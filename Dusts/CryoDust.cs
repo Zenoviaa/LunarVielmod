@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace StellaMod.Dusts
+namespace Stellamod.Dusts
 {
 	public class CryoDust : ModDust
 	{

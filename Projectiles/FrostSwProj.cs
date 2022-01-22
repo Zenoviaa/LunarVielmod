@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-using StellaMod.Dusts;
+using Stellamod.Dusts;
 using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles

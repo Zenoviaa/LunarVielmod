@@ -56,6 +56,7 @@ namespace Stellamod.Items.weapons.mage
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 20);
 		}
 	}
 }

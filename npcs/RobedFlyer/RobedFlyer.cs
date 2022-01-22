@@ -112,7 +112,6 @@ namespace Stellamod.npcs.RobedFlyer
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Robe, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.PinkPearl, 1, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 1, 3, 12 ));
 		}
 

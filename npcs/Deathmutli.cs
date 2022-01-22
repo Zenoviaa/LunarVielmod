@@ -11,7 +11,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Buffs;
 
 using Microsoft.Xna.Framework.Graphics;
-using StellaMod.Dusts;
+using Stellamod.Dusts;
 
 namespace Stellamod.npcs
 {
