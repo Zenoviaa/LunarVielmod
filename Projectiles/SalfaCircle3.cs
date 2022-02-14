@@ -9,11 +9,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    public class SalfaCircle : ModProjectile
+    public class SalfaCircle3 : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("SalfaCirle");
+            DisplayName.SetDefault("SalfaCirle3");
             Main.projFrames[Projectile.type] = 9;
         }
 
@@ -23,18 +23,26 @@ namespace Stellamod.Projectiles
             Projectile.DamageType = DamageClass.Magic;
             Projectile.width = 60;
             Projectile.height = 60;
-            Projectile.penetrate = -1;
-            Projectile.scale = 1.3f;
-            DrawOriginOffsetY = -65;
+            Projectile.penetrate = 100;
+            Projectile.scale = 1.7f;
+            DrawOriginOffsetY = -55;
             Projectile.damage = 0;
-            Projectile.timeLeft = 90;
+            Projectile.timeLeft = 120;
+            DrawOriginOffsetY = -20;
+            Projectile.rotation = 45;
 
         }
 
         public override bool PreAI()
         {
-            Projectile.scale *= 0.98f;
+            Projectile.scale *= 0.96f;
             Projectile.tileCollide = false;
+
+            int evenmoredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<SalfaceDust>());
+            int moredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BubbleBurst_Green);
+
+            Main.dust[evenmoredust].scale = 0.5f;
+            Main.dust[moredust].scale = 0.6f;
 
 
 
@@ -77,7 +85,7 @@ namespace Stellamod.Projectiles
 
 
 
-                Projectile.Center = playerCenter + new Vector2(90, 0).RotatedBy(swordRotation);
+                Projectile.Center = playerCenter + new Vector2(100, 0).RotatedBy(swordRotation);
 
 
 
@@ -103,4 +111,4 @@ namespace Stellamod.Projectiles
 }
 
 
-	
+

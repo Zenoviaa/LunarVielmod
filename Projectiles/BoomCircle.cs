@@ -21,14 +21,14 @@ namespace Stellamod.Projectiles
 			Projectile.width = 60;
 			Projectile.height = 60;
 			Projectile.penetrate = 3;
-			Projectile.timeLeft = 45;
+			Projectile.timeLeft = 28;
             Projectile.scale = 0.9f;
 			
 		}
 
 		public override bool PreAI()
 		{
-			Projectile.scale *= 0.96f;
+			
 			Projectile.tileCollide = false;
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.FireworkFountain_Yellow, 0f, 0f);
 			int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, 0f);

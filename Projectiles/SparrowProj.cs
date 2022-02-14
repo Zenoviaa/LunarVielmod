@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
-        
+
         public override void AI()
         {
 
@@ -54,12 +54,12 @@ namespace Stellamod.Projectiles
 
             {
                 Timer++;
-                if (Timer > 75)
+                if (Timer > 155)
                 {
                     // Our timer has finished, do something here:
                     // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
                     ShakeModSystem.Shake = 8;
-                   
+
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSalfi"));
                     Timer = 0;
                 }
@@ -87,97 +87,41 @@ namespace Stellamod.Projectiles
 
 
 
-                if (Timer == 10)
-                {
-                    float speedX = Projectile.velocity.X * 7;
-                    float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bowpull"));
-                }
-
-                if (Timer == 10)
-                { 
-
-                    Vector2 Position = Projectile.Center + new Vector2(90, 0).RotatedBy(swordRotation);
-                    float speedX = Projectile.velocity.X;
-                    float speedY = Projectile.velocity.Y;
-                    
-          
-                   
-                
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Position.X + speedX, Position.Y + speedY, speedX, speedY * 2, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bowpull"));
-                   
-                }
-
-
-
-                if (Timer == 75)
-                {
-
-                    Vector2 Position = Projectile.Center + new Vector2(150, 0).RotatedBy(swordRotation);
-                    float speedX = Projectile.velocity.X;
-                    float speedY = Projectile.velocity.Y;
-
-
-
-
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Position.X + speedX, Position.Y + speedY, speedX, speedY * 2, ModContent.ProjectileType<SalfaCircle2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                 
-
-                }
-
                 if (Timer == 20)
                 {
-                    float speedX = Projectile.velocity.X * 7;
+                    float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
-                if (Timer == 30)
-                {
-                    float speedX = Projectile.velocity.X * 7;
-                    float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-                }
+       
 
                 if (Timer == 40)
                 {
-                    float speedX = Projectile.velocity.X * 7;
+                    float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
-                if (Timer == 50)
-                {
-                    float speedX = Projectile.velocity.X * 7;
-                    float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-                }
+
                 if (Timer == 60)
                 {
-                    float speedX = Projectile.velocity.X * 7;
+                    float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 2, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.PygmySpear, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                    Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.FireworkFountain_Green, new Vector2(0, 1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
                 
+
+
 
 
 
@@ -197,17 +141,36 @@ namespace Stellamod.Projectiles
                     }
                 }
 
-                
+
 
 
             }
 
+            if (Timer == 75)
+            {
+ 
+ 
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
 
-            if (Timer >= 65)
-                {
-                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.position.X, Projectile.position.Y, Projectile.velocity.X, Projectile.velocity.Y, ModContent.ProjectileType<MorrowShot>(), Projectile.damage, Projectile.knockBack, Projectile.whoAmI, 0, 0);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bowpull"));
+            }
 
-                }
+           
+
+            if (Timer >= 152)
+            {
+                float speedX = Projectile.velocity.X * 10;
+                float speedY = Projectile.velocity.Y * 7;
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 4, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.25f, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+            }
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -230,7 +193,7 @@ namespace Stellamod.Projectiles
             return false;
         }
 
-       
+
 
     }
 }

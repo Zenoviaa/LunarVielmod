@@ -10,37 +10,33 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Projectiles;
+using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles
 {
-    public class MorrowShot : ModProjectile
+    public class MorrowShotArrow2 : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("morrowshot");
+            DisplayName.SetDefault("morrowshotarrow");
             Main.projFrames[Projectile.type] = 1;
             //The recording mode
         }
 
-        private int ProjectileSpawnedCount;
-        private int ProjectileSpawnedMax;
-        private Projectile ParentProjectile;
-        private bool RunOnce = true;
-        private bool MouseLeftBool = false;
+
 
         public override void SetDefaults()
         {
             Projectile.damage = 12;
-            Projectile.width = 40;
-            Projectile.height = 40;
+            Projectile.width = 12;
+            Projectile.height = 24;
             Projectile.light = 1.5f;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.maxPenetrate = 3;
-            
-
+            Projectile.maxPenetrate = 20;
+            Projectile.CloneDefaults(ProjectileID.BoneArrow);
 
             Projectile.ownerHitCheck = true;
 
@@ -57,27 +53,24 @@ namespace Stellamod.Projectiles
         public override bool PreAI()
         {
             int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f);
-            int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, 0f);
+            int sdust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<SalfaceDust>(), 0f, 0f);
 
 
-            Main.dust[dust].scale = 0.6f;
-            Main.dust[moredust].scale = 0.5f;
-      
 
+            Main.dust[dust].scale = 0.5f;
             return true;
         }
 
         public override void AI()
         {
-
-
-            
-
             Timer++;
             if (Timer > 3)
             {
                 // Our timer has finished, do something here:
                 // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
+                float speedX = Projectile.velocity.X;
+                float speedY = Projectile.velocity.Y;
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), speedX, speedY, speedX, speedY * 2, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
             }
 
@@ -114,7 +107,6 @@ namespace Stellamod.Projectiles
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            
 
 
 
@@ -122,55 +114,32 @@ namespace Stellamod.Projectiles
         }
 
         
+
+
+    
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Dust dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.KryptonMoss, 0, 0, 100, Color.Blue, 0.8f);
+                dust.noGravity = true;
+                dust.velocity *= 4f;
+                dust.scale = 0.2f;
+            }
+        }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-            float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-            Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
             Projectile.Kill();
-
-
         }
 
 
-        
 
 
 
-
-        public override bool PreDraw(ref Color lightColor)
-        
-           
-        {
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (Projectile.spriteDirection == -1)
-            {
-                spriteEffects = SpriteEffects.FlipHorizontally;
-            }
-            Asset<Texture2D> asset = TextureAssets.Projectile[Projectile.type];
-            int height = Main.player[Projectile.owner].height / 1; // 5 is frame count
-            int y = height * Projectile.frame;
-            var rect = new Rectangle(0, y, Main.player[Projectile.owner].width, height);
-            var drawOrigin = new Vector2(Main.player[Projectile.owner].width / 2, Projectile.height / 2);
-           
-
-            
-  
-        
-            
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-            }
-
-            return true ;
-        }
 
     }
 
-    
+
 
 
 }
