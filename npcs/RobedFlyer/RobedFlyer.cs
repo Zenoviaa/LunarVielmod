@@ -95,7 +95,7 @@ namespace Stellamod.npcs.RobedFlyer
 					{
 						float A = (float)Main.rand.Next(-150, 150) * 0.01f;
 						float B = (float)Main.rand.Next(-150, 150) * 0.01f;
-						int p = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(),NPC.Center.X, NPC.Center.Y, direction.X + A, direction.Y + B, ModContent.ProjectileType<Projectiles.RobedProjectile>(), 11, 1, Main.myPlayer, 0, 0);
+						int p = Projectile.NewProjectile(NPC.GetSpawnSourceForNPCFromNPCAI(),NPC.Center.X, NPC.Center.Y, direction.X + A, direction.Y + B, ModContent.ProjectileType<Projectiles.RobedProjectile>(), 11, 1, Main.myPlayer, 0, 0);
 						Main.projectile[p].scale = .5f;
 					}
 				}
