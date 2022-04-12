@@ -56,11 +56,11 @@ namespace Stellamod.Projectiles
 
         public override bool PreAI()
         {
-            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f);
-            int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.YellowStarDust, 0f, 0f);
+           
+            int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f);
 
 
-            Main.dust[dust].scale = 0.6f;
+          
             Main.dust[moredust].scale = 0.5f;
       
 

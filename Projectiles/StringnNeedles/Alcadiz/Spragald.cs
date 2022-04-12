@@ -7,7 +7,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
 	// - ModProjectile - the minion itself
 
@@ -46,14 +46,15 @@ namespace Stellamod.Projectiles
 
 		public sealed override void SetDefaults()
 		{
+			Projectile.originalDamage = (int)7f;
 			Projectile.width = 28;
 			Projectile.height = 28;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 			Projectile.damage = 15;
 			// These below are needed for a minion weapon
-			Projectile.friendly = false; // Only controls if it deals damage to enemies on contact (more on that later)
+			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
 			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Magic; // Declares the damage type (needed for it to deal damage)
+			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 0f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.timeLeft = 600;
@@ -195,7 +196,7 @@ namespace Stellamod.Projectiles
 			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
 			// Both things depend on if it has a target or not, so it's just one assignment here
 			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-		
+			Projectile.friendly = foundTarget;
 		}
 
 		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
