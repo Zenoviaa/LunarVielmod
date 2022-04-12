@@ -26,17 +26,21 @@ namespace Stellamod.Items.weapons.summon
 			Item.height = 20;
 			Item.rare = ItemRarityID.Green;
 			Item.value = Terraria.Item.sellPrice(0, 5, 80, 0);
-			Item.damage = 7;
-			Item.knockBack = 1;
-			Item.mana = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTime = Item.useAnimation = 120;
-			Item.DamageType = DamageClass.Summon;
-			Item.autoReuse = true;
-			Item.noUseGraphic = true;
-			Item.shoot = ModContent.ProjectileType<Windeffect>();
-			Item.shootSpeed = 8;
-			Item.UseSound = SoundID.Item1;
+			Item.CloneDefaults(ItemID.Arkhalis);
+			Item.damage = 7; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+			Item.DamageType = DamageClass.Ranged;
+			Item.mana = 100;
+			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
+			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.noMelee = true; //so the Item's animation doesn't do damage
+			Item.knockBack = 4; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
+			Item.value = 10000; // how much the Item sells for (measured in copper)
+			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
+			Item.autoReuse = true; // if you can hold click to automatically use it again
+			Item.shoot = ModContent.ProjectileType<StringNNeedlesAlcadiz>();
+			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
+			Item.channel = true;
 
 		}
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)

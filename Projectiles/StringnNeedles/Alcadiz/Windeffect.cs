@@ -19,12 +19,15 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			Projectile.width = 48;
 			Projectile.height = 48;
 			Projectile.alpha = 75;
-			Projectile.scale = 0.4f;
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;
+			Projectile.scale = 0.4f;
 			Projectile.DamageType = DamageClass.Summon;
 			Projectile.tileCollide = false;
 			Projectile.ignoreWater = true;
+			Projectile.timeLeft = 120;
+			DrawOriginOffsetX = -180;
+			DrawOriginOffsetY = -20;
 		}
 
 

@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 
             {
                 Timer++;
-                if (Timer > 220)
+                if (Timer > 170)
                 {
                     // Our timer has finished, do something here:
                     // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
@@ -66,22 +66,24 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
                 Player player = Main.player[Projectile.owner];
                 if (player.noItems || player.CCed || player.dead || !player.active)
                     Projectile.Kill();
-                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, false);
-               
+                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+                float swordRotation = 0f;
                 if (Main.myPlayer == Projectile.owner)
                 {
                     player.ChangeDir(Projectile.direction);
+                    swordRotation = (Main.MouseWorld - player.Center).ToRotation();
                     if (!player.channel)
                         Projectile.Kill();
                 }
+                Projectile.velocity = swordRotation.ToRotationVector2();
 
                 Projectile.spriteDirection = player.direction;
-               
+                if (Projectile.spriteDirection == 1)
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                else
+                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
 
-
-
-               
 
 
 
@@ -90,37 +92,76 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
                     float speedX = Projectile.velocity.X * 0;
                     float speedY = Projectile.velocity.Y * 0;
 
-             
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
+                  
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
-               
 
+
+                if (Timer == 100)
+                {
+                    float speedX = Projectile.velocity.X * 5;
+                    float speedY = Projectile.velocity.Y * 3;
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 0.5f), 0f, Projectile.owner, 0f, 0f);
+                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                }
+
+                if (Timer == 60)
+                {
+                    float speedX = Projectile.velocity.X * 5;
+                    float speedY = Projectile.velocity.Y * 3;
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                }
+
+                if (Timer == 140)
+                {
+                    float speedX = Projectile.velocity.X * 5;
+                    float speedY = Projectile.velocity.Y * 3;
+
+                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                }
+
+
+
+
+
+
+                Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+
+                player.heldProj = Projectile.whoAmI;
+                player.itemTime = 2;
+                player.itemAnimation = 2;
+                player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+
+                if (++Projectile.frameCounter >= 1)
+                {
+                    Projectile.frameCounter = 0;
+                    if (++Projectile.frame >= 1)
+                    {
+                        Projectile.frame = 0;
+                    }
+                }
 
 
 
 
             }
 
-            if (Timer == 100)
+           
+
+
+
+            if (Timer >= 170)
             {
-
-
-            
-
-            
-                SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-            }
-
-
-
-            if (Timer >= 160)
-            {
-                float speedX = Projectile.velocity.X * 0;
-                float speedY = Projectile.velocity.Y * 0;
+                float speedX = Projectile.velocity.X * 5;
+                float speedY = Projectile.velocity.Y * 2;
                 Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 4, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
                 Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.25f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
             }
         }
