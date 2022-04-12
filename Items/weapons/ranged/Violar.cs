@@ -14,7 +14,8 @@ namespace Stellamod.Items.weapons.ranged
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("Let them burn in harmony!" +
-				"\nSimple weapon forged from Stellean bricks and the heat from plants of the morrow...");
+				"\nSimple weapon forged from Stellean bricks and the heat from plants of the morrow" +
+				"\nImpractical but very rewarding...");
 			DisplayName.SetDefault("Violiar");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
@@ -41,6 +42,7 @@ namespace Stellamod.Items.weapons.ranged
 			Item.damage = 18;
 			Item.knockBack = 5f;
 			Item.noMelee = true;
+			Item.crit = 25;
 
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<violarproj>();

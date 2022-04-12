@@ -79,7 +79,7 @@ namespace Stellamod.npcs.RobedFlyer
 				NPC.ai[0] = -25f;
 				NPC.netUpdate = true;
 			}
-			if (counter >= 240) //Fires desert feathers like a shotgun
+			if (counter >= 240) 
 			{
 				counter = 0;
 				
