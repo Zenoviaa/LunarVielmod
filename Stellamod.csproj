@@ -19,4 +19,9 @@
     <Folder Include="Items\blocks\" />
     <Folder Include="Particles\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ParticleLibrary">
+      <HintPath>ParticleLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

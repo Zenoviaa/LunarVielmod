@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 		{
 			DisplayName.SetDefault("Spragald");
 			// Sets the amount of frames this minion has on its spritesheet
-			Main.projFrames[Projectile.type] = 4;
+			Main.projFrames[Projectile.type] = 14;
 			// This is necessary for right-click targeting
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
@@ -58,7 +58,11 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			Projectile.minionSlots = 0f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.timeLeft = 600;
-		
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 5;
+			Projectile.scale = 0.8f;
+
+
 		}
 
 		// Here you can decide if your minion breaks things like grass or pots

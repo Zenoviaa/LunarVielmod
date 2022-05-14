@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles
                 // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
                 float speedX = Projectile.velocity.X;
                 float speedY = Projectile.velocity.Y;
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), speedX, speedY, speedX, speedY * 2, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), speedX, speedY, speedX, speedY * 2, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
             }
 

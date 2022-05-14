@@ -6,7 +6,7 @@ namespace Stellamod.UI.systems
 	public class ProjectileModificationGlobalNPC : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool CloneNewInstances => true;
+		
 		public int timesHitByModifiedProjectiles;
 	}
 }

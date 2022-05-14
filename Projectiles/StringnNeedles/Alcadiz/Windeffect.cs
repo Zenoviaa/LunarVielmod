@@ -1,33 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
-	public class Windeffect : ModProjectile
+    public class Windeffect : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("windeffect");
-			Main.projFrames[Projectile.type] = 14;
+			Main.projFrames[Projectile.type] = 9;
 		}
 
 		public override void SetDefaults()
 		{
 			Projectile.width = 48;
 			Projectile.height = 48;
-			Projectile.alpha = 75;
+			Projectile.alpha = 125;
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;
-			Projectile.scale = 0.4f;
+			Projectile.scale = 0.7f;
 			Projectile.DamageType = DamageClass.Summon;
 			Projectile.tileCollide = false;
 			Projectile.ignoreWater = true;
-			Projectile.timeLeft = 120;
-			DrawOriginOffsetX = -180;
-			DrawOriginOffsetY = -20;
+			Projectile.timeLeft = 172;
+			DrawOriginOffsetX = -140;
+			DrawOriginOffsetY = -38;
 		}
 
 
@@ -35,16 +34,28 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 		{
 			Player player = Main.player[Projectile.owner];
 			Projectile.Center = player.Center;
-			if (++Projectile.frameCounter >= 5)
+			if (++Projectile.frameCounter >= 4)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 14)
+				if (++Projectile.frame >= 9)
 				{
 					Projectile.frame = 0;
 				}
 			}
 		
 		}
+		public override Color? GetAlpha(Color lightColor)
+		{
+			//return Color.White;
+			return new Color(0, 255, 255, 255) * (1f - (float)Projectile.alpha / 255f);
 
-    }
+		}
+		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+		{
+
+
+
+			overPlayers.Add(index);
+		}
+	}
 }

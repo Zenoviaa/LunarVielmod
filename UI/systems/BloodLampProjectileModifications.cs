@@ -11,7 +11,7 @@ namespace Stellamod.UI.systems
 	public class BloodLampProjectileModifications : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;
-		public override bool CloneNewInstances => true;
+		
 		public bool applyBuffOnHit;
 		public bool sayTimesHitOnThirdHit;
 		// These are set when the user specifies that they want a trail.

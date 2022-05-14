@@ -92,38 +92,10 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
                     float speedX = Projectile.velocity.X * 0;
                     float speedY = Projectile.velocity.Y * 0;
 
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
-                  
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-                }
-
-
-
-                if (Timer == 100)
-                {
-                    float speedX = Projectile.velocity.X * 5;
-                    float speedY = Projectile.velocity.Y * 3;
-
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 0.5f), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-                }
-
-                if (Timer == 60)
-                {
-                    float speedX = Projectile.velocity.X * 5;
-                    float speedY = Projectile.velocity.Y * 3;
-
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
-                }
-
-                if (Timer == 140)
-                {
-                    float speedX = Projectile.velocity.X * 5;
-                    float speedY = Projectile.velocity.Y * 3;
-
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Stynger, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/SpidrSummon"));
+                    
                 }
 
 
@@ -160,9 +132,9 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
             {
                 float speedX = Projectile.velocity.X * 5;
                 float speedY = Projectile.velocity.Y * 2;
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.25f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+              
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<Spragald>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+        
             }
         }
         public override bool PreDraw(ref Color lightColor)

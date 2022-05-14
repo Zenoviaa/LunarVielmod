@@ -197,7 +197,7 @@ namespace Stellamod.Projectiles
 					projectile.localAI[0] += (float)Main.rand.Next(10, 31) * 0.1f;
 
 				float num = projectile.localAI[0] / 60f;
-				num /= (1f + Main.player[projectile.owner].meleeSpeed) / 2f;
+				num /= (1f + Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee)) / 2f;
 				if (num > seconds)
 					projectile.ai[0] = -1f;
 			}
@@ -233,8 +233,8 @@ namespace Stellamod.Projectiles
 			if (Main.player[projectile.owner].yoyoString)
 				num2 = num2 * 1.25f + 30f;
 
-			num2 /= (1f + Main.player[projectile.owner].meleeSpeed * 3f) / 4f;
-			float num3 = acceleration / ((1f + Main.player[projectile.owner].meleeSpeed * 3f) / 4f);
+			num2 /= (1f + Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee) * 3f) / 4f;
+			float num3 = acceleration / ((1f + Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee) * 3f) / 4f);
 			float num4 = 14f - num3 / 2f;
 			float num5 = 5f + num3 / 2f;
 			if (flag)
@@ -471,8 +471,8 @@ namespace Stellamod.Projectiles
 			}
 			else if (projectile.ai[0] == 1f)
 			{
-				float num4 = 14f / Main.player[projectile.owner].meleeSpeed;
-				float num5 = 0.9f / Main.player[projectile.owner].meleeSpeed;
+				float num4 = 14f / Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee); ;
+				float num5 = 0.9f / Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee);
 				Math.Abs(num);
 				Math.Abs(num2);
 				if (projectile.ai[1] == 1f)

@@ -92,8 +92,8 @@ namespace Stellamod.Projectiles
                     float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
 
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
@@ -104,8 +104,8 @@ namespace Stellamod.Projectiles
                     float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
 
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
@@ -114,8 +114,8 @@ namespace Stellamod.Projectiles
                     float speedX = Projectile.velocity.X * 10;
                     float speedY = Projectile.velocity.Y * 7;
 
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
                 }
 
@@ -153,11 +153,11 @@ namespace Stellamod.Projectiles
                 float speedX = Projectile.velocity.X * 10;
                 float speedY = Projectile.velocity.Y * 7;
 
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                 SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bowpull"));
             }
 
@@ -167,9 +167,9 @@ namespace Stellamod.Projectiles
             {
                 float speedX = Projectile.velocity.X * 10;
                 float speedY = Projectile.velocity.Y * 7;
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 4, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.25f, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 4, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.25f, ModContent.ProjectileType<MorrowShot>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
             }
         }
         public override bool PreDraw(ref Color lightColor)

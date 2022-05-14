@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			float speedX = Projectile.velocity.X * 1;
 			float speedY = Projectile.velocity.Y * 1;
 
-			Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.StyngerShrapnel, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.StyngerShrapnel, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 			if (target.life <= 0)
 			{
 				

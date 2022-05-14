@@ -13,10 +13,11 @@ namespace Stellamod.Items.weapons.summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Alcadiz String n Needle");
-			Tooltip.SetDefault("Your summons will target focus enemies" +
-				"\nSummons will manifest out of your needle " +
-				"\nThey will act as temporary summons to give your other minions company!");
+			DisplayName.SetDefault("Alcadiz String n Charm");
+			Tooltip.SetDefault("Your summons will target focused enemies" +
+				"\nSummons will manifest out of your string shield" +
+				"\nThey will act as temporary summons to give your other minions company!" +
+				"\nThe Charm above gives you 10+ Defense while active!");
 		}
 
 
@@ -27,9 +28,9 @@ namespace Stellamod.Items.weapons.summon
 			Item.rare = ItemRarityID.Green;
 			Item.value = Terraria.Item.sellPrice(0, 5, 80, 0);
 			Item.CloneDefaults(ItemID.Arkhalis);
-			Item.damage = 7; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
-			Item.DamageType = DamageClass.Ranged;
-			Item.mana = 100;
+			Item.damage = 8; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+			Item.DamageType = DamageClass.Summon;
+			Item.mana = 50;
 			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
 			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot;
