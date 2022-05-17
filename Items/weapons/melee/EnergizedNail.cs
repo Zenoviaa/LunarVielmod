@@ -6,10 +6,12 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Stellamod.Buffs;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Nails;
+using Stellamod.Particles;
 
 namespace Stellamod.Items.weapons.melee
 {
-	public class HornedNail : ModItem
+	public class EnergizedNail : ModItem
 	{
 
 		public int AttackCounter = 1;
@@ -17,7 +19,7 @@ namespace Stellamod.Items.weapons.melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Doorlauncher"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("Purge under funny nail :0");
+			Tooltip.SetDefault("Electrical nail, thats weird");
 		}
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
@@ -31,7 +33,7 @@ namespace Stellamod.Items.weapons.melee
 
 		public override void SetDefaults()
 		{
-			Item.damage = 42;
+			Item.damage = 51;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 0;
 			Item.height = 0;
@@ -44,10 +46,10 @@ namespace Stellamod.Items.weapons.melee
 			Item.rare = 2;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<HornedNailProj>();
+			Item.shoot = ModContent.ProjectileType<EnergizedNailProj>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
-			Item.crit = 52;
+			Item.crit = 46;
 
 
 
@@ -76,12 +78,12 @@ namespace Stellamod.Items.weapons.melee
 			}
 			if (combowombo == 4)
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj>();
+				Item.shoot = ModContent.ProjectileType<EnergizedNailProj>();
 				combowombo = 0;
 			}
 			else
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj2>();
+				Item.shoot = ModContent.ProjectileType<EnergizedNailProj2>();
 			}
 			return false;
 
@@ -89,7 +91,7 @@ namespace Stellamod.Items.weapons.melee
 
 
 
-	
+
 
 	}
 }

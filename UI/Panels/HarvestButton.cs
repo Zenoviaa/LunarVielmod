@@ -12,7 +12,7 @@ namespace Stellamod.UI.Panels
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ModContent.GetTexture("Terraria/UI/ButtonHar"), new Vector2(Main.screenWidth + 20, Main.screenHeight - 20) / 2f, color);
+          //  spriteBatch.Draw(ModContent.GetTexture("Terraria/UI/ButtonHar"), new Vector2(Main.screenWidth + 20, Main.screenHeight - 20) / 2f, color);
         }
     }
 }

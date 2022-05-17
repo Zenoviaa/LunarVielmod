@@ -31,7 +31,6 @@ namespace Stellamod.Items.weapons.ranged
 			Item.knockBack = 4; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
 			Item.value = 10000; // how much the Item sells for (measured in copper)
 			Item.rare = ItemRarityID.Blue; // the color that the Item's name will be in-game
-			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
 			Item.autoReuse = true; // if you can hold click to automatically use it again
 			Item.shoot = ModContent.ProjectileType<SparrowProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)

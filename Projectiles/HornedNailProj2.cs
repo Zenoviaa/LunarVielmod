@@ -16,7 +16,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Projectiles
 {
-    public class HornedNailProj : ModProjectile
+    public class HornedNailProj2 : ModProjectile
     {
 
 

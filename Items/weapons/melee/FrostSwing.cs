@@ -15,8 +15,7 @@ namespace Stellamod.Items.weapons.melee
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Frost Swing");
-			Tooltip.SetDefault("An Arcanal Weapon!" +
-				"\nShoots one bone bolt to swirl and kill your enemies after attacking!" +
+			Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon");
 		}
 

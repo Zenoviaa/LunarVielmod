@@ -12,17 +12,20 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
+using Stellamod.UI.systems;
+using Terraria.Audio;
+using ParticleLibrary;
 
-
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.Nails
 {
-    public class HornedNailProj2 : ModProjectile
+    public class EnergizedNailProj : ModProjectile
     {
 
 
         public static bool swung = false;
-        public int SwingTime = 80;
-        public float holdOffset = 60f;
+        public int SwingTime = 60;
+        public float holdOffset = 15f;
         public bool bounced = false;
         public override void SetStaticDefaults()
         {
@@ -33,14 +36,14 @@ namespace Stellamod.Projectiles
         }
         public override void SetDefaults()
         {
-            Projectile.damage = 15;
+            Projectile.damage = 10;
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 100;
-            Projectile.width = 100;
+            Projectile.height = 20;
+            Projectile.width = 20;
             Projectile.friendly = true;
             Projectile.scale = 1f;
 
@@ -52,7 +55,7 @@ namespace Stellamod.Projectiles
         }
         public virtual float Lerp(float val)
         {
-            return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 12.5f - 10f) / 2f);
+            return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 6.5f - 5f) / 2f);
         }
         public override void AI()
         {
@@ -69,7 +72,6 @@ namespace Stellamod.Projectiles
             {
                 multiplier = 1.5f;
             }
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10000;
             AttachToPlayer();
@@ -85,20 +87,24 @@ namespace Stellamod.Projectiles
                 return;
             }
 
-          
+            Vector2 oldMouseWorld = Main.MouseWorld;
+            Timer++;
+            if (Timer < 5)
+                player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
+
 
             int dir = (int)Projectile.ai[1];
             float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
             // the actual rotation it should have
             float defRot = Projectile.velocity.ToRotation();
             // starting rotation
-            float endSet = ((MathHelper.PiOver2) / 0.3f);
+            float endSet = ((MathHelper.PiOver2) / 9f);
             float start = defRot - endSet;
 
             // ending rotation
             float end = defRot + endSet;
             // current rotation obv
-            float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
+            float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 0.2f - swingProgress);
             // offsetted cuz sword sprite
             Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
             position += rotation.ToRotationVector2() * holdOffset;
@@ -131,7 +137,22 @@ namespace Stellamod.Projectiles
 
 
 
-          
+
+            if (target.lifeMax <= 300)
+            {
+                if (target.life < target.lifeMax / 2)
+                {
+                    target.StrikeNPC(9999, 10, 5, false, false, true);
+                   
+                }
+            }
+            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
+
+            Main.dust[dust].scale = 1.2f;
+            ShakeModSystem.Shake = 5;
+
+            SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Zaped"));
+            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<ZappedParticle>(), Color.Purple, 1);
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
@@ -153,9 +174,9 @@ namespace Stellamod.Projectiles
             Main.EntitySpriteDraw(texture,
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-
-
+           
             return false;
         }
+       
     }
 }

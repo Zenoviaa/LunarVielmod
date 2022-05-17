@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,7 +38,6 @@ namespace Stellamod.Projectiles
 			Main.dust[dust].scale = 0.4f;
 			Main.dust[moredust].scale = 0.3f;
 			Main.dust[evenmoredust].scale = 0.3f;
-
 
 
 

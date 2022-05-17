@@ -12,11 +12,13 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
+using Terraria.Audio;
+using Stellamod.UI.systems;
 
-
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.Nails
 {
-    public class HornedNailProj : ModProjectile
+    public class EnergizedNailProj2 : ModProjectile
     {
 
 
@@ -140,8 +142,16 @@ namespace Stellamod.Projectiles
                 if (target.life < target.lifeMax / 2)
                 {
                     target.StrikeNPC(9999, 10, 5, false, false, true);
+                    
                 }
             }
+            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
+
+            Main.dust[dust].scale = 1.2f;
+            ShakeModSystem.Shake = 5;
+
+            SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Zaped"));
+            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity, new ZappedParticle(), Color.Purple, 1);
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

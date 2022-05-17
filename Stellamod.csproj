@@ -17,7 +17,6 @@
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\blocks\" />
-    <Folder Include="Particles\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">
