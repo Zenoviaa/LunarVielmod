@@ -1,4 +1,4 @@
 displayName = The Stella Mod
 author = Zenovia (Lunziestella)
-version = 0.1
+version = 1.0
 modReferences = ParticleLibrary
