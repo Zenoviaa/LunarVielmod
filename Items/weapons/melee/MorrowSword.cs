@@ -1,12 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.melee
+namespace Stellamod.Items.Weapons.Melee
 {
 	public class MorrowSword : ModItem
 	{
@@ -16,7 +16,6 @@ namespace Stellamod.Items.weapons.melee
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 40; // The item texture's width.
@@ -36,7 +35,6 @@ namespace Stellamod.Items.weapons.melee
 
 			Item.UseSound = SoundID.Item1; // The sound when the weapon is being used.
 		}
-
 		public override void MeleeEffects(Player player, Rectangle hitbox)
 		{
 			if (Main.rand.NextBool(3))
@@ -45,22 +43,19 @@ namespace Stellamod.Items.weapons.melee
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.CursedTorch);
 			}
 		}
-
 		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
 		{
 			// Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.OnFire, 20);
 		}
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 12);
-
+			recipe.Register();
 		}
 	}
 }

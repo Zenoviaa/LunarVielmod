@@ -1,6 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
@@ -8,16 +8,12 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-
-
-
 			DisplayName.SetDefault("Wounded");
 			Description.SetDefault("'A cut that saps life'");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.lifeRegen -= 6;
@@ -30,7 +26,6 @@ namespace Stellamod.Buffs
 				Main.dust[dust].noLight = true;
 			}
 		}
-
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.lifeRegen -= 6;

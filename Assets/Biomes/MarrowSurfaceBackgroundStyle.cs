@@ -27,23 +27,13 @@ namespace Stellamod.Backgrounds
 				}
 			}
 		}
-
 		public override int ChooseFarTexture()
 		{
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");
 		}
-
-
-        public override int ChooseMiddleTexture()
-        {
-
-
-			
+		public override int ChooseMiddleTexture()
+		{
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceClose");
-
-			
 		}
-
-        
 	}
 }

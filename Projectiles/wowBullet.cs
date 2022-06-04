@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -16,7 +15,6 @@ namespace Stellamod.Projectiles
 			DisplayName.SetDefault("Wow Bullet"); // The English name of the projectile
 			Main.projFrames[Projectile.type] = 7;
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 25; // The width of projectile hitbox
@@ -33,13 +31,10 @@ namespace Stellamod.Projectiles
 			Projectile.tileCollide = false; // Can the projectile collide with tiles?
 			Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
 			Projectile.rotation = 90;
-	
 			AIType = ProjectileID.Bullet; // Act exactly like default Bullet
 		}
-
 		public override void AI()
 		{
-
 			if (++Projectile.frameCounter >= 10)
 			{
 				Projectile.frameCounter = 0;
@@ -49,14 +44,13 @@ namespace Stellamod.Projectiles
 				}
 			}
 		}
-
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Main.instance.LoadProjectile(Projectile.type);
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
 			// Redraw the projectile with the color not influenced by light
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+			Vector2 drawOrigin = new(texture.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
@@ -66,7 +60,6 @@ namespace Stellamod.Projectiles
 
 			return true;
 		}
-
 		public override void Kill(int timeLeft)
 		{
 			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.

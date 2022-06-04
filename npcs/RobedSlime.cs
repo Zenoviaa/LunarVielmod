@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
 
-namespace Stellamod.npcs
+namespace Stellamod.NPCs
 {
 	// This ModNPC serves as an example of a completely custom AI.
 	public class RobedSlime : ModNPC
@@ -21,7 +20,7 @@ namespace Stellamod.npcs
 			Notice,
 			Jump,
 			Fall
-		
+
 		}
 
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
@@ -54,7 +53,6 @@ namespace Stellamod.npcs
 				}
 			});
 		}
-
 		public override void SetDefaults()
 		{
 			NPC.width = 32; // The width of the npc's hitbox (in pixels)
@@ -69,13 +67,11 @@ namespace Stellamod.npcs
 			NPC.knockBackResist = .5f;
 			NPC.alpha = 85;
 		}
-
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			// we would like this npc to spawn in the overworld.
 			return SpawnCondition.OverworldDaySlime.Chance * 0.1f;
 		}
-
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{
@@ -102,7 +98,6 @@ namespace Stellamod.npcs
 					break;
 			}
 		}
-
 		// Here in FindFrame, we want to set the animation frame our npc will use depending on what it is doing.
 		// We set npc.frame.Y to x * frameHeight where x is the xth frame in our spritesheet, counting from 0. For convenience, we have defined a enum above.
 		public override void FindFrame(int frameHeight)
@@ -138,7 +133,6 @@ namespace Stellamod.npcs
 					break;
 			}
 		}
-
 		private void FallAsleep()
 		{
 			// TargetClosest sets npc.target to the player.whoAmI of the closest player.
@@ -154,7 +148,6 @@ namespace Stellamod.npcs
 				AI_Timer = 0;
 			}
 		}
-
 		private void Notice()
 		{
 			// If the targeted player is in attack range (250).
@@ -181,7 +174,6 @@ namespace Stellamod.npcs
 				}
 			}
 		}
-
 		private void Jump()
 		{
 			AI_Timer++;
@@ -198,14 +190,12 @@ namespace Stellamod.npcs
 				AI_Timer = 0;
 			}
 		}
-
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Robe, 5)); 
+			npcLoot.Add(ItemDropRule.Common(ItemID.Robe, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 1, 3, 9));
 		}
-
 		public override void HitEffect(int hitDirection, double damage)
 		{
 
@@ -220,14 +210,11 @@ namespace Stellamod.npcs
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
 		}
-
-
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				
-
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] 
+			{
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("This type of slime for some reason is really magical somehow, it is exceptionally powerful.")
 			});

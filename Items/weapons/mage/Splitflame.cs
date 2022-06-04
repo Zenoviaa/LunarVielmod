@@ -1,17 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Projectiles;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
 
-namespace Stellamod.Items.weapons.mage
+namespace Stellamod.Items.Weapons.Mage
 {
 	internal class Splitflame : ModItem
 	{
@@ -20,8 +13,6 @@ namespace Stellamod.Items.weapons.mage
 			DisplayName.SetDefault("Split-flame candle");
 			Tooltip.SetDefault("Totally not the candle from split, totally.");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 38;
@@ -43,11 +34,6 @@ namespace Stellamod.Items.weapons.mage
 			Item.autoReuse = true;
 			Item.crit = 7;
 		}
-
-
-
-
-
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -57,7 +43,6 @@ namespace Stellamod.Items.weapons.mage
 			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 8);
-
 		}
 	}
 }

@@ -1,7 +1,7 @@
-﻿using Terraria.GameContent;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,7 +15,6 @@ namespace Stellamod.Projectiles
 		{
 			DisplayName.SetDefault("Frost Swing");
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.hostile = false;
@@ -28,12 +27,9 @@ namespace Stellamod.Projectiles
 			Projectile.scale = 1.2f;
 			Projectile.damage = 20;
 			Projectile.penetrate = 3;
-
 		}
-
 		public override void Kill(int timeLeft)
 		{
-
 			for (int num623 = 0; num623 < 25; num623++)
 			{
 				int num622 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, 0f, 100, default, 2f);
@@ -42,16 +38,13 @@ namespace Stellamod.Projectiles
 				Main.dust[num622].scale = 1.5f;
 			}
 		}
-
 		public override bool PreAI()
 		{
-
-
 			Projectile.tileCollide = true;
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.IcyMerman, 0f, 0f);
 			return base.PreAI();
 		}
-public override void AI()
+		public override void AI()
 		{
 			if (timer < 150)
 			{
@@ -99,28 +92,13 @@ public override void AI()
 				launch = true;
 			}
 
-
-			Vector3 RGB = new Vector3(1.5f, 0f, 1f);
-			float multiplier = 1;
-			float max = 2.25f;
-			float min = 1.0f;
-			RGB *= multiplier;
-			if (RGB.X > max)
-			{
-				multiplier = 0.5f;
-			}
-			if (RGB.X < min)
-			{
-				multiplier = 1.5f;
-			}
+			Vector3 RGB = new(1.5f, 0f, 1f);
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-
-
-			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+			Vector2 drawOrigin = new(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);

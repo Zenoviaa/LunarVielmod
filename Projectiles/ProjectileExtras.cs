@@ -2,9 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
@@ -552,12 +551,12 @@ namespace Stellamod.Projectiles
 			{
 				projectile.netUpdate = true;
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
-				
+
 			}
 			return false;
 		}
 
-		
+
 
 		public static void BoomerangOnHitEntity(int index)
 		{
@@ -596,7 +595,7 @@ namespace Stellamod.Projectiles
 				action();
 		}
 
-		
+
 
 		public static void DrawString(int index, Vector2 to = default)
 		{
@@ -741,7 +740,7 @@ namespace Stellamod.Projectiles
 					float num10 = 0.5f;
 					color = Lighting.GetColor((int)vector.X / 16, (int)(vector.Y / 16f), color);
 					color = new Color((int)((byte)((float)color.R * num10)), (int)((byte)((float)color.G * num10)), (int)((byte)((float)color.B * num10)), (int)((byte)((float)color.A * num10)));
-					
+
 				}
 			}
 		}
@@ -775,9 +774,9 @@ namespace Stellamod.Projectiles
 					if (!white) color = Lighting.GetColor((int)vector.X / 16, (int)((double)vector.Y / 16.0));
 					color = projectile.GetAlpha(color);
 					Main.spriteBatch.Draw(texture, vector - Main.screenPosition, sourceRectangle, color, rotation, origin, 1f, SpriteEffects.None, 0f);
-					
-					
-					
+
+
+
 				}
 			}
 		}

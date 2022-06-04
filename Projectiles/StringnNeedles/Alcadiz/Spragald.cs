@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,16 +13,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	// This is NOT an in-depth guide to advanced minion AI
 
-	
-
-	
-
-	
-
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	
-	
+	// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
 	// This minion shows a few mandatory things that make it behave properly.
 	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
@@ -64,32 +53,26 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 
 
 		}
-
 		// Here you can decide if your minion breaks things like grass or pots
 		public override bool? CanCutTiles()
 		{
 			return true;
 		}
-
 		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
 		public override bool MinionContactDamage()
 		{
 			return true;
 		}
-
 		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
-
 
 			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
 			Visuals();
 		}
-
-	
 
 		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
 		{
@@ -146,7 +129,6 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				}
 			}
 		}
-
 		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter)
 		{
 			// Starting search distance
@@ -195,14 +177,12 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 					}
 				}
 			}
-
 			// friendly needs to be set to true so the minion can deal contact damage
 			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
 			// Both things depend on if it has a target or not, so it's just one assignment here
 			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
 			Projectile.friendly = foundTarget;
 		}
-
 		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
 		{
 			// Default movement parameters (here for attacking)
@@ -255,7 +235,6 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				}
 			}
 		}
-
 		private void Visuals()
 		{
 			// So it will lean slightly towards the direction it's moving

@@ -1,8 +1,8 @@
-﻿using System;
-using Stellamod.Tiles;
+﻿using Stellamod.Tiles;
+using System;
 using Terraria.ModLoader;
 
-namespace Stellamod.UI.systems
+namespace Stellamod.UI.Systems
 {
 	public class BiomeTileCount : ModSystem
 	{

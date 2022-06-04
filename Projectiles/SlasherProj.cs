@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.systems;
+using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    public abstract class SlasherProj : ModProjectile
+	public abstract class SlasherProj : ModProjectile
 	{
 		public readonly int ChargeTime;
 		private readonly int DustType;
@@ -19,8 +19,6 @@ namespace Stellamod.Projectiles
 		private readonly int MaxKnockback;
 		private readonly float Acceleration;
 		private readonly float MaxSpeed;
-
-
 
 		public SlasherProj(int chargetime, int mindamage, int maxdamage, int dusttype, int size, int minknockback, int maxknockback, float acceleration, float maxspeed)
 		{
@@ -34,7 +32,6 @@ namespace Stellamod.Projectiles
 
 
 		}
-
 		public virtual void SafeAI() { }
 		public virtual void SafeDraw(SpriteBatch spriteBatch, Color lightColor) { }
 		public virtual void SafeSetDefaults() { }
@@ -54,7 +51,6 @@ namespace Stellamod.Projectiles
 			ProjectileID.Sets.TrailCacheLength[Type] = 20; // Sets the length of the trail.
 			SafeSetDefaults();
 		}
-
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Main.player[Projectile.owner].Center, Projectile.Center) ? true : base.Colliding(projHitbox, targetHitbox);
 		public virtual void Smash(Vector2 position) { }
 
@@ -70,8 +66,8 @@ namespace Stellamod.Projectiles
 		public float TrueRotation => ((float)radians + 3.9f) + ((Effects == SpriteEffects.FlipHorizontally) ? MathHelper.PiOver2 : 0);
 		public Vector2 Origin => (Effects == SpriteEffects.FlipHorizontally) ? new Vector2(Size, Size) : new Vector2(0, Size);
 
-        public sealed override bool PreDraw(ref Color lightColor)
-     
+		public sealed override bool PreDraw(ref Color lightColor)
+
 		{
 			Color color = lightColor;
 			Main.spriteBatch.Draw((Texture2D)TextureAssets.Projectile[Projectile.type], Main.player[Projectile.owner].Center - Main.screenPosition, new Rectangle(0, 0, Size, Size), color, TrueRotation, Origin, Projectile.scale, Effects, 0);
@@ -101,7 +97,7 @@ namespace Stellamod.Projectiles
 			if (player.direction == 1)
 				degrees += 180;
 
-			
+
 
 			radians = degrees * (Math.PI / 180);
 			if (player.channel && !released)
@@ -152,14 +148,14 @@ namespace Stellamod.Projectiles
 
 				if (!released)
 				{
-				
+
 					released = true;
 					Projectile.friendly = true;
 					SoundEngine.PlaySound(SoundID.Item1, Projectile.Center);
-					
+
 				}
 			}
-		
+
 
 			Projectile.position.Y = player.Center.Y - (int)(Math.Sin(radians * 0.96) * Size) - (Projectile.height / 2);
 			Projectile.position.X = player.Center.X - (int)(Math.Cos(radians * 0.96) * Size) - (Projectile.width / 2);
@@ -185,7 +181,6 @@ namespace Stellamod.Projectiles
 						Smash(Projectile.Center);
 
 					//if (Main.tile[(int)Projectile.Center.X / 16, (int)((Projectile.Center.Y + 24) / 16)].CollisionType == 1)
-						
 
 					Projectile.friendly = false;
 					SoundEngine.PlaySound(SoundID.Item70, Projectile.Center);

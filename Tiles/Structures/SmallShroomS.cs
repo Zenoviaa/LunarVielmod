@@ -28,7 +28,7 @@ namespace Stellamod.Tiles.Structures
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18,};
+			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18, };
 			TileObjectData.addTile(Type);
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
@@ -39,18 +39,13 @@ namespace Stellamod.Tiles.Structures
 			name.SetDefault("Shroomie");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
-
 		public override void NumDust(int x, int y, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}
-
-   
-        
-		
-	public override void KillMultiTile(int i, int j, int frameX, int frameY)
-	{
-		Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.SmallShroom>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY)
+		{
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.SmallShroom>());
 		}
-}
+	}
 }

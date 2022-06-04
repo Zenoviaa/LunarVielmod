@@ -1,11 +1,10 @@
-﻿using Stellamod.Buffs;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using IL.Terraria.DataStructures;
+using Stellamod.Buffs;
+using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
@@ -14,12 +13,8 @@ namespace Stellamod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Logger");
-
-		
 			Main.projFrames[Projectile.type] = 5;
 		}
-	
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 30;
@@ -31,10 +26,8 @@ namespace Stellamod.Projectiles
 			Projectile.timeLeft = 600;
 			Projectile.extraUpdates = 1;
 		}
-
 		public override void AI()
 		{
-
 			if (++Projectile.frameCounter >= 5)
 			{
 				Projectile.frameCounter = 0;
@@ -92,9 +85,6 @@ namespace Stellamod.Projectiles
 				}
 			}
 
-			
-
-
 			Projectile.rotation += 0.1f;
 			{
 				int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Firework_Yellow, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
@@ -112,24 +102,18 @@ namespace Stellamod.Projectiles
 				{
 					Projectile.velocity.Y = 16f;
 				}
-
-
 			}
-
 			return closestNPC;
 		}
 
-		
+
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			if (Main.rand.Next(5) == 0)
+			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<Wounded>(), 180);
 		}
-
 		public override bool PreDraw(ref Color lightColor)
 		{
-
-
 			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
@@ -179,10 +163,8 @@ namespace Stellamod.Projectiles
 		}
 		public override bool PreAI()
 		{
-
-
 			Projectile.tileCollide = true;
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0f, 0f);
+			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0f, 0f);
 			return base.PreAI();
 		}
 	}

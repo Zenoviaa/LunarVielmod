@@ -12,7 +12,6 @@ namespace Stellamod.Projectiles
 			DisplayName.SetDefault("Shadow Ball");
 			Main.projFrames[Projectile.type] = 4;
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
@@ -23,7 +22,6 @@ namespace Stellamod.Projectiles
 			Projectile.timeLeft = 60;
 			Projectile.scale = 0.5f;
 		}
-		
 		public override bool PreAI()
 		{
 			if (++Projectile.frameCounter >= 5)
@@ -36,11 +34,9 @@ namespace Stellamod.Projectiles
 			}
 
 			Projectile.tileCollide = true;
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, 0f);
-			int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, Main.rand.Next(110, 113));
+			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, 0f, 0f);
+			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, Main.rand.Next(110, 113));
 			
-
-
 			return false;
 		}
 
@@ -50,12 +46,9 @@ namespace Stellamod.Projectiles
 			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, Projectile.oldVelocity.X * 0.3f, Projectile.oldVelocity.Y * 0.3f);
 			return false;
 		}
-
 		public override void Kill(int timeLeft)
 		{
-
 			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, Projectile.oldVelocity.X * 0.3f, Projectile.oldVelocity.Y * 0.3f);
 		}
-
 	}
 }

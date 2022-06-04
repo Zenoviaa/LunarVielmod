@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +12,6 @@ namespace Stellamod.Projectiles
 			DisplayName.SetDefault("BoomMorrow");
 			Main.projFrames[Projectile.type] = 28;
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
@@ -26,28 +23,16 @@ namespace Stellamod.Projectiles
 			Projectile.scale = 0.9f;
 			Projectile.light = 1.5f;
 			Projectile.CloneDefaults(ProjectileID.DaybreakExplosion);
-
 		}
-
 		public override bool PreAI()
 		{
-
 			Projectile.tileCollide = false;
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<SalfaceDust>(), 0f, 0f);
-
 			Main.dust[dust].scale = 1f;
-
-
-
-
-
-
 			return true;
 		}
-
 		public override void AI()
 		{
-
 			if (++Projectile.frameCounter >= 1)
 			{
 				Projectile.frameCounter = 0;
@@ -56,7 +41,6 @@ namespace Stellamod.Projectiles
 					Projectile.frame = 0;
 				}
 			}
-
 		}
 	}
 }

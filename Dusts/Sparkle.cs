@@ -12,7 +12,6 @@ namespace Stellamod.Dusts
 			dust.noLight = true; // Makes the dust emit no light.
 			dust.scale *= 1.5f; // Multiplies the dust's initial scale by 1.5.
 		}
-
 		public override bool Update(Dust dust)
 		{ // Calls every frame the dust is active
 			dust.position += dust.velocity;

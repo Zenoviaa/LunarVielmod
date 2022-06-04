@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
@@ -21,27 +19,19 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			Projectile.DamageType = DamageClass.Summon;
 			Projectile.tileCollide = false;
 		}
-
 		public override bool PreAI()
 		{
 			Vector2 position = Projectile.Center + Vector2.Normalize(Projectile.velocity) * 10;
 
-			
 			ProjectileExtras.FlailAI(Projectile.whoAmI);
 			return false;
 		}
-
-
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-          
-		
+		public override bool PreDraw(ref Color lightColor)
+		{
 			ProjectileExtras.DrawChain(Projectile.whoAmI, Main.player[Projectile.owner].MountedCenter, "Stellamod/Projectiles/StringnNeedles/Alcadiz/Needle_Chain");
 			ProjectileExtras.DrawAroundOrigin(Projectile.whoAmI, lightColor);
 			return false;
 		}
-
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 			float speedX = Projectile.velocity.X * 1;
@@ -50,10 +40,6 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.StyngerShrapnel, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 			if (target.life <= 0)
 			{
-				
-
-				
-
 				for (int i = 0; i < 20; i++)
 				{
 					int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BubbleBurst_White, 0f, -2f, 0, default, 2f);
@@ -64,8 +50,6 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 					if (Main.dust[num].position != Projectile.Center)
 						Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
 				}
-
-			
 			}
 		}
 	}
