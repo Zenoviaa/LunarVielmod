@@ -19,8 +19,8 @@ namespace Stellamod.Tiles.Structures
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
-		  MineResist = 4f;
-		  MinPick = 200;
+			MineResist = 4f;
+			MinPick = 200;
 
 			DustType = ModContent.DustType<Dusts.SalfaceDust>();
 			AdjTiles = new int[] { TileID.Bookcases };
@@ -38,12 +38,10 @@ namespace Stellamod.Tiles.Structures
 			name.SetDefault("GrassMoss");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
-
 		public override void NumDust(int x, int y, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}
-
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.GrassMoss>());

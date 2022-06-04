@@ -1,12 +1,10 @@
-﻿using Terraria.ID;
-using Terraria.ModLoader;
+﻿using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
-using Stellamod.UI.systems;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.melee
+namespace Stellamod.Items.Weapons.Melee
 {
 	internal class PalmThrower : ModItem
 	{
@@ -15,8 +13,6 @@ namespace Stellamod.Items.weapons.melee
 			DisplayName.SetDefault("Palm Tomahawks");
 			Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 28;
@@ -38,21 +34,16 @@ namespace Stellamod.Items.weapons.melee
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 		}
-
-
-
-
-
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.PalmWood, 5);
 			recipe.AddIngredient(ItemID.Seashell, 5);
 			recipe.AddIngredient(ItemID.DemoniteBar, 7);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
 			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
 		}
 	}
 }

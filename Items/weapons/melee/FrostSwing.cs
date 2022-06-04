@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 
 
-namespace Stellamod.Items.weapons.melee
+namespace Stellamod.Items.Weapons.Melee
 {
 	public class FrostSwing : ModItem
 	{
@@ -18,8 +16,6 @@ namespace Stellamod.Items.weapons.melee
 			Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 23;
@@ -40,26 +36,16 @@ namespace Stellamod.Items.weapons.melee
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 		}
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            
-        
-			position = new Vector2((float)position.X, (float)
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback));
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback);
+
 			if (Item.shoot == ModContent.ProjectileType<FrostSwProj>())
-			{
 				Item.shoot = ModContent.ProjectileType<FrostSwProj3>();
-			}
 			else
-			{
 				Item.shoot = ModContent.ProjectileType<FrostSwProj>();
-			}
-          
-
+			
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-
 		}
-
-
 	}
 }

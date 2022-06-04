@@ -1,39 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Buffs;
-using System.Threading;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.weapons.melee;
-using Stellamod.Items.weapons.ranged;
-using Stellamod.Items.weapons.summon;
-using Stellamod.Items.weapons.mage;
-using Terraria.Audio;
 
-namespace Stellamod.npcs.Harvesting.Morrow
+namespace Stellamod.NPCs.Harvesting.Morrow
 {
 	// This ModNPC serves as an example of a completely custom AI.
 	public class HarvestOverworld : ModNPC
 	{
-		private enum ActionState
-		{
-			Ambient,
-			Amb2,
-			Amb3,
-			Amb4,
-
-		}
-		int frame = 0;
-		int timer = 0;
-
-
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
 		// These are for our benefit and the numbers could easily be used directly in the code below, but this is how we keep code organized.
 		private enum Frame
@@ -41,15 +27,25 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			first,
 			second,
 			third,
-			fourth,
-
+			fourth
+		}
+		private enum ActionState
+		{
+			Ambient,
+			Amb2,
+			Amb3,
+			Amb4
 		}
 		public ref float AI_State => ref NPC.ai[0];
 		public ref float AI_Timer => ref NPC.ai[1];
 		public ref float AI_FlutterTime => ref NPC.ai[2];
+
+		public int frame = 0;
+		public int timer = 0;
+
 		public override void SetStaticDefaults()
 		{
-			 DisplayName.SetDefault("???"); 
+			DisplayName.SetDefault("???");
 			Main.npcFrameCount[NPC.type] = 16; // make sure to set this for your modnpcs.
 
 			// Specify the debuffs it is immune to
@@ -61,7 +57,6 @@ namespace Stellamod.npcs.Harvesting.Morrow
 				}
 			});
 		}
-
 		public override void SetDefaults()
 		{
 			NPC.width = 7; // The width of the npc's hitbox (in pixels)
@@ -75,52 +70,35 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			NPC.lifeMax = 1;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
-
 		}
-
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			// we would like this npc to spawn in the overworld.
 			return SpawnCondition.Overworld.Chance * 0.1f;
 		}
-
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{
 			NPC.HasBuff<Harvester>();
 			// The npc starts in the asleep state, waiting for a player to enter range
-		 
-				timer++;
-				if (timer >= 15)
-				{
-					frame++;
-					timer = 0;
-				}
-				if (frame >= 16)
-				{
-					frame = 0;
-				}
-			Vector3 RGB = new Vector3(2.55f, 2.55f, 0.94f);
-			float multiplier = 1;
-			float max = 2.25f;
-			float min = 1.0f;
-			RGB *= multiplier;
-			if (RGB.X > max)
+			timer++;
+			if (timer >= 15)
 			{
-				multiplier = 0.5f;
+				frame++;
+				timer = 0;
 			}
-			if (RGB.X < min)
+			if (frame >= 16)
 			{
-				multiplier = 1.5f;
+				frame = 0;
 			}
+			Vector3 RGB = new(2.55f, 2.55f, 0.94f);
+			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 		}
-
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frame.Y = frameHeight * frame;
 		}
-
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 3, 5));
@@ -149,12 +127,13 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.GoldenKey, 10, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
-			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 10, 1, 10));
+			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 12, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.BambooBlock, 7, 1, 10));
 			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 1, 3, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
@@ -164,18 +143,15 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CanOfLeaves>(), 7, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 7, 1));
 		}
-        public override void OnKill()
-        {
-
-
-            base.OnKill();
-        }
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		public override void OnKill()
+		{
+			base.OnKill();
+		}
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				
-
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+			{
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("Harvest these bums!")
 			});

@@ -1,15 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Dusts;
-using Stellamod.Buffs;
-
-
 
 namespace Stellamod.Projectiles
 {
-
 	public class FrostSwProj2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
@@ -17,7 +13,6 @@ namespace Stellamod.Projectiles
 			DisplayName.SetDefault("FrostSwProj2");
 			Main.projFrames[base.Projectile.type] = 6;
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 56;
@@ -29,7 +24,6 @@ namespace Stellamod.Projectiles
 			Projectile.timeLeft = 11;
 			Projectile.ignoreWater = true;
 		}
-
 		public override void AI()
 		{
 			Projectile.frameCounter++;
@@ -53,7 +47,7 @@ namespace Stellamod.Projectiles
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			Vector2 angle = new Vector2(Projectile.ai[0], Projectile.ai[1]);
+			Vector2 angle = new(Projectile.ai[0], Projectile.ai[1]);
 			angle *= 0.105f;
 			Player player = Main.player[Projectile.owner];
 			if (angle.Y > 0 && player.velocity.Y != 0)
@@ -62,10 +56,8 @@ namespace Stellamod.Projectiles
 				player.velocity.Y = -angle.Y;
 			}
 
-			
-				target.AddBuff(ModContent.BuffType<Deathmultiplier>(), 360);
+			target.AddBuff(ModContent.BuffType<Deathmultiplier>(), 360);
 			base.OnHitNPC(target, damage, knockback, crit);
 		}
-
 	}
 }

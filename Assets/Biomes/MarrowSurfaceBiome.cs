@@ -1,5 +1,5 @@
-﻿using Stellamod.UI.systems;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;

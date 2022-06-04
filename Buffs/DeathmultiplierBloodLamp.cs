@@ -1,8 +1,6 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ModLoader;
+﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
@@ -10,9 +8,6 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-
-
-
 			DisplayName.SetDefault("Multiplier Blood Lamp");
 			Description.SetDefault("A multiplier of death for Blood Lamp");
 			Main.debuff[Type] = true;
@@ -20,7 +15,6 @@ namespace Stellamod.Buffs
 			Main.buffNoTimeDisplay[Type] = true;
 
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.lifeRegen -= 7;
@@ -33,7 +27,5 @@ namespace Stellamod.Buffs
 				Main.dust[dust].noLight = true;
 			}
 		}
-
-
 	}
 }

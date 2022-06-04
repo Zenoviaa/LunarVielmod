@@ -1,12 +1,10 @@
-﻿using Stellamod.Buffs;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using IL.Terraria.DataStructures;
-using Terraria.GameContent;
 using ReLogic.Content;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
@@ -15,12 +13,7 @@ namespace Stellamod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Beachthrow");
-
-
-			
 		}
-
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 10;
@@ -31,17 +24,9 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = 10;
 			Projectile.timeLeft = 600;
 			Projectile.scale = 0.65f;
-
-
-
 			AIType = ProjectileID.PossessedHatchet;
-
 		}
-
-
-
 		public override bool PreDraw(ref Color lightColor)
-
 		{
 			Asset<Texture2D> asset = TextureAssets.Projectile[Projectile.type];
 			Texture2D tex = asset.Value;
@@ -56,12 +41,7 @@ namespace Stellamod.Projectiles
 				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
-
 			return true;
 		}
-
 	}
-
-
-
-	}
+}

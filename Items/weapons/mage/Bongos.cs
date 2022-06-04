@@ -1,18 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Projectiles;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
-using Terraria.Audio;
 
-namespace Stellamod.Items.weapons.mage
+namespace Stellamod.Items.Weapons.Mage
 {
 	internal class Bongos : ModItem
 	{
@@ -21,8 +16,6 @@ namespace Stellamod.Items.weapons.mage
 			DisplayName.SetDefault("Star-Gilded Bongo");
 			Tooltip.SetDefault("Bong bong boom :)");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 16;
@@ -43,11 +36,6 @@ namespace Stellamod.Items.weapons.mage
 			Item.autoReuse = true;
 			Item.crit = 22;
 		}
-
-
-
-
-
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -59,24 +47,11 @@ namespace Stellamod.Items.weapons.mage
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 120);
-
 		}
-
-
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-          
-		
-
-
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
 			Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);
-			velocity = Vector2.Zero;
-	
-			
-
 			return false;
-
 		}
 	}
 }

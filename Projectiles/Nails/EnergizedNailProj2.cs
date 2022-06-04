@@ -1,186 +1,146 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Particles;
+using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using ReLogic.Content;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.Enums;
-using Terraria.GameContent.Shaders;
-using Terraria.Graphics.Effects;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Materials;
-using Stellamod.Particles;
-using Terraria.Audio;
-using Stellamod.UI.systems;
 
 namespace Stellamod.Projectiles.Nails
 {
-    public class EnergizedNailProj2 : ModProjectile
-    {
+	public class EnergizedNailProj2 : ModProjectile
+	{
+		public static bool swung = false;
+		public int SwingTime = 60;
+		public float holdOffset = 15f;
+		public bool bounced = false;
+		
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Slasher");
+			Main.projFrames[Projectile.type] = 1;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
+		}
+		public override void SetDefaults()
+		{
+			Projectile.damage = 10;
+			Projectile.timeLeft = SwingTime;
+			Projectile.penetrate = -1;
+			Projectile.ignoreWater = true;
+			Projectile.tileCollide = false;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.height = 20;
+			Projectile.width = 20;
+			Projectile.friendly = true;
+			Projectile.scale = 1f;
+		}
+		public float Timer
+		{
+			get => Projectile.ai[0];
+			set => Projectile.ai[0] = value;
+		}
+		public virtual float Lerp(float val)
+		{
+			return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 6.5f - 5f) / 2f);
+		}
+		public override void AI()
+		{
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10000;
+			AttachToPlayer();
+		}
+		public override bool ShouldUpdatePosition() => false;
+		public void AttachToPlayer()
+		{
+			Player player = Main.player[Projectile.owner];
+			if (!player.active || player.dead || player.CCed || player.noItems)
+				return;
 
+			Vector2 oldMouseWorld = Main.MouseWorld;
+			Timer++;
+			if (Timer < 5)
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
 
-        public static bool swung = false;
-        public int SwingTime = 60;
-        public float holdOffset = 15f;
-        public bool bounced = false;
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Slasher");
-            Main.projFrames[Projectile.type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
-        }
-        public override void SetDefaults()
-        {
-            Projectile.damage = 10;
-            Projectile.timeLeft = SwingTime;
-            Projectile.penetrate = -1;
-            Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 20;
-            Projectile.width = 20;
-            Projectile.friendly = true;
-            Projectile.scale = 1f;
+			int dir = (int)Projectile.ai[1];
+			float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
+			// the actual rotation it should have
+			float defRot = Projectile.velocity.ToRotation();
+			// starting rotation
+			float endSet = ((MathHelper.PiOver2) / 9f);
+			float start = defRot - endSet;
 
-        }
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-        public virtual float Lerp(float val)
-        {
-            return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 6.5f - 5f) / 2f);
-        }
-        public override void AI()
-        {
-            Vector3 RGB = new Vector3(1.45f, 2.55f, 0.94f);
-            float multiplier = 1;
-            float max = 2.25f;
-            float min = 1.0f;
-            RGB *= multiplier;
-            if (RGB.X > max)
-            {
-                multiplier = 0.5f;
-            }
-            if (RGB.X < min)
-            {
-                multiplier = 1.5f;
-            }
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10000;
-            AttachToPlayer();
-        }
-        public override bool ShouldUpdatePosition() => false;
-        public void AttachToPlayer()
-        {
+			// ending rotation
+			float end = defRot + endSet;
+			// current rotation obv
+			float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 0.2f - swingProgress);
+			// offsetted cuz sword sprite
+			Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
+			position += rotation.ToRotationVector2() * holdOffset;
+			Projectile.Center = position;
+			Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
+			player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+			player.itemRotation = rotation * player.direction;
+			player.itemTime = 2;
+			player.itemAnimation = 2;
+			Projectile.netUpdate = true;
+		}
 
-            Player player = Main.player[Projectile.owner];
-            if (!player.active || player.dead || player.CCed || player.noItems)
-            {
-                return;
-            }
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			Player player = Main.player[Projectile.owner];
+			Vector2 oldMouseWorld = Main.MouseWorld;
+			if (!bounced)
+			{
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
+				bounced = true;
+			}
 
-            Vector2 oldMouseWorld = Main.MouseWorld;
-            Timer++;
-            if (Timer < 5)
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
+			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
+			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.ElectrosphereMissile, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f); ;
+			Projectile.Kill();
 
+			if (target.lifeMax <= 300)
+			{
+				if (target.life < target.lifeMax / 2)
+				{
+					target.StrikeNPC(9999, 10, 5, false, false, true);
+				}
+			}
+			
+			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
+			Main.dust[dust].scale = 1.2f;
+			ShakeModSystem.Shake = 5;
 
-            int dir = (int)Projectile.ai[1];
-            float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
-            // the actual rotation it should have
-            float defRot = Projectile.velocity.ToRotation();
-            // starting rotation
-            float endSet = ((MathHelper.PiOver2) / 9f);
-            float start = defRot - endSet;
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Zaped"));
+			ParticleManager.NewParticle(Projectile.Center, Projectile.velocity, new ZappedParticle(), Color.Purple, 1);
+		}
+		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+		{
+			overPlayers.Add(index);
+		}
+		public override bool PreDraw(ref Color lightColor)
+		{
+			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
-            // ending rotation
-            float end = defRot + endSet;
-            // current rotation obv
-            float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 0.2f - swingProgress);
-            // offsetted cuz sword sprite
-            Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
-            position += rotation.ToRotationVector2() * holdOffset;
-            Projectile.Center = position;
-            Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
+			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+			int startY = frameHeight * Projectile.frame;
 
-            player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-            player.itemRotation = rotation * player.direction;
-            player.itemTime = 2;
-            player.itemAnimation = 2;
-            Projectile.netUpdate = true;
-        }
+			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+			Vector2 origin = sourceRectangle.Size() / 2f;
+			Color drawColor = Projectile.GetAlpha(lightColor);
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-            Player player = Main.player[Projectile.owner];
-            Vector2 oldMouseWorld = Main.MouseWorld;
-            if (!bounced)
-            {
+			Main.EntitySpriteDraw(texture,
+				Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
-                bounced = true;
-            }
-            else
-            {
-#pragma warning disable CS1717 // Assignment made to same variable
-                player.velocity = player.velocity;
-#pragma warning restore CS1717 // Assignment made to same variable
-                
-            }
-
-            float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-            float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.ElectrosphereMissile, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f); ;
-            Projectile.Kill();
-
-
-
-            if (target.lifeMax <= 300)
-            {
-                if (target.life < target.lifeMax / 2)
-                {
-                    target.StrikeNPC(9999, 10, 5, false, false, true);
-                    
-                }
-            }
-            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.InfluxWaver, 0f, 0f);
-
-            Main.dust[dust].scale = 1.2f;
-            ShakeModSystem.Shake = 5;
-
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Zaped"));
-            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity, new ZappedParticle(), Color.Purple, 1);
-        }
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-
-
-            overPlayers.Add(index);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            int startY = frameHeight * Projectile.frame;
-
-            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-            Vector2 origin = sourceRectangle.Size() / 2f;
-            Color drawColor = Projectile.GetAlpha(lightColor);
-
-            Main.EntitySpriteDraw(texture,
-                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-
-
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 }

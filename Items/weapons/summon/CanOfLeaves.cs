@@ -1,18 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
+using Stellamod.UI.Systems;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Projectiles;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
-using Stellamod.UI.systems;
 
-namespace Stellamod.Items.weapons.summon
+namespace Stellamod.Items.Weapons.Summon
 {
 	internal class CanOfLeaves : ModItem
 	{
@@ -21,8 +16,6 @@ namespace Stellamod.Items.weapons.summon
 			DisplayName.SetDefault("Box of Leaves");
 			Tooltip.SetDefault("Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 9;
@@ -45,9 +38,7 @@ namespace Stellamod.Items.weapons.summon
 			Item.autoReuse = true;
 			Item.crit = 15;
 		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-    
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// NewProjectile returns the index of the projectile it creates in the NewProjectile array.
 			// Here we are using it to gain access to the projectile object.
@@ -63,9 +54,6 @@ namespace Stellamod.Items.weapons.summon
 			// We do not want vanilla to spawn a duplicate projectile.
 			return false;
 		}
-
-
-
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();

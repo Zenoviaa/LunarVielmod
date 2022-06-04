@@ -1,9 +1,8 @@
 ﻿
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Tiles;
 
 namespace Stellamod.Items.Materials
 {
@@ -35,7 +34,6 @@ namespace Stellamod.Items.Materials
 			// DisplayName.AddTranslation(GameCulture.Polish, "Przykładowy blok");
 			// Tooltip.AddTranslation(GameCulture.Polish, "Jest to modded blok");
 		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 12;
@@ -49,13 +47,10 @@ namespace Stellamod.Items.Materials
 			Item.consumable = true;
 			Item.createTile = ModContent.TileType<Tiles.VerianWoodTile>();
 		}
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 
 		}
-
-
 	}
 }

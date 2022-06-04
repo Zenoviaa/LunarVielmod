@@ -1,113 +1,83 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using System;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    public class SalfaCircle3 : ModProjectile
-    {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("SalfaCirle3");
-            Main.projFrames[Projectile.type] = 9;
-        }
+	public class SalfaCircle3 : ModProjectile
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("SalfaCirle3");
+			Main.projFrames[Projectile.type] = 9;
+		}
+		public override void SetDefaults()
+		{
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Magic;
+			Projectile.width = 60;
+			Projectile.height = 60;
+			Projectile.penetrate = 100;
+			Projectile.scale = 1.7f;
+			DrawOriginOffsetY = -55;
+			Projectile.damage = 0;
+			Projectile.timeLeft = 120;
+			DrawOriginOffsetY = -20;
+			Projectile.rotation = 45;
+		}
+		public override bool PreAI()
+		{
+			Projectile.scale *= 0.96f;
+			Projectile.tileCollide = false;
 
-        public override void SetDefaults()
-        {
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.width = 60;
-            Projectile.height = 60;
-            Projectile.penetrate = 100;
-            Projectile.scale = 1.7f;
-            DrawOriginOffsetY = -55;
-            Projectile.damage = 0;
-            Projectile.timeLeft = 120;
-            DrawOriginOffsetY = -20;
-            Projectile.rotation = 45;
+			int evenmoredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<SalfaceDust>());
+			int moredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BubbleBurst_Green);
+			Main.dust[evenmoredust].scale = 0.5f;
+			Main.dust[moredust].scale = 0.6f;
 
-        }
+			return true;
+		}
+		public override Color? GetAlpha(Color lightColor)
+		{
+			return new Color(26, 38, 22, 0) * (1f - (float)Projectile.alpha / 50f);
+		}
+		public override void AI()
+		{
+			Player player = Main.player[Projectile.owner];
+			if (player.noItems || player.CCed || player.dead || !player.active)
+				Projectile.Kill();
 
-        public override bool PreAI()
-        {
-            Projectile.scale *= 0.96f;
-            Projectile.tileCollide = false;
+			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+			float swordRotation = 0f;
+			if (Main.myPlayer == Projectile.owner)
+			{
+				player.ChangeDir(Projectile.direction);
+				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
+				if (!player.channel)
+					Projectile.Kill();
+			}
+			Projectile.velocity = swordRotation.ToRotationVector2();
 
-            int evenmoredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<SalfaceDust>());
-            int moredust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BubbleBurst_Green);
+			Projectile.spriteDirection = player.direction;
+			if (Projectile.spriteDirection == 1)
+				Projectile.rotation = Projectile.velocity.ToRotation();
+			else
+				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-            Main.dust[evenmoredust].scale = 0.5f;
-            Main.dust[moredust].scale = 0.6f;
+			Projectile.Center = playerCenter + new Vector2(100, 0).RotatedBy(swordRotation);
 
-
-
-
-            return true;
-        }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            //return Color.White;
-            return new Color(26, 38, 22, 0) * (1f - (float)Projectile.alpha / 50f);
-        }
-        public override void AI()
-        {
-
-
-
-            {
-
-                Player player = Main.player[Projectile.owner];
-                if (player.noItems || player.CCed || player.dead || !player.active)
-                    Projectile.Kill();
-
-
-                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-                float swordRotation = 0f;
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    player.ChangeDir(Projectile.direction);
-                    swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-                    if (!player.channel)
-                        Projectile.Kill();
-                }
-                Projectile.velocity = swordRotation.ToRotationVector2();
-
-                Projectile.spriteDirection = player.direction;
-                if (Projectile.spriteDirection == 1)
-                    Projectile.rotation = Projectile.velocity.ToRotation();
-                else
-                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
-
-
-
-                Projectile.Center = playerCenter + new Vector2(100, 0).RotatedBy(swordRotation);
-
-
-
-
-                if (++Projectile.frameCounter >= 10)
-                {
-                    Projectile.frameCounter = 0;
-                    if (++Projectile.frame >= 9)
-                    {
-                        Projectile.frame = 0;
-                    }
-                }
-
-
-
-
-            }
-
-
-
-        }
-    }
+			if (++Projectile.frameCounter >= 10)
+			{
+				Projectile.frameCounter = 0;
+				if (++Projectile.frame >= 9)
+				{
+					Projectile.frame = 0;
+				}
+			}
+		}
+	}
 }
 
 
