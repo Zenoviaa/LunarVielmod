@@ -3,12 +3,11 @@ using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.ranged
+namespace Stellamod.Items.Weapons.Ranged
 {
 	public class wowgun : ModItem
 	{
@@ -23,34 +22,27 @@ namespace Stellamod.Items.weapons.ranged
 
 		public override void SetDefaults()
 		{
-			
-			Item.width = 62; 
-			Item.height = 32; 
+			Item.width = 62;
+			Item.height = 32;
 			Item.scale = 0.75f;
-			Item.rare = ItemRarityID.Green; 
-
-			
+			Item.rare = ItemRarityID.Green;
 			Item.useTime = 40;
-			Item.useAnimation = 40; 
-			Item.useStyle = ItemUseStyleID.Shoot; 
-			Item.autoReuse = true; 
-								   
+			Item.useAnimation = 40;
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.autoReuse = true;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/wow");
-
+			
 			// Weapon Properties
-			Item.DamageType = DamageClass.Ranged; 
-			Item.damage = 7; 
-			Item.knockBack = 3f; 
+			Item.DamageType = DamageClass.Ranged;
+			Item.damage = 7;
+			Item.knockBack = 3f;
 			Item.noMelee = true;
 
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<wowBullet>();
-			Item.shootSpeed = 2f; 
+			Item.shootSpeed = 2f;
 		}
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		
-
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
 		public override Vector2? HoldoutOffset()
 		{
@@ -66,18 +58,5 @@ namespace Stellamod.Items.weapons.ranged
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	}
 }

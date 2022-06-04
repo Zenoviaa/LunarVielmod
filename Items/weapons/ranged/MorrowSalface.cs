@@ -1,24 +1,19 @@
 ﻿using Stellamod.Projectiles;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.ranged
+namespace Stellamod.Items.Weapons.Ranged
 {
 	public class MorrowSalface : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("Arcanal Weapon.");
-
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.Arkhalis);
-
 			Item.damage = 13; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40; // hitbox width of the Item
@@ -35,18 +30,6 @@ namespace Stellamod.Items.weapons.ranged
 			Item.shoot = ModContent.ProjectileType<SparrowProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
-
-
-
 		}
-
-
-
-
-
-
-
-
-
 	}
 }

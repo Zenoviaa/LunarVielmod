@@ -8,7 +8,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.melee
+namespace Stellamod.Items.Weapons.Melee
 {
 	public class MorrowRapier : ModItem
 	{
@@ -19,7 +19,6 @@ namespace Stellamod.Items.weapons.melee
 			ItemID.Sets.SkipsInitialUseSound[Item.type] = true; // This skips use animation-tied sound playback, so that we're able to make it be tied to use time instead in the UseItem() hook.
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
-
 		public override void SetDefaults()
 		{
 			// Common Properties
@@ -53,7 +52,6 @@ namespace Stellamod.Items.weapons.melee
 			// Ensures no more than one spear can be thrown out, use this when using autoReuse
 			return player.ownedProjectileCounts[Item.shoot] < 1;
 		}
-
 		public override bool? UseItem(Player player)
 		{
 			// Because we're skipping sound playback on use animation start, we have to play it ourselves whenever the item is actually used.
@@ -77,7 +75,6 @@ namespace Stellamod.Items.weapons.melee
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 12);
-
 		}
 	}
 }

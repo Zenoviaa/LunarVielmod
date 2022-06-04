@@ -1,27 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Projectiles;
-using Stellamod.Items.Materials;
-using Terraria.DataStructures;
 
-namespace Stellamod.Items.weapons.mage
+namespace Stellamod.Items.Weapons.Mage
 {
-    internal class GildedStaff : ModItem
-    {
+	internal class GildedStaff : ModItem
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Gilded Staff");
 			Tooltip.SetDefault("Shoots two spinning pieces of spiritual magic at your foes!\nThe fabric is super magical, it turned wood into something like a flamethrower! :>");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.damage = 15;
@@ -44,11 +35,6 @@ namespace Stellamod.Items.weapons.mage
 			Item.autoReuse = true;
 			Item.crit = 22;
 		}
-		
-		
-
-		
-
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -63,10 +49,9 @@ namespace Stellamod.Items.weapons.mage
 
 
 
-    
 
 
 
 
 
-		
+

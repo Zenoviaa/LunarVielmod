@@ -1,6 +1,6 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
@@ -11,11 +11,7 @@ namespace Stellamod.Items.Materials
 		{
 			Tooltip.SetDefault("This is a modded wall.");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
-			
-
-
 		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 12;
@@ -29,8 +25,6 @@ namespace Stellamod.Items.Materials
 			Item.consumable = true;
 			Item.createWall = ModContent.WallType<Tiles.OvermorrowWallblock>();
 		}
-
-		
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(4);
@@ -38,7 +32,5 @@ namespace Stellamod.Items.Materials
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}
-
-
 	}
 }

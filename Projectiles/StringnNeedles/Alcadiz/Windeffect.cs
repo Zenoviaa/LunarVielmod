@@ -1,18 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 
 namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
-    public class Windeffect : ModProjectile
+	public class Windeffect : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("windeffect");
 			Main.projFrames[Projectile.type] = 9;
 		}
-
 		public override void SetDefaults()
 		{
 			Projectile.width = 48;
@@ -28,8 +27,6 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			DrawOriginOffsetX = -140;
 			DrawOriginOffsetY = -38;
 		}
-
-
 		public override void AI()
 		{
 			Player player = Main.player[Projectile.owner];
@@ -42,19 +39,13 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 					Projectile.frame = 0;
 				}
 			}
-		
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			//return Color.White;
 			return new Color(0, 255, 255, 255) * (1f - (float)Projectile.alpha / 255f);
-
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
-
-
-
 			overPlayers.Add(index);
 		}
 	}

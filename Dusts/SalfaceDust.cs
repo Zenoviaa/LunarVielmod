@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace Stellamod.Dusts
 {
@@ -10,19 +9,12 @@ namespace Stellamod.Dusts
 		{
 			dust.scale = 1f;
 			dust.alpha = 0;
-			dust.velocity = dust.velocity * 0.1f;
+			dust.velocity *= 0.1f;
 		}
 		public override void SetStaticDefaults()
 		{
 			UpdateType = 110;
-
 		}
-
-
-
-
-
-
 		public override bool Update(Dust dust)
 		{
 			Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), 0.2f, 0.2f, 0.2f);

@@ -1,12 +1,10 @@
-﻿using Stellamod.UI.Panels;
-using Terraria.ModLoader;
-using Terraria.UI;
+﻿using Terraria.ModLoader;
 
 namespace Stellamod
 {
 	public class Stellamod : Mod
 	{
-        
 
-    }
+
+	}
 }

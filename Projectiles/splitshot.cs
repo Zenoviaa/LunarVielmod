@@ -1,11 +1,8 @@
-﻿using Stellamod.Buffs;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using IL.Terraria.DataStructures;
-using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
@@ -17,42 +14,24 @@ namespace Stellamod.Projectiles
 			DisplayName.SetDefault("Split Flame");
 			Main.projFrames[Projectile.type] = 4;
 		}
-
 		public override void SetDefaults()
 		{
-
-
 			Projectile.CloneDefaults(ProjectileID.NebulaArcanumExplosionShot);
-
 			AIType = ProjectileID.NebulaArcanumExplosionShot;
-
-
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.penetrate = -1;
 			Projectile.ignoreWater = true;
 			Projectile.scale = 1f;
-
 			Main.projFrames[Projectile.type] = 4;
 		}
-
-
-
-
-
-
-
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-
-
-			if (Main.rand.Next(5) == 0)
+			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<Wounded>(), 420);
-
 		}
 		public override void AI()
 		{
-
 			if (++Projectile.frameCounter >= 5)
 			{
 				Projectile.frameCounter = 0;
@@ -61,12 +40,7 @@ namespace Stellamod.Projectiles
 					Projectile.frame = 0;
 				}
 			}
-
-			
-			
 			Dust.NewDustPerfect(Projectile.oldPosition + new Vector2(Projectile.width / 2, Projectile.height / 2), DustID.TreasureSparkle, new Vector2(0, 1).RotatedByRandom(1) * Main.rand.NextFloat(-1, 1) * Projectile.ai[0] / 10f);
-
-
 		}
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
@@ -100,29 +74,17 @@ namespace Stellamod.Projectiles
 				}
 			}
 
-
-
-
 			Projectile.rotation += 0.1f;
 			{
-				
-
 				Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
 				Projectile.rotation = Projectile.velocity.ToRotation();
 				if (Projectile.velocity.Y > 16f)
 				{
 					Projectile.velocity.Y = 16f;
 				}
-
-
 			}
 
 			return closestNPC;
 		}
-
-
-
-
-
 	}
 }

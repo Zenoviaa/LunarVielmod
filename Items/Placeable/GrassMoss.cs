@@ -1,5 +1,4 @@
-﻿using Terraria.ID;
-using Terraria.GameContent.Creative;
+﻿using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
@@ -13,7 +12,6 @@ namespace Stellamod.Items.Placeable
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
-
 		public override void SetDefaults()
 		{
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Structures.GrassMossS>());
@@ -22,8 +20,5 @@ namespace Stellamod.Items.Placeable
 			Item.width = 38;
 			Item.height = 24;
 		}
-
-		
-		
 	}
 }

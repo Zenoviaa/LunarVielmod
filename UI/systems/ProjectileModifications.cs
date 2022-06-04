@@ -1,16 +1,15 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.UI.systems;
 
-namespace Stellamod.UI.systems
+namespace Stellamod.UI.Systems
 {
 	// Here is a class dedicated to showcasing projectile modifications
 	public class ProjectileModifications : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;
-		
+
 		public bool applyBuffOnHit;
 		public bool sayTimesHitOnThirdHit;
 		// These are set when the user specifies that they want a trail.
@@ -40,6 +39,6 @@ namespace Stellamod.UI.systems
 				target.AddBuff(BuffID.Poisoned, 150);
 			}
 		}
-		
+
 	}
 }

@@ -18,16 +18,14 @@ namespace Stellamod.Tiles
 
 			AddMapEntry(new Color(200, 200, 200));
 
-			// todo: implement
+			// TODO: implement
 			// SetModTree(new Trees.ExampleTree());
 		}
-
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}
-
-		// todo: implement
+		// TODO: implement
 		// public override void ChangeWaterfallStyle(ref int style) {
 		// 	style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
 		// }

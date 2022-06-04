@@ -7,7 +7,6 @@ namespace Stellamod.Dusts
 		public override void SetStaticDefaults()
 		{
 			UpdateType = 110;
-			
 		}
 	}
 }

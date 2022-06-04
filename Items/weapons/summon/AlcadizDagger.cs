@@ -1,13 +1,12 @@
-﻿using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Stellamod.Projectiles;
-using Terraria.DataStructures;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.summon
+namespace Stellamod.Items.Weapons.Summon
 {
 	public class AlcadizDagger : ModItem
 	{
@@ -19,8 +18,6 @@ namespace Stellamod.Items.weapons.summon
 				"\nThey will act as temporary summons to give your other minions company!" +
 				"\nThe Charm above gives you 10+ Defense while active!");
 		}
-
-
 		public override void SetDefaults()
 		{
 			Item.width = 20;
@@ -42,17 +39,13 @@ namespace Stellamod.Items.weapons.summon
 			Item.shoot = ModContent.ProjectileType<StringNNeedlesAlcadiz>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
-
 		}
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
 			Lighting.AddLight(Item.position, 0.46f, .07f, .52f);
-
-
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
 

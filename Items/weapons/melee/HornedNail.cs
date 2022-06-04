@@ -1,19 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using Stellamod.Buffs;
 using Stellamod.Projectiles;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace Stellamod.Items.weapons.melee
+namespace Stellamod.Items.Weapons.Melee
 {
 	public class HornedNail : ModItem
 	{
-
 		public int AttackCounter = 1;
 		public int combowombo = 1;
+
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Doorlauncher"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
@@ -28,7 +26,6 @@ namespace Stellamod.Items.weapons.melee
 				position += Offset;
 			}
 		}
-
 		public override void SetDefaults()
 		{
 			Item.damage = 42;
@@ -48,18 +45,11 @@ namespace Stellamod.Items.weapons.melee
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
 			Item.crit = 52;
-
-
-
 		}
-
-
-
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
 		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			combowombo++;
@@ -86,10 +76,5 @@ namespace Stellamod.Items.weapons.melee
 			return false;
 
 		}
-
-
-
-	
-
 	}
 }
