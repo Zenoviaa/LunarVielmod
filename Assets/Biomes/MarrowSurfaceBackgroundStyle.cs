@@ -31,14 +31,16 @@ namespace Stellamod.Backgrounds
 		public override int ChooseFarTexture()
 		{
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");
+			
 		}
 
 
-        public override int ChooseMiddleTexture()
-        {
+		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
+		{
+			b -= 250;
+			scale = .66f;
+			parallax = 0.3;
 
-
-			
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceClose");
 
 			
