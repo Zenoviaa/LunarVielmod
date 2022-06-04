@@ -38,7 +38,7 @@ namespace Stellamod.Items.weapons.summon
 			Item.DamageType = DamageClass.Summon;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = new Terraria.Audio.LegacySoundStyle(2, 8);
+			Item.UseSound = SoundID.DD2_DrakinShot;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Logger>();
 			Item.shootSpeed = 10f;

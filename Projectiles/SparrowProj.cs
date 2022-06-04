@@ -60,7 +60,7 @@ namespace Stellamod.Projectiles
                     // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
                     ShakeModSystem.Shake = 8;
 
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSalfi"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSalfi"));
                     Timer = 0;
                 }
                 Player player = Main.player[Projectile.owner];
@@ -94,7 +94,8 @@ namespace Stellamod.Projectiles
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                    
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/Morrowarrow"));
                 }
 
        
@@ -106,7 +107,7 @@ namespace Stellamod.Projectiles
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/Morrowarrow"));
                 }
 
                 if (Timer == 60)
@@ -116,7 +117,7 @@ namespace Stellamod.Projectiles
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/Morrowarrow"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/Morrowarrow"));
                 }
 
                 
@@ -158,7 +159,7 @@ namespace Stellamod.Projectiles
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bowpull"));
+                SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/bowpull"));
             }
 
            

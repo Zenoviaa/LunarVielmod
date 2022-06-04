@@ -59,7 +59,7 @@ namespace Stellamod.Items.weapons.melee
 			// Because we're skipping sound playback on use animation start, we have to play it ourselves whenever the item is actually used.
 			if (!Main.dedServ)
 			{
-				SoundEngine.PlaySound(Item.UseSound, player.Center);
+				SoundEngine.PlaySound((SoundStyle)Item.UseSound, player.Center);
 			}
 
 			return null;

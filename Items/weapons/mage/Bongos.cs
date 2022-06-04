@@ -37,7 +37,7 @@ namespace Stellamod.Items.weapons.mage
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bongo");
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bongo");
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<BoomCircle>();
 			Item.autoReuse = true;

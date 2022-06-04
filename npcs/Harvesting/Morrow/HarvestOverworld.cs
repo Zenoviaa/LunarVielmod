@@ -15,6 +15,7 @@ using Stellamod.Items.weapons.melee;
 using Stellamod.Items.weapons.ranged;
 using Stellamod.Items.weapons.summon;
 using Stellamod.Items.weapons.mage;
+using Terraria.Audio;
 
 namespace Stellamod.npcs.Harvesting.Morrow
 {
@@ -66,12 +67,14 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			NPC.width = 7; // The width of the npc's hitbox (in pixels)
 			NPC.height = 25; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.// The amount of damage that this npc deals // The amount of defense that this npc has // The amount of health that this npc has
-			NPC.DeathSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/ItemHarvested"); // The sound the NPC will make when it dies.
+			NPC.DeathSound = new SoundStyle($"Stellamod/Assets/Sounds/ItemHarvested");  // The sound the NPC will make when it dies.
+
 			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
 			NPC.HasBuff<Harvester>();
 			NPC.friendly = true;
 			NPC.lifeMax = 1;
 			NPC.dontTakeDamageFromHostiles = true;
+			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
 
 		}
 
@@ -120,18 +123,18 @@ namespace Stellamod.npcs.Harvesting.Morrow
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 5, 3, 30));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Geode, 1, 1, 10));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 3, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 7, 3, 30));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Geode, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 1, 1, 15));
 			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 7, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.PlatinumOre, 3, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Musket, 40, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.WoodenCrate, 3, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.ApplePie, 3, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Apple, 5, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ItemID.WoodenCrate, 7, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.ApplePie, 6, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Apple, 10, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 10, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 15, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.BandofStarpower, 15, 1, 1));
@@ -146,6 +149,7 @@ namespace Stellamod.npcs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.GoldenKey, 10, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
+			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 10, 1, 10));
 			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 1, 3, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));

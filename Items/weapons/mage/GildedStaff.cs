@@ -37,7 +37,7 @@ namespace Stellamod.Items.weapons.mage
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = new Terraria.Audio.LegacySoundStyle(2, 8);
+			Item.UseSound = SoundID.Item2;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<ShadeBall>();
 			Item.shootSpeed = 8f;

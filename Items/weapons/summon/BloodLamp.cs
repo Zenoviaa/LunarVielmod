@@ -41,7 +41,7 @@ namespace Stellamod.Items.weapons.summon
 			Item.DamageType = DamageClass.Summon;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/bloodlamp");
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bloodlamp");
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.RainbowCrystalExplosion;
 			Item.autoReuse = true;

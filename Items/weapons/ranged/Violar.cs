@@ -2,6 +2,7 @@
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -35,7 +36,7 @@ namespace Stellamod.Items.weapons.ranged
 			Item.useStyle = ItemUseStyleID.Guitar;
 			Item.autoReuse = true;
 
-			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/violar");
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/violar");
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;

@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles
                     Projectile.Kill();
 
 
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowExp"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"));
 
                     Timer = 0;
                     
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSong"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"));
                 }
 
 
@@ -125,7 +125,7 @@ namespace Stellamod.Projectiles
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSong2"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"));
                 }
 
                 if (Timer == 160)
@@ -136,7 +136,7 @@ namespace Stellamod.Projectiles
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSong3"));
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"));
                 }
 
 

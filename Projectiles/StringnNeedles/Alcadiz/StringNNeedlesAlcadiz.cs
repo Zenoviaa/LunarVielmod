@@ -59,8 +59,8 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
                     // Our timer has finished, do something here:
                     // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
                     ShakeModSystem.Shake = 8;
-
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/MorrowSalfi"));
+                    
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MorrowSalfi"));
                     Timer = 0;
                 }
                 Player player = Main.player[Projectile.owner];
@@ -94,8 +94,8 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
-                    SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/SpidrSummon"));
                     
+
                 }
 
 
