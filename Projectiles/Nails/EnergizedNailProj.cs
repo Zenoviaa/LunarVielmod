@@ -120,7 +120,7 @@ namespace Stellamod.Projectiles.Nails
 			ShakeModSystem.Shake = 5;
 
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Zaped"));
-			ParticleManager.NewParticle<ZappedParticle>(Projectile.Center, Projectile.velocity * 0, Color.Purple, 1);
+			
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
