@@ -11,17 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class ArcanalPowder : ModItem
+	internal class Verstidust : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sepsis Powder");
+			DisplayName.SetDefault("Versti Powder");
 			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly star dust that does double damage as the igniter!");
+				"\nA musical dust that has calming flowers");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 2;
+			Item.damage = 15;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 30;
@@ -33,13 +33,13 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<ArcanePowder>();
+			Item.shoot = ModContent.ProjectileType<FlowerPowder>();
 			Item.autoReuse = true;
-			Item.shootSpeed = 12f;
-			Item.crit = 2;
-			Item.UseSound = SoundID.Grass;
+			Item.shootSpeed = 28f;
+			Item.crit = 26;
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
 		}
 
-	
+
 	}
 }

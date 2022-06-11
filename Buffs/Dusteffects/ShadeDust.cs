@@ -4,12 +4,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Dusteffects
 {
-	public class FlameDust : ModBuff
+	public class ShadeDust : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("FlameDust");
-			Description.SetDefault("A dust that is for the burning");
+			DisplayName.SetDefault("ArcaneDust");
+			Description.SetDefault("A dust that is for te burning");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;
@@ -17,14 +17,14 @@ namespace Stellamod.Buffs.Dusteffects
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 7;
+			npc.lifeRegen -= 15;
 
 			if (Main.rand.NextBool(2))
 			{
-				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.Torch);
+				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.ShadowbeamStaff);
 				Main.dust[dust].scale = 1.5f;
 				Main.dust[dust].noGravity = true;
-				Main.dust[dust].noLight = false;
+				Main.dust[dust].noLight = true;
 			}
 		}
 	}

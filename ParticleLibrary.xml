@@ -24,6 +24,11 @@
             Custom string Data for this emitter.
             </summary>
         </member>
+        <member name="F:ParticleLibrary.EmitterSystem.Emitter.Save">
+            <summary>
+            Whether this emitter should save when the world is exited.
+            </summary>
+        </member>
         <member name="F:ParticleLibrary.EmitterSystem.Emitter.CullDistance">
             <summary>
             Minumum distance before AI is run. Measured by distance from Main.localPlayer to Emitter.

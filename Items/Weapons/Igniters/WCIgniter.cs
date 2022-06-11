@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Igniters
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("WildCard");
+			DisplayName.SetDefault("WildCard Igniter");
 			Tooltip.SetDefault("Explode into magical bits :)");
 		}
 		public override void SetDefaults()
@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Pink;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/clickk");
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<IgniterStart>();

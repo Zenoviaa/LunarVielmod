@@ -11,17 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class ArcanalPowder : ModItem
+	internal class ShadowFlamePowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sepsis Powder");
+			DisplayName.SetDefault("ShadeFlame Powder");
 			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly star dust that does double damage as the igniter!");
+				"\nA shadow dust that explodes with your igniter!");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 2;
+			Item.damage = 6;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 30;
@@ -33,11 +33,11 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<ArcanePowder>();
+			Item.shoot = ModContent.ProjectileType <ShadePowderProj>();
 			Item.autoReuse = true;
-			Item.shootSpeed = 12f;
-			Item.crit = 2;
-			Item.UseSound = SoundID.Grass;
+			Item.shootSpeed = 20f;
+			Item.crit = 20;
+			Item.UseSound = SoundID.AbigailAttack;
 		}
 
 	

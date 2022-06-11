@@ -2,14 +2,14 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Buffs.Dusteffects
+namespace Stellamod.Buffs.PocketDustEffects
 {
-	public class FlameDust : ModBuff
+	public class PocketSandBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("FlameDust");
-			Description.SetDefault("A dust that is for the burning");
+			DisplayName.SetDefault("Pocket Sand Buff");
+			Description.SetDefault("A dust that is an additive");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;
@@ -21,10 +21,10 @@ namespace Stellamod.Buffs.Dusteffects
 
 			if (Main.rand.NextBool(2))
 			{
-				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.Torch);
-				Main.dust[dust].scale = 1.5f;
+				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.SandstormInABottle);
+				Main.dust[dust].scale = .85f;
 				Main.dust[dust].noGravity = true;
-				Main.dust[dust].noLight = false;
+				Main.dust[dust].noLight = true;
 			}
 		}
 	}

@@ -11,17 +11,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class ArcanalPowder : ModItem
+	internal class TrickPowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sepsis Powder");
+			DisplayName.SetDefault("Trick Powder");
 			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly star dust that does double damage as the igniter!");
+				"\nA sparkly tricky dust that does a lot damage!");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 2;
+			Item.damage = 7;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 30;
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<ArcanePowder>();
+			Item.shoot = ModContent.ProjectileType<TrickPowderProj>();
 			Item.autoReuse = true;
 			Item.shootSpeed = 12f;
 			Item.crit = 2;

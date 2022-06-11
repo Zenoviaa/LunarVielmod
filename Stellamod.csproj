@@ -18,6 +18,8 @@
   <ItemGroup>
     <Folder Include="Assets\Music\" />
     <Folder Include="Assets\Textures\Backgrounds\" />
+    <Folder Include="Equipables\Armors\" />
+    <Folder Include="Equipables\Accessories\" />
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\Blocks\" />
