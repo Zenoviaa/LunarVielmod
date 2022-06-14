@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using Terraria.ObjectData;
 using System.Collections.Generic;
-namespace Stellamod
+namespace Stellamod.Common
 {
     /// <summary>
     /// Class holding methods to save/load structs to binary .str files
@@ -23,12 +23,14 @@ namespace Stellamod
         /// </summary>
         /// <param name="BottomLeft"> bottom left of the placed structure</param>
         /// <param name="Path">path, starting past the mod root folder to read the .str from. Do not inculde the name of the mod in the path, or .str</param>
-        public static void ReadStruct(Point BottomLeft, string Path)
+        /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
+        public static int[] ReadStruct(Point BottomLeft, string Path)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
                 {
+                    List<int> ChestIndexs = new List<int>();
                     int Xlenght = reader.ReadInt32();
                     int Ylenght = reader.ReadInt32();
                     for (int i = 0; i <= Xlenght; i++)
@@ -42,6 +44,12 @@ namespace Stellamod
                             bool hastile = reader.ReadBoolean();
                             t.LiquidType = reader.ReadInt32();
                             t.LiquidAmount = reader.ReadByte();
+                            t.BlueWire = reader.ReadBoolean();
+                            t.RedWire = reader.ReadBoolean();
+                            t.GreenWire = reader.ReadBoolean();
+                            t.YellowWire = reader.ReadBoolean();
+                            t.HasActuator = reader.ReadBoolean();
+                            t.IsActuated = reader.ReadBoolean();
                             if (hastile)
                             {
                                 t.HasTile = hastile;
@@ -63,6 +71,11 @@ namespace Stellamod
                                 t.TileFrameNumber = reader.ReadInt32();
                                 t.TileFrameX = reader.ReadInt16();
                                 t.TileFrameY = reader.ReadInt16();
+                                bool Chest = reader.ReadBoolean();
+                                if (Chest)
+                                {
+                                    ChestIndexs.Add(Terraria.Chest.CreateChest((int)(BottomLeft.X + i), (int)(BottomLeft.Y - j)));
+                                }
                                 //byte slope = reader.ReadByte();
 
 
@@ -83,6 +96,7 @@ namespace Stellamod
                             t.WallFrameY = reader.ReadInt32();
                         }
                     }
+                    return ChestIndexs.ToArray();
                 }
             }
         }
@@ -131,8 +145,8 @@ namespace Stellamod
                 BottomLeft = Pos;
                 return;
             }
-            string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
-            using (var stream = File.Open(Path, FileMode.Create))
+            //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
+            using (var stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Create))
             {
                 using (var writer = new BinaryWriter(stream))
                 {
@@ -150,6 +164,12 @@ namespace Stellamod
                             writer.Write(hastile);
                             writer.Write(t.LiquidType);
                             writer.Write(t.LiquidAmount);
+                            writer.Write(t.BlueWire);
+                            writer.Write(t.RedWire);
+                            writer.Write(t.GreenWire);
+                            writer.Write(t.YellowWire);
+                            writer.Write(t.HasActuator);
+                            writer.Write(t.IsActuated);
                             if (hastile)
                             {
                                 bool Modded = t.TileType > TileID.Count;
@@ -168,6 +188,17 @@ namespace Stellamod
                                 writer.Write(t.TileFrameNumber);
                                 writer.Write(t.TileFrameX);
                                 writer.Write(t.TileFrameY);
+                                bool Chest = false;
+                                foreach (Chest c in Main.chest)
+                                {
+                                    if (c == null)
+                                        continue;
+                                    if (c.x == x && c.y == y)
+                                    {
+                                        Chest = true;
+                                    }
+                                }
+                                writer.Write(Chest);
                             }
                             bool WallModded = t.WallType >= WallID.Count;
                             writer.Write(WallModded);
@@ -232,36 +263,36 @@ namespace Stellamod
             writer.Write(tModTile.GetType().Name);
         }
     }
-        public class SaveItem : ModItem
+    public class SaveItem : ModItem
+    {
+        public override string Texture => $"Terraria/Images/Item_{ItemID.MagicCuffs}"; //I do not do spriting
+        public override void SetDefaults()
         {
-            public override string Texture => $"Terraria/Images/Item_{ItemID.MagicCuffs}"; //I do not do spriting
-            public override void SetDefaults()
-            {
-                Item.CloneDefaults(ItemID.MagicConch);
-                Item.useTime = Item.useAnimation = 15;
-            }
-            public override bool? UseItem(Player player)
-            {
-
-                StructureLoader.SaveStruct(Main.MouseWorld.ToTileCoordinates());
-                return true;
-            }
-
+            Item.CloneDefaults(ItemID.MagicConch);
+            Item.useTime = Item.useAnimation = 15;
         }
-        public class PlaceItem : ModItem
+        public override bool? UseItem(Player player)
         {
-            public override string Texture => $"Terraria/Images/Item_{ItemID.Shackle}"; //I do not do  spriting
-            public override void SetDefaults()
-            {
-                Item.CloneDefaults(ItemID.MagicConch);
-                Item.useTime = Item.useAnimation = 15;
-            }
-            public override bool? UseItem(Player player)
-            {
 
-                StructureLoader.ReadStruct(Main.MouseWorld.ToTileCoordinates(), "SavedStruct");
-                return true;
-            }
+            StructureLoader.SaveStruct(Main.MouseWorld.ToTileCoordinates());
+            return true;
+        }
+
+    }
+    public class PlaceItem : ModItem
+    {
+        public override string Texture => $"Terraria/Images/Item_{ItemID.Shackle}"; //I do not do  spriting
+        public override void SetDefaults()
+        {
+            Item.CloneDefaults(ItemID.MagicConch);
+            Item.useTime = Item.useAnimation = 15;
+        }
+        public override bool? UseItem(Player player)
+        {
+
+            StructureLoader.ReadStruct(Main.MouseWorld.ToTileCoordinates(), "SavedStruct");
+            return true;
         }
     }
+}
 
