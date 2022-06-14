@@ -5,9 +5,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
+
+
 namespace Stellamod.Tiles.Structures
 {
-	public class SpikeS : ModTile
+	public class MorrowDeathS : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -24,19 +26,23 @@ namespace Stellamod.Tiles.Structures
 
 			DustType = ModContent.DustType<Dusts.SalfaceDust>();
 			AdjTiles = new int[] { TileID.Bookcases };
+			Main.tileFrameImportant[Type] = true;
+			Main.tileNoAttach[Type] = true;
+			Main.tileLavaDeath[Type] = true;
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
+			TileObjectData.newTile.Height = 6;
+			TileObjectData.newTile.Width = 2;
 
-			// Placement
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, };
+			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
+			TileObjectData.newTile.StyleMultiplier = 2; //same as above
 			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18, };
+			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-
-			// Etc
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("GrassSpike");
-			AddMapEntry(new Color(200, 200, 200), name);
+
+			name.SetDefault("MorrowDeathS");
+			AddMapEntry(new Color(126, 77, 59), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)
 		{
@@ -44,7 +50,7 @@ namespace Stellamod.Tiles.Structures
 		}
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.MorrowSpike>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.MorrowDeath>());
 		}
 	}
 }

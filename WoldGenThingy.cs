@@ -25,10 +25,10 @@ namespace Stellamod
 		private void TestMethod(int x, int y)
 		{
 			Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
-			//WorldGen.digTunnel(x, y, 1, 0.01f, 100, 4, false);
+			WorldGen.digTunnel(x, y, 1, 0.01f, 1000, 4, false);
 			//WorldGen.TileRunner(x, y, WorldGen.genRand.Next(600, 700), WorldGen.genRand.Next(500, 600), ModContent.TileType<OvermorrowdirtTile>());
 			// Code to test placed here:
-			WorldGen.TileRunner(x, y, WorldGen.genRand.Next(600, 700), WorldGen.genRand.Next(500, 600), ModContent.TileType<OvermorrowdirtTile>());
+			//WorldGen.TileRunner(x, y, WorldGen.genRand.Next(600, 700), WorldGen.genRand.Next(500, 600), ModContent.TileType<OvermorrowdirtTile>());
 		}
 	}
 }
