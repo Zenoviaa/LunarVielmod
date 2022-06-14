@@ -13,6 +13,7 @@
     <None Remove="FX\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
@@ -23,6 +24,7 @@
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\Blocks\" />
+    <Folder Include="Structures\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
@@ -14,9 +15,10 @@ namespace Stellamod.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = Main.rand.Next(110, 113);
+			DustType = DustID.Firework_Yellow;
 			ItemDrop = ModContent.ItemType<Items.Materials.OvermorrowDirt>();
 
-			AddMapEntry(new Color(200, 200, 200));
+			AddMapEntry(new Color(25, 42, 25));
 
 			// TODO: implement
 			// SetModTree(new Trees.ExampleTree());

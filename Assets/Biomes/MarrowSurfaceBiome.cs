@@ -18,7 +18,10 @@ namespace Stellamod.Assets.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Jungle;
 
 		// Select Music
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrow");
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowday");
+		
+
+
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

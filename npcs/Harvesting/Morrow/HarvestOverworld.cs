@@ -145,6 +145,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		}
 		public override void OnKill()
 		{
+			CombatText.NewText(NPC.getRect(), Color.White, "Item Harvested!", true, false);
 			base.OnKill();
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
