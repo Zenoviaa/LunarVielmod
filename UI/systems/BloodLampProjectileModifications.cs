@@ -36,7 +36,7 @@ namespace Stellamod.UI.Systems
 
 			if (applyBuffOnHit)
 			{
-				target.AddBuff(ModContent.BuffType<DeathmultiplierBloodLamp>(), 480);
+				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
 			}
 		}
 	}

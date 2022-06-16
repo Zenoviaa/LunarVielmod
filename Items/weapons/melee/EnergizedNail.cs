@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.knockBack = 2;
 			Item.value = 10000;
 			Item.noMelee = true;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<EnergizedNailProj>();

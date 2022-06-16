@@ -43,12 +43,12 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			base.OnHitNPC(player, target, damage, knockBack, crit);
 			if (Main.rand.NextBool(5))
-				target.AddBuff(ModContent.BuffType<DeathmultiplierBloodLamp>(), 480);
+				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
 		}
 		public override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
 		{
 			if (Main.rand.NextBool(5))
-				target.AddBuff(ModContent.BuffType<DeathmultiplierBloodLamp>(), 480);
+				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
