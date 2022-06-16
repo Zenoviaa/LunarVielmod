@@ -126,8 +126,36 @@ namespace Stellamod.NPCs.Morrow
 					break;
 			}
 		}
+
+		float trueFrame = 0;
+		public void UpdateFrame(float speed, int minFrame, int maxFrame)
+		{
+			trueFrame += speed;
+			if (trueFrame < minFrame)
+			{
+				trueFrame = minFrame;
+			}
+			if (trueFrame > maxFrame)
+			{
+				trueFrame = minFrame;
+			}
+		}
 		// Here in FindFrame, we want to set the animation frame our npc will use depending on what it is doing.
 		// We set npc.frame.Y to x * frameHeight where x is the xth frame in our spritesheet, counting from 0. For convenience, we have defined a enum above.
+
+
+
+
+
+		//Frames: 1 - 7 is jump (this is just jump, it plays after notice (see Jump() later down)
+		//Frames: 8 - 21 is fall (plays quickest out of the couple, I'd say if the other frames speed were 75 than this is 50, about a third difference)
+		// frames 22 - 29 are asleep calltime / when the enemy doesnt notice
+		//frames 30 - 35 are notice (this takes place when the player is in range (see Notice() and Fallasleep() a bit further down under my frame failure)
+
+		//Also Im really sorry i just couldnt get this to work in game with the frames and ive been searching for a while so i need help, (examplemod didnt explain it well at all because of how simple the frame system is)
+
+
+
 		public override void FindFrame(int frameHeight)
 		{
 
@@ -210,7 +238,7 @@ namespace Stellamod.NPCs.Morrow
 				case (float)ActionState.Jump:
 
 				
-					NPC.frame.Y = 7 * frameHeight;
+					NPC.frame.Y = 1 * frameHeight;
 					NPC.frameCounter = 0;
 					NPC.frameCounter++;
 					counter++;
@@ -299,6 +327,8 @@ namespace Stellamod.NPCs.Morrow
 			// The faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left.
 			// This is also automatically flipped if npc.confused.
 			NPC.TargetClosest(true);
+			UpdateFrame(0.5f, 22, 29);
+			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
 			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 200f)
@@ -306,6 +336,7 @@ namespace Stellamod.NPCs.Morrow
 				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
 				AI_State = (float)ActionState.Notice;
 				AI_Timer = 0;
+				UpdateFrame(0.4f, 30, 35);
 			}
 		}
 		private void Notice()
@@ -321,6 +352,7 @@ namespace Stellamod.NPCs.Morrow
 				{
 					AI_State = (float)ActionState.Jump;
 					AI_Timer = 0;
+					UpdateFrame(0.4f, 1, 7);
 				}
 			}
 			else
@@ -332,6 +364,7 @@ namespace Stellamod.NPCs.Morrow
 					// Out targeted player seems to have left our range, so we'll go back to sleep.
 					AI_State = (float)ActionState.Asleep;
 					AI_Timer = 0;
+					
 				}
 			}
 		}
@@ -349,6 +382,7 @@ namespace Stellamod.NPCs.Morrow
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				AI_State = (float)ActionState.Fall;
 				AI_Timer = 0;
+				UpdateFrame(0.2f, 8, 21);
 			}
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
