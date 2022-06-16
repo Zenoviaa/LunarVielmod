@@ -7,8 +7,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("wall");
-			Tooltip.SetDefault("Thing");
+			DisplayName.SetDefault("wall4");
+			Tooltip.SetDefault("Thingd");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

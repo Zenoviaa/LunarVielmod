@@ -11,6 +11,7 @@ namespace Stellamod.Assets.Biomes
 	public class MarrowSurfaceBiome : ModBiome
 	{
 		public bool IsPrimaryBiome = true; // Allows this biome to impact NPC prices
+		
 
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/MarrowWaterStyle"); // Sets a water style for when inside this biome
@@ -40,12 +41,11 @@ namespace Stellamod.Assets.Biomes
 			// First, we will use the exampleBlockCount from our added ModSystem for our first custom condition
 			bool b1 = ModContent.GetInstance<BiomeTileCount>().BlockCount >= 40;
 
-			// Second, we will limit this biome to the inner horizontal third of the map as our second custom condition
-			bool b2 = Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;
+			
 
 			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
-			return b1 && b2 && b3;
+			return b1 && b3;
 		}
 	}
 }
