@@ -10,7 +10,8 @@ namespace Stellamod.Tiles
 	{
 		public override void SetStaticDefaults()
 		{
-			Main.wallHouse[Type] = true;
+			
+			Main.wallDungeon[Type] = true;
 
 			DustType = ModContent.DustType<Solution>();
 			ItemDrop = ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>();

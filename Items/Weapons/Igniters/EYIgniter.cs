@@ -57,5 +57,15 @@ namespace Stellamod.Items.Weapons.Igniters
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.Lens, 3);
+			recipe.AddIngredient(ItemID.BlackLens, 1);
+			recipe.AddIngredient(ItemID.Star, 3);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
+		}
 	}
 }

@@ -134,7 +134,12 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 3, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 2, 1, 50));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowRocks>(), 5, 1, 10));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 3, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 3, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreasFlower>(), 20, 1, 1));
 
 		}
 		public override void OnKill()

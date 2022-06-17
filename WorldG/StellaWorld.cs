@@ -132,7 +132,7 @@ namespace Stellamod.WorldG
 
 			for (int da = 0; da < 1; da++)
 			{
-				WorldGen.TileRunner(xa, ya, WorldGen.genRand.Next(1200, 1200), WorldGen.genRand.Next(1000, 1000), ModContent.TileType<OvermorrowdirtTile>());
+				WorldGen.TileRunner(xa, ya, WorldGen.genRand.Next(1100, 1100), WorldGen.genRand.Next(1100, 1100), ModContent.TileType<OvermorrowdirtTile>());
 
 
 			}
@@ -145,9 +145,9 @@ namespace Stellamod.WorldG
 
 		
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 85); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 86); k++)
 			{
-				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1100), MorrowEdge.Y + Main.rand.Next(0, 1000));
+				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 900), MorrowEdge.Y + Main.rand.Next(0, 900));
 
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
@@ -171,7 +171,7 @@ namespace Stellamod.WorldG
 
 			}
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 5); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 + 7); k++)
 			{
 				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1100), MorrowEdge.Y + Main.rand.Next(0, 1000));
 
@@ -192,13 +192,14 @@ namespace Stellamod.WorldG
 
 					// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-						Tuple.Create((int)ItemID.Acorn, 1.0),						
-						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 1.0),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 1.0),
-							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 1.0),
-							Tuple.Create(ModContent.ItemType<MorrowSword>(), 1.0),
-							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 1.0),
-						Tuple.Create(ModContent.ItemType<Bongos>(), 1.0) // Choose no item with a high weight of 7.
+						Tuple.Create((int)ItemID.Acorn, 0.1),
+						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
+							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
+							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
+							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
+							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
+						Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
 					);
 					if (specialItem != ItemID.None)
 					{
@@ -208,10 +209,13 @@ namespace Stellamod.WorldG
 					switch (Main.rand.Next(4))
 					{
 						case 0:
+							itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
 							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+
 							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 							itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 							break;
@@ -223,9 +227,11 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 							break;
 						case 2:
+							itemsToAdd.Add((ModContent.ItemType<MorrowRapier>(), Main.rand.Next(1, 1)));
 							itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -237,6 +243,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
 
 							break;
@@ -266,9 +273,9 @@ namespace Stellamod.WorldG
 
 			
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 4); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 9); k++)
 			{
-				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1100), MorrowEdge.Y + Main.rand.Next(0, 1000));
+				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1000), MorrowEdge.Y + Main.rand.Next(0, 1000));
 
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
@@ -287,13 +294,14 @@ namespace Stellamod.WorldG
 
 					// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-						Tuple.Create((int)ItemID.Acorn, 1.0),
-						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 1.0),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 1.0),
-							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 1.0),
-							Tuple.Create(ModContent.ItemType<MorrowSword>(), 1.0),
-							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 1.0),
-						Tuple.Create(ModContent.ItemType<Bongos>(), 1.0) // Choose no item with a high weight of 7.
+						Tuple.Create((int)ItemID.Acorn, 0.1),
+						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
+							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
+							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
+							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
+							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
+						Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
 					);
 					if (specialItem != ItemID.None)
 					{
@@ -306,6 +314,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 							itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
@@ -329,7 +338,9 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 							break;
 						case 3:
+							itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
@@ -374,7 +385,7 @@ namespace Stellamod.WorldG
 
 			for (int i = MorrowEdge.X; i < MorrowEdge.X + 1000; i++)
 			{
-				for (int j = MorrowEdge.Y; j < MorrowEdge.Y + 800; j++)
+				for (int j = MorrowEdge.Y; j < MorrowEdge.Y + 600; j++)
 				{
 					WorldGen.PlaceWall(i, j, ModContent.WallType<OvermorrowdirtWall>());
 				}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -53,12 +54,18 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.StoneBlock, 100);
 			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
+			
 			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
+
+			recipe.Register();
 		}
 	}
 }

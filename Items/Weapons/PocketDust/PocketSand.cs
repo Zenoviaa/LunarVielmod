@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.PocketProj;
@@ -28,7 +29,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 			Item.height = 40;
 			Item.useTime = 20;
 			Item.useAnimation = 20;
-			Item.useStyle = ItemUseStyleID.HiddenAnimation;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noMelee = true;
 			Item.knockBack = 2f;
 			Item.value = 200;
@@ -38,11 +39,23 @@ namespace Stellamod.Items.Weapons.PocketDust
 			Item.autoReuse = true;
 			Item.shootSpeed = 20f;
 			Item.ArmorPenetration = 300;
-			
+			Item.noUseGraphic = true;
+
 			Item.crit = 12;
 			Item.UseSound = SoundID.Grass;
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.SandBlock, 100);
+			recipe.AddIngredient(ItemID.Star, 15);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ItemID.Silk, 5);
+		}
 
-	
 	}
 }
