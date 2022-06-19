@@ -5,6 +5,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.PocketProj;
 using Stellamod.Projectiles.Powders;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -49,7 +50,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.SandBlock, 100);
 			recipe.AddIngredient(ItemID.Star, 15);
-			recipe.AddTile(TileID.Anvils);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
