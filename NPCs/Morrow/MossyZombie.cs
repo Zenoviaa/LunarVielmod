@@ -108,6 +108,7 @@ namespace Stellamod.NPCs.Morrow
 				case ActionState.Speed:
 					counter++;
 					Speed();
+					NPC.velocity *= 0.98f;
 					break;
 
 				
