@@ -18,6 +18,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Whips;
 
 namespace Stellamod.WorldG
 {
@@ -240,6 +241,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 							break;
 						case 3:
+							itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
 							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
 							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -328,6 +330,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
 							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+							itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
 							break;
 						case 2:
 							itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));

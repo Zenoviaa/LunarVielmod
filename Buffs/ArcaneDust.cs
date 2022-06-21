@@ -13,6 +13,7 @@ namespace Stellamod.Buffs
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;
+			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 
 		}
 		public override void Update(NPC npc, ref int buffIndex)
