@@ -27,8 +27,8 @@ namespace Stellamod.Particles
             Player player = Main.LocalPlayer;
             rotation += 0.4f;
 
-            position = Main.projectile[(int)ai[1]].Center;
-            if (!Main.projectile[(int)ai[1]].active)
+            position = Main.projectile[(int)ai[0]].Center;
+            if (!Main.projectile[(int)ai[0]].active)
             {
                 if (!ProjDed)
                 {

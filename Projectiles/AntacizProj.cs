@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Particles;
 using System;
@@ -18,7 +17,6 @@ namespace Stellamod.Projectiles
         public byte Timer;
         private int Spawned;
         private bool ParticleNo;
-        bool Spawner;
 
         public override void SetDefaults()
         {
@@ -37,18 +35,21 @@ namespace Stellamod.Projectiles
 
 
 
-
-       
       
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<Spinew>(), Color.Purple, 0.4f, Projectile.whoAmI);
+
+        }
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
             float rotation = Projectile.rotation;
-            
-           
-            player.heldProj = Projectile.whoAmI;
+
+
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation  -= 0.4f;
+            Projectile.rotation  -= 0.5f;
            
 
             if (Main.mouseLeft)
@@ -66,19 +67,14 @@ namespace Stellamod.Projectiles
                     Projectile.Kill();
                 }
             }
-            Timer++;
-            if (!Spawner && Timer == 2)
-            {
-                ParticleManager.NewParticle(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.velocity * 0, ParticleManager.NewInstance<Spinew>(), Color.Purple, 0.4f, Projectile.whoAmI);
 
-                Spawner = true;
-            }
+
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
 
 
-            
+            player.heldProj = Projectile.whoAmI;
             player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
             player.itemTime = 2;
             player.itemAnimation = 2;
@@ -86,9 +82,8 @@ namespace Stellamod.Projectiles
             Projectile.netUpdate = true;
 
         }
+       
 
-
-      
     }
 }
 
