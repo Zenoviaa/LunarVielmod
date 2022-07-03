@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -76,6 +78,18 @@ namespace Stellamod.Items.Weapons.Melee
 				Item.shoot = ModContent.ProjectileType<EnergizedNailProj2>();
 			}
 			return false;
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
+
+			recipe.AddIngredient(ModContent.ItemType<Stick>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
+
+			recipe.Register();
 		}
 	}
 }

@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
@@ -12,7 +15,7 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verstibloom");
+			DisplayName.SetDefault("Thorner");
 			Tooltip.SetDefault("Shoots a swirling red bloom to swirl and kill your enemies after attacking!" +
 				"\nHitting foes with the melee swing builds damage towards the swing of the weapon" +
 				"\nDoes trenourmous damage!");
@@ -49,6 +52,17 @@ namespace Stellamod.Items.Weapons.Melee
 
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.WoodenSword, 1);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ItemID.Vine, 3);
 		}
 	}
 }

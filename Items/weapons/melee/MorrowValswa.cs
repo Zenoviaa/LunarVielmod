@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ItemID.Torch, 210);
+			recipe.AddIngredient(ItemID.Torch, 20);
 		}
 	}
 }

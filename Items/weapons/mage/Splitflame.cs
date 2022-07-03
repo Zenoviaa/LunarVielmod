@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -43,6 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 8);
+			recipe.AddIngredient(ModContent.ItemType<Candle>(), 5);
 		}
 	}
 }

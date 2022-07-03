@@ -42,7 +42,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddIngredient(ItemID.BorealWood, 10);
 			recipe.AddIngredient(ItemID.Stinger, 3);
 			recipe.AddIngredient(ItemID.JungleSpores, 3);
-			recipe.AddIngredient(ItemID.Star, 3);
+			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 20);
