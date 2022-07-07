@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.UI.Panels;
 using System.Collections.Generic;
 using Terraria;
@@ -13,10 +14,22 @@ namespace Stellamod.UI.Systems
 		public UserInterface HarvestButtonLayer;
 		public HarvestButton HarvestButtonElement;
 
+		internal Gamble gambled;
+		private UserInterface _gambled;
+
 		private GameTime _lastUpdateUiGameTime;
 		internal UserInterface userInterface;
 		internal HarvestButton uiState;
-
+		public override void Unload()
+		{
+	
+			Gamble.Choice1 = null;
+			Gamble.Choice2 = null;
+			Gamble.Choice3 = null;
+			Gamble.Choice4 = null;
+			Gamble.Choice5 = null;
+			Gamble.Choice6 = null;
+		}
 		public override void Load()
 		{
 			if (!Main.dedServ && Main.netMode != NetmodeID.Server)
@@ -24,6 +37,12 @@ namespace Stellamod.UI.Systems
 				uiState = new HarvestButton();
 				userInterface = new UserInterface();
 				userInterface.SetState(uiState);
+				
+				
+				_gambled = new UserInterface();
+				gambled = new Gamble();
+				gambled.Activate();
+				_gambled.SetState(gambled);
 			}
 		}
 		public override void UpdateUI(GameTime gameTime)
@@ -31,13 +50,21 @@ namespace Stellamod.UI.Systems
 			_lastUpdateUiGameTime = gameTime;
 			if (userInterface?.CurrentState != null)
 				userInterface.Update(gameTime);
+			Player player = Main.LocalPlayer;
+			MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
+
+			Gamble.visible = !Main.gameMenu && !GamblePlayer.Bossdeath && player.HasItem(ModContent.ItemType<Starrdew>());
+
+			if (Gamble.visible) _gambled?.Update(gameTime);
+
+		
 		}
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
 		{
 			int interfaceLayer = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Cursor"));
 			if (interfaceLayer != -1)
 			{
-				layers.Insert(interfaceLayer, new LegacyGameInterfaceLayer("Player Swapper: Cursor",
+				layers.Insert(interfaceLayer, new LegacyGameInterfaceLayer("Stellamod: Bag",
 					delegate
 					{
 						if (_lastUpdateUiGameTime != null && userInterface?.CurrentState != null)
@@ -46,6 +73,19 @@ namespace Stellamod.UI.Systems
 						return true;
 					},
 					InterfaceScaleType.UI));
+			}
+			int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Cursor"));
+			if (mouseTextIndex != -1)
+			{
+				layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+					"Stellamod: Gamble Buttons",
+					delegate
+					{
+						if (Gamble.visible) _gambled.Draw(Main.spriteBatch, new GameTime());
+						return true;
+					},
+					InterfaceScaleType.Game)
+				);
 			}
 		}
 	}

@@ -8,10 +8,11 @@ using Terraria.ID;
 using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
 using Stellamod.UI.Panels;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.UI.Panels
 {
-	public class GambleButton : UIElement
+	public class GambleButtons : UIElement
 	{
 		public static int selectedID = 0;
 		static int idCount = 1;
@@ -41,7 +42,6 @@ namespace Stellamod.UI.Panels
 			buttonTexture = (Texture2D)ModContent.Request<Texture2D>(file);
 			buttonName = name;
 			color = clr;
-			//color.A = 127;
 			itemType = type;
 			rotOff = rotationOffset;
 		}
@@ -50,13 +50,13 @@ namespace Stellamod.UI.Panels
 			if (selectedID == id)
 			{
 				Player player = Main.LocalPlayer;
-				MyPlayer SoulPlayer = player.GetModPlayer<MyPlayer>();
+				MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
 
-				if (!MyPlayer.BossDeathTrue)
+				if (!GamblePlayer.Bossdeath && player.HasItem(ModContent.ItemType<Starrdew>()))
 				{
 					for (int i = 0; i < player.inventory.Length; i++)
 					{
-						if (player.inventory[i].type == ModContent.ItemType<GambleCube>())
+						if (player.inventory[i].type == ModContent.ItemType<Starrdew>())
 						{
 							Item item = new Item();
 							item.SetDefaults(itemType);
@@ -66,8 +66,9 @@ namespace Stellamod.UI.Panels
 							break;
 						}
 					}
-					MyPlayer.BossDeathTrue = true;
+					GamblePlayer.Bossdeath = true;
 				}
+				
 			}
 			else
 			{
@@ -96,6 +97,7 @@ namespace Stellamod.UI.Panels
 				if (scale < 1f) scale = 1f;
 			}
 			rot = gameTime.TotalGameTime.TotalMilliseconds / 2000 + rotOff;
+		
 		}
 		public override void Draw(SpriteBatch spriteBatch)
 		{
@@ -140,12 +142,12 @@ namespace Stellamod.UI.Panels
 
 		public override void OnInitialize()
 		{
-			Choice1 = new GambleButtons("RadiantShadows/UI/SelectMelee", "Warrior", new Color(255, 111, 58, 127), ItemID.CopperBroadsword, 0);
-			Choice2 = new GambleButtons("RadiantShadows/UI/SelectMelee", "Warrior", new Color(255, 111, 58, 127), ItemID.CopperBroadsword, 0);
-			Choice3 = new GambleButtons("RadiantShadows/UI/SelectRange", "Ranger", new Color(44, 201, 122, 127), ItemID.CopperBow, MathHelper.ToRadians(72 * 1));
-			Choice4 = new GambleButtons("RadiantShadows/UI/SelectMagic", "Mage", new Color(209, 82, 234, 127), ItemID.AmethystStaff, MathHelper.ToRadians(72 * 2));
-			Choice5 = new GambleButtons("RadiantShadows/UI/SelectSummon", "Summoner", new Color(37, 185, 234, 127), ItemID.SlimeStaff, MathHelper.ToRadians(72 * 3));
-			Choice6 = new GambleButtons("RadiantShadows/UI/SelectReaper", "Reaper", new Color(255, 61, 116, 127), ItemID.SlimeStaff, MathHelper.ToRadians(72 * 3));
+			Choice1 = new GambleButtons("Stellamod/UI/Panels/Die1", "Die", new Color(255, 111, 58, 127), ItemID.CopperBroadsword, 0);
+			Choice2 = new GambleButtons("Stellamod/UI/Panels/Die2", "Die 2", new Color(255, 111, 58, 127), ItemID.CopperBow, MathHelper.ToRadians(60 * 1));
+			Choice3 = new GambleButtons("Stellamod/UI/Panels/Die3", "Die 3", new Color(44, 201, 122, 127), ItemID.CopperBow, MathHelper.ToRadians(60 * 2));
+			Choice4 = new GambleButtons("Stellamod/UI/Panels/Die4", "Die 4", new Color(209, 82, 234, 127), ItemID.AmethystStaff, MathHelper.ToRadians(60 * 3));
+			Choice5 = new GambleButtons("Stellamod/UI/Panels/Die5", "Die 5", new Color(37, 185, 234, 127), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 4));
+			Choice6 = new GambleButtons("Stellamod/UI/Panels/Die6", "Die 6", new Color(255, 61, 116, 127), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 5));
 
 			Append(Choice1);
 			Append(Choice2);

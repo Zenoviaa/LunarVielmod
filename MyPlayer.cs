@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-
+using Terraria.ModLoader.IO;
 
 namespace Stellamod
 {
@@ -10,7 +11,6 @@ namespace Stellamod
 
 		public bool Bossdeath = false;
 		public bool Boots = false;
-		public bool doArmorNEWAbilityThing;
 		public int extraSlots;
 
 
@@ -29,8 +29,8 @@ namespace Stellamod
 
 
 		}
-
-
+		
+		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 
 		public override void PostUpdate()
 		{
