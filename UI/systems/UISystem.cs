@@ -32,6 +32,7 @@ namespace Stellamod.UI.Systems
 		}
 		public override void Load()
 		{
+			
 			if (!Main.dedServ && Main.netMode != NetmodeID.Server)
 			{
 				uiState = new HarvestButton();
@@ -50,10 +51,17 @@ namespace Stellamod.UI.Systems
 			_lastUpdateUiGameTime = gameTime;
 			if (userInterface?.CurrentState != null)
 				userInterface.Update(gameTime);
+
+
+			if (_gambled?.CurrentState != null)
+				gambled.Update(gameTime);
+			
+			
 			Player player = Main.LocalPlayer;
+		
 			MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
 
-			Gamble.visible = !Main.gameMenu && !GamblePlayer.Bossdeath && player.HasItem(ModContent.ItemType<Starrdew>());
+			Gamble.visible = !Main.gameMenu;
 
 			if (Gamble.visible) _gambled?.Update(gameTime);
 
@@ -74,7 +82,7 @@ namespace Stellamod.UI.Systems
 					},
 					InterfaceScaleType.UI));
 			}
-			int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Cursor"));
+			int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (mouseTextIndex != -1)
 			{
 				layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(

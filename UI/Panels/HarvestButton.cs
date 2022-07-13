@@ -29,7 +29,7 @@ namespace Stellamod.UI.Panels
 
 			Append(harvestButton);
 		}
-		public void OnClick(UIMouseEvent evt, UIElement listeningElement)
+		public new void OnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
 			for (int i = 0; i < Main.npc.Length; i++)
 			{

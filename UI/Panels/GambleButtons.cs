@@ -9,6 +9,7 @@ using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
 using Stellamod.UI.Panels;
 using Stellamod.Items.Materials;
+using ReLogic.Content;
 
 namespace Stellamod.UI.Panels
 {
@@ -38,8 +39,8 @@ namespace Stellamod.UI.Panels
 
 		public GambleButtons(string file, string name, Color clr, int type, double rotationOffset)
 		{
-			//text = new UIText(name);
-			buttonTexture = (Texture2D)ModContent.Request<Texture2D>(file);
+			text = new UIText(name);
+			buttonTexture = (Texture2D)ModContent.Request<Texture2D>(file, AssetRequestMode.ImmediateLoad);
 			buttonName = name;
 			color = clr;
 			itemType = type;
@@ -52,7 +53,7 @@ namespace Stellamod.UI.Panels
 				Player player = Main.LocalPlayer;
 				MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
 
-				if (!GamblePlayer.Bossdeath && player.HasItem(ModContent.ItemType<Starrdew>()))
+				if (!GamblePlayer.Bossdeath)
 				{
 					for (int i = 0; i < player.inventory.Length; i++)
 					{
@@ -60,13 +61,12 @@ namespace Stellamod.UI.Panels
 						{
 							Item item = new Item();
 							item.SetDefaults(itemType);
-							item.Prefix(-1);
 							player.inventory[i].TurnToAir();
 							player.inventory[i] = item;
 							break;
 						}
 					}
-					GamblePlayer.Bossdeath = true;
+					GamblePlayer.Bossdeath = false;
 				}
 				
 			}
@@ -101,33 +101,19 @@ namespace Stellamod.UI.Panels
 		}
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			Rectangle CenteredRectangle(int x, int y, int width, int height, float scale = 1f)
-			{
-				return new Rectangle(
-					x - (int)(width * scale / 2f),
-					y - (int)(height * scale / 2f),
-					(int)(width * scale),
-					(int)(height * scale));
-			}
-
-			//double rot = Main.time / 100 + rotOff;
+			double rot = Main.time / 100 + rotOff;
 
 			Vector2 pos = Main.LocalPlayer.Center - Main.screenPosition;
+			Vector2 mod = new Vector2((float)(pos.X + Math.Cos(rot) * dist) / Main.UIScale, (float)(pos.Y + Math.Sin(rot) * dist) / Main.UIScale);
 
-			Rectangle rect = CenteredRectangle(
-				(int)((pos.X + Math.Cos(rot) * dist) / Main.UIScale),
-				(int)((pos.Y + Math.Sin(rot) * dist) / Main.UIScale),
-				(int)(buttonTexture.Width),
-				(int)(buttonTexture.Height),
-				scale);
+			Left.Set((int)mod.X, 0f);
+			Top.Set((int)mod.Y, 0f);
+			Width.Set((int)buttonTexture.Width, 0f);
+			Height.Set((int)buttonTexture.Height, 0f);
 
-			Left.Set(rect.Left, 0f);
-			Top.Set(rect.Top, 0f);
-			Width.Set(rect.Width, 0f);
-			Height.Set(rect.Height, 0f);
-
-			spriteBatch.Draw(buttonTexture, rect, new Color(255, 255, 255, 127));
+			spriteBatch.Draw(buttonTexture, mod, buttonTexture.Bounds, new Color(255, 255, 255, 127), 0f, buttonTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
 		}
+
 	}
 	class Gamble : UIState
 	{
@@ -142,12 +128,20 @@ namespace Stellamod.UI.Panels
 
 		public override void OnInitialize()
 		{
-			Choice1 = new GambleButtons("Stellamod/UI/Panels/Die1", "Die", new Color(255, 111, 58, 127), ItemID.CopperBroadsword, 0);
-			Choice2 = new GambleButtons("Stellamod/UI/Panels/Die2", "Die 2", new Color(255, 111, 58, 127), ItemID.CopperBow, MathHelper.ToRadians(60 * 1));
-			Choice3 = new GambleButtons("Stellamod/UI/Panels/Die3", "Die 3", new Color(44, 201, 122, 127), ItemID.CopperBow, MathHelper.ToRadians(60 * 2));
-			Choice4 = new GambleButtons("Stellamod/UI/Panels/Die4", "Die 4", new Color(209, 82, 234, 127), ItemID.AmethystStaff, MathHelper.ToRadians(60 * 3));
-			Choice5 = new GambleButtons("Stellamod/UI/Panels/Die5", "Die 5", new Color(37, 185, 234, 127), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 4));
-			Choice6 = new GambleButtons("Stellamod/UI/Panels/Die6", "Die 6", new Color(255, 61, 116, 127), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 5));
+
+
+			
+
+			Choice1 = new GambleButtons("Stellamod/UI/Panels/Die1", "1", new Color(255, 111, 58, 255), ItemID.CopperBroadsword, 0);
+			Choice2 = new GambleButtons("Stellamod/UI/Panels/Die2", "2", new Color(255, 111, 58, 255), ItemID.CopperBow, MathHelper.ToRadians(60 * 1));
+			Choice3 = new GambleButtons("Stellamod/UI/Panels/Die3", "3", new Color(44, 201, 122, 255), ItemID.CopperBow, MathHelper.ToRadians(60 * 2));
+			Choice4 = new GambleButtons("Stellamod/UI/Panels/Die4", "4", new Color(209, 82, 234, 255), ItemID.AmethystStaff, MathHelper.ToRadians(60 * 3));
+			Choice5 = new GambleButtons("Stellamod/UI/Panels/Die5", "5", new Color(37, 185, 234, 255), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 4));
+			Choice6 = new GambleButtons("Stellamod/UI/Panels/Die6", "6", new Color(255, 61, 116, 255), ItemID.SlimeStaff, MathHelper.ToRadians(60 * 5));
+
+			
+			
+			Choice1.OnClick += OnClick1;
 
 			Append(Choice1);
 			Append(Choice2);
@@ -156,6 +150,13 @@ namespace Stellamod.UI.Panels
 			Append(Choice5);
 			Append(Choice6);
 			Append(GambleButtons.text);
+		}
+
+		public void OnClick1(UIMouseEvent evt, UIElement listeningElement)
+		{
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/clickk"));
+				
+			
 		}
 	}
 }
