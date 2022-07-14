@@ -45,11 +45,15 @@ namespace Stellamod.UI.Panels
 			color = clr;
 			itemType = type;
 			rotOff = rotationOffset;
+	
 		}
 		public override void Click(UIMouseEvent evt)
 		{
+			selectedID = id;
 			if (selectedID == id)
 			{
+				text.TextColor = color;
+				text.SetText(buttonName, Main.GameZoomTarget * 0.5f, true);
 				Player player = Main.LocalPlayer;
 				MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
 
@@ -63,19 +67,20 @@ namespace Stellamod.UI.Panels
 							item.SetDefaults(itemType);
 							player.inventory[i].TurnToAir();
 							player.inventory[i] = item;
+							SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+							Gamble.visible = false;
 							break;
+							
+				
 						}
 					}
-					GamblePlayer.Bossdeath = false;
+					
 				}
 				
 			}
-			else
-			{
-				selectedID = id;
-				text.TextColor = color;
-				text.SetText(buttonName, Main.GameZoomTarget * 0.5f, true);
-			}
+			
 		}
 		public override void Update(GameTime gameTime)
 		{
@@ -101,13 +106,13 @@ namespace Stellamod.UI.Panels
 		}
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			double rot = Main.time / 100 + rotOff;
+			double rot = Main.GlobalTimeWrappedHourly / 1 + rotOff;
 
 			Vector2 pos = Main.LocalPlayer.Center - Main.screenPosition;
 			Vector2 mod = new Vector2((float)(pos.X + Math.Cos(rot) * dist) / Main.UIScale, (float)(pos.Y + Math.Sin(rot) * dist) / Main.UIScale);
 
 			Left.Set((int)mod.X, 0f);
-			Top.Set((int)mod.Y, 0f);
+			Top.Set((int)mod.Y , 0f);
 			Width.Set((int)buttonTexture.Width, 0f);
 			Height.Set((int)buttonTexture.Height, 0f);
 

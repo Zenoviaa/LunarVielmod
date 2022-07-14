@@ -49,7 +49,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.SandBlock, 100);
-			recipe.AddIngredient(ItemID.Star, 15);
+			recipe.AddIngredient(ItemID.FallenStar, 15);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);

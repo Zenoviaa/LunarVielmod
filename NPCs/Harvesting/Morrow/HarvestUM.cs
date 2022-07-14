@@ -3,6 +3,7 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
@@ -125,7 +126,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.BambooBlock, 7, 1, 10));
 			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Tabi, 10, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 1, 3, 9));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 4, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 1));
@@ -140,6 +141,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 3, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 3, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreasFlower>(), 20, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 12));
 
 		}
 		public override void OnKill()

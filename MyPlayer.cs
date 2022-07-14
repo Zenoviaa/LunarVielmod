@@ -12,6 +12,23 @@ namespace Stellamod
 		public bool Bossdeath = false;
 		public bool Boots = false;
 		public int extraSlots;
+		public bool TAuraSpawn;
+		public int increasedLifeRegen;
+		public int TAuraCooldown = 600;
+		public override void ResetEffects()
+		{
+			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
+			TAuraSpawn = false;
+			Player.lifeRegen += increasedLifeRegen;
+			increasedLifeRegen = 0;
+
+
+
+
+
+
+		}
+
 
 
 
@@ -62,6 +79,44 @@ namespace Stellamod
 		internal static Item swingingItem;
 
 		public int Shake = 0;
+
+		public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+		{
+			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
+			{
+
+
+				//Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<TAuraProj>(), 0, 1f, Player.whoAmI);
+				TAuraCooldown = 600;
+
+			}
+
+
+
+
+
+
+		}
+
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+		{
+
+
+			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
+			{
+
+
+				//Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<TAuraProj>(), 0, 1f, Player.whoAmI);
+				TAuraCooldown = 600;
+
+			}
+
+
+
+
+
+
+		}
 	}
 
 

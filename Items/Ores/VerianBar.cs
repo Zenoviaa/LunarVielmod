@@ -35,7 +35,6 @@ namespace Stellamod.Items.Ores
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Lens, 3);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 3);
 			recipe.AddTile(TileID.Hellforge);

@@ -1,5 +1,9 @@
-﻿using Terraria;
+﻿
+using Terraria;
 using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Materials
 {
@@ -18,6 +22,15 @@ namespace Stellamod.Items.Materials
 			Item.height = 20;
 			Item.maxStack = 999;
 			Item.value = Item.sellPrice(silver: 2);
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe(4);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 3);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
 		}
 	}
 }
