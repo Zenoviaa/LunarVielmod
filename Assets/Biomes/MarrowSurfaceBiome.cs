@@ -19,8 +19,10 @@ namespace Stellamod.Assets.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Jungle;
 
 		// Select Music
+		
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowday");
 		
+
 
 
 

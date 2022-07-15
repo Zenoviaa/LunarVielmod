@@ -61,7 +61,7 @@ namespace Stellamod.UI.Systems
 		
 			MyPlayer GamblePlayer = player.GetModPlayer<MyPlayer>();
 
-			Gamble.visible = !Main.gameMenu;
+			
 
 			if (Gamble.visible) _gambled?.Update(gameTime);
 

@@ -9,16 +9,19 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.UI.Panels;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Consumables
 {
-	public class GildedBag1 : ModItem
+	public class Gambit : ModItem
 	{
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gilded Bag");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			DisplayName.SetDefault("Gambit Dice");
+			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}" +
+				"\n Gamble away your soul after battle for great rewards!"); // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
 
@@ -27,7 +30,7 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 10;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
@@ -42,33 +45,13 @@ namespace Stellamod.Items.Consumables
 
 		public override void RightClick(Player player)
 		{
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-
 			var entitySource = player.GetSource_OpenItem(Type);
-
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<WCIgniter>());
-			}
-			if (Main.rand.NextBool(40))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
-			}
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
-			}
-
-			if (Main.rand.NextBool(4))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-			}
 			if (Main.rand.NextBool(1))
 			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(1, 3));
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<GambitToken>(), Main.rand.Next(1, 1));
 			}
-			
-
+			Gamble.visible = true;
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rolldice"));
 
 		}
 
@@ -103,7 +86,7 @@ namespace Stellamod.Items.Consumables
 			}
 		}
 
-		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
 			Texture2D texture = TextureAssets.Item[Item.type].Value;

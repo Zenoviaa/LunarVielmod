@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets.Biomes;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -8,7 +10,6 @@ namespace Stellamod
 {
 	public class MyPlayer : ModPlayer
 	{
-
 		public bool Bossdeath = false;
 		public bool Boots = false;
 		public int extraSlots;
@@ -32,7 +33,7 @@ namespace Stellamod
 
 
 
-
+		
 
 		public override void UpdateDead()
 		{
@@ -71,8 +72,15 @@ namespace Stellamod
 					}
 				}
 			}
-		}
 
+			if (Player.InModBiome<MarrowSurfaceBiome>() && !Main.dayTime)
+			{
+				 MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
+			}
+
+
+
+		}
 		public const int CAMO_DELAY = 100;
 
 		internal static bool swingingCheck;
@@ -84,9 +92,9 @@ namespace Stellamod
 		{
 			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
 			{
-
-
-				//Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<TAuraProj>(), 0, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
 				TAuraCooldown = 600;
 
 			}
@@ -106,7 +114,9 @@ namespace Stellamod
 			{
 
 
-				//Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<TAuraProj>(), 0, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
 				TAuraCooldown = 600;
 
 			}

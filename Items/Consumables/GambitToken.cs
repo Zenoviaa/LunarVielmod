@@ -9,68 +9,33 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.UI.Panels;
 
 namespace Stellamod.Items.Consumables
 {
-	public class GildedBag1 : ModItem
+	public class GambitToken : ModItem
 	{
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gilded Bag");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			DisplayName.SetDefault("Gambit Token");
+			Tooltip.SetDefault("Use this while gambling to actually, gamble.."); // References a language key that says "Right Click To Open" in the language of the game
 
-			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+		
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 1;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
+			Item.rare = ItemRarityID.Green;
 			
 		}
 
-		public override bool CanRightClick()
-		{
-			return true;
-		}
-
-		public override void RightClick(Player player)
-		{
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-
-			var entitySource = player.GetSource_OpenItem(Type);
-
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<WCIgniter>());
-			}
-			if (Main.rand.NextBool(40))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
-			}
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
-			}
-
-			if (Main.rand.NextBool(4))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(1, 3));
-			}
-			
-
-
-		}
 
 		// Below is code for the visuals
 
@@ -102,8 +67,62 @@ namespace Stellamod.Items.Consumables
 				dust.alpha = 0;
 			}
 		}
+        public bool PreDrawInInventory(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
+			Texture2D texture = TextureAssets.Item[Item.type].Value;
 
-		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+			Rectangle frame;
+
+			if (Main.itemAnimations[Item.type] != null)
+			{
+				// In case this item is animated, this picks the correct frame
+				frame = Main.itemAnimations[Item.type].GetFrame(texture, Main.itemFrameCounter[whoAmI]);
+			}
+			else
+			{
+				frame = texture.Frame();
+			}
+
+			Vector2 frameOrigin = frame.Size() / 2f;
+			Vector2 offset = new Vector2(Item.width / 2 - frameOrigin.X, Item.height - frame.Height);
+			Vector2 drawPos = Item.position - Main.screenPosition + frameOrigin + offset;
+
+			float time = Main.GlobalTimeWrappedHourly;
+			float timer = Item.timeSinceItemSpawned / 240f + time * 0.04f;
+
+			time %= 4f;
+			time /= 2f;
+
+			if (time >= 1f)
+			{
+				time = 2f - time;
+			}
+
+			time = time * 0.5f + 0.5f;
+
+			for (float i = 0f; i < 1f; i += 0.25f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), rotation, frameOrigin, scale, SpriteEffects.None, 0);
+				
+			}
+
+			for (float i = 0f; i < 1f; i += 0.34f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
+			}
+
+			return true;
+		}
+
+
+
+
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
 			Texture2D texture = TextureAssets.Item[Item.type].Value;
