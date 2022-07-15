@@ -176,14 +176,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			Texture2D texture = TextureAssets.Npc[NPC.type].Value;
 
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-		
 
-			
 
-			
 
-			Vector2 frameOrigin = NPC.frame.Size() / 2f;
-			Vector2 offset = new Vector2(NPC.width / 2 - frameOrigin.X, NPC.height - NPC.frame.Height);
+
+
+
+			Vector2 frameOrigin = NPC.frame.Size();
+			Vector2 offset = new Vector2(NPC.width  - frameOrigin.X, NPC.height - NPC.frame.Height);
 			Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
 
 			float time = Main.GlobalTimeWrappedHourly;
@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			switch (State)
 			{
 				case ActionState.Start:
-					rect = new(0, 2 * 89, 80, 1 * 89);
+					rect = new(0, 1 * 89, 80, 1 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
@@ -388,7 +388,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				ResetTimers();
 			}
-			throw new NotImplementedException();
+		
 		}
 
 
@@ -423,7 +423,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				ResetTimers();
 			}
-			throw new NotImplementedException();
+			
 		}
 
 
@@ -441,7 +441,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ResetTimers();
 			}
 
-			throw new NotImplementedException();
+			
 		}
 
 
@@ -459,7 +459,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ResetTimers();
 			}
 			
-			throw new NotImplementedException();
+			
         }
 
 
@@ -486,14 +486,33 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			}
 
-			throw new NotImplementedException();
+			
         }
 
 
 
         private void Start()
         {
-            throw new NotImplementedException();
+			if (timer == 20)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.TeleportPulseIn;
+						break;
+					case 1:
+						State = ActionState.TeleportSlam;
+
+						break;
+				}
+				ResetTimers();
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+				
+
+			}
+			
         }
 
 
@@ -517,7 +536,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				State = ActionState.WindUp;
 				ResetTimers();
 			}
-				throw new NotImplementedException();
+				
         }
 
 
@@ -568,7 +587,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				}
 				ResetTimers();
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				throw new NotImplementedException();
+			
 
 			}
 		}
@@ -599,7 +618,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				}
 				ResetTimers();
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				throw new NotImplementedException();
+				
 
 			}
 		}
@@ -616,7 +635,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				ResetTimers();
 			}
-			throw new NotImplementedException();
+			
 		}
 
 
