@@ -111,8 +111,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 		public override void SetDefaults()
 		{
-			NPC.width = 160;
-			NPC.height = 178;
+			NPC.width = 80;
+			NPC.height = 89;
 			NPC.damage = 420;
 			NPC.defense = 1;
 			NPC.lifeMax = 8000;
@@ -124,7 +124,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.value = Item.buyPrice(gold: 40);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
-			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
+			NPC.npcSlots = 10f;
+			NPC.scale = 2f;
+			// Take up open spawn slots, preventing random NPCs from spawning during the fight
 
 			// Don't set immunities like this as of 1.4:
 			// NPC.buffImmune[BuffID.Confused] = true;
@@ -236,60 +238,60 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			switch (State)
 			{
 				case ActionState.Start:
-					rect = new(0, 2 * 178, 160, 1 * 178);
+					rect = new(0, 2 * 89, 80, 1 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.TeleportPulseIn:
-					rect = new Rectangle(0, 2 * 178, 160, 7 * 178);
+					rect = new Rectangle(0, 2 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.TeleportWindUp:
-					rect = new Rectangle(0, 27 * 178, 160, 7 * 178);
+					rect = new Rectangle(0, 27 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.TeleportSlam:
-					rect = new Rectangle(0, 46 * 178, 160, 7 * 178);
+					rect = new Rectangle(0, 46 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.TeleportPulseOut:
-					rect = new(0, 20 * 178, 160, 7 * 178);
+					rect = new(0, 20 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.Dash:
-					rect = new(0, 39 * 178, 160, 7 * 178);
+					rect = new(0, 39 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.Slam:
-					rect = new(0, 53 * 178, 160, 6 * 178);
+					rect = new(0, 53 * 89, 80, 6 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				
 				
 				case ActionState.WindUp:
-					rect = new(0, 34 * 178, 160, 7 * 178);
+					rect = new(0, 34 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 
 
 				case ActionState.Spin:
-					rect = new(0, 59 * 178, 160, 6 * 178);
+					rect = new(0, 59 * 89, 80, 6 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 
 				case ActionState.Pulse:
-					rect = new(0, 9 * 178, 160, 11 * 178);
+					rect = new(0, 9 * 89, 80, 11 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 			}
