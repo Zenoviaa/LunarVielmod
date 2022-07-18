@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.StarVeriplant
+namespace Stellamod.NPCs.Bosses.StarrVeriplant
 {
 	// Shows basic boss bar code using a custom colored texture. It only does visual things, so for a more practical boss bar, see the other example (MinionBossBossBar)
 	// To use this, in an NPCs SetDefaults, write:
