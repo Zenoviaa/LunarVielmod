@@ -23,6 +23,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Particles;
 using System.Threading;
 using Terraria.ModLoader.Utilities;
+using System.IO;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant
 {
@@ -84,7 +85,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			
 			Main.npcFrameCount[Type] = 64;
 
-
+			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
+			NPCID.Sets.TrailingMode[NPC.type] = 0;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
@@ -126,6 +128,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
+			DrawOffsetY = 60;
 			// Take up open spawn slots, preventing random NPCs from spawning during the fight
 
 			// Don't set immunities like this as of 1.4:
@@ -154,7 +157,31 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			});
 		}
 
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(attackCounter);
+			writer.Write(timeBetweenAttacks);
+			writer.WriteVector2(dashDirection);
+			writer.Write(dashDistance);
+
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			attackCounter = reader.ReadInt32();
+			timeBetweenAttacks = reader.ReadInt32();
+			
 		
+			dashDirection = reader.ReadVector2();
+			dashDistance = reader.ReadSingle();
+
+		}
+		
+		int attackCounter;
+		int timeBetweenAttacks = 120;
+		Vector2 dashDirection = Vector2.Zero;
+		float dashDistance = 0f;
+		Vector2 TeleportPos = Vector2.Zero;
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
@@ -166,13 +193,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 
 
-
-			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+;
 			Texture2D texture = TextureAssets.Npc[NPC.type].Value;
 
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
@@ -182,36 +203,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 
 
-			Vector2 frameOrigin = NPC.frame.Size();
-			Vector2 offset = new Vector2(NPC.width  - frameOrigin.X, NPC.height - NPC.frame.Height);
-			Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
-
-			float time = Main.GlobalTimeWrappedHourly;
-			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-
-			time %= 4f;
-			time /= 2f;
-
-			if (time >= 1f)
-			{
-				time = 2f - time;
-			}
-
-			time = time * 0.5f + 0.5f;
-
-			for (float i = 0f; i < 1f; i += 0.25f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(90, 70, 255, 50), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
-			}
-
-			for (float i = 0f; i < 1f; i += 0.34f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 120, 255, 77), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
-			}
+		
 
 			// Using a rectangle to crop a texture can be imagined like this:
 			// Every rectangle has an X, a Y, a Width, and a Height
@@ -280,7 +272,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				
 				
 				case ActionState.WindUp:
-					rect = new(0, 34 * 89, 80, 7 * 89);
+					rect = new(0, 34 * 89, 80, 5 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
@@ -299,11 +291,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			
 
-			return true;
+			return false;
 
 
 		}
-
 		
 		public override void AI()
 		{
@@ -311,6 +302,18 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
+			NPC.spriteDirection = NPC.direction;
+			Player player = Main.player[NPC.target];
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
+				direction.Normalize();
+				
+				
+
+
+			}
+			NPC.TargetClosest();
 
 			switch (State)
 			{
@@ -348,6 +351,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				case ActionState.Dash:
 					NPC.damage = 350;
+					NPC.velocity *= 0.8f;
 					counter++;
 					Dash();
 					break;
@@ -356,24 +360,28 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				case ActionState.TeleportPulseIn:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					PulseIn();
 					break;
 
 				case ActionState.TeleportPulseOut:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					PulseOut();
 					break;
 
 				case ActionState.TeleportSlam:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					TeleportSlam();
 					break;
 
 				case ActionState.TeleportWindUp:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					TeleportWindUp();
 					break;
@@ -410,13 +418,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				switch (Main.rand.Next(4))
 				{
 					case 0:
-						State = ActionState.TeleportWindUp;
+						State = ActionState.TeleportSlam;
 						break;
 					case 1:
-						State = ActionState.TeleportWindUp;
+						State = ActionState.TeleportSlam;
 						break;
 					case 2:
-						State = ActionState.TeleportWindUp;
+						State = ActionState.TeleportSlam;
 						break;
 					case 3:
 
@@ -452,8 +460,34 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 
 		private void TeleportWindUp()
-        {
+		{
 			timer++;
+
+
+			Player player = Main.player[NPC.target];
+
+			if (timer == 1) { 
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						int distance = Main.rand.Next(100, 100);
+						int distanceY = Main.rand.Next(-170, -170);
+						NPC.position.X = player.Center.X + (int)(distance);
+						NPC.position.Y = player.Center.Y + (int)(distanceY);
+
+						break;
+
+
+					case 1:
+						int distance2 = Main.rand.Next(-100, -100);
+						int distanceY2 = Main.rand.Next(-170, -170);
+						NPC.position.X = player.Center.X + (int)(distance2);
+						NPC.position.Y = player.Center.Y + (int)(distanceY2);
+
+						break;
+				}
+
+			}
 
 			if (timer == 27)
 			{
@@ -471,11 +505,32 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         private void Dash()
         {
-			if (timer == 20)
+			timer++;
+
+			Player player = Main.player[NPC.target];
+		
+			float speed = 25f;
+			
+
+				int distance = Main.rand.Next(3, 3);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				NPC.velocity.Y = 0;
+		
+
+			
+				if (timer == 20)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(2))
+				switch (Main.rand.Next(3))
 				{
 					case 0:
 						State = ActionState.TeleportWindUp;
@@ -484,10 +539,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						State = ActionState.TeleportSlam;
 
 						break;
+					case 2:
+						State = ActionState.TeleportWindUp;
+
+						break;
 				}
 				ResetTimers();
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				throw new NotImplementedException();
+				
 
 			}
 
@@ -526,21 +585,21 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         private void Slam()
 		{
+			timer++;
 			if (timer == 3)
             {
 				NPC.velocity = new Vector2(NPC.direction * 0, 15f);
 			}
 			
 
-			if (NPC.velocity.Y == 0)
-            {
+			
 				//summon code
 				if (timer == 27)
 				{
 					State = ActionState.WindUp;
 					ResetTimers();
 				}
-			}
+			
 
 
 		
@@ -551,7 +610,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         private void Spin()
         {
-
+			timer++;
 			switch (Main.rand.Next(4))
 			{
 				case 0:
@@ -603,6 +662,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         private void WindUp()
         {
+			timer++;
 			if (timer == 27)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -620,7 +680,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						break;
 					case 3:
 
-						State = ActionState.Dash;
+						State = ActionState.Spin;
 						break;
 				}
 				ResetTimers();

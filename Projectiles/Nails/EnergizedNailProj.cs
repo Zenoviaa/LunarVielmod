@@ -97,6 +97,7 @@ namespace Stellamod.Projectiles.Nails
 			Vector2 oldMouseWorld = Main.MouseWorld;
 			if (!bounced)
 			{
+				
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
 				bounced = true;
 			}

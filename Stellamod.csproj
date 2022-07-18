@@ -20,6 +20,7 @@
     <Folder Include="Assets\Music\" />
     <Folder Include="Equipables\Armors\" />
     <Folder Include="Equipables\Accessories\" />
+    <Folder Include="Items\Armors\Vanity\" />
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\Blocks\" />
