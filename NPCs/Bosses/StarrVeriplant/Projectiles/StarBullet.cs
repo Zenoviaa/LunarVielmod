@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Timer2++;
 			Projectile.spriteDirection = Projectile.direction;
 			Timer++;
-			if (Timer == 10)
+			if (Timer == 15)
             {
 
 
@@ -53,9 +53,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 
 				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-				
-				
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc - 3 * 2, ModContent.ProjectileType<StarSpike>(), (int)(10), 0f, Projectile.owner, 0f, 0f);
+
+
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc - 16, speedXabc * 0, speedYabc - 3 * 2, ModContent.ProjectileType<StarSpike>(), (int)(10), 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 

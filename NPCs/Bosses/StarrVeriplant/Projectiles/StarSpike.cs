@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			}
 
 			int dust2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), 0f, 0f);
-			Main.dust[dust2].scale = 0.5f;
+			Main.dust[dust2].scale = 0.8f;
 
 
 

@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public override void SetDefaults()
 		{
 			NPC.width = 80;
-			NPC.height = 50;
+			NPC.height = 60;
 			NPC.damage = 420;
 			NPC.defense = 1;
 			NPC.lifeMax = 8000;
@@ -141,6 +141,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
+			
 			
 		
 
@@ -468,8 +469,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 				case ActionState.BIGSlam:
 					NPC.damage = 0;
-					NPC.velocity *= 0f;
-					
+
+					NPC.velocity *= 2;
 						if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 						{
 							Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
@@ -516,18 +517,18 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					case 0:
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 1 * 1f , ModContent.ProjectileType<SineButterfly>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(10), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 1 * 1f , ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 1 * 3f, ModContent.ProjectileType<CosButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 2f, ModContent.ProjectileType<CosButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(15), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 1 * 3f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 2f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
 						break;
 
 
@@ -662,7 +663,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 				switch (Main.rand.Next(2))
 				{
 					case 0:
-						int distance = Main.rand.Next(200, 200);
+						int distance = Main.rand.Next(20, 20);
 						int distanceY = Main.rand.Next(-110, -110);
 						NPC.position.X = player.Center.X + (int)(distance);
 						NPC.position.Y = player.Center.Y + (int)(distanceY);
@@ -671,7 +672,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 
 					case 1:
-						int distance2 = Main.rand.Next(-100, -100);
+						int distance2 = Main.rand.Next(-120, -120);
 						int distanceY2 = Main.rand.Next(-110, -110);
 						NPC.position.X = player.Center.X + (int)(distance2);
 						NPC.position.Y = player.Center.Y + (int)(distanceY2);
@@ -887,13 +888,13 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			timer++;
 			if (timer < 20)
 			{
-				NPC.velocity = new Vector2(NPC.direction * 0, 600f);
-				NPC.velocity.Y *= 4;
+				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
+			
 			}
 
 			if (timer == 20)
 			{
-
+				NPC.velocity *= 0f;
 				if (NPC.velocity.Y == 0)
 				{
 
@@ -966,7 +967,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock2>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX * 0.1f, speedY - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(40), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 80, speedX * 0.1f, speedY - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(40), 0f, 0, 0f, 0f);
 
 						break;
 

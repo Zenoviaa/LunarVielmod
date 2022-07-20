@@ -28,9 +28,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 600;
-			Projectile.tileCollide = false;
+			Projectile.tileCollide = true;
 			Projectile.penetrate = -1;
 			Projectile.hostile = true;
+		
 		}
 		public float Timer
 		{
