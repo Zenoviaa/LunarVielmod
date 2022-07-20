@@ -12,7 +12,7 @@ using Stellamod.Dusts;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
 
-namespace Stellamod.Tiles.Structures
+namespace Stellamod.Tiles
 {
 	public class FlowerSummon : ModTile
 	{
