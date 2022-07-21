@@ -128,7 +128,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		{
 			NPC.width = 80;
 			NPC.height = 60;
-			NPC.damage = 420;
+			NPC.damage = 1;
 			NPC.defense = 1;
 			NPC.lifeMax = 8000;
 			NPC.HitSound = SoundID.NPCHit1;
@@ -162,7 +162,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/StarrVeriplant");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Veriplant");
 			}
 		}
 
@@ -375,6 +375,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y -= 0.04f;
+				NPC.noTileCollide = true;
+				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(10);
 			}
@@ -507,9 +509,9 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (timer == 3)
 			{
 				ShakeModSystem.Shake = 3;
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verispin"));
 
-
-				switch (Main.rand.Next(2))
+				switch (Main.rand.Next(1))
 				{
 					
 
@@ -529,6 +531,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 1 * 3f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 2f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
 						break;
 
 
@@ -562,7 +565,10 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
         private void PulseIn()
         {
 			timer++;
-
+			if (timer == 1)
+            {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
+			}
 			if (timer == 27)
 			{
 				State = ActionState.Pulse;
@@ -615,8 +621,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					int distanceY = Main.rand.Next(-250, -250);
 						NPC.position.X = player.Center.X ;
 						NPC.position.Y = player.Center.Y + (int)(distanceY);
-				
-				}
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
+			}
 
 						if (timer == 27)
 			{
@@ -637,6 +643,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 			if (timer == 1)
 			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 				int distanceY = Main.rand.Next(-300, -300);
 				NPC.position.X = player.Center.X;
 				NPC.position.Y = player.Center.Y + (int)(distanceY);
@@ -659,7 +666,10 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 			Player player = Main.player[NPC.target];
 
-			if (timer == 1) { 
+			if (timer == 1) {
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
+
 				switch (Main.rand.Next(2))
 				{
 					case 0:
@@ -703,7 +713,10 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			Player player = Main.player[NPC.target];
 		
 			float speed = 25f;
-			
+			if (timer == 1)
+            {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
+			}
 			if (timer < 5)
             {
 				NPC.damage = 250;
@@ -807,6 +820,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (timer == 3)
             {
 				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
+
 			}
 
 			if (timer > 10)
@@ -821,16 +835,15 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
 
+
 					
+					ShakeModSystem.Shake = 8;
 
 				}
-				if (NPC.velocity.Y == 0)
-				{
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					ShakeModSystem.Shake = 8;
-				}
+			}
+			if (timer == 10)
+            {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
 			}
 			
 
@@ -903,19 +916,19 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 6, speedY, ModContent.ProjectileType<StarBullet>(), (int)(10), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 6, speedY, ModContent.ProjectileType<StarBullet>(), (int)(10), 0f, 0, 0f, 0f);
-				
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifallstar"));
 
-					
-					
-					
-					
-					
-						
-					
-				
-					
 
-				
+
+
+
+
+
+
+
+
+
+
 				}
 			}
 
@@ -948,7 +961,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (timer == 3)
             {
 				ShakeModSystem.Shake = 3;
-
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verispin"));
 
 				switch (Main.rand.Next(5))
 				{
@@ -968,7 +981,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock2>(), (int)(20), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 80, speedX * 0.1f, speedY - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(40), 0f, 0, 0f, 0f);
-
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
 						break;
 
 
@@ -984,9 +997,9 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Flowing>(), (int)(5), 0f, 0, 0f, 0f);
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Flowing>(), (int)(5), 0f, 0, 0f, 0f);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Flowers"));
 
 
-				
 						break;
 					case 4:
 				
@@ -1132,6 +1145,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			Player player = Main.player[NPC.target];
 			if (timer == 7)
             {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veripulse"));
 				switch (Main.rand.Next(4))
 				{
 					case 0:

@@ -5,6 +5,7 @@ using Stellamod.Dusts;
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -179,7 +180,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX , Projectile.position.Y + speedY , speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, (int)(20), 0f, 0, 0f, 0f);
-		
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
 
 			Projectile.Kill();
 		}
@@ -188,7 +189,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, (int)(20), 0f, 0, 0f, 0f);
-
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
 			Projectile.Kill();
 			return false;
 		}

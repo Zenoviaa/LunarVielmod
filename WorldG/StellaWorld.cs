@@ -55,7 +55,8 @@ namespace Stellamod.WorldG
 			}
 
 
-			
+
+
 
 		}
 
@@ -110,25 +111,27 @@ namespace Stellamod.WorldG
 		}
 
 
+
+
 		
 
 
 
-
-
-		const string SavestringX = "Savestring1";
+			const string SavestringX = "Savestring1";
 		const string SavestringY = "Savestring2";
 
 
 		public static Point MorrowEdge = new Point(0, 0);
-
+		public static Point MorrowEdgeY = new Point(0, 0);
 
 		private void WorldGenMorrow(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Gild settling in the ground";
-			int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
-			int ya = WorldGen.genRand.Next((int)WorldGen.worldSurface, Main.maxTilesY);
+			int xa = WorldGen.genRand.Next(0, Main.maxTilesX / 2);
+			int ya = WorldGen.genRand.Next((int)WorldGen.worldSurface, Main.maxTilesY / 2);
+
+			int yb = WorldGen.genRand.Next((int)WorldGen.worldSurface, (int)WorldGen.worldSurface);
 
 
 			for (int da = 0; da < 1; da++)
@@ -140,13 +143,13 @@ namespace Stellamod.WorldG
 
 			MorrowEdge.X = xa - 500;
 			MorrowEdge.Y = ya - 100;
+			MorrowEdgeY.Y = yb - 100;
+			MorrowEdgeY.X = xa - 100;
 
 
 
 
-		
-
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 86); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 56); k++)
 			{
 				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 900), MorrowEdge.Y + Main.rand.Next(0, 900));
 
@@ -172,7 +175,14 @@ namespace Stellamod.WorldG
 
 			}
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 + 7); k++)
+			
+
+
+			
+
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 + 6); k++)
 			{
 				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1100), MorrowEdge.Y + Main.rand.Next(0, 1000));
 
@@ -277,7 +287,7 @@ namespace Stellamod.WorldG
 
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 9); k++)
 			{
-				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1000), MorrowEdge.Y + Main.rand.Next(0, 1000));
+				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 1000), MorrowEdge.Y + Main.rand.Next(0, 800));
 
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
@@ -375,7 +385,31 @@ namespace Stellamod.WorldG
 			}
 
 
+			for (int da = 0; da < 1; da++)
+			{
+				Point Loc = new Point(MorrowEdge.X + Main.rand.Next(0, 0), MorrowEdge.Y + Main.rand.Next(0, 200));
 
+
+				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
+				{
+
+					continue;
+				}
+
+				Tile tile = Main.tile[Loc.X, Loc.Y];
+				if (tile.HasTile && tile.TileType == ModContent.TileType<OvermorrowdirtTile>())
+				{
+					StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowOutpost");
+				}
+
+
+
+
+
+
+
+
+			}
 
 
 
