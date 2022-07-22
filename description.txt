@@ -18,7 +18,7 @@ This is a content/quality of life mod which includes:
 - 2 main armors to flesh out prehardmode's lack of class armors
 - A fully immersive soundtrack (Go check Diari Soundtrack)
 - Pretty much made by one gal named Zenovia :P
- 
+- A Charm system called Sigils (Can improve 
 
 Keep in mind this is an early version of the mod!
 (WARNING: THIS MOD ENCOURAGES YOU TO PLAY LIKE A GLASS CANNON + WORK ON EVASION)
