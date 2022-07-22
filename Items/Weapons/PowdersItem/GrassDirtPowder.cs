@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Powders;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -39,7 +41,18 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.crit = 51;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
 		}
-
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.Daybloom, 2);
+			recipe.AddIngredient(ItemID.DirtBlock, 15);
+			recipe.AddIngredient(ItemID.Seed, 3);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.Register();
+			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 3);
+		}
 
 	}
 }

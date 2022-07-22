@@ -374,11 +374,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.04f;
+				NPC.velocity.Y -= 0.2f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(10);
+				NPC.EncourageDespawn(2);
 			}
 				switch (State)
 			{

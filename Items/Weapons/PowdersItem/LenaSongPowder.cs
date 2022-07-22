@@ -19,8 +19,11 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nA musical dust! that explodes with your igniter!");
 		}
+
+		
 		public override void SetDefaults()
 		{
+			
 			Item.damage = 6;
 			Item.width = 40;
 			Item.height = 40;
@@ -30,7 +33,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<LenaPowderProj>();
@@ -38,6 +41,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.shootSpeed = 20f;
 			Item.crit = 51;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
+		
 		}
 
 

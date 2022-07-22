@@ -9,15 +9,16 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Melee;
 
 namespace Stellamod.Items.Consumables
 {
-	public class GildedBag1 : ModItem
+	public class VeribossBag : ModItem
 	{
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gilded Bag");
+			DisplayName.SetDefault("Veriplant Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
@@ -46,31 +47,45 @@ namespace Stellamod.Items.Consumables
 
 			var entitySource = player.GetSource_OpenItem(Type);
 
-			if (Main.rand.NextBool(7))
+			if (Main.rand.NextBool(1))
 			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<WCIgniter>());
-			}
-			if (Main.rand.NextBool(40))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
-			}
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
-			}
+				switch (Main.rand.Next(4))
+				{
 
-			if (Main.rand.NextBool(4))
+
+					case 0:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstidust>());
+
+						break;
+					case 1:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
+
+						break;
+					case 2:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstibloom>());
+
+						break;
+					case 3:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SteamedNail>());
+
+						break;
+				}
+			}
+			
+
+			if (Main.rand.NextBool(1))
 			{
 				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
 			}
 			if (Main.rand.NextBool(1))
 			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(1, 3));
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Starrdew>(), Main.rand.Next(3, 25));
 			}
-			if (Main.rand.NextBool(5))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(3, 7));
-			}
+			
 
 
 		}

@@ -13,11 +13,11 @@ namespace Stellamod.Items.Weapons.Melee
 			DisplayName.SetDefault("Verstidance");
 			Tooltip.SetDefault("An Arcanal Weapon!" +
 				"\nSwirl!" +
-			"\nHitting foes with the melee swing builds damage towards the swing of the weapon");
+			"\nA petal dance that increases your movement speed and defense, but be wary of high risk ");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 23;
+			Item.damage = 53;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.mana = 2;
