@@ -10,6 +10,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.Items.Consumables
 {
@@ -49,7 +50,7 @@ namespace Stellamod.Items.Consumables
 
 			if (Main.rand.NextBool(1))
 			{
-				switch (Main.rand.Next(4))
+				switch (Main.rand.Next(5))
 				{
 
 
@@ -71,6 +72,11 @@ namespace Stellamod.Items.Consumables
 					case 3:
 
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<SteamedNail>());
+
+						break;
+					case 4:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<Hornet>());
 
 						break;
 				}

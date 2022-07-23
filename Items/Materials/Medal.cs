@@ -8,8 +8,8 @@ namespace Stellamod.Items.Materials
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Ruin Medal");
-			Tooltip.SetDefault("Ew! Its sticky! I wonder what else is sticky..." +
-			"\nA sticky substance that resonates with the stars or the morrow!");
+			Tooltip.SetDefault("An old ancient medal.." +
+			"\nKeep this in your inventory, can be sold and may attract someone, romantically...");
 		}
 		public override void SetDefaults()
 		{

@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 using Stellamod.Assets.Biomes;
+using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -16,6 +19,8 @@ namespace Stellamod
 		public bool TAuraSpawn;
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
+		public bool ArcaneM;
+		public int ArcaneMCooldown = 0;
 		public bool ZoneMorrow = false;
 		public override void ResetEffects()
 		{
@@ -23,7 +28,7 @@ namespace Stellamod
 			TAuraSpawn = false;
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
-
+			ArcaneM = false;
 
 
 
@@ -77,7 +82,31 @@ namespace Stellamod
 				 MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
 			}
 
+			if ( ArcaneM && ArcaneMCooldown == 601)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+				for (int j = 0; j < 7; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(Player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
+				}
+				
+
+			}
+			if ( ArcaneM && ArcaneMCooldown > 600)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 2f;
+
+
+			}
+			if ( ArcaneM && ArcaneMCooldown == 720)
+			{
+				ArcaneMCooldown = 0;
+
+
+			}
 
 		}
 		public const int CAMO_DELAY = 100;
@@ -124,8 +153,11 @@ namespace Stellamod
 
 
 
-
+		
 		}
+
+
+		
 	}
 
 

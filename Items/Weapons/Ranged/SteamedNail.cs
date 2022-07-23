@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee
+namespace Stellamod.Items.Weapons.Ranged
 {
 	public class SteamedNail : ModItem
 	{

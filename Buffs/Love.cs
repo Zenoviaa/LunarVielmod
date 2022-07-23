@@ -20,9 +20,6 @@ namespace Stellamod.Buffs
 			player.statDefense += 10;
 			player.moveSpeed += 0.5f;
 			player.maxRunSpeed += 0.5f;
-			player.noKnockback = true;
-			player.lifeRegenTime /= 2;
-			player.lifeRegen = 100;
 			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.FireworkFountain_Red, Vector2.Zero);
 
 		}
