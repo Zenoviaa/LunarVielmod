@@ -35,6 +35,7 @@ namespace Stellamod.Items.Consumables
 			Item.width = 24;
 			Item.height = 24;
 			Item.rare = ItemRarityID.Purple;
+			Item.value = 200;
 			
 		}
 

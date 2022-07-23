@@ -30,7 +30,6 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Summon;
-			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bloodlamp");
 			Item.autoReuse = true;
@@ -38,6 +37,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.autoReuse = true;
 			Item.scale = 0.8f;
 			Item.crit = 15;
+			Item.value = 200;
 		}
 		public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
 		{

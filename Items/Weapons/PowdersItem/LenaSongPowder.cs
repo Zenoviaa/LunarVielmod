@@ -33,7 +33,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<LenaPowderProj>();
@@ -41,6 +40,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.shootSpeed = 20f;
 			Item.crit = 51;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
+			Item.sellPrice(1, 50, 0, 0);
 		
 		}
 

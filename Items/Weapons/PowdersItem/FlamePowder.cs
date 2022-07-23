@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = Item.buyPrice(0, 50, 0, 0);
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType <FlamePowderProj>();

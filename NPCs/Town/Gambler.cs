@@ -22,6 +22,8 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Town
 {
@@ -35,12 +37,16 @@ namespace Stellamod.NPCs.Town
 		{
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
-			Main.npcFrameCount[Type] = 16; // The amount of frames the NPC has
+			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
+
+			NPCID.Sets.ExtraFramesCount[Type] = 9; // Generally for Town NPCs, but this is how the NPC does extra things such as sitting in a chair and talking to other NPCs.
+			NPCID.Sets.AttackFrameCount[Type] = 4;
 			NPCID.Sets.DangerDetectRange[Type] = 700; // The amount of pixels away from the center of the npc that it tries to attack enemies.
 			NPCID.Sets.AttackType[Type] = 0;
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
+			
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
@@ -65,18 +71,16 @@ namespace Stellamod.NPCs.Town
 				.SetNPCAffection(NPCID.Stylist, AffectionLevel.Like) // Likes living near the guide.
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+
+
+			
+
 			; // < Mind the semicolon!
 		}
-		public enum ActionState
-		{
-
-			Walk,
-			Attack,
-			Wait,
-		}
+		
 		// Current state
 
-		public ActionState State = ActionState.Walk;
+		
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -99,6 +103,9 @@ namespace Stellamod.NPCs.Town
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
+			AnimationType = NPCID.Guide;
+
+			
 
 		}
 
@@ -108,14 +115,14 @@ namespace Stellamod.NPCs.Town
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Snow,
 
 				// Sets your NPC's flavor text in the bestiary.
 				new FlavorTextBestiaryInfoElement("She loves those ruin medals huh?, so much so that she is now attracted to you :("),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Mods.StellaMod.Bestiary.Zielie")
+				new FlavorTextBestiaryInfoElement("Zielie the Gambit")
 			});
 		}
 
@@ -134,37 +141,34 @@ namespace Stellamod.NPCs.Town
 				NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 			}
 
-			SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
-			// The rectangle we specify allows us to only cycle through specific parts of the texture by defining an area inside it
-
-			// Using a rectangle to crop a texture can be imagined like this:
-			// Every rectangle has an X, a Y, a Width, and a Height
-			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
-			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
-			Rectangle rect;
-
-			switch (State)
-			{
-				case ActionState.Walk:
-					rect = new Rectangle(0, 0 * 56, 40, 10 * 56);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 10, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
-				case ActionState.Wait:
-					rect = new Rectangle(0, 0 * 56, 40, 0 * 56);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2000, 0, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
-				case ActionState.Attack:
-					rect = new Rectangle(0, 10 * 40, 40, 6 * 56);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
-			}
-			return false;
+			return true;
 
 		}
+		public override string GetChat()
+		{
+			WeightedRandom<string> chat = new WeightedRandom<string>();
 
+			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
+			if (partyGirl >= 0 && Main.rand.NextBool(4))
+			{
+				chat.Add(Language.GetTextValue("I love the party girl! Shes really sweet! Umm could you maybe hook us up :(", Main.npc[partyGirl].GivenName));
+			}
+			// These are things that the NPC has a chance of telling you when you talk to it.
+			chat.Add(Language.GetTextValue("Hii, it is a me, Zielie! I'm frantic at moments but what can you expect when your in a world full of death?"));
+			chat.Add(Language.GetTextValue("Ive heard that the morrow is very pretty, I talked to veribloom and she said her society is falling apart though so maybe not."));
+			chat.Add(Language.GetTextValue("I have some things on the market for you, I go around collecting items and I get more stuff when you beat bosses and honestly, you seem really cool! :0"));
+			chat.Add(Language.GetTextValue("You know who is responsible for your dice rolling righttt? You know, uh after you beat bosses? Yeah, I've taken quite a liking to you so its my way of showing appreciation for what youre doing"), 5.0);
+			chat.Add(Language.GetTextValue("Can we get married?"), 0.1);
+
+			NumberOfTimesTalkedTo++;
+			if (NumberOfTimesTalkedTo >= 10)
+			{
+				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				chat.Add(Language.GetTextValue("Soo are we gonna get married or are you gonna buy something?"));
+			}
+
+			return chat; // chat is implicitly cast to a string.
+		}
 		public override void HitEffect(int hitDirection, double damage)
 		{
 			int num = NPC.life > 0 ? 1 : 5;
@@ -218,11 +222,8 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "Gamble";
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<Starrdew>()))
-			{
-				button = "Upgrade " + Lang.GetItemNameValue(ModContent.ItemType<Starrdew>());
-			}
+			button2 = "Marry";
+			
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -249,107 +250,86 @@ namespace Stellamod.NPCs.Town
 				shop = true;
 			}
 
+			if (!firstButton)
+            {
+				
+					Player player = Main.LocalPlayer;
+					WeightedRandom<string> chat = new WeightedRandom<string>();
+					switch (Main.rand.Next(3))
+					{
+
+
+						case 0:
+							CombatText.NewText(NPC.getRect(), Color.White, "OMG YOU DOOOO? Aww youre so sweet \nwe can hold off until a bit later :3", true, false);
+						
+							
+							player.AddBuff(ModContent.BuffType<Love>(), 36000);
+							break;
+						case 1:
+							CombatText.NewText(NPC.getRect(), Color.White, "Aww cmon, don't be so silly, \nlets wait until we fix this world, \nlet me help you out :P", true, false);
+							
+							player.AddBuff(ModContent.BuffType<Love>(), 36000);
+							break;
+						case 2:
+							CombatText.NewText(NPC.getRect(), Color.White, "Awaaaaaaaaaaaaaaaaaaaaaaaa~ \n(Zielie is too flustered to continue)", true, false);
+							
+
+							break;
+
+					}
+				
+				
+				
+			}
+
 		
 		}
 
-		public override void AI()
-		{
-			switch (State)
-			{
-
-				case ActionState.Walk:
-					AIType = NPCID.Guide;
-					counter++;
-					Walk();
-					break;
-
-				case ActionState.Wait:
-					AIType = NPCID.Guide;
-					counter++;
-					Wait();
-					break;
-
-				case ActionState.Attack:
-					counter++;
-					Attack();
-					break;
-
-				default:
-					counter++;
-					break;
-			}
-
-
-
-
-			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-
-			//for (int j = 0; j < 2; j++)
-			//{
-			//	Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, NPC.velocity * 0, ProjectileID.Spark, NPC.damage / 2, NPC.knockBackResist);
-			//}
-		}
+		
 		public void ResetTimers()
 		{
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
 		}
-		private void Attack()
-        {
-			timer++;
 
-			if (timer == 5)
-            {
-				NPC.HealEffect(100, true);
-				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-				float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX , NPC.position.Y + speedY , speedX - 2 * 3, speedY - 1 * 2f, ModContent.ProjectileType<SineButterflyfriendly>(), (int)(15), 0f, 0, 0f, 0f);
+		public override void SetupShop(Chest shop, ref int nextSlot)
+		{
+		
+			shop.item[nextSlot].SetDefaults(ItemID.PotionOfReturn);
+			shop.item[nextSlot].shopCustomPrice = 1;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+			nextSlot++;
 
 
-				timer = 0;
-            }
-			if (NPC.life == NPC.lifeMax)
-			{
-				State = ActionState.Walk;
-			}
-
-		}
-
-        private void Walk()
-        {
-			if (NPC.life != NPC.lifeMax)
-			{
-				State = ActionState.Attack;
-				ResetTimers();
-			}
-			
-			if (NPC.velocity.X == 0)
-            {
-				State = ActionState.Wait;
-			}
-		}
-
-        private void Wait()
-        {
-			if (NPC.velocity.X != 0)
-			{
-				State = ActionState.Walk;
-			}
-		}
-
-        public override void SetupShop(Chest shop, ref int nextSlot) {
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<LenaSongPowder>());
-		}
-	 	
+			shop.item[nextSlot].shopCustomPrice = 15;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
+			nextSlot++;
 
-		
-		
-		 //	if (Main.moonPhase < 2) {
-		 //		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-		 //	}
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<FrostedPowder>());
+			shop.item[nextSlot].shopCustomPrice = 3;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
+			nextSlot++;
+
+
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.Gambit>());
+			shop.item[nextSlot].shopCustomPrice = 5;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+			nextSlot++;
+
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Medal>());
+			nextSlot++;
+
+			if (Main.bloodMoon == true)
+			{
+				
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<BloodLamp>());
+				shop.item[nextSlot].shopCustomPrice = 20;
+				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+				nextSlot++;
+			}
+		}
 		 //	else if (Main.moonPhase < 4) {
 				// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
 		 //		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
@@ -385,7 +365,8 @@ namespace Stellamod.NPCs.Town
 		
 	}
 
-	public class GambitPersonProfile : ITownNPCProfile
+
+public class GambitPersonProfile : ITownNPCProfile
 	{
 		public int RollVariation() => 0;
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
@@ -393,14 +374,14 @@ namespace Stellamod.NPCs.Town
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("Stellamod/NPCs/Gambit");
+				return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Gambit");
 
 			if (npc.altTexture == 1)
-				return ModContent.Request<Texture2D>("Stellamod/NPCs/Gambit_Party");
+				return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Gambit_Party");
 
-			return ModContent.Request<Texture2D>("Stellamod/NPCs/Gambit");
+			return ModContent.Request<Texture2D>("Stellamod/NPCs/Town/Gambit");
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("Stellamod/NPCs/Gambit_Head");
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("Stellamod/NPCs/Town/Gambit_Head");
 	}
 }

@@ -50,14 +50,20 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<WCIgniter>());
 			}
+			
 			if (Main.rand.NextBool(40))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
 			}
-			if (Main.rand.NextBool(7))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
+		
+			if (NPC.downedBoss2)
+            {
+				if (Main.rand.NextBool(7))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
+				}
 			}
+			
 
 			if (Main.rand.NextBool(4))
 			{

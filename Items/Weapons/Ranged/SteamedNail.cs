@@ -67,12 +67,12 @@ namespace Stellamod.Items.Weapons.Melee
 			}
 			if (combowombo == 4)
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj>();
+				Item.shoot = ModContent.ProjectileType<SteamedNailProj>();
 				combowombo = 0;
 			}
 			else
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj2>();
+				Item.shoot = ModContent.ProjectileType<SteamedNailProj2>();
 			}
 			return false;
 

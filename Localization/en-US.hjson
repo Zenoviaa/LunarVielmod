@@ -1,0 +1,23 @@
+
+Mods: {
+	Stellamod: {
+TownNPCMood: {
+			Gambit: {
+				Content: I feel sooo nice!
+				NoHome: I would very much like a house, everything is soo spooki :(.
+				LoveSpace: I love how there is so much space here, we can finally start our relationship!
+				FarFromHome: AAA Im so far away help meee!
+				DislikeCrowded: There are too many people around, I feel so scared :(.
+				HateCrowded: I can't test my mod with so many people around!
+				LikeBiome: "{BiomeName} is a very nice place to relax."
+				LoveBiome: "I love {BiomeName}!"
+				DislikeBiome: "I hate this place {BiomeName}, I feel horriblee and too hot!"
+				HateBiome: "I realllyy hate this place."
+				LikeNPC: "I can respect {NPCName}, I almost feel like we could be great friends"
+				LoveNPC: "Do you think {NPCName}-san notices me?"
+				DislikeNPC: '''"{NPCName} keeps rambling on about "nfts"... Wish I could convince him how terrible of an idea that is."'''
+				HateNPC: "I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet."
+			}
+		}
+	}
+}

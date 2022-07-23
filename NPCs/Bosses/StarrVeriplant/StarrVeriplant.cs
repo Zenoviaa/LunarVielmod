@@ -1199,6 +1199,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			// ItemDropRule.MasterModeCommonDrop for the relic
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VeriBossRel>()));
 		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VeribossBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
@@ -1236,7 +1237,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 		}
 
 
+        public override void OnKill()
+        {
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedVeriBoss, -1);
+			
+        }
 
-
-	}
+    }
 }

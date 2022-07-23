@@ -16,6 +16,7 @@ namespace Stellamod
 		public bool TAuraSpawn;
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
+		public bool ZoneMorrow = false;
 		public override void ResetEffects()
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
@@ -29,8 +30,6 @@ namespace Stellamod
 
 
 		}
-
-
 
 
 		
