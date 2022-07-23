@@ -320,7 +320,14 @@ namespace Stellamod.NPCs.Town
 
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Medal>());
 			nextSlot++;
+			if (NPC.downedMechBossAny)
+			{
 
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ArcanalPowder>());
+				shop.item[nextSlot].shopCustomPrice = 40;
+				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+				nextSlot++;
+			}
 			if (Main.bloodMoon == true)
 			{
 				

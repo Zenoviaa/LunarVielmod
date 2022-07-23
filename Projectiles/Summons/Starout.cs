@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Summons
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 50;
+			Projectile.timeLeft = 100;
 			Projectile.ignoreWater = true;
 			Projectile.hostile =false;
 		}

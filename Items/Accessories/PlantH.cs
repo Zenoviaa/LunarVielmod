@@ -34,9 +34,10 @@ namespace Stellamod.Items.Accessories
 		{
 
 			player.GetModPlayer<MyPlayer>().PlantH = true;
-			player.maxRunSpeed -= 0.15f;
+			player.velocity *= 0.85f;
 			player.statDefense += 15;
-			
+			player.statLifeMax2 += 40;
+
 
 
 		}

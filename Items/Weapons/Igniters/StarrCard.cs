@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.IgniterEx;
 using Terraria;
@@ -11,17 +13,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class EYIgniter : ModItem
+	internal class StarrCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("EyeCard Igniter");
+			DisplayName.SetDefault("StarrCard Igniter");
 			Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
 				"\n Use a powder and then use this type of weapon!");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 2;
+			Item.damage = 4;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
@@ -61,10 +63,14 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Lens, 3);
-			recipe.AddIngredient(ItemID.BlackLens, 1);
+			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ItemID.Star, 3);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.Silk, 10);
+			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
 	}

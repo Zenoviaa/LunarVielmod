@@ -28,13 +28,13 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.damage = 90; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Summon;
 			Item.mana = 50;
-			Item.useTime = 20; // The Item's use time in ticks (60 ticks == 1 second.)
-			Item.useAnimation = 20; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
+			Item.useTime = 300; // The Item's use time in ticks (60 ticks == 1 second.)
+			Item.useAnimation = 300; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noMelee = true; //so the Item's animation doesn't do damage
 			Item.knockBack = 12; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
 			Item.value = 10000; // how much the Item sells for (measured in copper)
-			Item.UseSound = SoundID.DD2_CrystalCartImpact; // The sound that this Item plays when used.
+			Item.UseSound = SoundID.DD2_PhantomPhoenixShot; // The sound that this Item plays when used.
 			Item.autoReuse = true; // if you can hold click to automatically use it again
 			Item.shoot = ModContent.ProjectileType<Starbomb>();
 			Item.shootSpeed = 8f; // the speed of the projectile (measured in pixels per frame)
