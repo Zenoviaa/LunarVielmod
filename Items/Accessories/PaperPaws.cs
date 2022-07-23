@@ -7,14 +7,13 @@ using Stellamod;
 
 namespace Stellamod.Items.Accessories
 {
-	public class PlantH : ModItem
+	public class PaperPaws : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Plant Heritage");
-			Tooltip.SetDefault("Gain the power of plants!" +
-				"\n+40 life and +15 increased defense" +
-				"\n -15% Movement ");
+			DisplayName.SetDefault("Paper Paws");
+			Tooltip.SetDefault("Why don't you give your summons more credit?" +
+				"\n+2 summons");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -33,10 +32,8 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-			player.GetModPlayer<MyPlayer>().PlantH = true;
-			player.maxRunSpeed -= 0.15f;
-			player.statDefense += 15;
-			
+
+			player.maxMinions += 2;
 
 
 		}

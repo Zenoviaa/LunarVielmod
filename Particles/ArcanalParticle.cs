@@ -23,10 +23,10 @@ namespace Stellamod.Particles
 		{
 
 
-			scale *= 1f;
+			
 
 			rotation += Utils.Clamp(velocity.X * 0f, -ai[0], ai[0]);
-			velocity *= 0.98f;
+			velocity *= 0.99f;
 
 
 			if (scale <= 0f)

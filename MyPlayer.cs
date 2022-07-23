@@ -17,6 +17,7 @@ namespace Stellamod
 		public bool Boots = false;
 		public int extraSlots;
 		public bool TAuraSpawn;
+		public bool PlantH;
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
 		public bool ArcaneM;
@@ -29,7 +30,7 @@ namespace Stellamod
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
 			ArcaneM = false;
-
+			PlantH = false;
 
 
 
@@ -108,6 +109,10 @@ namespace Stellamod
 
 			}
 
+			if (PlantH)
+            {
+				Player.statLifeMax += 40;
+            }
 		}
 		public const int CAMO_DELAY = 100;
 
