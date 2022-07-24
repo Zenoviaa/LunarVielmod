@@ -9,6 +9,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.Particles;
+using Stellamod.UI.Systems;
 using System.Threading;
 using Terraria;
 using Terraria.Audio;
@@ -88,12 +89,14 @@ namespace Stellamod.NPCs.Morrow
 			{
 				case ActionState.Asleep:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					NPC.aiStyle = NPCID.Butterfly;
 					FallAsleep();
 					break;
 				case ActionState.Notice:
 					NPC.damage = 0;
+					NPC.velocity *= 0;
 					counter++;
 					Notice();
 					break;
@@ -125,15 +128,15 @@ namespace Stellamod.NPCs.Morrow
 			switch (State)
 			{
 				case ActionState.Asleep:
-					rect = new(0, 0, 92, 8 * 114);
+					rect = new(0, 0, 114, 8 * 92);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 8, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Notice:
-					rect = new Rectangle(0, 9 * 114, 92, 6 * 114);
+					rect = new Rectangle(0, 9 * 92, 114, 6 * 92);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Attack:
-					rect = new Rectangle(0, 15 * 114, 92, 11 * 114);
+					rect = new Rectangle(0, 15 * 92, 114, 11 * 92);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 11, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 		
@@ -148,7 +151,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.TargetClosest(true);			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
-			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 70f)
+			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 100f)
 			{
 				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
 				State = ActionState.Notice;
@@ -165,16 +168,15 @@ namespace Stellamod.NPCs.Morrow
 					ResetTimers();
 				}
 			
-			else
-			{
-				NPC.TargetClosest(true);
-				timer++;
+			
+				
+
 				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 150f)
 				{
 					State = ActionState.Asleep;
 					ResetTimers();
 				}
-			}
+			
 		}
 		public void Attack()
 		{
@@ -190,27 +192,23 @@ namespace Stellamod.NPCs.Morrow
 						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
 						break;
 					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 3, -0.1f);
+						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
 						break;
 					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
+						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
 						break;
 					case 3:
 
-						NPC.velocity = new Vector2(NPC.direction * 3, -0.1f);
+						NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
 						break;
 				}
-				float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-				float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(10), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1, ModContent.ProjectileType<SmallRock2>(), (int)(10), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin"));
+				ShakeModSystem.Shake = 4;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
 
 			}
-			else if (timer > 21)
+			 if (timer == 21)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				State = ActionState.Notice;
