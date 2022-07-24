@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -209,6 +210,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.BlackPearl, 3, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 25, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, 1, 1, 7));
 
 		}

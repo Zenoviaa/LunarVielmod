@@ -5,6 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Accessories.Players
 {
@@ -98,7 +99,6 @@ namespace Stellamod.Items.Accessories.Players
 				DashDelay = DashCooldown;
 				DashTimer = DashDuration;
 				Player.velocity = newVelocity;
-
 				// Here you'd be able to set an effect that happens when the dash first activates
 				// Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
 			}
@@ -122,17 +122,18 @@ namespace Stellamod.Items.Accessories.Players
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
 					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<BurnParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
 				}
-				Player.AddBuff(BuffID.Silenced, 1);
+				Player.AddBuff(BuffID.Cursed, 1);
 
 				// count down frames remaining
 				
 				Player.velocity *= 0.98f;
 				DashTimer--;
 			}
-
+			
 			if (DashTimer == 0)
             {
 				Player.GetModPlayer<ImmunityPlayer>().HasExampleImmunityAcc = false;
+				
 			}
 		}
 

@@ -7,6 +7,8 @@ using Stellamod;
 using Terraria.Audio;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories
 {
@@ -15,7 +17,7 @@ namespace Stellamod.Items.Accessories
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Sap Container");
-			Tooltip.SetDefault("Every 10 seconds drop eat stardew and MAJORLY increase your magic damage" +
+			Tooltip.SetDefault("Every 10 seconds eat stardew and MAJORLY increase your magic damage" +
 				"\n+20% Magic damage..." +
 				"\n But when sap is active you loose all your defense ");
 
@@ -33,7 +35,17 @@ namespace Stellamod.Items.Accessories
 
 
 		}
-
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
+			recipe.AddIngredient(ItemID.Bottle, 10);
+			recipe.AddIngredient(ItemID.BottledHoney, 10);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 

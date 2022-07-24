@@ -118,8 +118,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
 			{
 				CustomTexturePath = "Stellamod/NPCs/Bosses/StarrVeriplant/StarrPreview",
-				PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
+				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
+				
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
@@ -963,7 +964,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 				ShakeModSystem.Shake = 3;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verispin"));
 
-				switch (Main.rand.Next(3))
+				switch (Main.rand.Next(4))
 				{
 					case 0:
 						//Summon

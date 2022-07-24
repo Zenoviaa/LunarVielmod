@@ -22,6 +22,7 @@ namespace Stellamod
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
 		public bool ArcaneM;
+		public bool ThornedBook;
 		public int ArcaneMCooldown = 0;
 		public bool ZoneMorrow = false;
 		public override void ResetEffects()
@@ -32,7 +33,7 @@ namespace Stellamod
 			increasedLifeRegen = 0;
 			ArcaneM = false;
 			PlantH = false;
-	
+			ThornedBook = false;
 
 
 
@@ -161,8 +162,15 @@ namespace Stellamod
 		}
 
 
-		
-	}
+        public override void OnHitByNPC(NPC npc, int damage, bool crit)
+        {
+			if (ThornedBook)
+            {
+				npc.StrikeNPC(damage * 12, 1, 1, false, false, true);
+			}
+           
+        }
+    }
 
 
 }

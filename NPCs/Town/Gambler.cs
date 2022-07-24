@@ -24,6 +24,7 @@ using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Buffs;
+using Stellamod.Items.Accessories;
 
 namespace Stellamod.NPCs.Town
 {
@@ -154,10 +155,10 @@ namespace Stellamod.NPCs.Town
 				chat.Add(Language.GetTextValue("I love the party girl! Shes really sweet! Umm could you maybe hook us up :(", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Hii, it is a me, Zielie! I'm frantic at moments but what can you expect when your in a world full of death?"));
+			chat.Add(Language.GetTextValue("Hii, it is a me, Zielie! I'm frantic at moments but what can you expect when your in a world full of death and loooove?"));
 			chat.Add(Language.GetTextValue("Ive heard that the morrow is very pretty, I talked to veribloom and she said her society is falling apart though so maybe not."));
 			chat.Add(Language.GetTextValue("I have some things on the market for you, I go around collecting items and I get more stuff when you beat bosses and honestly, you seem really cool! :0"));
-			chat.Add(Language.GetTextValue("You know who is responsible for your dice rolling righttt? You know, uh after you beat bosses? Yeah, I've taken quite a liking to you so its my way of showing appreciation for what youre doing"), 5.0);
+			chat.Add(Language.GetTextValue("You know who is responsible for your dice rolling righttt? You know, uh after you beat bosses? Yeah, thats me ya silly lovebug"), 5.0);
 			chat.Add(Language.GetTextValue("Can we get married?"), 0.1);
 
 			NumberOfTimesTalkedTo++;
@@ -312,6 +313,15 @@ namespace Stellamod.NPCs.Town
 			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
 			nextSlot++;
 
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<PaperPaws>());
+			shop.item[nextSlot].shopCustomPrice = 10;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
+			nextSlot++;
+
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Steali>());
+			shop.item[nextSlot].shopCustomPrice = 10;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
+			nextSlot++;
 
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.Gambit>());
 			shop.item[nextSlot].shopCustomPrice = 5;

@@ -5,17 +5,18 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Stellamod;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Accessories
 {
-	public class PlantH : ModItem
+	public class ThornedBook : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Plant Heritage");
-			Tooltip.SetDefault("Gain the power of plants!" +
-				"\n+40 life and +15 increased defense" +
-				"\n -15% Movement ");
+			DisplayName.SetDefault("Thorned Book of Fiber Cordage");
+			Tooltip.SetDefault("When enemies hit you deal big amounts of damage back" +
+				"\n+20% Melee damage..." +
+				"\n-20 defense");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -33,23 +34,21 @@ namespace Stellamod.Items.Accessories
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
-			recipe.AddIngredient(ItemID.NaturesGift, 1);
+			recipe.AddIngredient(ItemID.CordageGuide, 1);
+			recipe.AddIngredient(ItemID.Silk, 10);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-			player.GetModPlayer<MyPlayer>().PlantH = true;
-			player.velocity *= 0.85f;
-			player.statDefense += 15;
-			player.statLifeMax2 += 40;
-
+			player.GetModPlayer<MyPlayer>().ThornedBook = true;
+			player.GetDamage(DamageClass.Melee) *= 1.2f; // Increase ALL player damage by 100%
+			player.statDefense -= 20;
 
 
 		}

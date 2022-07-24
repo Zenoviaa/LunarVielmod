@@ -9,6 +9,7 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.Items.Consumables
 {
@@ -55,12 +56,19 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
 			}
-		
+
+			if (Main.rand.NextBool(7))
+			{
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
+			}
+
 			if (NPC.downedBoss2)
             {
-				if (Main.rand.NextBool(7))
+				
+
+				if (Main.rand.NextBool(10))
 				{
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());
 				}
 			}
 			
@@ -77,7 +85,10 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(3, 7));
 			}
-
+			if (Main.rand.NextBool(9))
+			{
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(7, 13));
+			}
 
 		}
 
