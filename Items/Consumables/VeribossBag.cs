@@ -11,6 +11,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
 
 namespace Stellamod.Items.Consumables
 {
@@ -50,7 +51,7 @@ namespace Stellamod.Items.Consumables
 
 			if (Main.rand.NextBool(1))
 			{
-				switch (Main.rand.Next(5))
+				switch (Main.rand.Next(6))
 				{
 
 
@@ -77,6 +78,11 @@ namespace Stellamod.Items.Consumables
 					case 4:
 
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<Hornet>());
+
+						break;
+					case 5:
+
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<StarCall>());
 
 						break;
 				}

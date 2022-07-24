@@ -135,6 +135,7 @@ namespace Stellamod.NPCs.Harvesting.Ice
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WaterWalkingBoots, 25, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostSwing>(), 20, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrileOre>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlade, 10, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IceBoomerang, 10, 1));
