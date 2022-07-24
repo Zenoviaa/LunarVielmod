@@ -7,6 +7,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.Particles;
 using System.Threading;
 using Terraria;
@@ -20,15 +21,14 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class TribalPeasant : ModNPC
+	public class TribalPriest : ModNPC
 	{
 		// States
 		public enum ActionState
 		{
 			Asleep,
 			Notice,
-			Jump,
-			Fall
+			Attack
 		}
 		// Current state
 		public ActionState State = ActionState.Asleep;
@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Morrow
 
 		public override void SetStaticDefaults()
 		{
-			Main.npcFrameCount[NPC.type] = 35;
+			Main.npcFrameCount[NPC.type] = 26;
 
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
 			{
@@ -57,22 +57,28 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override void SetDefaults()
 		{
-			NPC.width = 72; // The width of the npc's hitbox (in pixels)
-			NPC.height = 84; // The height of the npc's hitbox (in pixels)
+			NPC.width = 114; // The width of the npc's hitbox (in pixels)
+			NPC.height = 92; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 10; // The amount of defense that this npc has
-			NPC.lifeMax = 200; // The amount of health that this npc has
+			NPC.lifeMax = 800; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
-			NPC.knockBackResist = .5f;
+			NPC.knockBackResist = 0f;
+			NPC.noGravity = true;	
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
 			{
-				return SpawnCondition.Cavern.Chance * 0.7f;
+				return SpawnCondition.Cavern.Chance * 0.5f;
+			}
+
+			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
+			{
+				return SpawnCondition.Overworld.Chance * 0.1f;
 			}
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
@@ -83,6 +89,7 @@ namespace Stellamod.NPCs.Morrow
 				case ActionState.Asleep:
 					NPC.damage = 0;
 					counter++;
+					NPC.aiStyle = NPCID.Butterfly;
 					FallAsleep();
 					break;
 				case ActionState.Notice:
@@ -90,22 +97,12 @@ namespace Stellamod.NPCs.Morrow
 					counter++;
 					Notice();
 					break;
-				case ActionState.Jump:
-					NPC.damage = 0;
+				case ActionState.Attack:
+					NPC.damage = 250;
 					counter++;
-					Jump();
+					Attack();
 					break;
-				case ActionState.Fall:
-					NPC.damage = 150;
-					counter++;
-					if (NPC.velocity.Y == 0)
-					{
-						NPC.velocity.X = 0;
-						State = ActionState.Asleep;
-						frameCounter = 0;
-						frameTick = 0;
-					}
-					break;
+				
 				default:
 					counter++;
 					break;
@@ -128,21 +125,18 @@ namespace Stellamod.NPCs.Morrow
 			switch (State)
 			{
 				case ActionState.Asleep:
-					rect = new(0, 22 * 84, 72, 8 * 84);
+					rect = new(0, 0, 92, 8 * 114);
 					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 8, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Notice:
-					rect = new Rectangle(0, 29 * 84, 72, 6 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					rect = new Rectangle(0, 9 * 114, 92, 6 * 114);
+					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
-				case ActionState.Jump:
-					rect = new Rectangle(0, 0, 72, 7 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+				case ActionState.Attack:
+					rect = new Rectangle(0, 15 * 114, 92, 11 * 114);
+					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 11, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
-				case ActionState.Fall:
-					rect = new Rectangle(0, 7 * 84, 72, 14 * 84);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 14, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
+		
 			}
 			return false;
 		}
@@ -154,7 +148,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.TargetClosest(true);			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
-			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 350f)
+			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 70f)
 			{
 				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
 				State = ActionState.Notice;
@@ -163,59 +157,63 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public void Notice()
 		{
-			if (Main.player[NPC.target].Distance(NPC.Center) < 250f)
-			{
+			
 				timer++;
-				if (timer >= 30)
+				if (timer >= 23)
 				{
-					State = ActionState.Jump;
+					State = ActionState.Attack;
 					ResetTimers();
 				}
-			}
+			
 			else
 			{
 				NPC.TargetClosest(true);
 				timer++;
-				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 450f)
+				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 150f)
 				{
 					State = ActionState.Asleep;
 					ResetTimers();
 				}
 			}
 		}
-		public void Jump()
+		public void Attack()
 		{
 			timer++;
 
-			if (timer == 9)
+			if (timer == 1)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
 				switch (Main.rand.Next(4))
 				{
 					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 5, -8f);
+						NPC.velocity = new Vector2(NPC.direction * 5, -0.1f);
 						break;
 					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 3, -7f);
+						NPC.velocity = new Vector2(NPC.direction * 3, -0.1f);
 						break;
 					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 4, -10f);
+						NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
 						break;
 					case 3:
 
-						NPC.velocity = new Vector2(NPC.direction * 3, -9f);
+						NPC.velocity = new Vector2(NPC.direction * 3, -0.1f);
 						break;
 				}
-
+				float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1, ModContent.ProjectileType<SmallRock2>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				
-				
+
+
 			}
-			else if (timer > 35)
+			else if (timer > 21)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
-				State = ActionState.Fall;
+				State = ActionState.Notice;
 				ResetTimers();
 			}
 		}
@@ -234,7 +232,6 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizDagger>(), 50, 1, 1));
 		}
 		public override void HitEffect(int hitDirection, double damage)
 		{
@@ -253,7 +250,7 @@ namespace Stellamod.NPCs.Morrow
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Even the weakest, most poor among the warriors in the morrow are still decent foes..")
+				new FlavorTextBestiaryInfoElement("A much richer form of the morrow warriors")
 			});
 		}
 	}
