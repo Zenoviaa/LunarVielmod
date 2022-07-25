@@ -19,7 +19,8 @@ namespace Stellamod.Items.Weapons.PowdersItem
 		{
 			DisplayName.SetDefault("Coal Powder");
 			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nForged from the gems you collect!");
+				"\nForged from the gems you collect!" +
+				"\nTia is a bum");
 		}
 		public override void SetDefaults()
 		{
@@ -49,7 +50,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ItemID.Bomb, 3);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);

@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -40,7 +41,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.PalmWood, 5);
 			recipe.AddIngredient(ItemID.Seashell, 5);
-			recipe.AddIngredient(ItemID.DemoniteBar, 7);
+			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 25);
 			recipe.AddIngredient(ItemID.ThrowingKnife, 3);

@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ItemID.Daybloom, 2);
 			recipe.AddIngredient(ItemID.DirtBlock, 15);
 			recipe.AddIngredient(ItemID.Seed, 3);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 1);

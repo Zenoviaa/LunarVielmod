@@ -69,7 +69,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
 			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
 			NPC.HasBuff<Harvester>();
-			NPC.friendly = true;
+			NPC.friendly = false;
 			NPC.lifeMax = 1;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
@@ -108,19 +108,19 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 1, 1, 15));
-			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 7, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ItemID.PlatinumOre, 3, 1, 25));
+			npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 3, 1, 15));
+			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 14, 1, 2));
+			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 14, 1, 25));
+			npcLoot.Add(ItemDropRule.Common(ItemID.PlatinumOre, 6, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Musket, 40, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 10, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 15, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.HermesBoots, 20, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.PotionOfReturn, 20, 1, 20));
-			npcLoot.Add(ItemDropRule.Common(ItemID.WormholePotion, 20, 1, 20));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 15, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 10, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 12, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.HermesBoots, 25, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.PotionOfReturn, 25, 1, 20));
+			npcLoot.Add(ItemDropRule.Common(ItemID.WormholePotion, 25, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bottle, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 2, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
 			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 12, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.BambooBlock, 7, 1, 10));
@@ -132,14 +132,14 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 2, 1, 50));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowRocks>(), 5, 1, 10));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 3, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 3, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 5, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 5, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreasFlower>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 12));
 

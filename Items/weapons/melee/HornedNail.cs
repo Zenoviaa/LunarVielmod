@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 42;
+			Item.damage = 32;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 0;
 			Item.height = 0;
@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shoot = ModContent.ProjectileType<HornedNailProj>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
-			Item.crit = 52;
+			Item.crit = 20;
 		}
 		public override Vector2? HoldoutOffset()
 		{

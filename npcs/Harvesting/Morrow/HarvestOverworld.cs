@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
 			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
 			NPC.HasBuff<Harvester>();
-			NPC.friendly = true;
+			NPC.friendly = false;
 			NPC.lifeMax = 1;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
@@ -101,35 +101,35 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 3, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 5, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 7, 3, 30));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Geode, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 1, 1, 15));
-			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 7, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 3, 1, 15));
+			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 7, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.PlatinumOre, 3, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Musket, 40, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WoodenCrate, 7, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.ApplePie, 6, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ItemID.ApplePie, 9, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Apple, 10, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 10, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 15, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 9, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.BandofStarpower, 15, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.HermesBoots, 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.MagicMirror, 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.PotionOfReturn, 20, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WormholePotion, 20, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bottle, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Aglet, 7, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Aglet, 13, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.SandstorminaBottle, 50, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.CloudinaBalloon, 50, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.GoldenKey, 10, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
-			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 12, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 10, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.GoldenKey, 40, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 10, 1, 999));
+			npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.BambooBlock, 7, 1, 10));
-			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 5, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 9, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
@@ -138,10 +138,10 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HornedNail>(), 10, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HornedNail>(), 50, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<wowgun>(), 30, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CanOfLeaves>(), 7, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 7, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CanOfLeaves>(), 15, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 15, 1));
 		}
 		public override void OnKill()
 		{

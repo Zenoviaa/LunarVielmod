@@ -69,8 +69,9 @@ namespace Stellamod.NPCs.Harvesting.Ice
 
 			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
 			NPC.HasBuff<Harvester>();
-			NPC.friendly = true;
+			NPC.friendly = false;
 			NPC.lifeMax = 1;
+
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
 		}
@@ -111,8 +112,8 @@ namespace Stellamod.NPCs.Harvesting.Ice
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 6, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 9, 3, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 6, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.GoldOre, 3, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IceSkates, 20, 1));
@@ -127,18 +128,18 @@ namespace Stellamod.NPCs.Harvesting.Ice
 			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Snowball, 1, 1, 99));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlock, 1, 1, 99));
-			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 5, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 9, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 13, 1, 12));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WaterWalkingBoots, 25, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostSwing>(), 20, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrileOre>(), 3, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrileOre>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 3, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlade, 10, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceBoomerang, 10, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlade, 30, 1));
+			npcLoot.Add(ItemDropRule.Common(ItemID.IceBoomerang, 15, 1));
 
 
 
