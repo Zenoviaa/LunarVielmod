@@ -78,10 +78,6 @@ namespace Stellamod.NPCs.Morrow
 				return SpawnCondition.Cavern.Chance * 0.2f;
 			}
 
-			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
-			{
-				return SpawnCondition.Overworld.Chance * 0.1f;
-			}
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
 		public override void AI()
@@ -91,8 +87,8 @@ namespace Stellamod.NPCs.Morrow
 				case ActionState.Asleep:
 					NPC.damage = 0;
 					counter++;
-					NPC.aiStyle = 65;
-					
+					NPC.aiStyle = 22;
+					NPC.velocity.Y *= 1.04f;
 					FallAsleep();
 					break;
 				case ActionState.Notice:
@@ -156,7 +152,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.TargetClosest(true);			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
-			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 80f)
+			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 70f)
 			{
 				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
 				State = ActionState.Notice;
@@ -176,7 +172,7 @@ namespace Stellamod.NPCs.Morrow
 			
 				
 
-				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 80f)
+				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 70f)
 				{
 					State = ActionState.Asleep;
 					ResetTimers();
