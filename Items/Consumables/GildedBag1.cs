@@ -81,11 +81,11 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(1, 3));
 			}
-			if (Main.rand.NextBool(5))
+			if (Main.rand.NextBool(9))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(3, 7));
 			}
-			if (Main.rand.NextBool(9))
+			if (Main.rand.NextBool(25))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(7, 13));
 			}

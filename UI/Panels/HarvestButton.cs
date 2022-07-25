@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -31,15 +32,28 @@ namespace Stellamod.UI.Panels
 		}
 		public new void OnClick(UIMouseEvent evt, UIElement listeningElement)
 		{
+			NPC closestNpc = Main.npc.Where(x => x.active).OrderBy(x => x.Center.DistanceSQ(Main.LocalPlayer.Center)).FirstOrDefault();
+			float closestDist = float.MaxValue;
 			for (int i = 0; i < Main.npc.Length; i++)
 			{
-				NPC npc = Main.npc[i];
-				if (npc.active && npc.HasBuff<Harvester>())
+				float dist = Main.npc[i].Center.DistanceSQ(Main.LocalPlayer.Center);
+				if (!Main.npc[i].active || dist >= closestDist)
 				{
-					npc.StrikeNPC(9999, 1, 1, false, false, true);
+					continue;
+				}
+
+				closestNpc = Main.npc[i];
+				closestDist = dist;
+
+				
+				if (closestNpc.active && closestNpc.HasBuff<Harvester>())
+				{
+					closestNpc.StrikeNPC(9999, 1, 1, false, false, true);
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/clickk"));
 				}
 			}
+			
+			
 		}
 	}
 }

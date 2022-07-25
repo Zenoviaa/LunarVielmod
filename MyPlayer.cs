@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Assets.Biomes;
+using Stellamod.Items.Consumables;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -18,13 +19,16 @@ namespace Stellamod
 		public int extraSlots;
 		public bool TAuraSpawn;
 		public bool PlantH;
+		public bool Dice;
 		public bool PlantHL;
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
+		public int DiceCooldown = 0;
 		public bool ArcaneM;
 		public bool ThornedBook;
 		public int ArcaneMCooldown = 0;
 		public bool ZoneMorrow = false;
+		public int Timer = 0;
 		public override void ResetEffects()
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
@@ -34,6 +38,7 @@ namespace Stellamod
 			ArcaneM = false;
 			PlantH = false;
 			ThornedBook = false;
+			Dice = false;
 
 
 
@@ -83,10 +88,10 @@ namespace Stellamod
 
 			if (Player.InModBiome<MarrowSurfaceBiome>() && !Main.dayTime)
 			{
-				 MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
+				MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
 			}
 
-			if ( ArcaneM && ArcaneMCooldown == 601)
+			if (ArcaneM && ArcaneMCooldown == 601)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
 				for (int j = 0; j < 7; j++)
@@ -96,23 +101,163 @@ namespace Stellamod
 					ParticleManager.NewParticle(Player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 				}
-				
+
 
 			}
-			if ( ArcaneM && ArcaneMCooldown > 600)
+			if (ArcaneM && ArcaneMCooldown > 600)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 
 
 			}
-			if ( ArcaneM && ArcaneMCooldown == 720)
+			if (ArcaneM && ArcaneMCooldown == 720)
 			{
 				ArcaneMCooldown = 0;
 
 
 			}
 
-			
+			if (Dice)
+			{
+				Timer++;
+				if (Timer == 90 || DiceCooldown == 90)
+				{
+					Player player = Player;
+					var entitySource = player.GetSource_FromThis();
+		
+					switch (Main.rand.Next(5))
+					{
+
+						case 0:
+
+
+							CombatText.NewText(player.getRect(), Color.YellowGreen, "Wohooo", true, false);
+							for (int i = 0; i < player.inventory.Length; i++)
+
+							{
+
+								if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+								{
+									Item item = new Item();
+									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
+									player.inventory[i].TurnToAir();
+									player.inventory[i] = item;
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+									Dice = false;
+									break;
+
+								}
+							}
+							break;
+
+						case 1:
+
+
+							CombatText.NewText(player.getRect(), Color.YellowGreen, "Omg, its something!", true, false);
+							for (int i = 0; i < player.inventory.Length; i++)
+
+							{
+
+								if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+								{
+									Item item = new Item();
+									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
+									player.inventory[i].TurnToAir();
+									player.inventory[i] = item;
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+									Dice = false;
+									break;
+
+								}
+							}
+							break;
+
+						case 2:
+
+
+							CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you disappointed? You should be.", true, false);
+							for (int i = 0; i < player.inventory.Length; i++)
+
+							{
+
+								if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+								{
+									Item item = new Item();
+									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
+									player.inventory[i].TurnToAir();
+									player.inventory[i] = item;
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+									Dice = false;
+									break;
+
+								}
+							}
+							break;
+
+						case 3:
+
+
+							CombatText.NewText(player.getRect(), Color.YellowGreen, "Wow, you have no maidens and no luck..", true, false);
+							for (int i = 0; i < player.inventory.Length; i++)
+
+							{
+
+								if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+								{
+									Item item = new Item();
+
+									player.inventory[i].TurnToAir();
+									player.inventory[i] = item;
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+									Dice = false;
+									break;
+
+								}
+							}
+							break;
+
+
+						case 4:
+
+							CombatText.NewText(player.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
+							for (int i = 0; i < player.inventory.Length; i++)
+
+							{
+
+								if (player.inventory[i].type == ModContent.ItemType<GambitToken>())
+
+								{
+									Item item = new Item();
+									player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+									player.inventory[i].TurnToAir();
+									player.inventory[i] = item;
+									SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+									Dice = false;
+									break;
+
+								}
+							}
+							break;
+
+					}
+					Timer = 0;
+
+				}
+
+			}
 		}
 		public const int CAMO_DELAY = 100;
 

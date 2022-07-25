@@ -93,9 +93,9 @@ namespace Stellamod.NPCs.Morrow
 		{
 			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
 			{
-				return SpawnCondition.OverworldDaySlime.Chance * 0.5f;
+				return SpawnCondition.Overworld.Chance * 0.5f;
 			}
-			return SpawnCondition.OverworldDaySlime.Chance * 0f;
+			return SpawnCondition.Overworld.Chance * 0f;
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)

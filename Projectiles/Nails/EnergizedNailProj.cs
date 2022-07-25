@@ -105,7 +105,7 @@ namespace Stellamod.Projectiles.Nails
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.ElectrosphereMissile, (int)(Projectile.damage * 0.5), 0f, Projectile.owner, 0f, 0f); ;
-			Projectile.Kill();
+	
 
 			if (target.lifeMax <= 300)
 			{

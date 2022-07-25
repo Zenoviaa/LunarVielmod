@@ -56,7 +56,13 @@ namespace Stellamod.NPCs.Morrow
 		{
 			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
 			{
-				return SpawnCondition.OverworldNight.Chance * 0.5f;
+				return SpawnCondition.OverworldNight.Chance * 0.2f;
+				return SpawnCondition.Underground.Chance * 0f;
+			}
+			
+			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			{
+				return SpawnCondition.Underground.Chance * 0.2f;
 			}
 			return SpawnCondition.OverworldNight.Chance * 0f;
 		}

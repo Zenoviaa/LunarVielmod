@@ -15,7 +15,7 @@ namespace Stellamod.Items.Accessories
 			DisplayName.SetDefault("Plant Heritage");
 			Tooltip.SetDefault("Gain the power of plants!" +
 				"\n+40 life and +15 increased defense" +
-				"\n -15% Movement ");
+				"\nBut you have decreased speed ");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -46,9 +46,10 @@ namespace Stellamod.Items.Accessories
 		{
 
 			player.GetModPlayer<MyPlayer>().PlantH = true;
-			player.velocity *= 0.85f;
+		
 			player.statDefense += 15;
 			player.statLifeMax2 += 40;
+			player.maxRunSpeed *= 0.40f;
 
 
 

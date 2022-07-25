@@ -105,21 +105,25 @@ namespace Stellamod.UI.Panels
 			rot = gameTime.TotalGameTime.TotalMilliseconds / 2000 + rotOff;
 
 		}
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
-			double rot = (Main.GlobalTimeWrappedHourly / 1) + rotOff;
+			
+		
+		double rot = (Main.GlobalTimeWrappedHourly / 1) + rotOff;
 
 			Vector2 pos = Main.LocalPlayer.Center - Main.screenPosition;
 			Vector2 mod = new((float)(pos.X + (Math.Cos(rot) * dist)) / Main.UIScale, (float)(pos.Y + (Math.Sin(rot) * dist)) / Main.UIScale);
 
-			Left.Set((int)mod.X - buttonTexture.Width / 2f, 0f);
-			Top.Set((int)mod.Y - buttonTexture.Height / 2f, 0f);
+			
+			Left.Set(0, 0.5f);
+			Top.Set(0, 0.5f);
 			Width.Set(buttonTexture.Width, 0f);
 			Height.Set(buttonTexture.Height, 0f);
 
 			spriteBatch.Draw(buttonTexture, mod, buttonTexture.Bounds, new Color(255, 255, 255, 127), 0f, buttonTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
-
+			// new Rectangle((int)Left.Pixels, (int)Top.Pixels, (int)Width.Pixels, (int)Height.Pixels)
 		}
+	
 	}
 	class Gamble : UIState
 	{

@@ -68,13 +68,14 @@ namespace Stellamod.NPCs.Morrow
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0f;
-			NPC.noGravity = true;	
+			NPC.noGravity = true;
+			NPC.noTileCollide = true;
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
 			{
-				return SpawnCondition.Cavern.Chance * 0.5f;
+				return SpawnCondition.Cavern.Chance * 0.2f;
 			}
 
 			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
@@ -89,9 +90,9 @@ namespace Stellamod.NPCs.Morrow
 			{
 				case ActionState.Asleep:
 					NPC.damage = 0;
-					NPC.velocity *= 0;
 					counter++;
-					NPC.aiStyle = NPCID.Butterfly;
+					NPC.aiStyle = 65;
+					
 					FallAsleep();
 					break;
 				case ActionState.Notice:
@@ -110,6 +111,10 @@ namespace Stellamod.NPCs.Morrow
 					counter++;
 					break;
 			}
+
+			Vector3 RGB = new(2.30f, 2.21f, 0.72f);
+			// The multiplication here wasn't doing anything
+			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
@@ -151,7 +156,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.TargetClosest(true);			
 
 			// Now we check the make sure the target is still valid and within our specified notice range (500)
-			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 100f)
+			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 80f)
 			{
 				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
 				State = ActionState.Notice;
@@ -171,7 +176,7 @@ namespace Stellamod.NPCs.Morrow
 			
 				
 
-				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 150f)
+				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 80f)
 				{
 					State = ActionState.Asleep;
 					ResetTimers();
@@ -230,6 +235,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StumpBuster>(), 20, 1, 1));
 		}
 		public override void HitEffect(int hitDirection, double damage)
 		{

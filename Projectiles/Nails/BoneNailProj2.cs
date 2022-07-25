@@ -108,9 +108,9 @@ namespace Stellamod.Projectiles.Nails
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.BoneGloveProj, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1, speedY * 1, ProjectileID.BoneGloveProj, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.BoneGloveProj, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-			Projectile.Kill();
+		
 
-			if (target.lifeMax <= 500)
+			if (target.lifeMax <= 100)
 			{
 				if (target.life < target.lifeMax / 2)
 				{

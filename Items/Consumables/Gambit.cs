@@ -11,6 +11,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.UI.Panels;
 using Terraria.Audio;
+using Stellamod.Projectiles;
 
 namespace Stellamod.Items.Consumables
 {
@@ -38,7 +39,7 @@ namespace Stellamod.Items.Consumables
 			Item.value = 200;
 			
 		}
-
+		public float Timer;
 		public override bool CanRightClick()
 		{
 			return true;
@@ -47,15 +48,93 @@ namespace Stellamod.Items.Consumables
 		public override void RightClick(Player player)
 		{
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (Main.rand.NextBool(1))
+			switch (Main.rand.Next(5))
 			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<GambitToken>(), Main.rand.Next(1, 1));
+
+				case 0:
+
+
+					CombatText.NewText(player.getRect(), Color.YellowGreen, "Wohooo", true, false);
+
+
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
+
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+
+					break;
+
+				case 1:
+
+
+					CombatText.NewText(player.getRect(), Color.YellowGreen, "Omg, its something!", true, false);
+
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
+
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+
+					break;
+
+				case 2:
+
+
+					CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you disappointed? You should be.", true, false);
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+
+
+					break;
+
+				case 3:
+
+
+					CombatText.NewText(player.getRect(), Color.YellowGreen, "Wow, you have no maidens and no luck..", true, false);
+
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+					break;
+
+
+					break;
+
+
+				case 4:
+
+					CombatText.NewText(player.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
+
+
+
+
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+
+
+
+
+
+					break;
+
+
+
+					
+
+
+
 			}
-			Gamble.visible = true;
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rolldice"));
-
+			float speedX = Main.rand.NextFloat(-4f, 4f);
+			float speedY = Main.rand.Next(-10, 11) * 0.2f;
+			Vector2 here = player.position;
+			Projectile.NewProjectile(entitySource, player.position.X, player.position.Y + 60, speedX * 0, speedY * 0, ModContent.ProjectileType<Dicein>(), 0, 0f, player.whoAmI, 0f, 0f);
+			player.GetModPlayer<MyPlayer>().Dice = true;
 		}
-
 		// Below is code for the visuals
 
 		public override Color? GetAlpha(Color lightColor)
