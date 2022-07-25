@@ -11,7 +11,7 @@ namespace Stellamod
 {
 	class WorldGenThingy : ModSystem
 	{
-		public static bool JustPressed(Keys key)
+		/*public static bool JustPressed(Keys key)
 		{
 			return Main.keyState.IsKeyDown(key) && !Main.oldKeyState.IsKeyDown(key);
 		}
@@ -30,5 +30,8 @@ namespace Stellamod
 			// Code to test placed here:
 			//WorldGen.TileRunner(x, y, WorldGen.genRand.Next(600, 700), WorldGen.genRand.Next(500, 600), ModContent.TileType<OvermorrowdirtTile>());
 		}
+	}
+}
+		*/
 	}
 }

@@ -73,12 +73,12 @@ namespace Stellamod.WorldG
 				Tile tile = Main.tile[xz, yz];
 				if (tile.HasTile && tile.TileType == ModContent.TileType<OvermorrowdirtTile>())
 				{
-					WorldGen.digTunnel(xz, yz, 1, 0.01f, 100, 4, false);
+					
 				}
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 
-				WorldGen.digTunnel(xz, yz, 1, 0.01f, 100, 5, false);
+				
 			}
 		}
 
