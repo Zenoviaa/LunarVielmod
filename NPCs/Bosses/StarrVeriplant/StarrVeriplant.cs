@@ -354,15 +354,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
-			if (Main.netMode != NetmodeID.MultiplayerClient)
-			{
-				Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
-				direction.Normalize();
-				
-				
-
-
-			}
+			
 			NPC.TargetClosest();
 
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
