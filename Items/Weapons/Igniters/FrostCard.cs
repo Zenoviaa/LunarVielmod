@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Silk, 3);
 			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 21);
-			recipe.AddIngredient(ItemID.Star, 3);
+			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
 			recipe.AddIngredient(ItemID.IceBlock, 100);
 			recipe.AddTile(TileID.WorkBenches);

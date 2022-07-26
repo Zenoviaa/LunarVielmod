@@ -69,7 +69,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 70);
-			recipe.AddIngredient(ItemID.Star, 3);
+			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ItemID.Silk, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
