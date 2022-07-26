@@ -27,8 +27,8 @@ namespace Stellamod.Items.Weapons.Igniters
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 100;
-			Item.useAnimation = 100;
+			Item.useTime = 50;
+			Item.useAnimation = 50;
 			Item.useStyle = ItemUseStyleID.Guitar;
 			Item.noMelee = true;
 			Item.knockBack = 0f;
