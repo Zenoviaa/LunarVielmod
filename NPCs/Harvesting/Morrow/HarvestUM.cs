@@ -71,6 +71,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			NPC.HasBuff<Harvester>();
 			NPC.friendly = false;
 			NPC.lifeMax = 1;
+			NPC.damage = 0;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
 		}

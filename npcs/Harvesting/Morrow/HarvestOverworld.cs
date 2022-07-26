@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			NPC.height = 25; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.// The amount of damage that this npc deals // The amount of defense that this npc has // The amount of health that this npc has
 			NPC.DeathSound = new SoundStyle($"Stellamod/Assets/Sounds/ItemHarvested");  // The sound the NPC will make when it dies.
-
+			NPC.damage = 0;
 			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
 			NPC.HasBuff<Harvester>();
 			NPC.friendly = false;
