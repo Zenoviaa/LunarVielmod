@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 		public override void SetDefaults()
 		{
 			
-			Item.damage = 6;
+			Item.damage = 4;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 30;

@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 12;
+			Item.damage = 8;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 20;

@@ -14,7 +14,7 @@ namespace Stellamod.Items.Accessories
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Steali");
-			Tooltip.SetDefault("A super fast dash that provides invincibility as you dash" +
+			Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
 				"\nIncreased regeneration" +
 				"\nYou may not attack while this is in use and the cost of 5% damage" +
 				"\nHollow Knight inspiried!");
