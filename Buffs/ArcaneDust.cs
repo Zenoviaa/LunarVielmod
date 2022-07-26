@@ -18,7 +18,7 @@ namespace Stellamod.Buffs
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 7;
+			npc.lifeRegen -= 4;
 
 			if (Main.rand.NextBool(2))
 			{

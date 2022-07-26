@@ -17,7 +17,7 @@ namespace Stellamod.Buffs.Dusteffects
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 2;
+			
 
 			if (Main.rand.NextBool(2))
 			{
