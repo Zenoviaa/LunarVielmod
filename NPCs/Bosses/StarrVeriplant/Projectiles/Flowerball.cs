@@ -21,12 +21,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 		public int moveSpeedY = 0;
 		public int counter;
 		public ref float AI_State => ref NPC.ai[0];
-		bool trailbehind;
 	
-		float extraYoff;
-		float skiptimer = 0;
-	
-		bool canhitplayer;
 		public float AiTimer
 		{
 			get => NPC.ai[0];

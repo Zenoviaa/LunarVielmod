@@ -261,8 +261,7 @@ namespace Stellamod
 		}
 		public const int CAMO_DELAY = 100;
 
-		internal static bool swingingCheck;
-		internal static Item swingingItem;
+		
 
 		public int Shake = 0;
 

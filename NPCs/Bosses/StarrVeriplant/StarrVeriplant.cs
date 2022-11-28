@@ -202,7 +202,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		Vector2 TeleportPos = Vector2.Zero;
 		bool boom = false;
 	
-
+		
 			
 
 public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

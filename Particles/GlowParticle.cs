@@ -18,7 +18,7 @@ namespace Stellamod.Particles
 		}
 		public override void AI()
 		{
-			scale = (120 - ai[0]) / 120;
+			Scale = (120 - ai[0]) / 120;
 			ai[0]++;
 			velocity *= 0.96f;
 		}

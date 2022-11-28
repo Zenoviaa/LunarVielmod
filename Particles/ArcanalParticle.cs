@@ -13,7 +13,7 @@ namespace Stellamod.Particles
 		{
 			width = 34;
 			height = 34;
-			scale = 2f;
+			Scale = 2f;
 			timeLeft = 40;
 			oldPos = new Vector2[10];
 			oldRot = new float[1];
@@ -29,7 +29,7 @@ namespace Stellamod.Particles
 			velocity *= 0.99f;
 
 
-			if (scale <= 0f)
+			if (Scale <= 0f)
 				active = false;
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

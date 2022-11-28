@@ -13,7 +13,7 @@ namespace Stellamod.Particles
 		{
 			width = 34;
 			height = 34;
-			scale = 1.5f;
+			Scale = 1.5f;
 			timeLeft = 100;
 			oldPos = new Vector2[10];
 			oldRot = new float[1];
@@ -23,13 +23,13 @@ namespace Stellamod.Particles
 		{
 
 			
-			scale *= 1f;
+			Scale *= 1f;
 
 			rotation += Utils.Clamp(velocity.X * 0f, -ai[0], ai[0]);
 			velocity *= 0.98f;
 
 
-			if (scale <= 0f)
+			if (Scale <= 0f)
 				active = false;
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

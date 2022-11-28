@@ -101,8 +101,7 @@ namespace Stellamod.Items.Consumables
 					break;
 
 
-					break;
-
+					
 
 				case 4:
 
