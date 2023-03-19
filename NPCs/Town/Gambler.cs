@@ -25,6 +25,7 @@ using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Buffs;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.NPCs.Town
 {
@@ -301,7 +302,11 @@ namespace Stellamod.NPCs.Town
 			shop.item[nextSlot].shopCustomPrice = 1;
 			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
 			nextSlot++;
-
+			
+			shop.item[nextSlot].SetDefaults(ItemID.WormholePotion);
+			shop.item[nextSlot].shopCustomPrice = 1;
+			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+			nextSlot++;
 
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<LenaSongPowder>());
 			shop.item[nextSlot].shopCustomPrice = 15;
@@ -327,9 +332,19 @@ namespace Stellamod.NPCs.Town
 			shop.item[nextSlot].shopCustomPrice = 5;
 			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
 			nextSlot++;
+			
 
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Medal>());
 			nextSlot++;
+			if (NPC.downedQueenBee)
+			{
+
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Verstidust>());
+				shop.item[nextSlot].shopCustomPrice = 20;
+				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+				nextSlot++;
+			}
+
 			if (NPC.downedMechBossAny)
 			{
 
@@ -338,6 +353,16 @@ namespace Stellamod.NPCs.Town
 				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
 				nextSlot++;
 			}
+
+			if (NPC.downedMechBossAny)
+			{
+
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<SteamedNail>());
+				shop.item[nextSlot].shopCustomPrice = 40;
+				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
+				nextSlot++;
+			}
+
 			if (Main.bloodMoon == true)
 			{
 				
