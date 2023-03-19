@@ -46,39 +46,56 @@ namespace Stellamod.WorldG
 				}
 			*/
 
+			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Webs"));
+			if (MorrowGen != -1)
+			{
+
+				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
+
+			}
+
+			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
+			if (CathedralGen != -1)
+			{
+
+				tasks.Insert(CathedralGen + 1, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+
+			}
+
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (ShiniesIndex != -1)
 			{
 
-				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Ores", WorldGenFlameOre));
-
+				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 			}
 
+			
 
-
+			
 
 
 		}
 
 		//private void WorldGenMorrowDig(GenerationProgress progress, GameConfiguration configuration)
 		//{
-			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+		// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 		//	progress.Message = "Gild drilling";
 
 		//	int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
 		//	int yz = WorldGen.genRand.Next((int)WorldGen.worldSurface, Main.maxTilesY);
 		//	for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 		//	{
-				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+		// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 		//		Tile tile = Main.tile[xz, yz];
 		//		if (tile.HasTile && tile.TileType == ModContent.TileType<OvermorrowdirtTile>())
 		//		{
-					
-		//		}
-	//
-				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 
-				
+		//		}
+		//
+		// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+
+
 		//	}
 		//}
 
@@ -109,15 +126,53 @@ namespace Stellamod.WorldG
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 9), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
 			}
 		}
+		private void WorldGenFrileOre(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Freezing the world with Frile";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+				int x = WorldGen.genRand.Next(0, Main.maxTilesX / 3);
+				int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 13), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
+			}
+		}
+
+		private void WorldGenMorrowedStructures(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Hunters settling down";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			{
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+				int xa = WorldGen.genRand.Next(0, Main.maxTilesX / 3);
+				int ya = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				
+			}
+		}
+
+		private void WorldGenCathedral(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Verlia Ark";
+
+
+			
+			
+		}
 
 
 
-
-		
-
-
-
-			const string SavestringX = "Savestring1";
+		const string SavestringX = "Savestring1";
 		const string SavestringY = "Savestring2";
 
 
