@@ -16,7 +16,7 @@ namespace Stellamod.Items.Accessories
 			DisplayName.SetDefault("Steali");
 			Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
 				"\nIncreased regeneration" +
-				"\nYou may not attack while this is in use and the cost of 5% damage" +
+				"\nYou may not attack while this is in use" +
 				"\nHollow Knight inspiried!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
@@ -39,7 +39,7 @@ namespace Stellamod.Items.Accessories
 	
 			
 			player.GetModPlayer<DashPlayer>().DashAccessoryEquipped = true;
-			player.GetDamage(DamageClass.Generic) *= 0.95f;
+		//	player.GetDamage(DamageClass.Generic) *= 0.95f;
 			player.lifeRegen += 1;
 			
 		}

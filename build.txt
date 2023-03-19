@@ -1,4 +1,4 @@
-displayName = The Stella Mod
+displayName = Rosemary's Garden
 author = Zenovia (Lunziestella)
-version = 1.23
+version = 1.24
 modReferences = ParticleLibrary

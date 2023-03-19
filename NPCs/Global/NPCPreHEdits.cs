@@ -1,4 +1,6 @@
 ﻿using Stellamod.Items.Consumables;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Weapons.PowdersItem;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -25,8 +27,25 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 3, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			if (npc.type == NPCID.Antlion)
+			{
 
 
+				npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+				npcLoot.Add(ItemDropRule.Common(ItemID.SandBoots, 25, 1, 1)); 
+				npcLoot.Add(ItemDropRule.Common(ItemID.Sandgun, 40, 1, 1)); 
+			}
+
+			if (npc.type == NPCID.Zombie)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GrassDirtPowder>(), 30, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
 
 		}
 	}

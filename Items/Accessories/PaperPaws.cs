@@ -13,7 +13,7 @@ namespace Stellamod.Items.Accessories
 		{
 			DisplayName.SetDefault("Paper Paws");
 			Tooltip.SetDefault("Why don't you give your summons more credit?" +
-				"\n+2 summons");
+				"\n+1 summon");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Accessories
 		{
 
 
-			player.maxMinions += 2;
+			player.maxMinions += 1;
 
 
 		}

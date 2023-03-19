@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Ores;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
@@ -18,6 +20,14 @@ namespace Stellamod.Items.Harvesting
 			Item.height = 20;
 			Item.maxStack = 999;
 			Item.value = Item.sellPrice(silver: 20);
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
+			recipe.AddIngredient(ItemID.DemoniteBar, 1);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
 		}
 	}
 

@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Stellamod;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Accessories
 {
@@ -29,7 +31,18 @@ namespace Stellamod.Items.Accessories
 
 
 		}
-
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
+			recipe.AddIngredient(ItemID.SpikyBall, 10);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().TAuraSpawn = true;

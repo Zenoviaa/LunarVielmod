@@ -310,7 +310,7 @@ namespace Stellamod
         {
 			if (ThornedBook)
             {
-				npc.StrikeNPC(damage * 6, 1, 1, false, false, true);
+				npc.StrikeNPC(damage * 7, 1, 1, false, false, true);
 			}
            
         }
