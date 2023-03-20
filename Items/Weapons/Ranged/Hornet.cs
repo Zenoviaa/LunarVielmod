@@ -58,7 +58,22 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<HornetLob>() });
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
 
-	
+			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
+			recipe.AddIngredient(ItemID.Minishark, 1);
+
+			recipe.Register();
+		}
+
 	}
 }

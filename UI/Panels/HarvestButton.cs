@@ -11,7 +11,7 @@ namespace Stellamod.UI.Panels
 {
 	public class HarvestButton : UIState
 	{
-		public UIImageButton harvestButton;
+		/* public UIImageButton harvestButton;
 
 		public override void OnInitialize()
 		{
@@ -55,5 +55,5 @@ namespace Stellamod.UI.Panels
 			
 			
 		}
-	}
+	*/}
 }

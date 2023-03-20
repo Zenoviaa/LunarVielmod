@@ -77,10 +77,22 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			if (spawnInfo.Player.ZoneUndergroundDesert)
             {
-					return SpawnCondition.Cavern.Chance * 0.1f;
+					return SpawnCondition.Cavern.Chance * 0.2f;
 			}
+
+			if (spawnInfo.Player.ZoneNormalUnderground)
+			{
+				return SpawnCondition.Cavern.Chance * 0.2f;
+			}
+			
+			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			{
+				return SpawnCondition.Underground.Chance * 0.5f;
+			}
+
+
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame

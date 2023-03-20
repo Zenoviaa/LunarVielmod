@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -91,10 +92,15 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<MarrowSurfaceBiome>())
+			if (spawnInfo.Player.ZoneDesert)
 			{
 				return SpawnCondition.Overworld.Chance * 0.5f;
 			}
+			if (spawnInfo.Player.ZoneJungle)
+			{
+				return SpawnCondition.Overworld.Chance * 0.3f;
+			}
+
 			return SpawnCondition.Overworld.Chance * 0f;
 		}
 
@@ -104,6 +110,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 3, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
 
 		}
 		public override void FindFrame(int frameHeight)

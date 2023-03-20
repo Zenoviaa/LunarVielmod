@@ -70,11 +70,15 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			
+			if (spawnInfo.Player.ZoneJungle)
 			{
-				return SpawnCondition.Cavern.Chance * 0.3f;
+				return SpawnCondition.Cavern.Chance * 0.7f;
+
 			}
-			return SpawnCondition.Cavern.Chance * 0f;
+
+
+			return SpawnCondition.Underground.Chance * 0f;
 		}
 		public override void AI()
 		{

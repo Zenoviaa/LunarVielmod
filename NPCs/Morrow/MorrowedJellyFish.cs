@@ -66,11 +66,7 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
-			{
-				return SpawnCondition.WaterCritter.Chance * 0.9f;
-			}
-			return SpawnCondition.WaterCritter.Chance * 0f;
+			return SpawnCondition.WaterCritter.Chance * 0.9f;
 		}
 		public override void AI()
 		{

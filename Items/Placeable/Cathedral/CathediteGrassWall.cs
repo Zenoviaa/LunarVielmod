@@ -4,17 +4,15 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Ores
+
+namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class FrileOre : ModItem
+	public class CathediteGrassWall : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("An ore too cold to place, used for many items with ice!");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
-
-			
+			Tooltip.SetDefault("Cathedite Grass Wall");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
 		}
 		public override void SetDefaults()
 		{
@@ -23,11 +21,11 @@ namespace Stellamod.Items.Ores
 			Item.maxStack = 999;
 			Item.useTurn = true;
 			Item.autoReuse = true;
-			Item.useAnimation = 10;
-			Item.useTime = 10;
+			Item.useAnimation = 15;
+			Item.useTime = 7;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
+			Item.createWall = ModContent.WallType<Tiles.CathediteGrassWallTile>();
 		}
-		
 	}
 }
