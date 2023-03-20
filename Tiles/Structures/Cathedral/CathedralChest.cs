@@ -12,9 +12,9 @@ using Stellamod.Dusts;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Placeable.Cathedral;
 
-namespace Stellamod.Tiles.Structures
+namespace Stellamod.Tiles.Structures.Cathedral
 {
-	public class MorrowChest : ModTile
+	public class CathedralChest : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -35,15 +35,12 @@ namespace Stellamod.Tiles.Structures
 			ChestDrop = ModContent.ItemType<CathedralChestI>();
 
 			// Names
-			ContainerName.SetDefault("Morrow Chest");
+			ContainerName.SetDefault("Cathedral Chest");
 
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Morrow Chest");
+			name.SetDefault("MCathedral Chest");
 			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
 
-			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			name.SetDefault("Locked Morrow Chest");
-			AddMapEntry(new Color(255, 156, 32), name, MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -77,7 +74,7 @@ namespace Stellamod.Tiles.Structures
 		{
 			if (Main.dayTime)
 			{
-				Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+				Main.NewText("The chest cannot be open in the light of the day due to Verlia's Moon lock Try again at night.", Color.Orange);
 				return false;
 			}
 
@@ -179,8 +176,8 @@ namespace Stellamod.Tiles.Structures
 				if (isLocked)
 				{
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
-					int key = ModContent.ItemType<MorrowChestKey>();
-					if (player.ConsumeItem(key) && Chest.Unlock(left, top))
+				
+					if ( Chest.Unlock(left, top))
 					{
 						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{
@@ -244,7 +241,7 @@ namespace Stellamod.Tiles.Structures
 					player.cursorItemIconID = ModContent.ItemType<CathedralChestI>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MorrowChestKey>();
+						player.cursorItemIconID = ItemID.Sundial;
 					}
 
 					player.cursorItemIconText = "";
