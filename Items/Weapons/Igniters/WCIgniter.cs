@@ -16,7 +16,8 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("WildCard Igniter");
-			Tooltip.SetDefault("Explode into magical bits :)");
+			Tooltip.SetDefault("Explode into magical bits :)" +
+				 "\n Use a powder or dust and then use this type of weapon!");
 		}
 		public override void SetDefaults()
 		{

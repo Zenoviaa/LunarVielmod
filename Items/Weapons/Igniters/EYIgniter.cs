@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		{
 			DisplayName.SetDefault("EyeCard Igniter");
 			Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
-				"\n Use a powder and then use this type of weapon!");
+				"\n Use a powder or dust and then use this type of weapon!");
 		}
 		public override void SetDefaults()
 		{
