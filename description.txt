@@ -1,4 +1,5 @@
-The Stella Mod is an expansive mod for the world of Aimacra and Stella! As a crossover from a personal game Diari, Stella has sought to expand her skills in the world of terraria!
+The Rosemary Mod is an expansive mod for the world of Aimacra. Rosemary and Sirestias! As a crossover from a personal game Diari, 
+Rosemary has sought to expand her skills in the world of terraria!
 When Sirestias, you and her crew teleported into the world of terraria you all kind of cracked the sky and the influence on world is quite dramatic..
 
 Civilizations grew, spread and even found ways to make use of this difference in the world, they call what falls from this crack "gild," and people have figured out ways to manipulate and even 
@@ -7,7 +8,6 @@ grow more powerful with it..
 What new evils have befallen this world? Who knows :P
 
 This is a content/quality of life mod which includes:
-- 1 Polished boss 
 - A couple new enemies and npcs
 - 30+ New interesting weapons
 - New systems for weapons and GP including Harvesting, Weapon Powders and igniters
