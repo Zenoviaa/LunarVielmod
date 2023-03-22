@@ -32,7 +32,7 @@ namespace Stellamod.Tiles.Structures
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ChestDrop = ModContent.ItemType<CathedralChestI>();
+			ChestDrop = ModContent.ItemType<MorrowChesti>();
 
 			// Names
 			ContainerName.SetDefault("Morrow Chest");
@@ -241,7 +241,7 @@ namespace Stellamod.Tiles.Structures
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{
-					player.cursorItemIconID = ModContent.ItemType<CathedralChestI>();
+					player.cursorItemIconID = ModContent.ItemType<MorrowChesti>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
 						player.cursorItemIconID = ModContent.ItemType<MorrowChestKey>();

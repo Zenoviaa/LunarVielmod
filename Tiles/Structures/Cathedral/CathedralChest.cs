@@ -38,9 +38,12 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			ContainerName.SetDefault("Cathedral Chest");
 
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("MCathedral Chest");
+			name.SetDefault("Cathedral Chest");
 			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
 
+			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+			name.SetDefault("Locked Cathedral Chest");
+			AddMapEntry(new Color(255, 156, 32), name, MapChestName);
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -74,7 +77,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		{
 			if (Main.dayTime)
 			{
-				Main.NewText("The chest cannot be open in the light of the day due to Verlia's Moon lock Try again at night.", Color.Orange);
+				Main.NewText("The chest cannot be open at day due to the Empress of the Moon, Verlia, a special seal is over it. Try again at night.", Color.LightBlue);
 				return false;
 			}
 
@@ -176,7 +179,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 				if (isLocked)
 				{
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
-				
+					
 					if ( Chest.Unlock(left, top))
 					{
 						if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -247,6 +250,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 					player.cursorItemIconText = "";
 				}
 			}
+
 
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;

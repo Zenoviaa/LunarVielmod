@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.aiStyle = -1;
 
 			// Custom boss bar
-			NPC.BossBar = ModContent.GetInstance<VeriBossBar>();
+			NPC.BossBar = ModContent.GetInstance<BossBarTest>();
 
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)

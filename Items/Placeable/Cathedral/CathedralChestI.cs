@@ -29,12 +29,12 @@ namespace Stellamod.Items.Placeable.Cathedral
 			Item.consumable = true;
 			Item.value = 500;
 			Item.createTile = ModContent.TileType<CathedralChest>();
-		 Item.placeStyle = 1; // Use this to place the chest in its locked style
+			Item.placeStyle = 1; // Use this to place the chest in its locked style
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		
+
 	}
 
-	
+
 }
