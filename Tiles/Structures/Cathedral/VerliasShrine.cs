@@ -98,8 +98,8 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		
 			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
 			SoundEngine.PlaySound(SoundID.Roar);
-
-            }
+				return true;
+			}
 			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
 			{
 
@@ -115,10 +115,13 @@ namespace Stellamod.Tiles.Structures.Cathedral
 				
 
 			}
-				
-			
+			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+            {
+				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
+			}
 
-			return true;
+
+				return true;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
