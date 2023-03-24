@@ -38,9 +38,9 @@ namespace Stellamod.Backgrounds
 		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
 		{
 			
-			scale = 1f;
+			scale = 0.6f;
 			parallax = 0.3;
-			b = 700;
+			b = 00;
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/Cathedralflat");
 
 			

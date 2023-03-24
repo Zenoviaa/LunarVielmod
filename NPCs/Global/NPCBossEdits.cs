@@ -66,6 +66,14 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			if (npc.type == NPCID.QueenBee)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+			
 			// Editing an existing drop rule
 			if (npc.type == NPCID.BloodNautilus)
 			{
@@ -81,10 +89,10 @@ namespace Stellamod.NPCs.Global
 				{
 					// You must study the vanilla code to know what to objects to cast to.
 					if (rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff)
-						normalDropRule.chanceDenominator = 3;
+						normalDropRule.chanceDenominator = 2;
 				}
-
-				// Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+																						  // Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
 				/*
 				npcLoot.RemoveWhere(
 					rule => rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff
