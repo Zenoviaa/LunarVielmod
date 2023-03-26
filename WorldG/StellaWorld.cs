@@ -525,14 +525,13 @@ namespace Stellamod.WorldG
 			{
 
 				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int ya = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+				int ya = WorldGen.genRand.Next(100, (int)WorldGen.worldSurfaceHigh);
 				Point Loc = new Point(xa, ya);
 
 			
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && tile.TileType == TileID.SnowBlock)
-				{
+			
 				
 
 
@@ -622,7 +621,7 @@ namespace Stellamod.WorldG
 								break; // Make sure not to exceed the capacity of the chest
 						}
 					}
-				}
+				
 
 
 

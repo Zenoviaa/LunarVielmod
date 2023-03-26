@@ -15,7 +15,7 @@ namespace Stellamod.Items.Accessories
 		{
 			DisplayName.SetDefault("Medallion of the Tombs");
 			Tooltip.SetDefault("Every 10 seconds drop high damage spiky balls on the ground" +
-				"\n+30% Ranged damage..." +
+				"\n+20% Ranged damage..." +
 				"\n But at the cost of all your defense :( ");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().TAuraSpawn = true;
-			player.GetDamage(DamageClass.Ranged) *= 1.3f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Ranged) *= 1.2f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().TAuraCooldown--;
 			player.statDefense -= 400;
 

@@ -40,7 +40,7 @@ namespace Stellamod.Backgrounds
 			
 			scale = 0.6f;
 			parallax = 0.3;
-			b = 00;
+			b = 1200;
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/Cathedralflat");
 
 			
