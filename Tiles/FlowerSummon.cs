@@ -12,6 +12,8 @@ using Stellamod.Dusts;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Consumables;
+using System;
 
 namespace Stellamod.Tiles
 {
@@ -83,46 +85,129 @@ namespace Stellamod.Tiles
 		public bool Checked = false;
 		public override bool RightClick(int i, int j)
 		{
-			
-			if (!NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
-            {
-		
-		
-			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
-			SoundEngine.PlaySound(SoundID.Roar);
-		
-	}
+
+			Player player = Main.LocalPlayer;
+
+			int key = ModContent.ItemType<MoonflameLantern>();
+			if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			{
+
+
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
+				SoundEngine.PlaySound(SoundID.Roar);
+				return true;
+			}
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			{
+
 				
-			
+			}
+
+
 
 			return true;
 		}
 		public override void MouseOver(int i, int j)
 		{
-			Checked = true;
- 
+			Player player = Main.LocalPlayer;
+			Tile tile = Main.tile[i, j];
+			int left = i;
+			int top = j;
+
+			Main.LocalPlayer.cursorItemIconEnabled = true;
+			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+			if (tile.TileFrameX % 36 != 0)
+			{
+				left--;
+			}
+
+			if (tile.TileFrameY != 0)
+			{
+				top--;
+			}
+
+			int chest = Chest.FindChest(left, top);
+			player.cursorItemIconID = -1;
+			if (chest < 0)
+			{
+				player.cursorItemIconText = Language.GetTextValue("Huntria's Shrine");
+			}
+			else
+			{
+				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
+				if (player.cursorItemIconText == defaultName)
+				{
+					player.cursorItemIconID = ModContent.ItemType<Flowersummon>();
+					if (Main.tile[left, top].TileFrameX / 36 == 1)
+					{
+						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+					}
+
+					player.cursorItemIconText = "";
+				}
+			}
+
+			player.noThrow = 2;
+			player.cursorItemIconEnabled = true;
 		}
 
-		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+		public override void MouseOverFar(int i, int j)
 		{
-			Tile tile = Main.tile[i, j];
+			MouseOver(i, j);
+			Player player = Main.LocalPlayer;
+			if (player.cursorItemIconText == "")
+			{
+				player.cursorItemIconEnabled = false;
+				player.cursorItemIconID = 0;
+			}
+		}
 
-			Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Tiles/FlowerSummon_Highlight").Value;
-			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange, Main.offScreenRange);
-			
-			if (Checked == true)
-            {
-				spriteBatch.Draw(texture, new Vector2(i * 16, j * 16) - Main.screenPosition + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Color.White);
+
+		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+		{
+			r = 0.215f;
+			g = 0.165f;
+			b = 0.1f;
+		}
+
+		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+		{
+			Point p = new Point(i, j);
+			Tile tile = Main.tile[p.X, p.Y];
+
+			if (tile == null || !tile.HasTile) { return false; }
+
+			Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Particles/GradientPillar").Value;
+
+			Vector2 offScreen = new Vector2(Main.offScreenRange);
+			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
+			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
+			Color color = new Color(0.2f, 0.15f, 0.08f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+
+			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+			return true;
+		}
+
+		public override void NearbyEffects(int i, int j, bool closer)
+		{
+			Vector2 pos = new Vector2(i, j) * 16;
+			Lighting.AddLight(pos, new Vector3(0.1f, 0.32f, 0.5f) * 0.35f);
+
+			if (Main.rand.NextBool(100))
+			{
+				if (!Main.tile[i, j - 1].HasTile)
+				{
+					Dust.NewDustPerfect(pos + new Vector2(Main.rand.NextFloat(0, 16), Main.rand.NextFloat(-32, -16)),
+						ModContent.DustType<Sparkle>(), new Vector2(Main.rand.NextFloat(-0.02f, 0.4f), -Main.rand.NextFloat(0.1f, 2f)), 0, new Color(0.2f, 0.15f, 0.08f, 0f), Main.rand.NextFloat(0.25f, 2f));
+
+				}
 			}
-			 timer++;
-			if (timer == 40)
-            {
-				Checked = false;
-				timer = 0;
-			}
+		}
 	}
 	}
-}
+
 
 
 
