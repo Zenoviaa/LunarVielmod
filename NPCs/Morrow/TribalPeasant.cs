@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Morrow
 			
 			if (spawnInfo.Player.ZoneJungle)
 			{
-				return SpawnCondition.Cavern.Chance * 0.7f;
+				return SpawnCondition.Cavern.Chance * 0.3f;
 
 			}
 

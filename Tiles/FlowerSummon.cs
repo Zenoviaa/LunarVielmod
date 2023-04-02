@@ -56,7 +56,7 @@ namespace Stellamod.Tiles
 			TileObjectData.newTile.Width = 5;
 			MineResist = 4f;
 			MinPick = 80;
-			TileObjectData.newTile.DrawYOffset = 6; // So the tile sinks into the ground
+			TileObjectData.newTile.DrawYOffset = 0; // So the tile sinks into the ground
 			TileObjectData.newTile.DrawXOffset = 4; // So the tile sinks into the ground
 
 
@@ -183,7 +183,7 @@ namespace Stellamod.Tiles
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
 			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.2f, 0.15f, 0.08f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+			Color color = new Color(0.2f, 0.15f, 0.08f, 0.1f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 

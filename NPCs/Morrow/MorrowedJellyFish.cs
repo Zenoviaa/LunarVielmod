@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			return SpawnCondition.WaterCritter.Chance * 0.9f;
+			return SpawnCondition.WaterCritter.Chance * 0.5f;
 		}
 		public override void AI()
 		{
