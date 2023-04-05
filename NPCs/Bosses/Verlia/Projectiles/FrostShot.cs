@@ -21,8 +21,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void SetDefaults()
 		{
 			Projectile.damage = 100;
-			Projectile.width = 30;
-			Projectile.height = 30;
+			Projectile.width = 40;
+			Projectile.height = 40;
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
@@ -31,6 +31,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.hostile = true;
+	
 		}
 		public float Timer
 		{
@@ -45,17 +46,17 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 
 			Timer++;
-			if (Timer == 3)
+			if (Timer == 4)
 			{
 
 
 
 
-				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<FrostShotIN>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc - 20, Projectile.position.Y + speedYabc - 20, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<FrostShotIN>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 
@@ -67,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 			
 
-			if (Timer2 < 200)
+			if (Timer2 < 150)
 			{
 				maxDetectRadius = 2000f;
 
@@ -86,12 +87,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Projectile.velocity = (closestplayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 
 		}
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-		{
-
-			behindNPCs.Add(index);
-
-		}
+		
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
 		public Player FindClosestNPC(float maxDetectDistance)
@@ -128,9 +124,57 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 			return closestplayer;
 		}
-		
-		
 
+		
+		public override bool PreDraw(ref Color lightColor)
+		{
+			Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
+
+			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
+			Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
+			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
+			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+
+			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
+
+
+
+
+
+			Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
+			Vector2 frameOrigin = frame.Size() / 2;
+			Vector2 offset = new Vector2(Projectile.width - frameOrigin.X);
+			Vector2 drawPos = Projectile.position - Main.screenPosition + frameOrigin + offset;
+
+			float time = Main.GlobalTimeWrappedHourly;
+			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+
+			time %= 4f;
+			time /= 2f;
+
+			if (time >= 1f)
+			{
+				time = 2f - time;
+			}
+
+			time = time * 0.5f + 0.5f;
+
+			for (float i = 0f; i < 1f; i += 0.25f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(220, 70, 255, 80), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
+			}
+
+			for (float i = 0f; i < 1f; i += 0.34f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(96, 190, 70, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
+			}
+			return true;
+		}
 
 	}
 }

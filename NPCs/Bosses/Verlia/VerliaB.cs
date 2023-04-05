@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
@@ -32,7 +31,7 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 namespace Stellamod.NPCs.Bosses.Verlia
 {
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-	public class Verlia : ModNPC
+	public class VerliaB : ModNPC
 	{
 		public Vector2 FirstStageDestination
 		{
@@ -69,6 +68,16 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			Explode,
 			In,
 			CutExplode,
+			IdleInvis,
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			Dash,
 			Slam,
 			Pulse,
@@ -153,6 +162,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
+		
+		
 
 
 
@@ -222,77 +233,151 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 			Vector2 position = NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY);
 
-			SpriteEffects spriteEffects = SpriteEffects.None;
+			SpriteEffects effects = SpriteEffects.None;
 
 			if (player.Center.X > NPC.Center.X)
 			{
-				spriteEffects = SpriteEffects.FlipHorizontally;
+				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			spriteBatch.Draw(texture, position + new Vector2(0, 4), NPC.frame, Color.White, NPC.rotation, NPC.frame.Size() / 2f, Vector2.One, spriteEffects, 0);
+			
 
-			return false;
-		}
+			Rectangle rect;
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(140, 0);
 
-		//Custom function so that I don't have to copy and paste the same thing in FindFrame
-		void GetFrameSetFrame(int frameHeight, int startFrame, int endFrame, int frameCountSpeed)
-        {
-			NPC.frameCounter += 1f;
+			///Animation Stuff for Verlia
+			/// 1 - 2 Summon Start
+			/// 3 - 7 Summon Idle / Idle
+			/// 8 - 11 Summon down
+			/// 12 - 19 Hold UP
+			/// 20 - 30 Sword UP
+			/// 31 - 35 Sword Slash Simple
+			/// 36 - 45 Hold Sword
+			/// 46 - 67 Barrage 
+			/// 68 - 75 Explode
+			/// 76 - 80 Appear
+			/// 133 width
+			/// 92 height
 
-			if (NPC.frameCounter >= frameCountSpeed)
-			{
-				NPC.frameCounter = 0;
-				NPC.frame.Y += frameHeight;
 
-				if (NPC.frame.Y >= Main.npcFrameCount[Type] * frameHeight)
-				{
-					NPC.frame.Y = startFrame * frameHeight;
-				}
-			}
-		}
+			///Animation Stuff for Veribloom
+			/// 1 = Idle
+			/// 2 = Blank
+			/// 2 - 8 Appear Pulse
+			/// 9 - 19 Pulse Buff Att
+			/// 20 - 26 Disappear Pulse
+			/// 27 - 33 Appear Winding
+			/// 34 - 38 Wind Up
+			/// 39 - 45 Dash
+			/// 46 - 52 Slam Appear
+			/// 53 - 58 Slam
+			/// 59 - 64 Spin
+			/// 80 width
+			/// 89 height
+			/// 
 
-        public override void FindFrame(int frameHeight)
-		{
+
+
 			switch (State)
 			{
 				case ActionState.StartVerlia:
-					GetFrameSetFrame(frameHeight, 0, 1, 5); //Idk what to set this to ¯\_(ツ)_/¯
+					rect = new(0, 1 * 92, 133, 1 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+
 				case ActionState.SummonStartup:
-					GetFrameSetFrame(frameHeight, 0, 1, 5);
+					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+
 				case ActionState.SummonIdle:
-					GetFrameSetFrame(frameHeight, 2, 6, 5);
+					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+
 				case ActionState.Unsummon:
-					GetFrameSetFrame(frameHeight, 7, 10, 5);
+					rect = new Rectangle(0, 8 * 92, 133, 4 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.HoldUP:
-					GetFrameSetFrame(frameHeight, 11, 18, 5);
+					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.SwordUP:
-					GetFrameSetFrame(frameHeight, 19, 29, 5);
+					rect = new Rectangle(0, 20 * 92, 133, 11 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.SwordSimple:
-					GetFrameSetFrame(frameHeight, 30, 34, 5);
+					rect = new(0, 31 * 92, 133, 5 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+
 				case ActionState.SwordHold:
-					GetFrameSetFrame(frameHeight, 35, 44, 5);
+					rect = new(0, 36 * 92, 133, 10 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+
 				case ActionState.TriShot:
-					GetFrameSetFrame(frameHeight, 45, 67, 5);
+					rect = new(0, 46 * 92, 133, 22 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.Explode:
-					GetFrameSetFrame(frameHeight, 68, 74, 5);
+					rect = new(0, 68 * 92, 133, 8 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.CutExplode:
-					GetFrameSetFrame(frameHeight, 75, 80, 5);
+					rect = new(0, 70 * 92, 133, 6 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
 				case ActionState.In:
-					GetFrameSetFrame(frameHeight, 0, 1, 5); //Idk what to set this to ¯\_(ツ)_/¯
+					rect = new(0, 76 * 92, 133, 5 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
+
+				case ActionState.IdleInvis:
+					rect = new(0, 74 * 92, 133, 1 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			}
+
+
+					return false;
 		}
+
+		//Custom function so that I don't have to copy and paste the same thing in FindFrame
+		
 
         int bee = 220;
 		private Vector2 originalHitbox;
@@ -409,7 +494,11 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					SwordHoldVerlia();
 					break;
 
-
+				case ActionState.IdleInvis:
+					NPC.damage = 0;
+					counter++;
+					InvisVerlia();
+					break;
 
 
 
@@ -558,6 +647,16 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		{
 			NPC.spriteDirection = NPC.direction;
 			timer++;
+			if (timer == 2)
+            {
+				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				if (timer == 15)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BackgroundOrb>(), (int)(0), 0f, 0, 0f, 0f);
+				}
+			}
 			if (timer == 55)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -582,7 +681,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		{
 			NPC.spriteDirection = NPC.direction;
 			timer++;
-			if (timer == 100)
+			if (timer == 200)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -682,30 +781,21 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				if (timer == 15)
-				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
-				}
 				if (timer == 25)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
 				}
-				if (timer == 35)
-				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
-				}
+				
 				if (timer == 45)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
 				}
-				if (timer == 55)
-				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
-				}
+			
 				if (timer == 65)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
 				}
+				
 				
 			}
 
@@ -716,18 +806,18 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 				if (timer == 15)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
 				}
 				
 				
 				if (timer == 45)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
 				}
 				
 			}
 			
-			if (timer == 85)
+			if (timer == 88)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -749,6 +839,31 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		}
 
 		private void ExplodeVerlia()
+		{
+			timer++;
+			if (timer == 30)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.IdleInvis;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void InvisVerlia()
 		{
 			timer++;
 			if (timer == 30)

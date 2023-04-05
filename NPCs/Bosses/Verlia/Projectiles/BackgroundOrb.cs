@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class FrostShotIN : ModProjectile
+	public class BackgroundOrb : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -20,8 +20,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Projectile.width = 45;
 			Projectile.height = 45;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 40;
-			Projectile.scale = 0.8f;
+			Projectile.timeLeft = 200;
+			Projectile.scale = 1f;
 			
 		}
 		public float Timer
@@ -35,7 +35,29 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+		
+			
+			Timer++;
+			if (Timer > 50)
+			{
 
+				Projectile.scale += 0.01f;
+
+
+
+
+
+			}
+			if (Timer < 150)
+			{
+				Projectile.scale -= 0.02f;
+
+
+
+
+
+
+			}
 		}
 		
 		public override bool PreAI()
@@ -64,5 +86,4 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		}
 	}
-
 }

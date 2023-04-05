@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using System;
+using Stellamod.NPCs.Bosses.Verlia;
 
 namespace Stellamod.Tiles.Structures.Cathedral
 {
@@ -92,15 +93,15 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			Player player = Main.LocalPlayer;
 
 			int key = ModContent.ItemType<MoonflameLantern>();
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
 		
 		
-			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
+			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<VerliaB>());
 			SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
 			{
 
 				Main.NewText("See me in the moonlight!", Color.LightSkyBlue);
@@ -115,7 +116,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 				
 
 			}
-			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
 				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
 			}
