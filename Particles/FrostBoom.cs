@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
@@ -9,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-    public class Spinew : Particle
+    public class FrostBoom : Particle
     {
         private const bool V = true;
         private int frameCount;
@@ -21,7 +19,7 @@ namespace Stellamod.Particles
             width = 1;
             height = 1;
             Scale = 1f;
-            timeLeft = 1000000;
+            timeLeft = 20;
         }
 
         public override void AI()
@@ -50,13 +48,14 @@ namespace Stellamod.Particles
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
 
-            Texture2D tex3 = Request<Texture2D>("Stellamod/Particles/spinbetter").Value;
+            Texture2D tex3 = Request<Texture2D>("Stellamod/Particles/FrostBoom").Value;
 
             float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
             if (alpha < 0f) alpha = 0f;
-            Color color = Color.Multiply(new(2.55f, 1.25f, 0.24f, 0), alpha / 2);
-            spriteBatch.Draw(tex3, Bottom - Main.screenPosition, tex3.AnimationFrame(ref frameCount, ref frameTick, 1, 12, true), color, velocity.ToRotation() + 180, new Vector2(270f, 249f) * 0.5f, 1.35f * scale, SpriteEffects.None, 0f);
+            Color color = Color.Multiply(new(1f, 1f, 1f, 0), alpha);
+            spriteBatch.Draw(tex3, Bottom - Main.screenPosition, tex3.AnimationFrame(ref frameCount, ref frameTick, 1, 20, true), color, velocity.ToRotation() + 180, new Vector2(270f, 249f) * 0.5f, 1.35f * scale, SpriteEffects.None, 0f);
             return false;
         }
     }
 }
+

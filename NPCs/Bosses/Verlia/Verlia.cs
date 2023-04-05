@@ -27,6 +27,7 @@ using System.IO;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.UI.Systems;
 using Terraria.Graphics.Effects;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
@@ -739,6 +740,57 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		private void BarrageVerlia()
 		{
 			timer++;
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+
+				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				if (timer == 15)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				if (timer == 25)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				if (timer == 35)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				if (timer == 45)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				if (timer == 55)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				if (timer == 65)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+				}
+				
+			}
+
+			else
+            {
+				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				if (timer == 15)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+				}
+				
+				
+				if (timer == 45)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+				}
+				
+			}
+			
 			if (timer == 85)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
