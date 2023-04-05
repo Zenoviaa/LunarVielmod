@@ -117,7 +117,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Starr Veriplant");
+			DisplayName.SetDefault("Verlia Of The Moon");
 
 			Main.npcFrameCount[Type] = 80;
 
@@ -140,7 +140,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
 			{
-				CustomTexturePath = "Stellamod/NPCs/Bosses/StarrVeriplant/VerliaPreview",
+				CustomTexturePath = "Stellamod/NPCs/Bosses/Verlia/VerliaPreview",
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
 
@@ -150,8 +150,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void SetDefaults()
 		{
-			NPC.width = 133;
-			NPC.height = 92;
+			NPC.width = 80;
+			NPC.height = 50;
 			NPC.damage = 1;
 			NPC.defense = 20;
 			NPC.lifeMax = 6000;
@@ -186,7 +186,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Verlia");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VerliaOfTheMoon");
 			}
 		}
 
@@ -306,7 +306,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					break;
 
 				case ActionState.SwordUP:
-					rect = new Rectangle(0, 20 * 91, 133, 11 * 92);
+					rect = new Rectangle(0, 20 * 92, 133, 11 * 92);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
@@ -373,7 +373,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-			NPC.spriteDirection = NPC.direction;
+			
 			Player player = Main.player[NPC.target];
 
 			NPC.TargetClosest();
@@ -619,6 +619,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		}
 		private void StartSummonVerlia()
 		{
+			NPC.spriteDirection = NPC.direction;
 			timer++;
 			if (timer == 55)
 			{
@@ -642,6 +643,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		private void IdleSummonVerlia()
 		{
+			NPC.spriteDirection = NPC.direction;
 			timer++;
 			if (timer == 100)
 			{
@@ -664,6 +666,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		}
 		private void UnSummonVerlia()
 		{
+			NPC.spriteDirection = NPC.direction;
 			timer++;
 			if (timer == 30)
 			{
@@ -882,7 +885,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		private void SwordSimpleVerlia()
 		{
 			timer++;
-			if (timer == 28)
+			if (timer == 19)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
