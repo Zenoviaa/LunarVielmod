@@ -69,18 +69,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			Explode,
 			In,
 			CutExplode,
-
-
-
-
-
-
-
-
-
-
-
-
 			Dash,
 			Slam,
 			Pulse,
@@ -118,7 +106,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia Of The Moon");
+			DisplayName.SetDefault("Verlia of The Moon");
 
 			Main.npcFrameCount[Type] = 80;
 
@@ -151,8 +139,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void SetDefaults()
 		{
-			NPC.width = 80;
-			NPC.height = 50;
+			NPC.Size = new Vector2(24, 42);
 			NPC.damage = 1;
 			NPC.defense = 20;
 			NPC.lifeMax = 6000;
@@ -225,140 +212,89 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
 		bool boom = false;
-
-
-
+		float turnMod = 0f;
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
+			Player player = Main.player[NPC.target];
 
+			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
+			Vector2 position = NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY);
 
-			;
-			Texture2D texture = TextureAssets.Npc[NPC.type].Value;
-			// Using a rectangle to crop a texture can be imagined like this:
-			// Every rectangle has an X, a Y, a Width, and a Height
-			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
-			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
-			SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Rectangle rect;
+			SpriteEffects spriteEffects = SpriteEffects.None;
 
+			if (player.Center.X > NPC.Center.X)
+			{
+				spriteEffects = SpriteEffects.FlipHorizontally;
+			}
 
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2);
+			spriteBatch.Draw(texture, position + new Vector2(0, 4), NPC.frame, Color.White, NPC.rotation, NPC.frame.Size() / 2f, Vector2.One, spriteEffects, 0);
 
-			///Animation Stuff for Verlia
-			/// 1 - 2 Summon Start
-			/// 3 - 7 Summon Idle / Idle
-			/// 8 - 11 Summon down
-			/// 12 - 19 Hold UP
-			/// 20 - 30 Sword UP
-			/// 31 - 35 Sword Slash Simple
-			/// 36 - 45 Hold Sword
-			/// 46 - 67 Barrage 
-			/// 68 - 75 Explode
-			/// 76 - 80 Appear
-			/// 133 width
-			/// 92 height
+			return false;
+		}
 
+		//Custom function so that I don't have to copy and paste the same thing in FindFrame
+		void GetFrameSetFrame(int frameHeight, int startFrame, int endFrame, int frameCountSpeed)
+        {
+			NPC.frameCounter += 1f;
 
-			///Animation Stuff for Veribloom
-			/// 1 = Idle
-			/// 2 = Blank
-			/// 2 - 8 Appear Pulse
-			/// 9 - 19 Pulse Buff Att
-			/// 20 - 26 Disappear Pulse
-			/// 27 - 33 Appear Winding
-			/// 34 - 38 Wind Up
-			/// 39 - 45 Dash
-			/// 46 - 52 Slam Appear
-			/// 53 - 58 Slam
-			/// 59 - 64 Spin
-			/// 80 width
-			/// 89 height
+			if (NPC.frameCounter >= frameCountSpeed)
+			{
+				NPC.frameCounter = 0;
+				NPC.frame.Y += frameHeight;
 
+				if (NPC.frame.Y >= Main.npcFrameCount[Type] * frameHeight)
+				{
+					NPC.frame.Y = startFrame * frameHeight;
+				}
+			}
+		}
+
+        public override void FindFrame(int frameHeight)
+		{
 			switch (State)
 			{
 				case ActionState.StartVerlia:
-					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 0, 1, 5); //Idk what to set this to ¯\_(ツ)_/¯
 					break;
-
-
 				case ActionState.SummonStartup:
-					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 0, 1, 5);
 					break;
-
-
 				case ActionState.SummonIdle:
-					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 2, 6, 5);
 					break;
-
-
 				case ActionState.Unsummon:
-					rect = new Rectangle(0, 8 * 92, 133, 4 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 7, 10, 5);
 					break;
-
 				case ActionState.HoldUP:
-					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 11, 18, 5);
 					break;
-
 				case ActionState.SwordUP:
-					rect = new Rectangle(0, 20 * 92, 133, 11 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 19, 29, 5);
 					break;
-
 				case ActionState.SwordSimple:
-					rect = new(0, 31 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 30, 34, 5);
 					break;
-
-
 				case ActionState.SwordHold:
-					rect = new(0, 36 * 92, 133, 10 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 35, 44, 5);
 					break;
-
-
 				case ActionState.TriShot:
-					rect = new(0, 46 * 92, 133, 22 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 45, 67, 5);
 					break;
-
 				case ActionState.Explode:
-					rect = new(0, 68 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 68, 74, 5);
 					break;
-
 				case ActionState.CutExplode:
-					rect = new(0, 70 * 92, 133, 6 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 75, 80, 5);
 					break;
-
 				case ActionState.In:
-					rect = new(0, 76 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					GetFrameSetFrame(frameHeight, 0, 1, 5); //Idk what to set this to ¯\_(ツ)_/¯
 					break;
-
-				
-
-
-
-
-
 			}
-
-
-
-
-			return false;
-
-
 		}
-		int bee = 220;
+
+        int bee = 220;
 		private Vector2 originalHitbox;
 
 		public override void AI()
@@ -373,7 +309,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
-			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
+			Lighting.AddLight(NPC.Center, RGB.X, RGB.Y, RGB.Z);
 			
 			Player player = Main.player[NPC.target];
 
