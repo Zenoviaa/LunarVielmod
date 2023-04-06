@@ -69,6 +69,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			In,
 			CutExplode,
 			IdleInvis,
+			InvisCut,
 			
 			
 			
@@ -350,7 +351,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
-
+				case ActionState.InvisCut:
+					rect = new(0, 74 * 92, 133, 1 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
 
 
 
@@ -384,7 +388,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void AI()
 		{
-
+			NPC.velocity *= 0.97f;
 			bee--;
 
 			if (bee == 0)
@@ -410,7 +414,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.2f;
+				NPC.velocity.Y -= 0.5f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
@@ -455,6 +459,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				case ActionState.TriShot:
 					NPC.damage = 0;
 					counter++;
+			
 					BarrageVerlia();
 					break;
 
@@ -479,6 +484,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				case ActionState.SwordUP:
 					NPC.damage = 0;
 					counter++;
+			
 					SwordUPVerlia();
 					break;
 
@@ -500,7 +506,11 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					InvisVerlia();
 					break;
 
-
+				case ActionState.InvisCut:
+					NPC.damage = 0;
+					counter++;
+					InvisCut();
+					break;
 
 
 				/////////////////////////////////////////////////////////////////////////////
@@ -643,21 +653,107 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			}
 
 		}
+
 		private void StartSummonVerlia()
 		{
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 			if (timer == 2)
             {
-				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				if (timer == 15)
-				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BackgroundOrb>(), (int)(0), 0f, 0, 0f, 0f);
-				}
+				
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 15, NPC.position.Y + speedYb + 30, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BackgroundOrb>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 30, NPC.position.Y + speedYb + 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<Sigil>(), (int)(0), 0f, 0, 0f, 0f);
 			}
-			if (timer == 55)
+			if (timer > 5)
+			{
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						if (timer == 6)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword1F>(), (int)(5), 0f, 0, 0f, 0f);
+						}
+
+						if (timer == 20)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 80, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword1F>(), (int)(5), 0f, 0, 0f, 0f);
+
+
+						}
+
+						if (timer == 25)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 120, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword1F>(), (int)(5), 0f, 0, 0f, 0f);
+
+						}
+
+						if (timer == 35)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 140, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword2F>(), (int)(5), 0f, 0, 0f, 0f);
+
+						}
+
+						if (timer == 45)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 170, NPC.position.Y + speedY - 130 , speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword2F>(), (int)(5), 0f, 0, 0f, 0f);
+
+						}
+
+						if (timer == 54)
+						{
+							float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 200, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Sword2F>(), (int)(5), 0f, 0, 0f, 0f);
+
+						}
+						break;
+
+
+
+
+
+
+
+
+
+
+
+				//	case 1:
+
+					//	break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+					//case 2:
+
+					//	break;
+				}
+
+			}
+				if (timer == 55)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -783,17 +879,17 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 				if (timer == 25)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(10), 0f, 0, 0f, 0f);
 				}
 				
 				if (timer == 45)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(10), 0f, 0, 0f, 0f);
 				}
 			
 				if (timer == 65)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(100), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(10), 0f, 0, 0f, 0f);
 				}
 				
 				
@@ -806,13 +902,13 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 				if (timer == 15)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(15), 0f, 0, 0f, 0f);
 				}
 				
 				
 				if (timer == 45)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(60), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot>(), (int)(15), 0f, 0, 0f, 0f);
 				}
 				
 			}
@@ -866,7 +962,49 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		private void InvisVerlia()
 		{
 			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-125, -125);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + (int)(distanceY);
+				
+			}
 			if (timer == 30)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.In;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void InvisCut()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-30, -30);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + (int)(distanceY);
+
+			}
+			if (timer == 8)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -889,6 +1027,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		private void Verliasinsideme()
 		{
 			timer++;
+
+			
 			if (timer == 27)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -944,7 +1084,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.In;
+						State = ActionState.InvisCut;
 						ResetTimers();
 						break;
 
@@ -988,6 +1128,43 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		private void SwordSimpleVerlia()
 		{
 			timer++;
+			Player player = Main.player[NPC.target];
+
+			float speed = 12f;
+			if (timer == 1)
+            {
+                if (player.Center.X > NPC.Center.X)
+				{
+					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 100, NPC.position.Y + speedYb + 80, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<SlashRight>(), (int)(20), 0f, 0, 0f, 0f);
+                }
+                else
+                {
+					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 100, NPC.position.Y + speedYb + 80, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<SlashLeft>(), (int)(20), 0f, 0, 0f, 0f);
+				}
+				
+				
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
+			}
+			if (timer < 3)
+			{
+				
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				NPC.velocity.Y = 0;
+				ShakeModSystem.Shake = 3;
+			}
 			if (timer == 19)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -1008,10 +1185,38 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			}
 
 		}
-
+		//npc.whoAmI
 		private void SwordHoldVerlia()
 		{
+			float ai1 = NPC.whoAmI;
 			timer++;
+			Player player = Main.player[NPC.target];
+			float speed = 6f;
+			if (timer == 1)
+			{
+				
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<SlashHold>(), (int)(100), 0f, Main.myPlayer, 0f, ai1);
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
+			}
+			if (timer < 30)
+			{
+				
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
 			if (timer == 38)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.

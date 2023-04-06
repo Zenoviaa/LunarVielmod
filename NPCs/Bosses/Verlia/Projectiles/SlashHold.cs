@@ -6,64 +6,60 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class BackgroundOrb : ModProjectile
+	public class SlashHold : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Background Orb");
-			Main.projFrames[Projectile.type] = 20;
+			DisplayName.SetDefault("Verlia's Swords Dance");
+			Main.projFrames[Projectile.type] = 10;
 		}
 		
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.width = 147;
-			Projectile.height = 147;
+			Projectile.hostile = true;
+			Projectile.width = 150;
+			Projectile.height = 150;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 200;
-			Projectile.scale = 1.5f;
-			
+			Projectile.timeLeft = 30;
+			Projectile.scale = 0.8f;
+			DrawOffsetX = -175;
+			DrawOriginOffsetY = -175;
 		}
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
-        public override void AI()
+	
+		public override void AI()
         {
-		
+			
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+			
+			NPC npc = Main.npc[(int)Projectile.ai[1]];
+			Projectile.Center = npc.Center;
 
-
-			Timer++;
-			if (Timer < 150)
+			if (++Projectile.frameCounter >= 1)
 			{
-				Projectile.scale -= 0.01f;
+				Projectile.frameCounter = 0;
+				if (++Projectile.frame >= 10)
+				{
+					Projectile.frame = 0;
+				}
 			}
 
-
-			if (Projectile.scale == 0f)
-            {
-				Projectile.Kill();
-            }
-
-
-			
 		}
 		
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 2)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 20)
-				{
-					Projectile.frame = 0;
-				}
-			}
+			
+
+			
+			
 			return true;
 
 			
@@ -72,11 +68,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		{
 			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
 		}
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-		{
-			behindNPCs.Add(index);
 
-		}
-
+		
 	}
+
 }

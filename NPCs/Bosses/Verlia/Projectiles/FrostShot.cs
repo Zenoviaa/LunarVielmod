@@ -43,10 +43,10 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void AI()
 		{
 			Timer2++;
-
+			Projectile.velocity *= 1.03f;
 
 			Timer++;
-			if (Timer == 4)
+			if (Timer == 6)
 			{
 
 

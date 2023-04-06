@@ -6,23 +6,24 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class BackgroundOrb : ModProjectile
+	public class SlashRight : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Background Orb");
-			Main.projFrames[Projectile.type] = 20;
+			DisplayName.SetDefault("Empress's Moon Slash");
+			Main.projFrames[Projectile.type] = 7;
 		}
 		
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.width = 147;
-			Projectile.height = 147;
+			Projectile.hostile = true;
+			Projectile.width = 200;
+			Projectile.height = 200;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 200;
+			Projectile.timeLeft = 14;
 			Projectile.scale = 1.5f;
-			
+			DrawOffsetX = -100;
 		}
 		public float Timer
 		{
@@ -38,11 +39,12 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 
 			Timer++;
-			if (Timer < 150)
-			{
-				Projectile.scale -= 0.01f;
+			if (Timer == 2)
+            {
+				Projectile.scale *= 0.98f;
+				Timer = 0;
 			}
-
+			
 
 			if (Projectile.scale == 0f)
             {
@@ -59,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (++Projectile.frameCounter >= 2)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 20)
+				if (++Projectile.frame >= 7)
 				{
 					Projectile.frame = 0;
 				}
@@ -70,12 +72,12 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(100, 100, 100, 0) * (1f - (float)Projectile.alpha / 50f);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			behindNPCs.Add(index);
-
+			behindProjectiles.Add(index);
 		}
 
 	}

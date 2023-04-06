@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 
 			Timer++;
-			if (Timer == 2)
+			if (Timer == 3)
 			{
 
 
