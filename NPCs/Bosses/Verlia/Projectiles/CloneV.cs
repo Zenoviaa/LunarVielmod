@@ -200,7 +200,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Clone of a powerfu sexy goddess :)")
+				new FlavorTextBestiaryInfoElement("Clone of a powerful sexy goddess :)")
 			});
 		}
 
