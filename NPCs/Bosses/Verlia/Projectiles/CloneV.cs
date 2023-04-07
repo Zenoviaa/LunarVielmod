@@ -32,7 +32,10 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Shoot
 		}
 		// Current state
-
+		public float AI_Timer;
+		public float Beam_Timer;
+		private float rand = 100000;
+		private float rand2 = 0;
 		public ActionState State = ActionState.Shoot;
 		// Current frame
 		public int frameCounter;
@@ -55,51 +58,53 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.width = 36; // The width of the npc's hitbox (in pixels)
 			NPC.height = 52; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
-			NPC.damage = 50; // The amount of damage that this npc deals
+			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 0; // The amount of defense that this npc has
-			NPC.lifeMax = 200; // The amount of health that this npc has
+			NPC.lifeMax = 120; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.knockBackResist = 0f;
-			
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
+			NPC.alpha = 125;
+
 		}
 
 
-	
+
 		public override void AI()
 		{
+			NPC.damage = 0;
 			switch (State)
 			{
-
+				
 				case ActionState.Shoot:
-					NPC.velocity *= 0.95f;
 					counter++;
+					NPC.velocity *= 0f;
 					Jump();
 					break;
 
 				case ActionState.Wait:
 					counter++;
-					NPC.aiStyle = 10;
+					NPC.aiStyle = 86;
+					NPC.velocity *= 0.96f;
 					Wait();
 					break;
 
 
-				default:
-					counter++;
-					break;
 			}
 
 
+
+
+
+			
 
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 
-			//for (int j = 0; j < 2; j++)
-			//{
-			//	Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, NPC.velocity * 0, ProjectileID.Spark, NPC.damage / 2, NPC.knockBackResist);
-			//}
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
@@ -120,14 +125,32 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			{
 				case ActionState.Shoot:				
 					rect = new Rectangle(0, 2 * 104, 36, 10 * 104);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Wait:
 					rect = new Rectangle(0, 1 * 104, 36, 1 * 104);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 60, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 60, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 
 			}
+
+
+			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
+
+
+
+
+
+
+			
+
+			// Using a rectangle to crop a texture can be imagined like this:
+			// Every rectangle has an X, a Y, a Width, and a Height
+			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
+			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
+
+
+			
 			return false;
 		}
 		
@@ -169,7 +192,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(90, 200, 210, 125) * (1f - (float)NPC.alpha / 50f);
+			return new Color(90, 200, 210, 200) * (1f - (float)NPC.alpha / 50f);
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -180,5 +203,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				new FlavorTextBestiaryInfoElement("Clone of a powerfu sexy goddess :)")
 			});
 		}
+
+
+		
+
 	}
 }

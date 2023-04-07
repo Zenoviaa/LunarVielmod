@@ -38,7 +38,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 35;
+			Item.damage = 25;
 			Item.knockBack = 0;
 			Item.noMelee = true;
 

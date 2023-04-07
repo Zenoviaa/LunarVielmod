@@ -55,7 +55,7 @@ namespace Stellamod.WorldG
 
 			}
 
-			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Moss Grass"));
+			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen != -1)
 			{
 
@@ -63,7 +63,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 2, new PassLegacy("World Gen Village", WorldGenVillage));
 			}
 
-			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Moss Grass"));
 			if (ShiniesIndex != -1)
 			{
 

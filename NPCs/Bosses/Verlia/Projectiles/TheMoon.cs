@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.hostile = true;
+			Projectile.hostile = false;
 			Projectile.width = 300;
 			Projectile.height = 300;
 			Projectile.penetrate = -1;

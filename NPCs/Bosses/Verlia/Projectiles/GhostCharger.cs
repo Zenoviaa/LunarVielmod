@@ -51,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.defense = 0;
 			NPC.lifeMax = 50;
 			NPC.noGravity = true;
-			NPC.noTileCollide = false;
+			NPC.noTileCollide = true;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 		}
