@@ -247,7 +247,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
 
 
-
+			
 
 
 			Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);

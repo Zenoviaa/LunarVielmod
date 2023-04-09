@@ -14,6 +14,7 @@ using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -24,6 +25,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
 	public class CloneV : ModNPC
 	{
+
 		// States
 		public enum ActionState
 		{
@@ -50,8 +52,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 11;
+			NPCID.Sets.TrailCacheLength[NPC.type] = 15;
+			NPCID.Sets.TrailingMode[NPC.type] = 0;
 
-			
 		}
 		public override void SetDefaults()
 		{
@@ -142,6 +145,17 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 
 
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			for (int k = 0; k < NPC.oldPos.Length; k++)
+			{
+				Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+				Color color = NPC.GetAlpha(Color.Lerp(new Color(9, 228, 171), new Color(9, 126, 58), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+				spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
+			}
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			
 
 			// Using a rectangle to crop a texture can be imagined like this:
@@ -150,7 +164,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
 
 
-			
+
 			return false;
 		}
 		
@@ -161,6 +175,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
             {
 				int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
 				NPC minionNPC = Main.npc[index];
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"));
 			}
 			
 			 if (timer == 39)
@@ -190,10 +205,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			frameTick = 0;
 		}
 
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(90, 200, 210, 200) * (1f - (float)NPC.alpha / 50f);
-		}
+		
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once

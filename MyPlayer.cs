@@ -2,8 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Assets.Biomes;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using Stellamod.Items.Consumables;
 using Stellamod.Particles;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -18,21 +21,56 @@ namespace Stellamod
 		public bool Boots = false;
 		public int extraSlots;
 		public bool TAuraSpawn;
+		public bool AdvancedBrooches;
+		public bool HikersBSpawn;
 		public bool PlantH;
 		public bool Dice;
 		public bool PlantHL;
 		public int increasedLifeRegen;
 		public int TAuraCooldown = 600;
+		public int HikersBCooldown = 30;
 		public int DiceCooldown = 0;
 		public bool ArcaneM;
 		public bool ThornedBook;
 		public int ArcaneMCooldown = 0;
 		public bool ZoneMorrow = false;
 		public int Timer = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		//---------------------------------------------------------------------------------------------------------------
+		// Brooches
+		public bool BroochSpragald;
+		public int SpragaldBCooldown = 1;
+		public bool BroochFrile;
+		public int FrileBCooldown = 1;
+		public int FrileBDCooldown = 1;
+		public bool BroochFlyfish;
+		public int FlyfishBCooldown = 1;
+
+		//---------------------------------------------------------------------------------------------------------------
 		public override void ResetEffects()
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
 			TAuraSpawn = false;
+			HikersBSpawn = false;
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
 			ArcaneM = false;
@@ -42,7 +80,9 @@ namespace Stellamod
 
 
 
-
+			BroochSpragald = false;
+			BroochFrile = false;
+			BroochFlyfish = false;
 		}
 
 
@@ -66,6 +106,59 @@ namespace Stellamod
 		public override void PostUpdate()
 		{
 			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
+
+			if (BroochSpragald && SpragaldBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SpragaldBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<Spragald>(), 1000);
+				SpragaldBCooldown = 1000;
+			}
+
+			if (BroochFrile && FrileBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<FrileBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<IceBrooch>(), 1000);
+				FrileBCooldown = 1000;
+			}
+
+
+			if (BroochFlyfish && FlyfishBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<FlyfishBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<Flyfish>(), 1000);
+				FlyfishBCooldown = 1000;
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			if (HikersBSpawn && HikersBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f, ModContent.ProjectileType<Stump>(), 10, 1f, Player.whoAmI);
+				HikersBCooldown = 30;
+
+			}
+
+
+
+
 
 			if (Boots)
 			{
@@ -276,7 +369,13 @@ namespace Stellamod
 
 			}
 
+			if (BroochFrile && FrileBDCooldown <= 0)
+			{
 
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<FrileBroochP>(), 4, 1f, Player.whoAmI);
+				FrileBDCooldown = 1;
+
+			}
 
 
 
@@ -299,10 +398,16 @@ namespace Stellamod
 			}
 
 
+			if (BroochFrile && FrileBDCooldown <= 0)
+			{
+
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<FrileBroochP>(), 3, 1f, Player.whoAmI);
+				FrileBDCooldown = 3;
+
+			}
 
 
 
-		
 		}
 
 
