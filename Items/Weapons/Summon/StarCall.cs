@@ -71,7 +71,7 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
-			recipe.AddIngredient(ItemID.Star, 30);
+			recipe.AddIngredient(ItemID.FallenStar, 30);
 		
 
 			recipe.Register();

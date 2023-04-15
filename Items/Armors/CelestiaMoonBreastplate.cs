@@ -48,7 +48,7 @@ namespace Stellamod.Items.Armors
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ItemID.Wood, 5);
-			recipe.AddIngredient(ItemID.Star, 10);
+			recipe.AddIngredient(ItemID.FallenStar, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

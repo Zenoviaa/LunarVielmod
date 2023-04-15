@@ -1,4 +1,8 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
+using Stellamod.Tiles;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
@@ -17,6 +21,18 @@ namespace Stellamod.Items.Materials
 			Item.height = 20;
 			Item.maxStack = 999;
 			Item.value = Item.sellPrice(silver: 50);
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe(3);
+			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 1);
+			recipe.AddIngredient(ItemID.FallenStar, 1);
+			recipe.AddIngredient(ItemID.BottledWater, 1);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.Register();
 		}
 	}
 }
