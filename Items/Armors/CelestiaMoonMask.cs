@@ -41,6 +41,7 @@ namespace Stellamod.Items.Armors
 		{
 			player.statManaMax2 += 20; // Increase how many mana points the player can have by 20
 			player.maxMinions++; // Increase how many minions the player can have by one
+			player.statDefense += 2;
 		}
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)

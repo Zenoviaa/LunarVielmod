@@ -35,6 +35,7 @@ namespace Stellamod.Items.Armors
 		{
 			player.moveSpeed += 0.05f; // Increase the movement speed of the player
 			player.statLifeMax2 += 20;
+			player.statDefense += 2;
 		}
 
 		public override void AddRecipes()
