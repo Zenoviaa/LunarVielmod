@@ -17,7 +17,6 @@ namespace Stellamod.Items.Armors
 			base.SetStaticDefaults();
 			DisplayName.SetDefault("Celestia Moon Breastplate");
 			Tooltip.SetDefault("Magical essence of an empress!"
-				+ "\nImmunity to 'On Fire!'"
 				+ "\n+60 max mana and +1 minion slot" +
 				"\n+20 Health");
 
