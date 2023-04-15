@@ -64,6 +64,10 @@ namespace Stellamod
 		public int FrileBDCooldown = 1;
 		public bool BroochFlyfish;
 		public int FlyfishBCooldown = 1;
+		public bool BroochMorrow;
+		public int MorrowBCooldown = 1;
+		public bool BroochSlime;
+		public int SlimeBCooldown = 1;
 
 		//---------------------------------------------------------------------------------------------------------------
 		public override void ResetEffects()
@@ -83,6 +87,8 @@ namespace Stellamod
 			BroochSpragald = false;
 			BroochFrile = false;
 			BroochFlyfish = false;
+			BroochMorrow = false;
+			BroochSlime = false;
 		}
 
 
@@ -132,9 +138,22 @@ namespace Stellamod
 				FlyfishBCooldown = 1000;
 			}
 
+			if (BroochMorrow && MorrowBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MorrowedBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<Morrow>(), 1000);
+				MorrowBCooldown = 1000;
+			}
 
 
+			if (BroochSlime && SlimeBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SlimeBrooch>(), 0, 1f, Player.whoAmI);
 
+				Player.AddBuff(ModContent.BuffType<Slimee>(), 1000);
+				SlimeBCooldown = 1000;
+			}
 
 
 

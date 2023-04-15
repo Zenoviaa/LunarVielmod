@@ -10,14 +10,15 @@ using Stellamod.Tiles;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-	public class SpragaldBroochA : ModItem
+	public class SlimeBroochA : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The Spragald");
+			DisplayName.SetDefault("Brooch of The cute slimes");
 			Tooltip.SetDefault("Simple Brooch!" +
-				"\nEffect = +10 Defense" +
-				"\n Use the power of the Spragald Spiders!");
+				"\nJump Higher!" +
+				"\nBouncy and fast fall" +
+				"\nAwww so cute :P");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -33,23 +34,12 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 5);
-			recipe.AddIngredient(ItemID.Silk, 20);
-			recipe.AddIngredient(ItemID.WebSlinger, 1);
-			recipe.AddIngredient(ItemID.JungleSpores, 10);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
-			recipe.Register();
-		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochSpragald = true;
-			player.GetModPlayer<MyPlayer>().SpragaldBCooldown--;
-			
+			player.GetModPlayer<MyPlayer>().BroochSlime = true;
+			player.GetModPlayer<MyPlayer>().SlimeBCooldown--;
+			player.frogLegJumpBoost = true;  // Increase ALL player damage by 100%
 		}
 
 
