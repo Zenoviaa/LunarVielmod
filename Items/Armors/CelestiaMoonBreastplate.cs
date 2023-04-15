@@ -38,7 +38,7 @@ namespace Stellamod.Items.Armors
 			player.statManaMax2 += 60; // Increase how many mana points the player can have by 20
 			player.maxMinions++; // Increase how many minions the player can have by one
 			player.statLifeMax2 += 20;
-			player.statDefense += 2;
+			
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

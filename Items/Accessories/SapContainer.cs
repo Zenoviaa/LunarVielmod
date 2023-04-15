@@ -59,7 +59,7 @@ namespace Stellamod.Items.Accessories
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 					ParticleManager.NewParticle(player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					
+					player.statDefense -= 8;
 				}
 			}
 			if (Timer2 > 600)
@@ -75,7 +75,7 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Magic) *= 1.2f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().ArcaneM = true;
 			player.GetModPlayer<MyPlayer>().ArcaneMCooldown++;
-			player.statDefense -= 8;
+		
 
 
 		}
