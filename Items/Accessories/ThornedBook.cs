@@ -15,8 +15,8 @@ namespace Stellamod.Items.Accessories
 		{
 			DisplayName.SetDefault("Thorned Book of Fiber Cordage");
 			Tooltip.SetDefault("When enemies hit you deal big amounts of damage back" +
-				"\n+20% Melee damage..." +
-				"\n-20 defense");
+				"\n+10% Melee damage..." +
+				"\n-5 defense");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -47,8 +47,8 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
-			player.GetDamage(DamageClass.Melee) *= 1.2f; // Increase ALL player damage by 100%
-			player.statDefense -= 20;
+			player.GetDamage(DamageClass.Melee) *= 1.1f; // Increase ALL player damage by 100%
+			player.statDefense -= 5;
 
 
 		}

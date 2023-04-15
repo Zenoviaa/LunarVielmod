@@ -40,7 +40,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ItemID.IceBlock, 50);
 			recipe.AddIngredient(ItemID.FrostDaggerfish, 10);
-			recipe.AddIngredient(ItemID.IceBlade, 10);
+			recipe.AddIngredient(ItemID.IceBlade, 1);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();
 		}
