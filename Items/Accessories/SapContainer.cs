@@ -18,8 +18,7 @@ namespace Stellamod.Items.Accessories
 		{
 			DisplayName.SetDefault("Sap Container");
 			Tooltip.SetDefault("Every 10 seconds eat stardew and MAJORLY increase your magic damage" +
-				"\n+7% Magic damage..." +
-				"\n But when sap is active you loose little defense ");
+				"\n+7% Magic damage...");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -65,7 +64,7 @@ namespace Stellamod.Items.Accessories
 			if (Timer2 > 600)
             {
 				player.GetDamage(DamageClass.Magic) *= 4f;
-				player.statDefense -= 8;
+				
 			}
 
 			if (Timer2 < 720)
