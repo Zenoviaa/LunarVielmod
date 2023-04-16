@@ -48,8 +48,9 @@ namespace Stellamod.Items.Armors.Huntrian
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "Increases life regen by a big amount!" +
-				"\nReduced Healing Flask cooldown "; // This is the setbonus tooltip
-			player.potionDelayTime -= 30;
+				"\nReduced Healing Flask cooldown" +
+				"\nDOES NOT STACK with philosophers stone"; // This is the setbonus tooltip
+			player.pStone = true;
 			player.lifeRegen += 2;
 		}
 
@@ -68,7 +69,7 @@ namespace Stellamod.Items.Armors.Huntrian
 
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ModContent.ItemType<CondensedDirt>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
+			recipe2.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
 			recipe2.AddIngredient(ItemID.Silk, 5);
 			recipe2.AddIngredient(ItemID.Wood, 50);
 			recipe2.AddIngredient(ItemID.CrimtaneBar, 8);

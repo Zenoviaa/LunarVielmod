@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Huntrian
 			Tooltip.SetDefault("Corroded Woods"
 				+ "\n+5% Damage!" +
 				"\n+10 Health" +
-				"\n+7% Critical Strike Chance!");
+				"\n+7 Critical Strike Chance!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -38,7 +38,7 @@ namespace Stellamod.Items.Armors.Huntrian
 		
 			player.statLifeMax2 += 10;
 			player.GetDamage(DamageClass.Generic) *= 1.05f;
-			player.GetCritChance(DamageClass.Generic) *= 1.07f;
+			player.GetCritChance(DamageClass.Generic) += 7f;
 
 		}
 
@@ -57,7 +57,7 @@ namespace Stellamod.Items.Armors.Huntrian
 
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ModContent.ItemType<CondensedDirt>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 2);
+			recipe2.AddIngredient(ModContent.ItemType<Mushroom>(), 2);
 			recipe2.AddIngredient(ItemID.Silk, 5);
 			recipe2.AddIngredient(ItemID.Wood, 50);
 			recipe2.AddIngredient(ItemID.CrimtaneBar, 8);
