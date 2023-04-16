@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
@@ -35,7 +36,8 @@ namespace Stellamod
 		public int ArcaneMCooldown = 0;
 		public bool ZoneMorrow = false;
 		public int Timer = 0;
-
+		public bool NotiaB;
+		public int NotiaBCooldown = 0;
 
 
 
@@ -81,6 +83,7 @@ namespace Stellamod
 			PlantH = false;
 			ThornedBook = false;
 			Dice = false;
+			NotiaB = false;
 
 
 
@@ -174,6 +177,34 @@ namespace Stellamod
 				HikersBCooldown = 30;
 
 			}
+
+
+
+
+			if (NotiaB && NotiaBCooldown == 401)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+				for (int j = 0; j < 6; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 30, 1f, Player.whoAmI);
+				}
+
+
+			}
+			if (NotiaB && NotiaBCooldown > 400)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 2f;
+				Player.GetDamage(DamageClass.Ranged) *= 2f;
+
+			}
+			if (NotiaB && NotiaBCooldown == 520)
+			{
+				NotiaBCooldown = 0;
+
+
+			}
+
 
 
 

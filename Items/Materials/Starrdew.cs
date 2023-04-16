@@ -20,12 +20,12 @@ namespace Stellamod.Items.Materials
 			Item.width = 20;
 			Item.height = 20;
 			Item.maxStack = 999;
-			Item.value = Item.sellPrice(silver: 50);
+			Item.value = Item.sellPrice(silver: 5);
 		}
 
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe(3);
+			Recipe recipe = CreateRecipe(4);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 1);
