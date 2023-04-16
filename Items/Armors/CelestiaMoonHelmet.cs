@@ -20,7 +20,7 @@ namespace Stellamod.Items.Armors
 				+ "\n+7% increased ranged and melee damage" +
 				"\n+35 Health");
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// If your head equipment should draw hair while drawn, use one of the following:
 			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
