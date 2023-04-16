@@ -38,7 +38,9 @@ namespace Stellamod
 		public int Timer = 0;
 		public bool NotiaB;
 		public int NotiaBCooldown = 0;
-
+		public int SwordCombo;
+		public int SwordComboR;
+		public int lastSelectedI;
 
 
 
@@ -92,10 +94,35 @@ namespace Stellamod
 			BroochFlyfish = false;
 			BroochMorrow = false;
 			BroochSlime = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			if (SwordComboR <= 0)
+			{
+				SwordCombo = 0;
+				SwordComboR = 0;
+			}
+			else
+			{
+				SwordComboR--;
+			}
 		}
 
 
-		
+
 
 		public override void UpdateDead()
 		{
@@ -109,7 +136,7 @@ namespace Stellamod
 
 
 		}
-		
+
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 
 		public override void PostUpdate()
@@ -181,24 +208,24 @@ namespace Stellamod
 
 
 
-			if (NotiaB && NotiaBCooldown == 401)
+			if (NotiaB && NotiaBCooldown == 301)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 6; j++)
+				for (int j = 0; j < 1; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 30, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
 				}
 
 
 			}
-			if (NotiaB && NotiaBCooldown > 400)
+			if (NotiaB && NotiaBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 				Player.GetDamage(DamageClass.Ranged) *= 2f;
 
 			}
-			if (NotiaB && NotiaBCooldown == 520)
+			if (NotiaB && NotiaBCooldown == 420)
 			{
 				NotiaBCooldown = 0;
 
@@ -267,7 +294,7 @@ namespace Stellamod
 				{
 					Player player = Player;
 					var entitySource = player.GetSource_FromThis();
-		
+
 					switch (Main.rand.Next(5))
 					{
 
@@ -404,7 +431,7 @@ namespace Stellamod
 		}
 		public const int CAMO_DELAY = 100;
 
-		
+
 
 		public int Shake = 0;
 
@@ -461,15 +488,45 @@ namespace Stellamod
 		}
 
 
-        public override void OnHitByNPC(NPC npc, int damage, bool crit)
-        {
+		public override void OnHitByNPC(NPC npc, int damage, bool crit)
+		{
 			if (ThornedBook)
-            {
+			{
 				npc.StrikeNPC(damage * 7, 1, 1, false, false, true);
 			}
-           
-        }
-    }
+
+		}
 
 
+
+
+
+
+
+
+
+		public override bool PreItemCheck()
+		{
+			if (Player.selectedItem != lastSelectedI)
+			{
+				SwordComboR = 0;
+				SwordCombo = 0;
+				lastSelectedI = Player.selectedItem;
+			}
+			if (SwordComboR > 0)
+			{
+				SwordComboR--;
+				if (SwordComboR == 0)
+				{
+					SwordCombo = 0;
+				}
+			}
+
+
+
+
+			return true;
+		}
+
+	}
 }
