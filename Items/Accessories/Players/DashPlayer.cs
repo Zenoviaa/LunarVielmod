@@ -13,7 +13,6 @@ namespace Stellamod.Items.Accessories.Players
 	{
 		// These indicate what direction is what in the timer arrays used
 		public const int DashDown = 0;
-		public const int DashUp = 1;
 		public const int DashRight = 2;
 		public const int DashLeft = 3;
 
@@ -21,7 +20,7 @@ namespace Stellamod.Items.Accessories.Players
 		public const int DashDuration = 30; // Duration of the dash afterimage effect in frames
 
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-		public const float DashVelocity = 13f;
+		public const float DashVelocity = 16f;
 
 		// The direction the player has double tapped.  Defaults to -1 for no dash double tap
 		public int DashDir = -1;
@@ -42,10 +41,6 @@ namespace Stellamod.Items.Accessories.Players
 			if (Player.controlDown && Player.releaseDown && Player.doubleTapCardinalTimer[DashDown] < 15)
 			{
 				DashDir = DashDown;
-			}
-			else if (Player.controlUp && Player.releaseUp && Player.doubleTapCardinalTimer[DashUp] < 15)
-			{
-				DashDir = DashUp;
 			}
 			else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15)
 			{
@@ -73,7 +68,6 @@ namespace Stellamod.Items.Accessories.Players
 				switch (DashDir)
 				{
 					// Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
-					case DashUp when Player.velocity.Y > -DashVelocity:
 					case DashDown when Player.velocity.Y < DashVelocity:
 						{
 							// Y-velocity is set here
@@ -112,15 +106,18 @@ namespace Stellamod.Items.Accessories.Players
 			if (DashTimer > 0)
 			{ // dash is active
 				Vector2 newVelocity = Player.velocity;
-				// This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
-				// Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
-				// Here we take advantage of "player.eocDash" and "player.armorEffectDrawShadowEOCShield" to get the Shield of Cthulhu's afterimage effect
-				Player.GetModPlayer<ImmunityPlayer>().HasExampleImmunityAcc = true;
+				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = true;
 				Player.armorEffectDrawShadowEOCShield = true;
 				for (int j = 0; j < 3; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
 					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<BurnParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 1; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+					ParticleManager.NewParticle(Player.Center, speed * 6, ParticleManager.NewInstance<DashParticle>(), Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 				Player.AddBuff(BuffID.Cursed, 1);
 
@@ -132,7 +129,7 @@ namespace Stellamod.Items.Accessories.Players
 			
 			if (DashTimer == 0)
             {
-				Player.GetModPlayer<ImmunityPlayer>().HasExampleImmunityAcc = false;
+				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = false;
 				
 			}
 		}
@@ -141,6 +138,7 @@ namespace Stellamod.Items.Accessories.Players
 		{
 			return DashAccessoryEquipped
 				&& !Player.setSolar // player isn't wearing solar armor
+				
 				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}
 	}

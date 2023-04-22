@@ -4,12 +4,12 @@ namespace Stellamod.Items.Accessories.Players
 {
 	public class ImmunityPlayer : ModPlayer
 	{
-		public bool HasExampleImmunityAcc;
+		public bool HasStealiImmunityAcc;
 
 		// Always reset the accessory field to its default value here.
 		public override void ResetEffects()
 		{
-			HasExampleImmunityAcc = false;
+			HasStealiImmunityAcc = false;
 		}
 
 		// Vanilla applies immunity time before this method and after PreHurt and Hurt
@@ -17,9 +17,12 @@ namespace Stellamod.Items.Accessories.Players
 	
 		public override void PostUpdate()
 		{
-			if (HasExampleImmunityAcc)
+			if (HasStealiImmunityAcc)
             {
 				Player.immune = true;
+				
+				
+				
 				Player.immuneTime = 6;
 			}
 			
