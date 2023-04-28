@@ -260,7 +260,7 @@ namespace Stellamod.Projectiles
 					{
 						projectile.ai[0] = -1f;
 						projectile.ai[1] = 0f;
-						projectile.netUpdate = true;
+						//projectile.netUpdate = true;
 					}
 					else
 					{
@@ -291,7 +291,7 @@ namespace Stellamod.Projectiles
 							}
 							projectile.ai[0] = x;
 							projectile.ai[1] = y;
-							projectile.netUpdate = true;
+							//projectile.netUpdate = true;
 						}
 					}
 				}
@@ -299,7 +299,7 @@ namespace Stellamod.Projectiles
 				if (flag4 && projectile.owner == Main.myPlayer)
 				{
 					projectile.ai[0] = -1f;
-					projectile.netUpdate = true;
+					//projectile.netUpdate = true;
 				}
 
 				if (projectile.ai[0] >= 0f)
@@ -400,7 +400,7 @@ namespace Stellamod.Projectiles
 				if (projectile.ai[0] == 0f)
 				{
 					projectile.ai[0] = 3f;
-					projectile.netUpdate = true;
+					//projectile.netUpdate = true;
 				}
 				if (Main.player[projectile.owner].itemAnimation < Main.player[projectile.owner].itemAnimationMax / 3)
 					projectile.ai[0] -= retractSpeed;
@@ -456,7 +456,7 @@ namespace Stellamod.Projectiles
 				if (num3 > initialRange)
 				{
 					projectile.ai[0] = 1f;
-					projectile.netUpdate = true;
+					//projectile.netUpdate = true;
 				}
 				else if (!Main.player[projectile.owner].channel)
 				{
@@ -481,7 +481,7 @@ namespace Stellamod.Projectiles
 				{
 					projectile.ai[1] = 1f;
 					if (projectile.tileCollide)
-						projectile.netUpdate = true;
+						//projectile.netUpdate = true;
 
 					projectile.tileCollide = false;
 					if (num3 < 20f)
@@ -549,7 +549,7 @@ namespace Stellamod.Projectiles
 			projectile.ai[0] = 1f;
 			if (flag)
 			{
-				projectile.netUpdate = true;
+				//projectile.netUpdate = true;
 				Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 
 			}
@@ -565,7 +565,7 @@ namespace Stellamod.Projectiles
 			{
 				projectile.velocity.X = -projectile.velocity.X;
 				projectile.velocity.Y = -projectile.velocity.Y;
-				projectile.netUpdate = true;
+				//projectile.netUpdate = true;
 			}
 			projectile.ai[0] = 1f;
 		}

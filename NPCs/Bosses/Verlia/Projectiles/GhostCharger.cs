@@ -14,23 +14,14 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
 	public class GhostCharger : ModNPC
 	{
-
-
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
 		public int counter;
-		public ref float AI_State => ref NPC.ai[0];
-
-		public float AiTimer
-		{
-			get => NPC.ai[0];
-			set => NPC.ai[0] = value;
-		}
-		public ref float AI_FlutterTime => ref NPC.ai[2];
 
 		public int frame = 0;
-		public int timer = 0;
-		public int timer2 = 0;
+
+		public short npcCounter = 0;
+		public bool dash = false;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Verlia Servant");
@@ -54,60 +45,82 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.noTileCollide = true;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
+			NPC.aiStyle = -1;
 		}
 		public override void AI()
 		{
+			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+			{
+				NPC.TargetClosest();
+			}
+			Player player = Main.player[NPC.target];
 			if (counter == 0)
 			{
-				NPC.ai[0] = 150;
+				if (npcCounter >= 4)
+                {
+					npcCounter = 0;
+					NPC.ai[0] = 150;
+				}
 			}
 			counter++;
 			NPC.spriteDirection = NPC.direction;
-			Player player = Main.player[NPC.target];
 			NPC.rotation = NPC.velocity.X * 0.1f;
-			if (NPC.Center.X >= player.Center.X && moveSpeed >= -30)
+			if (!dash && counter < 110)
 			{
-				moveSpeed--;
+				
+				if (NPC.Center.X >= player.Center.X && moveSpeed >= -30)
+				{
+					moveSpeed--;
+				}
+
+				if (NPC.Center.X <= player.Center.X && moveSpeed <= 30)
+				{
+					moveSpeed++;
+				}
+
+				NPC.velocity.X = moveSpeed * 0.09f;
+
+				if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -25)
+				{
+					moveSpeedY--;
+					NPC.ai[0] = 150f;
+				}
+
+				if (NPC.Center.Y <= player.Center.Y - NPC.ai[0] && moveSpeedY <= 25)
+				{
+					moveSpeedY++;
+				}
+
+				NPC.velocity.Y = moveSpeedY * 0.14f;
+			}
+			if (counter >= 110 && counter < 140)
+            {
+				dash = true;
+				NPC.velocity *= 0.95f;
 			}
 
-			if (NPC.Center.X <= player.Center.X && moveSpeed <= 30)
+			if (counter == 140)
 			{
-				moveSpeed++;
-			}
-
-			NPC.velocity.X = moveSpeed * 0.09f;
-
-			if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -25)
-			{
-				moveSpeedY--;
-				NPC.ai[0] = 150f;
-			}
-
-			if (NPC.Center.Y <= player.Center.Y - NPC.ai[0] && moveSpeedY <= 25)
-			{
-				moveSpeedY++;
-			}
-
-			NPC.velocity.Y = moveSpeedY * 0.14f;
-			if (Main.rand.NextBool(220) && Main.netMode != NetmodeID.MultiplayerClient)
-			{
-				NPC.ai[0] = -25f;
-				NPC.netUpdate = true;
-			}
-			if (counter >= 140)
-			{
-				counter = 0;
-
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
+					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
-					direction.X *= 6f;
-					direction.Y *= 6f;
-
-
+					direction.X *= 7f;
+					direction.Y *= 7f;
+					NPC.velocity = direction;
+					
+					
 				}
 			}
+			if (counter == 170)
+            {
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+					NPC.ai[0] += -25f;
+				npcCounter++;
+				NPC.velocity = Vector2.Zero;
+				counter = 0;
+				dash = false;
+            }
 		}
 		
 		public override void FindFrame(int frameHeight)

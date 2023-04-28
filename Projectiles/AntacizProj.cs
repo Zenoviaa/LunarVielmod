@@ -79,7 +79,7 @@ namespace Stellamod.Projectiles
             player.itemTime = 2;
             player.itemAnimation = 2;
             player.itemRotation = rotation * player.direction;
-            Projectile.netUpdate = true;
+            //Projectile.netUpdate = true;
 
         }
        
