@@ -89,7 +89,7 @@ namespace Stellamod.Projectiles.Nails
 			player.itemRotation = rotation * player.direction;
 			player.itemTime = 2;
 			player.itemAnimation = 2;
-			Projectile.netUpdate = true;
+			//Projectile.netUpdate = true;
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

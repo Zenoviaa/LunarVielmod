@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				// and then set netUpdate to true
 				Projectile.position = idlePosition;
 				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
+				//Projectile.netUpdate = true;
 			}
 
 			// If your minion is flying, you want to do this independently of any conditions

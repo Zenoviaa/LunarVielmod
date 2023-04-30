@@ -59,7 +59,7 @@ namespace Stellamod.Projectiles.Slashers
                 Projectile.timeLeft = SwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
-                Projectile.netUpdate = true;
+                //Projectile.netUpdate = true;
 
             }
             else if (_initialized)
@@ -136,7 +136,7 @@ namespace Stellamod.Projectiles.Slashers
                 player.itemRotation = rotation * player.direction;
                 player.itemTime = 2;
                 player.itemAnimation = 2;
-                Projectile.netUpdate = true;
+                //Projectile.netUpdate = true;
             }
 
         }

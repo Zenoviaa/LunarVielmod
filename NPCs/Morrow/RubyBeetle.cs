@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -17,6 +16,8 @@ namespace Stellamod.NPCs.Morrow
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
 		public int counter;
+		public bool dash = false;
+		public short npcCounter = 0;
 
 		public override void SetStaticDefaults()
 		{
@@ -38,9 +39,17 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override void AI()
 		{
+			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+			{
+				NPC.TargetClosest();
+			}
 			if (counter == 0)
 			{
-				NPC.ai[0] = 150;
+				if (npcCounter >= 4)
+				{
+					npcCounter = 0;
+					NPC.ai[0] = 150;
+				}
 			}
 			counter++;
 			NPC.spriteDirection = NPC.direction;
@@ -70,24 +79,30 @@ namespace Stellamod.NPCs.Morrow
 			}
 
 			NPC.velocity.Y = moveSpeedY * 0.23f;
-			if (Main.rand.NextBool(220) && Main.netMode != NetmodeID.MultiplayerClient)
+			if (counter >= 110 && counter < 140)
 			{
-				NPC.ai[0] = -25f;
-				NPC.netUpdate = true;
+				dash = true;
+				NPC.velocity *= 0.95f;
 			}
-			if (counter >= 140)
-			{
-				counter = 0;
 
+			if (counter == 140)
+			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
+					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
-					direction.X *= 11f;
-					direction.Y *= 11f;
-
-					
+					direction.X *= 9f;
+					direction.Y *= 9f;
+					NPC.velocity = direction;
 				}
+			}
+			if (counter == 180)
+			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+					NPC.ai[0] += -25f;
+				NPC.velocity = Vector2.Zero;
+				counter = 0;
+				dash = false;
 			}
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)

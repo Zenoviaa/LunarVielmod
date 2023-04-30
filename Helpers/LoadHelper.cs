@@ -260,7 +260,7 @@ namespace Stellamod.Helpers
             npc.NPCLoot();
             npc.active = false;
 
-            npc.netUpdate = true;
+            //npc.netUpdate = true;
         }
 
         public static float isLeft(Vector2 P0, Vector2 P1, Vector2 P2)
