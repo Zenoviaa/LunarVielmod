@@ -13,18 +13,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class GothivCard : ModItem
+	internal class StarterCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gothiv Card Igniter");
+			DisplayName.SetDefault("Beginner Igniter");
 			Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
 				"\n Use a powder or dust and then use this type of weapon!");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 5;
-			Item.mana = 5;
+			Item.damage = 1;
+			Item.mana = 1;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 50;
@@ -60,6 +60,17 @@ namespace Stellamod.Items.Weapons.Igniters
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<StarrCard>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
+			recipe.AddIngredient(ItemID.FallenStar, 3);
+			recipe.AddIngredient(ItemID.HellstoneBar, 30);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
 	}
 }
