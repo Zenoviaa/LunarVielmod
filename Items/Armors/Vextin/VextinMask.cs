@@ -48,19 +48,23 @@ namespace Stellamod.Items.Armors.Vextin
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
-			return body.type == ModContent.ItemType<CelestiaMoonBreastplate>() && legs.type == ModContent.ItemType<CelestiaMoonLegs>();
+			return body.type == ModContent.ItemType<VextinRobe>() && legs.type == ModContent.ItemType<VextinBoots>();
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Summon tornados at your cursor (forbidden armor)" +
-				"\nAutomatically run at fast speeds without boots! "; // This is the setbonus tooltip
+			player.setBonus = "Gain the accessory effects of desert boots!" +
+				"\nAutomatically run at fast speeds without boots! " +
+				"\n +3 Defense!"; // This is the setbonus tooltip
 			
 			player.maxRunSpeed += 0.5f;
+			player.statDefense += 3;
+			player.moveSpeed += 0.3f;
+		
 			player.armorEffectDrawOutlinesForbidden = true;
-			player.setForbidden = true;
 			player.desertBoots = true;
+			
 		
 		}
 		public override void AddRecipes()
