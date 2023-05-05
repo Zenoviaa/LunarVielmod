@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 6;
+			Item.damage = 7;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
