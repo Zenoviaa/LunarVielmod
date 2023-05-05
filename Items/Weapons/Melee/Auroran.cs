@@ -24,7 +24,8 @@ namespace Stellamod.Items.Weapons.Melee
         {
             DisplayName.SetDefault("The Auroran"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
             Tooltip.SetDefault("Sends shockwaves through the air" +
-                "\nHitting enemies with sword will increase speed!");
+                "\nHitting enemies with sword will increase speed!" +
+                "\nDivergency Inspired!");
         }
 
         public override void SetDefaults()

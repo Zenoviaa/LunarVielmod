@@ -18,7 +18,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Tooltip.SetDefault("Classy!" +
 				"\nTotally has no reference to Hollow Knight" +
-				"\nA weapon that shoots classy bomb and bullets.. A LOT");
+				"\nA weapon that shoots classy bomb and bullets.. A LOT" +
+				"\nDia Gun...");
 			DisplayName.SetDefault("Hornet");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
