@@ -14,7 +14,8 @@ namespace Stellamod.Items.Accessories.Shields
 		{
 			Tooltip.SetDefault("Super cool right??? A wooden shield?" +
 				"\nWhat are you gonna block, a bow and arrow?" +
-				"\nLiterally no blocking features smh");
+				"\nLiterally no blocking features smh" +
+				"\n +1 Defense and life regen increased!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
