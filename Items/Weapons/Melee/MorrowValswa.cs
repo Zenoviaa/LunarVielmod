@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void SetDefaults()
 		{
 			Item.channel = true;
-			Item.damage = 16;
+			Item.damage = 26;
 			Item.width = 60;
 			Item.height = 60;
 			Item.useTime = 20;
