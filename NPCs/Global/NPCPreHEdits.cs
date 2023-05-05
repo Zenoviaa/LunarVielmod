@@ -1,7 +1,9 @@
 ﻿using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -60,6 +62,24 @@ namespace Stellamod.NPCs.Global
 
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SlimeBroochA>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+			if (npc.type == NPCID.BloodZombie)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FleshClot>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 600, 1, 1));
+			}
+			
+			if (npc.type == NPCID.Drippler)
+			{
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 600, 1, 1));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FleshClot>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			
+
 			}
 		}
 	}
