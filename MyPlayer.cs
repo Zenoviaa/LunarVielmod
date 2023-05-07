@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
+using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Particles;
@@ -41,7 +42,8 @@ namespace Stellamod
 		public int SwordCombo;
 		public int SwordComboR;
 		public int lastSelectedI;
-
+		public bool Lovestruck;
+		public int LovestruckBCooldown = 0;
 
 
 
@@ -86,6 +88,7 @@ namespace Stellamod
 			ThornedBook = false;
 			Dice = false;
 			NotiaB = false;
+			Lovestruck = false;
 
 
 
@@ -454,14 +457,26 @@ namespace Stellamod
 
 			}
 
+			if (Lovestruck)
+			{
 
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
+
+
+			}
 
 
 		}
 
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
 		{
+			if (Lovestruck && LovestruckBCooldown <= 0)
+			{
 
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
+				LovestruckBCooldown = 30;
+
+			}
 
 			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
 			{
@@ -495,6 +510,13 @@ namespace Stellamod
 				npc.StrikeNPC(damage * 7, 1, 1, false, false, true);
 			}
 
+			if (Lovestruck)
+			{
+
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
+
+				npc.StrikeNPC(damage * 5, 1, 1, false, false, true);
+			}
 		}
 
 
