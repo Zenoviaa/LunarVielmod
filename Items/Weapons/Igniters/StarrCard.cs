@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 4;
+			Item.damage = 6;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
@@ -70,6 +70,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 70);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
 			recipe.AddIngredient(ItemID.Silk, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

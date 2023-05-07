@@ -68,6 +68,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<StarrCard>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
 			recipe.AddIngredient(ItemID.HellstoneBar, 30);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

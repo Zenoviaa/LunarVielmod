@@ -60,16 +60,6 @@ namespace Stellamod.Items.Weapons.Igniters
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Silk, 3);
-			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 21);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
-			recipe.AddIngredient(ItemID.IceBlock, 100);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
+		
 	}
 }

@@ -1,5 +1,6 @@
 ﻿
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -41,6 +42,7 @@ namespace Stellamod.Items.Consumables
 			recipe.AddIngredient(ItemID.ObsidianRose, 1);
 			recipe.AddIngredient(ItemID.HellstoneBar, 5);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<EmptyMoonflameLantern>(), 1);
 			recipe.AddTile(TileID.DemonAltar);
 			recipe.Register();
 		}

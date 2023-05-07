@@ -1,4 +1,4 @@
-TownNPCMood: {
+		TownNPCMood: {
 			Gambit: {
 				Content: I feel sooo nice!
 				NoHome: I would very much like a house, everything is soo spooki :(.
@@ -15,4 +15,5 @@ TownNPCMood: {
 				DislikeNPC: '''"{NPCName} keeps rambling on about "nfts"... Wish I could convince him how terrible of an idea that is."'''
 				HateNPC: "I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet."
 			}
-		}
+}
+		

@@ -16,7 +16,7 @@ namespace Stellamod.Items.Accessories
 			DisplayName.SetDefault("Hiker's Backpack");
 			Tooltip.SetDefault("Increased Regeneration!" +
 				"\n +3% damage" +
-				"\n Drops stumps on the ground as you walk! ");
+				"\n Drops stumps on the ground as you walk! [i:5197] ");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

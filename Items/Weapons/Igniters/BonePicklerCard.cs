@@ -68,6 +68,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
 			recipe.AddIngredient(ItemID.Bone, 50);
 			recipe.AddIngredient(ItemID.Silk, 10);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

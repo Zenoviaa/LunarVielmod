@@ -55,10 +55,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
-			
-
-
+	
 			recipe.Register();
 		}
 	}

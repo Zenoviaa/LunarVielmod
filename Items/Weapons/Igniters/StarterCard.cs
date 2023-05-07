@@ -63,13 +63,10 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<StarrCard>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ItemID.HellstoneBar, 30);
-			recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ItemID.FallenStar, 1);
+			recipe.AddIngredient(ItemID.Wood, 30);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
+			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}
 	}
