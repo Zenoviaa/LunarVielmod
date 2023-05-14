@@ -18,7 +18,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Music\" />
-    <Folder Include="Items\Armors\Vanity\" />
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\Blocks\" />

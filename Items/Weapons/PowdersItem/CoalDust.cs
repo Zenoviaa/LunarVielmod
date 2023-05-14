@@ -48,11 +48,10 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ItemID.StoneBlock, 50);
 			recipe.AddIngredient(ItemID.DirtBlock, 15);
 			recipe.AddIngredient(ItemID.Bomb, 3);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 5);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 

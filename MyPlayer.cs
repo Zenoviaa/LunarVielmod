@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
+using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -44,7 +46,7 @@ namespace Stellamod
 		public int lastSelectedI;
 		public bool Lovestruck;
 		public int LovestruckBCooldown = 0;
-
+		public bool ADisease;
 
 
 
@@ -74,6 +76,8 @@ namespace Stellamod
 		public int MorrowBCooldown = 1;
 		public bool BroochSlime;
 		public int SlimeBCooldown = 1;
+		public bool BroochDiari;
+		public int DiariBCooldown = 1;
 
 		//---------------------------------------------------------------------------------------------------------------
 		public override void ResetEffects()
@@ -97,6 +101,7 @@ namespace Stellamod
 			BroochFlyfish = false;
 			BroochMorrow = false;
 			BroochSlime = false;
+			BroochDiari = false;
 
 
 
@@ -141,7 +146,15 @@ namespace Stellamod
 		}
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
+		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
+		{
 
+			return (IEnumerable<Item>)(object)new Item[1]
+			{
+				new Item(ModContent.ItemType<SirestiasStarterBag>(), 1, 0),
+	
+			};
+		}
 		public override void PostUpdate()
 		{
 			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
@@ -188,6 +201,13 @@ namespace Stellamod
 				SlimeBCooldown = 1000;
 			}
 
+			if (BroochDiari && DiariBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<DiariBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<Diarii>(), 1000);
+				DiariBCooldown = 1000;
+			}
 
 
 
@@ -465,7 +485,7 @@ namespace Stellamod
 
 			}
 
-
+		
 		}
 
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
@@ -516,6 +536,57 @@ namespace Stellamod
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
 
 				npc.StrikeNPC(damage * 5, 1, 1, false, false, true);
+			}
+
+
+			if (ADisease)
+            {
+				switch (Main.rand.Next(8))
+				{
+
+
+					case 0:
+
+						npc.AddBuff((BuffID.Poisoned), 120);
+
+						break;
+					case 1:
+
+						npc.AddBuff((BuffID.Slow), 120);
+
+						break;
+					case 2:
+
+						npc.AddBuff((BuffID.OnFire3), 240);
+
+						break;
+					case 3:
+
+						npc.AddBuff((BuffID.OnFire), 120);
+
+						break;
+					case 4:
+
+						npc.AddBuff((BuffID.Frostburn2), 240);
+
+						break;
+					case 5:
+
+						npc.AddBuff((BuffID.BrainOfConfusionBuff), 240);
+
+						break;
+
+					case 6:
+
+						npc.AddBuff((BuffID.Lovestruck), 240);
+
+						break;
+					case 7:
+
+						npc.AddBuff((ModContent.BuffType<Wounded>()), 240);
+
+						break;
+				}
 			}
 		}
 
