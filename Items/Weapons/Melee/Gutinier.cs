@@ -8,6 +8,7 @@ using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers;
 using Stellamod.Projectiles.Slashers.Gutinier;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -25,10 +26,23 @@ namespace Stellamod.Items.Weapons.Melee
         {
             DisplayName.SetDefault("Gutinier"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
             Tooltip.SetDefault("Classful weapon!" +
-                "\nHigh Damage Scaling with knives" +
                 "\nDivergency Inspired!");
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+            var line = new TooltipLine(Mod, "", "");
 
+            line = new TooltipLine(Mod, "Gutinier", "High Damage Scaling with knives!")
+            {
+                OverrideColor = new Color(220, 87, 24)
+
+            };
+            tooltips.Add(line);
+
+           
+
+        }
         public override void SetDefaults()
         {
             Item.damage = 5;

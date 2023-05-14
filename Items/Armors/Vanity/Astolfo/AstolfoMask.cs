@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Vanity.Astolfo
 			Tooltip.SetDefault("Yummy kummy :3"
 				+ "\n+2% increased damage" +
 				"\n+35 Health" +
-				"\n+30 Pickaxe Speed!");
+				"\nIncreased Pickaxe Speed!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
@@ -43,7 +43,7 @@ namespace Stellamod.Items.Armors.Vanity.Astolfo
 		{
 			player.statLifeMax2 += 30;
 			player.GetDamage(DamageClass.Generic) *= 1.02f;
-			player.pickSpeed += 30;
+			player.pickSpeed *= 0.80f;
 			
 		
 			
