@@ -17,11 +17,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
 		public int counter;
-
-		public int frame = 0;
-
-		public short npcCounter = 0;
 		public bool dash = false;
+		public short npcCounter = 0;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Verlia Servant");
@@ -63,7 +60,10 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				}
 			}
 			counter++;
+
+
 			NPC.spriteDirection = NPC.direction;
+		
 			NPC.rotation = NPC.velocity.X * 0.1f;
 			if (!dash && counter < 110)
 			{
@@ -96,7 +96,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (counter >= 110 && counter < 140)
             {
 				dash = true;
-				NPC.velocity *= 0.95f;
+				NPC.velocity *= 0.97f;
 			}
 
 			if (counter == 140)
@@ -115,7 +115,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (counter == 170)
             {
 				if (Main.netMode != NetmodeID.MultiplayerClient)
-					NPC.ai[0] += -25f;
+				NPC.ai[0] += -25f;
 				npcCounter++;
 				NPC.velocity = Vector2.Zero;
 				counter = 0;
