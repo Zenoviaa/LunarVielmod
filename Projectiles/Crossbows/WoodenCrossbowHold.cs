@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.Audio;
-using RealmOne.Items;
+
 using System.Transactions;
 using Terraria.GameContent;
 using Stellamod.UI.Systems;
