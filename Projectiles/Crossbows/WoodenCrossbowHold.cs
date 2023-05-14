@@ -84,7 +84,7 @@ namespace Stellamod.Projectiles.Crossbows
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/bowpull"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
 			}
 
 			if (Timer == 40)
