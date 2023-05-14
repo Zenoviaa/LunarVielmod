@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Items.Armors.Vanity.Astolfo;
 using Stellamod.Items.Weapons.PowdersItem;
 using Terraria;
 using Terraria.ID;
@@ -30,8 +31,30 @@ namespace Stellamod.NPCs.Global
 
 	
 			}
-			
-			
+
+			if (type == NPCID.PartyGirl)
+			{
+				
+					// Adding an item to a vanilla NPC is easy:
+					// This item sells for the normal price.
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoMask>());
+					nextSlot++; // Don't forget this line, it is essential.
+					
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoSkirt>());
+					nextSlot++; // Don't forget this line, it is essential.
+
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoBody>());
+					nextSlot++; // Don't forget this line, it is essential.
+
+
+				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
+				// Editing item.value in SetupShop is an incorrect approach.
+
+				// This shop entry sells for 2 Defenders Medals.
+
+
+
+			}
 		}
 	}
 }

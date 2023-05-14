@@ -81,6 +81,7 @@ namespace Stellamod.NPCs.Global
 			
 
 			}
+
 		}
 	}
 }

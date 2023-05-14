@@ -11,14 +11,14 @@ using Stellamod.Projectiles.Crossbows;
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class DualWieldCrossbows : ModItem
+    public class WoodenCrossbow : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Double Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+            DisplayName.SetDefault("Wooden Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
             Tooltip.SetDefault("Use a small crossbow and shoot three bolts!"
-                + "\n'Double Trouble!'");
+                + "\n'Triple Threat!'");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
         }
