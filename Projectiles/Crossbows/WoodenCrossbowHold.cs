@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Crossbows
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 35;
+			Projectile.timeLeft = 55;
 		}
         public override bool? CanDamage()
         {
@@ -53,7 +53,7 @@ namespace Stellamod.Projectiles.Crossbows
 			{
 				// Our timer has finished, do something here:
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				ShakeModSystem.Shake = 8;
+				
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
 				Timer = 0;
@@ -87,27 +87,28 @@ namespace Stellamod.Projectiles.Crossbows
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/bowpull"));
 			}
 
-			if (Timer == 20)
+			if (Timer == 40)
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				ShakeModSystem.Shake = 2;
 			}
 
-			if (Timer == 23)
+			if (Timer == 43)
 			{
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
-			if (Timer == 26)
+			if (Timer == 46)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 

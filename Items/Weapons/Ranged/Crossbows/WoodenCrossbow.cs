@@ -29,8 +29,8 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;
-            Item.useTime = 25;
-            Item.useAnimation = 25;
+            Item.useTime = 45;
+            Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
             Item.rare = 1;
