@@ -57,7 +57,7 @@ namespace Stellamod.Items.Armors.Verl
 		{
 			player.setBonus = "Auto gain the abilities of Magic cuffs and Mana Flower!" +
 				"\nEnemies will be attacked by your power of music!"
-				+ "\nEvery few seconds you'll gain a major increase to damage!";  // This is the setbonus tooltip
+				+ "\nEvery few seconds you'll gain a major increase to Magic and Ranged damage!";  // This is the setbonus tooltip
 			player.GetModPlayer<MyPlayer>().NotiaB = true;
 			player.GetModPlayer<MyPlayer>().NotiaBCooldown++;
 			player.magicCuffs = true;
