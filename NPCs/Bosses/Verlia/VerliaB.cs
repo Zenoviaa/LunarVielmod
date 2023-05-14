@@ -73,6 +73,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			MoonSummonStartup,
 			CloneSummonStartup,
 			BigSwordSummonStartup,
+			BeggingingMoonStart,
 
 
 
@@ -98,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		}
 		// Current state
 
-		public ActionState State = ActionState.StartVerlia;
+		public ActionState State = ActionState.BeggingingMoonStart;
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -287,6 +288,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
+				case ActionState.BeggingingMoonStart:
+					rect = new(0, 1 * 92, 133, 1 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
 
 				case ActionState.SummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
@@ -445,6 +450,12 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					NPC.damage = 0;
 					counter++;
 					StartVerlia();
+					break;
+
+				case ActionState.BeggingingMoonStart:
+					NPC.damage = 0;
+					counter++;
+					MoonStartVerlia();
 					break;
 
 				case ActionState.SummonStartup:
@@ -704,6 +715,31 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						State = ActionState.BigSwordSummonStartup;
 						ResetTimers();
 						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void MoonStartVerlia()
+		{
+			timer++;
+			if (timer == 2)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.MoonSummonStartup;
+						ResetTimers();
+						break;
+
+
+
 				}
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
