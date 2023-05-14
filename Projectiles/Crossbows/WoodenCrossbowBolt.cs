@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Crossbows
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = -1;
 
             Projectile.timeLeft = 380;
             Projectile.netImportant = true;
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Crossbows
         public override void Kill(int timeleft)
         {
             for (var i = 0; i < 6; i++)
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.WoodFurniture, 0f, 0f, 0, default, 0.6f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 0, default, 0.5f);
             Collision.AnyCollision(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 
         }
