@@ -6,7 +6,7 @@ using Stellamod.Items.Armors;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 
-namespace Stellamod.Items.Armors
+namespace Stellamod.Items.Armors.Vanity.Astolfo
 {
 	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
 	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
