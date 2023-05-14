@@ -28,11 +28,10 @@ namespace Stellamod.Projectiles.Crossbows
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-
+            Projectile.arrow = true;
             Projectile.timeLeft = 380;
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
-            Projectile.CloneDefaults(ProjectileID.WoodenArrowFriendly);
             AIType = ProjectileID.WoodenArrowFriendly;
         }
         public override void Kill(int timeleft)
