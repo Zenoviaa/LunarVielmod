@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Crossbows
 				float speedY = Projectile.velocity.Y * 7;
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 
 			if (Timer == 23)
@@ -102,13 +102,13 @@ namespace Stellamod.Projectiles.Crossbows
 				float speedY = Projectile.velocity.Y * 7;
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 26)
 			{
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 7f, ModContent.ProjectileType<WoodenCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 
 
