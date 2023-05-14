@@ -17,7 +17,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			DisplayName.SetDefault("Brooch of the Tale of Diari");
 			Tooltip.SetDefault("Simple Brooch!" +
-				"\n+ 2 Defense!" +
+				"\n+ 4 Defense!" +
 				"\nAuto swing capabilities!" +
 				"\nFlame walking? Always Fed!" +
 				"\n+40 Health and Mana");
