@@ -93,10 +93,10 @@ namespace Stellamod
 			Dice = false;
 			NotiaB = false;
 			Lovestruck = false;
+			ADisease = false;
 
 
-
-			BroochSpragald = false;
+		BroochSpragald = false;
 			BroochFrile = false;
 			BroochFlyfish = false;
 			BroochMorrow = false;
