@@ -54,7 +54,8 @@ namespace Stellamod.Items.Armors.Verl
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "Auto gain the abilities of a Magic Quiver and +5% Ranged damage" +
-				"\nEnemies will be attacked by your power of music!"; // This is the setbonus tooltip
+				"\nEnemies will be attacked by your power of music!"
+				+ "\nEvery few seconds you'll gain a major increase to damage!"; // This is the setbonus tooltip
 			player.GetModPlayer<MyPlayer>().NotiaB = true;
 			player.GetModPlayer<MyPlayer>().NotiaBCooldown++;
 			player.magicQuiver = true;
