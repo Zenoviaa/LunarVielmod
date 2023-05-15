@@ -21,7 +21,6 @@
     <Folder Include="Items\Banners\" />
     <Folder Include="Gores\" />
     <Folder Include="Items\Blocks\" />
-    <Folder Include="Trails\" />
     <Folder Include="Projectiles\Hostile\" />
   </ItemGroup>
   <ItemGroup>
