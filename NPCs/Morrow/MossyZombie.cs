@@ -76,7 +76,7 @@ namespace Stellamod.NPCs.Morrow
 		{
 			for (int k = 0; k < 11; k++)
 			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Plantera_Green, hitDirection, -1f, 1, default, .61f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Plantera_Green, 1, -1f, 1, default, .61f);
 			}
 			
 

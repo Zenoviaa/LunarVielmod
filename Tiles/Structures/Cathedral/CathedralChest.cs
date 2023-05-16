@@ -16,6 +16,11 @@ namespace Stellamod.Tiles.Structures.Cathedral
 {
 	public class CathedralChest : ModTile
 	{
+		public override LocalizedText DefaultContainerName(int frameX, int frameY)
+		{
+			int option = frameX / 36;
+			return this.GetLocalization("MapEntry" + option);
+		}
 		public override void SetStaticDefaults()
 		{
 			// Properties
@@ -32,16 +37,16 @@ namespace Stellamod.Tiles.Structures.Cathedral
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<CathedralChestI>();
+			
 
 			// Names
-			ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Cathedral Chest");
+		
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Cathedral Chest");
 			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
 
-			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
+			
 			// name.SetDefault("Locked Cathedral Chest");
 			AddMapEntry(new Color(255, 156, 32), name, MapChestName);
 
@@ -121,7 +126,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */);
+			
 			Chest.DestroyChest(i, j);
 		}
 
@@ -237,7 +242,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			}
 			else
 			{
-				string defaultName = TileLoader.DefaultContainerName(tile.TileType)/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY);/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{

@@ -233,7 +233,7 @@ namespace Stellamod.NPCs.Town
 			
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
+		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
 			{
@@ -254,7 +254,7 @@ namespace Stellamod.NPCs.Town
 				//	return;
 				//}
 
-				shop = true;
+				shop = ShopName;
 			}
 
 			if (!firstButton)

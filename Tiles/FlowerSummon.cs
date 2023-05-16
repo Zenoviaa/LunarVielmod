@@ -20,6 +20,11 @@ namespace Stellamod.Tiles
 	
 	public class FlowerSummon : ModTile
 	{
+		public override LocalizedText DefaultContainerName(int frameX, int frameY)
+		{
+			int option = frameX / 36;
+			return this.GetLocalization("MapEntry" + option);
+		}
 
 		public int timer = 0;
 		public override void SetStaticDefaults()
@@ -31,9 +36,7 @@ namespace Stellamod.Tiles
 			AdjTiles = new int[] { TileID.Containers };
 
 			// Names
-			ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Morrowed Plants");
-
-			LocalizedText name = CreateMapEntryName();
+		
 			// name.SetDefault("Morrowed Plants");
 
 
@@ -134,7 +137,7 @@ namespace Stellamod.Tiles
 			}
 			else
 			{
-				string defaultName = TileLoader.ContainerName(tile.TileType)/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY); /* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{

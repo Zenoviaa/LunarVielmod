@@ -27,7 +27,7 @@ namespace Stellamod.Tiles
 			DustType = 84;
 			DustType = DustID.Sandnado;
 			DustType = DustID.Web;
-			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Materials.HuntiacBlock>();
+			RegisterItemDrop(ModContent.ItemType<Items.Materials.HuntiacBlock>());
 			HitSound = SoundID.Grass;
 		 MineResist = 2f;
 		 MinPick = 150;

@@ -27,7 +27,7 @@ namespace Stellamod.Tiles
 			DustType = 84;
 			DustType = DustID.Firework_Yellow;
 			DustType = DustID.FlameBurst;
-			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Ores.VerianOre>();
+			RegisterItemDrop(ModContent.ItemType<Items.Ores.VerianOre>());
 			HitSound = SoundID.Tink;
 		 MineResist = 2f;
 		 MinPick = 80;
