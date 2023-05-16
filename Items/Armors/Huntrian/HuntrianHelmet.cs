@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Huntrian
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Huntrian Helmet");
-			Tooltip.SetDefault("Corroded Woods"
+			// DisplayName.SetDefault("Huntrian Helmet");
+			/* Tooltip.SetDefault("Corroded Woods"
 				+ "\n+5% Damage!" +
-				"\n+20 Health");
+				"\n+20 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

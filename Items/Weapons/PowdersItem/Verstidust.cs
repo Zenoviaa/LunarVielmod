@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Versti Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA musical dust that has calming flowers");
+			// DisplayName.SetDefault("Versti Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
+				"\nA musical dust that has calming flowers"); */
 		}
 		public override void SetDefaults()
 		{

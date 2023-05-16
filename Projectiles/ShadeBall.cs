@@ -9,7 +9,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Shadow Ball");
+			// DisplayName.SetDefault("Shadow Ball");
 			Main.projFrames[Projectile.type] = 4;
 		}
 		public override void SetDefaults()

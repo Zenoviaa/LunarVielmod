@@ -10,7 +10,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("FrostSwProj");
+			// DisplayName.SetDefault("FrostSwProj");
 			Main.projFrames[base.Projectile.type] = 6;
 		}
 		public override void SetDefaults()
@@ -45,7 +45,7 @@ namespace Stellamod.Projectiles
 			
 			Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Vector2 angle = new Vector2(Projectile.ai[0], Projectile.ai[1]);
 			angle *= 0.105f;

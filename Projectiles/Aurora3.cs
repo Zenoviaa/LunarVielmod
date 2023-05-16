@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Aurora");
+			// DisplayName.SetDefault("Aurora");
 			Main.projFrames[Projectile.type] = 18;
 		}
 		

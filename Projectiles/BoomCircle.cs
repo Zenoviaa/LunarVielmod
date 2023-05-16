@@ -9,7 +9,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("BoomCirle");
+			// DisplayName.SetDefault("BoomCirle");
 		}
 		public override void SetDefaults()
 		{

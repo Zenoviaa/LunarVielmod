@@ -10,7 +10,7 @@ namespace Stellamod.Items.Ores
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("An ore merged and fused with gild, its scorching hot");
+			// Tooltip.SetDefault("An ore merged and fused with gild, its scorching hot");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

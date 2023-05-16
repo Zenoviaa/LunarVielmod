@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("BoomIce");
+			// DisplayName.SetDefault("BoomIce");
 			Main.projFrames[Projectile.type] = 30;
 		}
 		

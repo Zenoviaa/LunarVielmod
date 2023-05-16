@@ -13,11 +13,11 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Steali");
-			Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
+			// DisplayName.SetDefault("Steali");
+			/* Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
 				"\nIncreased regeneration" +
 				"\nYou may not attack while this is in use" +
-				"\nHollow Knight inspiried!");
+				"\nHollow Knight inspiried!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

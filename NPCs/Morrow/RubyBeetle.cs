@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Morrow
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Ruby Beetle");
+			// DisplayName.SetDefault("Ruby Beetle");
 			Main.npcFrameCount[NPC.type] = 6;
 		}
 		public override void SetDefaults()

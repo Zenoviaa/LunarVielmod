@@ -13,10 +13,10 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hiker's Backpack");
-			Tooltip.SetDefault("Increased Regeneration!" +
+			// DisplayName.SetDefault("Hiker's Backpack");
+			/* Tooltip.SetDefault("Increased Regeneration!" +
 				"\n +3% damage" +
-				"\n Drops stumps on the ground as you walk! ");
+				"\n Drops stumps on the ground as you walk! "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

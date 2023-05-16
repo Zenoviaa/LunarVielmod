@@ -8,7 +8,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
 	public class Needle : ModProjectile
 	{
-		public override void SetStaticDefaults() => DisplayName.SetDefault("Needlechain");
+		// public override void SetStaticDefaults() => DisplayName.SetDefault("Needlechain");
 
 		public override void SetDefaults()
 		{
@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			ProjectileExtras.DrawAroundOrigin(Projectile.whoAmI, lightColor);
 			return false;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			float speedX = Projectile.velocity.X * 1;
 			float speedY = Projectile.velocity.Y * 1;

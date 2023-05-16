@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public int timer = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Great Moon Blow");
+			// DisplayName.SetDefault("Great Moon Blow");
 
 		}
 		public override void SetDefaults()

@@ -11,9 +11,9 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Kaeva Clot");
-			Tooltip.SetDefault("Flesh-like substance used for many items!" +
-			"\nObtained from blood-typed enemies");
+			// DisplayName.SetDefault("Kaeva Clot");
+			/* Tooltip.SetDefault("Flesh-like substance used for many items!" +
+			"\nObtained from blood-typed enemies"); */
 		}
 		public override void SetDefaults()
 		{

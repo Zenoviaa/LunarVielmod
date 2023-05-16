@@ -10,7 +10,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Background Orb");
+			// DisplayName.SetDefault("Background Orb");
 			Main.projFrames[Projectile.type] = 20;
 		}
 		

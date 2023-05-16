@@ -8,8 +8,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Starr Veriplant Relic");
-			Tooltip.SetDefault("Woa what an achievement! Congrats!");
+			// DisplayName.SetDefault("Starr Veriplant Relic");
+			// Tooltip.SetDefault("Woa what an achievement! Congrats!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

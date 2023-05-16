@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.Summons
 		public int timer = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Death Stars");
+			// DisplayName.SetDefault("Death Stars");
 
 		}
 		public override void SetDefaults()

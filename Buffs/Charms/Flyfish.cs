@@ -9,8 +9,8 @@ namespace Stellamod.Buffs.Charms
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Charm Buff!");
-			Description.SetDefault("2 extra defense");
+			// DisplayName.SetDefault("Charm Buff!");
+			// Description.SetDefault("2 extra defense");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;

@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Lovestruck
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Lovestruck Mask");
-			Tooltip.SetDefault("Magical essence of an Lusting Goddess"
+			// DisplayName.SetDefault("Lovestruck Mask");
+			/* Tooltip.SetDefault("Magical essence of an Lusting Goddess"
 				+ "\n+7% increased damage" +
-				"\n+40 Health");
+				"\n+40 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 

@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles.IgniterEx
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("IgniterStart");
+			// DisplayName.SetDefault("IgniterStart");
 		}
 		public override void SetDefaults()
 		{
@@ -126,7 +126,7 @@ namespace Stellamod.Projectiles.IgniterEx
 			return closestNPC;
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 
 			NPC npc = target;

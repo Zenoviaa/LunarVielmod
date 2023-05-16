@@ -15,11 +15,11 @@ namespace Stellamod.Items.Armors.Stone
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Stonia Hat");
-			Tooltip.SetDefault("Happy Stone?"
+			// DisplayName.SetDefault("Stonia Hat");
+			/* Tooltip.SetDefault("Happy Stone?"
 				+ "\n+3% Damage!" +
 				"\n+5 Penetration" +
-				"\n+5 Critical Strike Chance!");
+				"\n+5 Critical Strike Chance!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

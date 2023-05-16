@@ -9,7 +9,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("windeffect");
+			// DisplayName.SetDefault("windeffect");
 			Main.projFrames[Projectile.type] = 9;
 		}
 		public override void SetDefaults()

@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Wow Bullet"); // The English name of the projectile
+			// DisplayName.SetDefault("Wow Bullet"); // The English name of the projectile
 			Main.projFrames[Projectile.type] = 7;
 		}
 		public override void SetDefaults()

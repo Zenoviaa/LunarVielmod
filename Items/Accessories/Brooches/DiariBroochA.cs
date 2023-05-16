@@ -15,12 +15,12 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of the Tale of Diari");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of the Tale of Diari");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\n+ 4 Defense!" +
 				"\nAuto swing capabilities!" +
 				"\nFlame walking? Always Fed!" +
-				"\n+40 Health and Mana");
+				"\n+40 Health and Mana"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -12,8 +12,8 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Palm Tomahawks");
-			Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");
+			// DisplayName.SetDefault("Palm Tomahawks");
+			// Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");
 		}
 		public override void SetDefaults()
 		{

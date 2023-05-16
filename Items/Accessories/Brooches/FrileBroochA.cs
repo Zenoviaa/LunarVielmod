@@ -14,10 +14,10 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The Spragald");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of The Spragald");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\nEnemies now are frosted with icy glazes when hit!" +
-				"\n Use the power of the Ice biome :P");
+				"\n Use the power of the Ice biome :P"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

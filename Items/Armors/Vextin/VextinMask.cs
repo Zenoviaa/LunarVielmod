@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Vextin
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Vextin Mask");
-			Tooltip.SetDefault("You feel the hidden sands flow in you"
+			// DisplayName.SetDefault("Vextin Mask");
+			/* Tooltip.SetDefault("You feel the hidden sands flow in you"
 				+ "\n+7% increased damage" +
-				"\n+20 Health");
+				"\n+20 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 

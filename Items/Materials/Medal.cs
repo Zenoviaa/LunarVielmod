@@ -7,9 +7,9 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Ruin Medal");
-			Tooltip.SetDefault("An old ancient medal.." +
-			"\nKeep this in your inventory, can be sold and may attract someone, romantically...");
+			// DisplayName.SetDefault("Ruin Medal");
+			/* Tooltip.SetDefault("An old ancient medal.." +
+			"\nKeep this in your inventory, can be sold and may attract someone, romantically..."); */
 		}
 		public override void SetDefaults()
 		{

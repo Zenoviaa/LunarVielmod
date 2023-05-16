@@ -14,10 +14,10 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The Spragald");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of The Spragald");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\nEffect = +10 Defense" +
-				"\n Use the power of the Spragald Spiders!");
+				"\n Use the power of the Spragald Spiders!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

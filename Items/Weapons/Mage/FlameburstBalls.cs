@@ -13,8 +13,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Molted Crust Ball");
-			Tooltip.SetDefault("Shoots fast homing sparks of fire!");
+			// DisplayName.SetDefault("Molted Crust Ball");
+			// Tooltip.SetDefault("Shoots fast homing sparks of fire!");
 		}
 		public override void SetDefaults()
 		{

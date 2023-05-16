@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
@@ -19,14 +20,14 @@ namespace Stellamod.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("VerianOre");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("VerianOre");
 			AddMapEntry(new Color(200, 171, 150), name);
 
 			DustType = 84;
 			DustType = DustID.Firework_Yellow;
 			DustType = DustID.FlameBurst;
-			ItemDrop = ModContent.ItemType<Items.Ores.VerianOre>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Ores.VerianOre>();
 			HitSound = SoundID.Tink;
 		 MineResist = 2f;
 		 MinPick = 80;

@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Bullet");
+			// DisplayName.SetDefault("Star Bullet");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}

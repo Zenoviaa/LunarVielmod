@@ -11,7 +11,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("death");
+			// DisplayName.SetDefault("death");
 			Main.projFrames[Projectile.type] = 14;
 		}
 		public override void SetDefaults()

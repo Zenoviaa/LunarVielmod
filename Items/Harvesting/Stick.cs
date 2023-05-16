@@ -8,9 +8,9 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stick");
-			Tooltip.SetDefault("Welp, its a stick" +
-			"\nBest use for weapons and planting items!");
+			// DisplayName.SetDefault("Stick");
+			/* Tooltip.SetDefault("Welp, its a stick" +
+			"\nBest use for weapons and planting items!"); */
 		}
 		public override void SetDefaults()
 		{

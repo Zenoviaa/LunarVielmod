@@ -11,9 +11,9 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Paper Paws");
-			Tooltip.SetDefault("Why don't you give your summons more credit?" +
-				"\n+1 summon");
+			// DisplayName.SetDefault("Paper Paws");
+			/* Tooltip.SetDefault("Why don't you give your summons more credit?" +
+				"\n+1 summon"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -10,8 +10,8 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stump Buster");
-			Tooltip.SetDefault("I command thee, use the power of stumps!");
+			// DisplayName.SetDefault("Stump Buster");
+			// Tooltip.SetDefault("I command thee, use the power of stumps!");
 		}
 		public override void SetDefaults()
 		{

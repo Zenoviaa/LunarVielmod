@@ -8,7 +8,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("SalfaCirle2");
+			// DisplayName.SetDefault("SalfaCirle2");
 			Main.projFrames[Projectile.type] = 4;
 		}
 		public override void SetDefaults()

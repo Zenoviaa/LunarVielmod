@@ -10,7 +10,7 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrow Valswa");
+			// DisplayName.SetDefault("Morrow Valswa");
 		}
 		public override void SetDefaults()
 		{

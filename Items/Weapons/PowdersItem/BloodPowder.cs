@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Kaev Powder");
-			Tooltip.SetDefault("Throw magical dust on them and ignite" +
-				"\nA blood dust that does high damage with igniters.");
+			// DisplayName.SetDefault("Kaev Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them and ignite" +
+				"\nA blood dust that does high damage with igniters."); */
 		}
 		public override void SetDefaults()
 		{

@@ -9,10 +9,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Alcadiz metal");
-			Tooltip.SetDefault("Woa this is super hard and magical.." +
+			// DisplayName.SetDefault("Alcadiz metal");
+			/* Tooltip.SetDefault("Woa this is super hard and magical.." +
 			"\nWhere does this ore come from?" +
-			"\nBest use for metalic weapons and magical items!");
+			"\nBest use for metalic weapons and magical items!"); */
 		}
 		public override void SetDefaults()
 		{

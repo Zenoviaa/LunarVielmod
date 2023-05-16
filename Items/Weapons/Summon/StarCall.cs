@@ -16,10 +16,10 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Starbomber");
-			Tooltip.SetDefault("Your summons will explode into big stary bits!" +
+			// DisplayName.SetDefault("Starbomber");
+			/* Tooltip.SetDefault("Your summons will explode into big stary bits!" +
 				"\nTakes 2 slots to summon" +
-				"\nThey will act as temporary summons for big damage");
+				"\nThey will act as temporary summons for big damage"); */
 		}
 		public override void SetDefaults()
 		{

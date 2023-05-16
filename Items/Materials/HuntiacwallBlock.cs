@@ -10,7 +10,7 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("silky walls!");
+			// Tooltip.SetDefault("silky walls!");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
 		}
 		public override void SetDefaults()

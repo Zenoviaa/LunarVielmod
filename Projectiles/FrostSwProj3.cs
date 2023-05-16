@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles
 		bool launch = false;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frost Swing");
+			// DisplayName.SetDefault("Frost Swing");
 		}
 		public override void SetDefaults()
 		{

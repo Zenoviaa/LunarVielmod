@@ -3,6 +3,7 @@ using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -41,9 +42,9 @@ namespace Stellamod.Tiles.Structures.Huntria
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
+			LocalizedText name = CreateMapEntryName();
 
-			name.SetDefault("Hunter's Curtains");
+			// name.SetDefault("Hunter's Curtains");
 			AddMapEntry(new Color(47, 49, 33), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)

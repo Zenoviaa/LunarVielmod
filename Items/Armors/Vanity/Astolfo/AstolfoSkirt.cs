@@ -14,10 +14,10 @@ namespace Stellamod.Items.Armors.Vanity.Astolfo
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Astolfo's skirt!");
-			Tooltip.SetDefault("Woa it even smells like water!"
+			// DisplayName.SetDefault("Astolfo's skirt!");
+			/* Tooltip.SetDefault("Woa it even smells like water!"
 				+ "\n5% increased movement speed" +
-				"\nRizz Thighs");
+				"\nRizz Thighs"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

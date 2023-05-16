@@ -15,9 +15,9 @@ namespace Stellamod.Items.Armors
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Celestia Moon Mask");
-			Tooltip.SetDefault("Magical essence of an empress!"
-				+ "\n+20 Max mana and +1 Minion Slot");
+			// DisplayName.SetDefault("Celestia Moon Mask");
+			/* Tooltip.SetDefault("Magical essence of an empress!"
+				+ "\n+20 Max mana and +1 Minion Slot"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 

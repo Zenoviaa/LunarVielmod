@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Whimsical Drear Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA musical dust! that explodes with your igniter!");
+			// DisplayName.SetDefault("Whimsical Drear Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
+				"\nA musical dust! that explodes with your igniter!"); */
 		}
 
 		

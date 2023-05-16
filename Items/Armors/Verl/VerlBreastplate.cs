@@ -17,12 +17,12 @@ namespace Stellamod.Items.Armors.Verl
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Verl Breastplate");
-			Tooltip.SetDefault("Shines with a blooming moon"
+			// DisplayName.SetDefault("Verl Breastplate");
+			/* Tooltip.SetDefault("Shines with a blooming moon"
 				+ "\n+10% Ranged and Magic Damage!" +
 				"\n+12 Penetration" +
 				"\n+5 Critical Strike Chance!" +
-				"\n+20 Max Life");
+				"\n+20 Max Life"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

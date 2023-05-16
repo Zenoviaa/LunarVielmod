@@ -48,7 +48,7 @@ namespace Stellamod.UI.Panels
 			rotOff = rotationOffset;
 
 		}
-		public override void Click(UIMouseEvent evt)
+		public override void LeftClick(UIMouseEvent evt)
 		{
 			selectedID = id;
 			if (selectedID == id)
@@ -151,7 +151,7 @@ namespace Stellamod.UI.Panels
 
 			
 			
-			Choice1.OnClick += OnClick1;
+			Choice1.OnLeftClick += OnClick1;
 
 			Append(Choice1);
 			Append(Choice2);

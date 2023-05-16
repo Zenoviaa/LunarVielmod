@@ -13,8 +13,8 @@ namespace Stellamod.Items.Placeable.Cathedral
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Crytsal I");
-			Tooltip.SetDefault("A giant crystal");
+			// DisplayName.SetDefault("Crytsal I");
+			// Tooltip.SetDefault("A giant crystal");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

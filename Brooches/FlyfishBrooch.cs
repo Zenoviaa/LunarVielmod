@@ -23,7 +23,7 @@ namespace Stellamod.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch Of speedy fish");
+			// DisplayName.SetDefault("Brooch Of speedy fish");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 1;
 			// This is necessary for right-click targeting

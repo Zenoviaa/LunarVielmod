@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowed Candle");
-			Tooltip.SetDefault("A candle but you cant place it :(" +
+			// DisplayName.SetDefault("Morrowed Candle");
+			/* Tooltip.SetDefault("A candle but you cant place it :(" +
 			"\nWhy does it exist?" +
-			"\nUsed in many recipes");
+			"\nUsed in many recipes"); */
 		}
 		public override void SetDefaults()
 		{

@@ -16,9 +16,9 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sap Container");
-			Tooltip.SetDefault("Every 10 seconds eat stardew and MAJORLY increase your magic damage" +
-				"\n+7% Magic damage...");
+			// DisplayName.SetDefault("Sap Container");
+			/* Tooltip.SetDefault("Every 10 seconds eat stardew and MAJORLY increase your magic damage" +
+				"\n+7% Magic damage..."); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

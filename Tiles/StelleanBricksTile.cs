@@ -14,7 +14,7 @@ namespace Stellamod.Tiles
 			Main.tileBlockLight[Type] = true;
 
 			DustType = Main.rand.Next(110, 113);
-			ItemDrop = ModContent.ItemType<Items.Materials.Stelleanbrick>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Materials.Stelleanbrick>();
 			MineResist = 8f;
 			MinPick = 225;
 

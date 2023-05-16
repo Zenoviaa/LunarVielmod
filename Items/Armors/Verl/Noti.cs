@@ -15,7 +15,7 @@ namespace Stellamod.Items.Armors.Verl
 		public int timer = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Powered Notes!");
+			// DisplayName.SetDefault("Powered Notes!");
 
 		}
 		public override void SetDefaults()
@@ -144,7 +144,7 @@ namespace Stellamod.Items.Armors.Verl
 		}
 
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 			Projectile.Kill();
         }

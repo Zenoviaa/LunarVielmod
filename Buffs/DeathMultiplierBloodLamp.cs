@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Multiplier Blood Lamp");
-			Description.SetDefault("A multiplier of death for Blood Lamp");
+			// DisplayName.SetDefault("Multiplier Blood Lamp");
+			// Description.SetDefault("A multiplier of death for Blood Lamp");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

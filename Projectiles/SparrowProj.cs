@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("dead");
+			// DisplayName.SetDefault("dead");
 			Main.projFrames[Projectile.type] = 1;
 		}
 		private int ProjectileSpawnedCount;

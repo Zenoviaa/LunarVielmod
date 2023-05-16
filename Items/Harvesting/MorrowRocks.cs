@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowed Stone");
-			Tooltip.SetDefault("Woa this is super hard.." +
+			// DisplayName.SetDefault("Morrowed Stone");
+			/* Tooltip.SetDefault("Woa this is super hard.." +
 			"\nAn object from harvesting" +
-			"\nBest use for plants, items and morrowed weapons!");
+			"\nBest use for plants, items and morrowed weapons!"); */
 		}
 		public override void SetDefaults()
 		{

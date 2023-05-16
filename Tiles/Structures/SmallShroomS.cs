@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -35,8 +36,8 @@ namespace Stellamod.Tiles.Structures
 			TileObjectData.newTile.StyleMultiplier = 2; //same as above
 
 			// Etc
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Shroomie");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Shroomie");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)

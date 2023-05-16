@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Auroran Bullet");
+			// DisplayName.SetDefault("Auroran Bullet");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}

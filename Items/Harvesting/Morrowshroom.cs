@@ -7,9 +7,9 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowshroom");
-			Tooltip.SetDefault("Ew an even weirder mushroom.." +
-			"\nBest use for planting");
+			// DisplayName.SetDefault("Morrowshroom");
+			/* Tooltip.SetDefault("Ew an even weirder mushroom.." +
+			"\nBest use for planting"); */
 		}
 		public override void SetDefaults()
 		{

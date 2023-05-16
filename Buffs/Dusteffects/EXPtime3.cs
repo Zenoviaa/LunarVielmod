@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("EXPtime3");
-			Description.SetDefault("thingy");
+			// DisplayName.SetDefault("EXPtime3");
+			// Description.SetDefault("thingy");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

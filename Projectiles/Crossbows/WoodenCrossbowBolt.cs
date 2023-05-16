@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.Crossbows
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Wooden Bolt");
+            // DisplayName.SetDefault("Wooden Bolt");
 
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Crossbows
 
 
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 
         {
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);

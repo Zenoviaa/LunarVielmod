@@ -8,10 +8,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Condensed Dirt");
-			Tooltip.SetDefault("Ew! Its sticky! Why??" +
+			// DisplayName.SetDefault("Condensed Dirt");
+			/* Tooltip.SetDefault("Ew! Its sticky! Why??" +
 			"\nA sticky dirt-like substance that comes from the ground!" +
-			"\nBest use for fertilizer and dirt-like items!");
+			"\nBest use for fertilizer and dirt-like items!"); */
 		}
 		public override void SetDefaults()
 		{

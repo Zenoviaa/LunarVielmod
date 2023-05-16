@@ -17,10 +17,10 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Coal Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
+			// DisplayName.SetDefault("Coal Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nForged from the gems you collect!" +
-				"\nTia is a bum");
+				"\nTia is a bum"); */
 		}
 		public override void SetDefaults()
 		{

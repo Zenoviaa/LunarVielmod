@@ -28,7 +28,7 @@ namespace Stellamod.WorldG
 	public class StellaWorld : ModSystem
 	{
 
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			/* int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Webs"));
 				if (MorrowGen != -1)
@@ -123,7 +123,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX / 3);
-				int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+				int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 9), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
@@ -139,7 +139,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+				int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 13), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
@@ -156,7 +156,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(0, Main.maxTilesX );
-				int ya = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, (int)WorldGen.rockLayerHigh);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
@@ -274,7 +274,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int ya = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, (int)WorldGen.rockLayerHigh);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
@@ -375,7 +375,7 @@ namespace Stellamod.WorldG
 			for (int g = 0; g < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 60); g++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yab = WorldGen.genRand.Next((int)WorldGen.rockLayerHigh, Main.maxTilesY);
+				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
 
 
@@ -408,7 +408,7 @@ namespace Stellamod.WorldG
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 40); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yab = WorldGen.genRand.Next((int)WorldGen.rockLayerHigh, Main.maxTilesY);
+				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
@@ -708,7 +708,7 @@ namespace Stellamod.WorldG
 			{
 
 				int xa = WorldGen.genRand.Next(Main.maxTilesX / 3, Main.maxTilesX / 2 );
-				int ya = WorldGen.genRand.Next((int)WorldGen.rockLayerLow + 300, (int)WorldGen.rockLayer + 300);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 300, (int)GenVars.rockLayer + 300);
 				Point Loc = new Point(xa, ya);
 
 
@@ -841,9 +841,9 @@ namespace Stellamod.WorldG
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Gild settling in the ground";
 			int xa = WorldGen.genRand.Next(0, Main.maxTilesX / 2);
-			int ya = WorldGen.genRand.Next((int)WorldGen.worldSurface, Main.maxTilesY / 2);
+			int ya = WorldGen.genRand.Next((int)GenVars.worldSurface, Main.maxTilesY / 2);
 
-			int yb = WorldGen.genRand.Next((int)WorldGen.worldSurface, (int)WorldGen.worldSurface);
+			int yb = WorldGen.genRand.Next((int)GenVars.worldSurface, (int)GenVars.worldSurface);
 
 
 			for (int da = 0; da < 1; da++)

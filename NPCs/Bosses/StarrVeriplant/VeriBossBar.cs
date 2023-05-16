@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
 		{
 			// Make the bar shake the less health the NPC has
-			float shakeIntensity = Utils.Clamp(1f - drawParams.LifePercentToShow - 0.2f, 0f, 1f);
+			float shakeIntensity = Utils.Clamp(1f - drawParams.LifePercentToShow/* tModPorter Note: Removed. Suggest: Life / LifeMax */ - 0.2f, 0f, 1f);
 			drawParams.BarCenter.Y -= 20f;
 			drawParams.BarCenter += new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * shakeIntensity * 2f;
 
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			return true;
 		}
-		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float lifePercent, ref float shieldPercent)
+		public override bool? ModifyInfo(ref BigProgressBarInfo info, ref float life, ref float lifeMax, ref float shield, ref float shieldMax)/* tModPorter Note: life and shield current and max values are now separate to allow for hp/shield number text draw */
 		{
 			// Here the game wants to know if to draw the boss bar or not. Return false whenever the conditions don't apply.
 			// If there is no possibility of returning false (or null) the bar will get drawn at times when it shouldn't, so write defensive code!

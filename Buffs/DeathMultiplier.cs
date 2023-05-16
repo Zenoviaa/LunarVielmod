@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Death Multiplier");
-			Description.SetDefault("A multiplier of death for Magiblades");
+			// DisplayName.SetDefault("Death Multiplier");
+			// Description.SetDefault("A multiplier of death for Magiblades");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

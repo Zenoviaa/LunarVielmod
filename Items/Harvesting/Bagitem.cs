@@ -9,10 +9,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Dust Bag");
-			Tooltip.SetDefault("A bag made for igniter dusts!" +
+			// DisplayName.SetDefault("Dust Bag");
+			/* Tooltip.SetDefault("A bag made for igniter dusts!" +
 			"\nWhere does this come from?" +
-			"\nUsed in every dust recipe, bring to the dust bench!");
+			"\nUsed in every dust recipe, bring to the dust bench!"); */
 		}
 		public override void SetDefaults()
 		{

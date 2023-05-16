@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Butterfly of spoopiness");
+			// DisplayName.SetDefault("Butterfly of spoopiness");
 			Main.projFrames[Projectile.type] = 4;
 			//The recording mode
 		}
@@ -197,7 +197,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 
 
 		}
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 
 			float speedXabx = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);

@@ -11,8 +11,8 @@ namespace Stellamod.Items.Placeable.Cathedral
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia's Shrine");
-			Tooltip.SetDefault("Use at your own risk");
+			// DisplayName.SetDefault("Verlia's Shrine");
+			// Tooltip.SetDefault("Use at your own risk");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

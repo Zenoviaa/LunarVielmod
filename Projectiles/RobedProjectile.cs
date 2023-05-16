@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles
 				}
 			}
 		}
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			for (int i = 0; i < 10; i++)
 			{

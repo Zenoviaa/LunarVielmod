@@ -11,7 +11,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Dicein");
+			// DisplayName.SetDefault("Dicein");
 			Main.projFrames[Projectile.type] = 30;
 		}
 		

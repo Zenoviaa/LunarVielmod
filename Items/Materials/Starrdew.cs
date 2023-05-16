@@ -11,9 +11,9 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Starr Dew");
-			Tooltip.SetDefault("Ew! Its sticky! I wonder what else is sticky..." +
-			"\nA sticky substance that resonates with the stars and the morrow!");
+			// DisplayName.SetDefault("Starr Dew");
+			/* Tooltip.SetDefault("Ew! Its sticky! I wonder what else is sticky..." +
+			"\nA sticky substance that resonates with the stars and the morrow!"); */
 		}
 		public override void SetDefaults()
 		{

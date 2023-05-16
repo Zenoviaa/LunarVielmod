@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Pieces.RareMetals
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Gintzi Mask");
-			Tooltip.SetDefault("Rare Iron Mask!"
+			// DisplayName.SetDefault("Gintzi Mask");
+			/* Tooltip.SetDefault("Rare Iron Mask!"
 				+ "\n+2 summons!" +
-				"\n+50 Health");
+				"\n+50 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -11,7 +11,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Split Flame");
+			// DisplayName.SetDefault("Split Flame");
 			Main.projFrames[Projectile.type] = 4;
 		}
 		public override void SetDefaults()
@@ -25,7 +25,7 @@ namespace Stellamod.Projectiles
 			Projectile.scale = 1f;
 			Main.projFrames[Projectile.type] = 4;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<Wounded>(), 420);

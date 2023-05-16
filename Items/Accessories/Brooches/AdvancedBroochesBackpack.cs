@@ -13,11 +13,11 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Advanced Brooch Knapsack");
-			Tooltip.SetDefault("Increased Regeneration!" +
+			// DisplayName.SetDefault("Advanced Brooch Knapsack");
+			/* Tooltip.SetDefault("Increased Regeneration!" +
 				"\n +10% damage" +
 				"\n Allows you to equip advanced brooches! (Very useful :P)" +
-				"\n Allows the effects of the Hiker's Backpack! ");
+				"\n Allows the effects of the Hiker's Backpack! "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

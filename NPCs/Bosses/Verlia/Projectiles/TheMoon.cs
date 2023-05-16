@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("The Coveted Great Moon");
+			// DisplayName.SetDefault("The Coveted Great Moon");
 			Main.projFrames[Projectile.type] = 20;
 		}
 		private int rippleCount = 3;

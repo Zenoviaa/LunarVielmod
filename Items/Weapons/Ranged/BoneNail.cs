@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Doorlauncher"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("Burning with flowery rage!");
+			// Tooltip.SetDefault("Burning with flowery rage!");
 		}
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{

@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Big Rock");
+			// DisplayName.SetDefault("Big Rock");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}
@@ -175,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			return true;
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;

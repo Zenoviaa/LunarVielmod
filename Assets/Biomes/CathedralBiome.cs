@@ -34,7 +34,7 @@ namespace Stellamod.Assets.Biomes
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Cathedral of the Moon");
+			// DisplayName.SetDefault("Cathedral of the Moon");
 		}
 
 		// Calculate when the biome is active.

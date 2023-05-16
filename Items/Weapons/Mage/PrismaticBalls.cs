@@ -13,8 +13,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Prismatic Cryadia Ball");
-			Tooltip.SetDefault("Shoots fast homing sparks of everlasting crystal light!");
+			// DisplayName.SetDefault("Prismatic Cryadia Ball");
+			// Tooltip.SetDefault("Shoots fast homing sparks of everlasting crystal light!");
 		}
 		public override void SetDefaults()
 		{

@@ -11,7 +11,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrow Valswa");
+			// DisplayName.SetDefault("Morrow Valswa");
 			Main.projFrames[Projectile.type] = 2;
 		}
 		public override void Smash(Vector2 position)

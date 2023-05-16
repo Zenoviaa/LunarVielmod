@@ -13,9 +13,9 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("You made a gun out of wood what did you expect.." +
-				"\nFor your efforts I commend you, now use my voice as a weapon :)");
-			DisplayName.SetDefault("WOWanizer");
+			/* Tooltip.SetDefault("You made a gun out of wood what did you expect.." +
+				"\nFor your efforts I commend you, now use my voice as a weapon :)"); */
+			// DisplayName.SetDefault("WOWanizer");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

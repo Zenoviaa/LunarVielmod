@@ -11,8 +11,8 @@ namespace Stellamod.Items.Ores
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Hot to the touch, filled with gild and glory of tribal warriors" +
-				"\n its so hot you can't even touch it, gotta use heated fabric...");
+			/* Tooltip.SetDefault("Hot to the touch, filled with gild and glory of tribal warriors" +
+				"\n its so hot you can't even touch it, gotta use heated fabric..."); */
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

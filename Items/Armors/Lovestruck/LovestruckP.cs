@@ -17,7 +17,7 @@ namespace Stellamod.Items.Armors.Lovestruck
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Death Lovestruck");
+			// DisplayName.SetDefault("Death Lovestruck");
 		}
 		public override void SetDefaults()
 		{
@@ -126,7 +126,7 @@ namespace Stellamod.Items.Armors.Lovestruck
 			return closestNPC;
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 
 			NPC npc = target;

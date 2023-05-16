@@ -17,9 +17,9 @@ namespace Stellamod.Items.Weapons.Igniters
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("ScorcheCard Igniter");
-			Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
-				"\n Use a powder or dust and then use this type of weapon!");
+			// DisplayName.SetDefault("ScorcheCard Igniter");
+			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
+				"\n Use a powder or dust and then use this type of weapon!"); */
 		}
 		public override void SetDefaults()
 		{

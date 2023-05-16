@@ -10,7 +10,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("BoomTrick");
+			// DisplayName.SetDefault("BoomTrick");
 			Main.projFrames[Projectile.type] = 20;
 		}
 		

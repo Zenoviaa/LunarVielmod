@@ -34,7 +34,7 @@ namespace Stellamod.Assets.Biomes
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Marrow Surface");
+			// DisplayName.SetDefault("Marrow Surface");
 		}
 
 		// Calculate when the biome is active.

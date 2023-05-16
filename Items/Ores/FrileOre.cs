@@ -10,7 +10,7 @@ namespace Stellamod.Items.Ores
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("An ore too cold to place, used for many items with ice!");
+			// Tooltip.SetDefault("An ore too cold to place, used for many items with ice!");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

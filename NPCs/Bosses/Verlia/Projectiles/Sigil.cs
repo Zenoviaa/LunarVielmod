@@ -10,7 +10,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sigil");
+			// DisplayName.SetDefault("Sigil");
 			Main.projFrames[Projectile.type] = 10;
 		}
 		

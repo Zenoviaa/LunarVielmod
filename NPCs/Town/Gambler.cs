@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Town
 
 			return chat; // chat is implicitly cast to a string.
 		}
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			int num = NPC.life > 0 ? 1 : 5;
 
@@ -181,7 +181,7 @@ namespace Stellamod.NPCs.Town
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+		public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */
 		{ // Requirements for the town NPC to spawn.
 			for (int k = 0; k < 255; k++)
 			{
@@ -228,7 +228,7 @@ namespace Stellamod.NPCs.Town
 			
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shopName)
 		{
 			if (firstButton)
 			{
@@ -295,7 +295,7 @@ namespace Stellamod.NPCs.Town
 			frameTick = 0;
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot)
+		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
 		
 			shop.item[nextSlot].SetDefaults(ItemID.PotionOfReturn);

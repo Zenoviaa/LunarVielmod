@@ -11,8 +11,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowed Flower Batch");
-			Tooltip.SetDefault("Do not right click or disturb the evil");
+			// DisplayName.SetDefault("Morrowed Flower Batch");
+			// Tooltip.SetDefault("Do not right click or disturb the evil");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("IceDust");
-			Description.SetDefault("A dust that is for the frozen");
+			// DisplayName.SetDefault("IceDust");
+			// Description.SetDefault("A dust that is for the frozen");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowed Vine");
-			Tooltip.SetDefault("A useful piece of string!" +
+			// DisplayName.SetDefault("Morrowed Vine");
+			/* Tooltip.SetDefault("A useful piece of string!" +
 			"\nFrom some Alcadiz warriors of the morrow" +
-			"\nUsed in many recipes for weapons, bags and such");
+			"\nUsed in many recipes for weapons, bags and such"); */
 		}
 		public override void SetDefaults()
 		{

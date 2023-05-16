@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Trick Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly tricky dust that does a lot damage!");
+			// DisplayName.SetDefault("Trick Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
+				"\nA sparkly tricky dust that does a lot damage!"); */
 		}
 		public override void SetDefaults()
 		{

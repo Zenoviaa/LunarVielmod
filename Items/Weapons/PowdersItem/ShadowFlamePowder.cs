@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("ShadeFlame Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA shadow dust that explodes with your igniter!");
+			// DisplayName.SetDefault("ShadeFlame Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
+				"\nA shadow dust that explodes with your igniter!"); */
 		}
 		public override void SetDefaults()
 		{

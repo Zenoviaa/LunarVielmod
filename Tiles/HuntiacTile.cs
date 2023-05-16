@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
@@ -19,14 +20,14 @@ namespace Stellamod.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Huntiac Silk");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Huntiac Silk");
 			AddMapEntry(new Color(36, 31, 27), name);
 
 			DustType = 84;
 			DustType = DustID.Sandnado;
 			DustType = DustID.Web;
-			ItemDrop = ModContent.ItemType<Items.Materials.HuntiacBlock>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Materials.HuntiacBlock>();
 			HitSound = SoundID.Grass;
 		 MineResist = 2f;
 		 MinPick = 150;

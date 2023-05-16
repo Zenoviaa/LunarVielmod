@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Seen");
-			Description.SetDefault("'Seen'");
+			// DisplayName.SetDefault("Seen");
+			// Description.SetDefault("'Seen'");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;

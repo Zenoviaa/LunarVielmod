@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using On.Terraria.DataStructures;
 using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;

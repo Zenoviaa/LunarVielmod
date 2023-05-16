@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles.Nails
 		
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Slasher");
+			// DisplayName.SetDefault("Slasher");
 			Main.projFrames[Projectile.type] = 1;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Nails
 			player.itemAnimation = 2;
 			//Projectile.netUpdate = true;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;

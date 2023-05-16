@@ -13,8 +13,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star-Gilded Bongo");
-			Tooltip.SetDefault("Bong bong boom :)");
+			// DisplayName.SetDefault("Star-Gilded Bongo");
+			// Tooltip.SetDefault("Bong bong boom :)");
 		}
 		public override void SetDefaults()
 		{

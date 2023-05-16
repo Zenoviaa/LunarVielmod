@@ -11,7 +11,7 @@ namespace Stellamod.Items.Ores
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Frozen to the core, an essense of the moon and ice.");
+			// Tooltip.SetDefault("Frozen to the core, an essense of the moon and ice.");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

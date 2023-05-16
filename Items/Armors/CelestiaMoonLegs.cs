@@ -14,10 +14,10 @@ namespace Stellamod.Items.Armors
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Celestia Moon Leggings");
-			Tooltip.SetDefault("Magical essence of an empress!"
+			// DisplayName.SetDefault("Celestia Moon Leggings");
+			/* Tooltip.SetDefault("Magical essence of an empress!"
 				+ "\n5% increased movement speed" +
-				"\n+20 Health");
+				"\n+20 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

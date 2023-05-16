@@ -16,11 +16,11 @@ namespace Stellamod.Items.Weapons.Whips
 		public override void SetStaticDefaults()
 		{
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-			DisplayName.SetDefault("Alcadiz Whip");
-			Tooltip.SetDefault("Your summons will target focused enemies" +
+			// DisplayName.SetDefault("Alcadiz Whip");
+			/* Tooltip.SetDefault("Your summons will target focused enemies" +
 				"\nSummons will act on a target and do tremendous more damage" +
 				"\nBut when you mark an enemy, you lower your defense :(" +
-				"\nDon't dieee!");
+				"\nDon't dieee!"); */
 		}
 
 		public override void SetDefaults()

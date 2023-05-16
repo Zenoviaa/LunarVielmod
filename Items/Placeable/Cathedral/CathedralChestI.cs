@@ -10,8 +10,8 @@ namespace Stellamod.Items.Placeable.Cathedral
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Cathedral Chest");
-			Tooltip.SetDefault("A chest dedicated to the empress of the moon Verlia");
+			// DisplayName.SetDefault("Cathedral Chest");
+			// Tooltip.SetDefault("A chest dedicated to the empress of the moon Verlia");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

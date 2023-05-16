@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.PocketProj
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pocket Sand Projectile");
+			// DisplayName.SetDefault("Pocket Sand Projectile");
 			
 		}
 		public override void SetDefaults()
@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.PocketProj
 
 			return true;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 
 			target.AddBuff(ModContent.BuffType<Dusted>(), 2880);

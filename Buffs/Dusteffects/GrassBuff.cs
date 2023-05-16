@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("GrassBuff");
-			Description.SetDefault("A dust that is for the poor");
+			// DisplayName.SetDefault("GrassBuff");
+			// Description.SetDefault("A dust that is for the poor");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

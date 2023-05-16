@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("TrickDust");
-			Description.SetDefault("A dust that is for true tricksters");
+			// DisplayName.SetDefault("TrickDust");
+			// Description.SetDefault("A dust that is for true tricksters");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

@@ -31,10 +31,10 @@ namespace Stellamod.Tiles
 			AdjTiles = new int[] { TileID.Containers };
 
 			// Names
-			ContainerName.SetDefault("Morrowed Plants");
+			ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Morrowed Plants");
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Morrowed Plants");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Morrowed Plants");
 
 
 			Main.tileTable[Type] = false;
@@ -134,7 +134,7 @@ namespace Stellamod.Tiles
 			}
 			else
 			{
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType)/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{

@@ -13,8 +13,8 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Box of Leaves");
-			Tooltip.SetDefault("Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...");
+			// DisplayName.SetDefault("Box of Leaves");
+			// Tooltip.SetDefault("Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...");
 		}
 		public override void SetDefaults()
 		{

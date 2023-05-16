@@ -13,9 +13,9 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Medallion of the Tombs");
-			Tooltip.SetDefault("Every 10 seconds drop high damage spiky balls on the ground" +
-				"\n+5% Ranged damage...");
+			// DisplayName.SetDefault("Medallion of the Tombs");
+			/* Tooltip.SetDefault("Every 10 seconds drop high damage spiky balls on the ground" +
+				"\n+5% Ranged damage..."); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

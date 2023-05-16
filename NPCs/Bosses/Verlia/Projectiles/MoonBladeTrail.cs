@@ -13,7 +13,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Moon Blade Trail");
+			// DisplayName.SetDefault("Moon Blade Trail");
 			Main.projFrames[Projectile.type] = 1;
 		}
 		

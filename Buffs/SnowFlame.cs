@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Snowy Flame");
-			Description.SetDefault("'An cryogenic-gilded hybrid force saps life'");
+			// DisplayName.SetDefault("Snowy Flame");
+			// Description.SetDefault("'An cryogenic-gilded hybrid force saps life'");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;

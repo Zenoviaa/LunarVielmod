@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Wounded");
-			Description.SetDefault("'A cut that saps life'");
+			// DisplayName.SetDefault("Wounded");
+			// Description.SetDefault("'A cut that saps life'");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;

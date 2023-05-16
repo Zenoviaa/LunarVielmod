@@ -21,13 +21,14 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Halhurish The Flamed"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("Whip your opponents in the air" +
-				"\nHitting enemies will explode");
+			// DisplayName.SetDefault("Halhurish The Flamed"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+			/* Tooltip.SetDefault("Whip your opponents in the air" +
+				"\nHitting enemies will explode"); */
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
 			line = new TooltipLine(Mod, "Halhurish", "Safunai Weapon Type")

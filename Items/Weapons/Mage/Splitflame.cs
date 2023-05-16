@@ -11,8 +11,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Split-flame candle");
-			Tooltip.SetDefault("Totally not the candle from split, totally.");
+			// DisplayName.SetDefault("Split-flame candle");
+			// Tooltip.SetDefault("Totally not the candle from split, totally.");
 		}
 		public override void SetDefaults()
 		{

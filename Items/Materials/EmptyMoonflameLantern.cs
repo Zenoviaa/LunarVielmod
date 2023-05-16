@@ -11,9 +11,9 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Take it to the depths of hell, " +
+			/* Tooltip.SetDefault("Take it to the depths of hell, " +
 				"\n Freeze the flame" +
-				"\n The dance at the Cathedral awaits at the top of the moonlight");
+				"\n The dance at the Cathedral awaits at the top of the moonlight"); */
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

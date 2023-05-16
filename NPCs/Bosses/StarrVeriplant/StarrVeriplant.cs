@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Starr Veriplant");
+			// DisplayName.SetDefault("Starr Veriplant");
 			
 			Main.npcFrameCount[Type] = 64;
 

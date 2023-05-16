@@ -11,8 +11,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Coconut Tome");
-			Tooltip.SetDefault("Look master, I can summon, Coconuts!");
+			// DisplayName.SetDefault("Coconut Tome");
+			// Tooltip.SetDefault("Look master, I can summon, Coconuts!");
 		}
 		public override void SetDefaults()
 		{

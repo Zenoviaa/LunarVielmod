@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using IL.Terraria.Graphics.Effects;
 using Terraria.Graphics.Effects; // Don't forget this one!
 using Stellamod.UI.Systems;
 using Terraria.Audio;
@@ -17,7 +16,7 @@ namespace Stellamod.Projectiles.Summons
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Starbomb");
+            // DisplayName.SetDefault("Starbomb");
             Main.projFrames[Projectile.type] = 1;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;

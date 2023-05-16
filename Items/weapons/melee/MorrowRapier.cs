@@ -14,7 +14,7 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Poke poke-dont get the wrong idea of the weapon function-poke");
+			// Tooltip.SetDefault("Poke poke-dont get the wrong idea of the weapon function-poke");
 
 			ItemID.Sets.SkipsInitialUseSound[Item.type] = true; // This skips use animation-tied sound playback, so that we're able to make it be tied to use time instead in the UseItem() hook.
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 			return null;
 		}
-		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			// Inflict the OnFire debuff for 1 second onto any NPC/Monster that this hits.
 			// 60 frames = 1 second

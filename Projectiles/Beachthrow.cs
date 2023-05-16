@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Beachthrow");
+			// DisplayName.SetDefault("Beachthrow");
 		}
 		public override void SetDefaults()
 		{

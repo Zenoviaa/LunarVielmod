@@ -17,11 +17,11 @@ namespace Stellamod.Items.Armors.Verl
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Verl Leggings");
-			Tooltip.SetDefault("Look at them thighs go!"
+			// DisplayName.SetDefault("Verl Leggings");
+			/* Tooltip.SetDefault("Look at them thighs go!"
 				+ "\n+7% Magic and Ranged Damage!" +
 				"\n+Increased Movement speed" +
-				"\n+40 Max Life");
+				"\n+40 Max Life"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

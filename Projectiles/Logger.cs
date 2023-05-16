@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Logger");
+			// DisplayName.SetDefault("Logger");
 			Main.projFrames[Projectile.type] = 5;
 		}
 		public override void SetDefaults()
@@ -107,7 +107,7 @@ namespace Stellamod.Projectiles
 		}
 
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<Wounded>(), 180);

@@ -15,11 +15,11 @@ namespace Stellamod.Items.Armors.Vanity.Astolfo
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Astolfo Wig");
-			Tooltip.SetDefault("Yummy kummy :3"
+			// DisplayName.SetDefault("Astolfo Wig");
+			/* Tooltip.SetDefault("Yummy kummy :3"
 				+ "\n+2% increased damage" +
 				"\n+35 Health" +
-				"\nIncreased Pickaxe Speed!");
+				"\nIncreased Pickaxe Speed!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 

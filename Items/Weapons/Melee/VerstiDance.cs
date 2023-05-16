@@ -10,10 +10,10 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verstidance");
-			Tooltip.SetDefault("An Arcanal Weapon!" +
+			// DisplayName.SetDefault("Verstidance");
+			/* Tooltip.SetDefault("An Arcanal Weapon!" +
 				"\nSwirl!" +
-			"\nA petal dance that increases your movement speed and defense, but be wary of high risk ");
+			"\nA petal dance that increases your movement speed and defense, but be wary of high risk "); */
 		}
 		public override void SetDefaults()
 		{

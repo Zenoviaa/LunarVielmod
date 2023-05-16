@@ -26,7 +26,7 @@ namespace Stellamod.Assets.Biomes
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrow Underground");
+			// DisplayName.SetDefault("Morrow Underground");
 		}
 
 		// Calculate when the biome is active.

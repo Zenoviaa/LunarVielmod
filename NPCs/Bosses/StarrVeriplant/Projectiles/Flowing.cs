@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 		public int timer = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Powdered death flower");
+			// DisplayName.SetDefault("Powdered death flower");
 
 		}
 		public override void SetDefaults()

@@ -11,8 +11,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Alcaology Station");
-			Tooltip.SetDefault("This table is used for dusts and useful materials!");
+			// DisplayName.SetDefault("Alcaology Station");
+			// Tooltip.SetDefault("This table is used for dusts and useful materials!");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

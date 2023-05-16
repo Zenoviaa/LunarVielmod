@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Doorlauncher"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("Electrical nail, thats weird");
+			// Tooltip.SetDefault("Electrical nail, thats weird");
 		}
 		public override void SetDefaults()
 		{

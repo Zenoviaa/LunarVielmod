@@ -16,10 +16,10 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Meatballs" +
+			/* Tooltip.SetDefault("Meatballs" +
 				"\nDo not be worried, this mushes reality into bit bits and then shoots it!" +
-				"\nYou can never miss :P");
-			DisplayName.SetDefault("Teraciz");
+				"\nYou can never miss :P"); */
+			// DisplayName.SetDefault("Teraciz");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

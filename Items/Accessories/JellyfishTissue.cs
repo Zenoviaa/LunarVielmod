@@ -11,10 +11,10 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Jellyfish Tissue");
-			Tooltip.SetDefault("Woa really cool!" +
+			// DisplayName.SetDefault("Jellyfish Tissue");
+			/* Tooltip.SetDefault("Woa really cool!" +
 				"\n+40 Defense" +
-				"\n But at the cost of 40% damage ");
+				"\n But at the cost of 40% damage "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

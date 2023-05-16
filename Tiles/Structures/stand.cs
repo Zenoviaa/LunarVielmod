@@ -3,6 +3,7 @@ using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -40,9 +41,9 @@ namespace Stellamod.Tiles.Structures
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
+			LocalizedText name = CreateMapEntryName();
 
-			name.SetDefault("stand");
+			// name.SetDefault("stand");
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)

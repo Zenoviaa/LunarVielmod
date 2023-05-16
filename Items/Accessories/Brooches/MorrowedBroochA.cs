@@ -14,11 +14,11 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The Huntria Morrow");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of The Huntria Morrow");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\nHeavy increased damage to your arrows" +
 				"\n +2 Defense and increased ranged damage" +
-				"\n Use the power of the deep dark morrow..");
+				"\n Use the power of the deep dark morrow.."); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

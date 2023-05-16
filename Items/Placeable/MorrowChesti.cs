@@ -9,8 +9,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gilded Chest");
-			Tooltip.SetDefault("A chest dedicated to the feral warriors of the morrow");
+			// DisplayName.SetDefault("Gilded Chest");
+			// Tooltip.SetDefault("A chest dedicated to the feral warriors of the morrow");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

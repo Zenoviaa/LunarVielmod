@@ -10,7 +10,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("morrowshotarrow");
+			// DisplayName.SetDefault("morrowshotarrow");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles
 				dust.scale = 0.2f;
 			}
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Projectile.Kill();
 		}

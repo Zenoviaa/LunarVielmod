@@ -10,7 +10,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Flowa");
+			// Tooltip.SetDefault("Flowa");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
 		}
 		public override void SetDefaults()

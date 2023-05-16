@@ -3,6 +3,7 @@ using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -40,9 +41,9 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
+			LocalizedText name = CreateMapEntryName();
 
-			name.SetDefault("Crystal");
+			// name.SetDefault("Crystal");
 			AddMapEntry(new Color(16, 40, 33), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)

@@ -10,7 +10,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia's Swords Dance");
+			// DisplayName.SetDefault("Verlia's Swords Dance");
 			Main.projFrames[Projectile.type] = 10;
 		}
 		

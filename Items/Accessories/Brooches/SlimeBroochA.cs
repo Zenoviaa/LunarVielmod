@@ -14,11 +14,11 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The cute slimes");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of The cute slimes");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\nJump Higher!" +
 				"\nBouncy and fast fall" +
-				"\nAwww so cute :P");
+				"\nAwww so cute :P"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

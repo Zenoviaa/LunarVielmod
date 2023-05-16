@@ -10,7 +10,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("cathedite Wall");
+			// Tooltip.SetDefault("cathedite Wall");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
 		}
 		public override void SetDefaults()

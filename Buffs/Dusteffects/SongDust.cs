@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("SongDust");
-			Description.SetDefault("A dust that is for the whimsical");
+			// DisplayName.SetDefault("SongDust");
+			// Description.SetDefault("A dust that is for the whimsical");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;

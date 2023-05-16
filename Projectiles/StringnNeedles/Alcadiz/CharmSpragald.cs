@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Charm Spragald");
+			// DisplayName.SetDefault("Charm Spragald");
 			Main.projFrames[Projectile.type] = 1;
 		}
 		public override void SetDefaults()

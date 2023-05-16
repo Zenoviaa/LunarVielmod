@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Celestia Moon Breastplate");
-			Tooltip.SetDefault("Magical essence of an empress!"
+			// DisplayName.SetDefault("Celestia Moon Breastplate");
+			/* Tooltip.SetDefault("Magical essence of an empress!"
 				+ "\n+60 max mana and +1 minion slot" +
-				"\n+20 Health");
+				"\n+20 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

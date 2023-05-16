@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Spinny Winny damage the binny");
+            // Tooltip.SetDefault("Spinny Winny damage the binny");
 
         }
 

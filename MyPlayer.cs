@@ -458,7 +458,7 @@ namespace Stellamod
 
 		public int Shake = 0;
 
-		public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
 		{
 			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
 			{
@@ -488,7 +488,7 @@ namespace Stellamod
 		
 		}
 
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
 		{
 			if (Lovestruck && LovestruckBCooldown <= 0)
 			{
@@ -523,7 +523,7 @@ namespace Stellamod
 		}
 
 
-		public override void OnHitByNPC(NPC npc, int damage, bool crit)
+		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 		{
 			if (ThornedBook)
 			{

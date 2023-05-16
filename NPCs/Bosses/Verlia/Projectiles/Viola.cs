@@ -34,7 +34,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public int timer2 = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Viola");
+			// DisplayName.SetDefault("Viola");
 			Main.npcFrameCount[NPC.type] = 1; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to

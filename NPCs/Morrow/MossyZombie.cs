@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Morrow
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrowed Swampster");
+			// DisplayName.SetDefault("Morrowed Swampster");
 			Main.npcFrameCount[NPC.type] = 8;
 		}
 
@@ -72,7 +72,7 @@ namespace Stellamod.NPCs.Morrow
 			return SpawnCondition.OverworldNight.Chance * 0f;
 		}
 		int invisibilityTimer;
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 11; k++)
 			{

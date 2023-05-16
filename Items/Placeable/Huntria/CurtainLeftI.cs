@@ -8,8 +8,8 @@ namespace Stellamod.Items.Placeable.Huntria
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("CurtainLeft");
-			Tooltip.SetDefault("Curtain");
+			// DisplayName.SetDefault("CurtainLeft");
+			// Tooltip.SetDefault("Curtain");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

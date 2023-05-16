@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("FlameDust");
-			Description.SetDefault("A dust that is for the arcane!");
+			// DisplayName.SetDefault("FlameDust");
+			// Description.SetDefault("A dust that is for the arcane!");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

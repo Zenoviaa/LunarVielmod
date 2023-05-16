@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public int timer2 = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sword of Kaellia");
+			// DisplayName.SetDefault("Sword of Kaellia");
 			Main.npcFrameCount[NPC.type] = 1; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to
@@ -156,7 +156,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			return false;
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 		{
 
 			NPC.StrikeNPC(9999, 1, 1, false, false, true);

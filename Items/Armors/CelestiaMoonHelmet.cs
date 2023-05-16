@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Celestia Moon Helmet");
-			Tooltip.SetDefault("Magical essence of an Emperor"
+			// DisplayName.SetDefault("Celestia Moon Helmet");
+			/* Tooltip.SetDefault("Magical essence of an Emperor"
 				+ "\n+7% increased ranged and melee damage" +
-				"\n+35 Health");
+				"\n+35 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 

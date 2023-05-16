@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Blood Dust");
-			Description.SetDefault("A dust that is for the death");
+			// DisplayName.SetDefault("Blood Dust");
+			// Description.SetDefault("A dust that is for the death");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

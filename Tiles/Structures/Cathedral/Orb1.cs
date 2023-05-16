@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -38,9 +39,9 @@ namespace Stellamod.Tiles.Structures.Cathedral
             TileObjectData.newTile.StyleHorizontal = true;
             TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
             TileObjectData.addTile(Type);
-            ModTranslation name = CreateMapEntryName();
+            LocalizedText name = CreateMapEntryName();
 
-            name.SetDefault("Crystal Orb");
+            // name.SetDefault("Crystal Orb");
        
 
             AddMapEntry(new Color(109, 225, 90));

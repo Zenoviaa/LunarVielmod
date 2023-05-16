@@ -14,7 +14,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Flask of KABOOM");
+			// DisplayName.SetDefault("Flask of KABOOM");
 		}
 
 		public override void SetDefaults()
@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles
 		}
 
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 			ShakeModSystem.Shake = 4;
 			float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);

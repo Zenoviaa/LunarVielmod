@@ -3,6 +3,7 @@ using Stellamod.Dusts;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -37,9 +38,9 @@ namespace Stellamod.Tiles
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
+			LocalizedText name = CreateMapEntryName();
 
-			name.SetDefault("Brooches Bench");
+			// name.SetDefault("Brooches Bench");
 			AddMapEntry(new Color(126, 77, 59), name);
 		}
 		public override void NumDust(int x, int y, bool fail, ref int num)

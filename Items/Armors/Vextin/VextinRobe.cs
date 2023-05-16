@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Vextin
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Vextin Robe");
-			Tooltip.SetDefault("Roam the wonderous sands"
+			// DisplayName.SetDefault("Vextin Robe");
+			/* Tooltip.SetDefault("Roam the wonderous sands"
 				+
-				"\n+40 Health");
+				"\n+40 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

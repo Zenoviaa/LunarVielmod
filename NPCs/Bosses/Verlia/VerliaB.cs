@@ -118,7 +118,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia of The Moon");
+			// DisplayName.SetDefault("Verlia of The Moon");
 
 			Main.npcFrameCount[Type] = 80;
 

@@ -14,7 +14,7 @@ namespace Stellamod.Tiles
 			Main.wallDungeon[Type] = true;
 
 			DustType = ModContent.DustType<Solution>();
-			ItemDrop = ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>();
 
 			AddMapEntry(new Color(11, 13, 17));
 		}

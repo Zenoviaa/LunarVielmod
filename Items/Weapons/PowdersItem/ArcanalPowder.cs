@@ -15,9 +15,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sepsis Powder");
-			Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly star dust that does double damage as the igniter!");
+			// DisplayName.SetDefault("Sepsis Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
+				"\nA sparkly star dust that does double damage as the igniter!"); */
 		}
 		public override void SetDefaults()
 		{

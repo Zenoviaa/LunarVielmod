@@ -15,7 +15,7 @@ namespace Stellamod.Projectiles
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Morrow Rapier");
+			// DisplayName.SetDefault("Morrow Rapier");
 		}
 		public override void SetDefaults()
 		{

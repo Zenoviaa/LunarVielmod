@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Scrap of Cinder");
-			Tooltip.SetDefault("Cinder scrap" +
+			// DisplayName.SetDefault("Scrap of Cinder");
+			/* Tooltip.SetDefault("Cinder scrap" +
 			"\nBurned to infinity" +
-			"\nUsed in plants");
+			"\nUsed in plants"); */
 		}
 		public override void SetDefaults()
 		{

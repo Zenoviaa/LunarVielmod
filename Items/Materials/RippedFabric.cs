@@ -11,10 +11,10 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Ripped Fabric");
-			Tooltip.SetDefault("From the knowledge of the Gilded to robes on enemies, wonderous!" +
+			// DisplayName.SetDefault("Ripped Fabric");
+			/* Tooltip.SetDefault("From the knowledge of the Gilded to robes on enemies, wonderous!" +
 				   "\nA very magical material although.." +
-			"\nI feel like the item calls my name...");
+			"\nI feel like the item calls my name..."); */
 		}
 		public override void SetDefaults()
 		{

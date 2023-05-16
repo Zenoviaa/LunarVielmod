@@ -10,7 +10,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("FrostShotIN");
+			// DisplayName.SetDefault("FrostShotIN");
 			Main.projFrames[Projectile.type] = 20;
 		}
 		

@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public int timer = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Powered Notes!");
+			// DisplayName.SetDefault("Powered Notes!");
 
 		}
 		public override void SetDefaults()

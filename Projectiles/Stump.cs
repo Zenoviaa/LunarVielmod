@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stump");
+			// DisplayName.SetDefault("Stump");
 		}
 		public override void SetDefaults()
 		{

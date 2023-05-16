@@ -34,7 +34,7 @@ namespace Stellamod.Helpers
             didHitThisProj = false;
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (Player.HeldItem.ModItem as IComboSystem == null)
                 return;

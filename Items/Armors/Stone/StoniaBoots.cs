@@ -15,11 +15,11 @@ namespace Stellamod.Items.Armors.Stone
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Stonia Boots");
-			Tooltip.SetDefault("Rizzy Stone"
+			// DisplayName.SetDefault("Stonia Boots");
+			/* Tooltip.SetDefault("Rizzy Stone"
 				+ "\n+2% Damage!" +
 				"\nHeavily Increased Falling!" +
-				"\nWoa rocks!");
+				"\nWoa rocks!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

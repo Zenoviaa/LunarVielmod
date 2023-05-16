@@ -11,8 +11,8 @@ namespace Stellamod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooches Jewelry Station");
-			Tooltip.SetDefault("This bench allows you to craft exquisite brooches and combine them! ");
+			// DisplayName.SetDefault("Brooches Jewelry Station");
+			// Tooltip.SetDefault("This bench allows you to craft exquisite brooches and combine them! ");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

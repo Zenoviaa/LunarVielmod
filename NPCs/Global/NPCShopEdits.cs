@@ -9,7 +9,7 @@ namespace Stellamod.NPCs.Global
 {
 	class NPCShopEdits : GlobalNPC
 	{
-		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 		{
 			// This example does not use the AppliesToEntity hook, as such, we can handle multiple npcs here by using if statements.
 			if (type == NPCID.ArmsDealer)

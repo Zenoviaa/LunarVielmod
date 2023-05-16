@@ -18,10 +18,10 @@ namespace Stellamod.Items.Weapons.PocketDust
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pocket Sand");
-			Tooltip.SetDefault("Throw magical dust on them!" +
+			// DisplayName.SetDefault("Pocket Sand");
+			/* Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nDust that can be used with and for combos in igniters" +
-				"\n Can penetrate armored enemies like nothing!");
+				"\n Can penetrate armored enemies like nothing!"); */
 		}
 		public override void SetDefaults()
 		{

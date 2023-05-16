@@ -132,7 +132,7 @@ namespace Stellamod.Projectiles.Whips
 			return false; // still charging
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			NPC npc = target;
 			Vector2 velocity = npc.velocity;

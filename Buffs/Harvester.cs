@@ -9,8 +9,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("HarvestIT");
-			Description.SetDefault("A signifier for harvest npcs!");
+			// DisplayName.SetDefault("HarvestIT");
+			// Description.SetDefault("A signifier for harvest npcs!");
 			Main.debuff[Type] = false;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

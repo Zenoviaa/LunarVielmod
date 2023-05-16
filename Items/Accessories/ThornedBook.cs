@@ -13,10 +13,10 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Thorned Book of Fiber Cordage");
-			Tooltip.SetDefault("When enemies hit you deal big amounts of damage back" +
+			// DisplayName.SetDefault("Thorned Book of Fiber Cordage");
+			/* Tooltip.SetDefault("When enemies hit you deal big amounts of damage back" +
 				"\n+10% Melee damage..." +
-				"\n-5 defense");
+				"\n-5 defense"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

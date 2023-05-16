@@ -9,8 +9,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Petal Dance");
-			Description.SetDefault("Death Dance");
+			// DisplayName.SetDefault("Petal Dance");
+			// Description.SetDefault("Death Dance");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;

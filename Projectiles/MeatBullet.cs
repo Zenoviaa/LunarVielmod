@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("MeatBall");
+			// DisplayName.SetDefault("MeatBall");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}

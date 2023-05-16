@@ -13,10 +13,10 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Book of Wooden Illusion");
-			Tooltip.SetDefault("Increased Regeneration!" +
+			// DisplayName.SetDefault("Book of Wooden Illusion");
+			/* Tooltip.SetDefault("Increased Regeneration!" +
 				"\n +3% damage" +
-				"\n Increases crit strike change by 5% ");
+				"\n Increases crit strike change by 5% "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

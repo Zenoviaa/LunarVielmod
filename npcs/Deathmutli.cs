@@ -6,7 +6,7 @@ namespace Stellamod.NPCs
 {
 	public class Deathmulti : GlobalNPC
 	{
-		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 		{
 			if (npc.HasBuff(ModContent.BuffType<DeathMultiplier>()) && projectile.CountsAsClass(DamageClass.Melee))
 			{

@@ -15,9 +15,9 @@ namespace Stellamod.Items.Armors.Lovestruck
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Lovestruck Breastplate");
-			Tooltip.SetDefault("Feel the love!"
-				+ "\n+60 Health and +1 minion slot");
+			// DisplayName.SetDefault("Lovestruck Breastplate");
+			/* Tooltip.SetDefault("Feel the love!"
+				+ "\n+60 Health and +1 minion slot"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

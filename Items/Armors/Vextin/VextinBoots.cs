@@ -15,10 +15,10 @@ namespace Stellamod.Items.Armors.Vextin
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Vextin Boots");
-			Tooltip.SetDefault("Hide in the sands"
+			// DisplayName.SetDefault("Vextin Boots");
+			/* Tooltip.SetDefault("Hide in the sands"
 				+ "\n+5% Damage" +
-				"\n+20 Health");
+				"\n+20 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

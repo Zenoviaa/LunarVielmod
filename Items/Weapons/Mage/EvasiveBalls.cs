@@ -13,8 +13,8 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pearlescent Ice Ball");
-			Tooltip.SetDefault("Shoots fast homing sparks of light!");
+			// DisplayName.SetDefault("Pearlescent Ice Ball");
+			// Tooltip.SetDefault("Shoots fast homing sparks of light!");
 		}
 		public override void SetDefaults()
 		{

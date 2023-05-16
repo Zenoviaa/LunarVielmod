@@ -13,8 +13,8 @@ namespace Stellamod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("I thank you for your contribution, return to me, I await your arrival " +
-				"\n at the top of my palace, we will dance soon <3");
+			/* Tooltip.SetDefault("I thank you for your contribution, return to me, I await your arrival " +
+				"\n at the top of my palace, we will dance soon <3"); */
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 

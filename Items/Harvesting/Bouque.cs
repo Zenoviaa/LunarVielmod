@@ -7,9 +7,9 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gloria Bouquet");
-			Tooltip.SetDefault("A bag of flowers for the dear" +
-			"\nUsed in various recipes");
+			// DisplayName.SetDefault("Gloria Bouquet");
+			/* Tooltip.SetDefault("A bag of flowers for the dear" +
+			"\nUsed in various recipes"); */
 		}
 		public override void SetDefaults()
 		{

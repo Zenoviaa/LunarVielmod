@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Alcadiz Fabric");
-			Tooltip.SetDefault("All the way from the Alcadiz temples.." +
+			// DisplayName.SetDefault("Alcadiz Fabric");
+			/* Tooltip.SetDefault("All the way from the Alcadiz temples.." +
 			"\nStrong as steel yet so fabric like, its pouring energy!" +
-			"\nBest use for magical items!");
+			"\nBest use for magical items!"); */
 		}
 		public override void SetDefaults()
 		{

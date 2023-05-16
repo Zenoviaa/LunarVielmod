@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia's Moon blade");
+			// DisplayName.SetDefault("Verlia's Moon blade");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}

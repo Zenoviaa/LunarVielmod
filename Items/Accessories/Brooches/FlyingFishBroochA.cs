@@ -14,10 +14,10 @@ namespace Stellamod.Items.Accessories.Brooches
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Brooch of The Shielded Fish");
-			Tooltip.SetDefault("Simple Brooch!" +
+			// DisplayName.SetDefault("Brooch of The Shielded Fish");
+			/* Tooltip.SetDefault("Simple Brooch!" +
 				"\nIncreases Speed and + 2 Defense!" +
-				"\n Use the power of the speedy fish that fly???");
+				"\n Use the power of the speedy fish that fly???"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

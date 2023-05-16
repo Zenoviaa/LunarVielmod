@@ -9,7 +9,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Coconuts");
+			// DisplayName.SetDefault("Coconuts");
 		}
 		public override void SetDefaults()
 		{
@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.scale = 0.9f;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<Wounded>(), 360);

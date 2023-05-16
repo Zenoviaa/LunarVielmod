@@ -8,7 +8,7 @@ namespace Stellamod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Flame Trail");
+			// DisplayName.SetDefault("Flame Trail");
 		}
 		public override void SetDefaults()
 		{
@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles
 			dust.noGravity = true;
 			return false;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.OnFire, 120);
 		}

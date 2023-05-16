@@ -17,12 +17,12 @@ namespace Stellamod.Items.Armors.Verl
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Verl Hat");
-			Tooltip.SetDefault("You feel prettier dont you?"
+			// DisplayName.SetDefault("Verl Hat");
+			/* Tooltip.SetDefault("You feel prettier dont you?"
 				+ "\n+7% Magic Damage!" +
 				"\n+Fast mana regeneration!" +
 				"\n+100 Max Mana" +
-				"\n+40 Max Life");
+				"\n+40 Max Life"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

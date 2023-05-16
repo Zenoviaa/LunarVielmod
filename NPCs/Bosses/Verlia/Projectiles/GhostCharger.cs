@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public short npcCounter = 0;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verlia Servant");
+			// DisplayName.SetDefault("Verlia Servant");
 			Main.npcFrameCount[NPC.type] = 4; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to

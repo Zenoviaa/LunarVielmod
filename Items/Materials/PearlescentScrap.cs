@@ -11,9 +11,9 @@ namespace Stellamod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pearlescent Scrap");
-			Tooltip.SetDefault("True fragments of the moon" +
-			"\nA strong resonance with sound and the stars...");
+			// DisplayName.SetDefault("Pearlescent Scrap");
+			/* Tooltip.SetDefault("True fragments of the moon" +
+			"\nA strong resonance with sound and the stars..."); */
 		}
 		public override void SetDefaults()
 		{

@@ -32,17 +32,17 @@ namespace Stellamod.Tiles.Structures.Cathedral
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-			ChestDrop = ModContent.ItemType<CathedralChestI>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<CathedralChestI>();
 
 			// Names
-			ContainerName.SetDefault("Cathedral Chest");
+			ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Cathedral Chest");
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Cathedral Chest");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Cathedral Chest");
 			AddMapEntry(new Color(200, 200, 200), name, MapChestName);
 
 			name = CreateMapEntryName(Name + "_Locked"); // With multiple map entries, you need unique translation keys.
-			name.SetDefault("Locked Cathedral Chest");
+			// name.SetDefault("Locked Cathedral Chest");
 			AddMapEntry(new Color(255, 156, 32), name, MapChestName);
 
 			// Placement
@@ -121,7 +121,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */);
 			Chest.DestroyChest(i, j);
 		}
 
@@ -184,7 +184,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 					{
 						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{
-							NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, left, top);
+							NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 						}
 					}
 				}
@@ -237,7 +237,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			}
 			else
 			{
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType)/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{

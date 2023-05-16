@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spragald");
+			// DisplayName.SetDefault("Spragald");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 14;
 			// This is necessary for right-click targeting

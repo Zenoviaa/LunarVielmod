@@ -9,8 +9,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Zielie's Love");
-			Description.SetDefault("Experience her power of her love towards you!");
+			// DisplayName.SetDefault("Zielie's Love");
+			// Description.SetDefault("Experience her power of her love towards you!");
 			Main.debuff[Type] = false;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;

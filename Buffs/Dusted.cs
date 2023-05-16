@@ -8,8 +8,8 @@ namespace Stellamod.Buffs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Dusted");
-			Description.SetDefault("Marks enemies with dust on them");
+			// DisplayName.SetDefault("Dusted");
+			// Description.SetDefault("Marks enemies with dust on them");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = false;

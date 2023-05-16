@@ -234,7 +234,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StumpBuster>(), 20, 1, 1));
 		}
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"));

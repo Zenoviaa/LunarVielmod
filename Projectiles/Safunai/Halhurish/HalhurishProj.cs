@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Halhurish");
+			// DisplayName.SetDefault("Halhurish");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
@@ -97,7 +97,7 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
 
 		
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 
 			ShakeModSystem.Shake = 4;

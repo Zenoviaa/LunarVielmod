@@ -9,8 +9,8 @@ namespace Stellamod.Buffs.Charms
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Charm Buff!");
-			Description.SetDefault("10+ Defense and Golden trail oooo :0");
+			// DisplayName.SetDefault("Charm Buff!");
+			// Description.SetDefault("10+ Defense and Golden trail oooo :0");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;

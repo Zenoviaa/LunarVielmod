@@ -17,3 +17,16 @@
 			}
 }
 		
+Mods: {
+	Stellamod: {
+		Items: {
+			Accessories: {
+			HikersBackpack: {
+				DisplayName: Hiker's Backpack
+				Description: "Increased Regeneration!
+				\n +3% damage 
+				\n Drops stumps on the ground as you walk!"
+			}
+
+
+	}

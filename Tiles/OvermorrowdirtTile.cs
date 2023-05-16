@@ -16,7 +16,7 @@ namespace Stellamod.Tiles
 
 			DustType = Main.rand.Next(110, 113);
 			DustType = DustID.Firework_Yellow;
-			ItemDrop = ModContent.ItemType<Items.Materials.OvermorrowDirt>();
+			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<Items.Materials.OvermorrowDirt>();
 
 			AddMapEntry(new Color(25, 42, 25));
 

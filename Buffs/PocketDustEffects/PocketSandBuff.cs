@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.PocketDustEffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pocket Sand Buff");
-			Description.SetDefault("A dust that is an additive");
+			// DisplayName.SetDefault("Pocket Sand Buff");
+			// Description.SetDefault("A dust that is an additive");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

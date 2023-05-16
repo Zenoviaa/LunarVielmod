@@ -12,7 +12,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("GroudSpike");
+			// DisplayName.SetDefault("GroudSpike");
 			Main.projFrames[Projectile.type] = 30;
 		}
 

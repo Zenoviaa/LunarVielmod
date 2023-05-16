@@ -33,10 +33,10 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			AdjTiles = new int[] { TileID.Containers };
 
 			// Names
-			ContainerName.SetDefault("Verlias Shrine");
+			ContainerName/* tModPorter Note: Removed. Override DefaultContainerName instead */.SetDefault("Verlias Shrine");
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Shrine of The Moon");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Shrine of The Moon");
 
 
 		
@@ -156,7 +156,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			}
 			else
 			{
-				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				string defaultName = TileLoader.DefaultContainerName(tile.TileType)/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{

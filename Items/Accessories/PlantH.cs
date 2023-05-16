@@ -12,10 +12,10 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Plant Heritage");
-			Tooltip.SetDefault("Gain the power of plants!" +
+			// DisplayName.SetDefault("Plant Heritage");
+			/* Tooltip.SetDefault("Gain the power of plants!" +
 				"\n+40 life and +15 increased defense" +
-				"\nBut you have decreased speed ");
+				"\nBut you have decreased speed "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -15,10 +15,10 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Let them burn in harmony!" +
+			/* Tooltip.SetDefault("Let them burn in harmony!" +
 				"\nSimple weapon forged from Stellean bricks and the heat from plants of the morrow" +
-				"\nImpractical but very rewarding...");
-			DisplayName.SetDefault("Violiar");
+				"\nImpractical but very rewarding..."); */
+			// DisplayName.SetDefault("Violiar");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -17,11 +17,11 @@ namespace Stellamod.Items.Armors.Verl
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Verl Mask");
-			Tooltip.SetDefault("You feel prettier dont you?"
+			// DisplayName.SetDefault("Verl Mask");
+			/* Tooltip.SetDefault("You feel prettier dont you?"
 				+ "\n+7% Ranged Damage!" +
 				"\n+15 Critical Strike Chance!" +
-				"\n+20 Max Life");
+				"\n+20 Max Life"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

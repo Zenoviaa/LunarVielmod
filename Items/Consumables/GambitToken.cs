@@ -18,8 +18,8 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gambit Token");
-			Tooltip.SetDefault("Use this while gambling to actually, gamble.."); // References a language key that says "Right Click To Open" in the language of the game
+			// DisplayName.SetDefault("Gambit Token");
+			// Tooltip.SetDefault("Use this while gambling to actually, gamble.."); // References a language key that says "Right Click To Open" in the language of the game
 
 		
 

@@ -14,10 +14,10 @@ namespace Stellamod.Items.Armors.Lovestruck
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Lovestruck Thighs");
-			Tooltip.SetDefault("Sexy!"
+			// DisplayName.SetDefault("Lovestruck Thighs");
+			/* Tooltip.SetDefault("Sexy!"
 				+ "\n10% increased movement speed" +
-				"\n+60 Health");
+				"\n+60 Health"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

@@ -7,10 +7,10 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sky Blue Dreas Flower");
-			Tooltip.SetDefault("All the way from the Alcadiz temples.." +
+			// DisplayName.SetDefault("Sky Blue Dreas Flower");
+			/* Tooltip.SetDefault("All the way from the Alcadiz temples.." +
 			"\nUsed for planting and harvesting" +
-			"\nBest use for magical items and plants!");
+			"\nBest use for magical items and plants!"); */
 		}
 		public override void SetDefaults()
 		{

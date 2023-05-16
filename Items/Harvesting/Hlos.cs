@@ -8,9 +8,9 @@ namespace Stellamod.Items.Harvesting
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Magical Handle");
-			Tooltip.SetDefault("Magical Handle omg!" +
-			"\nBest use for arcanal weapons");
+			// DisplayName.SetDefault("Magical Handle");
+			/* Tooltip.SetDefault("Magical Handle omg!" +
+			"\nBest use for arcanal weapons"); */
 
 		
 			Item.width = 20;

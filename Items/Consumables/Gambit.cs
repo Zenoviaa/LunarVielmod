@@ -20,9 +20,9 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gambit Dice");
-			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}" +
-				"\n Gamble away your soul after battle for great rewards!"); // References a language key that says "Right Click To Open" in the language of the game
+			// DisplayName.SetDefault("Gambit Dice");
+			/* Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}" +
+				"\n Gamble away your soul after battle for great rewards!"); */ // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
 

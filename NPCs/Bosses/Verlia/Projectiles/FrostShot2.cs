@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frost Shot");
+			// DisplayName.SetDefault("Frost Shot");
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
 		}

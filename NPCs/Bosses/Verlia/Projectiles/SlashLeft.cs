@@ -12,7 +12,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Empress's Moon Slash");
+			// DisplayName.SetDefault("Empress's Moon Slash");
 			Main.projFrames[Projectile.type] = 7;
 		}
 		

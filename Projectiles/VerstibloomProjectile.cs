@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles
 		public bool launch = false;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Verstibloom");
+			// DisplayName.SetDefault("Verstibloom");
 		}
 		public override void SetDefaults()
 		{

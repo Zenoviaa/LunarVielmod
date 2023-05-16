@@ -8,8 +8,8 @@ namespace Stellamod.Buffs.Dusteffects
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Coal Buff");
-			Description.SetDefault("A dust that is for the gemsparked!");
+			// DisplayName.SetDefault("Coal Buff");
+			// Description.SetDefault("A dust that is for the gemsparked!");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;

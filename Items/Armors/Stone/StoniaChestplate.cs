@@ -15,11 +15,11 @@ namespace Stellamod.Items.Armors.Stone
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Stonia Stoneplate");
-			Tooltip.SetDefault("Weak Stone?"
+			// DisplayName.SetDefault("Stonia Stoneplate");
+			/* Tooltip.SetDefault("Weak Stone?"
 				+ "\n+1% Damage!" +
 				"\n+2 Penetration" +
-				"\n+2 Critical Strike Chance!");
+				"\n+2 Critical Strike Chance!"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
