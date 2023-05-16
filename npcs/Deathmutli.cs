@@ -10,7 +10,7 @@ namespace Stellamod.NPCs
 		{
 			if (npc.HasBuff(ModContent.BuffType<DeathMultiplier>()) && projectile.CountsAsClass(DamageClass.Melee))
 			{
-				damage = (int)(damage * 1.7f);
+				projectile.damage = (int)(projectile.damage * 1.7f);
 			}
 		}
 	}
