@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams)
 		{
 			// Make the bar shake the less health the NPC has
-			float shakeIntensity = Utils.Clamp(1f - drawParams.LifePercentToShow/* tModPorter Note: Removed. Suggest: Life / LifeMax */ - 0.2f, 0f, 1f);
+			float shakeIntensity = Utils.Clamp(1f - drawParams.Life/* tModPorter Note: Removed. Suggest: Life / LifeMax */ - 0.2f, 0f, 1f);
 			drawParams.BarCenter.Y -= 20f;
 			drawParams.BarCenter += new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * shakeIntensity * 2f;
 
@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			// We assign bossHeadIndex here because we need to use it in GetIconTexture
 			VeribossHeadIndex = npc.GetBossHeadTextureIndex();
 
-			lifePercent = Utils.Clamp(npc.life / (float)npc.lifeMax, 0f, 1f);
+			life = Utils.Clamp(npc.life / (float)npc.lifeMax, 0f, 1f);
 
 			return true;
 		}

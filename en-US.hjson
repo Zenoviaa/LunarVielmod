@@ -1,34 +1,1287 @@
-		TownNPCMood: {
-			Gambit: {
-				Content: I feel sooo nice!
-				NoHome: I would very much like a house, everything is soo spooki :(.
-				LoveSpace: I love how there is so much space here to code tModLoader mods!
-				FarFromHome: AAA Im so far away help meee!
-				DislikeCrowded: There are too many people around, I feel so scared :(.
-				HateCrowded: I can't test my mod with so many people around!
-				LikeBiome: "{BiomeName} is a very nice place to relax."
-				LoveBiome: "I love {BiomeName}!"
-				DislikeBiome: "I hate this place {BiomeName}, I feel horriblee and too hot!"
-				HateBiome: "I realllyy hate this place."
-				LikeNPC: "I can respect {NPCName}, I almost feel like we could be great friends"
-				LoveNPC: "Do you think {NPCName}-san notices me?"
-				DislikeNPC: '''"{NPCName} keeps rambling on about "nfts"... Wish I could convince him how terrible of an idea that is."'''
-				HateNPC: "I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet."
-			}
+TownNPCMood: {
+	Gambit: {
+		Content: I feel sooo nice!
+		NoHome: I would very much like a house, everything is soo spooki :(.
+		LoveSpace: I love how there is so much space here to code tModLoader mods!
+		FarFromHome: AAA Im so far away help meee!
+		DislikeCrowded: There are too many people around, I feel so scared :(.
+		HateCrowded: I can't test my mod with so many people around!
+		LikeBiome: "{BiomeName} is a very nice place to relax."
+		LoveBiome: I love {BiomeName}!
+		DislikeBiome: I hate this place {BiomeName}, I feel horriblee and too hot!
+		HateBiome: I realllyy hate this place.
+		LikeNPC: I can respect {NPCName}, I almost feel like we could be great friends
+		LoveNPC: Do you think {NPCName}-san notices me?
+		DislikeNPC: '''"{NPCName} keeps rambling on about "nfts"... Wish I could convince him how terrible of an idea that is."'''
+		HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
+	}
 }
-		
+
 Mods: {
 	Stellamod: {
 		Items: {
 			Accessories: {
+				HikersBackpack: {
+					DisplayName: Hiker's Backpack
+					Description:
+						'''
+						Increased Regeneration!
+						+3% damage 
+						Drops stumps on the ground as you walk!
+						'''
+				}
+			}
+
+			PlaceItem: {
+				DisplayName: Place Item
+				Tooltip: ""
+			}
+
+			SaveItem: {
+				DisplayName: Save Item
+				Tooltip: ""
+			}
+
+			AdvancedBroochesBackpack: {
+				DisplayName: Advanced Brooches Backpack
+				Tooltip: ""
+			}
+
+			DiariBroochA: {
+				DisplayName: Diari Brooch A
+				Tooltip: ""
+			}
+
+			FlyingFishBroochA: {
+				DisplayName: Flying Fish Brooch A
+				Tooltip: ""
+			}
+
+			FrileBroochA: {
+				DisplayName: Frile Brooch A
+				Tooltip: ""
+			}
+
+			MorrowedBroochA: {
+				DisplayName: Morrowed Brooch A
+				Tooltip: ""
+			}
+
+			SlimeBroochA: {
+				DisplayName: Slime Brooch A
+				Tooltip: ""
+			}
+
+			SpragaldBroochA: {
+				DisplayName: Spragald Brooch A
+				Tooltip: ""
+			}
+
 			HikersBackpack: {
-				DisplayName: Hiker's Backpack
-				Description: "Increased Regeneration!
-				\n +3% damage 
-				\n Drops stumps on the ground as you walk!"
-						}
+				DisplayName: Hikers Backpack
+				Tooltip: ""
+			}
 
+			IllusionistBook: {
+				DisplayName: Illusionist Book
+				Tooltip: ""
+			}
 
-					}
+			JellyfishTissue: {
+				DisplayName: Jellyfish Tissue
+				Tooltip: ""
+			}
+
+			MOTT: {
+				DisplayName: M O T T
+				Tooltip: ""
+			}
+
+			PaperPaws: {
+				DisplayName: Paper Paws
+				Tooltip: ""
+			}
+
+			Paper: {
+				DisplayName: Paper
+				Tooltip: ""
+			}
+
+			PlantH: {
+				DisplayName: Plant H
+				Tooltip: ""
+			}
+
+			SapContainer: {
+				DisplayName: Sap Container
+				Tooltip: ""
+			}
+
+			WoodenShield: {
+				DisplayName: Wooden Shield
+				Tooltip: ""
+			}
+
+			Steali: {
+				DisplayName: Steali
+				Tooltip: ""
+			}
+
+			ThornedBook: {
+				DisplayName: Thorned Book
+				Tooltip: ""
+			}
+
+			CelestiaMoonBreastplate: {
+				DisplayName: Celestia Moon Breastplate
+				Tooltip: ""
+			}
+
+			CelestiaMoonHelmet: {
+				DisplayName: Celestia Moon Helmet
+				Tooltip: ""
+			}
+
+			CelestiaMoonLegs: {
+				DisplayName: Celestia Moon Legs
+				Tooltip: ""
+			}
+
+			CelestiaMoonMask: {
+				DisplayName: Celestia Moon Mask
+				Tooltip: ""
+			}
+
+			HuntrianBoots: {
+				DisplayName: Huntrian Boots
+				Tooltip: ""
+			}
+
+			HuntrianChestplate: {
+				DisplayName: Huntrian Chestplate
+				Tooltip: ""
+			}
+
+			HuntrianHelmet: {
+				DisplayName: Huntrian Helmet
+				Tooltip: ""
+			}
+
+			LovestruckBreastplate: {
+				DisplayName: Lovestruck Breastplate
+				Tooltip: ""
+			}
+
+			LovestruckLegs: {
+				DisplayName: Lovestruck Legs
+				Tooltip: ""
+			}
+
+			LovestruckMask: {
+				DisplayName: Lovestruck Mask
+				Tooltip: ""
+			}
+
+			GintzeMask: {
+				DisplayName: Gintze Mask
+				Tooltip: ""
+			}
+
+			StoniaBoots: {
+				DisplayName: Stonia Boots
+				Tooltip: ""
+			}
+
+			StoniaChestplate: {
+				DisplayName: Stonia Chestplate
+				Tooltip: ""
+			}
+
+			StoniaHat: {
+				DisplayName: Stonia Hat
+				Tooltip: ""
+			}
+
+			AstolfoBody: {
+				DisplayName: Astolfo Body
+				Tooltip: ""
+			}
+
+			AstolfoMask: {
+				DisplayName: Astolfo Mask
+				Tooltip: ""
+			}
+
+			AstolfoSkirt: {
+				DisplayName: Astolfo Skirt
+				Tooltip: ""
+			}
+
+			VerlBreastplate: {
+				DisplayName: Verl Breastplate
+				Tooltip: ""
+			}
+
+			VerlHat: {
+				DisplayName: Verl Hat
+				Tooltip: ""
+			}
+
+			VerlLeggings: {
+				DisplayName: Verl Leggings
+				Tooltip: ""
+			}
+
+			VerlMask: {
+				DisplayName: Verl Mask
+				Tooltip: ""
+			}
+
+			VextinBoots: {
+				DisplayName: Vextin Boots
+				Tooltip: ""
+			}
+
+			VextinMask: {
+				DisplayName: Vextin Mask
+				Tooltip: ""
+			}
+
+			VextinRobe: {
+				DisplayName: Vextin Robe
+				Tooltip: ""
+			}
+
+			Gambit: {
+				DisplayName: Gambit
+				Tooltip: ""
+			}
+
+			GambitToken: {
+				DisplayName: Gambit Token
+				Tooltip: ""
+			}
+
+			GildedBag1: {
+				DisplayName: Gilded Bag1
+				Tooltip: ""
+			}
+
+			MoonflameLantern: {
+				DisplayName: Moonflame Lantern
+				Tooltip: ""
+			}
+
+			SirestiasStarterBag: {
+				DisplayName: Sirestias Starter Bag
+				Tooltip: ""
+			}
+
+			VeribossBag: {
+				DisplayName: Veriboss Bag
+				Tooltip: ""
+			}
+
+			AlcadizMetal: {
+				DisplayName: Alcadiz Metal
+				Tooltip: ""
+			}
+
+			Bagitem: {
+				DisplayName: Bagitem
+				Tooltip: ""
+			}
+
+			Bouque: {
+				DisplayName: Bouque
+				Tooltip: ""
+			}
+
+			Candle: {
+				DisplayName: Candle
+				Tooltip: ""
+			}
+
+			Cinderscrap: {
+				DisplayName: Cinderscrap
+				Tooltip: ""
+			}
+
+			CondensedDirt: {
+				DisplayName: Condensed Dirt
+				Tooltip: ""
+			}
+
+			DreasFlower: {
+				DisplayName: Dreas Flower
+				Tooltip: ""
+			}
+
+			Fabric: {
+				DisplayName: Fabric
+				Tooltip: ""
+			}
+
+			FlowerBatch: {
+				DisplayName: Flower Batch
+				Tooltip: ""
+			}
+
+			Hlos: {
+				DisplayName: Hlos
+				Tooltip: ""
+			}
+
+			MorrowRocks: {
+				DisplayName: Morrow Rocks
+				Tooltip: ""
+			}
+
+			Morrowshroom: {
+				DisplayName: Morrowshroom
+				Tooltip: ""
+			}
+
+			MorrowVine: {
+				DisplayName: Morrow Vine
+				Tooltip: ""
+			}
+
+			Mushroom: {
+				DisplayName: Mushroom
+				Tooltip: ""
+			}
+
+			Stick: {
+				DisplayName: Stick
+				Tooltip: ""
+			}
+
+			ViolinStick: {
+				DisplayName: Violin Stick
+				Tooltip: ""
+			}
+
+			EmptyMoonflameLantern: {
+				DisplayName: Empty Moonflame Lantern
+				Tooltip: ""
+			}
+
+			FleshClot: {
+				DisplayName: Flesh Clot
+				Tooltip: ""
+			}
+
+			HuntiacBlock: {
+				DisplayName: Huntiac Block
+				Tooltip: ""
+			}
+
+			HuntiacwallBlock: {
+				DisplayName: Huntiacwall Block
+				Tooltip: ""
+			}
+
+			Medal: {
+				DisplayName: Medal
+				Tooltip: ""
+			}
+
+			OvermorrowDirt: {
+				DisplayName: Overmorrow Dirt
+				Tooltip: ""
+			}
+
+			OvermorrowdirtwallBlock: {
+				DisplayName: Overmorrowdirtwall Block
+				Tooltip: ""
+			}
+
+			OvermorrowWall: {
+				DisplayName: Overmorrow Wall
+				Tooltip: ""
+			}
+
+			OvermorrowWood: {
+				DisplayName: Overmorrow Wood
+				Tooltip: ""
+			}
+
+			PearlescentScrap: {
+				DisplayName: Pearlescent Scrap
+				Tooltip: ""
+			}
+
+			RippedFabric: {
+				DisplayName: Ripped Fabric
+				Tooltip: ""
+			}
+
+			Starrdew: {
+				DisplayName: Starrdew
+				Tooltip: ""
+			}
+
+			Stelleanbrick: {
+				DisplayName: Stelleanbrick
+				Tooltip: ""
+			}
+
+			VerianRuneBlock: {
+				DisplayName: Verian Rune Block
+				Tooltip: ""
+			}
+
+			VerianWood: {
+				DisplayName: Verian Wood
+				Tooltip: ""
+			}
+
+			FrileBar: {
+				DisplayName: Frile Bar
+				Tooltip: ""
+			}
+
+			FrileOre: {
+				DisplayName: Frile Ore
+				Tooltip: ""
+			}
+
+			VerianBar: {
+				DisplayName: Verian Bar
+				Tooltip: ""
+			}
+
+			VerianOre: {
+				DisplayName: Verian Ore
+				Tooltip: ""
+			}
+
+			AlcaologyI: {
+				DisplayName: Alcaology I
+				Tooltip: ""
+			}
+
+			Bar: {
+				DisplayName: Bar
+				Tooltip: ""
+			}
+
+			Bench: {
+				DisplayName: Bench
+				Tooltip: ""
+			}
+
+			BroochesTableI: {
+				DisplayName: Brooches Table I
+				Tooltip: ""
+			}
+
+			CathediteBlock: {
+				DisplayName: Cathedite Block
+				Tooltip: ""
+			}
+
+			CathediteGrassBlock: {
+				DisplayName: Cathedite Grass Block
+				Tooltip: ""
+			}
+
+			CathediteGrassWall: {
+				DisplayName: Cathedite Grass Wall
+				Tooltip: ""
+			}
+
+			CathediteWall: {
+				DisplayName: Cathedite Wall
+				Tooltip: ""
+			}
+
+			CathedralChestI: {
+				DisplayName: Cathedral Chest I
+				Tooltip: ""
+			}
+
+			Crystal1I: {
+				DisplayName: Crystal1 I
+				Tooltip: ""
+			}
+
+			Crystal2I: {
+				DisplayName: Crystal2 I
+				Tooltip: ""
+			}
+
+			FlowerMultiI: {
+				DisplayName: Flower Multi I
+				Tooltip: ""
+			}
+
+			Orb1I: {
+				DisplayName: Orb1 I
+				Tooltip: ""
+			}
+
+			ShrineI: {
+				DisplayName: Shrine I
+				Tooltip: ""
+			}
+
+			Flowersummon: {
+				DisplayName: Flowersummon
+				Tooltip: ""
+			}
+
+			GrassBig: {
+				DisplayName: Grass Big
+				Tooltip: ""
+			}
+
+			GrassMoss: {
+				DisplayName: Grass Moss
+				Tooltip: ""
+			}
+
+			CurtainLeftI: {
+				DisplayName: Curtain Left I
+				Tooltip: ""
+			}
+
+			CurtainRightI: {
+				DisplayName: Curtain Right I
+				Tooltip: ""
+			}
+
+			Log: {
+				DisplayName: Log
+				Tooltip: ""
+			}
+
+			MediumPot: {
+				DisplayName: Medium Pot
+				Tooltip: ""
+			}
+
+			MorrowChesti: {
+				DisplayName: Morrow Chesti
+				Tooltip: ""
+			}
+
+			MorrowChestKey: {
+				DisplayName: Morrow Chest Key
+				Tooltip: ""
+			}
+
+			MorrowDeath: {
+				DisplayName: Morrow Death
+				Tooltip: ""
+			}
+
+			MorrowDeath2: {
+				DisplayName: Morrow Death2
+				Tooltip: ""
+			}
+
+			MorrowSpike: {
+				DisplayName: Morrow Spike
+				Tooltip: ""
+			}
+
+			MorrowStone: {
+				DisplayName: Morrow Stone
+				Tooltip: ""
+			}
+
+			MushroomBig: {
+				DisplayName: Mushroom Big
+				Tooltip: ""
+			}
+
+			SmallShroom: {
+				DisplayName: Small Shroom
+				Tooltip: ""
+			}
+
+			StandN: {
+				DisplayName: Stand N
+				Tooltip: ""
+			}
+
+			VeriBossRel: {
+				DisplayName: Veri Boss Rel
+				Tooltip: ""
+			}
+
+			walla: {
+				DisplayName: walla
+				Tooltip: ""
+			}
+
+			wallb: {
+				DisplayName: wallb
+				Tooltip: ""
+			}
+
+			wallc: {
+				DisplayName: wallc
+				Tooltip: ""
+			}
+
+			walld: {
+				DisplayName: walld
+				Tooltip: ""
+			}
+
+			walle: {
+				DisplayName: walle
+				Tooltip: ""
+			}
+
+			wallf: {
+				DisplayName: wallf
+				Tooltip: ""
+			}
+
+			wallg: {
+				DisplayName: wallg
+				Tooltip: ""
+			}
+
+			BonePicklerCard: {
+				DisplayName: Bone Pickler Card
+				Tooltip: ""
+			}
+
+			DaedCard: {
+				DisplayName: Daed Card
+				Tooltip: ""
+			}
+
+			EYIgniter: {
+				DisplayName: E Y Igniter
+				Tooltip: ""
+			}
+
+			FrostCard: {
+				DisplayName: Frost Card
+				Tooltip: ""
+			}
+
+			GothivCard: {
+				DisplayName: Gothiv Card
+				Tooltip: ""
+			}
+
+			LovestruckCard: {
+				DisplayName: Lovestruck Card
+				Tooltip: ""
+			}
+
+			ScorcheCard: {
+				DisplayName: Scorche Card
+				Tooltip: ""
+			}
+
+			StarrCard: {
+				DisplayName: Starr Card
+				Tooltip: ""
+			}
+
+			StarterCard: {
+				DisplayName: Starter Card
+				Tooltip: ""
+			}
+
+			WCIgniter: {
+				DisplayName: W C Igniter
+				Tooltip: ""
+			}
+
+			Bongos: {
+				DisplayName: Bongos
+				Tooltip: ""
+			}
+
+			CocoSpark: {
+				DisplayName: Coco Spark
+				Tooltip: ""
+			}
+
+			EvasiveBalls: {
+				DisplayName: Evasive Balls
+				Tooltip: ""
+			}
+
+			FlameburstBalls: {
+				DisplayName: Flameburst Balls
+				Tooltip: ""
+			}
+
+			GildedStaff: {
+				DisplayName: Gilded Staff
+				Tooltip: ""
+			}
+
+			PrismaticBalls: {
+				DisplayName: Prismatic Balls
+				Tooltip: ""
+			}
+
+			Splitflame: {
+				DisplayName: Splitflame
+				Tooltip: ""
+			}
+
+			Antaciz: {
+				DisplayName: Antaciz
+				Tooltip: ""
+			}
+
+			Auroran: {
+				DisplayName: Auroran
+				Tooltip: ""
+			}
+
+			EnergizedNail: {
+				DisplayName: Energized Nail
+				Tooltip: ""
+			}
+
+			FrostSwing: {
+				DisplayName: Frost Swing
+				Tooltip: ""
+			}
+
+			Gutinier: {
+				DisplayName: Gutinier
+				Tooltip: ""
+			}
+
+			HornedNail: {
+				DisplayName: Horned Nail
+				Tooltip: ""
+			}
+
+			MorrowRapier: {
+				DisplayName: Morrow Rapier
+				Tooltip: ""
+			}
+
+			MorrowSword: {
+				DisplayName: Morrow Sword
+				Tooltip: ""
+			}
+
+			MorrowValswa: {
+				DisplayName: Morrow Valswa
+				Tooltip: ""
+			}
+
+			PalmThrower: {
+				DisplayName: Palm Thrower
+				Tooltip: ""
+			}
+
+			Halhurish: {
+				DisplayName: Halhurish
+				Tooltip: ""
+			}
+
+			Verstibloom: {
+				DisplayName: Verstibloom
+				Tooltip: ""
+			}
+
+			VerstiDance: {
+				DisplayName: Versti Dance
+				Tooltip: ""
+			}
+
+			PocketSand: {
+				DisplayName: Pocket Sand
+				Tooltip: ""
+			}
+
+			ArcanalPowder: {
+				DisplayName: Arcanal Powder
+				Tooltip: ""
+			}
+
+			BloodPowder: {
+				DisplayName: Blood Powder
+				Tooltip: ""
+			}
+
+			CoalDust: {
+				DisplayName: Coal Dust
+				Tooltip: ""
+			}
+
+			FlamePowder: {
+				DisplayName: Flame Powder
+				Tooltip: ""
+			}
+
+			FrostedPowder: {
+				DisplayName: Frosted Powder
+				Tooltip: ""
+			}
+
+			GrassDirtPowder: {
+				DisplayName: Grass Dirt Powder
+				Tooltip: ""
+			}
+
+			LenaSongPowder: {
+				DisplayName: Lena Song Powder
+				Tooltip: ""
+			}
+
+			ShadowFlamePowder: {
+				DisplayName: Shadow Flame Powder
+				Tooltip: ""
+			}
+
+			TrickPowder: {
+				DisplayName: Trick Powder
+				Tooltip: ""
+			}
+
+			Verstidust: {
+				DisplayName: Verstidust
+				Tooltip: ""
+			}
+
+			BoneNail: {
+				DisplayName: Bone Nail
+				Tooltip: ""
+			}
+
+			WoodenCrossbow: {
+				DisplayName: Wooden Crossbow
+				Tooltip: ""
+			}
+
+			Hornet: {
+				DisplayName: Hornet
+				Tooltip: ""
+			}
+
+			MorrowSalface: {
+				DisplayName: Morrow Salface
+				Tooltip: ""
+			}
+
+			SteamedNail: {
+				DisplayName: Steamed Nail
+				Tooltip: ""
+			}
+
+			Teraciz: {
+				DisplayName: Teraciz
+				Tooltip: ""
+			}
+
+			Violar: {
+				DisplayName: Violar
+				Tooltip: ""
+			}
+
+			wowgun: {
+				DisplayName: wowgun
+				Tooltip: ""
+			}
+
+			AlcadizDagger: {
+				DisplayName: Alcadiz Dagger
+				Tooltip: ""
+			}
+
+			BloodLamp: {
+				DisplayName: Blood Lamp
+				Tooltip: ""
+			}
+
+			CanOfLeaves: {
+				DisplayName: Can Of Leaves
+				Tooltip: ""
+			}
+
+			StarCall: {
+				DisplayName: Star Call
+				Tooltip: ""
+			}
+
+			StumpBuster: {
+				DisplayName: Stump Buster
+				Tooltip: ""
+			}
+
+			MorrowWhipI: {
+				DisplayName: Morrow Whip I
+				Tooltip: ""
 			}
 		}
+
+		Biomes: {
+			CathedralBiome.DisplayName: Cathedral Biome
+			MarrowSurfaceBiome.DisplayName: Marrow Surface Biome
+			MorrowUndergroundBiome.DisplayName: Morrow Underground Biome
+		}
+
+		Tiles: {
+			AlcaologyTable.MapEntry: Alcaology Table
+			BroochesTable.MapEntry: Brooches Table
+			FrileOreTile.MapEntry: Frile Ore Tile
+			HuntiacTile.MapEntry: Huntiac Tile
+			BarS.MapEntry: Bar S
+			BenchS.MapEntry: Bench S
+			CathedralChest.MapEntry: Cathedral Chest
+			Crystal1.MapEntry: Crystal1
+			Crystal2.MapEntry: Crystal2
+			FlowerMulti.MapEntry: Flower Multi
+			Orb1.MapEntry: Orb1
+			VerliasShrine.MapEntry: Verlias Shrine
+			GrassBigS.MapEntry: Grass Big S
+			GrassMossS.MapEntry: Grass Moss S
+			CurtainLeft.MapEntry: Curtain Left
+			CurtainRight.MapEntry: Curtain Right
+			LogS.MapEntry: Log S
+			MorrowChest.MapEntry: Morrow Chest
+			MorrowDeath2S.MapEntry: Morrow Death2 S
+			MorrowDeathS.MapEntry: Morrow Death S
+			MorrowStoneS.MapEntry: Morrow Stone S
+			MushroomBigS.MapEntry: Mushroom Big S
+			PotmedS.MapEntry: Potmed S
+			SmallShroomS.MapEntry: Small Shroom S
+			SpikeS.MapEntry: Spike S
+			stand.MapEntry: stand
+			wall1.MapEntry: wall1
+			wall2.MapEntry: wall2
+			wall3.MapEntry: wall3
+			wall4.MapEntry: wall4
+			wall5.MapEntry: wall5
+			wall6.MapEntry: wall6
+			wall7.MapEntry: wall7
+			VerianoreTile.MapEntry: Verianore Tile
+		}
+
+		Buffs: {
+			ArcaneDust: {
+				DisplayName: Arcane Dust
+				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+			}
+
+			Diarii: {
+				DisplayName: Diarii
+				Description: Mods.Stellamod.Buffs.Diarii.Description
+			}
+
+			Flyfish: {
+				DisplayName: Flyfish
+				Description: Mods.Stellamod.Buffs.Flyfish.Description
+			}
+
+			Goldren: {
+				DisplayName: Goldren
+				Description: Mods.Stellamod.Buffs.Goldren.Description
+			}
+
+			IceBrooch: {
+				DisplayName: Ice Brooch
+				Description: Mods.Stellamod.Buffs.IceBrooch.Description
+			}
+
+			Morrow: {
+				DisplayName: Morrow
+				Description: Mods.Stellamod.Buffs.Morrow.Description
+			}
+
+			Slimee: {
+				DisplayName: Slimee
+				Description: Mods.Stellamod.Buffs.Slimee.Description
+			}
+
+			Spragald: {
+				DisplayName: Spragald
+				Description: Mods.Stellamod.Buffs.Spragald.Description
+			}
+
+			DeathMultiplier: {
+				DisplayName: Death Multiplier
+				Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+			}
+
+			DeathMultiplierBloodLamp: {
+				DisplayName: Death Multiplier Blood Lamp
+				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+			}
+
+			Dusted: {
+				DisplayName: Dusted
+				Description: Mods.Stellamod.Buffs.Dusted.Description
+			}
+
+			CoalBuff: {
+				DisplayName: Coal Buff
+				Description: Mods.Stellamod.Buffs.CoalBuff.Description
+			}
+
+			EXPtime: {
+				DisplayName: E X Ptime
+				Description: Mods.Stellamod.Buffs.EXPtime.Description
+			}
+
+			EXPtime2: {
+				DisplayName: E X Ptime2
+				Description: Mods.Stellamod.Buffs.EXPtime2.Description
+			}
+
+			EXPtime3: {
+				DisplayName: E X Ptime3
+				Description: Mods.Stellamod.Buffs.EXPtime3.Description
+			}
+
+			EXPtime4: {
+				DisplayName: E X Ptime4
+				Description: Mods.Stellamod.Buffs.EXPtime4.Description
+			}
+
+			FlameDust: {
+				DisplayName: Flame Dust
+				Description: Mods.Stellamod.Buffs.FlameDust.Description
+			}
+
+			FlowerBuff: {
+				DisplayName: Flower Buff
+				Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+			}
+
+			GrassBuff: {
+				DisplayName: Grass Buff
+				Description: Mods.Stellamod.Buffs.GrassBuff.Description
+			}
+
+			IceDust: {
+				DisplayName: Ice Dust
+				Description: Mods.Stellamod.Buffs.IceDust.Description
+			}
+
+			KaevDust: {
+				DisplayName: Kaev Dust
+				Description: Mods.Stellamod.Buffs.KaevDust.Description
+			}
+
+			ShadeDust: {
+				DisplayName: Shade Dust
+				Description: Mods.Stellamod.Buffs.ShadeDust.Description
+			}
+
+			SongDust: {
+				DisplayName: Song Dust
+				Description: Mods.Stellamod.Buffs.SongDust.Description
+			}
+
+			TrickDust: {
+				DisplayName: Trick Dust
+				Description: Mods.Stellamod.Buffs.TrickDust.Description
+			}
+
+			Elegance: {
+				DisplayName: Elegance
+				Description: Mods.Stellamod.Buffs.Elegance.Description
+			}
+
+			GintzeSeen: {
+				DisplayName: Gintze Seen
+				Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+			}
+
+			Harvester: {
+				DisplayName: Harvester
+				Description: Mods.Stellamod.Buffs.Harvester.Description
+			}
+
+			Love: {
+				DisplayName: Love
+				Description: Mods.Stellamod.Buffs.Love.Description
+			}
+
+			PocketSandBuff: {
+				DisplayName: Pocket Sand Buff
+				Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+			}
+
+			SnowFlame: {
+				DisplayName: Snow Flame
+				Description: Mods.Stellamod.Buffs.SnowFlame.Description
+			}
+
+			MorrowWhipDebuff: {
+				DisplayName: Morrow Whip Debuff
+				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+			}
+
+			Whipdeath: {
+				DisplayName: Whipdeath
+				Description: Mods.Stellamod.Buffs.Whipdeath.Description
+			}
+
+			Wounded: {
+				DisplayName: Wounded
+				Description: Mods.Stellamod.Buffs.Wounded.Description
+			}
+		}
+
+		NPCs: {
+			Flowerball.DisplayName: Flowerball
+			StarrVeriplant.DisplayName: Starr Veriplant
+			CloneV.DisplayName: Clone V
+			GhostCharger.DisplayName: Ghost Charger
+			Sword1.DisplayName: Sword1
+			Sword2.DisplayName: Sword2
+			Sword3.DisplayName: Sword3
+			Viola.DisplayName: Viola
+			VerliaB.DisplayName: Verlia B
+			HarvestIce.DisplayName: Harvest Ice
+			HarvestOverworld.DisplayName: Harvest Overworld
+			HarvestUM.DisplayName: Harvest U M
+			MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
+			MossyZombie.DisplayName: Mossy Zombie
+			RubyBeetle.DisplayName: Ruby Beetle
+			TribalPeasant.DisplayName: Tribal Peasant
+			TribalPriest.DisplayName: Tribal Priest
+			GintzeCaptain.DisplayName: Gintze Captain
+			GintzeSolider.DisplayName: Gintze Solider
+			Gambit.DisplayName: Gambit
+		}
+
+		Projectiles: {
+			DiariBrooch.DisplayName: Diari Brooch
+			FlyfishBrooch.DisplayName: Flyfish Brooch
+			FrileBrooch.DisplayName: Frile Brooch
+			FrileBroochP.DisplayName: Frile Brooch P
+			MorrowedBrooch.DisplayName: Morrowed Brooch
+			SlimeBrooch.DisplayName: Slime Brooch
+			SpragaldBrooch.DisplayName: Spragald Brooch
+			Spragald.DisplayName: Spragald
+			LovestruckP.DisplayName: Lovestruck P
+			Noti.DisplayName: Noti
+			BigRock.DisplayName: Big Rock
+			CosButterfly.DisplayName: Cos Butterfly
+			Flowder.DisplayName: Flowder
+			Flowing.DisplayName: Flowing
+			GroundSpike.DisplayName: Ground Spike
+			Rock.DisplayName: Rock
+			Rock2.DisplayName: Rock2
+			SineButterfly.DisplayName: Sine Butterfly
+			SineButterflyfriendly.DisplayName: Sine Butterflyfriendly
+			SmallRock.DisplayName: Small Rock
+			SmallRock2.DisplayName: Small Rock2
+			SpikeBullet.DisplayName: Spike Bullet
+			StarBullet.DisplayName: Star Bullet
+			StarSpike.DisplayName: Star Spike
+			BackgroundOrb.DisplayName: Background Orb
+			FrostShot.DisplayName: Frost Shot
+			FrostShot2.DisplayName: Frost Shot2
+			FrostShotIN.DisplayName: Frost Shot I N
+			MoonBladeTrail.DisplayName: Moon Blade Trail
+			MoonOut.DisplayName: Moon Out
+			Notia.DisplayName: Notia
+			Sigil.DisplayName: Sigil
+			SlashHold.DisplayName: Slash Hold
+			SlashLeft.DisplayName: Slash Left
+			SlashRight.DisplayName: Slash Right
+			Strummer.DisplayName: Strummer
+			Sword1F.DisplayName: Sword1 F
+			Sword2F.DisplayName: Sword2 F
+			Sword3F.DisplayName: Sword3 F
+			Sword.DisplayName: Sword
+			TheMoon.DisplayName: The Moon
+			VerliaBlade.DisplayName: Verlia Blade
+			AntacizProj.DisplayName: Antaciz Proj
+			Aurora.DisplayName: Aurora
+			Aurora2.DisplayName: Aurora2
+			Aurora3.DisplayName: Aurora3
+			AuroranBullet.DisplayName: Auroran Bullet
+			AuroranBullet2.DisplayName: Auroran Bullet2
+			AuroranBullet3.DisplayName: Auroran Bullet3
+			Beachthrow.DisplayName: Beachthrow
+			BoomCircle.DisplayName: Boom Circle
+			BoomMorrow.DisplayName: Boom Morrow
+			CocoShot.DisplayName: Coco Shot
+			WoodenCrossbowBolt.DisplayName: Wooden Crossbow Bolt
+			WoodenCrossbowHold.DisplayName: Wooden Crossbow Hold
+			Deathtrail.DisplayName: Deathtrail
+			Dicein.DisplayName: Dicein
+			FrostbiteProj.DisplayName: Frostbite Proj
+			FrostSwProj.DisplayName: Frost Sw Proj
+			FrostSwProj2.DisplayName: Frost Sw Proj2
+			FrostSwProj3.DisplayName: Frost Sw Proj3
+			HornedNailProj.DisplayName: Horned Nail Proj
+			HornedNailProj2.DisplayName: Horned Nail Proj2
+			HornetKaboom.DisplayName: Hornet Kaboom
+			HornetLob.DisplayName: Hornet Lob
+			IgniterStart.DisplayName: Igniter Start
+			KaBoom.DisplayName: Ka Boom
+			KaBoomKaev.DisplayName: Ka Boom Kaev
+			KaBoomShade.DisplayName: Ka Boom Shade
+			KaBoomTrick.DisplayName: Ka Boom Trick
+			Logger.DisplayName: Logger
+			Meatball.DisplayName: Meatball
+			Meatball2.DisplayName: Meatball2
+			Meatball3.DisplayName: Meatball3
+			MeatBullet.DisplayName: Meat Bullet
+			MeatBullet2.DisplayName: Meat Bullet2
+			MeatBullet3.DisplayName: Meat Bullet3
+			MorrowRapproj.DisplayName: Morrow Rapproj
+			MorrowShot.DisplayName: Morrow Shot
+			MorrowShotArrow.DisplayName: Morrow Shot Arrow
+			MorrowShotArrow2.DisplayName: Morrow Shot Arrow2
+			MorrowValswaProj.DisplayName: Morrow Valswa Proj
+			BoneNailProj.DisplayName: Bone Nail Proj
+			BoneNailProj2.DisplayName: Bone Nail Proj2
+			EnergizedNailProj.DisplayName: Energized Nail Proj
+			EnergizedNailProj2.DisplayName: Energized Nail Proj2
+			SteamedNailProj.DisplayName: Steamed Nail Proj
+			SteamedNailProj2.DisplayName: Steamed Nail Proj2
+			PetalDance.DisplayName: Petal Dance
+			PocketSandProj.DisplayName: Pocket Sand Proj
+			ArcanePowder.DisplayName: Arcane Powder
+			CoalPowder.DisplayName: Coal Powder
+			DirtPowder.DisplayName: Dirt Powder
+			FlamePowderProj.DisplayName: Flame Powder Proj
+			FlowerPowder.DisplayName: Flower Powder
+			FrostPowder.DisplayName: Frost Powder
+			KaevPowder.DisplayName: Kaev Powder
+			LenaPowderProj.DisplayName: Lena Powder Proj
+			ShadePowderProj.DisplayName: Shade Powder Proj
+			TrickPowderProj.DisplayName: Trick Powder Proj
+			RobedProjectile.DisplayName: Robed Projectile
+			HalhurishProj.DisplayName: Halhurish Proj
+			SalfaCircle.DisplayName: Salfa Circle
+			SalfaCircle2.DisplayName: Salfa Circle2
+			SalfaCircle3.DisplayName: Salfa Circle3
+			ShadeBall.DisplayName: Shade Ball
+			AuroranSwordProj.DisplayName: Auroran Sword Proj
+			AuroranSwordProj2.DisplayName: Auroran Sword Proj2
+			GutinierSwordProj.DisplayName: Gutinier Sword Proj
+			GutinierSwordProj2.DisplayName: Gutinier Sword Proj2
+			MalodineSwordProj.DisplayName: Malodine Sword Proj
+			SparrowProj.DisplayName: Sparrow Proj
+			splitshot.DisplayName: splitshot
+			CharmSpragald.DisplayName: Charm Spragald
+			Needle.DisplayName: Needle
+			StringNNeedlesAlcadiz.DisplayName: String N Needles Alcadiz
+			Windeffect.DisplayName: Windeffect
+			Stump.DisplayName: Stump
+			Starbomb.DisplayName: Starbomb
+			Starout.DisplayName: Starout
+			TrickbiteProj.DisplayName: Trickbite Proj
+			VerstibloomProjectile.DisplayName: Verstibloom Projectile
+			Violarproj.DisplayName: Violarproj
+			MorrowWhipProj.DisplayName: Morrow Whip Proj
+			wowBullet.DisplayName: wow Bullet
+		}
+	}
+}

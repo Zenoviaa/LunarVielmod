@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			base.OnHitNPC(player, target, damage, knockBack, crit);
+			base.OnHitNPC(player, target, hit, damageDone);
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
 		}

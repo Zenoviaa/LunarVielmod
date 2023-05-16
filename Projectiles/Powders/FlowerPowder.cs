@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Powders
 
 			target.AddBuff(ModContent.BuffType<Dusted>(), 1360);
 			target.AddBuff(ModContent.BuffType<FlowerBuff>(), 1360);
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 		}
 	}
 }

@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.PocketProj
 
 			target.AddBuff(ModContent.BuffType<Dusted>(), 2880);
 			target.AddBuff(ModContent.BuffType<PocketSandBuff>(), 2880);
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 		}
 	}
 }
