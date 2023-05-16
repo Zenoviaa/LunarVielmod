@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Powders;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -39,7 +42,19 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.crit = 2;
 			Item.UseSound = SoundID.Grass;
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<FrostedPowder>(), 1);
+			recipe.AddIngredient(ItemID.HallowedBar, 5);
+			recipe.AddIngredient(ItemID.FallenStar, 10);
+			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 
-	
+			recipe.Register();
+		}
+
 	}
 }

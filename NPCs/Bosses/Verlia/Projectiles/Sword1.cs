@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
             }
 			if (timer == 450)
 			{
-				NPC.StrikeNPC(9999, 1, 1, false, false, true);
+				NPC.SimpleStrikeNPC(9999, 1, crit: false, NPC.knockBackResist);
 			}
 
 
@@ -159,8 +159,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 		{
 
-			NPC.StrikeNPC(9999, 1, 1, false, false, true);
-			
+			NPC.SimpleStrikeNPC(9999, 1, crit: false, NPC.knockBackResist);
+
 		}
 	}
 }

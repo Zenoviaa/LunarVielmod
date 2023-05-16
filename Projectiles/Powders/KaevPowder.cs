@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles.Powders
 
 			target.AddBuff(ModContent.BuffType<Dusted>(), 1120);
 			target.AddBuff(ModContent.BuffType<KaevDust>(), 1120);
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 		}
 	}
 }

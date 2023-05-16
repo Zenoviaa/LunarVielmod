@@ -141,7 +141,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.StrikeNPC(damage * 2, 1, 1, false, false, true);
+					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 					npc.RequestBuffRemoval(ModContent.BuffType<FlameDust>());
 				}
 			}
@@ -174,11 +174,11 @@ namespace Stellamod.Projectiles.IgniterEx
 						if (npc.active && npc.HasBuff<EXPtime>())
 						{
 							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, damage, knockback);
+							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
-							npc.StrikeNPC(damage * 12, 1, 1, false, false, true);
-							npc.StrikeNPC(damage * 12, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
@@ -227,11 +227,11 @@ namespace Stellamod.Projectiles.IgniterEx
 						if (npc.active && npc.HasBuff<EXPtime2>())
 						{
 							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, damage, knockback);
+							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
-							npc.StrikeNPC(damage * 24, 1, 1, false, false, true);
-							npc.StrikeNPC(damage * 24, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
 							float speedXab = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYab = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXab, Projectile.position.Y + speedYab, speedXab * 0, speedYab * 0, ModContent.ProjectileType<KaBoomShade>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
@@ -284,7 +284,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						for (int da = 0; da < 6; da++)
 						{
 
-							npc.StrikeNPC(damage * 1, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 						}
 					}
 
@@ -300,7 +300,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							for (int da = 0; da < 6; da++)
 							{
 
-								npc.StrikeNPC(damage * 1, 1, 1, false, false, true);
+								npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 							}
 
 
@@ -343,7 +343,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<LeafParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<DustaParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.StrikeNPC(damage * 1, 1, 1, false, false, true);
+					npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 
 				}
 			}
@@ -361,7 +361,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					Vector2 speed2 = Main.rand.NextVector2Circular(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					ParticleManager.NewParticle(Projectile.Center, speed * 7, ParticleManager.NewInstance<FlowerParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.StrikeNPC(damage * 2, 1, 1, false, false, true);
+					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 
 				}
 			}
@@ -379,8 +379,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 7, ParticleManager.NewInstance<LenaSongParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.StrikeNPC(damage * 2, 1, 1, false, false, true);
-					
+					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
+
 				}
 			}
 
@@ -415,7 +415,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						for (int da = 0; da < 7; da++)
 						{
 
-							npc.StrikeNPC(damage * 1, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 						}
 
 
@@ -433,7 +433,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/trickbomb"));
 
 
-							npc.StrikeNPC(damage * 17, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 17, 1, crit: false, Projectile.knockBack);
 
 
 
@@ -456,7 +456,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/trickbomb"));
 
 
-							npc.StrikeNPC(damage * 17, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 17, 1, crit: false, Projectile.knockBack);
 
 
 
@@ -490,7 +490,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int da = 0; da < 3; da++)
 				{
 
-					npc.StrikeNPC(damage * 2, 1, 1, false, false, true);
+					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 				}
 
 				for (int d = 0; d < 20; d++)
@@ -518,7 +518,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int da = 0; da < 3; da++)
 				{
 
-					npc.StrikeNPC(damage * 1, 1, 1, false, false, true);
+					npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 				}
 
 				for (int d = 0; d < 15; d++)
@@ -566,11 +566,11 @@ namespace Stellamod.Projectiles.IgniterEx
 						if (npc.active && npc.HasBuff<EXPtime>())
 						{
 							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
-							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, damage, knockback);
+							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
-							npc.StrikeNPC(damage * 20, 1, 1, false, false, true);
-							npc.StrikeNPC(damage * 20, 1, 1, false, false, true);
+							npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomKaev>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
@@ -600,7 +600,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 
 
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
+			
 				
 			
 		}

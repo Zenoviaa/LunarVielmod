@@ -34,6 +34,11 @@ namespace Stellamod.NPCs.Town
 	public class Gambit : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
+		public const string ShopName = "Shop";
+	
+
+		private static int ShimmerHeadIndex;
+		private static Profiles.StackedNPCProfile NPCProfile;
 
 		public override void SetStaticDefaults()
 		{
@@ -295,117 +300,151 @@ namespace Stellamod.NPCs.Town
 			frameTick = 0;
 		}
 
+
+
+
+
+
+
+
+
+
+
 		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
-		
-			shop.item[nextSlot].SetDefaults(ItemID.PotionOfReturn);
-			shop.item[nextSlot].shopCustomPrice = 1;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-			nextSlot++;
-			
-			shop.item[nextSlot].SetDefaults(ItemID.WormholePotion);
-			shop.item[nextSlot].shopCustomPrice = 1;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-			nextSlot++;
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<LenaSongPowder>());
-			shop.item[nextSlot].shopCustomPrice = 15;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
-			nextSlot++;
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<FrostedPowder>());
-			shop.item[nextSlot].shopCustomPrice = 3;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
-			nextSlot++;
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<PaperPaws>());
-			shop.item[nextSlot].shopCustomPrice = 10;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
-			nextSlot++;
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Steali>());
-			shop.item[nextSlot].shopCustomPrice = 10;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID; // omit this line if shopCustomPrice should be in regular coins.
-			nextSlot++;
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.Gambit>());
-			shop.item[nextSlot].shopCustomPrice = 5;
-			shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-			nextSlot++;
-			
-
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Medal>());
-			nextSlot++;
-			if (NPC.downedQueenBee)
+			foreach (Item item in items)
 			{
+				// Skip 'air' items and null items.
+				if (item == null || item.type == ItemID.None)
+				{
+					continue;
+				}
 
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Verstidust>());
-				shop.item[nextSlot].shopCustomPrice = 20;
-				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-				nextSlot++;
-			}
-
-			if (NPC.downedMechBossAny)
-			{
-
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ArcanalPowder>());
-				shop.item[nextSlot].shopCustomPrice = 40;
-				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-				nextSlot++;
-			}
-
-			if (NPC.downedMechBossAny)
-			{
-
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<SteamedNail>());
-				shop.item[nextSlot].shopCustomPrice = 40;
-				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-				nextSlot++;
-			}
-
-			if (Main.bloodMoon == true)
-			{
-				
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<BloodLamp>());
-				shop.item[nextSlot].shopCustomPrice = 20;
-				shop.item[nextSlot].shopSpecialCurrency = Stellamod.MedalCurrencyID;
-				nextSlot++;
+				// If NPC is shimmered then reduce all prices by 50%.
+				if (NPC.IsShimmerVariant)
+				{
+					int value = item.shopCustomPrice ?? item.value;
+					item.shopCustomPrice = value / 2;
+				}
 			}
 		}
-		 //	else if (Main.moonPhase < 4) {
+
+
+
+
+		public override void AddShops()
+		{
+			var npcShop = new NPCShop(Type, ShopName)
+
+
+
+
+					.Add(new Item(ItemID.PotionOfReturn)
+					{
+						shopCustomPrice = 1,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ItemID.WormholePotion)
+					{
+						shopCustomPrice = 1,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<LenaSongPowder>())
+					{
+						shopCustomPrice = 15,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<FrostedPowder>())
+					{
+						shopCustomPrice = 3,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<PaperPaws>())
+					{
+						shopCustomPrice = 10,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<Steali>())
+					{
+						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<Items.Consumables.Gambit>())
+					{
+						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<Medal>()) { shopCustomPrice = Item.buyPrice(gold: 15) })
+
+
+
+
+					.Add<Items.Weapons.PowdersItem.Verstidust>(Condition.DownedQueenBee)
+				
+
+			
+
+					.Add<Items.Weapons.Summon.BloodLamp>(Condition.BloodMoon)
+				;
+				
+				
+			
+				npcShop.Register(); // Name of this shop tab
+		}
+
+
+
+
+
+	
+
+
+
+
+
+
+	
+				//	else if (Main.moonPhase < 4) {
 				// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		 //		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		 //	}
-		 //	else if (Main.moonPhase < 6) {
-		 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
+				//		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
+				//	}
+				//	else if (Main.moonPhase < 6) {
+				// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
+				// 	}
+				//
+				// 	// todo: Here is an example of how your npc can sell items from other mods.
+				// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
+				// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
+				// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
+				// 	// 	nextSlot++;
+				// 	// }
+				//
+				// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
+				// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
+				// 	// 		if (Item.IsUnloaded) continue;
+				// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
+				// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
+				// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
+				// 	// 		nextSlot++;
+				// 	// 		//TODO: Have tModLoader handle index issues.
+				// 	// 	}
+				// 	// }
+				// }
 
-		
 
-		
 
-		
-		
-	}
+
+
+
+
+			}
 
 
 public class GambitPersonProfile : ITownNPCProfile

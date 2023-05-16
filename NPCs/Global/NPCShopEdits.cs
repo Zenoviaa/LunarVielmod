@@ -9,42 +9,30 @@ namespace Stellamod.NPCs.Global
 {
 	class NPCShopEdits : GlobalNPC
 	{
-		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
+
+
+		public override void ModifyShop(NPCShop shop)
 		{
-			// This example does not use the AppliesToEntity hook, as such, we can handle multiple npcs here by using if statements.
-			if (type == NPCID.ArmsDealer)
+			if (shop.NpcType == NPCID.PartyGirl)
 			{
-				if (Main.expertMode)
-				{
-					// Adding an item to a vanilla NPC is easy:
-					// This item sells for the normal price.
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<FlamePowder>());
-					nextSlot++; // Don't forget this line, it is essential.
-				}
-				
+				// Adding an item to a vanilla NPC is easy:
+				// This item sells for the normal price.
+				shop.Add(ModContent.ItemType<AstolfoMask>());
+				shop.Add(ModContent.ItemType<AstolfoSkirt>());
+				shop.Add(ModContent.ItemType<AstolfoBody>());
 
 				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
 				// Editing item.value in SetupShop is an incorrect approach.
 
 				// This shop entry sells for 2 Defenders Medals.
-				
 
-	
-			}
+			};
 
-			if (type == NPCID.PartyGirl)
+			if (shop.NpcType == NPCID.ArmsDealer)
 			{
-				
-					// Adding an item to a vanilla NPC is easy:
-					// This item sells for the normal price.
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoMask>());
-					nextSlot++; // Don't forget this line, it is essential.
-					
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoSkirt>());
-					nextSlot++; // Don't forget this line, it is essential.
-
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<AstolfoBody>());
-					nextSlot++; // Don't forget this line, it is essential.
+				// Adding an item to a vanilla NPC is easy:
+				// This item sells for the normal price.
+				shop.Add(ModContent.ItemType<FlamePowder>());
 
 
 				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
@@ -52,9 +40,9 @@ namespace Stellamod.NPCs.Global
 
 				// This shop entry sells for 2 Defenders Medals.
 
+			};
 
-
-			}
 		}
+		
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Nails;
 using Terraria;
@@ -76,6 +78,21 @@ namespace Stellamod.Items.Weapons.Ranged
 			}
 			return false;
 
+		}
+
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.AddIngredient(ItemID.Bone, 22);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 50);
+			recipe.AddIngredient(ItemID.HallowedBar, 5);
+
+
+			recipe.Register();
 		}
 	}
 }

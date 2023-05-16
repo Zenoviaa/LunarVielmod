@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles
 			}
 
 			target.AddBuff(ModContent.BuffType<DeathMultiplier>(), 360);
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 		}
 	}
 }

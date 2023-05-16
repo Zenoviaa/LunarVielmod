@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			timer++;
 			if (timer == 300)
             {
-				NPC.StrikeNPC(9999, 1, 1, false, false, true);
+				NPC.SimpleStrikeNPC(9999, 1, crit: false, 1);
 			}
 
 

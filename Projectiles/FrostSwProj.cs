@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles
 				angle *= 2.5f;
 				player.velocity.Y = -angle.Y;
 			}
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target,hit, damageDone);
 			target.AddBuff(ModContent.BuffType<DeathMultiplier>(), 360);
 		}
 	}

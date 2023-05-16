@@ -134,7 +134,7 @@ namespace Stellamod.Items.Armors.Lovestruck
 			target.AddBuff(BuffID.Confused, 720);
 
 
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 
 			Projectile.Kill();
 		}

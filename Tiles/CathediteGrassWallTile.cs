@@ -14,7 +14,7 @@ namespace Stellamod.Tiles
 			Main.wallHouse[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = ModContent.ItemType<CathediteGrassWall>();
+		
 
 			AddMapEntry(new Color(200, 200, 200));
 		}

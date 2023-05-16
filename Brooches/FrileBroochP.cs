@@ -135,7 +135,7 @@ namespace Stellamod.Brooches
 
 
 
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 				
 			
 		}

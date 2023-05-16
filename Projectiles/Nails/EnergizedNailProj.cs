@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Nails
 			{
 				if (target.life < target.lifeMax / 2)
 				{
-					target.StrikeNPC(9999, 10, 5, false, false, true);
+					target.SimpleStrikeNPC(9999, 1, crit: false, 1);
 
 				}
 			}
