@@ -10,7 +10,7 @@ namespace Stellamod.NPCs
 		{
 			if (npc.HasBuff(ModContent.BuffType<DeathMultiplierBloodLamp>()))
 			{
-				damage = (int)(damage * 2.1f);
+				projectile.damage = (int)(projectile.damage * 2.1f);
 			}
 		}
 	}
