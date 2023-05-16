@@ -12,11 +12,11 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Alcadiz String n Charm");
-			Tooltip.SetDefault("Your summons will target focused enemies" +
+			// DisplayName.SetDefault("Alcadiz String n Charm");
+			/* Tooltip.SetDefault("Your summons will target focused enemies" +
 				"\nSummons will manifest out of your string shield" +
 				"\nThey will act as temporary summons to give your other minions company!" +
-				"\nThe Charm above gives you 10+ Defense while active!");
+				"\nThe Charm above gives you 10+ Defense while active!"); */
 		}
 		public override void SetDefaults()
 		{

@@ -9,7 +9,7 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Arcanal Weapon.");
+			// Tooltip.SetDefault("Arcanal Weapon.");
 		}
 		public override void SetDefaults()
 		{

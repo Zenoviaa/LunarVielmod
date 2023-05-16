@@ -15,10 +15,10 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Thorner");
-			Tooltip.SetDefault("Shoots a swirling red bloom to swirl and kill your enemies after attacking!" +
+			// DisplayName.SetDefault("Thorner");
+			/* Tooltip.SetDefault("Shoots a swirling red bloom to swirl and kill your enemies after attacking!" +
 				"\nHitting foes with the melee swing builds damage towards the swing of the weapon" +
-				"\nDoes trenourmous damage!");
+				"\nDoes trenourmous damage!"); */
 		}
 		public override void SetDefaults()
 		{

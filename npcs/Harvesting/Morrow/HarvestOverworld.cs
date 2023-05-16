@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("???");
+			// DisplayName.SetDefault("???");
 			Main.npcFrameCount[NPC.type] = 16; // make sure to set this for your modnpcs.
 
 			// Specify the debuffs it is immune to

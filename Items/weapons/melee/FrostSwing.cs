@@ -12,9 +12,9 @@ namespace Stellamod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frost Swing");
-			Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
-			"\nHitting foes with the melee swing builds damage towards the swing of the weapon");
+			// DisplayName.SetDefault("Frost Swing");
+			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
+			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
 		public override void SetDefaults()
 		{

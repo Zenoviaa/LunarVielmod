@@ -13,10 +13,10 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Blood Lamp");
-			Tooltip.SetDefault("Enrages your summons by hitting enemies, shows a red mark on them!" +
+			// DisplayName.SetDefault("Blood Lamp");
+			/* Tooltip.SetDefault("Enrages your summons by hitting enemies, shows a red mark on them!" +
 				"\nSummons a red explosion crystal that hurts foes" +
-			"\nEven makes a bloodthirst trail for the summon being empowered!");
+			"\nEven makes a bloodthirst trail for the summon being empowered!"); */
 		}
 		public override void SetDefaults()
 		{
@@ -39,13 +39,13 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.crit = 15;
 			Item.value = 200;
 		}
-		public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			base.OnHitNPC(player, target, damage, knockBack, crit);
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
 		}
-		public override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+		public override void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
 		{
 			if (Main.rand.NextBool(5))
 				target.AddBuff(ModContent.BuffType<DeathMultiplierBloodLamp>(), 480);
