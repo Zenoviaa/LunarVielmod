@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "GardenWrecker", " (D) Low Damage scaling for Skulls on hit")
+            line = new TooltipLine(Mod, "GardenWrecker", "(D) Low Damage scaling for Skulls on hit")
             {
                 OverrideColor = new Color(108, 271, 99)
 
@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
     }
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 7;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;
