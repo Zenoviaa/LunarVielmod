@@ -1380,6 +1380,15 @@ Mods: {
 				DisplayName: Govheil Block
 				Tooltip: ""
 			}
+
+			GardenWrecker: {
+				Tooltip:
+					'''
+					Shoots out skull-bullets, if they hit, they do some serious damage!
+					It's true, they wrecked my garden! I'm only with the science team!
+					'''
+				DisplayName: Garden Wrecker
+			}
 		}
 
 		Biomes: {
@@ -1743,6 +1752,9 @@ Mods: {
 			Violarproj.DisplayName: Violarproj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
+			GardenWreckerHold.DisplayName: Garden Wrecker Hold
+			SkullShotKaboom.DisplayName: Skull Shot Kaboom
 		}
 	}
 }

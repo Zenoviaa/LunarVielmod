@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Gutinier", "High Damage Scaling with knives!")
+            line = new TooltipLine(Mod, "Gutinier", "(A) Very High Damage Scaling with knives!")
             {
                 OverrideColor = new Color(220, 87, 24)
 

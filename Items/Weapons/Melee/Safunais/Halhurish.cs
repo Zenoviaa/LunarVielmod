@@ -38,7 +38,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			};
 			tooltips.Add(line);
 
-			line = new TooltipLine(Mod, "Halhurish", "Medium Damage Scaling (Fireballs) On Hit!")
+			line = new TooltipLine(Mod, "Halhurish", "(C) Medium Damage Scaling (Fireballs) On Hit!")
 			{
 				OverrideColor = new Color(220, 87, 24)
 
