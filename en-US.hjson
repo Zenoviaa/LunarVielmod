@@ -66,17 +66,21 @@ Mods: {
 			}
 
 			FlyingFishBroochA: {
-				DisplayName: Flying Fish Brooch
-				Tooltip: ""
+				DisplayName: Brooch of the Flying Fish
+				Tooltip: '''
+				Simple Brooch!
+				Increases Speed and + 2 Defense!
+				Use the power of the speedy fish that fly???
+				'''
 			}
 
 			FrileBroochA: {
-				DisplayName: Brooch of The Shielded Fish
+				DisplayName: Brooch of The Friled Ice
 				Tooltip:
 					'''
 					Simple Brooch!
-					Increases Speed and + 2 Defense!
-					Use the power of the speedy fish that fly???
+					Enemies now are frosted with icy glazes when hit!
+					Use the power of the Ice biome :P
 					'''
 			}
 
