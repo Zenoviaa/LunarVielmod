@@ -13,7 +13,7 @@ namespace Stellamod.Tiles
 			Main.tileSolid[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
-
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.Cathedral.CathediteBlock>());
 			DustType = Main.rand.Next(110, 113);
 			
 			MineResist = 2f;

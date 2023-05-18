@@ -18,7 +18,7 @@ namespace Stellamod.Tiles
 		
 			MineResist = 2f;
 			MinPick = 225;
-
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.Cathedral.CathediteGrassBlock>());
 			AddMapEntry(new Color(7, 26, 2));
 
 			// TODO: implement

@@ -44,12 +44,25 @@ Mods: {
 
 			AdvancedBroochesBackpack: {
 				DisplayName: Advanced Brooches Backpack
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increased Regeneration! 
+					+10% damage
+					Allows you to equip advanced brooches! Very useful 
+					Allows the effects of the Hiker's Backpack!
+					'''
 			}
 
 			DiariBroochA: {
 				DisplayName: Diari Brooch
-				Tooltip: ""
+				Tooltip:
+					'''
+					Simple Brooch!
+					+ 4 Defense!
+					Auto swing capabilities!
+					Flame walking? Always Fed!
+					+40 Health and Mana
+					'''
 			}
 
 			FlyingFishBroochA: {
@@ -58,23 +71,45 @@ Mods: {
 			}
 
 			FrileBroochA: {
-				DisplayName: Frile Brooch
-				Tooltip: ""
+				DisplayName: Brooch of The Shielded Fish
+				Tooltip:
+					'''
+					Simple Brooch!
+					Increases Speed and + 2 Defense!
+					Use the power of the speedy fish that fly???
+					'''
 			}
 
 			MorrowedBroochA: {
-				DisplayName: Morrowed Brooch
-				Tooltip: ""
+				DisplayName: Brooch of The Huntria Morrow
+				Tooltip:
+					'''
+					Simple Brooch!
+					nHeavy increased damage to your arrows
+					+2 Defense and increased ranged damage
+					Use the power of the deep dark morrow..
+					'''
 			}
 
 			SlimeBroochA: {
-				DisplayName: Slime Brooch
-				Tooltip: ""
+				DisplayName: Brooch of The cute slimes
+				Tooltip:
+					'''
+					Simple Brooch!
+					Jump Higher!
+					Bouncy and fast fall
+					Awww so cute :P
+					'''
 			}
 
 			SpragaldBroochA: {
-				DisplayName: Spragald Brooch
-				Tooltip: ""
+				DisplayName: Brooch of The Spragald
+				Tooltip:
+					'''
+					Simple Brooch!
+					Effect = +10 Defense
+					Use the power of the Spragald Spiders!
+					'''
 			}
 
 			HikersBackpack: {
@@ -88,308 +123,551 @@ Mods: {
 			}
 
 			IllusionistBook: {
-				DisplayName: Illusionist Book
-				Tooltip: ""
+				DisplayName: Book of Wooden Illusion
+				Tooltip:
+					'''
+					Increased Regeneration!
+					+3% damage"
+					Increases crit strike change by 5% 
+					'''
 			}
 
 			JellyfishTissue: {
 				DisplayName: Jellyfish Tissue
-				Tooltip: ""
+				Tooltip:
+					'''
+					Woa really cool!
+					+40 Defense
+					But at the cost of 40% damage 
+					'''
 			}
 
 			MOTT: {
 				DisplayName: M.O.T.T
-				Tooltip: ""
+				Tooltip:
+					'''
+					Every 10 seconds drop high damage spiky balls on the ground
+					+5% Ranged damage...
+					'''
 			}
 
 			PaperPaws: {
 				DisplayName: Paper Paws
-				Tooltip: ""
+				Tooltip:
+					'''
+					Why don't you give your summons more credit?
+					+1 summon
+					'''
 			}
 
 			Paper: {
 				DisplayName: Paper
-				Tooltip: ""
+				Tooltip: Its paper idk what you expected
 			}
 
 			PlantH: {
 				DisplayName: Plant Heritage
-				Tooltip: ""
+				Tooltip:
+					'''
+					Gain the power of plants!
+					+40 life and +15 increased defense
+					But you have decreased speed 0v0
+					'''
 			}
 
 			SapContainer: {
 				DisplayName: Sap Container
-				Tooltip: ""
+				Tooltip:
+					'''
+					Every 10 seconds eat stardew and MAJORLY increase your magic damage"
+					+7% Magic damage...
+					'''
 			}
 
 			WoodenShield: {
 				DisplayName: Wooden Shield
-				Tooltip: ""
+				Tooltip:
+					'''
+					Super cool right??? A wooden shield?
+					What are you gonna block, a bow and arrow?
+					Literally no blocking features smh
+					+1 Defense and life regen increased!
+					'''
 			}
 
 			Steali: {
 				DisplayName: Steali
-				Tooltip: ""
+				Tooltip:
+					'''
+					A small fast dash that provides invincibility as you dash
+					Increased regeneration
+					You may not attack while this is in use
+					Hollow Knight inspiried!
+					'''
 			}
 
 			ThornedBook: {
 				DisplayName: Thorned Book
-				Tooltip: ""
+				Tooltip:
+					'''
+					When enemies hit you deal big amounts of damage back
+					+10% Melee damage...
+					-5 defense
+					'''
 			}
 
 			CelestiaMoonBreastplate: {
 				DisplayName: Celestia Moon Breastplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					Magical essence of an empress!
+					+60 max mana and +1 minion slot
+					+20 Health
+					'''
 			}
 
 			CelestiaMoonHelmet: {
 				DisplayName: Celestia Moon Helmet
-				Tooltip: ""
+				Tooltip:
+					'''
+					Magical essence of an Emperor
+					+7% increased ranged and melee damage
+					+35 Health
+					'''
 			}
 
 			CelestiaMoonLegs: {
 				DisplayName: Celestia Moon Leggings
-				Tooltip: ""
+				Tooltip:
+					'''
+					Magical essence of an empress!
+					5% increased movement speed
+					+20 Health
+					'''
 			}
 
 			CelestiaMoonMask: {
 				DisplayName: Celestia Moon Mask
-				Tooltip: ""
+				Tooltip:
+					'''
+					Magical essence of an empress!
+					+20 Max mana and +1 Minion Slot
+					'''
 			}
 
 			HuntrianBoots: {
 				DisplayName: Huntrian Boots
-				Tooltip: ""
+				Tooltip:
+					'''
+					Corroded Woods
+					+5% Damage!
+					+10 Health
+					+7 Critical Strike Chance!
+					'''
 			}
 
 			HuntrianChestplate: {
 				DisplayName: Huntrian Chestplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					Corroded Woods
+					+5% Damage!" 
+					+10 Health" 
+					+10 Critical Strike Chance!
+					'''
 			}
 
 			HuntrianHelmet: {
 				DisplayName: Huntrian Helmet
-				Tooltip: ""
+				Tooltip:
+					'''
+					Corroded Woods
+					+5% Damage!
+					+20 Health
+					'''
 			}
 
 			LovestruckBreastplate: {
 				DisplayName: Lovestruck Breastplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					Feel the love!
+					+60 Health and +1 minion slot
+					'''
 			}
 
 			LovestruckLegs: {
-				DisplayName: Lovestruck Legs
-				Tooltip: ""
+				DisplayName: Lovestruck Thighs
+				Tooltip:
+					'''
+					Sexy!
+					10% increased movement speed
+					+60 Health
+					'''
 			}
 
 			LovestruckMask: {
 				DisplayName: Lovestruck Mask
-				Tooltip: ""
+				Tooltip:
+					'''
+					Magical essence of an Lusting Goddess
+					+7% increased damage
+					+40 Health
+					'''
 			}
 
 			GintzeMask: {
-				DisplayName: Gintze Mask
-				Tooltip: ""
+				DisplayName: Gintzi Mask
+				Tooltip:
+					'''
+					Rare Iron Mask!
+					+2 summons!
+					+50 Health
+					'''
 			}
 
 			StoniaBoots: {
 				DisplayName: Stonia Boots
-				Tooltip: ""
+				Tooltip:
+					'''
+					Rizzy Stone
+					+2% Damage!
+					Heavily Increased Falling!
+					Woa rocks!
+					'''
 			}
 
 			StoniaChestplate: {
 				DisplayName: Stonia Chestplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					Weak Stone?
+					+1% Damage!
+					+2 Penetration
+					+2 Critical Strike Chance!
+					'''
 			}
 
 			StoniaHat: {
 				DisplayName: Stonia Hat
-				Tooltip: ""
+				Tooltip:
+					'''
+					Happy Stone?
+					+3% Damage
+					+5 Penetration
+					+5 Critical Strike Chance!
+					'''
 			}
 
 			AstolfoBody: {
 				DisplayName: Astolfo Breasts
-				Tooltip: ""
+				Tooltip:
+					'''
+					Nya~
+					Yummy!
+					+20 Health
+					'''
 			}
 
 			AstolfoMask: {
-				DisplayName: Astolfo Mask
-				Tooltip: ""
+				DisplayName: Astolfo Wig
+				Tooltip:
+					'''
+					Yummy kummy :3
+					+2% increased damage
+					+35 Health
+					Increased Pickaxe Speed!
+					'''
 			}
 
 			AstolfoSkirt: {
 				DisplayName: Astolfo Skirt
-				Tooltip: ""
+				Tooltip:
+					'''
+					Woa it even smells like water!
+					5% increased movement speed
+					Rizz Thighs
+					'''
 			}
 
 			VerlBreastplate: {
 				DisplayName: Verl Breastplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					Shines with a blooming moon
+					+10% Ranged and Magic Damage!
+					+12 Penetration" +
+					+5 Critical Strike Chance!
+					+20 Max Life
+					'''
 			}
 
 			VerlHat: {
 				DisplayName: Verl Hat
-				Tooltip: ""
+				Tooltip:
+					'''
+					You feel prettier dont you?
+					+7% Magic Damage!
+					+Fast mana regeneration!
+					+100 Max Mana
+					+40 Max Life
+					'''
 			}
 
 			VerlLeggings: {
 				DisplayName: Verl Leggings
-				Tooltip: ""
+				Tooltip:
+					'''
+					Look at them thighs go!
+					+7% Magic and Ranged Damage!
+					+Increased Movement speed
+					+40 Max Life
+					'''
 			}
 
 			VerlMask: {
 				DisplayName: Verl Mask
-				Tooltip: ""
+				Tooltip:
+					'''
+					You feel prettier dont you?
+					+7% Ranged Damage!
+					+15 Critical Strike Chance!
+					+20 Max Life
+					'''
 			}
 
 			VextinBoots: {
 				DisplayName: Vextin Boots
-				Tooltip: ""
+				Tooltip:
+					'''
+					Hide in the sands
+					+5% Damage
+					+20 Health
+					'''
 			}
 
 			VextinMask: {
 				DisplayName: Vextin Mask
-				Tooltip: ""
+				Tooltip:
+					'''
+					You feel the hidden sands flow in you
+					+7% increased damage
+					+20 Health
+					'''
 			}
 
 			VextinRobe: {
 				DisplayName: Vextin Robe
-				Tooltip: ""
+				Tooltip:
+					'''
+					Roam the wonderous sands	
+					+40 Health
+					'''
 			}
 
 			Gambit: {
 				DisplayName: Gambit
-				Tooltip: ""
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Gamble away your soul after battle for great rewards!
+					'''
 			}
 
 			GambitToken: {
 				DisplayName: Gambit Token
-				Tooltip: ""
+				Tooltip: Use this while gambling to actually, gamble..
 			}
 
 			GildedBag1: {
 				DisplayName: Gilded Bag
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			MoonflameLantern: {
 				DisplayName: Moonflame Lantern
-				Tooltip: ""
+				Tooltip:
+					'''
+					I thank you for your contribution, return to me, I await your arrival
+					at the top of my palace, we will dance soon <3
+					'''
 			}
 
 			SirestiasStarterBag: {
 				DisplayName: Sirestias Starter Bag
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			VeribossBag: {
 				DisplayName: Veriboss Bag
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			AlcadizMetal: {
 				DisplayName: Alcadiz Metal
-				Tooltip: ""
+				Tooltip:
+					'''
+					Woa this is super hard and magical..
+					Where does this ore come from?
+					Best use for metalic weapons and magical items!
+					'''
 			}
 
 			Bagitem: {
-				DisplayName: Bagitem
-				Tooltip: ""
+				DisplayName: Dust Bag
+				Tooltip:
+					'''
+					A bag made for igniter dusts!
+					Where does this come from?
+					Used in every dust recipe, bring to the dust bench!
+					'''
 			}
 
 			Bouque: {
 				DisplayName: Bouque
-				Tooltip: ""
+				Tooltip:
+					'''
+					A bag of flowers for the dear
+					Used in various recipes
+					'''
 			}
 
 			Candle: {
 				DisplayName: Candle
-				Tooltip: ""
+				Tooltip:
+					'''
+					A candle but you cant place it :(
+					Why does it exist?
+					Used in many recipes
+					'''
 			}
 
 			Cinderscrap: {
-				DisplayName: Cinderscrap
-				Tooltip: ""
+				DisplayName: Scrap of Cinder
+				Tooltip:
+					'''
+					Cinder scrap
+					Burned to infinity
+					Used in plants
+					'''
 			}
 
 			CondensedDirt: {
 				DisplayName: Condensed Dirt
-				Tooltip: ""
+				Tooltip:
+					'''
+					Ew! Its sticky! Why??
+					A sticky dirt-like substance that comes from the ground!
+					Best use for fertilizer and dirt-like items!
+					'''
 			}
 
 			DreasFlower: {
-				DisplayName: Dreas Flower
-				Tooltip: ""
+				DisplayName: Sky Blue Dreas Flower
+				Tooltip:
+					'''
+					All the way from the Alcadiz temples..
+					Used for planting and harvesting
+					Best use for magical items and plants!
+					'''
 			}
 
 			Fabric: {
-				DisplayName: Fabric
-				Tooltip: ""
+				DisplayName: Alcadiz Fabric
+				Tooltip:
+					'''
+					All the way from the Alcadiz temples..
+					Strong as steel yet so fabric like, its pouring energy!
+					Best use for magical items!
+					'''
 			}
 
 			FlowerBatch: {
 				DisplayName: Flower Batch
-				Tooltip: ""
+				Tooltip:
+					'''
+					These flowers are very pretty..
+					An object from harvesting
+					Best use for plants and some items!
+					'''
 			}
 
 			Hlos: {
 				DisplayName: Scrapped Handle
-				Tooltip: ""
+				Tooltip: Used for making various weapons
 			}
 
 			MorrowRocks: {
 				DisplayName: Morrow Rocks
-				Tooltip: ""
+				Tooltip: Rocks from the deep morrow
 			}
 
 			Morrowshroom: {
 				DisplayName: Morrowshroom
-				Tooltip: ""
+				Tooltip: Shroomster
 			}
 
 			MorrowVine: {
-				DisplayName: Morrow Vine
-				Tooltip: ""
+				DisplayName: Morrowed Vine
+				Tooltip:
+					'''
+					A useful piece of string!
+					From some Alcadiz warriors of the morrow
+					Used in many recipes for weapons, bags and such
+					'''
 			}
 
 			Mushroom: {
 				DisplayName: Mushroomer
-				Tooltip: ""
+				Tooltip: Ew a mushroom, for planting probably?
 			}
 
 			Stick: {
 				DisplayName: Stick
-				Tooltip: ""
+				Tooltip: Welp it's a stick
 			}
 
 			ViolinStick: {
 				DisplayName: Violin Stick
-				Tooltip: ""
+				Tooltip:
+					'''
+					Hmph, what is this used for?
+					Best use for weapons and musical items!
+					'''
 			}
 
 			EmptyMoonflameLantern: {
 				DisplayName: Empty Moonflame Lantern
-				Tooltip: ""
+				Tooltip:
+					'''
+					Take it to the depths of hell,
+					Freeze the flame
+					The dance at the Cathedral awaits at the top of the moonlight!
+					'''
 			}
 
 			FleshClot: {
 				DisplayName: Kaev Clot
-				Tooltip: ""
+				Tooltip: Flesh-like substance obtained from blood enemies
 			}
 
 			HuntiacBlock: {
 				DisplayName: Huntiac Block
-				Tooltip: ""
+				Tooltip: Dangerous
 			}
 
 			HuntiacwallBlock: {
 				DisplayName: Huntiac Wall
-				Tooltip: ""
+				Tooltip: Even more dangerous
 			}
 
 			Medal: {
-				DisplayName: Medal
-				Tooltip: ""
+				DisplayName: Ruin Medal
+				Tooltip:
+					'''
+					An old ancient medal..
+					Keep this in your inventory, can be sold and may attract someone, romantically...
+					'''
 			}
 
 			OvermorrowDirt: {
@@ -409,22 +687,35 @@ Mods: {
 
 			OvermorrowWood: {
 				DisplayName: Morrow Wood
-				Tooltip: ""
+				Tooltip: Yummy wood am I right?
 			}
 
 			PearlescentScrap: {
 				DisplayName: Pearlescent Scrap
-				Tooltip: ""
+				Tooltip:
+					'''
+					True fragments of the moon
+					A strong resonance with sound and the stars...
+					'''
 			}
 
 			RippedFabric: {
 				DisplayName: Ripped Fabric
-				Tooltip: ""
+				Tooltip:
+					'''
+					From the knowledge of the Gilded to robes on enemies, wonderous!
+					A very magical material although..
+					I feel like the item calls my name...
+					'''
 			}
 
 			Starrdew: {
-				DisplayName: Starrdew
-				Tooltip: ""
+				DisplayName: Starr dew
+				Tooltip:
+					'''
+					Ew! Its sticky! I wonder what else is sticky...
+					A sticky substance that resonates with the stars and the morrow!
+					'''
 			}
 
 			Stelleanbrick: {
@@ -444,27 +735,31 @@ Mods: {
 
 			FrileBar: {
 				DisplayName: Frile Bar
-				Tooltip: ""
+				Tooltip: Frozen to the core, an essense of the moon and ice
 			}
 
 			FrileOre: {
 				DisplayName: Frile Ore
-				Tooltip: ""
+				Tooltip: An ore too cold to place, used for many items with ice!
 			}
 
 			VerianBar: {
 				DisplayName: Verian Bar
-				Tooltip: ""
+				Tooltip:
+					'''
+					Hot to the touch, filled with gild and glory of tribal warriors
+					its so hot you can't even touch it, gotta use heated fabric...
+					'''
 			}
 
 			VerianOre: {
 				DisplayName: Verian Ore
-				Tooltip: ""
+				Tooltip: An ore merged and fused with gild, its scorching hot
 			}
 
 			AlcaologyI: {
 				DisplayName: Alcaology Station
-				Tooltip: ""
+				Tooltip: This table is used for dusts and useful materials!
 			}
 
 			Bar: {
@@ -478,8 +773,8 @@ Mods: {
 			}
 
 			BroochesTableI: {
-				DisplayName: Brooches Table
-				Tooltip: ""
+				DisplayName: Brooches Jewelry Station
+				Tooltip: This bench allows you to craft exquisite brooches and combine them!
 			}
 
 			CathediteBlock: {
@@ -509,22 +804,22 @@ Mods: {
 
 			Crystal1I: {
 				DisplayName: Crystal1
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			Crystal2I: {
 				DisplayName: Crystal2
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			FlowerMultiI: {
 				DisplayName: Flower Multi
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			Orb1I: {
 				DisplayName: Orb1 I
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			ShrineI: {
@@ -534,37 +829,37 @@ Mods: {
 
 			Flowersummon: {
 				DisplayName: Flowersummon
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			GrassBig: {
 				DisplayName: Grass Big
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			GrassMoss: {
 				DisplayName: Grass Moss
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			CurtainLeftI: {
 				DisplayName: Curtain Left I
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			CurtainRightI: {
 				DisplayName: Curtain Right I
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			Log: {
 				DisplayName: Log
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			MediumPot: {
 				DisplayName: Medium Pot
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			MorrowChesti: {
@@ -579,12 +874,12 @@ Mods: {
 
 			MorrowDeath: {
 				DisplayName: Morrow Death
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			MorrowDeath2: {
 				DisplayName: Morrow Death2
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			MorrowSpike: {
@@ -594,27 +889,27 @@ Mods: {
 
 			MorrowStone: {
 				DisplayName: Morrow Stone
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			MushroomBig: {
 				DisplayName: Mushroom Big
-				Tooltip: ""
+				Tooltip: Shrooms
 			}
 
 			SmallShroom: {
 				DisplayName: Small Shroom
-				Tooltip: ""
+				Tooltip: Do drugs
 			}
 
 			StandN: {
 				DisplayName: Stand N
-				Tooltip: ""
+				Tooltip: You arent meant to collect this :(
 			}
 
 			VeriBossRel: {
 				DisplayName: Veri Boss Rel
-				Tooltip: ""
+				Tooltip: Boss relic of a relic boss, good job :)
 			}
 
 			walla: {
@@ -654,212 +949,323 @@ Mods: {
 
 			BonePicklerCard: {
 				DisplayName: Bone Pickler Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			DaedCard: {
 				DisplayName: Daed Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			EYIgniter: {
 				DisplayName: EyeCard Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			FrostCard: {
 				DisplayName: Frost Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			GothivCard: {
 				DisplayName: Gothiv Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			LovestruckCard: {
 				DisplayName: Lovestruck Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			ScorcheCard: {
 				DisplayName: ScorcheCard Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			StarrCard: {
 				DisplayName: StarrCard Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			StarterCard: {
 				DisplayName: Starter Card Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			WCIgniter: {
 				DisplayName: WildCard Igniter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
 			}
 
 			Bongos: {
-				DisplayName: Bongos
-				Tooltip: ""
+				DisplayName: Star-Gilded Bongo
+				Tooltip: Boom bong boom at cursor
 			}
 
 			CocoSpark: {
-				DisplayName: Coco Spark
-				Tooltip: ""
+				DisplayName: Coconut Tome
+				Tooltip: Look master, I can summon, coconuts!
 			}
 
 			EvasiveBalls: {
-				DisplayName: Evasive Balls
-				Tooltip: ""
+				DisplayName: Pearlescent Ice Balls
+				Tooltip: Shoots fast homing sparks of light!
 			}
 
 			FlameburstBalls: {
-				DisplayName: Flameburst Balls
-				Tooltip: ""
+				DisplayName: Molted Crust Balls
+				Tooltip: Shoots fast homing sparks of fire!
 			}
 
 			GildedStaff: {
 				DisplayName: Gilded Staff
-				Tooltip: ""
+				Tooltip: Shoots two spinning pieces of spiritual magic at your foes
 			}
 
 			PrismaticBalls: {
-				DisplayName: Prismatic Balls
-				Tooltip: ""
+				DisplayName: Prismatic Cryadia Balls
+				Tooltip: Shoots fast homing sparks of everlasting crystal light!
 			}
 
 			Splitflame: {
-				DisplayName: Splitflame
-				Tooltip: ""
+				DisplayName: Split-flame candle
+				Tooltip: Totally not the candle from split, totally.
 			}
 
 			Antaciz: {
 				DisplayName: Antaciz
-				Tooltip: ""
+				Tooltip: Spinny winny damage the binny
 			}
 
 			Auroran: {
 				DisplayName: Auroran
-				Tooltip: ""
+				Tooltip:
+					'''
+					Sends shockwaves through the air
+					   Hitting enemies with sword will increase speed!
+					   Divergency Inspired!
+					'''
 			}
 
 			EnergizedNail: {
 				DisplayName: Energized Nail
-				Tooltip: ""
+				Tooltip: Electrical nail, thats weird
 			}
 
 			FrostSwing: {
 				DisplayName: Frost Swing
-				Tooltip: ""
+				Tooltip:
+					'''
+					Shoots one bone bolt to swirl and kill your enemies after attacking!
+					Hitting foes with the melee swing builds damage towards the swing of the weapon
+					'''
 			}
 
 			Gutinier: {
 				DisplayName: Gutinier
-				Tooltip: ""
+				Tooltip:
+					'''
+					Classful weapon!
+					   Divergency Inspired!
+					'''
 			}
 
 			HornedNail: {
 				DisplayName: Horned Nail
-				Tooltip: ""
+				Tooltip: Purge under funny nail :0
 			}
 
 			MorrowRapier: {
 				DisplayName: Morrow Rapier
-				Tooltip: ""
+				Tooltip: Poke poke-dont get the wrong idea of the weapon function-poke
 			}
 
 			MorrowSword: {
 				DisplayName: Morrow Sword
-				Tooltip: ""
+				Tooltip: This sword feels warm, what is this material?
 			}
 
 			MorrowValswa: {
 				DisplayName: Morrow Valswa
-				Tooltip: ""
+				Tooltip: Very bad sword don't use it, I warned you
 			}
 
 			PalmThrower: {
 				DisplayName: Palm Tomahawks
-				Tooltip: ""
+				Tooltip: Throw around tomahawks forged from palm, sounds boring :(
 			}
 
 			Halhurish: {
-				DisplayName: Halhurish
-				Tooltip: ""
+				DisplayName: Halhurish The Flamed
+				Tooltip:
+					'''
+					Whip your opponents in the air
+					Hitting enemies will explode
+					'''
 			}
 
 			Verstibloom: {
-				DisplayName: Verstibloom
-				Tooltip: ""
+				DisplayName: Thorner
+				Tooltip:
+					'''
+					Shoots a swirling red bloom to swirl and kill your enemies after attacking!
+					Hitting foes with the melee swing builds damage towards the swing of the weapon
+					Does trenourmous damage!
+					'''
 			}
 
 			VerstiDance: {
-				DisplayName: Versti Dance
-				Tooltip: ""
+				DisplayName: Verstidance
+				Tooltip:
+					'''
+					Swirl!
+					A petal dance that increases your movement speed and defense, but be wary of high risk 
+					'''
 			}
 
 			PocketSand: {
 				DisplayName: Pocket Sand
-				Tooltip: ""
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					Dust that can be used with and for combos in igniters
+					Can penetrate armored enemies like nothing!
+					'''
 			}
 
 			ArcanalPowder: {
-				DisplayName: Arcanal Powder
-				Tooltip: ""
+				DisplayName: Sepsis Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A sparkly star dust that does double damage as the igniter!
+					'''
 			}
 
 			BloodPowder: {
-				DisplayName: Blood Powder
-				Tooltip: ""
+				DisplayName: Kaev Powder
+				Tooltip:
+					'''
+					Throw magical dust on them and ignite
+					A blood dust that does high damage with igniters.
+					'''
 			}
 
 			CoalDust: {
-				DisplayName: Coal Dust
-				Tooltip: ""
+				DisplayName: Coal Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					Forged from the gems you collect!
+					'''
 			}
 
 			FlamePowder: {
 				DisplayName: Flame Powder
-				Tooltip: ""
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A flamey dust that explodes with your igniter!
+					'''
 			}
 
 			FrostedPowder: {
-				DisplayName: Frosted Powder
-				Tooltip: ""
+				DisplayName: Frost Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					Dusty ice dust that does continuous damage with the igniter!
+					'''
 			}
 
 			GrassDirtPowder: {
 				DisplayName: Dirt Powder
-				Tooltip: ""
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A dirty dust... that does damage???!
+					'''
 			}
 
 			LenaSongPowder: {
 				DisplayName: Lena Song Powder
-				Tooltip: ""
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A musical dust! that explodes with your igniter!
+					'''
 			}
 
 			ShadowFlamePowder: {
-				DisplayName: Shadow Flame Powder
-				Tooltip: ""
+				DisplayName: ShadowFlame Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A shadow dust that explodes with your igniter!
+					'''
 			}
 
 			TrickPowder: {
 				DisplayName: Trick Powder
-				Tooltip: ""
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A sparkly tricky dust that does a lot damage!
+					'''
 			}
 
 			Verstidust: {
-				DisplayName: Verstidust Powder
-				Tooltip: ""
+				DisplayName: Versti Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A musical dust that has calming flowers
+					'''
 			}
 
 			BoneNail: {
 				DisplayName: Bone Nail
-				Tooltip: ""
+				Tooltip: Burning with flowery rage
 			}
 
 			WoodenCrossbow: {
@@ -869,69 +1275,118 @@ Mods: {
 
 			Hornet: {
 				DisplayName: Hornet
-				Tooltip: ""
+				Tooltip:
+					'''
+					Classy!
+					Totally has no reference to Hollow Knight
+					A weapon that shoots classy bomb and bullets.. A LOT
+					Dia Gun...
+					'''
 			}
 
 			MorrowSalface: {
 				DisplayName: Morrowed Salface
-				Tooltip: ""
+				Tooltip: Shoots three bolts and then a big arcanal bolt
 			}
 
 			SteamedNail: {
 				DisplayName: Steamed Nail
-				Tooltip: ""
+				Tooltip: Ram em' hard (thats what i said)
 			}
 
 			Teraciz: {
 				DisplayName: Teraciz
-				Tooltip: ""
+				Tooltip:
+					'''
+					Meatballs
+					Do not be worried, this mushes reality into bit bits and then shoots it!
+					You can never miss :P
+					'''
 			}
 
 			Violar: {
 				DisplayName: Violar
-				Tooltip: ""
+				Tooltip:
+					'''
+					Let them burn in harmony!
+					Simple weapon forged from Stellean bricks and the heat from plants of the morrow
+					Impractical but very rewarding...
+					'''
 			}
 
 			wowgun: {
 				DisplayName: Wowgun
-				Tooltip: ""
+				Tooltip:
+					'''
+					You made a gun out of wood what did you expect..
+					For your efforts I commend you, now use my voice as a weapon :)
+					'''
 			}
 
 			AlcadizDagger: {
-				DisplayName: Alcadiz Dagger
-				Tooltip: ""
+				DisplayName: Alcadiz String n Brooch
+				Tooltip:
+					'''
+					Your summons will target focused enemies
+					Summons will manifest out of your string shield
+					They will act as temporary summons to give your other minions company!
+					The Brooch above gives you 10+ Defense while active!
+					'''
 			}
 
 			BloodLamp: {
 				DisplayName: Blood Lamp
-				Tooltip: ""
+				Tooltip:
+					'''
+					Enrages your summons by hitting enemies, shows a red mark on them!
+					Summons a red explosion crystal that hurts foes
+					Even makes a bloodthirst trail for the summon being empowered!
+					'''
 			}
 
 			CanOfLeaves: {
-				DisplayName: Can Of Leaves
-				Tooltip: ""
+				DisplayName: Box Of Leaves
+				Tooltip: Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...
 			}
 
 			StarCall: {
-				DisplayName: Star Call
-				Tooltip: ""
+				DisplayName: Starbomber
+				Tooltip:
+					'''
+					Your summons will explode into big stary bits!
+					Takes 2 slots to summon
+					They will act as temporary summons for big damage
+					Definitely gonna bring flashbacks after Diari releases
+					'''
 			}
 
 			StumpBuster: {
 				DisplayName: Stump Buster
-				Tooltip: ""
+				Tooltip: I command thee, use the power of stumps!
 			}
 
 			MorrowWhipI: {
-				DisplayName: Morrow Whip
+				DisplayName: Alcadiz Morrowed Whip
+				Tooltip:
+					'''
+					Your summons will target focused enemies
+					Summons will act on a target and do tremendous more damage
+					But when you mark an enemy, you lower your defense :(
+					Don't dieee!
+					'''
+			}
+
+			GovheilBlock: {
+				DisplayName: Govheil Block
 				Tooltip: ""
 			}
 		}
 
 		Biomes: {
-			CathedralBiome.DisplayName: Cathedral Biome
-			MarrowSurfaceBiome.DisplayName: Marrow Surface Biome
-			MorrowUndergroundBiome.DisplayName: Morrow Underground Biome
+			CathedralBiome.DisplayName: Verlia's Tower
+			MarrowSurfaceBiome.DisplayName: Morrow Surface
+			MorrowUndergroundBiome.DisplayName: Morrow Underground
+			FableBiome.DisplayName: Fablia
 		}
 
 		Tiles: {
@@ -969,6 +1424,7 @@ Mods: {
 			wall6.MapEntry: wall6
 			wall7.MapEntry: wall7
 			VerianoreTile.MapEntry: Verianore Tile
+			GovheilTile.MapEntry: Govheil Tile
 		}
 
 		Buffs: {
@@ -979,42 +1435,42 @@ Mods: {
 
 			Diarii: {
 				DisplayName: Diarii
-				Description: Mods.Stellamod.Buffs.Diarii.Description
+				Description: Diari Brooch
 			}
 
 			Flyfish: {
 				DisplayName: Flyfish
-				Description: Mods.Stellamod.Buffs.Flyfish.Description
+				Description: Flying Fish brooch
 			}
 
 			Goldren: {
 				DisplayName: Goldren
-				Description: Mods.Stellamod.Buffs.Goldren.Description
+				Description: Golded
 			}
 
 			IceBrooch: {
 				DisplayName: Ice Brooch
-				Description: Mods.Stellamod.Buffs.IceBrooch.Description
+				Description: Ice brooch
 			}
 
 			Morrow: {
 				DisplayName: Morrow
-				Description: Mods.Stellamod.Buffs.Morrow.Description
+				Description: The
 			}
 
 			Slimee: {
 				DisplayName: Slimee
-				Description: Mods.Stellamod.Buffs.Slimee.Description
+				Description: Slime brooch
 			}
 
 			Spragald: {
 				DisplayName: Spragald
-				Description: Mods.Stellamod.Buffs.Spragald.Description
+				Description: Morrowed Spragald Brooch +10 Def
 			}
 
 			DeathMultiplier: {
 				DisplayName: Death Multiplier
-				Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+				Description: Death
 			}
 
 			DeathMultiplierBloodLamp: {
@@ -1094,7 +1550,7 @@ Mods: {
 
 			Elegance: {
 				DisplayName: Elegance
-				Description: Mods.Stellamod.Buffs.Elegance.Description
+				Description: Move along with the wind
 			}
 
 			GintzeSeen: {
@@ -1119,7 +1575,7 @@ Mods: {
 
 			SnowFlame: {
 				DisplayName: Snow Flame
-				Description: Mods.Stellamod.Buffs.SnowFlame.Description
+				Description: Snowy flames
 			}
 
 			MorrowWhipDebuff: {

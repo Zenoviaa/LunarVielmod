@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.Shatter;
+			Item.UseSound = SoundID.DD2_BetsyFireballShot;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.Flamelash;
 			Item.shootSpeed = 7f;
