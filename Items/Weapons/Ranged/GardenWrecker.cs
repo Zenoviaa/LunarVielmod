@@ -61,7 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
-            Item.rare = 1;
+            Item.rare = ItemRarityID.Blue;
             Item.autoReuse = false;
             Item.shootSpeed = 13f;
             Item.shoot = ModContent.ProjectileType<GardenWreckerHold>();
