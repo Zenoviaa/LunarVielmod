@@ -1,8 +1,8 @@
-﻿using Stellamod.Tiles.Structures.Huntria;
+﻿using Stellamod.Tiles.Structures.AlcadizNGovheil;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Placeable.Huntria
+namespace Stellamod.Items.Placeable.Govhiel
 {
 	public class CurtainRightI : ModItem
 	{

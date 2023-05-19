@@ -26,17 +26,18 @@ namespace Stellamod.Projectiles
         public override void SetDefaults()
         {
             
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 80;
-            Projectile.width = 80;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.height = 40;
+            Projectile.width = 40;
             Projectile.friendly = true;
             Projectile.scale = 1f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
             Projectile.timeLeft = 100;
+            Projectile.damage = 16;
         }
 
 
@@ -66,7 +67,7 @@ namespace Stellamod.Projectiles
             {
                 ShakeModSystem.Shake = 1;
             }
-            if (Timer < 50)
+            if (Timer < 30)
             {
                 if (Main.mouseLeft)
                 {
@@ -74,21 +75,13 @@ namespace Stellamod.Projectiles
 
                 }
 
-                if (!Main.mouseLeft)
-                {
-
-                    Projectile.velocity = Projectile.DirectionTo(player.Center) * 20;
-                    if (Projectile.Hitbox.Intersects(player.Hitbox))
-                    {
-                        Projectile.Kill();
-                    }
-                }
+             
 
 
                 player.heldProj = Projectile.whoAmI;
                 player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                player.itemTime = 2;
-                player.itemAnimation = 2;
+                player.itemTime = 10;
+                player.itemAnimation = 10;
                 player.itemRotation = rotation * player.direction;
 
 
@@ -100,7 +93,7 @@ namespace Stellamod.Projectiles
                 float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                 float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
                 Projectile.Kill();
             }
@@ -116,22 +109,7 @@ namespace Stellamod.Projectiles
 
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-            }
-
-            return true;
-        }
+      
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -140,8 +118,9 @@ namespace Stellamod.Projectiles
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+            Projectile.Kill();
 
 
 

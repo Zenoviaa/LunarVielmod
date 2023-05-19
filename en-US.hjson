@@ -67,11 +67,12 @@ Mods: {
 
 			FlyingFishBroochA: {
 				DisplayName: Brooch of the Flying Fish
-				Tooltip: '''
-				Simple Brooch!
-				Increases Speed and + 2 Defense!
-				Use the power of the speedy fish that fly???
-				'''
+				Tooltip:
+					'''
+					Simple Brooch!
+					Increases Speed and + 2 Defense!
+					Use the power of the speedy fish that fly???
+					'''
 			}
 
 			FrileBroochA: {
@@ -1393,6 +1394,25 @@ Mods: {
 					'''
 				DisplayName: Garden Wrecker
 			}
+
+			AlcadizScrap: {
+				DisplayName: Alcadiz Scrap
+				Tooltip:
+					'''
+					Essence of high material, used for making very neat weapons
+					Countains the power of Frile, Govheil and Fablia!
+					'''
+			}
+
+			BurningAngel: {
+				DisplayName: Burning Angel
+				Tooltip:
+					'''
+					Shoots out many axes, beware they explode on impact
+					Steerable for a while and consectutive hits speed up next throw!
+					Made from heavy alcadiz metal!
+					'''
+			}
 		}
 
 		Biomes: {
@@ -1759,6 +1779,8 @@ Mods: {
 			GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
 			GardenWreckerHold.DisplayName: Garden Wrecker Hold
 			SkullShotKaboom.DisplayName: Skull Shot Kaboom
+			AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
+			BurningAngelProj.DisplayName: Burning Angel Proj
 		}
 	}
 }

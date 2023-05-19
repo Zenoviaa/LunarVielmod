@@ -30,6 +30,12 @@ namespace Stellamod.Items.Harvesting
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 
+			Recipe recipe3 = CreateRecipe();
+			recipe3.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
+			recipe3.AddIngredient(ItemID.CrimtaneBar, 1);
+			recipe3.AddTile(TileID.Anvils);
+			recipe3.Register();
+
 
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);

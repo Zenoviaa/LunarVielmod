@@ -3,6 +3,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -22,6 +23,28 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "BurningAngel", "(A) Great Damage scaling for explosions!")
+			{
+				OverrideColor = new Color(108, 271, 99)
+
+			};
+			tooltips.Add(line);
+
+			
+
+
+
+
+
+
+
+
+		}
 		public override void SetDefaults()
 		{
 			Item.width = 40;
@@ -31,14 +54,16 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useAnimation = 51;
 			Item.useStyle = ItemUseStyleID.Guitar;
 			Item.autoReuse = true;
+			Item.noMelee = true;
+			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.DD2_FlameburstTowerShot;
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 8;
+			Item.damage = 16;
 			Item.knockBack = 5f;
 			Item.noMelee = true;
-			Item.crit = 25;
+			Item.crit = 26;
 
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<BurningAngelProj>();
