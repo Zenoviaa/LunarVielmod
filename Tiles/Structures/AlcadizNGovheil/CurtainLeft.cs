@@ -9,7 +9,7 @@ using Terraria.ObjectData;
 
 
 
-namespace Stellamod.Tiles.Structures.Huntria
+namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 {
 	public class CurtainLeft : ModTile

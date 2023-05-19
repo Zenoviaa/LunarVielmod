@@ -1,0 +1,154 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Particles;
+using Stellamod.UI.Systems;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.Projectiles
+{
+    public class BurningAngelProj : ModProjectile
+    {
+
+        private int Spawned;
+        private bool ParticleNo;
+
+        public override void SetDefaults()
+        {
+            
+            Projectile.penetrate = -1;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.height = 80;
+            Projectile.width = 80;
+            Projectile.friendly = true;
+            Projectile.scale = 1f;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 5;
+            Projectile.timeLeft = 100;
+        }
+
+
+
+
+        public float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            float rotation = Projectile.rotation;
+            Timer++;
+
+            player.RotatedRelativePoint(Projectile.Center);
+            Projectile.rotation  -= 0.5f;
+
+
+            Projectile.velocity *= 0.98f;
+
+
+
+            if (Timer == 1)
+            {
+                ShakeModSystem.Shake = 1;
+            }
+            if (Timer < 50)
+            {
+                if (Main.mouseLeft)
+                {
+                    Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
+
+                }
+
+                if (!Main.mouseLeft)
+                {
+
+                    Projectile.velocity = Projectile.DirectionTo(player.Center) * 20;
+                    if (Projectile.Hitbox.Intersects(player.Hitbox))
+                    {
+                        Projectile.Kill();
+                    }
+                }
+
+
+                player.heldProj = Projectile.whoAmI;
+                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                player.itemTime = 2;
+                player.itemAnimation = 2;
+                player.itemRotation = rotation * player.direction;
+
+
+            }
+
+            if (Timer == 99)
+            {
+                ShakeModSystem.Shake = 4;
+                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+                Projectile.Kill();
+            }
+
+
+            Vector3 RGB = new(2.55f, 2.55f, 0.94f);
+            // The multiplication here wasn't doing anything
+            Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
+
+
+
+            //Projectile.netUpdate = true;
+
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+
+            // Redraw the projectile with the color not influenced by light
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            {
+                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            }
+
+            return true;
+        }
+
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            ShakeModSystem.Shake = 5;
+            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+
+
+
+
+        }
+
+
+    }
+}
+

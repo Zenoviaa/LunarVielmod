@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,6 +29,12 @@ namespace Stellamod.Items.Harvesting
 			recipe.AddIngredient(ItemID.DemoniteBar, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
+
+
+			Recipe recipe2 = CreateRecipe();
+			recipe2.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+			recipe2.AddTile(TileID.Furnaces);
+			recipe2.Register();
 		}
 	}
 

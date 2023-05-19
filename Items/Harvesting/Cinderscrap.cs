@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
@@ -19,6 +20,20 @@ namespace Stellamod.Items.Harvesting
 			Item.maxStack = 999;
 			Item.value = Item.sellPrice(silver: 5);
 		}
+
+
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+
+			recipe.Register();
+			recipe.AddIngredient(ItemID.Cobweb, 1);
+			recipe.AddIngredient(ItemID.Wood, 1);
+			recipe.AddIngredient(ItemID.Torch, 3);
+		}
+
+
 	}
 
 
