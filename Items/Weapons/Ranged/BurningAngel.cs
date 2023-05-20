@@ -35,7 +35,15 @@ namespace Stellamod.Items.Weapons.Ranged
 			};
 			tooltips.Add(line);
 
-			
+
+			line = new TooltipLine(Mod, "BurningAngel", "(Special) The farther your cursor is, the faster the axe goes!")
+			{
+				OverrideColor = new Color(235, 52, 97)
+
+			};
+			tooltips.Add(line);
+
+
 
 
 
