@@ -16,13 +16,15 @@ namespace Stellamod.Projectiles
 		
 		public override void SetDefaults()
 		{
-			Projectile.friendly = false;
-			Projectile.width = 45;
-			Projectile.height = 45;
+			Projectile.friendly = true;
+			Projectile.width = 90;
+			Projectile.height = 90;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 30;
 			Projectile.scale = 1f;
-			
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 20;
+
 		}
 		public float Timer
 		{
