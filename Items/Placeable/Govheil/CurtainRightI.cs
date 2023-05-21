@@ -2,20 +2,20 @@
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Placeable.Govhiel
+namespace Stellamod.Items.Placeable.Govheil
 {
-	public class CurtainLeftI : ModItem
+	public class CurtainRightI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("CurtainLeft");
+			// DisplayName.SetDefault("CurtainRight");
 			// Tooltip.SetDefault("Curtain");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 		public override void SetDefaults()
 		{
-			Item.DefaultToPlaceableTile(ModContent.TileType<CurtainLeft>());
+			Item.DefaultToPlaceableTile(ModContent.TileType<CurtainRight>());
 			Item.value = 150;
 			Item.maxStack = 20;
 			Item.width = 38;

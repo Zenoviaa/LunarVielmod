@@ -2,6 +2,7 @@
 using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -12,29 +13,31 @@ using Terraria.ObjectData;
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 {
-	public class CurtainRight : ModTile
+	public class MasistRight : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
 			// Properties
-			Main.tileTable[Type] = true;
+			Main.tileTable[Type] = false;
 			Main.tileSolidTop[Type] = false;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = false;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
+		// This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 			MineResist = 4f;
 			MinPick = 200;
 
-			DustType = ModContent.DustType<Dusts.SalfaceDust>();
+			DustType = DustID.SilverCoin;
 			AdjTiles = new int[] { TileID.Bookcases };
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-			TileObjectData.newTile.Height = 13;
-			TileObjectData.newTile.Width = 18;
+			TileObjectData.newTile.Height = 9;
+			TileObjectData.newTile.Width = 13;
+
+			TileObjectData.newTile.AnchorTop = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.SolidBottom, TileObjectData.newTile.Width, 0);
 
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
 			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
@@ -51,9 +54,6 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			num = fail ? 1 : 3;
 		}
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.Govheil.CurtainLeftI>());
-		}
+
 	}
 }
