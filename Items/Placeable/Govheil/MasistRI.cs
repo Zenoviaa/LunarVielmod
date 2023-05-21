@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Govheil
 {
-	public class MasistRtI : ModItem
+	public class MasistRI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

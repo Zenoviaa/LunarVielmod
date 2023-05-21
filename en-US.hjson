@@ -1413,6 +1413,41 @@ Mods: {
 					Made from heavy alcadiz metal!
 					'''
 			}
+
+			GovheilBoreI: {
+				DisplayName: Govheil Bore I
+				Tooltip: ""
+			}
+
+			MasistLI: {
+				DisplayName: Masist L I
+				Tooltip: ""
+			}
+
+			MasistRI: {
+				DisplayName: Masist R I
+				Tooltip: ""
+			}
+
+			VheilCurtainLI: {
+				DisplayName: Vheil Curtain L I
+				Tooltip: ""
+			}
+
+			VheilCurtainRI: {
+				DisplayName: Vheil Curtain R I
+				Tooltip: ""
+			}
+
+			WeiI: {
+				DisplayName: Wei I
+				Tooltip: ""
+			}
+
+			ZebiI: {
+				DisplayName: Zebi I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -1458,6 +1493,11 @@ Mods: {
 			wall7.MapEntry: wall7
 			VerianoreTile.MapEntry: Verianore Tile
 			GovheilTile.MapEntry: Govheil Tile
+			GovheilBore.MapEntry: Govheil Bore
+			GovheilWei.MapEntry: Govheil Wei
+			MasistLeft.MapEntry: Masist Left
+			MasistRight.MapEntry: Masist Right
+			Zebi.MapEntry: Zebi
 		}
 
 		Buffs: {
