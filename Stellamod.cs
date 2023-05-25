@@ -31,9 +31,18 @@ namespace Stellamod
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
             }
+
+
+            Instance = this;
+
+
+
+
+            Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
         }
 
-
+        public static Stellamod Instance;
         public override void Unload()
         {
             // The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.

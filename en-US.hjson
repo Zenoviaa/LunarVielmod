@@ -1451,10 +1451,25 @@ Mods: {
 		}
 
 		Biomes: {
-			CathedralBiome.DisplayName: Verlia's Tower
-			MarrowSurfaceBiome.DisplayName: Morrow Surface
-			MorrowUndergroundBiome.DisplayName: Morrow Underground
-			FableBiome.DisplayName: Fablia
+			CathedralBiome: {
+				DisplayName: Verlia's Tower
+				TownNPCDialogueName: the Cathedral Biome
+			}
+
+			MarrowSurfaceBiome: {
+				DisplayName: Morrow Surface
+				TownNPCDialogueName: the Marrow Surface Biome
+			}
+
+			MorrowUndergroundBiome: {
+				DisplayName: Morrow Underground
+				TownNPCDialogueName: the Morrow Underground Biome
+			}
+
+			FableBiome: {
+				DisplayName: Fablia
+				TownNPCDialogueName: the Fable Biome
+			}
 		}
 
 		Tiles: {
@@ -1687,7 +1702,29 @@ Mods: {
 			TribalPriest.DisplayName: Tribal Priest
 			GintzeCaptain.DisplayName: Gintze Captain
 			GintzeSolider.DisplayName: Gintze Solider
-			Gambit.DisplayName: Gambit
+
+			Gambit: {
+				DisplayName: Gambit
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					HateBiome: I hate {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
 		}
 
 		Projectiles: {
@@ -1821,6 +1858,7 @@ Mods: {
 			SkullShotKaboom.DisplayName: Skull Shot Kaboom
 			AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
 			BurningAngelProj.DisplayName: Burning Angel Proj
+			VRay.DisplayName: V Ray
 		}
 	}
 }

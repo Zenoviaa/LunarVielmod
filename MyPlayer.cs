@@ -284,6 +284,32 @@ namespace Stellamod
 				MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
 			}
 
+
+
+
+
+
+
+
+			if (Player.InModBiome<FableBiome>())
+			{
+				Main.GraveyardVisualIntensity = 0.4f;
+				Main.windPhysicsStrength = 50;
+				
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
 			if (ArcaneM && ArcaneMCooldown == 601)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));

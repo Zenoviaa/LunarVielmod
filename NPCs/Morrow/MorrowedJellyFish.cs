@@ -8,6 +8,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Projectiles;
 using Stellamod.Particles;
 using System.Threading;
 using Terraria;
@@ -172,8 +173,11 @@ namespace Stellamod.NPCs.Morrow
 				}
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+		
 				
 				
+				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
+
 			}
 			else if (timer > 27)
 			{

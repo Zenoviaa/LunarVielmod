@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 
 namespace Stellamod.Helpers
 {
@@ -28,5 +29,23 @@ namespace Stellamod.Helpers
 
 			return new Rectangle(0, area.Y + ((height / frameCount) * frame), texture.Width, height / frameCount);
 		}
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
 	}
+
+
+
+	
 }
