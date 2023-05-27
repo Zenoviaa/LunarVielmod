@@ -35,7 +35,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Main.tileLavaDeath[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 9;
-			TileObjectData.newTile.Width = 13;
+			TileObjectData.newTile.Width = 11;
 
 
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};

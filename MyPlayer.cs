@@ -10,7 +10,7 @@ using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
-using Stellamod.Projectiles.Ambient;
+
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -325,7 +325,7 @@ namespace Stellamod
 				GoldenRingCooldown++;
 
 				GoldenSparkleCooldown++;
-
+				RayCooldown++;
 
 
 
@@ -364,7 +364,7 @@ namespace Stellamod
 
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FlameParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
 				}
@@ -401,30 +401,41 @@ namespace Stellamod
 				}
 
 
-				if (Player.ZoneDirtLayerHeight || Player.ZoneSkyHeight)
-                {
+				
 
 
+					
 
-					RayCooldown++;
-
-					if (GoldenSparkleCooldown > 1000)
+					if (RayCooldown > 1000)
 					{
 						for (int j = 0; j < 1; j++)
 						{
-							RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1200f, 1200f), (Main.rand.NextFloat(1200f, 1200f)));
+							RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-2000f, 2000f), (Main.rand.NextFloat(700f, 700f)));
 		
 
 							Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
-		
-							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 0.3f, ModContent.ProjectileType<FabledRay>(), 0, 1f, Player.whoAmI); 
+
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<FabledSunray>(), 1, 1f, Player.whoAmI);
 
 							RayCooldown = 0;
 						}
 					}
 
+				if (RayCooldown == 500)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(700f, 700f)));
 
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<FabledColoredSunray>(), 1, 1f, Player.whoAmI);
+
+						
+					}
 				}
 
 			}

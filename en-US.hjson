@@ -1860,6 +1860,8 @@ Mods: {
 			BurningAngelProj.DisplayName: Burning Angel Proj
 			VRay.DisplayName: V Ray
 			FabledRay.DisplayName: Fabled Ray
+			FabledSunray.DisplayName: Fabled Sunray
+			FabledColoredSunray.DisplayName: Fabled Colored Sunray
 		}
 	}
 }
