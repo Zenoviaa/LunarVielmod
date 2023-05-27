@@ -1859,6 +1859,7 @@ Mods: {
 			AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
 			BurningAngelProj.DisplayName: Burning Angel Proj
 			VRay.DisplayName: V Ray
+			FabledRay.DisplayName: Fabled Ray
 		}
 	}
 }

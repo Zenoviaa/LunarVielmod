@@ -11,19 +11,38 @@ using ReLogic.Content;
 using Stellamod.Items.Materials;
 using Stellamod.Helpers;
 using Terraria.GameContent.UI;
+using Stellamod.Skies;
 
 namespace Stellamod
 {
+
+    
     public class Stellamod : Mod
     {
+        public const string EMPTY_TEXTURE = "Stellamod/Empty";
+        public static Texture2D EmptyTexture
+        {
+            get;
+            private set;
+        }
+        public int GlobalTimer { get; private set; }
 
+        public Stellamod()
+        {
+            Instance = this;
+            
+        }
+
+       
 
         public static int MedalCurrencyID;
         public override void Load()
         {
+           
             // ...other Load stuff goes here
             MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
 
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)
             {
@@ -32,14 +51,30 @@ namespace Stellamod
                 Filters.Scene["Shockwave"].Load();
             }
 
-
-            Instance = this;
-
-
-
-
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
+
+
+
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+            //``````````````````````````````````````````````````````````````````````````````````````
+          
+            Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
+            SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
+
+            SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
+            Filters.Scene["Stellamod:GovheilSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+           
+            //`````````````````````````````````````````````````````````````````````````````
+
+
+
+
+
+
         }
 
         public static Stellamod Instance;
