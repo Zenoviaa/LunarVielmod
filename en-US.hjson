@@ -1448,6 +1448,11 @@ Mods: {
 				DisplayName: Zebi I
 				Tooltip: ""
 			}
+
+			ShrineLifeCI: {
+				Tooltip: ""
+				DisplayName: Shrine Life C I
+			}
 		}
 
 		Biomes: {
@@ -1513,6 +1518,7 @@ Mods: {
 			MasistLeft.MapEntry: Masist Left
 			MasistRight.MapEntry: Masist Right
 			Zebi.MapEntry: Zebi
+			ShrineLifeC.MapEntry: Shrine Life C
 		}
 
 		Buffs: {

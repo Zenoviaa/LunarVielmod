@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles
 				Projectile.alpha--;
 			}
 			
-			if(Timer == 400)
+			if(Timer == 600)
             {
 				Timer = 0;
             }
