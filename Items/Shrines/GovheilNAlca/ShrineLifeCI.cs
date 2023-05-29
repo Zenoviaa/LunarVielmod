@@ -20,6 +20,7 @@ namespace Stellamod.Items.Shrines.GovheilNAlca
 		public override void SetDefaults()
 		{
 			Item.DefaultToPlaceableTile(ModContent.TileType<ShrineLifeC>());
+			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true;
 			Item.value = 150;
 			Item.maxStack = 9999;
 			Item.width = 38;
