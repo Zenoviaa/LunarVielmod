@@ -27,6 +27,7 @@ using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.UI.Systems;
 using Terraria.Graphics.Effects;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
@@ -1011,12 +1012,32 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				{
 
 					case 0:
-						if (timer == 6)
+						if (timer == 10)
 						{
 							float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 80, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<VerliaBlade>(), (int)(12), 0f, 0, 0f, 0f);
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa , speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 
+
+						}
+
+						if (timer == 10)
+						{
+							float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa , speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+
+
+						}
+
+						if (timer == 10)
+						{
+							float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 
 
 						}
@@ -1128,6 +1149,22 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Strummer>(), (int)(12), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Strummer>(), (int)(12), 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Sadano"));
+
+					
+
+
+				}
+
+				if (NPC.life < NPC.lifeMax / 4)
+				{
+					
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
 				}
 			}
 			

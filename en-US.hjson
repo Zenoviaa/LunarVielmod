@@ -1868,6 +1868,7 @@ Mods: {
 			FabledRay.DisplayName: Fabled Ray
 			FabledSunray.DisplayName: Fabled Sunray
 			FabledColoredSunray.DisplayName: Fabled Colored Sunray
+			AltideSword.DisplayName: Altide Sword
 		}
 	}
 }
