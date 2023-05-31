@@ -168,6 +168,54 @@ namespace Stellamod
 
 
 
+		public Vector2 focusPoint;
+		public float focusTransition;
+        private Vector2 startPoint;
+        public float focusLength;
+		public bool shouldFocus;
+		public override void ModifyScreenPosition()
+		{
+			if (this.shouldFocus)
+			{
+				if (this.focusLength > 0f)
+				{
+					if (this.focusTransition <= 1f)
+					{
+						Main.screenPosition = Vector2.SmoothStep(this.startPoint, this.focusPoint, this.focusTransition += 0.05f);
+					}
+					else
+					{
+						Main.screenPosition = this.focusPoint;
+					}
+					this.focusLength -= 0.05f;
+				}
+				else if (this.focusTransition >= 0f)
+				{
+					Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), this.focusPoint, this.focusTransition -= 0.05f);
+				}
+				else
+				{
+					this.shouldFocus = false;
+				}
+			}
+			if (this.shakeDrama > 0.5f)
+			{
+				this.shakeDrama *= 0.92f;
+				Vector2 shake = new Vector2(Main.rand.NextFloat(this.shakeDrama), Main.rand.NextFloat(this.shakeDrama));
+				Main.screenPosition += shake;
+			}
+		}
+		public void FocusOn(Vector2 pos, float length)
+		{
+			if (base.Player.Center.Distance(pos) < 2000f)
+			{
+				this.focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+				this.focusTransition = 0f;
+				this.startPoint = Main.screenPosition;
+				this.focusLength = length;
+				this.shouldFocus = true;
+			}
+		}
 
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
@@ -623,8 +671,9 @@ namespace Stellamod
 
 
 		public int Shake = 0;
+        private float shakeDrama;
 
-		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
 		{
 			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
 			{

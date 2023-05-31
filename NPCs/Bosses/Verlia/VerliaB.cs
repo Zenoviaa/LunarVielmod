@@ -411,6 +411,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		{
 			NPC.velocity *= 0.97f;
 			bee--;
+			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
+
+
+
 
 			if (bee == 0)
 			{
