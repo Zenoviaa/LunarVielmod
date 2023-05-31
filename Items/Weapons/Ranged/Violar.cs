@@ -3,6 +3,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -21,6 +22,34 @@ namespace Stellamod.Items.Weapons.Ranged
 			// DisplayName.SetDefault("Violiar");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Violar", "(D) Low Damage scaling for flames")
+			{
+				OverrideColor = new Color(108, 271, 99)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Violar", "(B) Great spread on with flames")
+			{
+				OverrideColor = new Color(220, 87, 24)
+
+			};
+			tooltips.Add(line);
+
+
+
+
+
+
+
+
 		}
 		public override void SetDefaults()
 		{
