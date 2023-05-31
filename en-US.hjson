@@ -1453,6 +1453,15 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Shrine Life C I
 			}
+
+			Curlistine: {
+				DisplayName: Curlistine
+				Tooltip:
+					'''
+					Shoots out many chained swords guided by the swirling stars..
+					Verlia's wish is granted upon you.
+					'''
+			}
 		}
 
 		Biomes: {
@@ -1869,6 +1878,8 @@ Mods: {
 			FabledSunray.DisplayName: Fabled Sunray
 			FabledColoredSunray.DisplayName: Fabled Colored Sunray
 			AltideSword.DisplayName: Altide Sword
+			CurlistineProj.DisplayName: Curlistine Proj
+			FrostKaboom.DisplayName: Frost Kaboom
 		}
 	}
 }

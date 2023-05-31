@@ -3,6 +3,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -23,6 +24,20 @@ namespace Stellamod.Items.Weapons.Ranged
 			// DisplayName.SetDefault("Hornet");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Hornet", "(D) Low Damage scaling for Explosions on hit")
+			{
+				OverrideColor = new Color(108, 271, 99)
+
+			};
+			tooltips.Add(line);
+
+
 		}
 
 		public override void SetDefaults()
