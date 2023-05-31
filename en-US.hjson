@@ -1462,6 +1462,16 @@ Mods: {
 					Verlia's wish is granted upon you.
 					'''
 			}
+
+			AlcadizPowder: {
+				DisplayName: Alcadiz Powder
+				Tooltip:
+					'''
+					Throw magical dust on them!
+					A spark-like explosion dust that does a lot damage!
+					From the Fabled fallen remains..
+					'''
+			}
 		}
 
 		Biomes: {
@@ -1695,6 +1705,11 @@ Mods: {
 				DisplayName: Wounded
 				Description: You are taking damage
 			}
+
+			AlcadDust: {
+				DisplayName: Alcad Dust
+				Description: Mods.Stellamod.Buffs.AlcadDust.Description
+			}
 		}
 
 		NPCs: {
@@ -1880,6 +1895,8 @@ Mods: {
 			AltideSword.DisplayName: Altide Sword
 			CurlistineProj.DisplayName: Curlistine Proj
 			FrostKaboom.DisplayName: Frost Kaboom
+			KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
+			AlcadPowder.DisplayName: Alcad Powder
 		}
 	}
 }

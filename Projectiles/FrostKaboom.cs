@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
 			Projectile.height = 45;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 40;
-			Projectile.scale = 0.8f;
+			Projectile.scale = 1.2f;
 			
 		}
 		public float Timer
@@ -31,7 +31,7 @@ namespace Stellamod.Projectiles
 		}
         public override void AI()
         {
-			Projectile.rotation -= 0.03f;
+			Projectile.rotation += 0.03f;
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);

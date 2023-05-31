@@ -47,13 +47,14 @@ namespace Stellamod.Items.Weapons.Melee
         public override void SetDefaults()
         {
 
-            Item.damage = 19; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 15; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Melee;
             Item.width = 20; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item
             Item.useTime = 30; // The Item's use time in ticks (60 ticks == 1 second.)
             Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
-            Item.useStyle = ItemUseStyleID.Swing;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.staff[Item.type] = true;
             Item.noMelee = true; //so the Item's animation doesn't do damage
             Item.knockBack = 11; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
             Item.value = 10000; // how much the Item sells for (measured in copper)

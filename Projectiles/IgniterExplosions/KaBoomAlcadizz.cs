@@ -4,13 +4,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class KaBoomKaev : ModProjectile
+	public class KaBoomAlcadizz : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Boom");
+			// DisplayName.SetDefault("BoomTrick");
 			Main.projFrames[Projectile.type] = 30;
 		}
 		
@@ -22,7 +22,7 @@ namespace Stellamod.Projectiles
 			Projectile.height = 129;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 30;
-			Projectile.scale = 1f;
+			Projectile.scale = 1.3f;
 			
 		}
 		public float Timer
@@ -38,10 +38,6 @@ namespace Stellamod.Projectiles
 			Vector3 RGB = new(2.55f, 2.55f, 0.94f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-		}
-		public override Color? GetAlpha(Color lightColor)
-		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
@@ -62,6 +58,10 @@ namespace Stellamod.Projectiles
 			return true;
 
 			
+		}
+		public override Color? GetAlpha(Color lightColor)
+		{
+			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
 		}
 
 	}
