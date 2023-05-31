@@ -1018,7 +1018,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa , speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
-
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 
 						}
 
@@ -1028,7 +1028,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa , speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
-
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 
 						}
 
@@ -1038,7 +1038,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
-
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 
 						}
 						break;
@@ -1164,7 +1164,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
 
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
-
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 				}
 			}
 			

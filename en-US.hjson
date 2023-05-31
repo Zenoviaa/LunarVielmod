@@ -1787,19 +1787,19 @@ Mods: {
 			FrostShot2.DisplayName: Frost Shot2
 			FrostShotIN.DisplayName: Frost Shot I N
 			MoonBladeTrail.DisplayName: Moon Blade Trail
-			MoonOut.DisplayName: Moon Out
+			MoonOut.DisplayName: Moon Star piece
 			Notia.DisplayName: Notia
 			Sigil.DisplayName: Sigil
-			SlashHold.DisplayName: Slash Hold
-			SlashLeft.DisplayName: Slash Left
-			SlashRight.DisplayName: Slash Right
+			SlashHold.DisplayName: Verlias Swords Dance
+			SlashLeft.DisplayName: Slash of the moon
+			SlashRight.DisplayName: Slash of the moon
 			Strummer.DisplayName: Strummer
-			Sword1F.DisplayName: Sword1 F
-			Sword2F.DisplayName: Sword2 F
-			Sword3F.DisplayName: Sword3 F
+			Sword1F.DisplayName: Sword of Maskilla
+			Sword2F.DisplayName: Sword of Vixyl
+			Sword3F.DisplayName: Sword of Daedia
 			Sword.DisplayName: Sword
 			TheMoon.DisplayName: The Moon
-			VerliaBlade.DisplayName: Verlia Blade
+			VerliaBlade.DisplayName: Verlias Moon Blade
 			AntacizProj.DisplayName: Antaciz Proj
 			Aurora.DisplayName: Aurora
 			Aurora2.DisplayName: Aurora2
@@ -1892,7 +1892,7 @@ Mods: {
 			FabledRay.DisplayName: Fabled Ray
 			FabledSunray.DisplayName: Fabled Sunray
 			FabledColoredSunray.DisplayName: Fabled Colored Sunray
-			AltideSword.DisplayName: Altide Sword
+			AltideSword.DisplayName: Altide Sword Shard
 			CurlistineProj.DisplayName: Curlistine Proj
 			FrostKaboom.DisplayName: Frost Kaboom
 			KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
