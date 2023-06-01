@@ -1755,6 +1755,8 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			VerlSword.DisplayName: Verl Sword
 		}
 
 		Projectiles: {
@@ -1787,7 +1789,7 @@ Mods: {
 			FrostShot2.DisplayName: Frost Shot2
 			FrostShotIN.DisplayName: Frost Shot I N
 			MoonBladeTrail.DisplayName: Moon Blade Trail
-			MoonOut.DisplayName: Moon Star piece
+			MoonOut.DisplayName: Moon Out
 			Notia.DisplayName: Notia
 			Sigil.DisplayName: Sigil
 			SlashHold.DisplayName: Verlias Swords Dance

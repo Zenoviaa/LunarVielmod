@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			{
 				ShakeModSystem.Shake = 6;
 			
-				for (int j = 0; j < 40; j++)
+				for (int j = 0; j < 35; j++)
 				{
 
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);

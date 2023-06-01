@@ -25,8 +25,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		}
 		public override void SetDefaults()
 		{
-			Projectile.width = 5;
-			Projectile.height = 5;
+			Projectile.width = 10;
+			Projectile.height = 10;
 			Projectile.friendly = false;
 			Projectile.tileCollide = true;
 			Projectile.penetrate = -1;
@@ -37,22 +37,20 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Projectile.usesIDStaticNPCImmunity = false;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 120;
-			Projectile.Size = new Vector2(5, 5);
+			Projectile.Size = new Vector2(10, 10);
 		}
 		public override void AI()
 		{
-			
-			t += 0.01f;
-
-		
-		
-			Projectile.ai[0]++;
 
 			if (t > .75)
 			{
-				
+
 				afterImgCancelDrawCount++;
 			}
+			
+			t += 0.01f;
+			Projectile.ai[0]++;
+			
 		}
 		public override bool PreAI()
 		{
@@ -75,6 +73,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 			return true;
 		}
+
 
 		public override bool PreDraw(ref Color lightColor)
 		{
@@ -111,6 +110,11 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			return false;
 		}
 	}
+
+
+
+
+	
 
 
 
