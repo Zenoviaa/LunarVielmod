@@ -157,7 +157,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
             afterImgColor.R = 96;
             Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             Texture2D texture = TextureAssets.Projectile[ProjectileID.RainbowRodBullet].Value;
-            Main.instance.LoadProjectile(ProjectileID.HallowBossRainbowStreak);
+
             for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)

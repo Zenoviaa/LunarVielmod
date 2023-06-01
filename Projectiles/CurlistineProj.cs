@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles
     {
         NPC target;
         int afterImgCancelDrawCount = 0;
-        int afterImgCancelDrawCount2 = 0;
+     
         Vector2 endPoint;
         Vector2 controlPoint1;
         Vector2 controlPoint2;
