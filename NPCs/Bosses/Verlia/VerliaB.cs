@@ -189,7 +189,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			NPC.aiStyle = -1;
 
 			// Custom boss bar
-			NPC.BossBar = ModContent.GetInstance<BossBarTest>();
+			NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();
 
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
