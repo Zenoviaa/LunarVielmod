@@ -105,8 +105,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				{
 					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
-					direction.X *= (Main.rand.NextFloat(5f, 13f));
-					direction.Y *= (Main.rand.NextFloat(5f, 10f));
+					direction.X *= (Main.rand.NextFloat(5f, 16f));
+					direction.Y *= (Main.rand.NextFloat(5f, 13f));
 					NPC.velocity = direction;
 					
 					

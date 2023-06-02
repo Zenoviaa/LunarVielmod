@@ -83,8 +83,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			afterImgColor.B = 107;
 			afterImgColor.G = 107;
 			afterImgColor.R = 107;
-			Texture2D texture = TextureAssets.Projectile[ProjectileID.FairyQueenMagicItemShot].Value;
-			Main.instance.LoadProjectile(ProjectileID.StarCannonStar);
+			Main.instance.LoadProjectile(ProjectileID.SuperStar);
+			Texture2D texture = TextureAssets.Projectile[ProjectileID.SuperStar].Value;
 			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)

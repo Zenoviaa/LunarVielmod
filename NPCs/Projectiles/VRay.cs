@@ -20,12 +20,12 @@ namespace Stellamod.NPCs.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 30;
+            Projectile.width = Projectile.height = 700;
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 600;
             Projectile.alpha = 255;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -35,13 +35,13 @@ namespace Stellamod.NPCs.Projectiles
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 120f * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Time / 600f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
 
             // And create bright light.
-            Lighting.AddLight(Projectile.Center, Color.GreenYellow.ToVector3() * 1.4f);
+            Lighting.AddLight(Projectile.Center, Color.DarkBlue.ToVector3() * 1.4f);
 
 
 
@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Projectiles
         {
             for (int i = 0; i < 6; i++)
             {
-                Dust fire = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(50f, 50f), DustID.GoldCoin);
+                Dust fire = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10f, 10f), DustID.SpectreStaff);
                 fire.velocity = -Vector2.UnitY * Main.rand.NextFloat(1.5f, 3.25f);
                 fire.velocity *= Main.rand.NextBool(2).ToDirectionInt();
                 fire.scale = 1f + fire.velocity.Length() * 0.1f;
@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Projectiles
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * 2f;
+            return Projectile.width * Projectile.scale * 1f;
         }
 
         public override bool ShouldUpdatePosition() => false;
@@ -91,12 +91,12 @@ namespace Stellamod.NPCs.Projectiles
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            Color middleColor = Color.Lerp(Color.White, Color.Yellow, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.GreenYellow, Color.DarkGreen, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
+            Color middleColor = Color.Lerp(Color.White, Color.LightSkyBlue, 0.6f);
+            Color middleColor2 = Color.Lerp(Color.LightBlue, Color.AliceBlue, 0.5f);
+            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 600);
 
-            TrailRegistry.LaserShader.UseColor(Color.SandyBrown);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail2);
+            TrailRegistry.LaserShader.UseColor(Color.LightSkyBlue);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

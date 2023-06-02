@@ -28,6 +28,7 @@ using Stellamod.UI.Systems;
 using Terraria.Graphics.Effects;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
+using Stellamod.NPCs.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
@@ -75,6 +76,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			CloneSummonStartup,
 			BigSwordSummonStartup,
 			BeggingingMoonStart,
+			Dienow,
+			SummonBeamer,
+			idleSummonBeamer,
+			HoldUPdie,
 
 
 
@@ -377,14 +382,26 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
+				case ActionState.Dienow:
+					rect = new(0, 1 * 92, 133, 1 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.SummonBeamer:
+					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.idleSummonBeamer:
+					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
 
 
-
-
-
-
-
-
+				case ActionState.HoldUPdie:
+					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
 
 
 
@@ -414,7 +431,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
 
-
+			
 
 			if (bee == 0)
 			{
@@ -573,6 +590,30 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					InvisCut();
 					break;
 
+				case ActionState.Dienow:
+					NPC.damage = 0;
+					counter++;
+					Dienow();
+					break;
+
+				case ActionState.SummonBeamer:
+					NPC.damage = 0;
+					counter++;
+					SummonBeamer();
+					break;
+
+				case ActionState.idleSummonBeamer:
+					NPC.damage = 0;
+					counter++;
+					idleSummonBeamer();
+					break;
+
+				case ActionState.HoldUPdie:
+					NPC.damage = 0;
+					counter++;
+					HoldUPVerliadie();
+					break;
+
 
 				/////////////////////////////////////////////////////////////////////////////
 				///
@@ -729,6 +770,32 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		}
 
+
+		private void Dienow()
+		{
+			timer++;
+			if (timer == 2)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.SummonBeamer;
+						ResetTimers();
+						break;
+
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
 		private void MoonStartVerlia()
 		{
 			timer++;
@@ -744,6 +811,55 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						break;
 
 
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonBeamer()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+			if (timer == 2)
+			{
+
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 15, NPC.position.Y + speedYb + 30, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BackgroundOrb>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 30, NPC.position.Y + speedYb + 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<Sigil>(), (int)(0), 0f, 0, 0f, 0f);
+			}
+			
+						if (timer == 6)
+						{
+							GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
+						}
+
+
+						
+
+
+						//case 2:
+
+						//	break;
+				
+			
+			if (timer == 110)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.idleSummonBeamer;
+						ResetTimers();
+						break;
 
 				}
 
@@ -1031,7 +1147,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
-
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
 						}
 
 						if (timer == 30)
@@ -1043,7 +1159,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYc = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-2, -2) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYb * -1, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYc * 1, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
-
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
 						}
 
 						if (timer == 50)
@@ -1055,7 +1171,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 							float speedYc = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYb * -1, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
 							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYc * 1, ModContent.ProjectileType<SineSword>(), (int)(23), 0f, 0, 0f, 0f);
-
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
 						}
 						break;
 				}
@@ -1128,6 +1244,35 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			}
 
 		}
+
+		private void idleSummonBeamer()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+			if (timer == 50)
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VerliaSONATO"));
+			}
+			if (timer == 600)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Unsummon;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
 		private void UnSummonVerlia()
 		{
 			NPC.spriteDirection = NPC.direction;
@@ -1135,15 +1280,42 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			if (timer == 30)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
+				if (NPC.life < NPC.lifeMax / 8)
 				{
-					case 0:
-						State = ActionState.HoldUP;
-						ResetTimers();
-						break;
+
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.HoldUPdie;
+							ResetTimers();
+							break;
+
+
+					}
+
+
+
+
 
 				}
+				if (NPC.life > NPC.lifeMax / 8)
+				{
+
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.HoldUP;
+							ResetTimers();
+							break;
+
+					}
+
+
+
+
+
+				}
+				
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
@@ -1182,23 +1354,90 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 				}
+
+				if (NPC.life < NPC.lifeMax / 5)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+		
+				}
+
+				if (NPC.life < NPC.lifeMax / 6)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
+
+				if (NPC.life < NPC.lifeMax / 7)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
 			}
 			
 			if (timer == 30)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				
+
 				if (NPC.life < NPC.lifeMax / 2)
 				{
-
-					switch (Main.rand.Next(1))
+					if (NPC.life < NPC.lifeMax / 8)
 					{
-						case 0:
-							State = ActionState.SwordUP;
-							ResetTimers();
-							break;
-						
+
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								State = ActionState.Dienow;
+								ResetTimers();
+								break;
+
+
+						}
+
+
+
+
 
 					}
+					if (NPC.life > NPC.lifeMax / 8)
+					{
+
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								State = ActionState.SwordUP;
+								ResetTimers();
+								break;
+
+
+						}
+
+
+
+
+
+					}
+					
+					
+				
 
 
 
@@ -1220,7 +1459,12 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 					}
 				}
-				
+
+
+			
+
+
+
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
@@ -1229,8 +1473,97 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		}
 
-		//if (NPC.life<NPC.lifeMax / 2)
-		private void BarrageVerlia()
+
+
+		private void HoldUPVerliadie()
+		{
+			timer++;
+			if (timer == 2)
+			{
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Strummer>(), (int)(12), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Strummer>(), (int)(12), 0f, 0, 0f, 0f);
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Sadano"));
+
+
+
+
+				}
+
+				if (NPC.life < NPC.lifeMax / 4)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
+
+				if (NPC.life < NPC.lifeMax / 5)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+				}
+
+				if (NPC.life < NPC.lifeMax / 6)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
+
+				if (NPC.life < NPC.lifeMax / 7)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
+			}
+
+			if (timer == 30)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								State = ActionState.SwordUP;
+								ResetTimers();
+								break;
+
+
+						}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+		}
+			//if (NPC.life<NPC.lifeMax / 2)
+			private void BarrageVerlia()
 		{
 			timer++;
 			if (NPC.life < NPC.lifeMax / 2)
@@ -1310,7 +1643,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (NPC.life < NPC.lifeMax / 2)
 				{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
-					int index3 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+				
 					int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<GhostCharger>());
 				}
 			}
