@@ -1254,6 +1254,192 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VerliaSONATO"));
 			}
+			float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+			float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+			float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+			if (timer == 100)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 150)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 60, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(50), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 200)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 90, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(40), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 250)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 20, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(20), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 300)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 40, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 350)
+			{
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 20, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 400)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 450)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 90, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(50), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+			if (timer == 500)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 100, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 275)
+			{
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(22), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(20), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 375)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 60, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(50), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 225)
+			{
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 190, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(50), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 125)
+			{
+
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 230, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 325)
+			{
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(22), 0f, 0, 0f, 0f);
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 140, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 475)
+			{
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(22), 0f, 0, 0f, 0f);
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 220, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 400)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 120, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+			if (timer == 425)
+			{
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(22), 0f, 0, 0f, 0f);
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 190, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+			if (timer == 175)
+			{
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(22), 0f, 0, 0f, 0f);
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 200, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SineSword>(), (int)(30), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			if (timer == 600)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
@@ -1280,7 +1466,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			if (timer == 30)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (NPC.life < NPC.lifeMax / 8)
+				if (NPC.life < NPC.lifeMax / 7)
 				{
 
 					switch (Main.rand.Next(1))
@@ -1298,7 +1484,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 
 				}
-				if (NPC.life > NPC.lifeMax / 8)
+				if (NPC.life > NPC.lifeMax / 7)
 				{
 
 					switch (Main.rand.Next(1))
@@ -1343,7 +1529,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 				}
 
-				if (NPC.life < NPC.lifeMax / 4)
+				if (NPC.life < NPC.lifeMax / 3)
 				{
 					
 
@@ -1355,7 +1541,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 				}
 
-				if (NPC.life < NPC.lifeMax / 5)
+				if (NPC.life < NPC.lifeMax / 4)
 				{
 
 
@@ -1367,7 +1553,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		
 				}
 
-				if (NPC.life < NPC.lifeMax / 6)
+				if (NPC.life < NPC.lifeMax / 5)
 				{
 
 
@@ -1379,7 +1565,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 				}
 
-				if (NPC.life < NPC.lifeMax / 7)
+				if (NPC.life < NPC.lifeMax / 6)
 				{
 
 
@@ -1399,7 +1585,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 				if (NPC.life < NPC.lifeMax / 2)
 				{
-					if (NPC.life < NPC.lifeMax / 8)
+					if (NPC.life < NPC.lifeMax / 7)
 					{
 
 						switch (Main.rand.Next(1))
@@ -1417,7 +1603,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 
 					}
-					if (NPC.life > NPC.lifeMax / 8)
+					if (NPC.life > NPC.lifeMax / 7)
 					{
 
 						switch (Main.rand.Next(1))
@@ -1494,6 +1680,18 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 				}
 
+				if (NPC.life < NPC.lifeMax / 3)
+				{
+
+
+					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+				}
+
 				if (NPC.life < NPC.lifeMax / 4)
 				{
 
@@ -1503,7 +1701,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
 
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
+
 				}
 
 				if (NPC.life < NPC.lifeMax / 5)
@@ -1512,25 +1710,13 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
-
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
-
-				}
-
-				if (NPC.life < NPC.lifeMax / 6)
-				{
-
-
-					float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 
 
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(15), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, ModContent.ProjectileType<AltideSword>(), (int)(12), 0f, 0, 0f, 0f);
 				}
 
-				if (NPC.life < NPC.lifeMax / 7)
+				if (NPC.life < NPC.lifeMax / 6)
 				{
 
 
@@ -1574,7 +1760,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 				if (timer == 25)
 				{
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(3), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FrostShot2>(), (int)(33), 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot2"));
 				}
 				

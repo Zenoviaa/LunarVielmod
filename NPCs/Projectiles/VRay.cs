@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Projectiles
 
 
             // And create bright light.
-            Lighting.AddLight(Projectile.Center, Color.DarkBlue.ToVector3() * 1.4f);
+            Lighting.AddLight(Projectile.Center, Color.DarkBlue.ToVector3() * 1.5f);
 
 
 
@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Projectiles
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * 1f;
+            return Projectile.width * Projectile.scale * 1.3f;
         }
 
         public override bool ShouldUpdatePosition() => false;
