@@ -57,6 +57,7 @@ namespace Stellamod
 		public int GoldenRingCooldown = 0;
 		public int GoldenSparkleCooldown = 0;
 		public int RayCooldown = 0;
+		public int VerliaBDCooldown = 5;
 
 
 
@@ -86,7 +87,28 @@ namespace Stellamod
 		public int SlimeBCooldown = 1;
 		public bool BroochDiari;
 		public int DiariBCooldown = 1;
-
+		public bool BroochVerlia;
+		public int VerliaBCooldown = 1;
+		public bool BroochAmethyst;
+		public int AmethystBCooldown = 1;
+		public bool BroochAmber;
+		public int AmberBCooldown = 1;
+		public bool BroochLonelyBones;
+		public int LonelyBonesBCooldown = 1;
+		public bool BroochMagesticWood;
+		public int MagesticWoodBCooldown = 1;
+		public bool BroochFamiliarWood;
+		public int FamiliarWoodBCooldown = 1;
+		public bool BroochMerchantsCoat;
+		public int MerchantsCoatBCooldown = 1;
+		public bool BroochMorrowedJellies;
+		public int MorrowedJelliesBCooldown = 1;
+		public bool BroochAllEye;
+		public int AllEyeBCooldown = 1;
+		public bool BroochMOS;
+		public int MOSBCooldown = 1;
+		public bool BroochBonedEye;
+		public int BonedEyeBCooldown = 1;
 		//---------------------------------------------------------------------------------------------------------------
 		public override void ResetEffects()
 		{
@@ -110,7 +132,7 @@ namespace Stellamod
 			BroochMorrow = false;
 			BroochSlime = false;
 			BroochDiari = false;
-
+			BroochVerlia = false;
 
 
 
@@ -232,6 +254,8 @@ namespace Stellamod
 		{
 			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
 
+
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Brooches
 			if (BroochSpragald && SpragaldBCooldown <= 0)
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SpragaldBrooch>(), 0, 1f, Player.whoAmI);
@@ -282,10 +306,16 @@ namespace Stellamod
 				DiariBCooldown = 1000;
 			}
 
+			if (BroochVerlia && VerliaBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<VerliaBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<VerliaBroo>(), 1000);
+				VerliaBCooldown = 1000;
+			}
 
 
-
-
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -699,8 +729,28 @@ namespace Stellamod
 
 
 			}
+			if (BroochVerlia && VerliaBDCooldown <= 0)
+			{
+				
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
 
-		
+
+					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<VerliaBroochP3>(), 20, 1f, Player.whoAmI);
+				}
+
+				VerliaBDCooldown = 220;
+			}
+
 		}
 
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
@@ -733,7 +783,27 @@ namespace Stellamod
 
 			}
 
+			if (BroochVerlia && VerliaBDCooldown <= 0)
+			{
 
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
+
+
+					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<VerliaBroochP3>(), 20, 1f, Player.whoAmI);
+				}
+
+				VerliaBDCooldown = 220;
+			}
 
 		}
 

@@ -2899,8 +2899,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VeriBossRel>()));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VeribossBag>()));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 

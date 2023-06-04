@@ -1472,6 +1472,33 @@ Mods: {
 					From the Fabled fallen remains..
 					'''
 			}
+
+			VerliaBossBag: {
+				DisplayName: Verlia Boss Bag
+				Tooltip: ""
+			}
+
+			VerliaHat: {
+				Tooltip:
+					'''
+					Great for style!
+					Increased life by 50!
+					Increased Mana by 100!
+					I know you wanna wear it...
+					'''
+				DisplayName: Verlias Hat
+			}
+
+			VerliaBroochA: {
+				Tooltip:
+					'''
+					I love ya!
+					When hitting enemies, a bunch of heavy damaging snowflakes may come out on impact!
+					Increased mana by 50!
+					Increased Defense by 5!
+					'''
+				DisplayName: Brooch of Verlia's Charm
+			}
 		}
 
 		Biomes: {
@@ -1710,12 +1737,17 @@ Mods: {
 				DisplayName: Alcad Dust
 				Description: Mods.Stellamod.Buffs.AlcadDust.Description
 			}
+
+			VerliaBroo: {
+				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+				DisplayName: Verlia Brooch
+			}
 		}
 
 		NPCs: {
 			Flowerball.DisplayName: Flowerball
 			StarrVeriplant.DisplayName: Starr Veriplant
-			CloneV.DisplayName: Clone V
+			CloneV.DisplayName: Verlia Clone
 			GhostCharger.DisplayName: Ghost Charger
 			Sword1.DisplayName: Sword of Maskillia
 			Sword2.DisplayName: Sword of Vixyl
@@ -1725,7 +1757,7 @@ Mods: {
 			HarvestIce.DisplayName: ???
 			HarvestOverworld.DisplayName: ???
 			HarvestUM.DisplayName: ???
-			MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
+			MorrowedJellyFish.DisplayName: Morrowed Jellyfish
 			MossyZombie.DisplayName: Mossy Zombie
 			RubyBeetle.DisplayName: Ruby Beetle
 			TribalPeasant.DisplayName: Tribal Peasant
@@ -1757,6 +1789,7 @@ Mods: {
 			}
 
 			VerlSword.DisplayName: Verl Sword
+			StarteV.DisplayName: Verlia?
 		}
 
 		Projectiles: {
@@ -1900,6 +1933,13 @@ Mods: {
 			KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
 			AlcadPowder.DisplayName: Alcad Powder
 			SineSword.DisplayName: Sine Sword
+			VerliaBrooch.DisplayName: Verlia Brooch
+			VerliaBroochP.DisplayName: Verlia Brooch P
+			VerliaBroochP2.DisplayName: Verlia Brooch P2
+			VerliaBroochP3.DisplayName: Verlia Brooch P3
+			VerliaHeadScreen.DisplayName: Verlia Head Screen
+			VerliaText1.DisplayName: Verlia Text1
+			VerliaText2.DisplayName: Verlia Text2
 		}
 	}
 }

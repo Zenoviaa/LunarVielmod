@@ -16,6 +16,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using System;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.Tiles.Structures.Cathedral
 {
@@ -98,12 +99,12 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			Player player = Main.LocalPlayer;
 
 			int key = ModContent.ItemType<MoonflameLantern>();
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()) && !NPC.AnyNPCs(ModContent.NPCType<StarteV>()))
             {
 		
 		
-			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<VerliaB>());
-			SoundEngine.PlaySound(SoundID.Roar);
+			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarteV>());
+			// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
 			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))

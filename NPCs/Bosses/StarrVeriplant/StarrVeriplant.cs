@@ -1255,11 +1255,6 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 		}
 
 
-        public override void OnKill()
-        {
-			NPC.SetEventFlagCleared(ref DownedBossSystem.downedVeriBoss, -1);
-			
-        }
 
     }
 }
