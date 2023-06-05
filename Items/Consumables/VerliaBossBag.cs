@@ -12,6 +12,9 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Armors.Vanity.Verlia;
+using Stellamod.Items.Accessories.Brooches;
 
 namespace Stellamod.Items.Consumables
 {
@@ -57,7 +60,7 @@ namespace Stellamod.Items.Consumables
 
 					case 0:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstidust>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerliaHat>());
 
 						break;
 					case 1:
@@ -67,12 +70,12 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 2:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstibloom>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SupernovaSitar>());
 
 						break;
 					case 3:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SteamedNail>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<HarmonicBlasphemy>());
 
 						break;
 					case 4:
@@ -82,7 +85,7 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 5:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<StarCall>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SwordsOfRevengence>());
 
 						break;
 				}
@@ -101,6 +104,11 @@ namespace Stellamod.Items.Consumables
 			if (Main.rand.NextBool(1))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<PearlescentScrap>(), Main.rand.Next(3, 25));
+			}
+
+			if (Main.rand.NextBool(1))
+			{
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<VerliaBroochA>(), Main.rand.Next(1, 1));
 			}
 
 		}

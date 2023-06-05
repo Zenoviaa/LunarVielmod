@@ -1499,6 +1499,38 @@ Mods: {
 					'''
 				DisplayName: Brooch of Verlia's Charm
 			}
+
+			SwordsOfRevengence: {
+				Tooltip:
+					'''
+					I love ya!
+					Summons a Curlistine sword that brings Verlia's small swords to life!
+					Activates Verlia's Brooch effects! 
+					(Inc mana by 50, Def by 5, Heavy snowflakes on hit!) 
+					'''
+				DisplayName: Swords Of Revengence
+			}
+
+			HarmonicBlasphemy: {
+				DisplayName: Harmonic Blasphemy
+				Tooltip:
+					'''
+					I love ya!
+					Very powerful moon blaster!
+					Use small moons gifted from Verlia herself!
+					Also use the power of music!
+					'''
+			}
+
+			SupernovaSitar: {
+				DisplayName: Supernova Sitar
+				Tooltip:
+					'''
+					I love ya!
+					Absolute Distortion of Verlia's power of the moon and stars!
+					Her personal gift to you!
+					'''
+			}
 		}
 
 		Biomes: {
@@ -1940,6 +1972,15 @@ Mods: {
 			VerliaHeadScreen.DisplayName: Verlia Head Screen
 			VerliaText1.DisplayName: Verlia Text1
 			VerliaText2.DisplayName: Verlia Text2
+			SwordsVin.DisplayName: Swords Vin
+			StringNNeedleVerlia.DisplayName: String N Needle Verlia
+			CharmVerlia.DisplayName: Charm Verlia
+			SwordsArmy.DisplayName: Swords Army
+			SwordsArmy3.DisplayName: Swords Army3
+			SwordsArmy2.DisplayName: Swords Army2
+			PulseShoter.DisplayName: Pulse Shoter
+			VerlShot.DisplayName: Verl Shot
+			Supernova.DisplayName: Supernova
 		}
 	}
 }

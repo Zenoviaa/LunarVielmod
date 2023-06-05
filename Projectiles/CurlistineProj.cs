@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles
             }
             Projectile.velocity = Vector2.Zero;
             Projectile.rotation = (Projectile.Center - CubicBezier(initialPos, controlPoint1, controlPoint2, endPoint, t + 0.025f)).ToRotation() - MathHelper.PiOver2;
-            endPoint = endPoint.MoveTowards(wantedEndPoint, 32);
+            endPoint = endPoint.MoveTowards(wantedEndPoint, 16);
             if (t > 1)
             {
                 for (int i = 0; i < Main.maxNPCs; i++)
@@ -144,7 +144,6 @@ namespace Stellamod.Projectiles
             afterImgColor.R = 96;
             Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)
