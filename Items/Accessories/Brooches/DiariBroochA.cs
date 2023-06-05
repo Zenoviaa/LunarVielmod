@@ -29,7 +29,14 @@ namespace Stellamod.Items.Accessories.Brooches
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Love you and have fun -Sirestias")
+			line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Simple Brooch!")
+			{
+				OverrideColor = new Color(198, 124, 225)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Brooch of the Tale of Diari", "Love you and have fun -Sirestias")
             {
                 OverrideColor = new Color(220, 87, 24)
 

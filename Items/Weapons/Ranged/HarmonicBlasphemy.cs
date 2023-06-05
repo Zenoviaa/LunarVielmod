@@ -77,9 +77,9 @@ namespace Stellamod.Items.Weapons.Ranged
             if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
                 position += muzzleOffset;
             Lighting.AddLight(player.position, r: 0.5f, g: 1f, b: 1.7f);
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 35; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
                 var d = Dust.NewDustPerfect(Main.LocalPlayer.Center, DustID.FrostStaff, speed * 6, Scale: 0.9f);
                 ;
                 d.noGravity = true;

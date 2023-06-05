@@ -57,7 +57,6 @@ Mods: {
 				DisplayName: Diari Brooch
 				Tooltip:
 					'''
-					Simple Brooch!
 					+ 4 Defense!
 					Auto swing capabilities!
 					Flame walking? Always Fed!
@@ -69,7 +68,6 @@ Mods: {
 				DisplayName: Brooch of the Flying Fish
 				Tooltip:
 					'''
-					Simple Brooch!
 					Increases Speed and + 2 Defense!
 					Use the power of the speedy fish that fly???
 					'''
@@ -79,7 +77,6 @@ Mods: {
 				DisplayName: Brooch of The Friled Ice
 				Tooltip:
 					'''
-					Simple Brooch!
 					Enemies now are frosted with icy glazes when hit!
 					Use the power of the Ice biome :P
 					'''
@@ -89,8 +86,7 @@ Mods: {
 				DisplayName: Brooch of The Huntria Morrow
 				Tooltip:
 					'''
-					Simple Brooch!
-					nHeavy increased damage to your arrows
+					Heavy increased damage to your arrows
 					+2 Defense and increased ranged damage
 					Use the power of the deep dark morrow..
 					'''
@@ -100,7 +96,6 @@ Mods: {
 				DisplayName: Brooch of The cute slimes
 				Tooltip:
 					'''
-					Simple Brooch!
 					Jump Higher!
 					Bouncy and fast fall
 					Awww so cute :P
@@ -111,7 +106,6 @@ Mods: {
 				DisplayName: Brooch of The Spragald
 				Tooltip:
 					'''
-					Simple Brooch!
 					Effect = +10 Defense
 					Use the power of the Spragald Spiders!
 					'''
@@ -1531,6 +1525,11 @@ Mods: {
 					Her personal gift to you!
 					'''
 			}
+
+			Parendine: {
+				DisplayName: Parendine
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -1982,6 +1981,7 @@ Mods: {
 			VerlShot.DisplayName: Verl Shot
 			Supernova.DisplayName: Supernova
 			CurlistineProj2.DisplayName: Curlistine Proj2
+			ParendineProj.DisplayName: Parendine Proj
 		}
 	}
 }

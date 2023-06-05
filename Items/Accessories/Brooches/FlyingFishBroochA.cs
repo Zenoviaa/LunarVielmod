@@ -7,6 +7,7 @@ using Stellamod;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
+using System.Collections.Generic;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
@@ -20,6 +21,21 @@ namespace Stellamod.Items.Accessories.Brooches
 				"\n Use the power of the speedy fish that fly???"); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+
+			line = new TooltipLine(Mod, "Brooch of Flyfish", "Simple Brooch!")
+			{
+				OverrideColor = new Color(198, 124, 225)
+
+			};
+			tooltips.Add(line);
+
+
+
 		}
 
 		public override void SetDefaults()

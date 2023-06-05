@@ -6,7 +6,7 @@ using System;
 using Terraria.ID;
 using System.Collections.Generic;
 
-namespace Stellamod.Helpers
+namespace Stellamod.Helpers.Mathin
 {
     public static partial class MathExtension
     {

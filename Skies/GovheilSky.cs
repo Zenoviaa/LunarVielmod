@@ -10,6 +10,7 @@ using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 using Stellamod.Trails;
+
 using Stellamod.Helpers.Separate;
 using Terraria.Utilities;
 
