@@ -110,10 +110,11 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 
 
 			afterImgColor.B--;
-		
-			
 
-	
+
+
+
+			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)

@@ -34,8 +34,8 @@ namespace Stellamod.Projectiles
 		public override void SetDefaults()
 		{
 
-			Projectile.width = 6;
-			Projectile.height = 6;
+			Projectile.width = 20;
+			Projectile.height = 20;
 			Projectile.light = 1.5f;
 			Projectile.friendly = true;
 			Projectile.ignoreWater = true;
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 5;
+			Projectile.localNPCHitCooldown = 4;
 		}
 		public float Timer
 		{

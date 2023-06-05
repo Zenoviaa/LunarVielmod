@@ -44,10 +44,10 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			// Sets the amount of frames this minion has on its spritesheet
 
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+		
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-			ProjectileID.Sets.MinionShot[Projectile.type] = true;
+			
 
 		 // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = false; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 			// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
+		 // Declares this as a minion (has many effects)
 			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 0f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
@@ -200,38 +200,23 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			Projectile.ai[0]++;
 
 		}
-		public void AdditiveCall(SpriteBatch spriteBatch, Vector2 screenPos)
-		{
-			float sineAdd = (float)Math.Sin(alphaCounter) + 2f;
-			{
-				for (int k = 0; k < Projectile.oldPos.Length; k++)
-				{
-					Color color = new Color(191, 102, 255) * 0.85f * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 
-					float scale = Projectile.scale;
-					Texture2D tex = ModContent.Request<Texture2D>("Stellamod/Projectiles/StringnNeedles/Verl/SwordsVin_Trail", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-
-					spriteBatch.Draw(tex, Projectile.oldPos[k] + Projectile.Size / 2 - Main.screenPosition, null, color * sineAdd, Projectile.rotation, tex.Size() / 2, scale, default, default);
-				}
-			}
-		}
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = 0; k < Projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-			}
+
 
 
 			Color afterImgColor = Main.hslToRgb(Projectile.ai[1], 1, 0.5f);
 			float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
-			afterImgColor.A = 50;
+			afterImgColor.A = 40;
 			afterImgColor.B = 255;
 			afterImgColor.G = 215;
 			afterImgColor.R = 96;
+
+
+
+
+			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
@@ -255,7 +240,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 				}
 			}
 
-			
+
 			return false;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

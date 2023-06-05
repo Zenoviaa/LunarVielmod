@@ -99,7 +99,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 				float speedX = Projectile.velocity.X * 5;
 				float speedY = Projectile.velocity.Y * 2;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<SwordsVin>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 0.5f, ModContent.ProjectileType<CurlistineProj2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 			}
 		}
 		public override bool PreDraw(ref Color lightColor)

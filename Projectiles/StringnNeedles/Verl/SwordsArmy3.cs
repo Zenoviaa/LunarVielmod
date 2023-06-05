@@ -80,8 +80,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 
 		public override void AI()
 		{
-			Projectile.velocity *= 0.99f;
-
+		
 			Projectile.tileCollide = false;
 			if (ta > 150)
 			{
@@ -108,9 +107,10 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			afterImgColor.G = 149;
 			afterImgColor.R = 59;
 
-		
-			
 
+
+
+			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
