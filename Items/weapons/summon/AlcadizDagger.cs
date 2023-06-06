@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Terraria;
 using Terraria.DataStructures;
@@ -55,6 +57,20 @@ namespace Stellamod.Items.Weapons.Summon
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
+
+	
+			recipe.AddIngredient(ItemID.Wood, 10);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ItemID.Stinger, 1);
+
+
+			recipe.Register();
 		}
 	}
 }
