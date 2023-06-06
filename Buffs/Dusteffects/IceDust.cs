@@ -13,13 +13,12 @@ namespace Stellamod.Buffs.Dusteffects
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;
-			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
+		
 
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 2;
-			npc.defense -= 15;
+			
 			npc.onFrostBurn = true;
 			npc.stepSpeed -= 10;
 

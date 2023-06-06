@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 62;
+			Item.damage = 50;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 0;
 			Item.height = 0;
@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ModContent.ProjectileType<BoneNailProj>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
-			Item.crit = 52;
+			Item.crit = 20;
 		}
 		public override Vector2? HoldoutOffset()
 		{

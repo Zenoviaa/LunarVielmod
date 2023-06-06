@@ -54,7 +54,7 @@ namespace Stellamod.Items.Consumables
 
 			if (Main.rand.NextBool(1))
 			{
-				switch (Main.rand.Next(6))
+				switch (Main.rand.Next(5))
 				{
 
 
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 1:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SwordsOfRevengence>());
 
 						break;
 					case 2:
@@ -81,11 +81,6 @@ namespace Stellamod.Items.Consumables
 					case 4:
 
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<Curlistine>());
-
-						break;
-					case 5:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SwordsOfRevengence>());
 
 						break;
 				}

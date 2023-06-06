@@ -1528,7 +1528,16 @@ Mods: {
 
 			Parendine: {
 				DisplayName: Parendine
-				Tooltip: ""
+				Tooltip: Whip frosty!
+			}
+
+			AuroranSeeker: {
+				Tooltip:
+					'''
+					A super charged book of spells to cast!
+					Summons a book that puts a variety of 7 spells on its attacker!
+					'''
+				DisplayName: Auroran Seeker
 			}
 		}
 
@@ -1773,6 +1782,11 @@ Mods: {
 				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
 				DisplayName: Verlia Brooch
 			}
+
+			AuroranSeekerMinionBuff: {
+				DisplayName: Auroran Seeker Minion Buff
+				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+			}
 		}
 
 		NPCs: {
@@ -1982,6 +1996,16 @@ Mods: {
 			Supernova.DisplayName: Supernova
 			CurlistineProj2.DisplayName: Curlistine Proj2
 			ParendineProj.DisplayName: Parendine Proj
+			SeekerProj.DisplayName: Seeker Proj
+			AuroranSeekerProj.DisplayName: Auroran Seeker Proj
+			Coinspa.DisplayName: Coinspa
+			Glyph1.DisplayName: Glyph1
+			Glyph2.DisplayName: Glyph2
+			Glyph3.DisplayName: Glyph3
+			Glyph4.DisplayName: Glyph4
+			Glyph5.DisplayName: Glyph5
+			Glyph6.DisplayName: Glyph6
+			Glyph7.DisplayName: Glyph7
 		}
 	}
 }

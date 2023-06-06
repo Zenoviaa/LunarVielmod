@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
+using Stellamod.Projectiles.StringnNeedles.Verl;
+using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -10,7 +13,29 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class AlcadizDagger : ModItem
+	public class AuroranSeekerMinionBuff : ModBuff
+	{
+		public override void SetStaticDefaults()
+		{
+			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
+			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
+		}
+
+		public override void Update(Player player, ref int buffIndex)
+		{
+			// If the minions exist reset the buff time, otherwise remove the buff from the player
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<AuroranSeekerProj>()] > 0)
+			{
+				player.buffTime[buffIndex] = 18000;
+			}
+			else
+			{
+				player.DelBuff(buffIndex);
+				buffIndex--;
+			}
+		}
+	}
+	public class AuroranSeeker : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -24,12 +49,12 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.rare = ItemRarityID.Green;
-			Item.value = Terraria.Item.sellPrice(0, 5, 80, 0);
+			Item.rare = ItemRarityID.Pink;
+			Item.value = Terraria.Item.sellPrice(0, 10, 80, 0);
 			Item.CloneDefaults(ItemID.Arkhalis);
-			Item.damage = 8; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+			Item.damage = 9; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Summon;
-			Item.mana = 50;
+			Item.mana = 20;
 			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
 			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot;
@@ -38,9 +63,10 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.value = 10000; // how much the Item sells for (measured in copper)
 			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
 			Item.autoReuse = true; // if you can hold click to automatically use it again
-			Item.shoot = ModContent.ProjectileType<StringNNeedlesAlcadiz>();
+			Item.shoot = ModContent.ProjectileType<AuroranSeekerProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
+			Item.buffType = ModContent.BuffType<AuroranSeekerMinionBuff>();
 		}
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
@@ -59,15 +85,23 @@ namespace Stellamod.Items.Weapons.Summon
 			return false;
 		}
 
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+			position = Main.MouseWorld;
+		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 
-	
-			recipe.AddIngredient(ItemID.Wood, 10);
+
+			recipe.AddIngredient(ItemID.Chain, 10);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
-			recipe.AddIngredient(ItemID.Stinger, 1);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
+			recipe.AddIngredient(ItemID.FallenStar, 10);
 
 
 			recipe.Register();

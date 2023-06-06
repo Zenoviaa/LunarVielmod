@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Stellamod.Projectiles.Safunai.Halhurish;
 using Stellamod.Projectiles.Safunai.Parendine;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
@@ -93,7 +96,22 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 			return false;
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
 
+
+			recipe.AddIngredient(ItemID.Chain, 15);
+			recipe.AddIngredient(ItemID.IceBlade, 1);
+			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
+			recipe.AddIngredient(ItemID.FallenStar, 10);
+
+
+			recipe.Register();
+		}
 		public override float UseTimeMultiplier(Player player) => player.GetAttackSpeed(DamageClass.Melee); //Scale with melee speed buffs, like whips
 		public override void NetSend(BinaryWriter writer) => writer.Write(combo);
 		public override void NetReceive(BinaryReader reader) => combo = reader.ReadInt32();

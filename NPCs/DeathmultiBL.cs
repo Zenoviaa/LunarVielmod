@@ -8,7 +8,7 @@ namespace Stellamod.NPCs
 	{
 		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 		{
-			if (npc.HasBuff(ModContent.BuffType<DeathMultiplierBloodLamp>()))
+			if (npc.HasBuff(ModContent.BuffType<DeathMultiplierBloodLamp>()) && projectile.CountsAsClass(DamageClass.Summon))
 			{
 				projectile.damage = (int)(projectile.damage * 2.1f);
 			}

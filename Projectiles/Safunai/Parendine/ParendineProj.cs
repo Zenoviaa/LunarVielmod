@@ -127,7 +127,7 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 		{
 
 			ShakeModSystem.Shake = 4;
-			SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"));
+			SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
 

@@ -149,7 +149,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 2, 1, 50));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 50));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowRocks>(), 5, 1, 10));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 5, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 5, 1, 1));
