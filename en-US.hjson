@@ -1539,6 +1539,148 @@ Mods: {
 					'''
 				DisplayName: Auroran Seeker
 			}
+
+			GovheilMask: {
+				DisplayName: Govheil Mask
+				Tooltip:
+					'''
+					12% Increased Magic and Summon damage!
+					+50 Mana and increased Mana regeneration
+					+12% Crit strike change
+					I've heard rumors that the flower gives a special affection bonus..
+					'''
+			}
+
+			GovheilHelmet: {
+				Tooltip:
+					'''
+					12% Increased Ranged and Melee damage!
+					Autoswing capabilities
+					+10% Crit strike change
+					You wanna be cool huh?
+					'''
+				DisplayName: Govheil Helmet
+			}
+
+			GovheilChainplate: {
+				Tooltip:
+					'''
+					12% Increased Ranged and Melee damage!
+					+50 Life
+					Gain effects of a magic quiver!
+					'''
+				DisplayName: Govheil Chainplate
+			}
+
+			GovheilBreastplate: {
+				Tooltip:
+					'''
+					12% Increased Magic and Summon damage!
+					+100 Mana and increased Mana regeneration
+					+30 Life!
+					+1 Summon
+					'''
+				DisplayName: Govheil Breastplate
+			}
+
+			GovheilThighs: {
+				DisplayName: Govheil Thighs
+				Tooltip:
+					'''
+					7% Increased Movement speed
+					+30 Life!
+					+10% Damage
+					+15 Armor Penetration
+					Mega thicc!
+					'''
+			}
+
+			XexterianLeggings: {
+				Tooltip: +12% Damage
+				DisplayName: Xexterian Leggings
+			}
+
+			XexterianHat: {
+				DisplayName: Xexterian Hat
+				Tooltip:
+					'''
+					+20% Damage
+					+20 Life
+					You really want this knock off Forbidden armor?
+					'''
+			}
+
+			XexterianHeatplate: {
+				DisplayName: Xexterian Heatplate
+				Tooltip:
+					'''
+					+20 Armor Penetration
+					+20 Life!
+					+6% Damage
+					+5 Critical Strike Chance
+					'''
+			}
+
+			DaediaThighs: {
+				Tooltip:
+					'''
+					+40 Life!
+					30% Increased movement speed!
+					Walk like a flowery goddess with flower boots!
+					'''
+				DisplayName: Daedia Thighs
+			}
+
+			DaediaMask: {
+				Tooltip:
+					'''
+					+65 Life!
+					A little halo over a new spiritual goddess!
+					'''
+				DisplayName: Daedia Mask
+			}
+
+			DaediaBreastplate: {
+				Tooltip:
+					'''
+					+60 Life!
+					+2 Summons
+					'''
+				DisplayName: Daedia Breastplate
+			}
+
+			PotionOfLifeWand: {
+				DisplayName: Potion Of Life Wand
+				Tooltip: A sweet little potion summon that will give drop hearts occasionally!
+			}
+
+			PotionOfManaWand: {
+				Tooltip: A sweet little potion summon that will give drop mana occasionally!
+				DisplayName: Potion Of Mana Wand
+			}
+
+			Ebistar: {
+				DisplayName: Ebistar
+				Tooltip:
+					'''
+					This will not go the way you want it to...
+					Shoots many swirling star arrows!
+					'''
+			}
+
+			Hearstspire: {
+				DisplayName: Heartspire
+				Tooltip:
+					'''
+					Slash through the lovely night!
+					Dream upon a goddess of love, Daedia!
+					'''
+			}
+
+			Pearlinator: {
+				DisplayName: Pearlinator
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -1787,6 +1929,16 @@ Mods: {
 				DisplayName: Auroran Seeker Minion Buff
 				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
 			}
+
+			LifeWandMinionBuff: {
+				DisplayName: Life Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+			}
+
+			ManaWandMinionBuff: {
+				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+				DisplayName: Mana Wand Minion Buff
+			}
 		}
 
 		NPCs: {
@@ -2006,6 +2158,18 @@ Mods: {
 			Glyph5.DisplayName: Glyph5
 			Glyph6.DisplayName: Glyph6
 			Glyph7.DisplayName: Glyph7
+			GovheilBows.DisplayName: Govheil Bows
+			GovheilBowsProj.DisplayName: Govheil Bows Proj
+			GovheilSwords.DisplayName: Govheil Swords
+			LightBomb.DisplayName: Light Bomb
+			LWProj.DisplayName: L W Proj
+			MWProj.DisplayName: M W Proj
+			EbistarProj.DisplayName: Ebistar Proj
+			SparkedStar.DisplayName: Sparked Star
+			HearstspireProj.DisplayName: Hearstspire Proj
+			HearstspireProj2.DisplayName: Hearstspire Proj2
+			Flameball.DisplayName: Flameball
+			Flameball2.DisplayName: Flameball2
 		}
 	}
 }

@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Stellamod;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
+using System.Collections.Generic;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
@@ -20,6 +21,23 @@ namespace Stellamod.Items.Accessories.Brooches
 				"\n Allows the effects of the Hiker's Backpack! "); */
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+
+
+			line = new TooltipLine(Mod, "ADBP", "A+ Accessory!")
+			{
+				OverrideColor = new Color(220, 87, 24)
+
+			};
+			tooltips.Add(line);
+
+
+
+
 		}
 
 		public override void SetDefaults()

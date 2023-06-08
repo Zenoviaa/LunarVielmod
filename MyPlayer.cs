@@ -5,6 +5,8 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
+using Stellamod.Items.Armors.Daedia;
+using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
@@ -58,7 +60,11 @@ namespace Stellamod
 		public int GoldenSparkleCooldown = 0;
 		public int RayCooldown = 0;
 		public int VerliaBDCooldown = 5;
-
+		public bool GovheilB;
+		public bool GovheilC;
+		public int GovheilBCooldown = 0;
+		public bool Daedstruck;
+		public int DaedstruckBCooldown = 1;
 
 
 
@@ -124,7 +130,9 @@ namespace Stellamod
 			NotiaB = false;
 			Lovestruck = false;
 			ADisease = false;
-
+			GovheilB = false;
+			GovheilC = false;
+			Daedstruck = false;
 
 		BroochSpragald = false;
 			BroochFrile = false;
@@ -165,7 +173,9 @@ namespace Stellamod
 		public override void UpdateDead()
 		{
 			ResetStats();
+			
 		}
+		
 		public void ResetStats()
 		{
 			Bossdeath = false;
@@ -174,6 +184,7 @@ namespace Stellamod
 
 
 		}
+		
 
 
 
@@ -358,9 +369,69 @@ namespace Stellamod
 
 			}
 
+			if (Daedstruck && DaedstruckBCooldown == 0)
+			{
+				DaedstruckBCooldown = 600;
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<LightBomb>(), 30, 1f, Player.whoAmI);
+
+			}
 
 
 
+
+
+
+
+
+			if (GovheilB && GovheilBCooldown == 301)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+				for (int j = 0; j < 1; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
+				}
+
+
+			}
+			if (GovheilB && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 2f;
+				Player.GetDamage(DamageClass.Summon) *= 2f;
+
+			}
+			if (GovheilB && GovheilBCooldown == 540)
+			{
+				GovheilBCooldown = 0;
+
+
+			}
+
+
+
+			if (GovheilC && GovheilBCooldown == 301)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+				for (int j = 0; j < 1; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilSwords>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+			if (GovheilC && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Ranged) *= 2f;
+				Player.GetDamage(DamageClass.Melee) *= 2f;
+
+			}
+			if (GovheilC && GovheilBCooldown == 520)
+			{
+				GovheilBCooldown = 0;
+
+
+			}
 
 
 			if (Boots)
@@ -392,7 +463,7 @@ namespace Stellamod
 
 
 
-
+			
 
 			if (Player.InModBiome<FableBiome>())
 			{

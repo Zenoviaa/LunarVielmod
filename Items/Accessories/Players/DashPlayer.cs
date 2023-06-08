@@ -126,11 +126,13 @@ namespace Stellamod.Items.Accessories.Players
 				Player.velocity *= 0.98f;
 				DashTimer--;
 			}
-			
+
+		
 			if (DashTimer == 0)
             {
 				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = false;
 				
+
 			}
 		}
 
