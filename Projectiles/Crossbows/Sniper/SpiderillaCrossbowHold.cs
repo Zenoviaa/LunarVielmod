@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 105;
+			Projectile.timeLeft = 103;
 		}
         public override bool? CanDamage()
         {

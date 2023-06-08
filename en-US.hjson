@@ -1679,52 +1679,99 @@ Mods: {
 
 			Pearlinator: {
 				DisplayName: Pearlinator
-				Tooltip: ""
+				Tooltip: '''
+					Lovely flamethrower?
+					Dream upon a goddess of love, Daedia!
+					'''
 			}
 
 			MerchantCrossbow: {
-				DisplayName: Merchant Crossbow
-				Tooltip: ""
+				DisplayName: The Merchants Crossbow
+				Tooltip: '''
+					Who knew merchants could sell weapons!
+					Either way its a holding crossbow!
+					How generous :P
+					'''
 			}
 
 			LeadCrossbow: {
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					'''
 				DisplayName: Lead Crossbow
 			}
 
 			IronCrossbow: {
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					'''
 				DisplayName: Iron Crossbow
 			}
 
 			DungeonCrossbow: {
-				Tooltip: ""
-				DisplayName: Dungeon Crossbow
+				Tooltip: '''
+					Woa spooky...
+					A simple crossbow that can be held down to shoot bolts
+					Bones come out from each hit!
+					'''
+				DisplayName: Bone and Rag Crossbow
 			}
 
 			GoldCrossbow: {
 				DisplayName: Gold Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					This one even has ruby bolts inside!
+					'''
 			}
 
 			PlatinumCrossbow: {
 				DisplayName: Platinum Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					This one even has ruby bolts inside!
+					'''
 			}
 
 			SilverCrossbow: {
 				DisplayName: Silver Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					This one even has sapphire bolts inside!
+					'''
 			}
 
 			TungstenCrossbow: {
 				DisplayName: Tungsten Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					A simple crossbow that can be held down to shoot bolts
+					This one even has sapphire bolts inside!
+					'''
 			}
 
 			MorrowedCrossbow: {
 				DisplayName: Morrowed Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					Sniper type crossbow that can be held down to shoot fast rail bolts!
+					The morrow is coming inside of me!
+					'''
+			}
+
+			DustedSilk: {
+				DisplayName: Dusted Silk
+				Tooltip: '''
+					Special material harvested from spiders
+					Useful for crafting certain string-like items!
+					'''
+			}
+
+			SpiderillaCrossbow: {
+				DisplayName: Spiderilla Crossbow
+				Tooltip: '''
+					Sniper type crossbow that can be held down to shoot fast rail bolts!
+					Eggs pop out of this one so uh...
+					If you have arachniphobia, why use this?
+					'''
 			}
 		}
 
@@ -2231,6 +2278,9 @@ Mods: {
 			DelfaCircle.DisplayName: Delfa Circle
 			MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
 			MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
+			AltaCircle.DisplayName: Alta Circle
+			SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
+			SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
 		}
 	}
 }
