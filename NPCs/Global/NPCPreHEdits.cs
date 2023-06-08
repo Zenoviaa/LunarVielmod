@@ -3,6 +3,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -41,6 +42,19 @@ namespace Stellamod.NPCs.Global
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 2)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+			if (npc.type == NPCID.BlueArmoredBones)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+			if (npc.type == NPCID.AngryBones)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
 
 			if (npc.type == NPCID.Antlion)
 			{
