@@ -1681,6 +1681,51 @@ Mods: {
 				DisplayName: Pearlinator
 				Tooltip: ""
 			}
+
+			MerchantCrossbow: {
+				DisplayName: Merchant Crossbow
+				Tooltip: ""
+			}
+
+			LeadCrossbow: {
+				Tooltip: ""
+				DisplayName: Lead Crossbow
+			}
+
+			IronCrossbow: {
+				Tooltip: ""
+				DisplayName: Iron Crossbow
+			}
+
+			DungeonCrossbow: {
+				Tooltip: ""
+				DisplayName: Dungeon Crossbow
+			}
+
+			GoldCrossbow: {
+				DisplayName: Gold Crossbow
+				Tooltip: ""
+			}
+
+			PlatinumCrossbow: {
+				DisplayName: Platinum Crossbow
+				Tooltip: ""
+			}
+
+			SilverCrossbow: {
+				DisplayName: Silver Crossbow
+				Tooltip: ""
+			}
+
+			TungstenCrossbow: {
+				DisplayName: Tungsten Crossbow
+				Tooltip: ""
+			}
+
+			MorrowedCrossbow: {
+				DisplayName: Morrowed Crossbow
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -2170,6 +2215,22 @@ Mods: {
 			HearstspireProj2.DisplayName: Hearstspire Proj2
 			Flameball.DisplayName: Flameball
 			Flameball2.DisplayName: Flameball2
+			IronCrossbowHold.DisplayName: Iron Crossbow Hold
+			LeadCrossbowBolt.DisplayName: Lead Crossbow Bolt
+			LeadCrossbowHold.DisplayName: Lead Crossbow Hold
+			DunCrossbowBolt.DisplayName: Dun Crossbow Bolt
+			DungeonCrossbowHold.DisplayName: Dungeon Crossbow Hold
+			MerCrossbowBolt.DisplayName: Mer Crossbow Bolt
+			MerCrossbowHold.DisplayName: Mer Crossbow Hold
+			GoldCrossbowHold.DisplayName: Gold Crossbow Hold
+			PlatinumCrossbowBolt.DisplayName: Platinum Crossbow Bolt
+			PlatinumCrossbowHold.DisplayName: Platinum Crossbow Hold
+			SilverCrossbowBolt.DisplayName: Silver Crossbow Bolt
+			SilverCrossbowHold.DisplayName: Silver Crossbow Hold
+			TungstenCrossbowHold.DisplayName: Tungsten Crossbow Hold
+			DelfaCircle.DisplayName: Delfa Circle
+			MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
+			MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
 		}
 	}
 }

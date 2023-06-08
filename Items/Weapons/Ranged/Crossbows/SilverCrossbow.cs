@@ -7,12 +7,12 @@ using Terraria.GameContent.Creative;
 using Terraria.Audio;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Stellamod.Projectiles.Crossbows;
-using Stellamod.Projectiles.Crossbows.Lead;
+using Stellamod.Projectiles.Crossbows.Gemmed;
 
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {
 
-    public class IronCrossbow : ModItem
+    public class SilverCrossbow : ModItem
     {
 
         public override void SetStaticDefaults()
@@ -26,24 +26,24 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
         public override void SetDefaults()
         {
-            Item.damage = 11;
+            Item.damage = 14;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;
-            Item.useTime = 48;
-            Item.useAnimation = 48;
+            Item.useTime = 45;
+            Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 4;
+            Item.knockBack = 2;
             Item.rare = ItemRarityID.Blue;
             Item.autoReuse = false;
             Item.shootSpeed = 30f;
-            Item.shoot = ModContent.ProjectileType<IronCrossbowHold>();
+            Item.shoot = ModContent.ProjectileType<SilverCrossbowHold>();
             Item.scale = 0.8f;
             Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 7);
+            Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
             Item.channel = true;
-
+       
 
         }
 
@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.IronBar, 7);
+            recipe.AddIngredient(ItemID.SilverBar, 9);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.LeadBar, 7);
-            recipe.AddTile(TileID.WorkBenches);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
 
