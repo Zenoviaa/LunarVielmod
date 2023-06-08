@@ -18,6 +18,14 @@ namespace Stellamod.Items.Materials
 			Item.value = Item.sellPrice(silver: 1);
 		}
 
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe(3);
+			recipe.AddIngredient(ItemID.Wood, 1);
+	
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
+		}
 	
 	}
 }

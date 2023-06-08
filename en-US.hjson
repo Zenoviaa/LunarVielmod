@@ -1779,6 +1779,26 @@ Mods: {
 					If you have arachniphobia, why use this?
 					'''
 			}
+
+			DesertCrossbow: {
+				Tooltip: ""
+				DisplayName: Desert Crossbow
+			}
+
+			FrostyCrossbow: {
+				DisplayName: Frosty Crossbow
+				Tooltip: ""
+			}
+
+			CoralCrossbow: {
+				DisplayName: Coral Crossbow
+				Tooltip: ""
+			}
+
+			MoltenCrossbow: {
+				DisplayName: Molten Crossbow
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -2287,6 +2307,19 @@ Mods: {
 			AltaCircle.DisplayName: Alta Circle
 			SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
 			SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
+			MeltaCircle.DisplayName: Melta Circle
+			DesertCrossbowHold.DisplayName: Desert Crossbow Hold
+			DesertCrossbowBolt.DisplayName: Desert Crossbow Bolt
+			IcaCircle.DisplayName: Ica Circle
+			IceCrossbowBolt.DisplayName: Ice Crossbow Bolt
+			IceCrossbowHold.DisplayName: Ice Crossbow Hold
+			CoralBubble.DisplayName: Coral Bubble
+			CoralCircle.DisplayName: Coral Circle
+			CoralCrossbowBolt.DisplayName: Coral Crossbow Bolt
+			CoralCrossbowHold.DisplayName: Coral Crossbow Hold
+			MoltenCircle.DisplayName: Molten Circle
+			MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
+			MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
 		}
 	}
 }
