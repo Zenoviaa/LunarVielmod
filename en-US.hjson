@@ -1799,6 +1799,16 @@ Mods: {
 				DisplayName: Molten Crossbow
 				Tooltip: ""
 			}
+
+			FabiliaCrossbow: {
+				DisplayName: Fabilia Crossbow
+				Tooltip: ""
+			}
+
+			JadeJungleCrossbow: {
+				DisplayName: Jade Jungle Crossbow
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -2320,6 +2330,11 @@ Mods: {
 			MoltenCircle.DisplayName: Molten Circle
 			MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
 			MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
+			FableCrossbowBolt.DisplayName: Fable Crossbow Bolt
+			FableCrossbowHold.DisplayName: Fable Crossbow Hold
+			GeaCircle.DisplayName: Gea Circle
+			JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
+			JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
 		}
 	}
 }

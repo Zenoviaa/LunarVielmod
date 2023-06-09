@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 			AIType = ProjectileID.ToxicBubble;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.penetrate = -1;
+			Projectile.penetrate = 1;
 			Projectile.ignoreWater = true;
 			Projectile.scale = 0.9f;
 		}

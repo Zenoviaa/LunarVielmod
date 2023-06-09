@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Tiles;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -29,6 +30,14 @@ namespace Stellamod.Items.Harvesting
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.sellPrice(silver: 2);
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe(2);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.AddIngredient(ItemID.Wood, 1);
+			recipe.Register();
+
 		}
 	}
 }
