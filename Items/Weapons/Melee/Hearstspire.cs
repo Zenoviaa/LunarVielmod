@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.value = 10000;
             Item.noMelee = true;
 
-            Item.UseSound = SoundID.Item1;
+            Item.UseSound = SoundID.Item71;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<HearstspireProj>();
             Item.shootSpeed = 20f;

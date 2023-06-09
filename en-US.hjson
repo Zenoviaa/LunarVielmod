@@ -1781,7 +1781,8 @@ Mods: {
 			}
 
 			DesertCrossbow: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					Shotgun type crossbow that shoots bolts in many directions!
 					Hold down to shoot!
 					Rumors have it that they are faster than the wind..
@@ -1791,17 +1792,18 @@ Mods: {
 
 			FrostyCrossbow: {
 				DisplayName: Auroran Ice Crossbow
-				Tooltip: '''
+				Tooltip:
+					'''
 					Shotgun type crossbow that shoots bolts in many directions!
 					Hold down to shoot!
 					Frosty!
 					'''
-
 			}
 
 			CoralCrossbow: {
 				DisplayName: Night's Coral Crossbow
-				Tooltip: '''
+				Tooltip:
+					'''
 					A speed type crossbow meant for hunters
 					Hold down to shoot!
 					The absolute, the enraged, the entropy, the finale!
@@ -1810,7 +1812,8 @@ Mods: {
 
 			MoltenCrossbow: {
 				DisplayName: Molten Crossbow
-				Tooltip:  '''
+				Tooltip:
+					'''
 					A speed type crossbow meant for hunters
 					Hold down to shoot!
 					Sometimes, we want to watch the world burn...
@@ -1819,7 +1822,8 @@ Mods: {
 
 			FabiliaCrossbow: {
 				DisplayName: Fabilia Wilds Crossbow
-				Tooltip:  '''
+				Tooltip:
+					'''
 					Shotgun type crossbow that shoots bolts in many directions!
 					Hold down to shoot!
 					Explode enemies with this favorable fabilia crossbow :P
@@ -1828,7 +1832,8 @@ Mods: {
 
 			JadeJungleCrossbow: {
 				DisplayName: Jade Jungle Crossbow
-				Tooltip: '''
+				Tooltip:
+					'''
 					Sniper type crossbow that can be held down to shoot fast rail bolts!
 					Little leaves come out of the bolts
 					Grass can sometimes taste yummy :)
