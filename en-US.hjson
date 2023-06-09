@@ -1771,7 +1771,7 @@ Mods: {
 			}
 
 			SpiderillaCrossbow: {
-				DisplayName: Spiderilla Crossbow
+				DisplayName: Spiderillas Crossbow
 				Tooltip:
 					'''
 					Sniper type crossbow that can be held down to shoot fast rail bolts!
@@ -1781,40 +1781,65 @@ Mods: {
 			}
 
 			DesertCrossbow: {
-				Tooltip: ""
-				DisplayName: Desert Crossbow
+				Tooltip: '''
+					Shotgun type crossbow that shoots bolts in many directions!
+					Hold down to shoot!
+					Rumors have it that they are faster than the wind..
+					'''
+				DisplayName: Winded Sands Crossbow
 			}
 
 			FrostyCrossbow: {
-				DisplayName: Frosty Crossbow
-				Tooltip: ""
+				DisplayName: Auroran Ice Crossbow
+				Tooltip: '''
+					Shotgun type crossbow that shoots bolts in many directions!
+					Hold down to shoot!
+					Frosty!
+					'''
+
 			}
 
 			CoralCrossbow: {
-				DisplayName: Coral Crossbow
-				Tooltip: ""
+				DisplayName: Night's Coral Crossbow
+				Tooltip: '''
+					A speed type crossbow meant for hunters
+					Hold down to shoot!
+					The absolute, the enraged, the entropy, the finale!
+					'''
 			}
 
 			MoltenCrossbow: {
 				DisplayName: Molten Crossbow
-				Tooltip: ""
+				Tooltip:  '''
+					A speed type crossbow meant for hunters
+					Hold down to shoot!
+					Sometimes, we want to watch the world burn...
+					'''
 			}
 
 			FabiliaCrossbow: {
-				DisplayName: Fabilia Crossbow
-				Tooltip: ""
+				DisplayName: Fabilia Wilds Crossbow
+				Tooltip:  '''
+					Shotgun type crossbow that shoots bolts in many directions!
+					Hold down to shoot!
+					Explode enemies with this favorable fabilia crossbow :P
+					'''
 			}
 
 			JadeJungleCrossbow: {
 				DisplayName: Jade Jungle Crossbow
-				Tooltip: ""
+				Tooltip: '''
+					Sniper type crossbow that can be held down to shoot fast rail bolts!
+					Little leaves come out of the bolts
+					Grass can sometimes taste yummy :)
+					'''
 			}
 		}
 
 		Biomes: {
 			CathedralBiome: {
 				DisplayName: Verlia's Tower
-				TownNPCDialogueName: the Cathedral Biome
+				TownNPCDialogueName: Verlia's Tower
 			}
 
 			MarrowSurfaceBiome: {
@@ -2049,22 +2074,22 @@ Mods: {
 			}
 
 			VerliaBroo: {
-				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+				Description: Verlia's enchantment
 				DisplayName: Verlia Brooch
 			}
 
 			AuroranSeekerMinionBuff: {
 				DisplayName: Auroran Seeker Minion Buff
-				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+				Description: Summons for your little cute books :P
 			}
 
 			LifeWandMinionBuff: {
 				DisplayName: Life Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+				Description: Wand of life!
 			}
 
 			ManaWandMinionBuff: {
-				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+				Description: Wand of Mana!
 				DisplayName: Mana Wand Minion Buff
 			}
 		}
