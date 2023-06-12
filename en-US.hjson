@@ -1867,6 +1867,26 @@ Mods: {
 				DisplayName: Sand Slicer
 				Tooltip: ""
 			}
+
+			MetalDagger: {
+				Tooltip: ""
+				DisplayName: Metal Dagger
+			}
+
+			Vinger: {
+				Tooltip: ""
+				DisplayName: Vinger
+			}
+
+			CharmofRot: {
+				Tooltip: ""
+				DisplayName: Charmof Rot
+			}
+
+			Vheilatine: {
+				Tooltip: ""
+				DisplayName: Vheilatine
+			}
 		}
 
 		Biomes: {
@@ -2396,6 +2416,9 @@ Mods: {
 			VoltuxPortal.DisplayName: Voltux Portal
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			SandSlacerProj.DisplayName: Sand Slacer Proj
+			MetalDaggerProj.DisplayName: Metal Dagger Proj
+			VingerProj.DisplayName: Vinger Proj
+			VheilatineProj.DisplayName: Vheilatine Proj
 		}
 	}
 }

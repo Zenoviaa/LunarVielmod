@@ -3,6 +3,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
@@ -29,7 +30,15 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 3, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+
+			if (npc.type == NPCID.GoblinSorcerer)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 300, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			if (npc.type == NPCID.BlackRecluse)
 			{
