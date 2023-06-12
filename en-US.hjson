@@ -1839,6 +1839,34 @@ Mods: {
 					Grass can sometimes taste yummy :)
 					'''
 			}
+
+			Heatspot: {
+				DisplayName: Heatspot
+				Tooltip:
+					'''
+					Are you burning yet?
+					+4% Magic damage :P
+					'''
+			}
+
+			Valtotude: {
+				DisplayName: Windatude
+				Tooltip:
+					'''
+					Create a swirl that keeps enemies inside a whirlwind
+					Great for getting your summons to attack enemies in one spot!
+					'''
+			}
+
+			DesertWhip: {
+				Tooltip: ""
+				DisplayName: Desert Whip
+			}
+
+			SandSlicer: {
+				DisplayName: Sand Slicer
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -2365,6 +2393,9 @@ Mods: {
 			GeaCircle.DisplayName: Gea Circle
 			JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
 			JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
+			VoltuxPortal.DisplayName: Voltux Portal
+			DesertWhipProj.DisplayName: Desert Whip Proj
+			SandSlacerProj.DisplayName: Sand Slacer Proj
 		}
 	}
 }

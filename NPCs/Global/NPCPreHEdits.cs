@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Accessories.Brooches;
+﻿using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -42,6 +43,13 @@ namespace Stellamod.NPCs.Global
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 2)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
+
+
+
+
+			//------------------------------------------- Dungeon
+
 			if (npc.type == NPCID.BlueArmoredBones)
 			{
 
@@ -56,6 +64,9 @@ namespace Stellamod.NPCs.Global
 			}
 
 
+
+			//--------------------------------------------------------------------- Desert
+
 			if (npc.type == NPCID.Antlion)
 			{
 
@@ -66,6 +77,21 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ItemID.SandBoots, 25, 1, 1)); 
 				npcLoot.Add(ItemDropRule.Common(ItemID.Sandgun, 40, 1, 1)); 
 			}
+			if (npc.type == NPCID.Vulture)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+			}
+
+			//------------------------------------------------------------------------ OVERWORLD + RAIN
+
+
+
+
+
 
 			if (npc.type == NPCID.Zombie)
 			{
@@ -89,6 +115,9 @@ namespace Stellamod.NPCs.Global
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SlimeBroochA>(), 300, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
+
+			//------------------------------------------- BLOOD MOON
 
 			if (npc.type == NPCID.BloodZombie)
 			{
