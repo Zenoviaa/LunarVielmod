@@ -1879,8 +1879,13 @@ Mods: {
 			}
 
 			CharmofRot: {
-				Tooltip: ""
-				DisplayName: Charmof Rot
+				Tooltip:
+					'''
+					Rotting with the webs
+					+8% Summon Damage
+					Cloud in a Bottle effects!
+					'''
+				DisplayName: Charm of Rot
 			}
 
 			Vheilatine: {
