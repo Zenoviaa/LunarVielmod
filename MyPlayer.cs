@@ -5,20 +5,30 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
+using Stellamod.Dusts;
+using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Stellamod.Projectiles.Minions;
+using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Weapons.Gun;
 
 namespace Stellamod
 {
@@ -115,8 +125,268 @@ namespace Stellamod
 		public int MOSBCooldown = 1;
 		public bool BroochBonedEye;
 		public int BonedEyeBCooldown = 1;
-		//---------------------------------------------------------------------------------------------------------------
-		public override void ResetEffects()
+        //---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+        public float screenFlash;
+        private float screenFlashSpeed = 0.05f;
+        private Vector2? screenFlashCenter;
+        private float shakeDrama;
+        public Vector2 startPoint;
+
+        public Vector2 focusPoint;
+        public float focusTransition;
+        public float focusLength;
+        public bool shouldFocus;
+        public bool Leather;
+        public bool HMArmor;
+        public bool FCArmor;
+        public float FCArmorTime;
+        public float HMArmorTime;
+        public bool ZoneAbyss;
+        public bool ZoneAcid;
+        public float AssassinsSlashes;
+        public float AssassinsTime;
+        public bool AssassinsSlash;
+        public NPC AssassinsSlashnpc;
+        public bool StealthRune;
+        public bool SingularityFragment;
+        public float StealthTime;
+
+        public bool CorsageRune;
+        public float CorsageTime;
+
+        public bool DetonationRune;
+
+        public bool ShadowCharm = false;
+
+        public bool ClamsPearl;
+        public bool ShadeRune = false;
+        public bool RealityRune = false;
+        public bool SpiritPendent = false;
+
+        public NPC CrysalizerNpc;
+
+        public int CrysalizerHits;
+
+        public int GHETime;
+        public bool GHE;
+        public Vector2 GHEVector;
+        public Entity GHETarget;
+
+        public bool heart = false;
+        public int heartDead = 0;
+
+        public int IrradiatedKilled;
+
+
+
+
+
+
+
+        public void ShakeAtPosition(Vector2 position, float distance, float strength)
+        {
+            this.shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
+        }
+        public override void ModifyScreenPosition()
+        {
+            if (this.shouldFocus)
+            {
+                if (this.focusLength > 0f)
+                {
+                    if (this.focusTransition <= 1f)
+                    {
+                        Main.screenPosition = Vector2.SmoothStep(this.startPoint, this.focusPoint, this.focusTransition += 0.05f);
+                    }
+                    else
+                    {
+                        Main.screenPosition = this.focusPoint;
+                    }
+                    this.focusLength -= 0.05f;
+                }
+                else if (this.focusTransition >= 0f)
+                {
+                    Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), this.focusPoint, this.focusTransition -= 0.05f);
+                }
+                else
+                {
+                    this.shouldFocus = false;
+                }
+            }
+            if (this.shakeDrama > 0.5f)
+            {
+                this.shakeDrama *= 0.92f;
+                Vector2 shake = new Vector2(Main.rand.NextFloat(this.shakeDrama), Main.rand.NextFloat(this.shakeDrama));
+                Main.screenPosition += shake;
+            }
+        }
+        public void FocusOn(Vector2 pos, float length)
+        {
+            if (base.Player.Center.Distance(pos) < 2000f)
+            {
+                this.focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+                this.focusTransition = 0f;
+                this.startPoint = Main.screenPosition;
+                this.focusLength = length;
+                this.shouldFocus = true;
+            }
+        }
+        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {
+
+            if (damageSource.SourceOtherIndex == 8)
+                CustomDeath(ref damageSource);
+            return true;
+        }
+        private void CustomDeath(ref PlayerDeathReason reason)
+        {
+            if (Player.FindBuffIndex(ModContent.BuffType<AbyssalFlame>()) >= 0)
+            {
+                reason = PlayerDeathReason.ByCustomReason(Player.name + " was consumed by the abyss.");
+            }
+
+        }
+        public override void OnHitAnything(float x, float y, Entity victim)
+        {
+            if (GHE)
+            {
+                GHETarget = victim;
+            }
+            if (DetonationRune)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+
+                }
+            }
+            if (RealityRune)
+            {
+                if (Main.rand.NextBool(7))
+                {
+                    var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+
+                }
+            }
+        }
+
+
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
+        {
+            if (StealthRune && StealthTime >= 500)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/StealthRune"), Player.position);
+                for (int m = 0; m < 20; m++)
+                {
+                    int num1 = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, -2f, 0, default, .8f);
+                    Main.dust[num1].noGravity = true;
+                    Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    if (Main.dust[num1].position != Player.Center)
+                        Main.dust[num1].velocity = Player.DirectionTo(Main.dust[num1].position) * 6f;
+                    int num = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, -2f, 0, default, .8f);
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    if (Main.dust[num].position != Player.Center)
+                        Main.dust[num].velocity = Player.DirectionTo(Main.dust[num].position) * 6f;
+                }
+                StealthTime = 0;
+            }
+            if (CorsageRune && CorsageTime == 0)
+            {
+
+                if (Main.rand.NextBool(5))
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune1"), Player.position);
+                    for (int i = 0; i < 20; i++)
+                    {
+                        var entitySource = Player.GetSource_FromThis();
+                        int num1 = Gore.NewGore(entitySource, new Vector2(Player.Center.X + Main.rand.Next(-10, 10), Player.Center.Y + Main.rand.Next(-10, 10)), Player.velocity, 911);
+                        Main.gore[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        Main.gore[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        if (Main.dust[num1].position != Player.Center)
+                        {
+                            Main.dust[num1].velocity = Player.DirectionTo(Main.dust[num1].position) * 6f;
+                        }
+
+                        int num = Gore.NewGore(entitySource, new Vector2(Player.Center.X + Main.rand.Next(-10, 10), Player.Center.Y + Main.rand.Next(-10, 10)), Player.velocity, 911);
+
+                        Main.gore[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        Main.gore[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        if (Main.dust[num].position != Player.Center)
+                        {
+                            Main.dust[num].velocity = Player.DirectionTo(Main.dust[num].position) * 6f;
+
+                        }
+                    }
+
+
+                    CorsageTime = 1;
+                }
+
+            }
+            if (CorsageTime >= 1 && CorsageRune)
+            {
+                int Sound = Main.rand.Next(1, 3);
+                if (Sound == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune2"), Player.position);
+                }
+                else
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune3"), Player.position);
+                }
+                for (int i = 0; i < 200; i++)
+                {
+                    if (Main.npc[i].active && !Main.npc[i].friendly && Main.npc[i].type != NPCID.TargetDummy)
+                    {
+                        int distance = (int)Main.npc[i].Distance(Player.Center);
+                        if (distance < 320)
+                        {
+                            Main.npc[i].AddBuff(BuffID.Poisoned, 120);
+                        }
+
+                    }
+                }
+                for (int i = 0; i < 20; i++)
+                {
+                    if (Main.npc[i].active && !Main.npc[i].friendly && Main.npc[i].type != NPCID.TargetDummy)
+                    {
+                        var entitySource = Main.npc[i].GetSource_FromThis();
+                        int num1 = Gore.NewGore(entitySource, new Vector2(Main.npc[i].Center.X + Main.rand.Next(-10, 10), Main.npc[i].Center.Y + Main.rand.Next(-10, 10)), Main.npc[i].velocity, 911);
+                        Main.gore[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        Main.gore[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        if (Main.dust[num1].position != Main.npc[i].Center)
+                        {
+                            Main.dust[num1].velocity = Main.npc[i].DirectionTo(Main.dust[num1].position) * 6f;
+                        }
+
+                        int num = Gore.NewGore(entitySource, new Vector2(Main.npc[i].Center.X + Main.rand.Next(-10, 10), Main.npc[i].Center.Y + Main.rand.Next(-10, 10)), Main.npc[i].velocity, 911);
+
+                        Main.gore[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        Main.gore[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                        if (Main.dust[num].position != Main.npc[i].Center)
+                        {
+                            Main.dust[num].velocity = Main.npc[i].DirectionTo(Main.dust[num].position) * 6f;
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        public override void ResetEffects()
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
 			TAuraSpawn = false;
@@ -150,13 +420,23 @@ namespace Stellamod
 
 
 
+            SpiritPendent = false;
+            GHE = false;
+            ShadeRune = false;
+            FCArmor = false;
+            ClamsPearl = false;
+            HMArmor = false;
+            DetonationRune = false;
+            CorsageRune = false;
+            StealthRune = false;
+            Leather = false;
+            ShadowCharm = false;
 
 
 
 
 
-
-			if (SwordComboR <= 0)
+            if (SwordComboR <= 0)
 			{
 				SwordCombo = 0;
 				SwordComboR = 0;
@@ -200,57 +480,6 @@ namespace Stellamod
 		}
 
 
-
-		public Vector2 focusPoint;
-		public float focusTransition;
-        private Vector2 startPoint;
-        public float focusLength;
-		public bool shouldFocus;
-		public override void ModifyScreenPosition()
-		{
-			if (this.shouldFocus)
-			{
-				if (this.focusLength > 0f)
-				{
-					if (this.focusTransition <= 1f)
-					{
-						Main.screenPosition = Vector2.SmoothStep(this.startPoint, this.focusPoint, this.focusTransition += 0.05f);
-					}
-					else
-					{
-						Main.screenPosition = this.focusPoint;
-					}
-					this.focusLength -= 0.05f;
-				}
-				else if (this.focusTransition >= 0f)
-				{
-					Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), this.focusPoint, this.focusTransition -= 0.05f);
-				}
-				else
-				{
-					this.shouldFocus = false;
-				}
-			}
-			if (this.shakeDrama > 0.5f)
-			{
-				this.shakeDrama *= 0.92f;
-				Vector2 shake = new Vector2(Main.rand.NextFloat(this.shakeDrama), Main.rand.NextFloat(this.shakeDrama));
-				Main.screenPosition += shake;
-			}
-		}
-		public void FocusOn(Vector2 pos, float length)
-		{
-			if (base.Player.Center.Distance(pos) < 2000f)
-			{
-				this.focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-				this.focusTransition = 0f;
-				this.startPoint = Main.screenPosition;
-				this.focusLength = length;
-				this.shouldFocus = true;
-			}
-		}
-
-
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
 		{
@@ -263,11 +492,258 @@ namespace Stellamod
 		}
 		public override void PostUpdate()
 		{
-			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
+            //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
+
+            if (GHE)
+            {
+                if (GHETarget.active)
+                {
+                    GHETime++;
+                    if (GHETime >= 30)
+                    {
+                        Vector2 direction = Vector2.Normalize(GHETarget.Center - Player.Center) * 8.5f;
+                        GHETime = 0;
+                        GHEVector.X = Main.rand.NextFloat(GHETarget.Center.X - 130, GHETarget.Center.X + 130);
+                        GHEVector.Y = Main.rand.NextFloat(GHETarget.Center.Y - 130, GHETarget.Center.Y + 130);
+                        var EntitySource = GHETarget.GetSource_FromThis();
+                        Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Main.myPlayer, 0, 0);
+                    }
+                }
+            }
+
+            bool expertMode = Main.expertMode;
+            if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
+            {
+
+            }
+            else
+            {
+                heart = false;
+                heartDead = 0;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
+            {
+
+            }
+            else
+            {
+                IrradiatedKilled = 0;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+            {
+                SingularityFragment = true;
+            }
+            else
+            {
+                SingularityFragment = false;
+            }
+            if (SingularityFragment)
+            {
+                if (Main.shimmerAlpha <= 1)
+                {
+                    Main.shimmerAlpha += 0.02f;
+                }
+                else
+                {
+                    Main.shimmerAlpha = 1.02f;
+                }
+                if (Main.shimmerBrightenDelay <= 0.2f)
+                {
+                    Main.shimmerBrightenDelay += 0.05f;
+                }
+                else
+                {
+                    Main.shimmerBrightenDelay = 0.811f;
+                }
+                if (Main.shimmerDarken <= 1.4f)
+                {
+                    Main.shimmerDarken += 0.06f;
+                }
+                else
+                {
+                    Main.shimmerDarken = 1.41f;
+                }
+            }
+            else
+            {
+                if (Main.shimmerAlpha >= 0)
+                {
+                    Main.shimmerAlpha -= 0.01f;
+                }
+                else
+                {
+                    Main.shimmerAlpha = 0f;
+                }
+                if (Main.shimmerBrightenDelay >= 0f)
+                {
+                    Main.shimmerBrightenDelay -= 0.01f;
+                }
+                else
+                {
+                    Main.shimmerBrightenDelay = 0f;
+                }
+                if (Main.shimmerDarken >= 0f)
+                {
+                    Main.shimmerDarken -= 0.01f;
+                }
+                else
+                {
+                    Main.shimmerDarken = 0f;
+                }
+            }
+
+            if (AssassinsSlash)
+            {
+                AssassinsTime++;
+                if (AssassinsTime >= 8)
+                {
+                    AssassinsSlashes += 1;
+                    if (AssassinsSlashes >= 7)
+                    {
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(AssassinsSlashnpc.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                        }
+                        AssassinsSlashnpc = null;
+                        AssassinsSlashes = 0;
+                        AssassinsTime = 0;
+                        AssassinsSlash = false;
+                    }
+                    if (AssassinsSlashnpc.active == false)
+                    {
+                        AssassinsSlashnpc = null;
+                        AssassinsSlashes = 0;
+                        AssassinsTime = 0;
+                        AssassinsSlash = false;
+                    }
+                    AssassinsTime = 0;
+                    var EntitySource = AssassinsSlashnpc.GetSource_FromThis();
 
 
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Brooches
-			if (BroochSpragald && SpragaldBCooldown <= 0)
+                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Main.myPlayer, 0, 0);
+                }
+            }
+
+            Player player = Main.LocalPlayer;
+            if (!player.active)
+                return;
+            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
+
+            if (HMArmor)
+            {
+                HMArmorTime++;
+                if (HMArmorTime <= 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArcharilitDrone3"), player.position);
+                    var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
+                }
+
+            }
+            else
+            {
+                player.ClearBuff(ModContent.BuffType<HMMinionBuff>());
+                HMArmorTime = 0;
+            }
+
+
+            if (FCArmor)
+            {
+                FCArmorTime++;
+                if (FCArmorTime <= 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune1"), Player.position);
+                    var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    player.AddBuff(ModContent.BuffType<FCBuff>(), 99999);
+                }
+
+            }
+            else
+            {
+                player.ClearBuff(ModContent.BuffType<FCBuff>());
+                FCArmorTime = 0;
+            }
+            if (ZoneAcid)
+            {
+                if (player.wet)
+                {
+                    player.AddBuff(ModContent.BuffType<Irradiation>(), 30);
+                }
+                Main.raining = true;
+                Main.maxRaining = 0.8f;
+                Main.maxRain = 140;
+                Main.rainTime = 18000;
+                var entitySource = Player.GetSource_FromThis();
+                Main.raining = true;
+                Main.maxRaining = 0.8f;
+                Main.maxRain = 140;
+                Main.rainTime = 18000;
+                float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
+                int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
+                int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
+                int a = Gore.NewGore(entitySource, new Vector2(x, y), Vector2.Zero, GoreID.TreeLeaf_Jungle, goreScale);
+                Main.gore[a].rotation = 0f;
+                Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
+            }
+
+
+            if (ZoneAbyss)
+            {
+                player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
+            }
+
+            if (StealthRune)
+            {
+                if (StealthTime <= 500)
+                {
+                    StealthTime++;
+                }
+                else
+                {
+                    if (Main.rand.NextBool(5))
+                    {
+                        int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
+                        Main.dust[dustnumber].velocity *= 0.3f;
+                        Main.dust[dustnumber].noGravity = true;
+                    }
+                }
+                Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
+                Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
+                Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
+                Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
+                Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
+
+            }
+            if (SpiritPendent && ZoneAbyss)
+            {
+                Player.GetDamage(DamageClass.Magic) += 250 / 150f;
+                Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
+                Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
+                Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
+                Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
+            }
+            if (CorsageTime >= 1)
+            {
+                var entitySource = Player.GetSource_FromThis();
+                if (Main.rand.NextBool(5))
+                {
+                    int a = Gore.NewGore(entitySource, new Vector2(Player.Center.X + Main.rand.Next(-10, 10), Player.Center.Y + Main.rand.Next(-10, 10)), Player.velocity, 911);
+                    Main.gore[a].timeLeft = 20;
+                    Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
+                }
+                Player.lifeRegen += 30;
+                CorsageTime++;
+                if (CorsageTime >= 300)
+                {
+
+                    CorsageTime = 0;
+                }
+            }
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Brooches
+            if (BroochSpragald && SpragaldBCooldown <= 0)
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SpragaldBrooch>(), 0, 1f, Player.whoAmI);
 
@@ -630,7 +1106,6 @@ namespace Stellamod
 				Timer++;
 				if (Timer == 90 || DiceCooldown == 90)
 				{
-					Player player = Player;
 					var entitySource = player.GetSource_FromThis();
 
 					switch (Main.rand.Next(5))
@@ -772,7 +1247,6 @@ namespace Stellamod
 
 
 		public int Shake = 0;
-        private float shakeDrama;
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
 		{

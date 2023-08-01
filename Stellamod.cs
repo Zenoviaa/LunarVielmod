@@ -33,12 +33,39 @@ namespace Stellamod
             
         }
 
-       
 
+        public static Player PlayerExists(int whoAmI)
+        {
+            return whoAmI > -1 && whoAmI < Main.maxPlayers && Main.player[whoAmI].active && !Main.player[whoAmI].dead && !Main.player[whoAmI].ghost ? Main.player[whoAmI] : null;
+        }
+
+        public static Stellamod Instance;
         public static int MedalCurrencyID;
         public override void Load()
         {
-           
+
+            Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:BasicTrail"] = new MiscShaderData(BasicTrailRef, "TrailPass");
+            GameShaders.Misc["VampKnives:LightningTrail"] = new MiscShaderData(LightningTrailRef, "TrailPass");
+
+
+
+            Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:GenericLaserShader"] = new MiscShaderData(genericLaserShader, "TrailPass");
+
+
+            Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:LightBeamVertexShader"] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
+
+
+            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:ArtemisLaserShader"] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
+
+
+
+            Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["VampKnives:Fire"] = new MiscShaderData(shadowflameShader, "TrailPass");
             // ...other Load stuff goes here
             MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
 
@@ -77,7 +104,6 @@ namespace Stellamod
 
         }
 
-        public static Stellamod Instance;
         public override void Unload()
         {
             // The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.

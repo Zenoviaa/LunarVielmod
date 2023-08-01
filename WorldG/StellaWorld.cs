@@ -25,10 +25,10 @@ namespace Stellamod.WorldG
 {
 
 
-	public class StellaWorld : ModSystem
+    public class StellaWorld : ModSystem
 	{
-
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+        public static bool SoulStorm;
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			/* int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Webs"));
 				if (MorrowGen != -1)

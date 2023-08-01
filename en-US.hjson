@@ -703,7 +703,7 @@ Mods: {
 				Tooltip:
 					'''
 					From the knowledge of the Gilded to robes on enemies, wonderous!
-					A very magical material although..
+					A very magical Materials although..
 					I feel like the item calls my name...
 					'''
 			}
@@ -758,7 +758,7 @@ Mods: {
 
 			AlcaologyI: {
 				DisplayName: Alcaology Station
-				Tooltip: This table is used for dusts and useful materials!
+				Tooltip: This table is used for dusts and useful Materials!
 			}
 
 			Bar: {
@@ -1121,7 +1121,7 @@ Mods: {
 
 			MorrowSword: {
 				DisplayName: Morrow Sword
-				Tooltip: This sword feels warm, what is this material?
+				Tooltip: This sword feels warm, what is this Materials?
 			}
 
 			MorrowValswa: {
@@ -1393,7 +1393,7 @@ Mods: {
 				DisplayName: Alcadiz Scrap
 				Tooltip:
 					'''
-					Essence of high material, used for making very neat weapons
+					Essence of high Materials, used for making very neat weapons
 					Countains the power of Frile, Govheil and Fablia!
 					'''
 			}
@@ -1765,7 +1765,7 @@ Mods: {
 				DisplayName: Dusted Silk
 				Tooltip:
 					'''
-					Special material harvested from spiders
+					Special Materials harvested from spiders
 					Useful for crafting certain string-like items!
 					'''
 			}
