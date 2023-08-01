@@ -48,7 +48,6 @@ namespace Stellamod.Items.Accessories
 		{
 			player.GetDamage(DamageClass.Summon) *= 1.08f; // Increase ALL player damage by 100%
 
-
 		}
 
 
