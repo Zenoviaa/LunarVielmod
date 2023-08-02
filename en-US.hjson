@@ -2976,6 +2976,11 @@ Mods: {
 				DisplayName: Heat Glider
 				Tooltip: ""
 			}
+
+			JPost: {
+				DisplayName: J Post
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3072,6 +3077,7 @@ Mods: {
 			BlueFlower2.MapEntry: Blue Flower2
 			BlueFlower.MapEntry: Blue Flower
 			AbyssalStone.MapEntry: Abyssal Stone
+			JackPost.MapEntry: Jack Post
 		}
 
 		Buffs: {
