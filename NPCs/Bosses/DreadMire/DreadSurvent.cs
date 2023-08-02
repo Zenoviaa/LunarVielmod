@@ -27,7 +27,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         float HomeY = 330f;
         public override void SetStaticDefaults()
         {
-
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             Main.npcFrameCount[NPC.type] = 3;
