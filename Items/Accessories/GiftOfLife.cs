@@ -39,7 +39,7 @@ namespace Stellamod.Items.Accessories
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<WoodShield>(), 1);
-            recipe.AddIngredient(ItemType<LivingAlloy>(), 10);
+            recipe.AddIngredient(ItemType<Ivythorn>(), 10);
             recipe.AddIngredient(ItemType<CoreGem>(), 3);
             recipe.AddIngredient(ItemID.NaturesGift, 1);
             recipe.AddTile(TileID.TinkerersWorkbench);

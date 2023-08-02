@@ -30,12 +30,21 @@ namespace Stellamod.WorldG
 
     public class EventWorld : ModSystem
     {
+        //Gintzing--------------------------
+        public static bool Gintzing;
+        public static bool GintzingText;
         public static bool TryForGintze;
         public static bool GintzeDayReset;
         public static int GintzeKills;
+
+
+        //SoulStorm--------------------------
         public static bool SoulStorm;
-        public static bool Gintzing;
-        public static bool GintzingText;
+
+
+
+
+
         public void GintzeKillAdd()
         {
             GintzeKills = 0;
@@ -93,16 +102,20 @@ namespace Stellamod.WorldG
                 TryForGintze = false;
                 GintzeDayReset = false;
             }
-
-            if (Main.dayTime && player.townNPCs >= 3 && Main.rand.Next(2) == 0 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset)
             {
-                Gintzing = true;
-                if (!GintzingText)
+                if (Main.rand.Next(2) == 0)
                 {
-                    Main.NewText("The Gintze army is aproching", 191, 165, 160);
-                    GintzingText = true;
+                    Gintzing = true;
+                    if (!GintzingText)
+                    {
+                        Main.NewText("The Gintze army is aproching...", 191, 165, 160);
+                        GintzingText = true;
+                    }
                 }
+                TryForGintze = true;
             }
+   
         }
     }
 }

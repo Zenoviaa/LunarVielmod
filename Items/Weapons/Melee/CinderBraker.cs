@@ -12,6 +12,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -55,7 +56,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Gladius, 1);
-            recipe.AddIngredient(ItemType<FlareGem>(), 25);
+            recipe.AddIngredient(ItemType<Cinderscrap>(), 25);
             recipe.AddIngredient(ItemType<WanderingFlame>(), 15);
             recipe.AddIngredient(ItemType<DarkEssence>(), 5);
             recipe.AddTile(TileID.Anvils);

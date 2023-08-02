@@ -46,7 +46,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.GoldBar, 1);
             recipe.AddIngredient(ModContent.ItemType<SteampunkBar>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<FlareGem>(), 8);
             recipe.AddTile(TileID.HeavyWorkBench);
             recipe.Register();
         }

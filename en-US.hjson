@@ -2118,17 +2118,17 @@ Mods: {
 			}
 
 			HeavyMetalBody: {
-				DisplayName: Heavy Metal Body
+				DisplayName: Gintzl Body
 				Tooltip: ""
 			}
 
 			HeavyMetalHead: {
-				DisplayName: Heavy Metal Head
+				DisplayName: Gintzl Head
 				Tooltip: ""
 			}
 
 			HeavyMetalLegs: {
-				DisplayName: Heavy Metal Legs
+				DisplayName: Gintzl Legs
 				Tooltip: ""
 			}
 
@@ -2979,6 +2979,11 @@ Mods: {
 
 			JPost: {
 				DisplayName: J Post
+				Tooltip: ""
+			}
+
+			GintzlMetal: {
+				DisplayName: Gintzl Metal
 				Tooltip: ""
 			}
 		}

@@ -10,6 +10,7 @@ using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Armors.HeavyMetal
 {
@@ -34,18 +35,9 @@ namespace Stellamod.Items.Armors.HeavyMetal
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<MetallicOmniSource>(), 1);
-            recipe.AddIngredient(ItemType<ArnchaliteBar>(), 8);
-            recipe.AddIngredient(ItemID.IronBar, 5);
+            recipe.AddIngredient(ItemType<GintzlMetal>(), 12);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe.AddIngredient(ItemType<MetallicOmniSource>(), 1);
-            recipe.AddIngredient(ItemType<ArnchaliteBar>(), 8);
-            recipe2.AddIngredient(ItemID.LeadBar, 5);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
 
     }
