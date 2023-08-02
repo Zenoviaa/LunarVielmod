@@ -437,6 +437,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         NPC.velocity.Y *= 0.94f;
                         break;
                     case 2:
+                        base.NPC.velocity.Y *= 0.95f;
                         if (NPC.position.X >= player.position.X)
                         {
                             Dir = true;
@@ -767,10 +768,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
 
         }

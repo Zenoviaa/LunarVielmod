@@ -2961,6 +2961,21 @@ Mods: {
 				DisplayName: Light Spand
 				Tooltip: ""
 			}
+
+			MoonMothStaff: {
+				DisplayName: Moon Moth Staff
+				Tooltip: ""
+			}
+
+			SolMothStaff: {
+				DisplayName: Sol Moth Staff
+				Tooltip: ""
+			}
+
+			HeatGlider: {
+				DisplayName: Heat Glider
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3323,6 +3338,16 @@ Mods: {
 			VoidMinionBuff: {
 				DisplayName: Void Minion Buff
 				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+			}
+
+			MoonMothBuff: {
+				DisplayName: Moon Moth Buff
+				Description: Mods.Stellamod.Buffs.MoonMothBuff.Description
+			}
+
+			SolMothBuff: {
+				DisplayName: Sol Moth Buff
+				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
 			}
 		}
 
@@ -3808,6 +3833,9 @@ Mods: {
 			ZthoKnife.DisplayName: Ztho Knife
 			DreadMireMagic.DisplayName: Dread Mire Magic
 			LightSpandProg.DisplayName: Light Spand Prog
+			MoonMothMinion.DisplayName: Moon Moth Minion
+			SolMothMinion.DisplayName: Sol Moth Minion
+			HuntrianArrow.DisplayName: Huntrian Arrow
 		}
 	}
 }

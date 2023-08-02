@@ -45,8 +45,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.lavaImmune = false;
             NPC.alpha = 0;
             NPC.dontTakeDamage = false;
-            NPC.HitSound = new SoundStyle("Stellamod/Sounds/NPCHit/VoidHit") with { PitchVariance = 0.1f };
-            NPC.DeathSound = new SoundStyle("Stellamod/Sounds/NPCKilled/VoidDead2") with { PitchVariance = 0.1f };
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/NPCHit/VoidHit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/NPCKilled/VoidDead2") with { PitchVariance = 0.1f };
         }
         int frame = 0;
         public override void HitEffect(NPC.HitInfo hit)

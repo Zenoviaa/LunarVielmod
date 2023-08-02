@@ -1,10 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Projectiles.Summons
 {
@@ -65,8 +67,15 @@ namespace Stellamod.Projectiles.Summons
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+            if (owner.dead || !owner.active)
+            {
+                owner.ClearBuff(BuffType<AuroranSeekerMinionBuff>());
+            }
+            if (owner.HasBuff(BuffType<AuroranSeekerMinionBuff>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+            GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
 			Visuals();

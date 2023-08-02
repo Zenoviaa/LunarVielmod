@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Ice.WinterbornBat
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Winterborn Slime");
-            Main.npcFrameCount[NPC.type] = 5;
+            Main.npcFrameCount[NPC.type] = 4;
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
