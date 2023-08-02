@@ -20,6 +20,7 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Whips;
 using Stellamod.Items.Materials;
+using Stellamod.Tiles.Abyss;
 
 namespace Stellamod.WorldG
 {
@@ -50,8 +51,9 @@ namespace Stellamod.WorldG
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (MorrowGen != -1)
 			{
-
-				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
+				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
+			//	tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenMorrowedStructures));
+				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 
 			}
 
@@ -61,6 +63,7 @@ namespace Stellamod.WorldG
 
 				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+				
 			}
 
 			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
@@ -108,11 +111,73 @@ namespace Stellamod.WorldG
 
 
 
+		private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Shifting Shadows deep in the Ice";
 
 
 
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmx = WorldGen.genRand.Next(0, Main.maxTilesX - 1000); // from 50 since there's a unaccessible area at the world's borders
+																								// 50% of choosing the last 6th of the world
+																								// Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int abysmy = (int)Main.rockLayer - 10 ;
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.rockLayer)
+				{
+					abysmy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmy > Main.UnderworldLayer)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.CorruptIce
+					|| tile.TileType == TileID.SnowBlock
+					|| tile.TileType == TileID.FleshIce
+					|| tile.TileType == TileID.IceBlock
+					|| tile.TileType == TileID.Slush))
+				{
+					continue;
+				}
 
 
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx, abysmy + 400);
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), ModContent.TileType<AbyssalDirt>());
+					
+
+					
+					
+
+				}
+			}
+
+		}
 		// 6. This is the actual world generation code.
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -528,7 +593,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int towerX = WorldGen.genRand.Next(Main.maxTilesX - 200, Main.maxTilesX - 100); // from 50 since there's a unaccessible area at the world's borders
+				int towerX = WorldGen.genRand.Next(Main.maxTilesX - 300, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
 																		 // 50% of choosing the last 6th of the world
 																		 // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())

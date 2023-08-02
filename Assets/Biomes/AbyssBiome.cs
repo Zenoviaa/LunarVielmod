@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod
+namespace Stellamod.Assets.Biomes
 {
     public class AbyssBiome : ModBiome
     {

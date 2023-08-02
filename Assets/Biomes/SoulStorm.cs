@@ -7,7 +7,7 @@ using Stellamod.Tiles.Acid;
 using Terraria;
 using Stellamod.WorldG;
 
-namespace Stellamod
+namespace Stellamod.Assets.Biomes
 {
     internal class SoulStorm : ModSceneEffect
     {

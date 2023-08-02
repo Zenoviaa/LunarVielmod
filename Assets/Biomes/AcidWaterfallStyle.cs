@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Biomes
+namespace Stellamod.Assets.Biomes
 {
     public class AcidWaterfallStyle : ModWaterfallStyle
     {

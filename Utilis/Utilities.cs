@@ -3,9 +3,10 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Stellamod.Biomes;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets.Biomes;
 
 namespace Stellamod.Utilis
 {
