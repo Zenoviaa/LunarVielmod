@@ -2118,17 +2118,17 @@ Mods: {
 			}
 
 			HeavyMetalBody: {
-				DisplayName: Heavy Metal Body
+				DisplayName: Gintzl Body
 				Tooltip: ""
 			}
 
 			HeavyMetalHead: {
-				DisplayName: Heavy Metal Head
+				DisplayName: Gintzl Head
 				Tooltip: ""
 			}
 
 			HeavyMetalLegs: {
-				DisplayName: Heavy Metal Legs
+				DisplayName: Gintzl Legs
 				Tooltip: ""
 			}
 
@@ -3484,6 +3484,7 @@ Mods: {
 			DreadFireBombG.DisplayName: Dread Fire Bomb G
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			GintzeWindRider.DisplayName: Gintze Wind Rider
 		}
 
 		Projectiles: {
