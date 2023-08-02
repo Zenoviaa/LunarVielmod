@@ -73,6 +73,12 @@
     <None Remove="Items\Consumables\SunStalkerBag.png" />
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineBUANI.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineHalhurishI.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
+    <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
     <None Remove="Items\Weapons\Mage\Aneuriliac.png" />
     <None Remove="Items\Weapons\Mage\Astalaiya.png" />
     <None Remove="Items\Weapons\Mage\Eclipsia.png" />
@@ -174,6 +180,12 @@
     <None Remove="Particles\IcingParticle.png" />
     <None Remove="Projectiles\Crossbows\Magical\IcaCircle - Copy.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineGardenWreckerC.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineHalhurishC.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
+    <None Remove="Tiles\ShrineBreakers\Govheil\ShrineSolMothC.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

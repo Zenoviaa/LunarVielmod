@@ -2118,17 +2118,17 @@ Mods: {
 			}
 
 			HeavyMetalBody: {
-				DisplayName: Gintzl Body
+				DisplayName: Heavy Metal Body
 				Tooltip: ""
 			}
 
 			HeavyMetalHead: {
-				DisplayName: Gintzl Head
+				DisplayName: Heavy Metal Head
 				Tooltip: ""
 			}
 
 			HeavyMetalLegs: {
-				DisplayName: Gintzl Legs
+				DisplayName: Heavy Metal Legs
 				Tooltip: ""
 			}
 
@@ -2982,8 +2982,33 @@ Mods: {
 				Tooltip: ""
 			}
 
-			GintzlMetal: {
-				DisplayName: Gintzl Metal
+			ShrineAI: {
+				DisplayName: Shrine A I
+				Tooltip: ""
+			}
+
+			ShrineBUANI: {
+				DisplayName: Shrine B U A N I
+				Tooltip: ""
+			}
+
+			ShrineGardenWreckerI: {
+				DisplayName: Shrine Garden Wrecker I
+				Tooltip: ""
+			}
+
+			ShrineHalhurishI: {
+				DisplayName: Shrine Halhurish I
+				Tooltip: ""
+			}
+
+			ShrineLightsI: {
+				DisplayName: Shrine Lights I
+				Tooltip: ""
+			}
+
+			ShrineSolMothI: {
+				DisplayName: Shrine Sol Moth I
 				Tooltip: ""
 			}
 		}
@@ -3083,6 +3108,12 @@ Mods: {
 			BlueFlower.MapEntry: Blue Flower
 			AbyssalStone.MapEntry: Abyssal Stone
 			JackPost.MapEntry: Jack Post
+			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+			ShrineBUAN.MapEntry: Shrine B U A N
+			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+			ShrineHalhurishC.MapEntry: Shrine Halhurish C
+			ShrineLights.MapEntry: Shrine Lights
+			ShrineSolMothC.MapEntry: Shrine Sol Moth C
 		}
 
 		Buffs: {
@@ -3453,7 +3484,6 @@ Mods: {
 			DreadFireBombG.DisplayName: Dread Fire Bomb G
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-			GintzeWindRider.DisplayName: Gintze Wind Rider
 		}
 
 		Projectiles: {

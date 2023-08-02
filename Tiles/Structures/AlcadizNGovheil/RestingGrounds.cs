@@ -22,7 +22,7 @@ using Stellamod.NPCs.Bosses.Jack;
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
 	
-	public class JackPost : ModTile
+	public class RestingGrounds : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{
@@ -57,8 +57,8 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			AdjTiles = new int[] { TileID.Bookcases };
 			Main.tileFrameImportant[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-			TileObjectData.newTile.Height = 4;
-			TileObjectData.newTile.Width = 3;
+			TileObjectData.newTile.Height = 7;
+			TileObjectData.newTile.Width = 8;
 			MineResist = 8f;
 			MinPick = 200;
 			TileObjectData.newTile.DrawYOffset = 6; // So the tile sinks into the ground
@@ -66,7 +66,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Main.tileBlockLight[Type] = true;
 
 
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16 };
 			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
 			TileObjectData.newTile.StyleMultiplier = 2; //same as above
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -99,16 +99,10 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			Player player = Main.LocalPlayer;
 
-			int key = ModContent.ItemType<WanderingEssence>();
-		
+			int key = ModContent.ItemType<GothiviasSeal>();
 
 
-
-
-
-
-		
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
 			{
 
 
@@ -116,25 +110,14 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+
+			if (player.HasItem(key))
 			{
 
-				Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
-
-
+				Main.NewText("I cannot raise my sword of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
 
 			}
 
-			else
-			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-
-
-			}
-			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-			}
 
 
 
@@ -154,7 +137,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			int top = j;
 
 			Main.LocalPlayer.cursorItemIconEnabled = true;
-			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<WanderingEssence>();
+			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<GothiviasSeal>();
 			if (tile.TileFrameX % 36 != 0)
 			{
 				left--;
@@ -169,7 +152,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Jack's Shrine");
+				player.cursorItemIconText = Language.GetTextValue("Disturb Ruined Tablet?");
 			}
 			else
 			{
@@ -180,7 +163,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 					player.cursorItemIconID = ModContent.ItemType<ShrineI>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+						player.cursorItemIconID = ModContent.ItemType<GothiviasSeal>();
 					}
 
 					player.cursorItemIconText = "";
@@ -222,7 +205,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
 			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.02f, 0.01f, 0.01f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+			Color color = new Color(0.06f, 0.03f, 0.04f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
