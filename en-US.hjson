@@ -2956,6 +2956,11 @@ Mods: {
 				DisplayName: Cyro Bolt
 				Tooltip: ""
 			}
+
+			LightSpand: {
+				DisplayName: Light Spand
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3802,6 +3807,7 @@ Mods: {
 			Plantius2.DisplayName: Plantius2
 			ZthoKnife.DisplayName: Ztho Knife
 			DreadMireMagic.DisplayName: Dread Mire Magic
+			LightSpandProg.DisplayName: Light Spand Prog
 		}
 	}
 }

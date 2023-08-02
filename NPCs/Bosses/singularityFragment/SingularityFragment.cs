@@ -53,14 +53,14 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.defense = 23;
             NPC.lifeMax = 6300;
             NPC.scale = 0.9f;
-            NPC.DeathSound = new SoundStyle("Stellamod/Sounds/NPCKilled/VoidDead1") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             NPC.value = 60f;
             NPC.knockBackResist = 0f;
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/SingularityFragment");
-            NPC.HitSound = new SoundStyle("Stellamod/Sounds/NPCHit/VoidHit") with { PitchVariance = 0.1f };
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sounds/Music/SingularityFragment");
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
         }
         public override void FindFrame(int frameHeight)
         {

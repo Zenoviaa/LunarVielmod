@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.scale = 1f;
             DrawOriginOffsetY = 0;
             Projectile.damage = 0;
-            Projectile.timeLeft = 161g;
+            Projectile.timeLeft = 161;
 
         }
         public override bool PreAI()

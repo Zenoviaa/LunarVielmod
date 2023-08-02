@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles
         public override void AI()
         {
 			
-			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
+			Vector3 RGB = new(2.89f, 2.53f, 0.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
