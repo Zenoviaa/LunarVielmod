@@ -100,26 +100,24 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Player player = Main.LocalPlayer;
 
 			int key = ModContent.ItemType<GothiviasSeal>();
-		
 
 
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			{
 
 
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Jack>());
+				// SoundEngine.PlaySound(SoundID.Roar);
+				return true;
+			}
 
-
-		
 			if (player.HasItem(key))
 			{
 
-				Main.NewText("Deep below the Virulent ", Color.Gold);
+				Main.NewText("I cannot raise my sword of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
 
 			}
-			else
-			{
-				Main.NewText("An unbeliever has no right to read Gothivia's Wearabouts", Color.Gold);
 
-
-			}
 
 
 
@@ -139,7 +137,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			int top = j;
 
 			Main.LocalPlayer.cursorItemIconEnabled = true;
-			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<WanderingEssence>();
+			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<GothiviasSeal>();
 			if (tile.TileFrameX % 36 != 0)
 			{
 				left--;
@@ -154,7 +152,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Jack's Shrine");
+				player.cursorItemIconText = Language.GetTextValue("Disturb Ruined Tablet?");
 			}
 			else
 			{
@@ -165,7 +163,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 					player.cursorItemIconID = ModContent.ItemType<ShrineI>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+						player.cursorItemIconID = ModContent.ItemType<GothiviasSeal>();
 					}
 
 					player.cursorItemIconText = "";
@@ -207,7 +205,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
 			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.02f, 0.01f, 0.01f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+			Color color = new Color(0.06f, 0.03f, 0.04f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
