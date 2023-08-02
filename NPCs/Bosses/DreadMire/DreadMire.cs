@@ -773,6 +773,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
 
         }
         int frame = 0;

@@ -26,6 +26,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Terraria.GameContent.Bestiary;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Harvesting;
 
 
 //By Al0n37
@@ -698,7 +699,8 @@ namespace Stellamod.NPCs.Bosses.Jack
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
-
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 1, 7, 50));
         }
     }
 }

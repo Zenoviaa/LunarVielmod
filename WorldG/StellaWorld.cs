@@ -21,6 +21,7 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Whips;
 using Stellamod.Items.Materials;
 using Stellamod.Tiles.Abyss;
+using Stellamod.Tiles.Acid;
 
 namespace Stellamod.WorldG
 {
@@ -53,7 +54,7 @@ namespace Stellamod.WorldG
 			if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-			//	tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenMorrowedStructures));
+				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 
 			}
@@ -123,7 +124,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmx = WorldGen.genRand.Next(0, Main.maxTilesX - 1000); // from 50 since there's a unaccessible area at the world's borders
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 																								// 50% of choosing the last 6th of the world
 																								// Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -132,16 +133,16 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int abysmy = (int)Main.rockLayer - 10 ;
+				int abysmy = ((Main.maxTilesY / 2));
 
 				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.rockLayer)
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
 				{
 					abysmy++;
 				}
 
 				// If we went under the world's surface, try again
-				if (abysmy > Main.UnderworldLayer)
+				if (abysmy > Main.UnderworldLayer - 50)
 				{
 					continue;
 				}
@@ -168,8 +169,8 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx, abysmy + 400);
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), ModContent.TileType<AbyssalDirt>());
+					Point Loc = new Point(abysmx, abysmy);
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), ModContent.TileType<AbyssalDirt>());
 					
 
 					
@@ -177,6 +178,106 @@ namespace Stellamod.WorldG
 
 				}
 			}
+
+		}
+
+		private void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Virulifying the Morrow";
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+																			   // 50% of choosing the last 6th of the world
+																			   // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int abysmy = (int)(Main.worldSurface - 50);
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
+				{
+					abysmy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmy > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.Mud))
+				{
+					continue;
+				}
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx, abysmy);
+					WorldGen.TileRunner(Loc.X, Loc.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc.X, Loc.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc.X, Loc.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					placed = true;
+
+
+				}
+
+			}
+
+			for (int fa = 0; fa < 20; fa++)
+{
+				int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
+				int abysmyd = (int)(Main.worldSurface - 50);
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
+				{
+					abysmyd++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmyd > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmxd, abysmyd];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()))
+				{
+					continue;
+				}
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmxd, abysmyd);
+
+
+					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
+				}
+
+
+				
+
+			}
+			
 
 		}
 		// 6. This is the actual world generation code.

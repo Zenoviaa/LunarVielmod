@@ -36,7 +36,7 @@ namespace Stellamod.Items.Armors.Govheil
 
 		public override void UpdateEquip(Player player)
 		{
-			player.statManaMax2 += 100; // Increase how many mana points the player can have by 20
+			player.statManaMax2 += 50; // Increase how many mana points the player can have by 20
 			player.maxMinions++; // Increase how many minions the player can have by one
 			player.statLifeMax2 += 30;
 			player.GetDamage(DamageClass.Magic) *= 1.12f;

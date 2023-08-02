@@ -37,22 +37,15 @@ namespace Stellamod.Items.Consumables
 
 
             Item.noMelee = true;
-            Item.consumable = true;
+            Item.consumable = false;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
-        }
-        public override bool CanUseItem(Player player) => !NPC.AnyNPCs(ModContent.NPCType<Jack>());
-
-        public override bool? UseItem(Player player)
-        {
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<Jack>());
-            return true;
         }
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<FlareGem>(), 8);
-            recipe.AddIngredient(ItemID.Wood, 40);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
+            recipe.AddIngredient(ItemID.Wood, 20);
             recipe.AddIngredient(ItemID.Hay, 15);
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();
