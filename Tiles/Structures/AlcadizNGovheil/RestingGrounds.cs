@@ -22,7 +22,7 @@ using Stellamod.NPCs.Bosses.Jack;
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
 	
-	public class JackPost : ModTile
+	public class RestingGrounds : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{
@@ -57,8 +57,8 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			AdjTiles = new int[] { TileID.Bookcases };
 			Main.tileFrameImportant[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-			TileObjectData.newTile.Height = 4;
-			TileObjectData.newTile.Width = 3;
+			TileObjectData.newTile.Height = 7;
+			TileObjectData.newTile.Width = 8;
 			MineResist = 8f;
 			MinPick = 200;
 			TileObjectData.newTile.DrawYOffset = 6; // So the tile sinks into the ground
@@ -66,7 +66,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Main.tileBlockLight[Type] = true;
 
 
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 16, 16, 16, 16 };
 			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
 			TileObjectData.newTile.StyleMultiplier = 2; //same as above
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -99,7 +99,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			Player player = Main.LocalPlayer;
 
-			int key = ModContent.ItemType<WanderingEssence>();
+			int key = ModContent.ItemType<GothiviasSeal>();
 		
 
 
@@ -108,32 +108,17 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 		
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			if (player.HasItem(key))
 			{
 
-
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Jack>());
-				// SoundEngine.PlaySound(SoundID.Roar);
-				return true;
-			}
-			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-			{
-
-				Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
-
-
+				Main.NewText("Deep below the Virulent ", Color.Gold);
 
 			}
-
 			else
 			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+				Main.NewText("An unbeliever has no right to read Gothivia's Wearabouts", Color.Gold);
 
 
-			}
-			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
 			}
 
 

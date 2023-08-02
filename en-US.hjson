@@ -2981,6 +2981,36 @@ Mods: {
 				DisplayName: J Post
 				Tooltip: ""
 			}
+
+			ShrineAI: {
+				DisplayName: Shrine A I
+				Tooltip: ""
+			}
+
+			ShrineBUANI: {
+				DisplayName: Shrine B U A N I
+				Tooltip: ""
+			}
+
+			ShrineGardenWreckerI: {
+				DisplayName: Shrine Garden Wrecker I
+				Tooltip: ""
+			}
+
+			ShrineHalhurishI: {
+				DisplayName: Shrine Halhurish I
+				Tooltip: ""
+			}
+
+			ShrineLightsI: {
+				DisplayName: Shrine Lights I
+				Tooltip: ""
+			}
+
+			ShrineSolMothI: {
+				DisplayName: Shrine Sol Moth I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3078,6 +3108,12 @@ Mods: {
 			BlueFlower.MapEntry: Blue Flower
 			AbyssalStone.MapEntry: Abyssal Stone
 			JackPost.MapEntry: Jack Post
+			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+			ShrineBUAN.MapEntry: Shrine B U A N
+			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+			ShrineHalhurishC.MapEntry: Shrine Halhurish C
+			ShrineLights.MapEntry: Shrine Lights
+			ShrineSolMothC.MapEntry: Shrine Sol Moth C
 		}
 
 		Buffs: {
