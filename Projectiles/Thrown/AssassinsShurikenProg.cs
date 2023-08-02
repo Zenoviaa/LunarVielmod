@@ -7,11 +7,11 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using Stellamod.Effects;
 
-namespace Stellamod.Projectiles.Weapons.Thrown
+namespace Stellamod.Projectiles.Thrown
 {
     internal class AssassinsShurikenProg : ModProjectile
     {
@@ -60,11 +60,11 @@ namespace Stellamod.Projectiles.Weapons.Thrown
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/AssassinsKnifeProg"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/AssassinsKnifeProg2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), Projectile.position);
                 }
 
                 Projectile.spriteDirection = Projectile.direction;
@@ -125,11 +125,11 @@ namespace Stellamod.Projectiles.Weapons.Thrown
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/AssassinsKnifeHit"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/AssassinsKnifeHit2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
             if (Main.rand.Next(4) == 0 && !target.boss)
                 target.AddBuff(BuffID.Confused, 180);
@@ -153,7 +153,7 @@ namespace Stellamod.Projectiles.Weapons.Thrown
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.StringTrail);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StringTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
             return false;

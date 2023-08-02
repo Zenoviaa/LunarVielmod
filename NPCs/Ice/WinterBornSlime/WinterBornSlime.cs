@@ -13,7 +13,7 @@ using Terraria.Audio;
 using Stellamod.Items.Materials;
 
 
-namespace Stellamod.NPCs.WinterBornSlime
+namespace Stellamod.NPCs.Ice.WinterBornSlime
 {
     internal class WinterBornSlime : ModNPC
     {

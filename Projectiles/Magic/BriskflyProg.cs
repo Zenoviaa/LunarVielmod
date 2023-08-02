@@ -9,7 +9,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class BriskflyProg : ModProjectile
     {
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             if (!Sounded)
             {
                 int Type = Main.rand.Next(1, 5);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Briskfly"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Briskfly"));
                 Sounded = true;
             }
 

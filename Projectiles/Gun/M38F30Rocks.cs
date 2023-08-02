@@ -8,13 +8,13 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 using ReLogic.Content;
-using Stellamod.Projectiles.Weapons.Bow;
-using Stellamod.Effects.Primitives;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
     internal class M38F30Rocks : ModProjectile
     {
@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Weapons.Gun
             }
             if (Projectile.ai[1] == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/M38F30"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30"), Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 256f, 16f);
             }
 
@@ -82,11 +82,11 @@ namespace Stellamod.Projectiles.Weapons.Gun
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/M38F30Bomb2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb2"), Projectile.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/M38F30Bomb1"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/M38F30Bomb1"), Projectile.position);
             }
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
             var EntitySource = Projectile.GetSource_Death();
@@ -116,7 +116,7 @@ namespace Stellamod.Projectiles.Weapons.Gun
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.FadedStreak);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
             return false;

@@ -8,10 +8,10 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Projectiles.Minions.IrradiatedCreeperStaff;
+using static Stellamod.Items.Weapons.Summon.IrradiatedCreeperStaff;
 using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Projectiles.Minions
+namespace Stellamod.Items.Weapons.Summon
 {
 	/*
 	 * This file contains all the code necessary for a minion
@@ -87,7 +87,7 @@ namespace Stellamod.Projectiles.Minions
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GSummon"), player.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GSummon"), player.position);
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
             position = Main.MouseWorld;
 			return true;

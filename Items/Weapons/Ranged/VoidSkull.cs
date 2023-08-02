@@ -10,11 +10,11 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
 using Terraria.GameContent.Creative;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Bow;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -60,11 +60,11 @@ namespace Stellamod.Items.Weapons.Ranged
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Wingspand"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Wingspand"));
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Wingspand2"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Wingspand2"));
             }
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             float numberProjectiles = 2;

@@ -9,7 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.RoyalSlime
+namespace Stellamod.NPCs.Overworld.RoyalSlime
 {
 
 	public class RoyalSlime : ModNPC

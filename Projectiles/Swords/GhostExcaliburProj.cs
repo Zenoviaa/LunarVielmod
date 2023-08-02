@@ -8,11 +8,11 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     internal class GhostExcaliburProj : ModProjectile
     {
@@ -56,11 +56,11 @@ namespace Stellamod.Projectiles.Weapons.Swords
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GhostExcalibur2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur2"), Projectile.position);
                 }
                 if (Sound == 2)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GhostExcalibur1"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1"), Projectile.position);
                 }
                 Projectile.alpha = 255;
             }

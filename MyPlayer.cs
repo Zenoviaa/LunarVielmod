@@ -26,9 +26,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Stellamod.Projectiles.Minions;
-using Stellamod.Projectiles.Weapons.Swords;
-using Stellamod.Projectiles.Weapons.Gun;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Projectiles.Swords;
+using Stellamod.Projectiles.Gun;
 
 namespace Stellamod
 {
@@ -635,7 +635,7 @@ namespace Stellamod
                 HMArmorTime++;
                 if (HMArmorTime <= 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArcharilitDrone3"), player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
                     var EntitySource = Player.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);

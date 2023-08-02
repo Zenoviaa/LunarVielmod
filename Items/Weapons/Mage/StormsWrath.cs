@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Mage
 {

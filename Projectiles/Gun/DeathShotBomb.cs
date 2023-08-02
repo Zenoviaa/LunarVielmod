@@ -9,10 +9,10 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.Bestiary;
 using Stellamod.Dusts;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Terraria.Audio;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
     public class DeathShotBomb : ModProjectile
     {
@@ -53,11 +53,11 @@ namespace Stellamod.Projectiles.Weapons.Gun
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/DeathShotBomb"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/DeathShotBomb2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb2"), Projectile.position);
                 }
                 for (int i = 0; i < 14; i++)
                 {

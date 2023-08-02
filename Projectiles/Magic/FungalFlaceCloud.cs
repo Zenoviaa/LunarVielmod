@@ -9,7 +9,7 @@ using static Humanizer.In;
 using Microsoft.Xna.Framework;
 
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class FungalFlaceCloud : ModProjectile
     {

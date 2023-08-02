@@ -7,11 +7,11 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
 
     internal class DreadVomit : ModProjectile

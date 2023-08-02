@@ -1,4 +1,4 @@
-﻿using Stellamod.Projectiles.Weapons.Spears;
+﻿using Stellamod.Projectiles.Spears;
 using System;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -10,8 +10,8 @@ using Terraria.GameContent.Creative;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Spears;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Stellamod.Items.Materials.HardMode;
@@ -61,20 +61,20 @@ namespace Stellamod.Items.Weapons.Ranged
             if (WinterboundArrow >= 3)
             {
                 WinterboundArrow = 0;
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterboundArrow"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrow"), player.position);
                 type = ModContent.ProjectileType<CrysalizerArrow1>();
                 Projectile.NewProjectile(source, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
             }
             if (WinterboundArrow == 2)
             {
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterboundArrow"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrow"), player.position);
                 type = ModContent.ProjectileType<CrysalizerArrow2>();
                 Projectile.NewProjectile(source, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
             }
             if (WinterboundArrow == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterboundArrow"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrow"), player.position);
                 type = ModContent.ProjectileType<CrysalizerArrow3>();
                 Projectile.NewProjectile(source, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, player.whoAmI);
             }

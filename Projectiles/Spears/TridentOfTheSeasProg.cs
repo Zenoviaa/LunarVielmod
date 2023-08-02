@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
     public class TridentOfTheSeasProg : ModProjectile
     {

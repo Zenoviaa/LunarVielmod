@@ -9,14 +9,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Swords;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.INest;
-using Stellamod.Projectiles.Minions;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Melee.Spears;
 
 namespace Stellamod.Items.Consumables

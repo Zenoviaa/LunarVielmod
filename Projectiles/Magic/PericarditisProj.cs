@@ -10,9 +10,9 @@ using Terraria.Audio;
 using static Humanizer.In;
 using Terraria.Graphics.Shaders;
 using Stellamod.Effects;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class PericarditisProj : ModProjectile
     {
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             if (Projectile.ai[1] == 1)
             {
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Pericarditis"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pericarditis"), Projectile.position);
             }
         }
         public override void Kill(int timeLeft)

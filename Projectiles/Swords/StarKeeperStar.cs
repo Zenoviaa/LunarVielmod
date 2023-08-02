@@ -7,13 +7,13 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
 using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Bow;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     internal class StarKeeperStar : ModProjectile
     {
@@ -134,7 +134,7 @@ namespace Stellamod.Projectiles.Weapons.Swords
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.StarTrail);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
             return false;

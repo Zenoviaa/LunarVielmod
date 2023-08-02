@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class DeafenProj : ModProjectile
     {
@@ -46,11 +46,11 @@ namespace Stellamod.Projectiles.Weapons.Magic
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/TheDeafen"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/TheDeafen"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/TheDeafen2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/TheDeafen2"), Projectile.position);
                 }
 
                 Projectile.spriteDirection = Projectile.direction;

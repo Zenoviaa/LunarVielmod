@@ -8,15 +8,15 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Terraria.Graphics.Shaders;
 using Stellamod.Effects;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Terraria.DataStructures;
 using Stellamod.Utilis;
 using Stellamod.NPCs.Bosses.INest;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     internal class CrysalizerArrow3 : ModProjectile
     {
@@ -63,19 +63,19 @@ namespace Stellamod.Projectiles.Weapons.Bow
                     player.GetModPlayer<MyPlayer>().CrysalizerHits += 1;
                     if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 1)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Crysalizer1"), player.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), player.position);
                     }
                     if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 2)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Crysalizer2"), player.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer2"), player.position);
                     }
                     if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 3)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Crysalizer3"), player.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3"), player.position);
                     }
                     if (player.GetModPlayer<MyPlayer>().CrysalizerHits == 4)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Crysalizer4"), player.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), player.position);
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32f);
                         Utilities.NewProjectileBetter(target.Center.X, target.Center.Y, 0, 0, ModContent.ProjectileType<CrysalizerExplosion>(), 50, 0f, -1, 0, Projectile.whoAmI);
                         player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
@@ -84,7 +84,7 @@ namespace Stellamod.Projectiles.Weapons.Bow
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Crysalizer5"), player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer5"), player.position);
                     player.GetModPlayer<MyPlayer>().CrysalizerNpc = target;
                     player.GetModPlayer<MyPlayer>().CrysalizerHits = 0;
                 }
@@ -135,7 +135,7 @@ namespace Stellamod.Projectiles.Weapons.Bow
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.SmallWhispyTrail);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
             return false;

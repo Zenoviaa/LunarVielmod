@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using XPT.Core.Audio.MP3Sharp.Decoding;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
 	public class RealityBolt : ModProjectile
     {

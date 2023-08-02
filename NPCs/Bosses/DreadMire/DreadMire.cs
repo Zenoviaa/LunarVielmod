@@ -10,18 +10,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Utilis;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.ShadowWraith;
+
 
 using Terraria.GameContent.Bestiary;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Swords;
+using Stellamod.Items.Weapons.Melee;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Weapons.Ranged;
 
@@ -634,7 +634,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
                         if (NPC.ai[0] == 10)
                         {
-
+                            var entitySource = NPC.GetSource_FromThis();
+                            Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("DreadMireMagic").Type, 19, 0);
                             Light.Y = player.Center.Y;
                             Light.X = player.Center.X;
                         }
@@ -708,16 +709,17 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                                 int Sound = Main.rand.Next(1, 3);
                                 if (Sound == 1)
                                 {
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ShadeHand"));
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ShadeHand"));
                                 }
                                 else
                                 {
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ShadeHand2"));
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ShadeHand2"));
                                 }
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
 
                                     var entitySource = NPC.GetSource_FromThis();
+
                                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 64f);
                                     int OffSet = Main.rand.Next(-240, 240 + 1);
                                     Vector2 NukePos;

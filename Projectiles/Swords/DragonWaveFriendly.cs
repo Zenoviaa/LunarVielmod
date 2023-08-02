@@ -6,7 +6,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     public class DragonWaveFriendly : ModProjectile
 	{

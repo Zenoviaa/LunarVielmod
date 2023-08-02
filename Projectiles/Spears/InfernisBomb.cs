@@ -10,7 +10,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Terraria.ModLoader.PlayerDrawLayer;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
 
     internal class InfernisBomb : ModProjectile

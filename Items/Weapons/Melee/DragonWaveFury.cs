@@ -10,9 +10,9 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Swords;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
 	public class DragonWaveFury : ModItem
 	{

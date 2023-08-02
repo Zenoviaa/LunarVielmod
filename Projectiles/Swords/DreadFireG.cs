@@ -1,4 +1,4 @@
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,10 +9,10 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Stellamod.NPCs.Bosses.Jack;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.NPCs.Bosses.DreadMire;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     public class DreadFireG : ModProjectile
     {

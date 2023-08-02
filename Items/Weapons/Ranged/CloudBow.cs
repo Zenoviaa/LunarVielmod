@@ -12,7 +12,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Bow;
 
 namespace Stellamod.Items.Weapons.Ranged
 

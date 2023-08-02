@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     internal class FrostWave : ModProjectile
     {
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Weapons.Swords
             if (!Moved && Projectile.ai[1] >= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Astalaiya2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2"), Projectile.position);
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 for (int j = 0; j < 10; j++)

@@ -7,9 +7,9 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
     internal class GladiatorSpearProg : ModProjectile
     {
@@ -61,18 +61,18 @@ namespace Stellamod.Projectiles.Weapons.Spears
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                         Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProgRed>(), 40, 1, Main.myPlayer, 0, 0);
 
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GladiatorMirageRed"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirageRed"), Projectile.position);
                 }
                 else
                 {
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GladiatorMirage1"), Projectile.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage1"), Projectile.position);
                     }
                     else
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GladiatorMirage2"), Projectile.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GladiatorMirage2"), Projectile.position);
                     }
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                         Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<GladiatorSpearMirageProg>(), 10, 1, Main.myPlayer, 0, 0);

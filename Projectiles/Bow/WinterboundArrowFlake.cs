@@ -11,7 +11,7 @@ using static Humanizer.In;
 using Microsoft.Xna.Framework;
 using ReLogic.Content;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     internal class WinterboundArrowFlake : ModProjectile
     {

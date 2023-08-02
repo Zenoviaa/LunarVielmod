@@ -8,9 +8,9 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     internal class WinterboundArrow : ModProjectile
     {
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Weapons.Bow
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterboundArrowHit"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundArrowHit"), Projectile.position);
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 50; i++)
             {

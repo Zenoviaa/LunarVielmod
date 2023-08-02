@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
 	public class BTech3 : ModProjectile
 	{

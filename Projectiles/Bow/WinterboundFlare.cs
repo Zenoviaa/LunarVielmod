@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     internal class WinterboundFlare : ModProjectile
     {
@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Weapons.Bow
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterboundFlare"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterboundFlare"), Projectile.position);
 
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;

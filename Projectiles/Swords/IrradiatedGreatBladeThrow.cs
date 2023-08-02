@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 using static Humanizer.In;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using System.Diagnostics.Metrics;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
 	public class IrradiatedGreatBladeThrow : ModProjectile
 	{

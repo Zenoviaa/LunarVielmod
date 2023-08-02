@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.Bestiary;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     public class AssassinsSpawnEffect : ModProjectile
     {

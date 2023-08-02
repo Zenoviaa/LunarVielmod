@@ -6,7 +6,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     public class Nado : ModProjectile
     {

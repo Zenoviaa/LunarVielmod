@@ -1,6 +1,6 @@
 
 
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
@@ -14,9 +14,9 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using static Stellamod.Projectiles.Minions.VoidStaff;
+using static Stellamod.Items.Weapons.Summon.VoidStaff;
 
-namespace Stellamod.Projectiles.Minions
+namespace Stellamod.Items.Weapons.Summon
 {
 	/*
 	 * This file contains all the code necessary for a minion
@@ -90,7 +90,7 @@ namespace Stellamod.Projectiles.Minions
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/GSummon"), player.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GSummon"), player.position);
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
             position = Main.MouseWorld;
 			return true;
@@ -175,7 +175,7 @@ namespace Stellamod.Projectiles.Minions
                 Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
                 Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
                 TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-                GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.FadedStreak);
+                GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
                 TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
                 return false;

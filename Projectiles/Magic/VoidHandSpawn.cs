@@ -9,7 +9,7 @@ using Terraria.Audio;
 using static Humanizer.In;
 
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class VoidHandSpawn : ModProjectile
     {
@@ -66,11 +66,11 @@ namespace Stellamod.Projectiles.Weapons.Magic
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/VoidHand3"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand3"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/VoidHand2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand2"), Projectile.position);
                 }
             }
             if (Projectile.ai[0] == 20)
@@ -88,7 +88,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/VoidHand"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidHand"), Projectile.position);
                 OldVelotcity = Projectile.velocity;
 
                 Moved = true;

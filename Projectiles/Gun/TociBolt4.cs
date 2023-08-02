@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
 	public class TociBolt4 : ModProjectile
 	{

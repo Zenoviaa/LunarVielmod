@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 
-namespace Stellamod.NPCs.ShadowWraith
+namespace Stellamod.NPCs.Overworld.ShadowWraith
 {
     internal class ShadowFlare : ModProjectile
     {

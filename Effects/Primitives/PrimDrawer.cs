@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Shaders;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 
 namespace Stellamod.Effects.Primitives
 {

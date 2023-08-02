@@ -8,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
-using Stellamod.Projectiles.Weapons.Thrown;
+using Stellamod.Projectiles.Thrown;
 
 namespace Stellamod.Items.Weapons.Thrown
 {

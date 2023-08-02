@@ -14,7 +14,7 @@ using Stellamod.Items.Materials;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 
-namespace Stellamod.NPCs.IvythornSlime
+namespace Stellamod.NPCs.Overworld.IvythornSlime
 {
 
 	public class IvythornSlime : ModNPC

@@ -16,7 +16,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Stellamod.Effects
+namespace CosmicVoid.Effects
 {
     public static class VampUtils
     {

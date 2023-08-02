@@ -7,10 +7,10 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
-using Stellamod.Projectiles.Weapons.Bow;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Magic;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     internal class FrostWaveBig : ModProjectile
     {
@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Weapons.Swords
             if (!Moved && Projectile.ai[1] >= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Astalaiya2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2"), Projectile.position);
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 for (int j = 0; j < 10; j++)
@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles.Weapons.Swords
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Main.myPlayer, 0, 0);
             }
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/WinterStorm"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.Snow, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;

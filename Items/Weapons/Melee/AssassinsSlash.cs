@@ -12,7 +12,7 @@ using Terraria.DataStructures;
 using Terraria.Audio;
 using Stellamod.Items.Materials.Tech;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
     public class AssassinsSlash : ModItem
     {
@@ -98,7 +98,7 @@ namespace Stellamod.Items.Weapons.Swords
 
             if(Hits == 6)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/AssassinsSlashCharge"), player.position);              
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), player.position);              
                 Hits = 7;
             }
             player.GetModPlayer<MyPlayer>().AssassinsSlashnpc = target;

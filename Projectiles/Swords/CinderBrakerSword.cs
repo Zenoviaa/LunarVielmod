@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
 	public class CinderBrakerSword : ModProjectile
 	{
@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Weapons.Swords
             Projectile.ai[1]++;
             if (Projectile.ai[1] <= 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/CinderBraker"), Projectile.position);;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), Projectile.position);;
             }
             Projectile.velocity /= 0.99f;
 		}

@@ -8,11 +8,11 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
     internal class GladiatorSpearMirageProg : ModProjectile
     {

@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Tiles;
-using Stellamod.Projectiles.Weapons.Gun;
+using Stellamod.Projectiles.Gun;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.HardMode;

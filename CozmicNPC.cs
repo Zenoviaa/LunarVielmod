@@ -12,10 +12,10 @@ using System.Runtime.CompilerServices;
 using Terraria.GameContent;
 using System;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Projectiles.Minions;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Materials.HardMode;
 using Stellamod.Items.Weapons.Melee.Spears;
 

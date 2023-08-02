@@ -13,7 +13,7 @@ using System;
 
 namespace Stellamod.Projectiles.Crossbows.Magical
 {
-    public class IceCrossbowHold : ModProjectile
+	public class IceCrossbowHold : ModProjectile
     {
         private float AimResponsiveness = 0.6f;
         private bool timerUp = false;

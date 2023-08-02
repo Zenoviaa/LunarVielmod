@@ -1,6 +1,6 @@
-﻿using Stellamod.Projectiles.Weapons.Spears;
+﻿using Stellamod.Projectiles.Spears;
 using System;
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
 using System;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -11,12 +11,12 @@ using Terraria.GameContent.NetModules;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Spears;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -62,11 +62,11 @@ namespace Stellamod.Items.Weapons.Ranged
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArchariliteEnergyShot"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot"));
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArchariliteEnergyShot2"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2"));
             }
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrow>(), damage, knockback, player.whoAmI);
             float numberProjectiles = 2;

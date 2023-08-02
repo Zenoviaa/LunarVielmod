@@ -8,13 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 using static Humanizer.In;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Utilis;
-using Stellamod.Effects.Primitives;
+
 using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
+
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Dusts;
+using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
@@ -120,7 +121,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.TerraTrail);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.TerraTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             if (Main.rand.NextBool(5))
             {

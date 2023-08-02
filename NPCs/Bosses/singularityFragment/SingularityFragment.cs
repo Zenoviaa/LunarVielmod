@@ -13,7 +13,6 @@ using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
-using Stellamod.NPCs.ShadowWraith;
 using Stellamod.NPCs.Bosses.Jack;
 using System.Reflection.Metadata;
 using Stellamod.Utilis;
@@ -21,7 +20,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Swords;
+using Stellamod.Items.Weapons.Melee;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Weapons.Ranged;
 

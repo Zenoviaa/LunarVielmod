@@ -1,4 +1,4 @@
-﻿using Stellamod.Projectiles.Weapons.Magic;
+﻿using Stellamod.Projectiles.Magic;
 using Terraria.ModLoader;
 using Terraria.Net;
 using Terraria.GameContent.NetModules;
@@ -6,8 +6,8 @@ using Terraria.GameContent.Creative;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Spears;
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Spears;
 using System;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -15,8 +15,8 @@ using Terraria.ID;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Bow;
-using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -68,17 +68,17 @@ namespace Stellamod.Items.Weapons.Mage
             if (Star >= 3)
             {
                 Star = 0;
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Astalaiya3"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3"), player.position);
                 type = ModContent.ProjectileType<AstalaiyaStar1>();
             }
             if (Star == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Astalaiya2"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2"), player.position);
                 type = ModContent.ProjectileType<AstalaiyaStar3>();
             }
             if (Star == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Astalaiya1"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"), player.position);
                 type = ModContent.ProjectileType<AstalaiyaStar2>();
             }
         }

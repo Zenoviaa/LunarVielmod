@@ -14,7 +14,7 @@ using Stellamod.Items.Materials;
 
 
 
-namespace Stellamod.NPCs.WinterbornBat
+namespace Stellamod.NPCs.Ice.WinterbornBat
 {
     internal class WinterbornBat : ModNPC
     {

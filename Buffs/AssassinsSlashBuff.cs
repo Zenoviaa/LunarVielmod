@@ -4,7 +4,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Swords;
 using Terraria.Audio;
 
 namespace Stellamod.Buffs

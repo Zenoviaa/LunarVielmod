@@ -1,4 +1,4 @@
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,9 +7,9 @@ using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.GameContent;
 using Terraria.ID;
-using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Swords;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     public class OFlame : ModProjectile
     {

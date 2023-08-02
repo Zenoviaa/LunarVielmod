@@ -12,7 +12,6 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using Stellamod.Items.Materials;
 
-using Stellamod.NPCs.ShadowWraith;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {

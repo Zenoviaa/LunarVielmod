@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 
-namespace Stellamod.NPCs.ShadeSlime
+namespace Stellamod.NPCs.Overworld.ShadeSlime
 {
 
     public class ShadeSlime : ModNPC

@@ -8,11 +8,11 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using static Humanizer.In;
 using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     internal class SwordOfGlactiaProj : ModProjectile
     {
@@ -53,15 +53,15 @@ namespace Stellamod.Projectiles.Weapons.Swords
                 int Sound = Main.rand.Next(1, 4);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/SwordOfGlactia1"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
                 }
                 if (Sound == 2)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/SwordOfGlactia2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), Projectile.position);
                 }
                 if (Sound == 3)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/SwordOfGlactia3"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), Projectile.position);
                 }
                 Projectile.alpha = 255;
                 Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 50, Projectile.position.X + 50);

@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.ShadowWraith
+namespace Stellamod.NPCs.Overworld.ShadowWraith
 {
 
     public class ShadowWraith : ModNPC

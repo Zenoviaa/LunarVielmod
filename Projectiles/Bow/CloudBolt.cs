@@ -4,7 +4,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
 	public class CloudBolt : ModProjectile
 	{

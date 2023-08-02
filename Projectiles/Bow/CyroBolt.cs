@@ -10,12 +10,12 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Items.Materials;
 using Terraria.Audio;
 using Terraria.DataStructures;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     public class CyroBolt : ModItem
     {
@@ -54,11 +54,11 @@ namespace Stellamod.Projectiles.Weapons.Bow
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/CyroBolt1"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CyroBolt1"), player.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/CyroBolt2"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CyroBolt2"), player.position);
             }
         }
 

@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
 using Terraria.GameContent.Creative;
 using Terraria.DataStructures;
 

@@ -13,7 +13,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Mage
 {

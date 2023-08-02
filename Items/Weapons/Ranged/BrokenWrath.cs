@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Weapons.Gun;
+using Stellamod.Projectiles.Gun;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Terraria.Audio;
@@ -71,11 +71,11 @@ namespace Stellamod.Items.Weapons.Ranged
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/BrokenWrath2"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath2"), player.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/BrokenWrath1"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BrokenWrath1"), player.position);
             }
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.position, 248f, 14f);
             Vector2 newVect = origVect.RotatedBy(System.Math.PI / (Main.rand.Next(72, 1300) / 23));

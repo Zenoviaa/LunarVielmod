@@ -7,19 +7,19 @@ using Terraria.GameContent.Creative;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Bow;
 using Terraria.DataStructures;
 using Mono.Cecil;
 using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Projectiles.Weapons.Swords;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Swords;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Items.Accessories.Runes;
 
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
 using Terraria.Audio;
 using Stellamod.Items.Materials.Tech;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
     public class X3107 : ModItem
     {

@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using static Humanizer.In;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
 
     internal class InfernisProj : ModProjectile
@@ -106,7 +106,7 @@ namespace Stellamod.Projectiles.Weapons.Spears
  
 
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/Infernis1"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
             Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT3Explosion, Projectile.damage * 2, 1, Main.myPlayer, 0, 0);

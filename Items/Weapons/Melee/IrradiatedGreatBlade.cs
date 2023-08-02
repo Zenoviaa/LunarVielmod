@@ -9,11 +9,11 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Weapons.Swords;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Swords;
+using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
     public class IrradiatedGreatBlade : ModItem
     {

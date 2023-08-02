@@ -15,7 +15,7 @@ using Terraria.GameContent.Bestiary;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Terraria.Audio;
 
 namespace Stellamod.NPCs.Bosses.DreadMire

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
-using Stellamod.Projectiles.Weapons.Thrown;
+using Stellamod.Projectiles.Thrown;
 namespace Stellamod.Items.Weapons.Thrown
 {
 	public class GreyBricks : ModItem

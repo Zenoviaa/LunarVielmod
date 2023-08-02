@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 using static Humanizer.In;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Utilis;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using Stellamod.Effects;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class StarFlowerproj1 : ModProjectile
     {
@@ -65,11 +65,11 @@ namespace Stellamod.Projectiles.Weapons.Magic
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/StarFlower1"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/StarFlower1_2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower1_2"), Projectile.position);
                 }
             }
             if (Projectile.ai[1] == 120)
@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             }
             if (Projectile.ai[1] == 160)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/StarFlower2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower2"), Projectile.position);
 
             }
             if (Projectile.timeLeft <= 50)
@@ -125,7 +125,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.BulbTrail);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BulbTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
             return false;

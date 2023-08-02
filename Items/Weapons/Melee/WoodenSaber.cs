@@ -8,7 +8,7 @@ using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
     public class WoodenSaber : ModItem
     {

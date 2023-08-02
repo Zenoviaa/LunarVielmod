@@ -7,7 +7,7 @@ using Terraria.ID;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
 	public class TorrentialLanceP : ModProjectile
 	{

@@ -10,7 +10,7 @@ using Terraria.Audio;
 using static Humanizer.In;
 using Mono.Cecil;
 
-namespace Stellamod.Projectiles.Weapons.Spears
+namespace Stellamod.Projectiles.Spears
 {
     internal class StarSheithProg : ModProjectile
     {
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Weapons.Spears
             if (!Sounded)
             {
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/StarSheith"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarSheith"));
                 Sounded = true;
             }
  

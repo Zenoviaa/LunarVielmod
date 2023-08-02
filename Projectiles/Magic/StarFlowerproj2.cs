@@ -8,13 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 using static Humanizer.In;
 using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Utilis;
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using Stellamod.Effects;
 
-namespace Stellamod.Projectiles.Weapons.Magic
+namespace Stellamod.Projectiles.Magic
 {
     internal class StarFlowerproj2 : ModProjectile
     {
@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Weapons.Magic
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/StarFlower3"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3"), Projectile.position);
                 var EntitySource = Projectile.GetSource_Death();
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);

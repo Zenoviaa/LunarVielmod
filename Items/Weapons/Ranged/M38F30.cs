@@ -1,6 +1,6 @@
-﻿using Stellamod.Projectiles.Weapons.Spears;
+﻿using Stellamod.Projectiles.Spears;
 using System;
-using Stellamod.Projectiles.Weapons.Spears;
+using Stellamod.Projectiles.Spears;
 using System;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -12,13 +12,13 @@ using Terraria.GameContent.Creative;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Spears;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Projectiles.Weapons.Gun;
-using Stellamod.Projectiles.Weapons.Swords;
+using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.Items.Weapons.Ranged
 {

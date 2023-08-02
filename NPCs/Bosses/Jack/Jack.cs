@@ -20,7 +20,7 @@ using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Swords;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.DreadMire;

@@ -1,7 +1,7 @@
 using Stellamod.Items.Accessories;
 using Stellamod.Dusts;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.NPCs.ShadowWraith;
+
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

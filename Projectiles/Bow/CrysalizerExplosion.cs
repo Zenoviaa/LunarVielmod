@@ -8,8 +8,9 @@ using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Trails;
 
-namespace Stellamod.Projectiles.Weapons.Bow
+namespace Stellamod.Projectiles.Bow
 {
     public class CrysalizerExplosion : ModProjectile
     {
@@ -73,10 +74,10 @@ namespace Stellamod.Projectiles.Weapons.Bow
 
         public override bool PreDraw(ref Color lightColor)
         {
-            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, VampTextureRegistry.FireVertexShader);
+            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireVertexShader);
 
-            VampTextureRegistry.FireVertexShader.UseSaturation(0.45f);
-            VampTextureRegistry.FireVertexShader.SetShaderTexture(VampTextureRegistry.CrystalNoise);
+            TrailRegistry.FireVertexShader.UseSaturation(0.45f);
+            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.CrystalNoise);
 
             List<float> rotationPoints = new();
             List<Vector2> drawPoints = new();

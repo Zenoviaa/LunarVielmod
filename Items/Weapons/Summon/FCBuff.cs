@@ -1,10 +1,10 @@
 
 
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Bow;
-using Stellamod.Projectiles.Weapons.Gun;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Gun;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,7 +16,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria.Graphics.Shaders;
 using Terraria.GameContent;
 
-namespace Stellamod.Projectiles.Minions
+namespace Stellamod.Items.Weapons.Summon
 {
 	/*
 	 * This file contains all the code necessary for a minion

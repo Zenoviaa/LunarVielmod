@@ -1,4 +1,4 @@
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -89,14 +89,14 @@ namespace Stellamod.NPCs.Bosses.INest
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, VampTextureRegistry.GenericLaserVertexShader);
+            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.Yellow, 0.6f);
             Color middleColor2 = Color.Lerp(Color.GreenYellow, Color.DarkGreen, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
-            VampTextureRegistry.GenericLaserVertexShader.UseColor(Color.DarkSeaGreen);
-            VampTextureRegistry.GenericLaserVertexShader.SetShaderTexture(VampTextureRegistry.LightningTrail);
+            TrailRegistry.GenericLaserVertexShader.UseColor(Color.DarkSeaGreen);
+            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.LightningTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

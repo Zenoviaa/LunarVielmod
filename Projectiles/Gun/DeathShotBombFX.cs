@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.Bestiary;
 using Stellamod.Dusts;
 
-namespace Stellamod.Projectiles.Weapons.Gun
+namespace Stellamod.Projectiles.Gun
 {
     public class DeathShotBombFX : ModProjectile
     {

@@ -1,4 +1,4 @@
-﻿using Stellamod.Projectiles.Weapons.Spears;
+﻿using Stellamod.Projectiles.Spears;
 using System;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -10,8 +10,8 @@ using Terraria.GameContent.Creative;
 using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Weapons.Spears;
-using Stellamod.Projectiles.Weapons.Magic;
+using Stellamod.Projectiles.Spears;
+using Stellamod.Projectiles.Magic;
 using Stellamod.NPCs.Bosses.DreadMire;
 
 namespace Stellamod.Items.Weapons.Mage

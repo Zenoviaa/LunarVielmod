@@ -1,9 +1,9 @@
 
 
-using Stellamod.Effects.Primitives;
+using Stellamod.Trails;
 using Stellamod.Effects;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Weapons.Bow;
+using Stellamod.Projectiles.Bow;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,9 +15,9 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Graphics.Shaders;
 using Terraria.Audio;
-using static Stellamod.Projectiles.Minions.ArncharRemote;
+using static Stellamod.Items.Weapons.Summon.ArncharRemote;
 
-namespace Stellamod.Projectiles.Minions
+namespace Stellamod.Items.Weapons.Summon
 {
 	/*
 	 * This file contains all the code necessary for a minion
@@ -100,7 +100,7 @@ namespace Stellamod.Projectiles.Minions
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArcharilitDrone3"), player.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
             position = Main.MouseWorld;
 			return true;
@@ -184,7 +184,7 @@ namespace Stellamod.Projectiles.Minions
 				Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 				Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
 				TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-				GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(VampTextureRegistry.SmallWhispyTrail);
+				GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
 				TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
 				return false;
@@ -324,11 +324,11 @@ namespace Stellamod.Projectiles.Minions
                         int Sound = Main.rand.Next(1, 3);
                         if (Sound == 1)
                         {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArcharilitDrone1"), Projectile.position);
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1"), Projectile.position);
                         }
                         else
                         {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/ArcharilitDrone2"), Projectile.position);
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2"), Projectile.position);
                         }
                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                         Projectile.velocity.Y -= 10;

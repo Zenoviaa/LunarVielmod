@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Thrown
+namespace Stellamod.Projectiles.Thrown
 {
 	public class Boralius2 : ModProjectile
 	{

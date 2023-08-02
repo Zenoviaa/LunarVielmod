@@ -12,7 +12,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 
-namespace Stellamod.Items.Weapons.Swords
+namespace Stellamod.Items.Weapons.Melee
 {
     class SwordOfTheJungleGoddess : ModItem
     {

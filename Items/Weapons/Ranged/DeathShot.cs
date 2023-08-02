@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Terraria.Audio;
-using Stellamod.Projectiles.Weapons.Gun;
+using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -51,11 +51,11 @@ namespace Stellamod.Items.Weapons.Ranged
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/DeathShot"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShot"), player.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/DeathShot2"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShot2"), player.position);
             }
         }
         public override void AddRecipes()

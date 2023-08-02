@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Weapons.Swords
+namespace Stellamod.Projectiles.Swords
 {
     public class WindSytheBlue : ModProjectile
     {
@@ -48,8 +48,8 @@ namespace Stellamod.Projectiles.Weapons.Swords
             Projectile.ai[1]++;
             if (Projectile.ai[1] <= 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/SkyrageShasher"), Projectile.position);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Item/SkyrageShasherEle"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasherEle"), Projectile.position);
             }
             Projectile.rotation += 0.1f;
 			if(Projectile.timeLeft >= 250 && Projectile.timeLeft <= 310)
