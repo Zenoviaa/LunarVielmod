@@ -5,11 +5,14 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Particles;
+using Stellamod.WorldG;
 using System;
 using System.Threading;
 using Terraria;
@@ -66,8 +69,9 @@ namespace Stellamod.NPCs.Overworld
 			NPC.damage = 30; // The amount of damage that this npc deals
 			NPC.defense = 0; // The amount of defense that this npc has
 			NPC.lifeMax = 200; // The amount of health that this npc has
-			NPC.HitSound = SoundID.DD2_SkeletonHurt; // The sound the NPC will make when being hit.
-			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0.2f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
@@ -250,9 +254,32 @@ namespace Stellamod.NPCs.Overworld
 				ResetTimers();
 			}
 		}
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            for (int k = 0; k < 20; k++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
+            }
+            if (NPC.life <= 0)
+            {
+                EventWorld.GintzeKills += 1;
+                for (int i = 0; i < 20; i++)
+                {
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
+                    Main.dust[num].noGravity = true;
+                    Dust expr_62_cp_0 = Main.dust[num];
+                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+                    Dust expr_92_cp_0 = Main.dust[num];
+                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+                    if (Main.dust[num].position != NPC.Center)
+                    {
+                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+                    }
+                }
+            }
+        }
 
-
-		public void Pace()
+        public void Pace()
 		{
 			timer++;
 			NPC.velocity.Y += 4f;
@@ -350,14 +377,13 @@ namespace Stellamod.NPCs.Overworld
 			frameCounter = 0;
 			frameTick = 0;
 		}
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 8, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 40, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 7));
-
-		}
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 2, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]

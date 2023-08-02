@@ -12,7 +12,7 @@ namespace Stellamod.Assets.Biomes
     public class AbyssBiome : ModBiome
     {
         //public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("SpiritMod/Biomes/SpiritUgBgStyle");
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Hidding_In_The_Shadows");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Sounds/Music//Hidding_In_The_Shadows");
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;

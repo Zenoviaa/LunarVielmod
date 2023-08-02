@@ -18,12 +18,20 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Materials.HardMode;
 using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.WorldG;
 
 namespace Stellamod
 {
     public class CozmicNPC : GlobalNPC
     {
-
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if (EventWorld.Gintzing)
+            {
+                spawnRate = (int)((double)spawnRate * 0.01);
+                maxSpawns = (int)((float)maxSpawns * 6.2f);
+            }
+        }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {

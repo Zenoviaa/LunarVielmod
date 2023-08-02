@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Acidic
             NPC.defense = 14;
             NPC.lifeMax = 100;
             NPC.HitSound = SoundID.NPCHit42;
-            NPC.DeathSound = new SoundStyle("Stellamod/Sounds/NPCKilled/AcidProbeDeath") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/AcidProbeDeath") with { PitchVariance = 0.1f };
             NPC.value = 30f;
             NPC.buffImmune[BuffID.Poisoned] = true;
             NPC.buffImmune[BuffID.Venom] = true;

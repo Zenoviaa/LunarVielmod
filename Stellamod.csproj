@@ -180,7 +180,6 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Music\" />
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Items\Banners\" />
     <Folder Include="Items\Blocks\" />
