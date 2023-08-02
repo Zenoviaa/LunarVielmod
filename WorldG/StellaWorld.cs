@@ -29,7 +29,7 @@ namespace Stellamod.WorldG
 
     public class StellaWorld : ModSystem
     {
-        public static bool Gintzing;
+     
         public static bool SoulStorm;
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
