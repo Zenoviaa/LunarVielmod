@@ -24,7 +24,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.Overworld
+namespace Stellamod.NPCs.Event.Gintzearmy
 {
 	public class GintzeCaptain : ModNPC
 	{
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Overworld
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (3.500f) : 0f;
+            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.5f) : 0f;
         }
 		public override void AI()
 		{

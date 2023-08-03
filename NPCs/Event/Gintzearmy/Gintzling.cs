@@ -1,24 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.Particles;
-using System.Threading;
+using MonoMod.Cil;
+using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
+using static Terraria.ModLoader.ModContent;
+using ReLogic.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Audio;
+using Stellamod.WorldG;
+using Stellamod.Items.Armors.Pieces.RareMetals;
+using Stellamod.Items.Harvesting;
+using Terraria.GameContent.ItemDropRules;
+using Stellamod.Items.Ores;
+using Terraria.GameContent.Bestiary;
 
 namespace Stellamod.NPCs.Event.Gintzearmy
 {
@@ -48,172 +45,154 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 8;
-
+			NPCID.Sets.TrailCacheLength[NPC.type] = 3;
+			NPCID.Sets.TrailingMode[NPC.type] = 0;
 
 		}
 		public override void SetDefaults()
 		{
-			NPC.width = 40; // The width of the npc's hitbox (in pixels)
-			NPC.height = 56; // The height of the npc's hitbox (in pixels)
-			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
-			NPC.damage = 1; // The amount of damage that this npc deals
-			NPC.defense = 15; // The amount of defense that this npc has
-			NPC.lifeMax = 1500; // The amount of health that this npc has
-			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
-			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
+			NPC.width = 58; // The width of the npc's hitbox (in pixels)
+			NPC.height = 58; // The height of the npc's hitbox (in pixels)
+			NPC.aiStyle = 41; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
+			NPC.damage = 20; // The amount of damage that this npc deals
+			NPC.defense = 5; // The amount of defense that this npc has
+			NPC.lifeMax = 50; // The amount of health that this npc has
+			NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
 			NPC.value = 5000f; // How many copper coins the NPC will drop when killed.
-			NPC.knockBackResist = 0f;
+			NPC.knockBackResist = 0.4f;
 
 		}
-	
 		public override void AI()
 		{
-			switch (State)
-			{
-
-				case ActionState.Jump:
-					NPC.damage = 250;
-					counter++;
-					Jump();
-					break;
-
-				case ActionState.Wait:
-					NPC.damage = 0;
-					counter++;
-					Wait();
-					break;
-
-				case ActionState.Fall:
-					NPC.damage = 250;
-					counter++;
-					if (NPC.velocity.Y == 0)
-					{
-						NPC.velocity.X = 0;
-						State = ActionState.Wait;
-						frameCounter = 0;
-						frameTick = 0;
-						NPC.aiStyle = 41;
-					}
-					break;
-				default:
-					counter++;
-					break;
-			}
-
-
-
-
-			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-
-			//for (int j = 0; j < 2; j++)
-			//{
-			//	Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, NPC.velocity * 0, ProjectileID.Spark, NPC.damage / 2, NPC.knockBackResist);
-			//}
-		}
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-		{
-			// Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
-			SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
-			// The rectangle we specify allows us to only cycle through specific parts of the texture by defining an area inside it
-
-			// Using a rectangle to crop a texture can be imagined like this:
-			// Every rectangle has an X, a Y, a Width, and a Height
-			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
-			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
-			Rectangle rect;
-
-			switch (State)
-			{
-				case ActionState.Jump:
-					rect = new Rectangle(0, 58, 29, 7 * 58);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
-
-			}
-			return false;
+			NPC.velocity.X *= 0.99f;
 		}
 
-		public void Jump()
-		{
-			timer++;
 
-			if (timer == 9)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(4))
-				{
-					case 0:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 1:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-					case 3:
-
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
-						break;
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-
-				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
-
-			}
-			else if (timer > 27)
-			{
-				// after .66 seconds, we go to the hover state. //TODO, gravity?
-				State = ActionState.Fall;
-				ResetTimers();
-			}
-		}
-
-		public void Wait()
-		{
-			
-
-	
-		}
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.BlackPearl, 3, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 25, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, 1, 1, 7));
+
+			npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 3, 1, 2));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 4, 1, 1));
+		
 
 		}
-		public override void HitEffect(NPC.HitInfo hit)
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"));
-
-
+			return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.5f) : 0f;
 		}
+	
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Extremely powerful jellyfish that has been aflicted by the gild in the morrow, very dangerour")
+				new FlavorTextBestiaryInfoElement("Lowest of the Gintze but can wipe you out fast! They need food too yknow :(")
 			});
+		}
+		int frame = 0;
+		public override void FindFrame(int frameHeight)
+		{
+
+
+			bool expertMode = Main.expertMode;
+			Player player = Main.player[NPC.target];
+
+			NPC.frameCounter += 0.5f;
+			if (NPC.frameCounter >= 4)
+			{
+				frame++;
+				NPC.frameCounter = 0;
+			}
+			if (frame >= 8)
+			{
+				frame = 0;
+			}
+			NPC.frame.Y = frameHeight * frame;
+
+		}
+		public override void HitEffect(NPC.HitInfo hit)
+		{
+			for (int k = 0; k < 5; k++)
+			{
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
+			}
+			if (NPC.life <= 0)
+			{
+				EventWorld.GintzeKills += 1;
+				for (int i = 0; i < 5; i++)
+				{
+					int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
+					Main.dust[num].noGravity = true;
+					Dust expr_62_cp_0 = Main.dust[num];
+					expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+					Dust expr_92_cp_0 = Main.dust[num];
+					expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+					if (Main.dust[num].position != NPC.Center)
+					{
+						Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+					}
+				}
+			}
+
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"));
+		}
+
+
+
+
+		Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
+		public virtual string GlowTexturePath => Texture + "_Glow";
+		private Asset<Texture2D> _glowTexture;
+		public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			float num108 = 4;
+			float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
+			float num106 = 0f;
+			Color color1 = Color.LightBlue * num107 * .8f;
+			var effects = NPC.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+			spriteBatch.Draw(
+				GlowTexture,
+				NPC.Center - Main.screenPosition + Drawoffset,
+				NPC.frame,
+				color1,
+				NPC.rotation,
+				NPC.frame.Size() / 2,
+				NPC.scale,
+				effects,
+				0
+			);
+			SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
+			Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.White);
+			for (int num103 = 0; num103 < 4; num103++)
+			{
+				Color color28 = color29;
+				color28 = NPC.GetAlpha(color28);
+				color28 *= 1f - num107;
+				Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+				Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
+			}
+		}
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+		{
+			Lighting.AddLight(NPC.Center, Color.Silver.ToVector3() * 0.25f * Main.essScale);
+			SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
+			for (int k = 0; k < NPC.oldPos.Length; k++)
+			{
+				Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+				Color color = NPC.GetAlpha(Color.Lerp(new Color(191, 165, 160), new Color(191, 59, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+				spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
+			}
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			return true;
 		}
 	}
 }

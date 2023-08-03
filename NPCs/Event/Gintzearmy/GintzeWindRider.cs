@@ -16,7 +16,7 @@ using Stellamod.Items.Harvesting;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Ores;
 
-namespace Stellamod.NPCs.Overworld
+namespace Stellamod.NPCs.Event.Gintzearmy
 {
 
     public class GintzeWindRider : ModNPC
@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Overworld
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (3.0f) : 0f;
+            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.5f) : 0f;
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)

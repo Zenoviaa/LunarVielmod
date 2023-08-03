@@ -24,7 +24,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.Overworld
+namespace Stellamod.NPCs.Event.Gintzearmy
 {
 	public class GintzeSolider : ModNPC
 	{
