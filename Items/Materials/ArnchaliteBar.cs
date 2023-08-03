@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Stellamod.Tiles;
+using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Materials
 {
@@ -36,7 +37,7 @@ namespace Stellamod.Items.Materials
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 2);
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 2);
             recipe.AddIngredient(ModContent.ItemType<ArncharChunk>(), 1);
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();

@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.wingTimeMax = 25;
+			player.wingTimeMax = 55;
 			if (Main.rand.Next(4) == 0)
 			{
 

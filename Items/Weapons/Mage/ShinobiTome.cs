@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useStyle = 5;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
+            Item.rare = ItemRarityID.Blue;
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/SwordThrow");
             Item.autoReuse = true;
 			Item.shoot = ProjectileType<ShinobiKnife>();

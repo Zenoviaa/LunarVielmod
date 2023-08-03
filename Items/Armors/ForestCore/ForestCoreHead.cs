@@ -27,7 +27,7 @@ namespace Stellamod.Items.Armors.ForestCore
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = 6;
+            Item.rare = 2;
 
             Item.defense = 2;
         }

@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 		{
 
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 3, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 4, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 6, 1, 1));
 		
 
 		}

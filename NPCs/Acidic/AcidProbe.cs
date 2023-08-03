@@ -20,7 +20,7 @@ using Terraria.Audio;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Utilis;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials.HardMode;
+
 
 namespace Stellamod.NPCs.Acidic
 {
@@ -162,10 +162,7 @@ namespace Stellamod.NPCs.Acidic
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<AcidStaketers>(), 1, false, 0, false, false);
             }
-            if (Main.rand.Next(5) == 0 && Main.hardMode)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ContamintSoul>(), Main.rand.Next(1, 4), false, 0, false, false);
-            }
+
         }
         public override void AI()
         {

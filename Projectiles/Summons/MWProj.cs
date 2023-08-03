@@ -1,10 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Weapons.Summon;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles.Summons
 {
 	// - ModProjectile - the minion itself
@@ -65,9 +66,15 @@ namespace Stellamod.Projectiles.Summons
 		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
 		public override void AI()
 		{
-			Player owner = Main.player[Projectile.owner];
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+            Player owner = Main.player[Projectile.owner];
+            {
+                owner.ClearBuff(BuffType<ManaWandMinionBuff>());
+            }
+            if (owner.HasBuff(BuffType<ManaWandMinionBuff>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+            GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
 			Visuals();

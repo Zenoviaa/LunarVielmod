@@ -2,7 +2,7 @@
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.HardMode;
+
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Utilis;
 using Microsoft.Xna.Framework;
@@ -184,10 +184,7 @@ namespace Stellamod.NPCs.Abyssal
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<LunarBand>(), 1, false, 0, false, false);
             }
-            if (Main.rand.Next(5) == 0 && Main.hardMode)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<EldritchSoul>(), Main.rand.Next(1, 4), false, 0, false, false);
-            }
+
         }
 
     }

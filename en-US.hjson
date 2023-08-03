@@ -3041,6 +3041,16 @@ Mods: {
 				DisplayName: Rune Of Wind
 				Tooltip: ""
 			}
+
+			GintzlsSteed: {
+				DisplayName: Gintzls Steed
+				Tooltip: ""
+			}
+
+			Gallasis: {
+				DisplayName: Galasis
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {

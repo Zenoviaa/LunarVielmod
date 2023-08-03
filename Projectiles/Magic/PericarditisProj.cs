@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles.Magic
             }
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 64f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 16f);
             var entitySource = Projectile.GetSource_FromThis();
             NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<DreadFireBombG>());
 
