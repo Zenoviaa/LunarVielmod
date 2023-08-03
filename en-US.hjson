@@ -3529,6 +3529,7 @@ Mods: {
 			Gintzling.DisplayName: Gintzling
 			GintzeSpearman.DisplayName: Gintze Spearman
 			GintzeWarrior.DisplayName: Gintze Warrior
+			CommanderGintzia.DisplayName: Commander Gintzia
 		}
 
 		Projectiles: {

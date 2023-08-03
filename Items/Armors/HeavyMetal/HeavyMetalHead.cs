@@ -31,7 +31,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.value = 10000;
             Item.rare = 6;
 
-            Item.defense = 5;
+            Item.defense = 3;
         }
 
         public override void UpdateEquip(Player player)

@@ -29,7 +29,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 6;
+            Item.defense = 3;
             Item.vanity = true;
         }
         public override void AddRecipes()

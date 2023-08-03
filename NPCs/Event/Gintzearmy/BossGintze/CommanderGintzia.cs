@@ -170,8 +170,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		{
 			NPC.Size = new Vector2(42, 67);
 			NPC.damage = 1;
-			NPC.defense = 12;
-			NPC.lifeMax = 2500;
+			NPC.defense = 10;
+			NPC.lifeMax = 750;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -263,7 +263,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(140, 0);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) - new Vector2(0, 68);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -308,43 +308,43 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			switch (State)
 			{
 				case ActionState.Slammer:
-					rect = new(0, 9 * 134, 84, 4 * 134);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					rect = new(0, 9 * 67, 42, 3 * 67);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.Jumpin:
-					rect = new(0, 5 * 134, 84, 3 * 134);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 20, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					rect = new(0, 5 * 67, 42, 3 * 67);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 20, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 
 				case ActionState.Fallin:
-					rect = new(0, 8 * 134, 84, 1 * 134);
+					rect = new(0, 8 * 67, 42, 1 * 67);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 80, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.Jumpstartup:
-					rect = new Rectangle(0, 1 * 134, 84, 4 * 134);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					rect = new Rectangle(0, 1 * 67, 42, 3 * 67);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.Stop:
-					rect = new Rectangle(0, 0 * 134, 84, 1 * 134);
+					rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.Rulse:
-					rect = new Rectangle(0, 13 * 134, 84, 17 * 134);
+					rect = new Rectangle(0, 13 * 67, 42, 17 * 67);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 17, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.StartGintze:
-					rect = new Rectangle(0, 0 * 134, 84, 1 * 134);
+					rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.HandsNRun:
-					rect = new Rectangle(0, 30 * 134, 84, 12 * 134);
+					rect = new Rectangle(0, 30 * 67, 42, 12 * 67);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 12, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
@@ -371,10 +371,12 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		int bee = 220;
 		private Vector2 originalHitbox;
+		int moveSpeed = 0;
+		int moveSpeedY = 0;
 
 		public override void AI()
 		{
-			NPC.velocity *= 0.97f;
+			
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
@@ -387,9 +389,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			}
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
-			// The multiplication here wasn't doing anything
-			Lighting.AddLight(NPC.Center, RGB.X, RGB.Y, RGB.Z);
-
+			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
+			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
 
 			NPC.TargetClosest();
@@ -419,20 +420,25 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				case ActionState.StartGintze:
 					NPC.damage = 0;
 					counter++;
+					NPC.noGravity = false;
 					StartGintze();
+					NPC.aiStyle = -1;
 					break;
 
 
 				case ActionState.Jumpin:
 					NPC.damage = 0;
 					counter++;
+					NPC.aiStyle = -1;
 					JumpinGintze();
+		
 					break;
 
 
 				case ActionState.Jumpstartup:
 					NPC.damage = 0;
 					counter++;
+					NPC.aiStyle = -1;
 					StartJumpGintze();
 					break;
 
@@ -444,9 +450,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 				case ActionState.HandsNRun:
 					NPC.damage = 50;
-					NPC.aiStyle = 3;
-					AIType = NPCID.SnowFlinx;
-					NPC.velocity.X *= 1.02f;
+				
+					
 					counter++;
 					HandTime();
 					break;
@@ -454,7 +459,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				case ActionState.Slammer:
 					NPC.damage = 0;
 					counter++;
-					NPC.velocity *= 2;
+
 					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 					{
 						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
@@ -473,8 +478,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 				case ActionState.Fallin:
 					NPC.damage = 100;
+					NPC.velocity.Y *= 1.2f;
 					counter++;
-					NPC.velocity.Y -= 0.5f;
+					NPC.aiStyle = -1;
+					NPC.noTileCollide = false;
+
+
+					
 					if (NPC.velocity.Y == 0)
 					{
 						NPC.velocity.X = 0;
@@ -724,6 +734,17 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			}
 		}
 
+		public override bool? CanFallThroughPlatforms()
+		{
+			if (State == ActionState.Fallin && NPC.HasValidTarget && Main.player[NPC.target].Top.Y > NPC.Bottom.Y)
+			{
+				// If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
+				return true;
+			}
+
+			return false;
+			// You could also return null here to apply vanilla behavior (which is the same as false for custom AI)
+		}
 
 
 		private void StartJumpGintze()
@@ -733,8 +754,10 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			
 			if (timer == 2)
 			{
-			//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
+				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
+				NPC.velocity.X *= 0;
+				NPC.velocity.Y *= 0;
 			}
 
 
@@ -760,42 +783,46 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		private void JumpinGintze()
 		{
+
+			Player player = Main.player[NPC.target];
 			NPC.spriteDirection = NPC.direction;
 			timer++;
+			float speed = 25f;
 
 			if (timer == 2)
 			{
 				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
 
-				
-					// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-					switch (Main.rand.Next(4))
-					{
-						case 0:
-							NPC.velocity = new Vector2(NPC.direction * 0, -15f);
-							break;
-						case 1:
-							NPC.velocity = new Vector2(NPC.direction * 0, -15f);
-							break;
-						case 2:
-							NPC.velocity = new Vector2(NPC.direction * 0, -15f);
-							break;
-						case 3:
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				NPC.velocity = new Vector2(NPC.direction * 2, -15f);
 
-							NPC.velocity = new Vector2(NPC.direction * 0, -15f);
-							break;
-					}
-
-					// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
 
 
-					// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
+				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
 
 			}
+		/*	if (timer > 30)
+			{
 
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				Vector2 Top = (player.Center - new Vector2(0, 100));
+
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (Top - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+			
+			}
+*/
 
 			if (timer == 60)
 			{
@@ -827,20 +854,23 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				ShakeModSystem.Shake = 8;
 			}
 
-			if (timer < 10)
+			if (timer < 9)
 			{
-
 
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
 
 			}
 
 			if (timer == 20)
 			{
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
 
 				State = ActionState.Stop;
 
@@ -857,7 +887,11 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		{
 			timer++;
 	
-
+			if (timer == 10)
+            {
+				NPC.velocity.X *= 0;
+				NPC.velocity.Y *= 0;
+			}
 		
 
 			if (timer == 20)
@@ -913,7 +947,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 
+			if (timer == 10)
+            {
 
+				NPC.aiStyle = 107;
+				AIType = NPCID.GoblinShark;
+
+			}
 
 
 
