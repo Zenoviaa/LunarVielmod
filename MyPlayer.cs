@@ -636,8 +636,9 @@ namespace Stellamod
                 if (HMArmorTime <= 1)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+					var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }
 
