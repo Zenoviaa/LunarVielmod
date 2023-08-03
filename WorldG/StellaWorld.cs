@@ -123,7 +123,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 500 ); // from 50 since there's a unaccessible area at the world's borders
+				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 600 ); // from 50 since there's a unaccessible area at the world's borders
 																			   // 50% of choosing the last 6th of the world
 																			   // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -141,7 +141,7 @@ namespace Stellamod.WorldG
 				}
 
 				// If we went under the world's surface, try again
-				if (smy > Main.worldSurface - 30)
+				if (smy > Main.worldSurface - 20)
 				{
 					continue;
 				}
@@ -165,14 +165,27 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 100);
+					Point Loc = new Point(smx, smy + 70);
 					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome");
+
+
+					Point Loc2 = new Point(smx - 10, smy - 70);
+					WorldUtils.Gen(Loc2, new Shapes.Circle(15, 20), new Actions.SetTile(TileID.Dirt));
+					//	Point resultPoint;
+					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
+					//	{
+					//new Conditions.IsSolid().AreaAnd(10, 10),
+					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
+					//	}), out resultPoint);
+					//		if (searchSuccessful)
+					//		{
+					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
+					//		}
+
 					placed = true;
-
-
-
-
 				}
+
+
 			}
 
 		}
