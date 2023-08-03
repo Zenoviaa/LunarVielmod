@@ -25,7 +25,7 @@ namespace Stellamod.Items.Armors.Leather
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = 6;
+            Item.rare = 3;
 
             Item.defense = 2;
         }

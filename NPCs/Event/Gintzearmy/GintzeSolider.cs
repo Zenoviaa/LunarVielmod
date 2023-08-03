@@ -379,9 +379,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 		}
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 3, 1, 2));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 6, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

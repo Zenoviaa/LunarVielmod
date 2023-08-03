@@ -14,7 +14,7 @@ using Stellamod.Projectiles.Spears;
 using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Stellamod.Items.Materials.HardMode;
+
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -46,7 +46,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IceWalker>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<LightEssence>(), 12);
             recipe.AddIngredient(ItemID.Marrow, 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

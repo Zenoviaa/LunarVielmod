@@ -16,7 +16,7 @@ using Stellamod.Trails;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Materials.HardMode;
+
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.WorldG;
 
@@ -50,10 +50,6 @@ namespace Stellamod
                     npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
                 }
             }
-            if (npc.type == NPCID.Lihzahrd || npc.type == NPCID.LihzahrdCrawler || npc.type == NPCID.FlyingSnake)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AncientLizardMetal>(), 2, 0, 5));
-            }
             if (npc.type == NPCID.GreekSkeleton)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GladiatorSpear>(), 8, 1, 1));
@@ -78,16 +74,6 @@ namespace Stellamod
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
-
-            }
-            if (npc.type == NPCID.ThePossessed || npc.type == NPCID.SwampThing || npc.type == NPCID.Vampire || npc.type == NPCID.DrManFly || npc.type == NPCID.Fritz || npc.type == NPCID.VampireBat || npc.type == NPCID.Frankenstein)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SolarMirrorShard>(), 2, 0, 5));
-
-            }
-            if (npc.type == NPCID.Pixie || npc.type == NPCID.Unicorn || npc.type == NPCID.Gastropod)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LightEssence>(), 2, 0, 5));
 
             }
             if (npc.type == NPCID.BloodJelly || npc.type == NPCID.BloodJelly || npc.type == NPCID.GreenJellyfish || npc.type == NPCID.PinkJellyfish)

@@ -3041,6 +3041,16 @@ Mods: {
 				DisplayName: Rune Of Wind
 				Tooltip: ""
 			}
+
+			GintzlsSteed: {
+				DisplayName: Gintzls Steed
+				Tooltip: ""
+			}
+
+			Gallasis: {
+				DisplayName: Gallasis
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3529,6 +3539,7 @@ Mods: {
 			Gintzling.DisplayName: Gintzling
 			GintzeSpearman.DisplayName: Gintze Spearman
 			GintzeWarrior.DisplayName: Gintze Warrior
+			CommanderGintzia.DisplayName: Commander Gintzia
 		}
 
 		Projectiles: {

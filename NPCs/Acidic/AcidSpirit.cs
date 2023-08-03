@@ -1,7 +1,7 @@
 
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.HardMode;
+
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Utilis;
 using Microsoft.Xna.Framework;
@@ -150,10 +150,7 @@ namespace Stellamod.NPCs.Acidic
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<AcidStaketers>(), 1, false, 0, false, false);
             }
-            if (Main.rand.Next(5) == 0 && Main.hardMode)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ContamintSoul>(), Main.rand.Next(1, 4), false, 0, false, false);
-            }
+
         }
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;

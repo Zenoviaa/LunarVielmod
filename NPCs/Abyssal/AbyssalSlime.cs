@@ -13,7 +13,7 @@ using ReLogic.Content;
 using Stellamod.Utilis;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.HardMode;
+
 
 namespace Stellamod.NPCs.Abyssal
 {
@@ -69,10 +69,6 @@ namespace Stellamod.NPCs.Abyssal
             if (Main.rand.Next(30) == 0)
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<LunarBand>(), 1, false, 0, false, false);
-            }
-            if (Main.rand.Next(5) == 0 && Main.hardMode)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<EldritchSoul>(), Main.rand.Next(1, 4), false, 0, false, false);
             }
         }
         public override void HitEffect(NPC.HitInfo hit)

@@ -21,7 +21,7 @@ namespace Stellamod.Items.Armors.ForestCore
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 3;
+            Item.defense = 2;
             Item.vanity = true;
         }
 

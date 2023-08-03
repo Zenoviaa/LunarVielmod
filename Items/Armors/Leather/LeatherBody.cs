@@ -28,7 +28,7 @@ namespace Stellamod.Items.Armors.Leather
             Item.width = 30;
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = 3;
             Item.defense = 4;
             Item.vanity = true;
         }

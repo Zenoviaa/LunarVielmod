@@ -11,7 +11,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.HardMode;
+
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -45,7 +45,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.GoldBar, 1);
-            recipe.AddIngredient(ModContent.ItemType<SteampunkBar>(), 15);
             recipe.AddTile(TileID.HeavyWorkBench);
             recipe.Register();
         }

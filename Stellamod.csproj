@@ -133,7 +133,6 @@
     <None Remove="Items\Weapons\Ranged\M38F30.png" />
     <None Remove="Items\Weapons\Ranged\RustlockPistol.png" />
     <None Remove="Items\Weapons\Ranged\Rustvolver.png" />
-    <None Remove="Items\Weapons\Ranged\SolarSpiner.png" />
     <None Remove="Items\Weapons\Ranged\TecnoBlaster.png" />
     <None Remove="Items\Weapons\Ranged\TheRedSkull.png" />
     <None Remove="Items\Weapons\Ranged\Tociflare.png" />

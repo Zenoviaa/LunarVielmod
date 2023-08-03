@@ -192,6 +192,7 @@ namespace Stellamod
         public int IrradiatedKilled;
 
 
+        public bool Dead;
 
 
 
@@ -246,7 +247,8 @@ namespace Stellamod
         }
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
-
+			Dead = true;
+            HMArmor = false;
             if (damageSource.SourceOtherIndex == 8)
                 CustomDeath(ref damageSource);
             return true;
@@ -308,7 +310,7 @@ namespace Stellamod
 
 			if (StealthRune && StealthTime >= 500)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/StealthRune"), Player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StealthRune"), Player.position);
                 for (int m = 0; m < 20; m++)
                 {
                     int num1 = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, -2f, 0, default, .8f);
@@ -331,7 +333,7 @@ namespace Stellamod
 
                 if (Main.rand.NextBool(5))
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune1"), Player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     for (int i = 0; i < 20; i++)
                     {
                         var entitySource = Player.GetSource_FromThis();
@@ -364,11 +366,11 @@ namespace Stellamod
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune2"), Player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune2"), Player.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune3"), Player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune3"), Player.position);
                 }
                 for (int i = 0; i < 200; i++)
                 {
@@ -520,10 +522,17 @@ namespace Stellamod
         {
             Player player = Main.LocalPlayer;
             if (!player.active)
-                return;
-            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
-            //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
-            if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
+				return;
+			MyPlayer CVA = player.GetModPlayer<MyPlayer>();
+			if (Dead)
+            {
+                HMArmorTime = 0;
+                HMArmor = false;
+                Dead = false;
+
+            }
+			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
+			if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
                 WindRuneOn = false;
@@ -693,7 +702,7 @@ namespace Stellamod
                 FCArmorTime++;
                 if (FCArmorTime <= 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/CorsageRune1"), Player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     var EntitySource = Player.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
                     player.AddBuff(ModContent.BuffType<FCBuff>(), 99999);
