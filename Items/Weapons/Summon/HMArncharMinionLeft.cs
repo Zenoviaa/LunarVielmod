@@ -15,10 +15,12 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Graphics.Shaders;
 using Terraria.GameContent;
+using Stellamod.Projectiles.Thrown;
+using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -32,7 +34,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class HMMinionBuff : ModBuff
+    public class HMMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -237,7 +239,7 @@ namespace Stellamod.Items.Weapons.Summon
 				NPC npc = Main.npc[player.MinionAttackTargetNPC];
 				float between = Vector2.Distance(npc.Center, Projectile.Center);
 				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f)
+				if (between < 1000f)
 				{
 					distanceFromTarget = between;
 					targetCenter = npc.Center;
@@ -295,7 +297,7 @@ namespace Stellamod.Items.Weapons.Summon
 						Vector2 direction = targetCenter - Projectile.Center;
 						var EntitySource = Projectile.GetSource_Death();
 						if (Main.netMode != NetmodeID.MultiplayerClient)
-							Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ModContent.ProjectileType<BrokenMissile>(), 10, 1, Main.myPlayer, 0, 0);
+							Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ModContent.ProjectileType<GintzeSpearMini>(), 10, 1, Main.myPlayer, 0, 0);
 						Projectile.ai[1] = 0;
 					}
 
@@ -560,7 +562,7 @@ namespace Stellamod.Items.Weapons.Summon
                 NPC npc = Main.npc[player.MinionAttackTargetNPC];
                 float between = Vector2.Distance(npc.Center, Projectile.Center);
                 // Reasonable distance away so it doesn't target across multiple screens
-                if (between < 2000f)
+                if (between < 1000f)
                 {
                     distanceFromTarget = between;
                     targetCenter = npc.Center;
@@ -617,7 +619,7 @@ namespace Stellamod.Items.Weapons.Summon
                         Vector2 direction = targetCenter - Projectile.Center;
                         var EntitySource = Projectile.GetSource_Death();
                         if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ModContent.ProjectileType<BrokenMissile>(), 10, 1, Main.myPlayer, 0, 0);
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ModContent.ProjectileType<GintzeSpearMini>(), 10, 1, Main.myPlayer, 0, 0);
                         Projectile.ai[1] = 0;
                     }
 

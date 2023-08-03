@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
-	public class StringNNeedlesAlcadiz : ModProjectile
+    public class StringNNeedlesAlcadiz : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

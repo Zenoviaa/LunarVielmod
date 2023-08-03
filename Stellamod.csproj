@@ -181,6 +181,7 @@
     <None Remove="Particles\IcingParticle.png" />
     <None Remove="Projectiles\Crossbows\Magical\IcaCircle - Copy.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineGardenWreckerC.png" />

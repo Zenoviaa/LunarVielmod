@@ -62,7 +62,7 @@ namespace Stellamod.WorldG
                 
                 if (Main.expertMode)
                 {
-                    if (GintzeKills >= 100)
+                    if (GintzeKills >= 140)
                     {
                         GintzeDayReset = true;
                         Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
@@ -74,7 +74,7 @@ namespace Stellamod.WorldG
                 }
                 else if(Main.masterMode)
                 {
-                    if (GintzeKills >= 125)
+                    if (GintzeKills >= 185)
                     {
                         GintzeDayReset = true;
                         Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
@@ -85,7 +85,7 @@ namespace Stellamod.WorldG
                 }
                 else
                 {
-                    if (GintzeKills >= 75)
+                    if (GintzeKills >= 100)
                     {
                         GintzeDayReset = true;
                         Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
@@ -104,7 +104,7 @@ namespace Stellamod.WorldG
             }
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset)
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.Next(6) == 0)
                 {
                     Gintzing = true;
                     if (!GintzingText)

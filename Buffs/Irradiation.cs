@@ -36,11 +36,11 @@ namespace Stellamod.Buffs
 
             if (player.wet)
 			{
-                player.lifeRegen -= 26;
+                player.lifeRegen -= 76;
             }
 			else
             {
-                player.lifeRegen -= 16;
+                player.lifeRegen -= 36;
                 if (Main.rand.Next(2) == 0)
                 {
                     int dust = Dust.NewDust(player.position, player.width, player.height, DustID.CursedTorch);

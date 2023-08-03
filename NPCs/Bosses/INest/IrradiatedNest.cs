@@ -263,7 +263,7 @@ namespace Stellamod.NPCs.Bosses.INest
             p2 = NPC.life < NPC.lifeMax * 0.5f;
             if (!p2)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Irradiated_Nest");
             }
             if (p2 && !CutScene)
             {
@@ -318,7 +318,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 }
                 if (NPC.ai[3] == 1250 - 150)
                 {
-                    Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
+                    Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Irradieagle_Wrath");
                     NPC.defense = 24;
                     NPC.ai[3] = 0;
                     NPC.ai[1] = 0;
@@ -331,7 +331,6 @@ namespace Stellamod.NPCs.Bosses.INest
             }
             if (!Spawned)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
                 Spawned = true;
                 NPC.ai[2] = 1;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land"));

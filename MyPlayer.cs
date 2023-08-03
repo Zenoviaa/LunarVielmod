@@ -29,6 +29,7 @@ using Terraria.ModLoader.IO;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Gun;
+using Stellamod.WorldG;
 
 namespace Stellamod
 {
@@ -166,7 +167,10 @@ namespace Stellamod
 
         public bool ShadowCharm = false;
 
-        public bool ClamsPearl;
+		public bool ClamsPearl;
+
+        public bool WindRuneOn;
+        public bool WindRune;
         public bool ShadeRune = false;
         public bool RealityRune = false;
         public bool SpiritPendent = false;
@@ -251,6 +255,10 @@ namespace Stellamod
             {
                 reason = PlayerDeathReason.ByCustomReason(Player.name + " was consumed by the abyss.");
             }
+            if (Player.FindBuffIndex(ModContent.BuffType<Irradiation>()) >= 0)
+            {
+                reason = PlayerDeathReason.ByCustomReason(Player.name + " was contaminated");
+            }
 
         }
         public override void OnHitAnything(float x, float y, Entity victim)
@@ -281,8 +289,22 @@ namespace Stellamod
 
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
-        {
-            if (StealthRune && StealthTime >= 500)
+		{
+			if (WindRune && !Player.HasBuff(ModContent.BuffType<GintzelSheildCD>()) && !Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
+			{
+
+				if (Main.rand.NextBool(4))
+                {
+                    var EntitySource = Player.GetSource_FromThis();
+                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
+                    Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 400);
+                    WindRuneOn = true;
+  
+                }
+			}
+
+			if (StealthRune && StealthTime >= 500)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Rune/StealthRune"), Player.position);
                 for (int m = 0; m < 20; m++)
@@ -432,7 +454,7 @@ namespace Stellamod
             Leather = false;
             ShadowCharm = false;
 
-
+            WindRune = false;
 
 
 
@@ -459,25 +481,26 @@ namespace Stellamod
 		public void ResetStats()
 		{
 			Bossdeath = false;
-			Boots = false;
+			WindRune = false;
 
 
 
 		}
-		
 
 
 
 
-		public override void PostUpdateMiscEffects()
+
+        public override void PostUpdateMiscEffects()
 		{
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
 			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+            base.Player.ManageSpecialBiomeVisuals("Split:Mirage", EventWorld.Gintzing);
 
-
-		}
+        }
 
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
@@ -491,9 +514,23 @@ namespace Stellamod
 			};
 		}
 		public override void PostUpdate()
-		{
+        {
+            Player player = Main.LocalPlayer;
+            if (!player.active)
+                return;
+            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
             //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
-
+            if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
+                WindRuneOn = false;
+                player.AddBuff(ModContent.BuffType<GintzelSheildCD>(), 900);
+            }
+            if (!WindRune && Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
+                player.ClearBuff(ModContent.BuffType<GintzelSheild>());
+            }
             if (GHE)
             {
                 if (GHETarget.active)
@@ -625,10 +662,7 @@ namespace Stellamod
                 }
             }
 
-            Player player = Main.LocalPlayer;
-            if (!player.active)
-                return;
-            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
+
 
             if (HMArmor)
             {
@@ -637,7 +671,8 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
                     Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }

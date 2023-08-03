@@ -3026,6 +3026,21 @@ Mods: {
 				DisplayName: Resting Grounds I
 				Tooltip: ""
 			}
+
+			ShinobiTome: {
+				DisplayName: Shinobi Tome
+				Tooltip: ""
+			}
+
+			GintzlSpear: {
+				DisplayName: Gintzl Spear
+				Tooltip: ""
+			}
+
+			RuneOfWind: {
+				DisplayName: Rune Of Wind
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3364,8 +3379,8 @@ Mods: {
 			}
 
 			HMMinionBuff: {
-				DisplayName: H M Minion Buff
-				Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+				DisplayName: Gintzl Soliders
+				Description: Thai soliders shall protect thee
 			}
 
 			IrradiatedCreeperBuff: {
@@ -3406,6 +3421,16 @@ Mods: {
 			SolMothBuff: {
 				DisplayName: Sol Moth Buff
 				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+			}
+
+			GintzelSheild: {
+				DisplayName: Gintzel Sheild
+				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+			}
+
+			GintzelSheildCD: {
+				DisplayName: Gintzel Sheild C D
+				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
 			}
 		}
 
@@ -3502,6 +3527,8 @@ Mods: {
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
 			GintzeWindRider.DisplayName: Gintze Wind Rider
 			Gintzling.DisplayName: Gintzling
+			GintzeSpearman.DisplayName: Gintze Spearman
+			GintzeWarrior.DisplayName: Gintze Warrior
 		}
 
 		Projectiles: {
@@ -3898,6 +3925,10 @@ Mods: {
 			HuntrianArrow.DisplayName: Huntrian Arrow
 			HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
 			HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
+			GintzeSpear.DisplayName: Gintze Spear
+			ShinobiKnife.DisplayName: Shinobi Knife
+			GintzeSpearMini.DisplayName: Gintze Spear Mini
+			WindeffectGintzl.DisplayName: Windeffect Gintzl
 		}
 	}
 }
