@@ -58,10 +58,10 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Main.tileFrameImportant[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 7;
-			TileObjectData.newTile.Width = 8;
+			TileObjectData.newTile.Width = 7;
 			MineResist = 8f;
 			MinPick = 200;
-			TileObjectData.newTile.DrawYOffset = 6; // So the tile sinks into the ground
+			TileObjectData.newTile.DrawYOffset = 14; // So the tile sinks into the ground
 			//TileObjectData.newTile.DrawXOffset = -4; // So the tile sinks into the ground
 			Main.tileBlockLight[Type] = true;
 
@@ -75,7 +75,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-			Main.tileOreFinderPriority[Type] = 800;
+			Main.tileOreFinderPriority[Type] = 700;
 			TileID.Sets.HasOutlines[Type] = false;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 		}
@@ -188,9 +188,9 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{
-			r = 0.2f;
-			g = 0.165f;
-			b = 0.12f;
+			r = 0.1f;
+			g = 0.2f;
+			b = 0.2f;
 		}
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
@@ -205,7 +205,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
 			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.06f, 0.03f, 0.04f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+			Color color = new Color(0.01f, 0.05f, 0.02f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 

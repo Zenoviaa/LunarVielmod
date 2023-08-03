@@ -3021,6 +3021,11 @@ Mods: {
 				DisplayName: Gothivias Seal
 				Tooltip: ""
 			}
+
+			RestingGroundsI: {
+				DisplayName: Resting Grounds I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3496,6 +3501,7 @@ Mods: {
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
 			GintzeWindRider.DisplayName: Gintze Wind Rider
+			Gintzling.DisplayName: Gintzling
 		}
 
 		Projectiles: {
