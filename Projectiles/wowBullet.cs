@@ -34,8 +34,9 @@ namespace Stellamod.Projectiles
 			AIType = ProjectileID.Bullet; // Act exactly like default Bullet
 		}
 		public override void AI()
-		{
-			if (++Projectile.frameCounter >= 10)
+        {
+
+            if (++Projectile.frameCounter >= 10)
 			{
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= 7)

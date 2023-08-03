@@ -59,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sounds/Music/SingularityFragment");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sounds/SingularityFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
         }
         public override void FindFrame(int frameHeight)

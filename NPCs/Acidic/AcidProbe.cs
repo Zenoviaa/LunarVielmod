@@ -181,7 +181,7 @@ namespace Stellamod.NPCs.Acidic
             }
             if (Timer == 300)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Npc/AcidProbe1"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe1"), NPC.position);
                 RotSpeed = 0.3f;
                 NPC.ai[3] = 35;
                 NPC.netUpdate = true;
@@ -190,7 +190,7 @@ namespace Stellamod.NPCs.Acidic
             {
                 if (Timer % 11 == 0)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Npc/AcidProbe3"), NPC.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3"), NPC.position);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                     SoundEngine.PlaySound(SoundID.Item8, NPC.position);
@@ -204,7 +204,7 @@ namespace Stellamod.NPCs.Acidic
             }
             if (Timer == 450)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Npc/AcidProbe2"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe2"), NPC.position);
                 RotSpeed = 0.1f;
                 Timer = 2;
                 NPC.ai[3] = 15;

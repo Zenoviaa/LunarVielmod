@@ -209,12 +209,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             if (player.GetModPlayer<MyPlayer>().heart)
             {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadHeart");
                 NPC.Center = player.Center - Vector2.UnitY * (-200);
-                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/DreadHeart");
+
             }
             else
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/DreadmireV2");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadmireV2");
             }
             Vector2 targetPos;
             if (NPC.ai[2] == 1)

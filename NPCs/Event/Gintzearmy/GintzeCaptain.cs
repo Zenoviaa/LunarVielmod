@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.5f) : 0f;
+            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.2f) : 0f;
         }
 		public override void AI()
 		{

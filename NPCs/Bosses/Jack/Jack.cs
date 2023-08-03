@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.noGravity = false;
             NPC.boss = true;
             NPC.alpha = 255;
-            Music = MusicLoader.GetMusicSlot(Mod, "Stellamod/Assets/Sounds/Jack");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)

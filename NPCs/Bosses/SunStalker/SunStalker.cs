@@ -65,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.scale = 1f;
-            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/SunStalker");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }
         Vector2 targetPos;
         public override void OnKill()

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories.Runes;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Stellamod.UI.Systems;
 using System;
@@ -10,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.StringnNeedles.Verl
 {
-	public class StringNNeedleVerlia : ModProjectile
+    public class StringNNeedleVerlia : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
