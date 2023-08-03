@@ -3425,12 +3425,12 @@ Mods: {
 
 			GintzelSheild: {
 				DisplayName: Gintzel Sheild
-				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+				Description: + 15 Defence!
 			}
 
 			GintzelSheildCD: {
-				DisplayName: Gintzel Sheild C D
-				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+				DisplayName: Gintzel Sheild Cool Down
+				Description: You can not have the Gintzel Sheild now
 			}
 		}
 

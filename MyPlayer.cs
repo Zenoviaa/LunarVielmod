@@ -30,6 +30,8 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Gun;
 using Stellamod.WorldG;
+using Terraria.GameContent;
+using Stellamod.NPCs.Bosses.Verlia;
 
 namespace Stellamod
 {
@@ -491,17 +493,18 @@ namespace Stellamod
 
 
 
-        public override void PostUpdateMiscEffects()
+		public override void PostUpdateMiscEffects()
 		{
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
 			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
-            base.Player.ManageSpecialBiomeVisuals("Split:Mirage", EventWorld.Gintzing);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
 
+
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
-
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
