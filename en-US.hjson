@@ -1904,12 +1904,12 @@ Mods: {
 
 			AquaticHealingNecklace: {
 				DisplayName: Aquatic Healing Necklace
-				Tooltip: ""
+				Tooltip: Aquatic Healing Necklace
 			}
 
 			ArncharMagazine: {
 				DisplayName: Arnchar Magazine
-				Tooltip: ""
+				Tooltip: Increases ranged critical strike chance by 5%
 			}
 
 			ClamsPearl: {
@@ -1924,6 +1924,11 @@ Mods: {
 
 			CoralBand: {
 				DisplayName: Coral Band
+				Tooltip: ""
+			}
+
+			GintzlMetal: {
+				DisplayName: Gintzl Metal
 				Tooltip: ""
 			}
 
@@ -1944,7 +1949,7 @@ Mods: {
 
 			LeatherGlove: {
 				DisplayName: Leather Glove
-				Tooltip: ""
+				Tooltip: Increases throwing damage and throwing velocity.
 			}
 
 			LunarBand: {
@@ -1964,17 +1969,17 @@ Mods: {
 
 			RuneOfCorsage: {
 				DisplayName: Rune Of Corsage
-				Tooltip: "Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned."
+				Tooltip: Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned.
 			}
 
 			RuneOfDetonation: {
 				DisplayName: Rune Of Detonation
-				Tooltip: "Has a chance to explode enemies doing double damage"
+				Tooltip: Has a chance to explode enemies doing double damage
 			}
 
 			RuneOfReality: {
 				DisplayName: Rune Of Reality
-				Tooltip: "When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit"
+				Tooltip: When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit
 			}
 
 			RuneOfShade: {
@@ -1984,12 +1989,12 @@ Mods: {
 
 			RuneOfStealth: {
 				DisplayName: Rune Of Stealth
-				Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form ""
+				Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form "
 			}
 
 			ShadeCharm: {
 				DisplayName: Shade Charm
-				Tooltip: "Decreases Mana Cost and lights up in the night"
+				Tooltip: Decreases Mana Cost and lights up in the night
 			}
 
 			ShadeScarf: {
@@ -2019,7 +2024,7 @@ Mods: {
 
 			SunGlyph: {
 				DisplayName: Sun Glyph
-				Tooltip: ""
+				Tooltip: Greatly increases all damage in the daylight.
 			}
 
 			WoodShield: {
@@ -2064,12 +2069,12 @@ Mods: {
 
 			AstrasilkHead: {
 				DisplayName: Astrasilk Head
-				Tooltip: ""
+				Tooltip: Increases Mana Regen by 4%
 			}
 
 			AstrasilkLegs: {
 				DisplayName: Astrasilk Legs
-				Tooltip: ""
+				Tooltip: Increases movement speed by 20%
 			}
 
 			DreamerBody: {
@@ -2104,17 +2109,17 @@ Mods: {
 
 			ForestCoreBody: {
 				DisplayName: Forest Core Body
-				Tooltip: ""
+				Tooltip: Increases ranged crit chance by 2%
 			}
 
 			ForestCoreHead: {
 				DisplayName: Forest Core Head
-				Tooltip: ""
+				Tooltip: Increases ranged ramage by 2%
 			}
 
 			ForestCoreLegs: {
 				DisplayName: Forest Core Legs
-				Tooltip: ""
+				Tooltip: Increases movement speed by 10%
 			}
 
 			HeavyMetalBody: {
@@ -2134,17 +2139,17 @@ Mods: {
 
 			LeatherBody: {
 				DisplayName: Leather Body
-				Tooltip: ""
+				Tooltip: " Increases throwing damage by 25%"
 			}
 
 			LeatherHead: {
 				DisplayName: Leather Head
-				Tooltip: ""
+				Tooltip: Increases throwing critical strike chance by 4%
 			}
 
 			LeatherLegs: {
 				DisplayName: Leather Legs
-				Tooltip: ""
+				Tooltip: Increases movement speed by 10%
 			}
 
 			ShadeWraithBody: {
@@ -2199,7 +2204,7 @@ Mods: {
 
 			EDR: {
 				DisplayName: E D R
-				Tooltip: ""
+				Tooltip: that big red button probably will do something you'll regret... Your conscience advises you to press it and see what happens!
 			}
 
 			JackoBag: {
@@ -2259,7 +2264,7 @@ Mods: {
 
 			BlankRune: {
 				DisplayName: Blank Rune
-				Tooltip: ""
+				Tooltip: This doesn�t look like it will do anything by itself
 			}
 
 			ConvulgingMater: {
@@ -2274,7 +2279,7 @@ Mods: {
 
 			DarkEssence: {
 				DisplayName: Dark Essence
-				Tooltip: ""
+				Tooltip: Pure shadows conjured by the darkest of entities.
 			}
 
 			DreadFoil: {
@@ -2294,7 +2299,7 @@ Mods: {
 
 			GelatinOzze: {
 				DisplayName: Gelatin Ozze
-				Tooltip: ""
+				Tooltip: '''Jellyfish are scary...	 Trust me...'''
 			}
 
 			AncientLizardMetal: {
@@ -2369,7 +2374,7 @@ Mods: {
 
 			Ivythorn: {
 				DisplayName: Ivythorn
-				Tooltip: ""
+				Tooltip: A poisonous plant which weaves its way into entities
 			}
 
 			LivingAlloy: {
@@ -2379,7 +2384,7 @@ Mods: {
 
 			LostScrap: {
 				DisplayName: Lost Scrap
-				Tooltip: ""
+				Tooltip: A shadow of a former extreme technological advancement
 			}
 
 			SingulariumBar: {
@@ -2394,7 +2399,7 @@ Mods: {
 
 			StarSilk: {
 				DisplayName: Star Silk
-				Tooltip: ""
+				Tooltip: Divine silk made of pure astral energy.
 			}
 
 			StormEssence: {
@@ -2469,7 +2474,7 @@ Mods: {
 
 			VirulentPlating: {
 				DisplayName: Virulent Plating
-				Tooltip: ""
+				Tooltip: Radiating within the acid of entities of the tocins
 			}
 
 			WanderingFlame: {
@@ -2614,7 +2619,7 @@ Mods: {
 
 			WintersStom: {
 				DisplayName: Winters Stom
-				Tooltip: ""
+				Tooltip: Every third shot will be a powerful winter shot today explodes into snowflakes that deal damage
 			}
 
 			ArchariliteRaysword: {
@@ -2644,7 +2649,7 @@ Mods: {
 
 			FrostBringer: {
 				DisplayName: Frost Bringer
-				Tooltip: ""
+				Tooltip: Damage reduces the farther you are away from the target
 			}
 
 			IrradiatedGreatBlade: {
@@ -3011,6 +3016,11 @@ Mods: {
 				DisplayName: Shrine Sol Moth I
 				Tooltip: ""
 			}
+
+			GothiviasSeal: {
+				DisplayName: Gothivias Seal
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3114,6 +3124,7 @@ Mods: {
 			ShrineHalhurishC.MapEntry: Shrine Halhurish C
 			ShrineLights.MapEntry: Shrine Lights
 			ShrineSolMothC.MapEntry: Shrine Sol Moth C
+			RestingGrounds.MapEntry: Resting Grounds
 		}
 
 		Buffs: {
@@ -3879,6 +3890,8 @@ Mods: {
 			MoonMothMinion.DisplayName: Moon Moth Minion
 			SolMothMinion.DisplayName: Sol Moth Minion
 			HuntrianArrow.DisplayName: Huntrian Arrow
+			HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
+			HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
 		}
 	}
 }
