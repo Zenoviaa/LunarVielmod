@@ -3011,6 +3011,21 @@ Mods: {
 				DisplayName: Shrine Sol Moth I
 				Tooltip: ""
 			}
+
+			GothiviasSeal: {
+				DisplayName: Gothivias Seal
+				Tooltip: ""
+			}
+
+			GintzlMetal: {
+				DisplayName: Gintzl Metal
+				Tooltip: ""
+			}
+
+			RestingGroundsI: {
+				DisplayName: Resting Grounds I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3114,6 +3129,7 @@ Mods: {
 			ShrineHalhurishC.MapEntry: Shrine Halhurish C
 			ShrineLights.MapEntry: Shrine Lights
 			ShrineSolMothC.MapEntry: Shrine Sol Moth C
+			RestingGrounds.MapEntry: Resting Grounds
 		}
 
 		Buffs: {
