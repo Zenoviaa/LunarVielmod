@@ -1949,7 +1949,7 @@ Mods: {
 
 			LunarBand: {
 				DisplayName: Lunar Band
-				Tooltip: ""
+				Tooltip: "always increased critical strike chance & increased damage in the night "
 			}
 
 			OceanScroll: {
@@ -1964,17 +1964,17 @@ Mods: {
 
 			RuneOfCorsage: {
 				DisplayName: Rune Of Corsage
-				Tooltip: ""
+				Tooltip: "Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned."
 			}
 
 			RuneOfDetonation: {
 				DisplayName: Rune Of Detonation
-				Tooltip: ""
+				Tooltip: "Has a chance to explode enemies doing double damage"
 			}
 
 			RuneOfReality: {
 				DisplayName: Rune Of Reality
-				Tooltip: ""
+				Tooltip: "When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit"
 			}
 
 			RuneOfShade: {
@@ -1984,12 +1984,12 @@ Mods: {
 
 			RuneOfStealth: {
 				DisplayName: Rune Of Stealth
-				Tooltip: ""
+				Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form ""
 			}
 
 			ShadeCharm: {
 				DisplayName: Shade Charm
-				Tooltip: ""
+				Tooltip: "Decreases Mana Cost and lights up in the night"
 			}
 
 			ShadeScarf: {
