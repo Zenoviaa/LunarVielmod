@@ -65,7 +65,7 @@ namespace Stellamod.WorldG
                     if (GintzeKills >= 100)
                     {
                         GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 191, 165, 160);
+                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -77,7 +77,7 @@ namespace Stellamod.WorldG
                     if (GintzeKills >= 125)
                     {
                         GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 191, 165, 160);
+                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -88,14 +88,14 @@ namespace Stellamod.WorldG
                     if (GintzeKills >= 75)
                     {
                         GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 191, 165, 160);
+                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
                     }
                 }
 
-                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 1);
+                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
             }
             if (!Main.dayTime)
             {
@@ -109,7 +109,7 @@ namespace Stellamod.WorldG
                     Gintzing = true;
                     if (!GintzingText)
                     {
-                        Main.NewText("The Gintze army is aproching...", 191, 165, 160);
+                        Main.NewText("The Gintze army is aproching...", 34, 121, 100);
                         GintzingText = true;
                     }
                 }
