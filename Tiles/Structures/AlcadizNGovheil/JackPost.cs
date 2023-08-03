@@ -112,29 +112,41 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			{
 
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Jack>());
+				NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Jack>());
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+            {
+
+                Main.NewText("...", Color.Gold);
+
+
+
 			}
-			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-			{
-
-				Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
-
-
-
-			}
-
 			else
 			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+                if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+                {
+
+                    Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
 
 
-			}
-			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-			{
-				Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-			}
+
+                }
+
+                else
+                {
+                    Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+
+
+                }
+                if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+                {
+                    Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+                }
+            }
+
 
 
 

@@ -91,7 +91,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Projectile.height = 28;
 			// Makes the minion go through tiles freely
 			Projectile.tileCollide = false;
-			Projectile.alpha = 100;
+			Projectile.alpha = 60;
 			// These below are needed for a minion weapon
 			// Only controls if it deals damage to enemies on contact (more on that later)
 			Projectile.friendly = true;
@@ -116,27 +116,55 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 		public override bool PreDraw(ref Color lightColor)
         {
+
             Player player = Main.player[Projectile.owner];
-            var effects = player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-			Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
+            int distance = (int)(Projectile.Center - player.Center).Length();
+            if (distance > 80f)
+            {
+                Projectile.spriteDirection = Projectile.direction;
+                var effects = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+                Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+                Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
 
-			Vector2 drawOrigin = drawFrame.Size() / 2;
+                Vector2 drawOrigin = drawFrame.Size() / 2;
 
-			for (int k = 0; k < Projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
+                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-				float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
 
-				Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
+                    Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
 
-				float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
-				Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
+                    float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
+                    Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
 
-			}
+                }
+            }
+            else
+            {
+                Projectile.spriteDirection = player.direction;
+                var effects = player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+                Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+                Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
 
-			Lighting.AddLight(new Vector2(Projectile.Center.X, Projectile.Center.Y), 0.075f * 2, 0.075f * 2, 0.075f * 2);
+                Vector2 drawOrigin = drawFrame.Size() / 2;
+
+                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
+
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+
+                    Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
+
+                    float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
+                    Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
+
+                }
+            }
+
+            Lighting.AddLight(new Vector2(Projectile.Center.X, Projectile.Center.Y), 0.075f * 2, 0.075f * 2, 0.075f * 2);
 
 			return false;
 		}
@@ -302,7 +330,6 @@ namespace Stellamod.Items.Weapons.Summon
 			}
 			else
             {
-                Projectile.spriteDirection = player.direction;
                 Projectile.rotation = Projectile.velocity.X * 0.08f;
 				// Minion doesn't have a target: return to player and idle
 				if (distanceToIdlePosition > 600f)
@@ -386,7 +413,7 @@ namespace Stellamod.Items.Weapons.Summon
             Projectile.height = 28;
             // Makes the minion go through tiles freely
             Projectile.tileCollide = false;
-            Projectile.alpha = 100;
+            Projectile.alpha = 60;
             // These below are needed for a minion weapon
             // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
@@ -411,27 +438,56 @@ namespace Stellamod.Items.Weapons.Summon
         }
         public override bool PreDraw(ref Color lightColor)
         {
+
             Player player = Main.player[Projectile.owner];
-            var effects = player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
-
-            Vector2 drawOrigin = drawFrame.Size() / 2;
-
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            int distance = (int)(Projectile.Center - player.Center).Length();
+            if (distance > 80f)
             {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
+                Projectile.spriteDirection = Projectile.direction;
+				var effects = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+                Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+                Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
 
-                float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                Vector2 drawOrigin = drawFrame.Size() / 2;
 
-                Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
+                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-                float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
-                Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
 
+                    Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
+
+                    float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
+                    Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
+
+                }
+            }
+			else
+			{
+                Projectile.spriteDirection = player.direction;
+				var effects = player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+                Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+                Rectangle drawFrame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
+
+                Vector2 drawOrigin = drawFrame.Size() / 2;
+
+                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
+
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+
+                    Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
+
+                    float sineAdd = (float)Math.Sin(Main.timeForVisualEffects / 80) + 2;
+                    Color col = new Color((int)(7.5f * sineAdd), (int)(16.5f * sineAdd), (int)(18f * sineAdd), 0);
+
+                }
             }
 
-            Lighting.AddLight(new Vector2(Projectile.Center.X, Projectile.Center.Y), 0.075f * 2, 0.075f * 2, 0.075f * 2);
+
+			Lighting.AddLight(new Vector2(Projectile.Center.X, Projectile.Center.Y), 0.075f * 2, 0.075f * 2, 0.075f * 2);
 
             return false;
         }
@@ -596,7 +652,7 @@ namespace Stellamod.Items.Weapons.Summon
             }
             else
             {
-                Projectile.spriteDirection = player.direction;
+
                 Projectile.rotation = Projectile.velocity.X * 0.08f;
                 // Minion doesn't have a target: return to player and idle
                 if (distanceToIdlePosition > 600f)

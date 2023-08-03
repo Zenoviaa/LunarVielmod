@@ -71,7 +71,6 @@ namespace Stellamod.WorldG
 			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen != -1)
 			{
-
 				tasks.Insert(CathedralGen + 3, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Testing", WorldGenTest));

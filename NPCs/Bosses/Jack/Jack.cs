@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.noGravity = false;
             NPC.boss = true;
             NPC.alpha = 255;
-            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Jack");
+            Music = MusicLoader.GetMusicSlot(Mod, "Stellamod/Assets/Sounds/Jack");
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)
@@ -242,8 +242,6 @@ namespace Stellamod.NPCs.Bosses.Jack
             }
             if (NPC.ai[2] == 0)
             {
-
-                NPC.Center = player.Center - Vector2.UnitX * (200);
                 NPC.ai[2] = 10;
             }
             p2 = NPC.life < NPC.lifeMax * 0.5f;
