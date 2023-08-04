@@ -84,13 +84,11 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ItemID.StoneBlock, 100);
 			recipe.AddTile(TileID.Anvils);
 			
-			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
 

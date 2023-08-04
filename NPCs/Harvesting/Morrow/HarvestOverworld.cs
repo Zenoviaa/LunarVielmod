@@ -133,7 +133,6 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
