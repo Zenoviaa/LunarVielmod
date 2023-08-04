@@ -65,10 +65,10 @@ namespace Stellamod.WorldG
 
             if (Gintzing)
             {
-                
+       
                 if (Main.expertMode)
                 {
-                    if (GintzeKills >= 140)
+                    if (GintzeKills >= 110)
                     {
                         GintzingBoss = true;
                         GintzingText = false;
@@ -79,7 +79,7 @@ namespace Stellamod.WorldG
                 }
                 else if(Main.masterMode)
                 {
-                    if (GintzeKills >= 185)
+                    if (GintzeKills >= 145)
                     {
                         GintzingBoss = true;      
                         GintzingText = false;
@@ -89,7 +89,7 @@ namespace Stellamod.WorldG
                 }
                 else
                 {
-                    if (GintzeKills >= 100)
+                    if (GintzeKills >= 85)
                     {
                         GintzingBoss = true;
                         GintzingText = false;

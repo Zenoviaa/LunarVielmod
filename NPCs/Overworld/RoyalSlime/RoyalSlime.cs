@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
@@ -44,11 +45,11 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 			AIType = NPCID.BlueSlime;
 			AnimationType = NPCID.BlueSlime;
 		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			return SpawnCondition.OverworldDay.Chance * 0.05f;
-		}
-		public override void OnKill()
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return (Main.dayTime && spawnInfo.Player.ZoneOverworldHeight && !spawnInfo.Player.ZoneBeach && !spawnInfo.Player.ZoneJungle && !spawnInfo.Player.ZoneDesert && !spawnInfo.Player.ZoneSnow && !spawnInfo.Player.ZoneCrimson && !spawnInfo.Player.ZoneSkyHeight && !EventWorld.Gintzing ? (0.80f) : 0f);
+        }
+        public override void OnKill()
         {
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.SlimeCrown, 1, false, 0, false, false);
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(1, 20));
