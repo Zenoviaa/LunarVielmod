@@ -3033,7 +3033,7 @@ Mods: {
 			}
 
 			GintzlSpear: {
-				DisplayName: Gintzl Spear
+				DisplayName: Gintzl Javelin
 				Tooltip: ""
 			}
 
@@ -3540,6 +3540,10 @@ Mods: {
 			GintzeSpearman.DisplayName: Gintze Spearman
 			GintzeWarrior.DisplayName: Gintze Warrior
 			CommanderGintzia.DisplayName: Commander Gintzia
+			GintziaHand.DisplayName: Gintzia Hand
+			WinterSoul1.DisplayName: Winter Soul
+			WinterSoul2.DisplayName: Winter Soul
+			WinterSoul3.DisplayName: Winter Soul
 		}
 
 		Projectiles: {
@@ -3940,6 +3944,7 @@ Mods: {
 			ShinobiKnife.DisplayName: Shinobi Knife
 			GintzeSpearMini.DisplayName: Gintze Spear Mini
 			WindeffectGintzl.DisplayName: Windeffect Gintzl
+			Gintzianado.DisplayName: Gintzianado
 		}
 	}
 }

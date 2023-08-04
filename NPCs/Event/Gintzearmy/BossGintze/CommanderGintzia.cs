@@ -29,6 +29,8 @@ using Terraria.Graphics.Effects;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
+using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.WorldG;
 
 namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 {
@@ -164,9 +166,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-		}
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return (spawnInfo.Player.ZoneOverworldHeight && !NPC.AnyNPCs(ModContent.NPCType<CommanderGintzia>()) && EventWorld.GintzingBoss) ? (53.5f) : 0f;
+        }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			NPC.Size = new Vector2(42, 67);
 			NPC.damage = 1;
@@ -244,8 +250,32 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		Vector2 TeleportPos = Vector2.Zero;
 		bool boom = false;
 		float turnMod = 0f;
-
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            for (int k = 0; k < 20; k++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
+            }
+            if (NPC.life <= 0)
+            {
+				EventWorld.GintzeWin();
+                EventWorld.GintzeKills += 1;
+                for (int i = 0; i < 20; i++)
+                {
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
+                    Main.dust[num].noGravity = true;
+                    Dust expr_62_cp_0 = Main.dust[num];
+                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+                    Dust expr_92_cp_0 = Main.dust[num];
+                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
+                    if (Main.dust[num].position != NPC.Center)
+                    {
+                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+                    }
+                }
+            }
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
 
@@ -768,15 +798,11 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 			if (timer == 2)
-			{
-
-
-			//	float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-			//	float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-
-				//Summon hands here
-
-			}
+            {
+                var entitySource = NPC.GetSource_FromThis();
+                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
+                //Summon hands here
+            }
 			if (timer == 3)
 			{
 				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);

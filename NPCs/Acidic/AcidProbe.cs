@@ -168,14 +168,20 @@ namespace Stellamod.NPCs.Acidic
         {
             NPC.spriteDirection = NPC.direction;
 
-            Timer++;
+
                  Player player = Main.player[NPC.target];
             int Distance = (int)(NPC.Center - player.Center).Length();
-            if (Distance > 200f)
+            if (Distance > 300f)
             {
-                NPC.ai[2] = 299;
+
+                Timer = 299;
 
             }
+            else
+            {
+                Timer++;
+            }
+
             if (Timer == 300)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe1"), NPC.position);

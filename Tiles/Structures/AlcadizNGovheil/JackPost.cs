@@ -18,11 +18,12 @@ using System;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Jack;
+using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
-	
-	public class JackPost : ModTile
+
+    public class JackPost : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{

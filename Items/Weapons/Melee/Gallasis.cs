@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.crit = 12; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = 3;
             Item.UseSound = SoundID.Item1; // The sound when the weapon is being used.
 		}
 		public override void MeleeEffects(Player player, Rectangle hitbox)

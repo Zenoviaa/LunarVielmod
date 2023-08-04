@@ -87,6 +87,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					counter++;
 					NPC.velocity *= 0f;
 					Jump();
+
 					break;
 
 				case ActionState.Wait:
@@ -143,19 +144,23 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				case ActionState.Shoot:				
 					rect = new Rectangle(0, 2 * 104, 40, 10 * 104);
 					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
+                    NPC.netUpdate = true;
+                    break;
 				case ActionState.Wait:
 					rect = new Rectangle(0, 1 * 104, 40, 1 * 104);
 					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 60, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
+                    NPC.netUpdate = true;
+                    break;
 				case ActionState.Starter:
 					rect = new Rectangle(0, 0, 40, 11 * 104);
 					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 9, 11, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
+                    NPC.netUpdate = true;
+                    break;
 				case ActionState.Death:
 					rect = new Rectangle(0, 1 * 104, 40, 1 * 104);
 					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 60, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-					break;
+                    NPC.netUpdate = true;
+                    break;
 			}
 
 
@@ -257,8 +262,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (timer == 2)
 			{
 				int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VerliaB>());
-
-			}
+                Main.npc[index].netUpdate = true;
+            }
 			if (timer == 3)
 			{
 				NPC.SimpleStrikeNPC(99999, 1, crit: false, NPC.knockBackResist);

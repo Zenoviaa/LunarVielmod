@@ -37,7 +37,7 @@ namespace Stellamod.WorldG
         public static bool GintzeDayReset;
         public static int GintzeKills;
 
-
+        public static bool GintzingBoss;
         //SoulStorm--------------------------
         public static bool SoulStorm;
 
@@ -45,9 +45,15 @@ namespace Stellamod.WorldG
 
 
 
-        public void GintzeKillAdd()
+        public static void GintzeWin()
         {
-            GintzeKills = 0;
+            if (GintzingBoss)
+            {
+                GintzeDayReset = true;
+                Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
+                GintzeKills = 0;
+                GintzingBoss = false;
+            }
         }
         public override void PostUpdateWorld()
         {
@@ -64,8 +70,7 @@ namespace Stellamod.WorldG
                 {
                     if (GintzeKills >= 140)
                     {
-                        GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
+                        GintzingBoss = true;
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -76,8 +81,7 @@ namespace Stellamod.WorldG
                 {
                     if (GintzeKills >= 185)
                     {
-                        GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
+                        GintzingBoss = true;      
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -87,8 +91,7 @@ namespace Stellamod.WorldG
                 {
                     if (GintzeKills >= 100)
                     {
-                        GintzeDayReset = true;
-                        Main.NewText("The Gintze army has been defeated!", 34, 121, 100);
+                        GintzingBoss = true;
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -102,7 +105,7 @@ namespace Stellamod.WorldG
                 TryForGintze = false;
                 GintzeDayReset = false;
             }
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss)
             {
                 if (Main.rand.Next(6) == 0)
                 {

@@ -38,7 +38,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<GintzeSpear>();
             Item.shootSpeed = 15f;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = 3;
             Item.consumable = true;
             Item.maxStack = 999;
         }

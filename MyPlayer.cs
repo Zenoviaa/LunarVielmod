@@ -681,7 +681,7 @@ namespace Stellamod
                 HMArmorTime++;
                 if (HMArmorTime <= 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GintzSummon"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
 
 					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
@@ -692,7 +692,13 @@ namespace Stellamod
             }
             else
             {
-                player.ClearBuff(ModContent.BuffType<HMMinionBuff>());
+				if (Player.HasBuff(ModContent.BuffType<HMMinionBuff>()))
+
+                {
+                    player.ClearBuff(ModContent.BuffType<HMMinionBuff>());
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GintzSummon2"), player.position);
+                }
+                
                 HMArmorTime = 0;
             }
 
