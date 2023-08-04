@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Items.Armors.Vanity.Astolfo;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Terraria;
 using Terraria.ID;
@@ -49,7 +50,11 @@ namespace Stellamod.NPCs.Global
 				// This item sells for the normal price.
 				shop.Add(ModContent.ItemType<FlamePowder>());
 
-
+				if (Main.hardMode)
+                {
+					shop.Add(ModContent.ItemType<RustlockPistol>());
+					shop.Add(ModContent.ItemType<Rustvolver>());
+				}
 				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
 				// Editing item.value in SetupShop is an incorrect approach.
 

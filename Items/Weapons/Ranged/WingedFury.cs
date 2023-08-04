@@ -40,6 +40,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAmmo = AmmoID.Arrow;
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 31;
+            Item.scale = 0.7f;
             Item.useTime = 31;
             Item.consumeAmmoOnLastShotOnly = true;
         }

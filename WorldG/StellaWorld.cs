@@ -65,17 +65,18 @@ namespace Stellamod.WorldG
 
 				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				
+				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenAstrasilkOre));
+				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
 			}
 
 			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen != -1)
 			{
 
-				tasks.Insert(CathedralGen + 3, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Testing", WorldGenTest));
-				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Village", WorldGenVillage));
+				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen Testing", WorldGenTest));
+				tasks.Insert(CathedralGen + 8, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 			}
 
 			
@@ -170,8 +171,12 @@ namespace Stellamod.WorldG
 					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome");
 
 
-					Point Loc2 = new Point(smx - 10, smy - 70);
-					WorldUtils.Gen(Loc2, new Shapes.Circle(15, 20), new Actions.SetTile(TileID.Dirt));
+					Point Loc2 = new Point(smx - 10, smy - 40);
+					WorldUtils.Gen(Loc2, new Shapes.Circle(30, 50), new Actions.SetTile(TileID.Dirt));
+					
+					
+					Point Loc3 = new Point(smx + 616, smy - 40);
+					WorldUtils.Gen(Loc3, new Shapes.Circle(30, 70), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -310,9 +315,9 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(abysmx, abysmy);
-					WorldGen.TileRunner(Loc.X, Loc.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc.X, Loc.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc.X, Loc.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc.X + 200, Loc.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc.X + 200, Loc.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc.X + 200, Loc.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
 					placed = true;
 
 
@@ -361,18 +366,47 @@ namespace Stellamod.WorldG
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-			progress.Message = "Scorching Gild burning into the world";
+			progress.Message = "Scorching Gild and Arnchar burning into the world";
 
 
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-				int x = WorldGen.genRand.Next(0, Main.maxTilesX / 3);
+				int x = WorldGen.genRand.Next(0, Main.maxTilesX / 2);
 				int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 9), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
+
+				
 			}
+
+		
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+				
+			
+		}
+		private void WorldGenArncharOre(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Scorching Arnchar into the world";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+			
+
+				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int yz = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 9), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
+			}
+
+
+			// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+
+
 		}
 		private void WorldGenFrileOre(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -384,10 +418,38 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 13), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
+			}
+		}
+
+		private void WorldGenAstrasilkOre(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Stars inverting throughout the Abysm!";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+
+				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int y = WorldGen.genRand.Next(0, Main.maxTilesY);
+
+				Tile tile = Main.tile[x, y];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == ModContent.TileType<AbyssalDirt>() ||
+					tile.TileType == TileID.IceBlock))
+				{
+					continue;
+				}
+
+
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(30, 50), WorldGen.genRand.Next(10, 60), ModContent.TileType<AstrasilkOreTile>());
 			}
 		}
 

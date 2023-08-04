@@ -43,12 +43,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shootSpeed = 15;
 			Item.useAmmo = AmmoID.Bullet;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.GoldBar, 1);
-            recipe.AddTile(TileID.HeavyWorkBench);
-            recipe.Register();
-        }
+
     }
 }

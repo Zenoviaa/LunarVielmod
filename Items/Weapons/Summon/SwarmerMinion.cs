@@ -83,14 +83,7 @@ namespace Stellamod.Items.Weapons.Summon
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ProjectileType<SwarmerMinion>();
 		}
-		public override void AddRecipes()
-		{
-            Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<DarkEssence>(), 15);
-			recipe.AddIngredient(ItemType<GelatinOzze>(), 10);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
+	
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies

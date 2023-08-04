@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.Blackout, 180);
             }
@@ -104,6 +104,8 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
         {
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(0, 2));
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
+
+            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<StarSilk>(), Main.rand.Next(1, 3), false, 0, false, false);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

@@ -27,7 +27,7 @@ namespace Stellamod.Tiles
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(0, 100, 120), name);
             // name.SetDefault("Arnchar");
-            RegisterItemDrop(ModContent.ItemType<CoreGem>());
+
         }
         public override bool CanExplode(int i, int j)
 		{

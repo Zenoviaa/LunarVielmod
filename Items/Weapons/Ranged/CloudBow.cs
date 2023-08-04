@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void SetDefaults() 
 		{
-			Item.damage = 31;
+			Item.damage = 81;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -64,12 +64,6 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			return false; // return false because we don't want tmodloader to shoot projectile
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<AzureaBar>(), 20);
-			recipe.AddTile(TileID.SkyMill);
-			recipe.Register();
-		}
+
 	}
 }

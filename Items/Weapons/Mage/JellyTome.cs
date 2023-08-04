@@ -44,14 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 
 		}
-		public override void AddRecipes()
-		{
-            Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<DarkEssence>(), 13);
-			recipe.AddIngredient(ItemType<GelatinOzze>(), 5);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);

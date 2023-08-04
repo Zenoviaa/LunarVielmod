@@ -38,7 +38,8 @@ namespace Stellamod.Items.Armors.Elagent
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<AzureFragments>(), 9);
+            recipe.AddIngredient(ItemType<StarSilk>(), 9);
+            recipe.AddIngredient(ItemType<PearlescentScrap>(), 9);
             recipe.AddIngredient(ItemID.Feather, 12);
             recipe.AddIngredient(ItemID.Bone, 16);
             recipe.AddTile(TileID.SkyMill);

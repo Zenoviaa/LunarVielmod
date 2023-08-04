@@ -39,7 +39,7 @@ namespace Stellamod.Items.Accessories
 			recipe.AddIngredient(ItemID.Chain, 5);
 			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 5);
 			recipe.AddIngredient(ItemID.CloudinaBottle, 1);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
+			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 5);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

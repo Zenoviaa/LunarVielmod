@@ -40,14 +40,6 @@ namespace Stellamod.Items.Weapons.Ranged
 
 
 		}
-		public override void AddRecipes()
-		{
-            Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<DarkEssence>(), 8);
-			recipe.AddIngredient(ItemType<GelatinOzze>(), 12);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);

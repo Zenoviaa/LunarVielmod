@@ -3,8 +3,10 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
 using Terraria;
@@ -95,11 +97,66 @@ namespace Stellamod.NPCs.Global
 
 			}
 
+			if (npc.type == NPCID.FlyingAntlion)
+			{
+
+
+		
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SwarmerStaff>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+			}
+
 			//------------------------------------------------------------------------ OVERWORLD + RAIN
 
 
 
+			if (npc.type == NPCID.AngryNimbus)
+			{
 
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudBow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+			}
+
+			if (npc.type == NPCID.PinkJellyfish)
+			{
+
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 90, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+			if (npc.type == NPCID.GreenJellyfish)
+			{
+
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 90, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+			if (npc.type == NPCID.MartianWalker)
+			{
+
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Dragoniper>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+			if (npc.type == NPCID.BlueJellyfish)
+			{
+
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 90, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
 
 
 			if (npc.type == NPCID.Zombie)
@@ -110,6 +167,14 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GrassDirtPowder>(), 30, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
+			if (npc.type == NPCID.Harpy)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 2, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
 
 			if (npc.type == NPCID.FlyingFish)
 			{
@@ -132,7 +197,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FleshClot>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+	// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 1000, 1, 1));
 			}
@@ -141,7 +206,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodLamp>(), 600, 1, 1));
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FleshClot>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+		 // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			
 
 			}

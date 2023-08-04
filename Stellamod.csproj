@@ -175,6 +175,7 @@
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\RuneSpawnEffect.png" />
     <None Remove="NPCs\Bosses\singularityFragment\SoulBeam.png" />
+    <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />

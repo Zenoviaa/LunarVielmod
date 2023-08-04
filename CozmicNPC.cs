@@ -56,19 +56,12 @@ namespace Stellamod
             }
             if (npc.type == NPCID.Harpy)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AzureFragments>(), 2, 1, 7));
+   
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudSkaters>(), 30, 1, 1));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Wingspand>(), 30, 1, 1));
             }
-            if (npc.type == NPCID.FlyingAntlion || npc.type == NPCID.GiantFlyingAntlion)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SwarmerStaff>(), 30, 1, 1));
-            }
-            if (npc.type == NPCID.Vulture)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Tallon>(), Main.rand.Next(0, 2)));
 
-            }
+
 
 
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
@@ -76,11 +69,7 @@ namespace Stellamod
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
 
             }
-            if (npc.type == NPCID.BloodJelly || npc.type == NPCID.BloodJelly || npc.type == NPCID.GreenJellyfish || npc.type == NPCID.PinkJellyfish)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GelatinOzze>(), Main.rand.Next(0, 2)));
 
-            }
             if (npc.type == NPCID.SkeletronHand)
             {
                 npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 1, 5, 15));

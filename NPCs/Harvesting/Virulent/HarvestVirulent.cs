@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -18,10 +19,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.Harvesting.Ice
+namespace Stellamod.NPCs.Harvesting.Virulent
 {
 	// This ModNPC serves as an example of a completely custom AI.
-	public class HarvestIce : ModNPC
+	public class HarvestVirulent : ModNPC
 	{
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
 		// These are for our benefit and the numbers could easily be used directly in the code below, but this is how we keep code organized.
@@ -77,11 +78,11 @@ namespace Stellamod.NPCs.Harvesting.Ice
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.ZoneSnow)
+			if (spawnInfo.Player.InModBiome<AcidBiome>())
             {
 					return SpawnCondition.Cavern.Chance  * 0.2f;
 			}
-			if (spawnInfo.Player.ZoneSnow)
+			if (spawnInfo.Player.InModBiome<AcidBiome>())
 			{
 				return SpawnCondition.Overworld.Chance * 0.2f;
 			}
@@ -112,35 +113,20 @@ namespace Stellamod.NPCs.Harvesting.Ice
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 9, 3, 5));
+
 			npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 6, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ItemID.GoldOre, 3, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceSkates, 20, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 10, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 5, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 15, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.FrostDaggerfish, 2, 5, 20));
-			npcLoot.Add(ItemDropRule.Common(ItemID.PotionOfReturn, 20, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WormholePotion, 20, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bottle, 5, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 5, 1, 999));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Snowball, 1, 1, 99));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlock, 1, 1, 99));
 			npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 9, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 13, 1, 12));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), 30, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WaterWalkingBoots, 25, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostSwing>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrileOre>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 3, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceBlade, 30, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.IceBoomerang, 15, 1));
 
 
 

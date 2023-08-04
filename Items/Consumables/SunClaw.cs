@@ -37,7 +37,7 @@ namespace Stellamod.Items.Consumables
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Tallon>(), 15);
+            recipe.AddIngredient(ItemID.AntlionMandible, 15);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

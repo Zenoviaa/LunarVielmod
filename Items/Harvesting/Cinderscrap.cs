@@ -25,7 +25,7 @@ namespace Stellamod.Items.Harvesting
 
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe();
+			Recipe recipe = CreateRecipe(3);
 
 			recipe.Register();
 			recipe.AddIngredient(ItemID.Cobweb, 1);

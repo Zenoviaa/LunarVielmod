@@ -3071,6 +3071,11 @@ Mods: {
 				DisplayName: Gintzia Treasure Bag
 				Tooltip: Special little secret inside
 			}
+
+			GintzeCard: {
+				DisplayName: Gintze Card
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3095,12 +3100,12 @@ Mods: {
 			}
 
 			AcidBiome: {
-				TownNPCDialogueName: the Acid Biome
+				TownNPCDialogueName: the Virulent Biome
 				DisplayName: Acid Biome
 			}
 
 			AbyssBiome: {
-				TownNPCDialogueName: the Abyss Biome
+				TownNPCDialogueName: the Abysm Biome
 				DisplayName: Abyss Biome
 			}
 		}
@@ -3178,6 +3183,7 @@ Mods: {
 			TealBulb.MapEntry: Teal Bulb
 			TealBulb2.MapEntry: Teal Bulb2
 			TealBulb3.MapEntry: Teal Bulb3
+			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
 		}
 
 		Buffs: {
@@ -3577,6 +3583,7 @@ Mods: {
 			WinterSoul1.DisplayName: Winter Soul
 			WinterSoul2.DisplayName: Winter Soul
 			WinterSoul3.DisplayName: Winter Soul
+			HarvestVirulent.DisplayName: Harvest Virulent
 		}
 
 		Projectiles: {

@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemType<RangerDrive>(), 1);
             recipe.AddIngredient(ItemType<UnknownCircuitry>(), 15);
             recipe.AddIngredient(ItemType<DeathShot>(), 1);
-            recipe.AddTile(TileID.Anvils);
+			recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
 

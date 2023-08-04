@@ -15,21 +15,26 @@ namespace Stellamod.Tiles
     {
         public override void SetStaticDefaults()
         {
-            Main.tileSolid[Type] = true;
-            Main.tileMerge[Type][Type] = true;
-            Main.tileBlockLight[Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+			TileID.Sets.Ore[Type] = true;
+			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
+			Main.tileOreFinderPriority[Type] = 710; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
+			Main.tileShine2[Type] = true; // Modifies the draw color slightly.
+			Main.tileShine[Type] = 400; // How often tiny dust appear off this tile. Larger is less frequently
+			Main.tileMergeDirt[Type] = true;
+			Main.tileSolid[Type] = true;
+			Main.tileBlockLight[Type] = true;
 
-            HitSound = SoundID.DD2_CrystalCartImpact;
-            DustType = DustID.Copper;
-            AddMapEntry(new Color(247, 118, 34));
-            Main.tileMerge[TileID.Dirt][Type] = true;
-            Main.tileMerge[TileID.Stone][Type] = true;
-            Main.tileMerge[TileID.Mud][Type] = true;
-            Main.tileMerge[TileID.ClayBlock][Type] = true;
-            LocalizedText name = CreateMapEntryName();
-            // name.SetDefault("Arnchar");
-            RegisterItemDrop(ModContent.ItemType<ArncharChunk>());
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Frile Ore");
+			AddMapEntry(new Color(255, 169, 0), name);
+
+			DustType = 84;
+			DustType = DustID.Torch;;
+			HitSound = SoundID.DD2_CrystalCartImpact;
+			MineResist = 1f;
+			MinPick = 50;
+			// name.SetDefault("Arnchar");
+			RegisterItemDrop(ModContent.ItemType<ArncharChunk>());
         }
 
 

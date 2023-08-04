@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Tiles;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -74,7 +75,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<RangerDrive>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
             recipe.AddIngredient(ItemID.IllegalGunParts, 1);
             recipe.AddIngredient(ItemID.Minishark, 1);
             recipe.AddIngredient(ItemID.SharkFin, 3);

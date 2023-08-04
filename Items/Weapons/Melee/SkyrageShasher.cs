@@ -13,6 +13,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -83,7 +84,9 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void AddRecipes() 
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<AzureaBar>(), 15);
+			recipe.AddIngredient(ItemType<StarSilk>(), 15);
+			recipe.AddIngredient(ItemID.Feather, 5);
+			recipe.AddIngredient(ItemType<GintzlMetal>(), 5);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}

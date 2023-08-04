@@ -11,6 +11,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -45,8 +46,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<VirulentPlating>(), 30);
             recipe.AddIngredient(ItemType<DreadFoil>(), 10);
-            recipe.AddIngredient(ItemType<WanderingFlame>(), 15);
-            recipe.AddIngredient(ItemType<IrradiatedBar>(), 5);
+            recipe.AddIngredient(ItemType<VerianBar>(), 5);
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();
         }

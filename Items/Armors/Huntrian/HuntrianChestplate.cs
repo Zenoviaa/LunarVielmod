@@ -49,8 +49,9 @@ namespace Stellamod.Items.Armors.Huntrian
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
 			recipe.AddIngredient(ItemID.Silk, 5);
-			recipe.AddIngredient(ItemID.Wood, 50);
+			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 15);
 			recipe.AddIngredient(ItemID.DemoniteBar, 10);
+			
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 
@@ -59,7 +60,7 @@ namespace Stellamod.Items.Armors.Huntrian
 			recipe2.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
 			recipe2.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
 			recipe2.AddIngredient(ItemID.Silk, 5);
-			recipe2.AddIngredient(ItemID.Wood, 50);
+			recipe2.AddIngredient(ModContent.ItemType<GintzlMetal>(), 15);
 			recipe2.AddIngredient(ItemID.CrimtaneBar, 10);
 			recipe2.AddTile(TileID.Anvils);
 			recipe2.Register();

@@ -56,7 +56,6 @@ namespace Stellamod.Items.Armors.ForestCore
             recipe.AddIngredient(ItemID.Wood, 8);
             recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 7);
             recipe.AddIngredient(ItemID.WoodHelmet, 1);
-            recipe.AddIngredient(ModContent.ItemType<CoreGem>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

@@ -50,8 +50,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.IllegalGunParts, 1);
-            recipe.AddIngredient(ItemType<AzureaBar>(), 18);
-            recipe.AddTile(TileID.SkyMill);
+            recipe.AddIngredient(ItemID.Feather, 10);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
