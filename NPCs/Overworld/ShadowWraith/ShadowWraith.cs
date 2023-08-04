@@ -112,11 +112,11 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override void OnKill()
         {
-            if (Main.rand.Next(30) == 0)
+            if (Main.rand.NextBool(100))
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeHandTome>(), 1, false, 0, false, false);
             }
-            if (Main.rand.Next(30) == 0)
+            if (Main.rand.NextBool(50))
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeCharm>(), 1, false, 0, false, false);
             }

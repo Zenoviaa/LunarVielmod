@@ -3029,12 +3029,12 @@ Mods: {
 
 			ShinobiTome: {
 				DisplayName: Shinobi Tome
-				Tooltip: ""
+				Tooltip: Excellent choice for no hand ninjas!
 			}
 
 			GintzlSpear: {
 				DisplayName: Gintzl Javelin
-				Tooltip: ""
+				Tooltip: How do they even throw them?
 			}
 
 			RuneOfWind: {
@@ -3044,12 +3044,32 @@ Mods: {
 
 			GintzlsSteed: {
 				DisplayName: Gintzls Steed
-				Tooltip: ""
+				Tooltip: I dont know how they are shooting arrows with no arms..
 			}
 
 			Gallasis: {
 				DisplayName: Galasis
 				Tooltip: ""
+			}
+
+			GintzlBroochA: {
+				DisplayName: Winded Gintze Brooch
+				Tooltip:
+					'''
+					Adds the power of wind!
+					+4 Defense
+					Auto-Swing on every item!
+					'''
+			}
+
+			GintzlShield: {
+				DisplayName: Gintzl Shield
+				Tooltip: +6 Defense
+			}
+
+			GintziaBossBag: {
+				DisplayName: Gintzia Treasure Bag
+				Tooltip: Special little secret inside
 			}
 		}
 
@@ -3441,6 +3461,16 @@ Mods: {
 			GintzelSheildCD: {
 				DisplayName: Gintzel Sheild Cool Down
 				Description: You can not have the Gintzel Sheild now
+			}
+
+			Gintzingwinds: {
+				DisplayName: Gintzingwinds
+				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+			}
+
+			GintBroo: {
+				DisplayName: Gint Broo
+				Description: Mods.Stellamod.Buffs.GintBroo.Description
 			}
 		}
 
@@ -3945,6 +3975,7 @@ Mods: {
 			GintzeSpearMini.DisplayName: Gintze Spear Mini
 			WindeffectGintzl.DisplayName: Windeffect Gintzl
 			Gintzianado.DisplayName: Gintzianado
+			GintzlBrooch.DisplayName: Gintzl Brooch
 		}
 	}
 }

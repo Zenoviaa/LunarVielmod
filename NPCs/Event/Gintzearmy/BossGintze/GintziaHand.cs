@@ -55,13 +55,14 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
             NPC.alpha = 255;
             NPC.width = 30;
             NPC.height = 30;
-            NPC.damage = 10;
+            NPC.damage = 30;
             NPC.defense = 0;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 50;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
+            NPC.noTileCollide = true;
             NPC.alpha = 0;
         }
         int frame = 3;
@@ -234,6 +235,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                 switch (NPC.ai[1])
                 {
                     case 0:
+                        NPC.noTileCollide = true;
                         NPC.alpha -= 50;
                         NPC.ai[0]++;
                         if (NPC.ai[0] > 20)
@@ -243,6 +245,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                         }
                         break;
                     case 1:
+                        NPC.noTileCollide = true;
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 2)
                         {
@@ -252,6 +255,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
                         break;
                     case 2:
+                        NPC.noTileCollide = true;
                         frame = 2;
                         NPC.ai[0]++;
                         if (NPC.ai[0] <= 2)
@@ -312,6 +316,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                         break;
                     case 3:
                         frame = 1;
+                        NPC.noTileCollide = false;
                         NPC.ai[0]++;
                         if (NPC.ai[0] <= 2)
                         {

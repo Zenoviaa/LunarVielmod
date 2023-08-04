@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
         {
             NPC.noGravity = true;
             NPC.noTileCollide = false;
-            NPC.lifeMax = 80;
+            NPC.lifeMax = 50;
             NPC.defense = 4;
             NPC.value = 65f;
             NPC.knockBackResist = 0.55f;
@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Gintzing) ? (0.1f) : 0f;
+            return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Gintzing) ? (278f) : 0f;
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)

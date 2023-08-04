@@ -128,7 +128,9 @@ namespace Stellamod
 		public int MOSBCooldown = 1;
 		public bool BroochBonedEye;
 		public int BonedEyeBCooldown = 1;
-        //---------------------------------------------------------------------------------------------------------------
+		public bool BroochGint;
+		public int GintBCooldown = 1;
+		//---------------------------------------------------------------------------------------------------------------
 
 
 
@@ -137,7 +139,7 @@ namespace Stellamod
 
 
 
-        public float screenFlash;
+		public float screenFlash;
         private float screenFlashSpeed = 0.05f;
         private Vector2? screenFlashCenter;
         private float shakeDrama;
@@ -855,6 +857,14 @@ namespace Stellamod
 				VerliaBCooldown = 1000;
 			}
 
+			if (BroochGint && GintBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<GintzlBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<GintBroo>(), 1000);
+				GintBCooldown = 1000;
+			}
+
 
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -987,9 +997,32 @@ namespace Stellamod
 			{
 				MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
 			}
+			if (EventWorld.GintzingBoss)
+			{
+				player.AddBuff(ModContent.BuffType<Gintzingwinds>(), 100);
+			}
+
+			if (Player.HasBuff<Gintzingwinds>()) 
+            {
+
+				for (int j = 0; j < 1 ; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Square(1f, 1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<windline>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
+				}
 
+				Main.GraveyardVisualIntensity = 0.8f;
+				Main.windPhysicsStrength = 90;
+
+
+			}
 
 
 

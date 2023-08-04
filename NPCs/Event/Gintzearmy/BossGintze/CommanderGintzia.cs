@@ -891,9 +891,9 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VeriBossRel>()));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
+
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GintziaBossBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
@@ -933,7 +933,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		public override void OnKill()
 		{
-		//	NPC.SetEventFlagCleared(ref DownedBossSystem.downedVeriBoss, -1);
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedGintzlBoss, -1);
 
 		}
 

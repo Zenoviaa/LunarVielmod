@@ -15,17 +15,20 @@ namespace Stellamod.Helpers
 	public class DownedBossSystem : ModSystem
 	{
 		public static bool downedVeriBoss = false;
+		public static bool downedGintzlBoss = false;
 		// public static bool downedOtherBoss = false;
 
 		public override void OnWorldLoad()
 		{
 			downedVeriBoss = false;
+			downedGintzlBoss = false;
 			// downedOtherBoss = false;
 		}
 
 		public override void OnWorldUnload()
 		{
 			downedVeriBoss = false;
+			downedGintzlBoss = false;
 			// downedOtherBoss = false;
 		}
 
@@ -38,6 +41,11 @@ namespace Stellamod.Helpers
 				tag["downedVeriBoss"] = true;
 			}
 
+			if (downedGintzlBoss)
+			{
+				tag["downedGintzlBoss"] = true;
+			}
+
 			// if (downedOtherBoss) {
 			//	tag["downedOtherBoss"] = true;
 			// }
@@ -45,7 +53,8 @@ namespace Stellamod.Helpers
 
 		public override void LoadWorldData(TagCompound tag)
 		{
-			downedVeriBoss = tag.ContainsKey("downedMinionBoss");
+			downedVeriBoss = tag.ContainsKey("downedVerliaBoss");
+			downedGintzlBoss = tag.ContainsKey("downedGintzlBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
@@ -54,6 +63,7 @@ namespace Stellamod.Helpers
 			// Order of operations is important and has to match that of NetReceive
 			var flags = new BitsByte();
 			flags[0] = downedVeriBoss;
+			flags[1] = downedGintzlBoss;
 			// flags[1] = downedOtherBoss;
 			writer.Write(flags);
 
@@ -65,6 +75,7 @@ namespace Stellamod.Helpers
 			// Order of operations is important and has to match that of NetSend
 			BitsByte flags = reader.ReadByte();
 			downedVeriBoss = flags[0];
+			downedGintzlBoss = flags[1];
 			// downedOtherBoss = flags[1];
 
 			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:

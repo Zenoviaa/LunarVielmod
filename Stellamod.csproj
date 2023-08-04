@@ -17,6 +17,7 @@
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\DarkHold.png" />
+    <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />

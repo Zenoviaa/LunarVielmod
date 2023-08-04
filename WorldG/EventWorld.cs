@@ -68,7 +68,7 @@ namespace Stellamod.WorldG
        
                 if (Main.expertMode)
                 {
-                    if (GintzeKills >= 110)
+                    if (GintzeKills >= 80)
                     {
                         GintzingBoss = true;
                         GintzingText = false;
@@ -79,7 +79,7 @@ namespace Stellamod.WorldG
                 }
                 else if(Main.masterMode)
                 {
-                    if (GintzeKills >= 145)
+                    if (GintzeKills >= 100)
                     {
                         GintzingBoss = true;      
                         GintzingText = false;
@@ -89,7 +89,7 @@ namespace Stellamod.WorldG
                 }
                 else
                 {
-                    if (GintzeKills >= 85)
+                    if (GintzeKills >= 65)
                     {
                         GintzingBoss = true;
                         GintzingText = false;
@@ -98,6 +98,9 @@ namespace Stellamod.WorldG
                     }
                 }
 
+
+               
+
                 player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
             }
             if (!Main.dayTime)
@@ -105,9 +108,9 @@ namespace Stellamod.WorldG
                 TryForGintze = false;
                 GintzeDayReset = false;
             }
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
-                if (Main.rand.Next(6) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     Gintzing = true;
                     if (!GintzingText)
@@ -118,7 +121,22 @@ namespace Stellamod.WorldG
                 }
                 TryForGintze = true;
             }
-   
+
+
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
+            {
+                if (Main.rand.NextBool(20))
+                {
+                    Gintzing = true;
+                    if (!GintzingText)
+                    {
+                        Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
+                        GintzingText = true;
+                    }
+                }
+                TryForGintze = true;
+            }
+
         }
     }
 }

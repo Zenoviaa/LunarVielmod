@@ -29,7 +29,7 @@ namespace Stellamod
             if (EventWorld.Gintzing)
             {
                 spawnRate = (int)((double)spawnRate * 0.01);
-                maxSpawns = (int)((float)maxSpawns * 6.2f);
+                maxSpawns = (int)((float)maxSpawns * 4.3f);
             }
         }
 

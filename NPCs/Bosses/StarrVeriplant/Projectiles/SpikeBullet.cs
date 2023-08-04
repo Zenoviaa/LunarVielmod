@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 		{
 			Projectile.damage = 45;
 			Projectile.width = 12;
-			Projectile.height = 22;
+			Projectile.height = 42;
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;

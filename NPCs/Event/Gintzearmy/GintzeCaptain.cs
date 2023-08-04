@@ -68,10 +68,10 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 2; // The amount of defense that this npc has
-			NPC.lifeMax = 300; // The amount of health that this npc has
+			NPC.lifeMax = 200; // The amount of health that this npc has
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
-            NPC.value = 1000f; // How many copper coins the NPC will drop when killed.
+            NPC.value = 10f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (0.07f) : 0f;
+            return (spawnInfo.Player.ZoneOverworldHeight && Main.dayTime && EventWorld.Gintzing) ? (200.0f) : 0f;
         }
 		public override void AI()
 		{
@@ -93,8 +93,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy
             {
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
 					int index3 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
+				int index4 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSpearman>());
 
-				
 			}
 			switch (State)
 			{
