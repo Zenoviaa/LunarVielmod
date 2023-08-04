@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Morrow
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Vine, 3, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowRocks>(), 1, 1, 5));
+
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 1, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreasFlower>(), 15, 1, 1));

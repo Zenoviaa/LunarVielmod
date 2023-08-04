@@ -142,7 +142,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 4, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Hlos>(), 21, 1, 1));
+		
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
@@ -150,9 +150,9 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 50));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowRocks>(), 5, 1, 10));
+	
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Candle>(), 5, 1, 1));
+		
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreasFlower>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 12));
 

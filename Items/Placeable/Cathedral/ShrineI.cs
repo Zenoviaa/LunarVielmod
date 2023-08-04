@@ -32,7 +32,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 			recipe.AddIngredient(ItemID.LunarBar, 22);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 50);
+		
 			recipe.AddIngredient(ItemID.Bone, 20);
 
 			recipe.Register();

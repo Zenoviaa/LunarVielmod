@@ -58,7 +58,6 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddIngredient(ItemID.SandBlock, 50);
 			recipe.AddIngredient(ItemID.AntlionMandible, 5);
 			recipe.AddTile(TileID.Anvils);	
-			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 3);
 
 

@@ -78,8 +78,6 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-
-			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);

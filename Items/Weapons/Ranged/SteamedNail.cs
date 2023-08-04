@@ -87,8 +87,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddIngredient(ItemID.Bone, 22);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 50);
 			recipe.AddIngredient(ItemID.HallowedBar, 5);
 
 

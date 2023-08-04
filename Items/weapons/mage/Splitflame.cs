@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 38;
+			Item.damage = 30;
 			Item.mana = 5;
 			Item.width = 18;
 			Item.height = 21;
@@ -35,16 +35,6 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.autoReuse = true;
 			Item.crit = 7;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Torch, 99);
-			recipe.AddIngredient(ItemID.HellstoneBar, 8);
-			recipe.AddIngredient(ItemID.Obsidian, 8);
-			recipe.AddTile(TileID.Hellforge);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<Candle>(), 5);
-		}
+
 	}
 }

@@ -35,7 +35,6 @@ namespace Stellamod.Items.Placeable
 			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 35);
-			recipe.AddIngredient(ModContent.ItemType<MorrowRocks>(), 50);
 			recipe.AddIngredient(ItemID.Bone, 20);
 
 			recipe.Register();

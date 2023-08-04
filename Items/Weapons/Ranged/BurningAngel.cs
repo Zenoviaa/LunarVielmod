@@ -81,19 +81,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.StoneBlock, 50);
-			recipe.AddTile(TileID.Anvils);	
-			recipe.AddIngredient(ModContent.ItemType<Hlos>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 3);
-			recipe.AddIngredient(ItemID.Silk, 5);
 
-			recipe.Register();
-		}
 	}
 }
 

@@ -65,7 +65,7 @@ namespace Stellamod.WorldG
 
 				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenAstrasilkOre));
+		
 				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
 			}
 
@@ -425,33 +425,7 @@ namespace Stellamod.WorldG
 			}
 		}
 
-		private void WorldGenAstrasilkOre(GenerationProgress progress, GameConfiguration configuration)
-		{
-			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-			progress.Message = "Stars inverting throughout the Abysm!";
-
-
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-			{
-
-				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int y = WorldGen.genRand.Next(0, Main.maxTilesY);
-
-				Tile tile = Main.tile[x, y];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == ModContent.TileType<AbyssalDirt>() ||
-					tile.TileType == TileID.IceBlock))
-				{
-					continue;
-				}
-
-
-				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-
-				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(30, 50), WorldGen.genRand.Next(10, 60), ModContent.TileType<AstrasilkOreTile>());
-			}
-		}
+	
 
 		private void WorldGenMorrowedStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
