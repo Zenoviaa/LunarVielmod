@@ -211,7 +211,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Veriplant");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gintzicane");
 			}
 		}
 
