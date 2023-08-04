@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Tiles.Abyss
 {
     [TileTag(TileTags.VineSway)]
-    public class AbyssalVines : ModTile
+    public class AbyssalVines2 : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -31,7 +31,7 @@ namespace Stellamod.Tiles.Abyss
             HitSound = SoundID.Grass;
             DustType = DustID.Plantera_Green;
 
-            AddMapEntry(new Color(93, 203, 243));
+            AddMapEntry(new Color(93, 243, 243));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
@@ -47,7 +47,7 @@ namespace Stellamod.Tiles.Abyss
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             r = .154f * 2;
-            g = .077f * 2;
+            g = .177f * 2;
             b = .255f * 2;
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)

@@ -33,24 +33,58 @@ namespace Stellamod.Tiles.Abyss
 
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.Next(3) == 0)
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.Next(3) == 0)
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower2>(), true);
                 }
             }
+            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
+            {
+                if (Main.rand.Next(2) == 0)
+                {
+                    WorldGen.PlaceTile(i, j - 2, TileType<TealBulb>(), true);
+                }
+            }
+            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
+            {
+                if (Main.rand.Next(2) == 0)
+                {
+                    WorldGen.PlaceTile(i, j, TileType<TealBulb2>(), true);
+                }
+            }
+            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
+            {
+                if (Main.rand.Next(2) == 0)
+                {
+                    WorldGen.PlaceTile(i, j - 1, TileType<TealBulb3>(), true);
+                }
+            }
             //Try place vine
-            if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
+            if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
             {
                 if (!tile.BottomSlope)
                 {
                     tileBelow.TileType = (ushort)ModContent.TileType<AbyssalVines>();
+                    tileBelow.HasTile = true;
+                    WorldGen.SquareTileFrame(i, j + 1, true);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        NetMessage.SendTileSquare(-1, i, j + 1, 3, TileChangeType.None);
+                    }
+                }
+            }
+            if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
+            {
+                if (!tile.BottomSlope)
+                {
+                    tileBelow.TileType = (ushort)ModContent.TileType<AbyssalVines2>();
                     tileBelow.HasTile = true;
                     WorldGen.SquareTileFrame(i, j + 1, true);
                     if (Main.netMode == NetmodeID.Server)

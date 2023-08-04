@@ -3155,6 +3155,9 @@ Mods: {
 			ShrineLights.MapEntry: Shrine Lights
 			ShrineSolMothC.MapEntry: Shrine Sol Moth C
 			RestingGrounds.MapEntry: Resting Grounds
+			TealBulb.MapEntry: Teal Bulb
+			TealBulb2.MapEntry: Teal Bulb2
+			TealBulb3.MapEntry: Teal Bulb3
 		}
 
 		Buffs: {
