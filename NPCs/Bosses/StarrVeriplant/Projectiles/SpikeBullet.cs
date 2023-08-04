@@ -55,11 +55,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 				
 				
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<GroundSpike>(), (int)(1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<GroundSpike>(), (int)(0), 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 
 			}
+
+
 
 			Projectile.velocity.X *=  1.05f;
 			
