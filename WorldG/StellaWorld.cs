@@ -65,18 +65,17 @@ namespace Stellamod.WorldG
 
 				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-		
-				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
+				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
 			}
 
 			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen != -1)
 			{
 
-				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen Testing", WorldGenTest));
-				tasks.Insert(CathedralGen + 8, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
+				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Testing", WorldGenTest));
+				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 			}
 
 			
