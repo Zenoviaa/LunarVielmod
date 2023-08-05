@@ -75,7 +75,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				
 			}
 
 
@@ -305,21 +305,13 @@ namespace Stellamod.WorldG
 				//	Main.npc[num].homeless = true;
 
 
+				Point Loc = new Point(abysmx, abysmy);
+				Point Loc2 = new Point(abysmx + 100, abysmy);
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx, abysmy);
+					
 					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), ModContent.TileType<AbyssalDirt>());
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -328,6 +320,20 @@ namespace Stellamod.WorldG
 				
 
 				}
+
+				for (int da = 0; da < 1; da++)
+				{
+
+					StructureLoader.ReadStruct(Loc2, "Struct/Aurelus/AurelusTemple");
+
+
+
+					placed = true;
+
+
+				}
+
+
 
 			}
 		} 
