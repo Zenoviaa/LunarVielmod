@@ -180,7 +180,9 @@
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
     <None Remove="Particles\IcingParticle.png" />
-    <None Remove="Projectiles\Crossbows\Magical\IcaCircle - Copy.png" />
+    <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
+    <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
+    <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

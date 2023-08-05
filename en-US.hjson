@@ -2964,17 +2964,17 @@ Mods: {
 
 			LightSpand: {
 				DisplayName: Light Spand
-				Tooltip: ""
+				Tooltip: Burning lights of Gothivia's Light
 			}
 
 			MoonMothStaff: {
 				DisplayName: Moon Moth Staff
-				Tooltip: ""
+				Tooltip: Woa
 			}
 
 			SolMothStaff: {
 				DisplayName: Sol Moth Staff
-				Tooltip: ""
+				Tooltip: Very good for clearing out small hordes!
 			}
 
 			HeatGlider: {
@@ -3019,7 +3019,10 @@ Mods: {
 
 			GothiviasSeal: {
 				DisplayName: Gothivias Seal
-				Tooltip: ""
+				Tooltip:'''
+				Take it to the depth of the Virulent, 
+				there lies a castle awaiting your arrival...
+					''' 
 			}
 
 			RestingGroundsI: {
@@ -3049,7 +3052,7 @@ Mods: {
 
 			Gallasis: {
 				DisplayName: Galasis
-				Tooltip: ""
+				Tooltip: The gintzl's legacy resides in this very useful item.
 			}
 
 			GintzlBroochA: {
@@ -3064,7 +3067,7 @@ Mods: {
 
 			GintzlShield: {
 				DisplayName: Gintzl Shield
-				Tooltip: +6 Defense
+				Tooltip: Great for defense!
 			}
 
 			GintziaBossBag: {
@@ -3079,32 +3082,37 @@ Mods: {
 
 			AurelusTempleTile: {
 				DisplayName: Aurelus Temple Tile
-				Tooltip: ""
+				Tooltip: Why do you have this?
 			}
 
 			AurelusChesti: {
 				Tooltip: ""
-				DisplayName: Aurelus Chesti
+				DisplayName: Aurelus Chest
 			}
 
 			AurelusBanneri: {
-				DisplayName: Aurelus Banneri
+				DisplayName: Aurelus Banner
 				Tooltip: ""
 			}
 
 			AurelusPosti: {
 				Tooltip: ""
-				DisplayName: Aurelus Posti
+				DisplayName: Aurelus Post
 			}
 
 			AurelusBanner2i: {
 				Tooltip: ""
-				DisplayName: Aurelus Banner2i
+				DisplayName: Aurelus Banner II
 			}
 
 			AurelusBorderI: {
 				DisplayName: Aurelus Border I
 				Tooltip: ""
+			}
+
+			TON618Crossbow: {
+				DisplayName: TON618 Crossbow
+				Tooltip: "Expertly crafted by a special bowsman"
 			}
 		}
 
@@ -3131,12 +3139,12 @@ Mods: {
 
 			AcidBiome: {
 				TownNPCDialogueName: the Virulent Biome
-				DisplayName: Acid Biome
+				DisplayName: Virulent Biome
 			}
 
 			AbyssBiome: {
 				TownNPCDialogueName: the Abysm Biome
-				DisplayName: Abyss Biome
+				DisplayName: Abysm Biome
 			}
 
 			AurelusBiome: {
@@ -3148,8 +3156,8 @@ Mods: {
 		Tiles: {
 			AlcaologyTable.MapEntry: Alcaology Table
 			BroochesTable.MapEntry: Brooches Table
-			FrileOreTile.MapEntry: Frile Ore Tile
-			HuntiacTile.MapEntry: Huntiac Tile
+			FrileOreTile.MapEntry: Frile Ore 
+			HuntiacTile.MapEntry: Huntiac 
 			BarS.MapEntry: Bar S
 			BenchS.MapEntry: Bench S
 			CathedralChest.MapEntry: Cathedral Chest
@@ -3179,8 +3187,8 @@ Mods: {
 			wall5.MapEntry: wall5
 			wall6.MapEntry: wall6
 			wall7.MapEntry: wall7
-			VerianoreTile.MapEntry: Verianore Tile
-			GovheilTile.MapEntry: Govheil Tile
+			VerianoreTile.MapEntry: Verian Ore
+			GovheilTile.MapEntry: Govheil Block
 			GovheilBore.MapEntry: Govheil Bore
 			GovheilWei.MapEntry: Govheil Wei
 			MasistLeft.MapEntry: Masist Left
@@ -3218,7 +3226,7 @@ Mods: {
 			TealBulb.MapEntry: Teal Bulb
 			TealBulb2.MapEntry: Teal Bulb2
 			TealBulb3.MapEntry: Teal Bulb3
-			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
+			AstrasilkOreTile.MapEntry: Astrasilk Ore 
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBanner1.MapEntry: Aurelus Banner1
 			AurelusPost.MapEntry: Aurelus Post
@@ -3418,27 +3426,27 @@ Mods: {
 
 			AbyssalFlame: {
 				DisplayName: Abyssal Flame
-				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+				Description: Burn
 			}
 
 			AcidFlame: {
 				DisplayName: Acid Flame
-				Description: Mods.Stellamod.Buffs.AcidFlame.Description
+				Description: Burn more
 			}
 
 			AssassinsSlashBuff: {
 				DisplayName: Assassins Slash Buff
-				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+				Description: Slashin
 			}
 
 			DarkHold: {
 				DisplayName: Dark Hold
-				Description: Mods.Stellamod.Buffs.DarkHold.Description
+				Description: You feel like everything around you is darker.
 			}
 
 			Irradiation: {
 				DisplayName: Irradiation
-				Description: Mods.Stellamod.Buffs.Irradiation.Description
+				Description: Poisoned
 			}
 
 			ArncharMinionBuff: {
@@ -3493,16 +3501,16 @@ Mods: {
 
 			MoonMothBuff: {
 				DisplayName: Moon Moth Buff
-				Description: Mods.Stellamod.Buffs.MoonMothBuff.Description
+				Description: The moon moths
 			}
 
 			SolMothBuff: {
 				DisplayName: Sol Moth Buff
-				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+				Description: Moth helpers!
 			}
 
 			GintzelSheild: {
-				DisplayName: Gintzel Sheild
+				DisplayName: Gintzel Shield
 				Description: + 15 Defence!
 			}
 
@@ -3513,12 +3521,12 @@ Mods: {
 
 			Gintzingwinds: {
 				DisplayName: Gintzingwinds
-				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+				Description: The winds are rising, something is coming
 			}
 
 			GintBroo: {
-				DisplayName: Gint Broo
-				Description: Mods.Stellamod.Buffs.GintBroo.Description
+				DisplayName: Gintzl Brooch
+				Description: Gives good defense
 			}
 		}
 
@@ -4025,6 +4033,10 @@ Mods: {
 			WindeffectGintzl.DisplayName: Windeffect Gintzl
 			Gintzianado.DisplayName: Gintzianado
 			GintzlBrooch.DisplayName: Gintzl Brooch
+			TON618CrossbowHold.DisplayName: T O N618 Crossbow Hold
+			TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
+			PiaCircle.DisplayName: Pia Circle
+			SpacticProj.DisplayName: Spactic Proj
 		}
 	}
 }
