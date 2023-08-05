@@ -68,5 +68,6 @@ namespace Stellamod.Utilis
     {
         public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
         public static bool ZoneAcid(this Player player) => player.InModBiome<AcidBiome>();
+        public static bool ZoneAurelus(this Player player) => player.InModBiome<AurelusBiome>();
     }
 }

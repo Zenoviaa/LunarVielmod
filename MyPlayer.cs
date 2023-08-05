@@ -503,8 +503,8 @@ namespace Stellamod
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
 			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
-
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
 
 
