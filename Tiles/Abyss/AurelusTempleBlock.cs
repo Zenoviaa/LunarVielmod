@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Placeable.Cathedral;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
