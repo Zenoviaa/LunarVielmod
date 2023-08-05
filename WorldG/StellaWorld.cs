@@ -27,11 +27,11 @@ namespace Stellamod.WorldG
 {
 
 
-    public class StellaWorld : ModSystem
-    {
-     
-        public static bool SoulStorm;
-        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+	public class StellaWorld : ModSystem
+	{
+
+		public static bool SoulStorm;
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
 			/* int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Webs"));
 				if (MorrowGen != -1)
@@ -75,13 +75,14 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 			}
 
-			
 
-			
 
-			
+
+
+
 
 
 		}
@@ -123,9 +124,9 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 600 ); // from 50 since there's a unaccessible area at the world's borders
-																			   // 50% of choosing the last 6th of the world
-																			   // Choose which side of the world to be on randomly
+				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 600); // from 50 since there's a unaccessible area at the world's borders
+																								 // 50% of choosing the last 6th of the world
+																								 // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
 				///{
 				///	towerX = Main.maxTilesX - towerX;
@@ -171,8 +172,8 @@ namespace Stellamod.WorldG
 
 					Point Loc2 = new Point(smx - 10, smy - 40);
 					WorldUtils.Gen(Loc2, new Shapes.Circle(30, 50), new Actions.SetTile(TileID.Dirt));
-					
-					
+
+
 					Point Loc3 = new Point(smx + 616, smy - 40);
 					WorldUtils.Gen(Loc3, new Shapes.Circle(30, 70), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
@@ -193,6 +194,64 @@ namespace Stellamod.WorldG
 			}
 
 		}
+
+
+
+		private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Singularities singing!";
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int smx = WorldGen.genRand.Next(0, Main.maxTilesX); // from 50 since there's a unaccessible area at the world's borders
+																								 // 50% of choosing the last 6th of the world
+																								 // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int smy = WorldGen.genRand.Next(0, Main.maxTilesY);
+
+				// We go down until we hit a solid tile or go under the world's surface
+
+				Tile tile = Main.tile[smx, smy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == ModContent.TileType<AbyssalDirt>()))
+				{
+					continue;
+				}
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(smx + 100, smy + 100);
+					StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
+
+
+
+					placed = true;
+				}
+
+
+			}
+
+		}
 		private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Shifting Shadows deep in the Ice";
@@ -205,8 +264,8 @@ namespace Stellamod.WorldG
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-																								// 50% of choosing the last 6th of the world
-																								// Choose which side of the world to be on randomly
+																			   // 50% of choosing the last 6th of the world
+																			   // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
 				///{
 				///	towerX = Main.maxTilesX - towerX;
@@ -251,15 +310,28 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(abysmx, abysmy);
 					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), ModContent.TileType<AbyssalDirt>());
-					
 
-					
-					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
 
 				}
-			}
 
-		}
+			}
+		} 
+	
 
 		private void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
 		{

@@ -3101,6 +3101,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Aurelus Banner2i
 			}
+
+			AurelusBorderI: {
+				DisplayName: Aurelus Border I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3132,6 +3137,11 @@ Mods: {
 			AbyssBiome: {
 				TownNPCDialogueName: the Abysm Biome
 				DisplayName: Abyss Biome
+			}
+
+			AurelusBiome: {
+				DisplayName: Aurelus Biome
+				TownNPCDialogueName: the Aurelus Biome
 			}
 		}
 
@@ -3212,6 +3222,7 @@ Mods: {
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBanner1.MapEntry: Aurelus Banner1
 			AurelusPost.MapEntry: Aurelus Post
+			AurelusBorderS.MapEntry: Aurelus Border S
 		}
 
 		Buffs: {

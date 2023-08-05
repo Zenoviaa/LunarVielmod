@@ -155,7 +155,8 @@ namespace Stellamod
         public float FCArmorTime;
         public float HMArmorTime;
         public bool ZoneAbyss;
-        public bool ZoneAcid;
+		public bool ZoneAurelus;
+		public bool ZoneAcid;
         public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -745,7 +746,12 @@ namespace Stellamod
                 player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
             }
 
-            if (StealthRune)
+			if (ZoneAurelus)
+			{
+				player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
+			}
+
+			if (StealthRune)
             {
                 if (StealthTime <= 500)
                 {
@@ -1168,7 +1174,7 @@ namespace Stellamod
 
 			}
 
-				if (Player.InModBiome<AbyssBiome>())
+				if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
 			{
 			
 				Main.windPhysicsStrength = 50;
