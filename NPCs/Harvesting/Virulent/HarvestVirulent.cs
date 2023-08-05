@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Harvesting.Virulent
 		}
 		public override void OnKill()
 		{
-			CombatText.NewText(NPC.getRect(), Color.White, "Ice item Harvested!", true, false);
+			CombatText.NewText(NPC.getRect(), Color.White, "Virulent item Harvested!", true, false);
 			base.OnKill();
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
