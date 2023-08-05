@@ -75,7 +75,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				
+				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 			}
 
 
@@ -207,21 +207,25 @@ namespace Stellamod.WorldG
 			int attempts = 0;
 			while (!placed && attempts++ < 100000)
 			{
-				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(0, Main.maxTilesX); // from 50 since there's a unaccessible area at the world's borders
-																								 // 50% of choosing the last 6th of the world
-																								 // Choose which side of the world to be on randomly
-				///if (WorldGen.genRand.NextBool())
-				///{
-				///	towerX = Main.maxTilesX - towerX;
-				///}
 
-				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = WorldGen.genRand.Next(0, Main.maxTilesY);
+
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmy = ((Main.maxTilesY / 2));
 
 				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+				{
+					abysmy++;
+				}
 
-				Tile tile = Main.tile[smx, smy];
+				// If we went under the world's surface, try again
+				if (abysmy > Main.UnderworldLayer - 50)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == ModContent.TileType<AbyssalDirt>()))
 				{
@@ -240,7 +244,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx + 100, smy + 100);
+					Point Loc = new Point(abysmx - 150, abysmy + 100);
 					StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
 
 
@@ -306,7 +310,6 @@ namespace Stellamod.WorldG
 
 
 				Point Loc = new Point(abysmx, abysmy);
-				Point Loc2 = new Point(abysmx + 100, abysmy);
 
 				for (int da = 0; da < 1; da++)
 				{
@@ -321,17 +324,7 @@ namespace Stellamod.WorldG
 
 				}
 
-				for (int da = 0; da < 1; da++)
-				{
-
-					StructureLoader.ReadStruct(Loc2, "Struct/Aurelus/AurelusTemple");
-
-
-
-					placed = true;
-
-
-				}
+				
 
 
 
