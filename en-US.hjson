@@ -3076,6 +3076,11 @@ Mods: {
 				DisplayName: Gintze Card
 				Tooltip: ""
 			}
+
+			AurelusTempleTile: {
+				DisplayName: Aurelus Temple Tile
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
