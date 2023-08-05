@@ -6,7 +6,7 @@ using Stellamod.Tiles.Abyss.Aurelus;
 
 namespace Stellamod.Items.Placeable
 {
-    public class MorrowChesti : ModItem
+    public class AurelusChesti : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -28,27 +28,11 @@ namespace Stellamod.Items.Placeable
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
 			Item.value = 500;
-			Item.createTile = ModContent.TileType<MorrowChest>();
+			Item.createTile = ModContent.TileType<AurelusChest>();
 		 Item.placeStyle = 1; // Use this to place the chest in its locked style
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		
-	}
-
-	public class MorrowChestKey : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3; // Biome keys usually take 1 item to research instead.
-		}
-
-		public override void SetDefaults()
-		{
-			Item.CloneDefaults(ItemID.GoldenKey);
-			Item.width = 14;
-			Item.height = 20;
-			Item.maxStack = 99;
-		}
 	}
 }

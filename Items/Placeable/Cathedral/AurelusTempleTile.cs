@@ -1,12 +1,11 @@
-﻿
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class AurelusTempleTile : ModItem
+    public class AurelusTempleTile : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -45,7 +44,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.Abyss.AurelusTempleBlock>();
+			Item.createTile = ModContent.TileType<Tiles.Abyss.Aurelus.AurelusTempleBlock>();
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		

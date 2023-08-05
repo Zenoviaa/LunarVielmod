@@ -3081,6 +3081,16 @@ Mods: {
 				DisplayName: Aurelus Temple Tile
 				Tooltip: ""
 			}
+
+			AurelusChesti: {
+				Tooltip: ""
+				DisplayName: Aurelus Chesti
+			}
+
+			AurelusBanneri: {
+				DisplayName: Aurelus Banneri
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3189,6 +3199,8 @@ Mods: {
 			TealBulb2.MapEntry: Teal Bulb2
 			TealBulb3.MapEntry: Teal Bulb3
 			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
+			AurelusChest.MapEntry: Aurelus Chest
+			AurelusBanner1.MapEntry: Aurelus Banner1
 		}
 
 		Buffs: {

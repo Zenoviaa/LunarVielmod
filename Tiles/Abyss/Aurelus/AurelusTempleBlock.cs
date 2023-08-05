@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.Tiles.Abyss
+namespace Stellamod.Tiles.Abyss.Aurelus
 {
     public class AurelusTempleBlock : ModTile
     {
@@ -17,15 +17,13 @@ namespace Stellamod.Tiles.Abyss
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.IceBlock][Type] = true;
             Main.tileMerge[TileID.SnowBlock][Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-            RegisterItemDrop(ModContent.ItemType<AurelusTempleTile>());
+            RegisterItemDrop(ItemType<AurelusTempleTile>());
             AddMapEntry(new Color(6, 5, 7));
-
-
         }
-   
+
         public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
@@ -72,7 +70,7 @@ namespace Stellamod.Tiles.Abyss
             {
                 if (!tile.BottomSlope)
                 {
-                    tileBelow.TileType = (ushort)ModContent.TileType<AbyssalVines>();
+                    tileBelow.TileType = (ushort)TileType<AbyssalVines>();
                     tileBelow.HasTile = true;
                     WorldGen.SquareTileFrame(i, j + 1, true);
                     if (Main.netMode == NetmodeID.Server)
@@ -85,7 +83,7 @@ namespace Stellamod.Tiles.Abyss
             {
                 if (!tile.BottomSlope)
                 {
-                    tileBelow.TileType = (ushort)ModContent.TileType<AbyssalVines2>();
+                    tileBelow.TileType = (ushort)TileType<AbyssalVines2>();
                     tileBelow.HasTile = true;
                     WorldGen.SquareTileFrame(i, j + 1, true);
                     if (Main.netMode == NetmodeID.Server)
