@@ -19,8 +19,8 @@ namespace Stellamod.Tiles.Abyss
             Main.tileBlendAll[this.Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-
-            AddMapEntry(new Color(57, 55, 172));
+            RegisterItemDrop(ModContent.ItemType<AurelusTempleTile>());
+            AddMapEntry(new Color(6, 5, 7));
 
 
         }
