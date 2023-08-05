@@ -3019,10 +3019,11 @@ Mods: {
 
 			GothiviasSeal: {
 				DisplayName: Gothivias Seal
-				Tooltip:'''
-				Take it to the depth of the Virulent, 
-				there lies a castle awaiting your arrival...
-					''' 
+				Tooltip:
+					'''
+					Take it to the depth of the Virulent, 
+					there lies a castle awaiting your arrival...
+					'''
 			}
 
 			RestingGroundsI: {
@@ -3112,7 +3113,7 @@ Mods: {
 
 			TON618Crossbow: {
 				DisplayName: TON618 Crossbow
-				Tooltip: "Expertly crafted by a special bowsman"
+				Tooltip: Expertly crafted by a special bowsman
 			}
 		}
 
@@ -3156,8 +3157,8 @@ Mods: {
 		Tiles: {
 			AlcaologyTable.MapEntry: Alcaology Table
 			BroochesTable.MapEntry: Brooches Table
-			FrileOreTile.MapEntry: Frile Ore 
-			HuntiacTile.MapEntry: Huntiac 
+			FrileOreTile.MapEntry: Frile Ore
+			HuntiacTile.MapEntry: Huntiac
 			BarS.MapEntry: Bar S
 			BenchS.MapEntry: Bench S
 			CathedralChest.MapEntry: Cathedral Chest
@@ -3226,7 +3227,7 @@ Mods: {
 			TealBulb.MapEntry: Teal Bulb
 			TealBulb2.MapEntry: Teal Bulb2
 			TealBulb3.MapEntry: Teal Bulb3
-			AstrasilkOreTile.MapEntry: Astrasilk Ore 
+			AstrasilkOreTile.MapEntry: Astrasilk Ore
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBanner1.MapEntry: Aurelus Banner1
 			AurelusPost.MapEntry: Aurelus Post

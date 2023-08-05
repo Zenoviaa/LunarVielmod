@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = 2;
+            Projectile.penetrate = 1;
             Projectile.arrow = true;
             Projectile.timeLeft = 380;
             Projectile.netImportant = true;

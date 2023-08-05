@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Gun
 		{
 			Projectile.CloneDefaults(ProjectileID.Bullet);
 			AIType = ProjectileID.Bullet;
-			Projectile.penetrate = -1;
+			Projectile.penetrate = 1;
 			Projectile.width = 15;
 			Projectile.height = 15;
 		}
