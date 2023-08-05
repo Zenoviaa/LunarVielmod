@@ -16,6 +16,7 @@ namespace Stellamod
 
         public int AcidCount;
         public static bool InAcid => ModContent.GetInstance<BiomeTileCounts>().AcidCount > 80;
+
         public int AurelusCount;
         public static bool InAurelus => ModContent.GetInstance<BiomeTileCounts>().AurelusCount > 10;
 
