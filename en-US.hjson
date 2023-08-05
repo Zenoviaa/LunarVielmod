@@ -3091,6 +3091,16 @@ Mods: {
 				DisplayName: Aurelus Banneri
 				Tooltip: ""
 			}
+
+			AurelusBanner2i: {
+				DisplayName: Aurelus Banner2i
+				Tooltip: ""
+			}
+
+			AurelusBorderI: {
+				DisplayName: Aurelus Border I
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3201,6 +3211,7 @@ Mods: {
 			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBanner1.MapEntry: Aurelus Banner1
+			AurelusBorderS.MapEntry: Aurelus Border S
 		}
 
 		Buffs: {
