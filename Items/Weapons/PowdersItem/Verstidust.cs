@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Powders;
+using Stellamod.Tiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -40,6 +42,16 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Lenabee");
 		}
 
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 15);
+			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 
+			recipe.Register();
+		}
 	}
 }
