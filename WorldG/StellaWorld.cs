@@ -22,6 +22,10 @@ using Stellamod.Items.Weapons.Whips;
 using Stellamod.Items.Materials;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
+using Stellamod.Items.Weapons.Ranged.Crossbows;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod.WorldG
 {
@@ -246,7 +250,7 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(abysmx - 150, abysmy + 100);
 					
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -257,64 +261,77 @@ namespace Stellamod.WorldG
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-							Tuple.Create((int)ItemID.Acorn, 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+
 							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
-								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
-								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
-								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
-							Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
+							Tuple.Create(ModContent.ItemType<ConvulgingMater>(), 0.1),
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
 						);
 						if (specialItem != ItemID.None)
 						{
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(4))
+						switch (Main.rand.Next(6))
 						{
 							case 0:
-								itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-
-								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 								break;
 							case 1:
-								itemsToAdd.Add((ItemID.Duck, 1));
+								itemsToAdd.Add((ModContent.ItemType<Venatici>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<MorrowRapier>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<Neptune8Card>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ModContent.ItemType<TON618Crossbow>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
 
+								break;
+							case 4:
+								itemsToAdd.Add((ModContent.ItemType<HolmbergScythe>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 5:
+								itemsToAdd.Add((ModContent.ItemType<AurelusBlightBroochA>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 						}
 

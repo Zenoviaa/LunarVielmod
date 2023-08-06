@@ -82,11 +82,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
-			if (Main.dayTime)
-			{
-				Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
-				return false;
-			}
+			
 
 			DustType = dustType;
 			return true;
@@ -187,7 +183,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 				{
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<VoidKey>();
-					if (player.ConsumeItem(key) && Chest.Unlock(left, top))
+					if (player.HasItem(key) && Chest.Unlock(left, top))
 					{
 						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{

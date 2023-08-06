@@ -1,53 +1,62 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
+
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.ShadeWraith
-{
-    [AutoloadEquip(EquipType.Body)]
-    public class ShadeWraithBody : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Shade Wraith Body");
-			// Tooltip.SetDefault("Increases endurance by 13%");
-		}
-        public override void SetDefaults()
+        // The AutoloadEquip attribute automatically attaches an equip texture to this item.
+        // Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
+        [AutoloadEquip(EquipType.Body)]
+        public class ShadeWraithBody : ModItem
         {
-            Item.width = 28;
-            Item.height = 22;
-            Item.value = 80000;
-            Item.rare = 14;
+            public override void SetStaticDefaults()
+            {
+                base.SetStaticDefaults();
+                // DisplayName.SetDefault("Astolfo Breasts");
+                /* Tooltip.SetDefault("Nya~"
+                    + "\nYummy!" +
+                    "\n+20 Health"); */
 
-            Item.defense = 6;
-        }
+                CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            }
 
-        public override void UpdateEquip(Player player)
-        {
-            player.endurance += 0.15f;
-        }
+            public override void SetDefaults()
+            {
+                Item.width = 18; // Width of the item
+                Item.height = 18; // Height of the item
+                Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+                Item.rare = ItemRarityID.Green; // The rarity of the item
+                Item.defense = 4; // The amount of defense the item will give when equipped
+            }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<DarkEssence>(), 9);
-            recipe.AddIngredient(ItemID.DemoniteBar, 6);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
+            public override void UpdateEquip(Player player)
+            {
+                player.endurance += 0.15f;
+                player.statLifeMax2 += 20;
 
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemType<DarkEssence>(), 9);
-            recipe2.AddIngredient(ItemID.CrimtaneBar, 6);
-            recipe2.AddTile(TileID.WorkBenches);
-            recipe2.Register();
+            }
+
+            // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+            public override void AddRecipes()
+            {
+                Recipe recipe = CreateRecipe();
+                recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
+                recipe.AddIngredient(ItemID.DemoniteBar, 6);
+                recipe.AddTile(TileID.WorkBenches);
+                recipe.Register();
+
+                Recipe recipe2 = CreateRecipe();
+                recipe2.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
+                recipe2.AddIngredient(ItemID.CrimtaneBar, 6);
+                recipe2.AddTile(TileID.WorkBenches);
+                recipe2.Register();
+            }
         }
     }
-}
+    
+

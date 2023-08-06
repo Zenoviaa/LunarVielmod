@@ -51,7 +51,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 5);
+			recipe.AddIngredient(ItemID.Leather, 5);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 

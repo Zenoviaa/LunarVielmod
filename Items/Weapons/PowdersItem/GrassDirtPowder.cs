@@ -44,14 +44,12 @@ namespace Stellamod.Items.Weapons.PowdersItem
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Daybloom, 2);
 			recipe.AddIngredient(ItemID.DirtBlock, 15);
-			recipe.AddIngredient(ItemID.Seed, 3);
+			recipe.AddIngredient(ItemID.Leather, 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 3);
 		}
 
 	}

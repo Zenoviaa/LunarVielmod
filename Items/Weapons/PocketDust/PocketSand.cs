@@ -54,7 +54,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 

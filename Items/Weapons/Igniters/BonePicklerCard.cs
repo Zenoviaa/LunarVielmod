@@ -63,12 +63,12 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
 			recipe.AddIngredient(ItemID.Bone, 50);
 			recipe.AddIngredient(ItemID.Silk, 10);
-			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
+			recipe.AddIngredient(ItemID.Leather, 9);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

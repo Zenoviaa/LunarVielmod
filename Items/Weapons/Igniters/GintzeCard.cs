@@ -64,6 +64,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 21);
+			recipe.AddIngredient(ItemID.Leather, 9);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

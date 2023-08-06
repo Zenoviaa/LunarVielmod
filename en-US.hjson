@@ -2194,7 +2194,7 @@ Mods: {
 
 			WinterbornLegs: {
 				DisplayName: Winterborn Legs
-				Tooltip:  10% Increased movement speed!
+				Tooltip: 10% Increased movement speed!
 			}
 
 			DreadmireBag: {
@@ -2759,7 +2759,7 @@ Mods: {
 
 			DivineSniper: {
 				DisplayName: Divine Sniper
-				Tooltip: "It really isnt all that divine"
+				Tooltip: It really isnt all that divine
 			}
 
 			Dragoniper: {
@@ -3043,7 +3043,8 @@ Mods: {
 
 			RuneOfWind: {
 				DisplayName: Rune Of Wind
-				Tooltip: '''
+				Tooltip:
+					'''
 					Sometimes when hit you generate a wind shield!
 					This shield gives 15 defense.
 					'''
@@ -3131,7 +3132,7 @@ Mods: {
 
 			AurelusDoor: {
 				DisplayName: Aurelus Door
-				Tooltip: "You really shouldnt use this"
+				Tooltip: You really shouldnt use this
 			}
 
 			AurelusSummoni: {
@@ -3139,10 +3140,39 @@ Mods: {
 				Tooltip: ""
 			}
 
-
 			MagnusMagnum: {
 				DisplayName: Magnus Magnum
-				Tooltip: "You know Harry, Ive never really cared for your two-shoe ass"
+				Tooltip: You know Harry, Ive never really cared for your two-shoe ass
+			}
+
+			VoidKey: {
+				DisplayName: Void Key
+				Tooltip: ""
+			}
+
+			Neptune8Card: {
+				DisplayName: Neptune8 Card
+				Tooltip: ""
+			}
+
+			Gintelze: {
+				DisplayName: Gintelze
+				Tooltip: ""
+			}
+
+			HolmbergScythe: {
+				DisplayName: Holmberg Scythe
+				Tooltip: ""
+			}
+
+			Alcarish: {
+				DisplayName: Alcarish
+				Tooltip: ""
+			}
+
+			AurelusBlightBroochA: {
+				DisplayName: Aurelus Blight Brooch A
+				Tooltip: ""
 			}
 		}
 
@@ -3564,6 +3594,11 @@ Mods: {
 				DisplayName: Void Minion Buff
 				Description: Very void like
 			}
+
+			AurelusB: {
+				DisplayName: Aurelus B
+				Description: Mods.Stellamod.Buffs.AurelusB.Description
+			}
 		}
 
 		NPCs: {
@@ -3671,6 +3706,28 @@ Mods: {
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
 			SingularityLazer2.DisplayName: Singularity Lazer2
+
+			Ginztel: {
+				DisplayName: Ginztel
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
 		}
 
 		Projectiles: {
@@ -4081,6 +4138,11 @@ Mods: {
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			AlcarishProj.DisplayName: Alcarish Proj
+			HolmbergScytheMirageProj.DisplayName: Holmberg Scythe Mirage Proj
+			HolmbergScytheMirageProjBlue.DisplayName: Holmberg Scythe Mirage Proj Blue
+			HolmbergScytheProj.DisplayName: Holmberg Scythe Proj
+			AurelusBlightBrooch.DisplayName: Aurelus Blight Brooch
 		}
 	}
 

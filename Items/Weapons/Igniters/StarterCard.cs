@@ -65,7 +65,6 @@ namespace Stellamod.Items.Weapons.Igniters
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.FallenStar, 1);
 			recipe.AddIngredient(ItemID.Wood, 30);
-			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}

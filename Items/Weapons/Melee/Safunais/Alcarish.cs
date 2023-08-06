@@ -59,7 +59,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.knockBack = 4f;
 			Item.UseSound = SoundID.Item116;
 			Item.shoot = ModContent.ProjectileType<AlcarishProj>();
-			Item.value = Item.sellPrice(gold: 10);
+		
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 			Item.channel = true;
@@ -81,7 +81,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Vector2 direction = velocity.RotatedBy(Main.rand.NextFloat(-0.2f, 0.2f));
 			Projectile proj = Projectile.NewProjectileDirect(source, position, direction, type, damage, knockback, player.whoAmI);
 
-			if (proj.ModProjectile is HalhurishProj modProj)
+			if (proj.ModProjectile is AlcarishProj modProj)
 			{
 				modProj.SwingTime = (int)(Item.useTime * UseTimeMultiplier(player) * (slam ? 1.75f : 1));
 				modProj.SwingDistance = player.Distance(Main.MouseWorld) * distanceMult;

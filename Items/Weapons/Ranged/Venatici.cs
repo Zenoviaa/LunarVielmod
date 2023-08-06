@@ -13,6 +13,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Gun;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -35,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.knockBack = 2;
 			Item.value = 100000;
 			Item.rare = 2;
-			Item.UseSound = SoundID.Item36;
+			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/TON618");
 			Item.autoReuse = false;
 			Item.shoot = ProjectileType<Venbullet>();
 			Item.shootSpeed = 20f;

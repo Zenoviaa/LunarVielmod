@@ -107,10 +107,6 @@ namespace Stellamod.Projectiles.Safunai.Alcarish
 		
 			
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.5f, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0.25f, speedY * 2, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 5, speedY * 3, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY, ProjectileID.ThrowingKnife, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 			

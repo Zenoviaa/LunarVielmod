@@ -130,6 +130,8 @@ namespace Stellamod
 		public int BonedEyeBCooldown = 1;
 		public bool BroochGint;
 		public int GintBCooldown = 1;
+		public bool BroochAureBlight;
+		public int AureBCooldown = 1;
 		//---------------------------------------------------------------------------------------------------------------
 
 
@@ -440,6 +442,8 @@ namespace Stellamod
 			BroochSlime = false;
 			BroochDiari = false;
 			BroochVerlia = false;
+			BroochAureBlight = false;
+			BroochGint = false;
 
 
 
@@ -448,8 +452,7 @@ namespace Stellamod
 
 
 
-
-            SpiritPendent = false;
+			SpiritPendent = false;
             GHE = false;
             ShadeRune = false;
             FCArmor = false;
@@ -799,13 +802,23 @@ namespace Stellamod
                 }
             }
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Brooches
-            if (BroochSpragald && SpragaldBCooldown <= 0)
+            if (BroochAureBlight && AureBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<AurelusBlightBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<AurelusB>(), 1000);
+				SpragaldBCooldown = 1000;
+			}
+
+			if (BroochSpragald && SpragaldBCooldown <= 0)
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SpragaldBrooch>(), 0, 1f, Player.whoAmI);
 
 				Player.AddBuff(ModContent.BuffType<Spragald>(), 1000);
 				SpragaldBCooldown = 1000;
 			}
+
+
 
 			if (BroochFrile && FrileBCooldown <= 0)
 			{

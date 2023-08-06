@@ -31,9 +31,6 @@ namespace Stellamod.Items.Placeable
 			recipe.AddIngredient(ItemID.WorkBench, 1);
 			recipe.AddIngredient(ItemID.Solidifier, 1);
 			recipe.AddIngredient(ItemID.Furnace, 1);
-			recipe.AddIngredient(ItemID.Chest, 3);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 10);

@@ -37,7 +37,7 @@ namespace Stellamod.Items.Accessories
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
 			recipe.AddIngredient(ItemID.Bottle, 10);
