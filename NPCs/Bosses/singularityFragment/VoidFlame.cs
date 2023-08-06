@@ -6,12 +6,22 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using System;
+using Terraria;
 using Terraria.ID;
-using Stellamod.Projectiles.Swords;
-using Stellamod.NPCs.Bosses.Jack;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using Microsoft.Xna.Framework.Graphics;
+using static Humanizer.In;
+using Terraria.GameContent;
 using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.Utilis;
+using Stellamod.Trails;
+using Terraria.Graphics.Shaders;
+using Stellamod.Effects;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
+using Stellamod.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -66,7 +76,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
         }
         public override Color? GetAlpha(Color lightColor) => Color.White;
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
 
+        }
         public override void AI()
         {
 

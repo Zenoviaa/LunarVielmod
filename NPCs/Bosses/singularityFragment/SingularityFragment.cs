@@ -23,6 +23,10 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Overworld.ShadowWraith;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -30,13 +34,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
     public class SingularityFragment : ModNPC
     {
         private const int TELEPORT_DISTANCE = 400;
-        public bool TP = true;
-        public bool DarkHoldPos = true;
-        public bool Flying = false;
-        public bool HP50 = false;
+        public bool PH2 = false;
         public bool Spawned = false;
+        public bool TP = false;
+        public bool Lazer = false;
+        public int Timer = 0;
+        public int PrevAttac = 0;
+        public int MaxAttac = 0;
+        public static int SingularityOrbs = 0;
+        public static Vector2 SingularityPos;
+        public static Vector2 SingularityStart;
         public override void SetStaticDefaults()
         {
+            Main.npcFrameCount[NPC.type] = 30;
             // DisplayName.SetDefault("Binding Abyss");
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -49,9 +59,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.scale = 0;
             NPC.width = 100;
             NPC.height = 60;
-            NPC.damage = 999;
-            NPC.defense = 23;
-            NPC.lifeMax = 6300;
+            NPC.damage = 9999;
+            NPC.defense = 11;
+            NPC.lifeMax = 3100;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             NPC.value = 60f;
@@ -59,15 +69,27 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Sounds/SingularityFragment");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SingularityFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
         }
+        int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.15f;
-            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
-            int frame = (int)NPC.frameCounter;
-            NPC.frame.Y = frame * frameHeight;
+
+
+            NPC.frameCounter += 0.5f;
+
+            if (NPC.frameCounter >= 3)
+            {
+                frame++;
+                NPC.frameCounter = 0;
+            }
+            if (frame >= 30)
+            {
+                frame = 0;
+            }
+            NPC.frame.Y = frameHeight * frame;
+
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -78,8 +100,63 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         }
 
+        public void CasuallyApproachChild()
+        {
+            Player player = Main.player[NPC.target];
+            NPC.velocity.Y *= 0.94f;
+            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
+        }
+        public int rippleCount = 20;
+        public int rippleSize = 5;
+        public int rippleSpeed = 25;
+        public float distortStrength = 600f;
+
+        int bee = 220;
+        public Vector2 LastBacklash;
+        public Vector2 LastDirection;
+        public int Attack;
+        public int SparkCount;
+        public int SparkCountMax;
         public override void AI()
         {
+            Timer ++;
+            if (Timer == 10)
+            {
+                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                {
+                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+                }
+            }
+            if (Timer >= 15)
+            {
+                Timer = 0;
+                if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                {
+                    Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+                }
+
+                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                {
+                    float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+                }
+            }
+
+
+
+
+
+            PH2 = NPC.life < NPC.lifeMax * 0.4f;
+            if (PH2)
+            {
+                MaxAttac = 7;
+            }
+            else             
+            {
+                MaxAttac = 5;
+            }
+
 
             var entitySource = NPC.GetSource_FromThis();
             Player player = Main.player[NPC.target];
@@ -108,14 +185,35 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
             if (NPC.ai[2] == 0)
             {
-                NPC.position.X = player.Center.X;
-                NPC.position.Y = player.Center.Y - 200;
+                SingularityStart = NPC.position;
                 NPC.scale = 0;
                 Spawned = false;
                 NPC.ai[2] = 1;
             }
+            SingularityPos = NPC.Center;
+            if (Spawned)
+            {
+                if (SingularityOrbs > 0)
+                {
+                    SparkCountMax = 3;
+                    NPC.dontTakeDamage = true;
+                    NPC.dontCountMe = true;
+                }
+                else
+                {
+                    SparkCountMax = 1;
+                    NPC.dontTakeDamage = false;
+                    NPC.dontCountMe = false;
+                }
+            }
+            else
+            {
+                NPC.dontTakeDamage = true;
+                NPC.dontCountMe = true;
+            }
 
-    
+
+
             if (NPC.ai[2] == 1)
                 switch (NPC.ai[1])
                 {
@@ -146,11 +244,31 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 }
                                 if (NPC.ai[0] >= 1)
                                 {
-                                    NPC.velocity.Y -= 0.05f;
+                                    NPC.velocity.Y -= 0.01f;
                                     NPC.scale += 0.010f;
                                     NPC.ai[0]++;
                                     if (NPC.scale >= 1)
                                     {
+                                        if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                        {
+                                            Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+                                        }
+
+                                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                        {
+                                            float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+                                        }
+                                        float radius = 250;
+                                        float rot = MathHelper.TwoPi / 5;
+                                        for (int I = 0; I < 5; I++)
+                                        {
+                                            SingularityOrbs = 5;
+                                            Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
+                                            NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y), ModContent.NPCType<SingularityOrb>(), NPC.whoAmI, NPC.whoAmI, I * rot, radius);
+
+                                        }
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                                         for (int i = 0; i < 14; i++)
@@ -171,7 +289,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                         }
                                         Spawned = true;
                                         NPC.damage = 999;
-                                        TP = false;
+        
                                         NPC.ai[0] = 0;
                                         NPC.ai[1] = 0;
                                         NPC.netUpdate = true;
@@ -182,39 +300,37 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             else
                             {
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                if (SingularityOrbs == 0)
                                 {
-                                    NPC.scale = 1;
-                                }
-       
-                                if (NPC.life > NPC.lifeMax * 0.5f)
-                                {
-                                    NPC.ai[1] = Main.rand.Next(1, 5);
-                                    NPC.scale = 1;
-                                    NPC.netUpdate = true;
-                                }
-                                else
-                                {
-                                    if (Main.rand.Next(2) == 0)
+                                    Attack = Main.rand.Next(1, MaxAttac);
+                                    if (Attack == PrevAttac)
                                     {
-
-                                        NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y + 80, ModContent.NPCType<Voidling>());
-                                    }
-                                    if (NPC.life > NPC.lifeMax * 0.2f)
-                                    {
-                                        NPC.ai[1] = Main.rand.Next(1, 7);
-                                        NPC.scale = 1;
-                                        NPC.netUpdate = true;
+                                        Attack = Main.rand.Next(1, MaxAttac);
                                     }
                                     else
                                     {
-                                        NPC.defense = 30;
-                                        NPC.ai[1] = Main.rand.Next(1, 8);
-                                        NPC.scale = 1;
-                                        NPC.netUpdate = true;
+                                        NPC.ai[1] = Attack;
                                     }
-
                                 }
+                                else
+                                {
+                                    Attack = Main.rand.Next(1, 3);
+                                    if (Attack == PrevAttac)
+                                    {
+                                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                        {
+                                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+                                        }
+                                        Attack = Main.rand.Next(1, 3);
+                                    }
+                                    else
+                                    {
+                                        NPC.ai[1] = Attack;
+                                    }
+                                }
+         
+                                NPC.scale = 1;
+           
                                 NPC.scale = 1;
                                 NPC.netUpdate = true;
                             }
@@ -226,24 +342,151 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         break;
                     case 1:
                         NPC.ai[0]++;
-                        if (NPC.life > NPC.lifeMax * 0.5f)
+
+
+                        if (SingularityOrbs == 0)
                         {
-                            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.006f);
+                            CasuallyApproachChild();
+                            NPC.velocity *= 0.90f;
                         }
                         else
                         {
-                            if (NPC.life > NPC.lifeMax * 0.2f)
+                            NPC.velocity *= 0.90f;
+                        }
+                        if(SparkCount < SparkCountMax)
+                        {
+                            if (NPC.ai[0] == 20)
                             {
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularitySpark>());
+                            }
+                            if (NPC.ai[0] == 70 || NPC.ai[0] == 75 || NPC.ai[0] == 80 || NPC.ai[0] == 85 || NPC.ai[0] == 90)
+                            {
+                                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                                Vector2 Backlash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center ) * 8.5f;
+                                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                                if (SingularityOrbs == 0)
+                                {
+                                    NPC.velocity += Backlash / 2;
+                                }
+                 
+                                float offsetX = Main.rand.Next(-5, 5);
+                                float offsetY = Main.rand.Next(-5, 5);
+                                int damage = Main.expertMode ? 6 : 10;
+                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (direction.X * 1.5f) + offsetX, (direction.Y * 1.5f) + offsetY, ModContent.ProjectileType<SingularitySparkProj>(), damage, 1, Main.myPlayer, 0, 0);
+                            }
+                            if (NPC.ai[0] == 110)
+                            {
+                                SparkCount += 1;
+                                NPC.ai[0] = 0;
+                            }
+                        }
+                        else
+                        {
+                            if (SingularityOrbs == 0)
+                            {
+                                if (NPC.ai[0] >= 10)
+                                {
+                                    SparkCount = 0;
+                                    PrevAttac = 1;
+                                    NPC.ai[1] = 0;
+                                    NPC.ai[0] = 0;
+                                }
+                                CasuallyApproachChild();
                             }
                             else
                             {
-                                NPC.defense = 32;
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.011f);
+                                if (NPC.ai[0] >= 50)
+                                {
+                                    SparkCount = 0;
+                                    PrevAttac = 1;
+                                    NPC.ai[1] = 0;
+                                    NPC.ai[0] = 0;
+                                }
+                                NPC.velocity *= 0.90f;
                             }
+                        }
+                        break;
+                    case 2:
+                        NPC.ai[0]++;
+    
+                        if (SingularityOrbs == 0)
+                        {
+                            if (NPC.ai[0] >= 150)
+                            {
+                                PrevAttac = 2;
+                                NPC.ai[1] = 0;
+                                NPC.ai[0] = 0;
+                            }
+                            CasuallyApproachChild();
+                        }
+                        else
+                        {
+                            if (NPC.ai[0] >= 190)
+                            {
+                                PrevAttac = 2;
+                                NPC.ai[1] = 0;
+                                NPC.ai[0] = 0;
+                            }
+                            NPC.velocity *= 0.90f;
+                        }
+                        if (NPC.ai[0] == 70 || NPC.ai[0] == 100 || NPC.ai[0] == 130)
+                        {
+                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
+                            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+
+                    
+                            float offsetX = Main.rand.Next(-1, 1);
+                            float offsetY = Main.rand.Next(-1, 1);
+                            int damage = Main.expertMode ? 11 : 15;
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (direction.X * 1.5f) + offsetX, (direction.Y * 1.5f) + offsetY, ModContent.ProjectileType<VoidFlame>(), damage, 1, Main.myPlayer, 0, 0);
                         }
 
+                        break;
+                    case 3:
+                        NPC.ai[0]++;
+                        if (NPC.ai[0] <= 5)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
+                        }
+                        if (NPC.ai[0] >= 275)
+                        {
+                            PrevAttac = 3;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
+                        NPC.velocity *= 0.90f;
+                        if (NPC.ai[0] == 100)
+                        {
+                            LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
+                            LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                            NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularitySparkBig>());
+                        }
+                        if (NPC.ai[0] == 170 || NPC.ai[0] == 175 || NPC.ai[0] == 180 || NPC.ai[0] == 185 || NPC.ai[0] == 190  || NPC.ai[0] == 195 || NPC.ai[0] == 200 || NPC.ai[0] == 205 || NPC.ai[0] == 210 || NPC.ai[0] == 215 || NPC.ai[0] == 220 || NPC.ai[0] == 225 || NPC.ai[0] == 230 || NPC.ai[0] == 235 || NPC.ai[0] == 240 || NPC.ai[0] == 245 || NPC.ai[0] == 250 || NPC.ai[0] == 255)
+                        {
+
+                            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                            SoundEngine.PlaySound(SoundID.Item91, NPC.position);
+
+
+                            Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
+                            if (SingularityOrbs == 0)
+                            {
+                                NPC.velocity += LastBacklash / 5;
+                            }
+                            float offsetX = Main.rand.Next(-5, 5);
+                            float offsetY = Main.rand.Next(-5, 5);
+                            int damage = Main.expertMode ? 11 : 15;
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (LastDirection.X * 1.5f) + offsetX, (LastDirection.Y * 1.5f) + offsetY, ModContent.ProjectileType<PulsarBeam>(), damage, 1, Main.myPlayer, 0, 0);
+                        }
+
+                        break;
+                    case 4:
+                        NPC.ai[0]++;
+                        CasuallyApproachChild();
                         base.NPC.velocity.Y *= 0.95f;
                         if (NPC.ai[0] == 50 || NPC.ai[0] == 150)
                         {
@@ -281,383 +524,189 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             NPC.netUpdate = true;
                         }
                         break;
-                    case 2:
-                        NPC.ai[0]++;
-                        base.NPC.velocity *= 0.97f;
-
-                        if (NPC.ai[0] >= 70)
-                        {
-
-                            if (Main.rand.Next(2) == 0)
-                            {
-                                if (Main.netMode != NetmodeID.Server)
-                                {
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 22f);
-                                    Vector2 vector = base.NPC.Center + (VectorHelper.Right * 125f).RotatedByRandom(180.0);
-                                    Dust dust = Dust.NewDustDirect(vector, NPC.width, NPC.height, DustID.Firework_Blue, 0, 0, 0, Color.White, 2);
-                                    dust.velocity *= -1f;
-                                    dust.scale *= .8f;
-                                    dust.noGravity = true;
-                                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                                    vector2_1.Normalize();
-                                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                                    dust.velocity = vector2_2;
-                                    vector2_2.Normalize();
-                                    Vector2 vector2_3 = vector2_2 * 34f;
-                                    dust.position = NPC.Center - vector2_3;
-                                    NPC.netUpdate = true;
-                                }
-                                if (Main.netMode != NetmodeID.Server)
-                                {
-                                    Vector2 vector = base.NPC.Center + (VectorHelper.Right * 125f).RotatedByRandom(180.0);
-                                    Dust dust = Dust.NewDustDirect(vector, NPC.width, NPC.height, DustID.Firework_Blue, 0, 0, 0, Color.White, 2);
-                                    dust.velocity *= -1f;
-                                    dust.scale *= .8f;
-                                    dust.noGravity = true;
-                                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                                    vector2_1.Normalize();
-                                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                                    dust.velocity = vector2_2;
-                                    vector2_2.Normalize();
-                                    Vector2 vector2_3 = vector2_2 * 34f;
-                                    dust.position = vector - vector2_3;
-                                    NPC.netUpdate = true;
-                                }
-                            }
-                        }
-                        if (NPC.life > NPC.lifeMax * 0.5f)
-                        {
-                            if (NPC.ai[0] == 200)
-                            {
-                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
-                                int offsetRandom = Main.rand.Next(0, 50);
-                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 92f);
-                                for (int i = 0; i < 20; i++)
-                                {
-                                    Dust.NewDustPerfect(base.NPC.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
-                                }
-                                float spread = 45f * 0.0174f;
-                                double startAngle = Math.Atan2(1, 0) - spread / 2;
-                                double deltaAngle = spread / 8f;
-                                double offsetAngle;
-
-                                for (int i = 0; i < 4; i++)
-                                {
-                                    offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<AbyssalChargeProjectile>(), 22, 0, Main.myPlayer);
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<AbyssalChargeProjectile>(), 22, 0, Main.myPlayer);
-                                    }
-
-
-                                }
-                            }
-                            if (NPC.ai[0] == 70)
-                            {
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"), NPC.position);
-
-                            }
-                            if (NPC.ai[0] >= 220)
-                            {
-                                NPC.ai[0] = 0;
-                                NPC.ai[1] = 0;
-                                NPC.netUpdate = true;
-                            }
-                        }
-                        else
-                        {
-                            if (NPC.ai[0] == 200 || NPC.ai[0] == 230)
-                            {
-                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
-                                int offsetRandom = Main.rand.Next(0, 50);
-                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 92f);
-                                for (int i = 0; i < 20; i++)
-                                {
-                                    Dust.NewDustPerfect(base.NPC.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
-                                }
-                                float spread = 45f * 0.0174f;
-                                double startAngle = Math.Atan2(1, 0) - spread / 2;
-                                double deltaAngle = spread / 8f;
-                                double offsetAngle;
-
-                                for (int i = 0; i < 4; i++)
-                                {
-                                    offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<AbyssalChargeProjectile>(), 22, 0, Main.myPlayer);
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<AbyssalChargeProjectile>(), 22, 0, Main.myPlayer);
-                                    }
-
-
-                                }
-                            }
-                            if (NPC.ai[0] == 70)
-                            {
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"), NPC.position);
-
-                            }
-                            if (NPC.ai[0] >= 250)
-                            {
-                                NPC.ai[0] = 0;
-                                NPC.ai[1] = 0;
-                                NPC.netUpdate = true;
-                            }
-                        }
-
-                        break;
-                    case 3:
-                        NPC.ai[0]++;
-                        if (NPC.life > NPC.lifeMax * 0.5f)
-                        {
-                            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.006f);
-                        }
-                        else
-                        {
-                            if (NPC.life > NPC.lifeMax * 0.2f)
-                            {
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
-                            }
-                            else
-                            {
-                                NPC.defense = 30;
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.011f);
-                            }
-
-                        }
-                        base.NPC.velocity.Y *= 0.95f;
-                        if (NPC.ai[0] == 50 || NPC.ai[0] == 80 || NPC.ai[0] == 110)
-                        {
-                            SoundEngine.PlaySound(SoundID.DD2_DrakinShot);
-                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            SoundEngine.PlaySound(SoundID.Item8, NPC.position);
-                            float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-                            float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 32 : 45;
-
-                            Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<VoidFlame>(), damage, 1, Main.myPlayer, 0, 0);
-                        }
-
-                        if (NPC.ai[0] >= 130)
-                        {
-                            NPC.ai[0] = 0;
-                            NPC.ai[1] = 0;
-                            NPC.netUpdate = true;
-                        }
-                        break;
-                    case 4:
-                        NPC.ai[0]++;
-                        if (NPC.life > NPC.lifeMax * 0.5f)
-                        {
-                            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.006f);
-                        }
-                        else
-                        {
-                            if (NPC.life > NPC.lifeMax * 0.2f)
-                            {
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
-                            }
-                            else
-                            {
-                                NPC.defense = 30;
-                                base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.011f);
-                            }
-
-                        }
-                        base.NPC.velocity *= 0.7f;
-                        if (NPC.ai[0] <= 100)
-                        {
-
-                            if (Main.rand.Next(2) == 0)
-                            {
-                                if (Main.netMode != NetmodeID.Server)
-                                {
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 22f);
-                                    Vector2 vector = base.NPC.Center + (VectorHelper.Right * 125f).RotatedByRandom(180.0);
-                                    Dust dust = Dust.NewDustDirect(vector, NPC.width, NPC.height, DustID.Firework_Blue, 0, 0, 0, Color.White, 2);
-                                    dust.velocity *= -1f;
-                                    dust.scale *= .8f;
-                                    dust.noGravity = true;
-                                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                                    vector2_1.Normalize();
-                                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                                    dust.velocity = vector2_2;
-                                    vector2_2.Normalize();
-                                    Vector2 vector2_3 = vector2_2 * 34f;
-                                    dust.position = NPC.Center - vector2_3;
-                                    NPC.netUpdate = true;
-                                }
-    
-                            }
-                        }
-                        if (NPC.ai[0] == 100)
-                        {
-                            SoundEngine.PlaySound(SoundID.DD2_DrakinShot);
-                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            SoundEngine.PlaySound(SoundID.Item8, NPC.position);
-                            float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-                            float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 20 : 31;
-
-                            Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<AbyssWave>(), damage, 1, Main.myPlayer, 0, 0);
-                        }
-
-                        if (NPC.ai[0] >= 100)
-                        {
-                            NPC.ai[0] = 0;
-                            NPC.ai[1] = 0;
-                            NPC.netUpdate = true;
-                        }
-                        break;
                     case 5:
-
                         NPC.ai[0]++;
-                        if (NPC.ai[0] == 1)
+                        if (!Lazer)
                         {
-                            NPC.damage = 0;
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
-                        }
-                        if (!TP)
-                        {
-                            NPC.velocity.Y += 0.05f;
-                            NPC.scale -= 0.015f;
-                            if (NPC.scale <= 0)
+
+                            if (NPC.ai[0] == 1)
                             {
-                                NPC.scale = 0;
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn"), NPC.position);
-                                TP = true;
-                                NPC.velocity.Y = 0;
-                                Vector2 angle = Vector2.UnitX.RotateRandom(Math.PI * 2);
-                                NPC.position.X = player.Center.X + (int)(TELEPORT_DISTANCE * angle.X);
-                                NPC.position.Y = player.Center.Y + (int)(TELEPORT_DISTANCE * angle.Y);
-                                NPC.netUpdate = true;
+                                NPC.damage = 0;
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
+                            }
+                            if (!TP)
+                            {
+                                NPC.velocity.Y += 0.05f;
+                                NPC.scale -= 0.015f;
+                                if (NPC.scale <= 0)
+                                {
+                                    NPC.scale = 0;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn"), NPC.position);
+                                    TP = true;
+                                    NPC.velocity.Y = 0;
+                                    Vector2 angle = Vector2.UnitX.RotateRandom(Math.PI * 2);
+
+                                    NPC.position = SingularityStart;
+                                    NPC.netUpdate = true;
+                                }
+                            }
+                            else
+                            {
+                                NPC.velocity.Y -= 0.05f;
+                                NPC.scale += 0.015f;
+                                if (NPC.scale >= 1)
+                                {
+                                    Lazer = true;
+                                    NPC.scale = 1;
+                                    NPC.damage = 999;
+                                    TP = false;
+                                    NPC.ai[0] = 0;
+
+                                    NPC.netUpdate = true;
+                                }
                             }
                         }
                         else
                         {
-                            NPC.velocity.Y -= 0.05f;
-                            NPC.scale += 0.015f;
-                            if (NPC.scale >= 1)
+                            if (NPC.ai[0] <= 5)
                             {
-                                NPC.scale = 1;
-                                NPC.damage = 999;
-                                TP = false;
-                                NPC.ai[0] = 0;
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
+                            }
+                            if (NPC.ai[0] >= 525)
+                            {
+                                Lazer = false;
+                                PrevAttac = 5;
                                 NPC.ai[1] = 0;
-                                NPC.netUpdate = true;
+                                NPC.ai[0] = 0;
+                            }
+                            NPC.velocity *= 0.90f;
+                            if (NPC.ai[0] == 50)
+                            {
+                                LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
+                                LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+                            }
+                            if (NPC.ai[0] == 170)
+                            {
+                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
+                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect2>(), 0, 0f);
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER"));
+                                float radius = 10;
+                                float rot = MathHelper.TwoPi / 2;
+                                for (int I = 0; I < 1; I++)
+                                {
+                                    Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
+                                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y), ModContent.NPCType<LazerOrb>(), NPC.whoAmI, NPC.whoAmI, I * rot, radius);
+
+                                }
+
                             }
                         }
+
+
+
 
                         break;
                     case 6:
                         NPC.ai[0]++;
-                        base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
-                        base.NPC.velocity.Y *= 0.95f;
-                        if (NPC.ai[0] == 50 )
-                        {
-                            SoundEngine.PlaySound(SoundID.DD2_DrakinShot);
-                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            SoundEngine.PlaySound(SoundID.Item8, NPC.position);
-                            float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-                            float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 20 : 31;
-
-                            Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<AbyssalChargeProjectile2>(), damage, 1, Main.myPlayer, 0, 0);
-                        }
-
-                        if (NPC.ai[0] >= 60)
-                        {
-                            NPC.ai[0] = 0;
-                            NPC.ai[1] = 0;
-                            NPC.netUpdate = true;
-                        }
-                        break;
-                    case 7:
-                        NPC.ai[0]++;
-                        base.NPC.velocity *= 0.97f;
-
-                        if (NPC.ai[0] >= 70)
+                        if (!Lazer)
                         {
 
-                            if (Main.rand.Next(2) == 0)
+                            if (NPC.ai[0] == 1)
                             {
-                                if (Main.netMode != NetmodeID.Server)
-                                {
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 22f);
-                                    Vector2 vector = base.NPC.Center + (VectorHelper.Right * 125f).RotatedByRandom(180.0);
-                                    Dust dust = Dust.NewDustDirect(vector, NPC.width, NPC.height, DustID.Firework_Blue, 0, 0, 0, Color.White, 2);
-                                    dust.velocity *= -1f;
-                                    dust.scale *= .8f;
-                                    dust.noGravity = true;
-                                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                                    vector2_1.Normalize();
-                                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                                    dust.velocity = vector2_2;
-                                    vector2_2.Normalize();
-                                    Vector2 vector2_3 = vector2_2 * 34f;
-                                    dust.position = NPC.Center - vector2_3;
-                                    NPC.netUpdate = true;
-                                }
-                                if (Main.netMode != NetmodeID.Server)
-                                {
-                                    Vector2 vector = base.NPC.Center + (VectorHelper.Right * 125f).RotatedByRandom(180.0);
-                                    Dust dust = Dust.NewDustDirect(vector, NPC.width, NPC.height, DustID.Firework_Blue, 0, 0, 0, Color.White, 2);
-                                    dust.velocity *= -1f;
-                                    dust.scale *= .8f;
-                                    dust.noGravity = true;
-                                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                                    vector2_1.Normalize();
-                                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                                    dust.velocity = vector2_2;
-                                    vector2_2.Normalize();
-                                    Vector2 vector2_3 = vector2_2 * 34f;
-                                    dust.position = vector - vector2_3;
-                                    NPC.netUpdate = true;
-                                }
+                                NPC.damage = 0;
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
                             }
-                        }
-                        if (NPC.ai[0] >= 70)
-                        {
-                            if(player.position.X >= NPC.position.X)
+                            if (!TP)
                             {
-                                player.velocity.X -= 0.1f;
-                                player.velocity.X -= 90.9f / distance;
+                                NPC.velocity.Y += 0.01f;
+                                NPC.scale -= 0.015f;
+                                if (NPC.scale <= 0)
+                                {
+                                    NPC.scale = 0;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn"), NPC.position);
+                                    TP = true;
+                                    NPC.velocity.Y = 0;
+                                    Vector2 angle = Vector2.UnitX.RotateRandom(Math.PI * 2);
+
+                                    NPC.position = SingularityStart;
+                                    NPC.netUpdate = true;
+                                }
                             }
                             else
                             {
-                                player.velocity.X += 0.1f;
-                                player.velocity.X += 90.9f / distance;
+                                NPC.velocity.Y -= 0.05f;
+                                NPC.scale += 0.015f;
+                                if (NPC.scale >= 1)
+                                {
+                                    Lazer = true;
+                                    NPC.scale = 1;
+                                    NPC.damage = 999;
+                                    TP = false;
+                                    NPC.ai[0] = 0;
+
+                                    NPC.netUpdate = true;
+                                }
                             }
                         }
-                        if (NPC.ai[0] == 70)
+                        else
                         {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER"), NPC.position);
-                            Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y - 900, 0, 10, ModContent.ProjectileType<VoidBeam>(), 100, 0f, -1, 0, NPC.whoAmI);
+                            if (NPC.ai[0] <= 5)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
+                            }
+                            if (NPC.ai[0] >= 525)
+                            {
+                                Lazer = false;
+                                PrevAttac = 6;
+                                NPC.ai[1] = 0;
+                                NPC.ai[0] = 0;
+                            }
+                            NPC.velocity *= 0.90f;
+                            if (NPC.ai[0] == 50)
+                            {
+                                LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
+                                LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+                            }
+                            if (NPC.ai[0] == 270)
+                            {
+                                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                {
+                                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+                                }
+                            }
+                            if (NPC.ai[0] == 170)
+                            {
+                                if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                {
+                                    Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
 
-                        }
-                        if (NPC.ai[0] == 1)
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"), NPC.position);
+                                }
 
+                                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                                {
+                                    float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+                                }
+                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
+                                Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect2>(), 0, 0f);
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER"));
+                                float radius = 10;
+                                float rot = MathHelper.TwoPi / 2;
+                                for (int I = 0; I < 1; I++)
+                                {
+                                    Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
+                                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y), ModContent.NPCType<LazerOrb>(), NPC.whoAmI, NPC.whoAmI, I * rot, radius);
+
+                                }
+
+                            }
                         }
-                        if (NPC.ai[0] >= 420)
-                        {
-                            NPC.ai[0] = 0;
-                            NPC.ai[1] = 0;
-                            NPC.netUpdate = true;
-                        }
+
+
+
+
                         break;
                 }
         }
@@ -697,7 +746,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
 
             Vector2 frameOrigin = NPC.frame.Size();
-            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 8, NPC.height - NPC.frame.Height + 0);
+            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + (NPC.scale * 4), NPC.height - NPC.frame.Height + 0);
             Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
 
             float time = Main.GlobalTimeWrappedHourly;

@@ -3131,6 +3131,12 @@ Mods: {
 				Tooltip: ""
 			}
 
+			AurelusSummoni: {
+				DisplayName: Aurelus Summoni
+				Tooltip: ""
+			}
+		}
+
 			VoidKey: {
 				DisplayName: Void Key
 				Tooltip: ""
@@ -3253,6 +3259,7 @@ Mods: {
 			AurelusPost.MapEntry: Aurelus Post
 			AurelusBorderS.MapEntry: Aurelus Border S
 			AurelusDoorClosed.MapEntry: Aurelus Door Closed
+			AurelusSummon.MapEntry: Aurelus Summon
 		}
 
 		Buffs: {
@@ -3658,6 +3665,11 @@ Mods: {
 			WinterSoul2.DisplayName: Winter Soul
 			WinterSoul3.DisplayName: Winter Soul
 			HarvestVirulent.DisplayName: Harvest Virulent
+			SingularityOrb.DisplayName: Singularity Orb
+			SingularitySpark.DisplayName: Singularity Spark
+			SingularitySparkBig.DisplayName: Singularity Spark Big
+			LazerOrb.DisplayName: Lazer Orb
+			SingularityLazer.DisplayName: Singularity Lazer
 		}
 
 		Projectiles: {
@@ -4067,6 +4079,10 @@ Mods: {
 			Venbullet.DisplayName: Venbullet
 			VenShotIN.DisplayName: Ven Shot I N
 			IceboundMinion.DisplayName: Icebound Minion
+			SingularitySparkProj.DisplayName: Singularity Spark Proj
+			PulsarBeam.DisplayName: Pulsar Beam
+			RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
+			VoidBeamIN.DisplayName: Void Beam I N
 		}
 	}
 }
