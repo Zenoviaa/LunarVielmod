@@ -27,7 +27,7 @@ namespace Stellamod.Items.Materials
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(4);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();

@@ -25,6 +25,7 @@ namespace Stellamod.Items.Materials
             Recipe recipe = CreateRecipe(2);
             recipe.AddIngredient(ItemID.Silk, 2);
             recipe.AddIngredient(ItemID.FallenStar, 1);
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
             recipe.AddTile(TileID.Bottles);
             recipe.Register();
         }

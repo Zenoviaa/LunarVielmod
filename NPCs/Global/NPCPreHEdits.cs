@@ -168,14 +168,6 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GrassDirtPowder>(), 30, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			if (npc.type == NPCID.Harpy)
-			{
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 2, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
-
 			if (npc.type == NPCID.FlyingFish)
 			{
 

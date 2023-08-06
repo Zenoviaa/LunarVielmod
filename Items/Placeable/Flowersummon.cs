@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -32,9 +33,9 @@ namespace Stellamod.Items.Placeable
 			recipe.AddIngredient(ItemID.HellstoneBar, 22);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 35);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 35);
 			recipe.AddIngredient(ItemID.Bone, 20);
 
 			recipe.Register();

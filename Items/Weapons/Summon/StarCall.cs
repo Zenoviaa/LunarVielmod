@@ -66,7 +66,6 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddTile(TileID.Anvils);
 
 			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);

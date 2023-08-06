@@ -104,7 +104,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 			recipe.AddIngredient(ItemID.Chain, 15);
 			recipe.AddIngredient(ItemID.IceBlade, 1);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
 			recipe.AddIngredient(ItemID.FallenStar, 10);
 

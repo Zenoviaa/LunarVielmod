@@ -98,8 +98,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 
 			recipe.AddIngredient(ItemID.Chain, 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<Paper>(), 9);
+			recipe.AddIngredient(ItemID.Leather, 10);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
 			recipe.AddIngredient(ItemID.FallenStar, 10);
 

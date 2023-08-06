@@ -132,8 +132,7 @@ namespace Stellamod.NPCs.Harvesting.Ice
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 13, 1, 12));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fabric>(), 7, 5, 25));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 15, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.WaterWalkingBoots, 25, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostSwing>(), 20, 1, 1));

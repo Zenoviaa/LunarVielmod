@@ -11,6 +11,7 @@ using Terraria.ObjectData;
 using Stellamod.Dusts;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod.Tiles.Abyss.Aurelus
 {
@@ -185,7 +186,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 				if (isLocked)
 				{
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
-					int key = ModContent.ItemType<MorrowChestKey>();
+					int key = ModContent.ItemType<VoidKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top))
 					{
 						if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -250,7 +251,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 					player.cursorItemIconID = ModContent.ItemType<AurelusChesti>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MorrowChestKey>();
+						player.cursorItemIconID = ModContent.ItemType<VoidKey>();
 					}
 
 					player.cursorItemIconText = "";

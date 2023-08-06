@@ -105,7 +105,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(0, 2));
             Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
 
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<StarSilk>(), Main.rand.Next(1, 3), false, 0, false, false);
+          
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

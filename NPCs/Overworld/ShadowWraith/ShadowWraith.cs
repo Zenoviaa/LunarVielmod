@@ -13,6 +13,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Overworld.ShadowWraith
 {
@@ -120,6 +121,18 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeCharm>(), 1, false, 0, false, false);
             }
+
+          
+        }
+
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            if (NPC.downedBoss1)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 3, 1, 3));
+            }
+
         }
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;

@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ItemID.HellstoneBar, 22);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 35);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
 	
 			recipe.AddIngredient(ItemID.RedPaint, 200);
 			recipe.AddIngredient(ItemID.BlackPaint, 200);

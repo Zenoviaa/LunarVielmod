@@ -2169,32 +2169,32 @@ Mods: {
 
 			TerricBody: {
 				DisplayName: Terric Body
-				Tooltip: ""
+				Tooltip: +40 Health
 			}
 
 			TerricHead: {
 				DisplayName: Terric Head
-				Tooltip: ""
+				Tooltip: +13% Increased Magic Damage
 			}
 
 			TerricLegs: {
 				DisplayName: Terric Legs
-				Tooltip: ""
+				Tooltip: Increased movement speed!
 			}
 
 			WinterbornBody: {
 				DisplayName: Winterborn Body
-				Tooltip: ""
+				Tooltip: +20 Health!
 			}
 
 			WinterbornHead: {
 				DisplayName: Winterborn Head
-				Tooltip: ""
+				Tooltip: Increased Mana Regeneration
 			}
 
 			WinterbornLegs: {
 				DisplayName: Winterborn Legs
-				Tooltip: ""
+				Tooltip:  10% Increased movement speed!
 			}
 
 			DreadmireBag: {
@@ -2239,17 +2239,17 @@ Mods: {
 
 			WanderingEssence: {
 				DisplayName: Wandering Essence
-				Tooltip: ""
+				Tooltip: Strange item to represent love to Gothivia
 			}
 
 			ArnchaliteBar: {
 				DisplayName: Arnchalite Bar
-				Tooltip: ""
+				Tooltip: Its scolding hot! But its not old enough to be verian yet.
 			}
 
 			ArncharChunk: {
 				DisplayName: Arnchar Chunk
-				Tooltip: ""
+				Tooltip: Little pieces of a bigger substance
 			}
 
 			AzureaBar: {
@@ -2749,7 +2749,7 @@ Mods: {
 
 			Crysalizer: {
 				DisplayName: Crysalizer
-				Tooltip: ""
+				Tooltip: Shoot enemies with a crystallized shot!
 			}
 
 			DeathShot: {
@@ -2759,7 +2759,7 @@ Mods: {
 
 			DivineSniper: {
 				DisplayName: Divine Sniper
-				Tooltip: ""
+				Tooltip: "It really isnt all that divine"
 			}
 
 			Dragoniper: {
@@ -2804,7 +2804,7 @@ Mods: {
 
 			LAZER: {
 				DisplayName: L A Z E R
-				Tooltip: ""
+				Tooltip: Im a lasering
 			}
 
 			M38F30: {
@@ -2814,7 +2814,7 @@ Mods: {
 
 			RustlockPistol: {
 				DisplayName: Rustlock Pistol
-				Tooltip: ""
+				Tooltip: Great for shooting nothing!
 			}
 
 			Rustvolver: {
@@ -2844,7 +2844,7 @@ Mods: {
 
 			TychineGun: {
 				DisplayName: Tychine Gun
-				Tooltip: ""
+				Tooltip: Why would you kill sharks for this :(
 			}
 
 			VoidBlaster: {
@@ -2874,12 +2874,12 @@ Mods: {
 
 			DripplerStaff: {
 				DisplayName: Drippler Staff
-				Tooltip: ""
+				Tooltip: Drippy
 			}
 
 			IrradiatedCreeperStaff: {
 				DisplayName: Irradiated Creeper Staff
-				Tooltip: ""
+				Tooltip: I see the resemblence..
 			}
 
 			IvyakenStaff: {
@@ -2889,12 +2889,12 @@ Mods: {
 
 			JellyStaff: {
 				DisplayName: Jelly Staff
-				Tooltip: ""
+				Tooltip: Summons a small jelly to fight for you!
 			}
 
 			SwarmerStaff: {
 				DisplayName: Swarmer Staff
-				Tooltip: ""
+				Tooltip: Swarm them, now.
 			}
 
 			VoidStaff: {
@@ -2914,22 +2914,22 @@ Mods: {
 
 			Acidius: {
 				DisplayName: Acidius
-				Tooltip: ""
+				Tooltip: Acid flamer!
 			}
 
 			AssassinsKnife: {
 				DisplayName: Assassins Knife
-				Tooltip: ""
+				Tooltip: Can confuse foes!
 			}
 
 			AssassinsShuriken: {
 				DisplayName: Assassins Shuriken
-				Tooltip: ""
+				Tooltip: Can also confuse foes!
 			}
 
 			Boralius: {
 				DisplayName: Boralius
-				Tooltip: ""
+				Tooltip: Frostburner!
 			}
 
 			Bricks: {
@@ -2949,7 +2949,7 @@ Mods: {
 
 			Plantius: {
 				DisplayName: Plantius
-				Tooltip: ""
+				Tooltip: Poisoner!
 			}
 
 			ZthoKnifes: {
@@ -2979,7 +2979,7 @@ Mods: {
 
 			HeatGlider: {
 				DisplayName: Heat Glider
-				Tooltip: ""
+				Tooltip: Oh burn baby burn :)
 			}
 
 			JPost: {
@@ -3043,7 +3043,10 @@ Mods: {
 
 			RuneOfWind: {
 				DisplayName: Rune Of Wind
-				Tooltip: ""
+				Tooltip: '''
+					Sometimes when hit you generate a wind shield!
+					This shield gives 15 defense.
+					'''
 			}
 
 			GintzlsSteed: {
@@ -3118,17 +3121,17 @@ Mods: {
 
 			Venatici: {
 				DisplayName: Venatici
-				Tooltip: ""
+				Tooltip: I never knew there was a black hole this big :(
 			}
 
 			IceboundStaff: {
 				DisplayName: Icebound Staff
-				Tooltip: ""
+				Tooltip: Frozen by the icebound and spirits!
 			}
 
 			AurelusDoor: {
 				DisplayName: Aurelus Door
-				Tooltip: ""
+				Tooltip: "You really shouldnt use this"
 			}
 
 			AurelusSummoni: {
@@ -3136,20 +3139,16 @@ Mods: {
 				Tooltip: ""
 			}
 
-			VoidKey: {
-				DisplayName: Void Key
-				Tooltip: ""
-			}
 
 			MagnusMagnum: {
 				DisplayName: Magnus Magnum
-				Tooltip: ""
+				Tooltip: "You know Harry, Ive never really cared for your two-shoe ass"
 			}
 		}
 
 		VoidKey: {
 			DisplayName: Void Key
-			Tooltip: ""
+			Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
 		}
 
 		Biomes: {
@@ -3273,12 +3272,12 @@ Mods: {
 		Buffs: {
 			AbyssalFlame: {
 				DisplayName: Abyssal Flame
-				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+				Description: Youre burning
 			}
 
 			AcidFlame: {
 				DisplayName: Acid Flame
-				Description: Mods.Stellamod.Buffs.AcidFlame.Description
+				Description: Don't die like this
 			}
 
 			ArcaneDust: {
@@ -3288,57 +3287,57 @@ Mods: {
 
 			AssassinsSlashBuff: {
 				DisplayName: Assassins Slash Buff
-				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+				Description: Slashin away
 			}
 
 			Diarii: {
 				DisplayName: Diarii
-				Description: Mods.Stellamod.Buffs.Diarii.Description
+				Description: Love you!
 			}
 
 			Flyfish: {
 				DisplayName: Flyfish
-				Description: Mods.Stellamod.Buffs.Flyfish.Description
+				Description: Flying fishhhh!
 			}
 
 			GintBroo: {
 				DisplayName: Gint Broo
-				Description: Mods.Stellamod.Buffs.GintBroo.Description
+				Description: You feel like the commander of an army!
 			}
 
 			Goldren: {
 				DisplayName: Goldren
-				Description: Mods.Stellamod.Buffs.Goldren.Description
+				Description: Hot and golden
 			}
 
 			IceBrooch: {
 				DisplayName: Ice Brooch
-				Description: Mods.Stellamod.Buffs.IceBrooch.Description
+				Description: Freeze em
 			}
 
 			Morrow: {
 				DisplayName: Morrow
-				Description: Mods.Stellamod.Buffs.Morrow.Description
+				Description: Morrowed arrows
 			}
 
 			Slimee: {
 				DisplayName: Slimee
-				Description: Mods.Stellamod.Buffs.Slimee.Description
+				Description: Super high jump
 			}
 
 			Spragald: {
 				DisplayName: Spragald
-				Description: Mods.Stellamod.Buffs.Spragald.Description
+				Description: Spragald beans
 			}
 
 			VerliaBroo: {
 				DisplayName: Verlia Broo
-				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+				Description: Verlia is giving you smiles!
 			}
 
 			DarkHold: {
 				DisplayName: Dark Hold
-				Description: Mods.Stellamod.Buffs.DarkHold.Description
+				Description: Its got a grasp on your eyes.
 			}
 
 			DeathMultiplier: {
@@ -3428,7 +3427,7 @@ Mods: {
 
 			Elegance: {
 				DisplayName: Elegance
-				Description: Mods.Stellamod.Buffs.Elegance.Description
+				Description: Fly with the winds!
 			}
 
 			GintzelSheild: {
@@ -3438,17 +3437,17 @@ Mods: {
 
 			GintzelSheildCD: {
 				DisplayName: Gintzel Sheild C D
-				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+				Description: True
 			}
 
 			GintzeSeen: {
 				DisplayName: Gintze Seen
-				Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+				Description: You are being seen!
 			}
 
 			Gintzingwinds: {
 				DisplayName: Gintzingwinds
-				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+				Description: You feel like something is trembling before you.
 			}
 
 			Harvester: {
@@ -3463,7 +3462,7 @@ Mods: {
 
 			Love: {
 				DisplayName: Love
-				Description: Mods.Stellamod.Buffs.Love.Description
+				Description: In love!
 			}
 
 			PocketSandBuff: {
@@ -3473,7 +3472,7 @@ Mods: {
 
 			SnowFlame: {
 				DisplayName: Snow Flame
-				Description: Mods.Stellamod.Buffs.SnowFlame.Description
+				Description: Flamed snow
 			}
 
 			MorrowWhipDebuff: {
@@ -3488,82 +3487,82 @@ Mods: {
 
 			Wounded: {
 				DisplayName: Wounded
-				Description: Mods.Stellamod.Buffs.Wounded.Description
+				Description: Youre wounded
 			}
 
 			ArncharMinionBuff: {
 				DisplayName: Arnchar Minion Buff
-				Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+				Description: Arnchar
 			}
 
 			AuroranSeekerMinionBuff: {
 				DisplayName: Auroran Seeker Minion Buff
-				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+				Description: Seeks out strange humans
 			}
 
 			DripperBuff: {
 				DisplayName: Dripper Buff
-				Description: Mods.Stellamod.Buffs.DripperBuff.Description
+				Description: Cute little staff lol
 			}
 
 			FCBuff: {
 				DisplayName: F C Buff
-				Description: Mods.Stellamod.Buffs.FCBuff.Description
+				Description: You know I didnt expect you to look here.
 			}
 
 			HMMinionBuff: {
 				DisplayName: H M Minion Buff
-				Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+				Description: Idek what this is.
 			}
 
 			IceboundMinionBuff: {
 				DisplayName: Icebound Minion Buff
-				Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+				Description: Frost bats????
 			}
 
 			IrradiatedCreeperBuff: {
 				DisplayName: Irradiated Creeper Buff
-				Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+				Description: Creppin in ya doors
 			}
 
 			IvyakenBuff: {
 				DisplayName: Ivyaken Buff
-				Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+				Description: woa
 			}
 
 			JellyMinionBuff: {
 				DisplayName: Jelly Minion Buff
-				Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+				Description: Jellytastic
 			}
 
 			LifeWandMinionBuff: {
 				DisplayName: Life Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+				Description: Gives hearts
 			}
 
 			ManaWandMinionBuff: {
 				DisplayName: Mana Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+				Description: Gives mana stars!
 			}
 
 			ProbeBuff: {
 				DisplayName: Probe Buff
-				Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+				Description: Wanna get probed :3
 			}
 
 			SolMothBuff: {
 				DisplayName: Sol Moth Buff
-				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+				Description: Moth
 			}
 
 			SwarmerMinionBuff: {
 				DisplayName: Swarmer Minion Buff
-				Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+				Description: Swarmin
 			}
 
 			VoidMinionBuff: {
 				DisplayName: Void Minion Buff
-				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+				Description: Very void like
 			}
 		}
 
@@ -4118,7 +4117,7 @@ Mods: {
 
 		AurelusBiome: {
 			DisplayName: Aurelus Biome
-			TownNPCDialogueName: the Aurelus Biome
+			TownNPCDialogueName: the Aurelus Temple
 		}
 	}
 

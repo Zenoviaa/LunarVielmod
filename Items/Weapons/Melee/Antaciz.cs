@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
             recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
             recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
             recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
