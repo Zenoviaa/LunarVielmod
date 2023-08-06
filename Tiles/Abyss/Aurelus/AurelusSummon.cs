@@ -39,11 +39,11 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 
 
 			LocalizedText name = CreateMapEntryName();
-			// name.SetDefault("Shrine of The Moon");
+            // name.SetDefault("Shrine of The Moon");
 
 
-
-			Main.tileNoAttach[Type] = true;
+            Main.tileLighted[Type] = true;
+            Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = false;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
