@@ -66,7 +66,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 	
 			recipe.AddIngredient(ItemID.Wood, 10);
-			recipe.AddIngredient(ModContent.ItemType<Fabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 15);
 			recipe.AddIngredient(ItemID.Stinger, 1);
 
 

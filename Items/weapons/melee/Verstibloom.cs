@@ -61,7 +61,6 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ItemID.Vine, 3);
 			recipe.AddIngredient(ItemID.Stinger, 3);

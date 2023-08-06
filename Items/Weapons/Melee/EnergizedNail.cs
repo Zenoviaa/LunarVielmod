@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 32;
+			Item.damage = 62;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 0;
 			Item.height = 0;
@@ -85,8 +85,7 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddTile(TileID.Anvils);
 
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<DreasFlower>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
 
 			recipe.Register();
