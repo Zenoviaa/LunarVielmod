@@ -41,6 +41,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public int Timer = 0;
         public int PrevAttac = 0;
         public int MaxAttac = 0;
+        public static int LazerType = 0;
         public static int SingularityOrbs = 0;
         public static Vector2 SingularityPos;
         public static Vector2 SingularityStart;
@@ -470,7 +471,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                             SoundEngine.PlaySound(SoundID.Item91, NPC.position);
 
-
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2212f, 13f);
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             if (SingularityOrbs == 0)
                             {
@@ -496,7 +497,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                             float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                             float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 32 : 45;
+                            int damage = Main.expertMode ? 6 : 10;
 
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -508,7 +509,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                             Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                             direction.Normalize();
-                            int damage = expertMode ? 32 : 45;
+                            int damage = Main.expertMode ? 6 : 10;
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             for (int j = -1; j <= 1; j++)
@@ -570,7 +571,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             if (NPC.ai[0] <= 5)
                             {
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2"));
                             }
                             if (NPC.ai[0] >= 525)
                             {
@@ -582,12 +583,23 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             NPC.velocity *= 0.90f;
                             if (NPC.ai[0] == 50)
                             {
+                                LazerType = Main.rand.Next(0, 2);
+                                if (LazerType == 0)
+                                {
+
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+                                }
+                                else
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer2>());
+                                }
                                 LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
                                 LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+         
                             }
                             if (NPC.ai[0] == 170)
                             {
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2212f, 62f);
                                 Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                                 Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect2>(), 0, 0f);
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER"));
@@ -653,7 +665,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             if (NPC.ai[0] <= 5)
                             {
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge"));
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2"));
                             }
                             if (NPC.ai[0] >= 525)
                             {
@@ -665,9 +677,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             NPC.velocity *= 0.90f;
                             if (NPC.ai[0] == 50)
                             {
+                                LazerType = Main.rand.Next(0, 2);
+                                if (LazerType == 0)
+                                {
+
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+                                }
+                                else
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer2>());
+                                }
                                 LastBacklash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center) * 8.5f;
                                 LastDirection = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SingularityLazer>());
+                           
                             }
                             if (NPC.ai[0] == 270)
                             {
@@ -678,6 +700,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             if (NPC.ai[0] == 170)
                             {
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2212f, 62f);
                                 if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
                                 {
                                     Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);

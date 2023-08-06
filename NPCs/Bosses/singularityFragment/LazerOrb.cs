@@ -92,11 +92,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             }
 
             Vector2 direction = Vector2.Normalize(NPC.Center - Main.npc[parent].Center) * 8.5f;
-
+            NPC.Center = Main.npc[parent].Center + NPC.ai[2] * Timer.ToRotationVector2();
             direction.Normalize();
             NPC.rotation = -direction.ToRotation();
             if (!Lazer)
             {
+                if (global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.LazerType == 1)
+                {
+                    Timer = -179f;
+                }
+
                 Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 50, 0f, -1, 0, NPC.whoAmI);
                 Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 50, 0f, -1, 0, NPC.whoAmI);
                 Lazer = true;
@@ -104,10 +109,17 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.ai[1] = direction.X;
             NPC.ai[3] = direction.Y;
 
-            NPC.Center = Main.npc[parent].Center + NPC.ai[2] * Timer.ToRotationVector2();
+       
 
+            if(global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.LazerType == 0)
+            {
+                Timer -= .01f;
+            }
+            else
+            {
+                Timer += .01f;
+            }
 
-            Timer -= .01f;
             return false;
         }
 
