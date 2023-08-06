@@ -3140,6 +3140,11 @@ Mods: {
 				DisplayName: Void Key
 				Tooltip: ""
 			}
+
+			MagnusMagnum: {
+				DisplayName: Magnus Magnum
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
