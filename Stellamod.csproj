@@ -154,6 +154,8 @@
     <None Remove="Items\Weapons\Summon\HMArncharMinionLeft.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionRight.png" />
     <None Remove="Items\Weapons\Summon\HMMinionBuff.png" />
+    <None Remove="Items\Weapons\Summon\IceboundMinion.png" />
+    <None Remove="Items\Weapons\Summon\IceboundMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\IrradiatedCreeper2.png" />
     <None Remove="Items\Weapons\Summon\IrradiatedCreeperBuff.png" />
     <None Remove="Items\Weapons\Summon\IrradiatedCreeperStaff.png" />
@@ -189,7 +191,7 @@
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
-    <None Remove="Projectiles\Magic\LightSpandProg - Copy.png" />
+    <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

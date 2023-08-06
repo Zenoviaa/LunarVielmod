@@ -29,6 +29,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Overworld.ShadowWraith;
+using Stellamod.UI.Systems;
 
 
 //By Al0n37
@@ -88,7 +89,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
         {
             if (NPC.life <= 0)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048f, 128f);
+                ShakeModSystem.Shake = 8;
                 var entitySource = NPC.GetSource_FromThis();
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);

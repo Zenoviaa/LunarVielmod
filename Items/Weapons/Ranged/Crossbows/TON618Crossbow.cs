@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
         public override void SetDefaults()
         {
-            Item.damage = 33;
+            Item.damage = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
             Item.height = 25;
