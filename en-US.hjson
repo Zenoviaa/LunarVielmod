@@ -3125,6 +3125,16 @@ Mods: {
 				DisplayName: Icebound Staff
 				Tooltip: ""
 			}
+
+			AurelusDoor: {
+				DisplayName: Aurelus Door
+				Tooltip: ""
+			}
+
+			VoidKey: {
+				DisplayName: Void Key
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3242,6 +3252,7 @@ Mods: {
 			AurelusBanner1.MapEntry: Aurelus Banner1
 			AurelusPost.MapEntry: Aurelus Post
 			AurelusBorderS.MapEntry: Aurelus Border S
+			AurelusDoorClosed.MapEntry: Aurelus Door Closed
 		}
 
 		Buffs: {

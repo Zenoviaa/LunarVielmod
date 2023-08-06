@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-	public class MoonflameLantern : ModItem
+	public class VoidKey : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -38,11 +38,9 @@ namespace Stellamod.Items.Consumables
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 40);
-			recipe.AddIngredient(ItemID.ObsidianRose, 1);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
 			recipe.AddIngredient(ItemID.HellstoneBar, 5);
-			recipe.AddIngredient(ModContent.ItemType<EmptyMoonflameLantern>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<VoidLantern>(), 1);
 			recipe.AddTile(TileID.DemonAltar);
 			recipe.Register();
 		}
