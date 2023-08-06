@@ -42,11 +42,8 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 8);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 12);
-            recipe.AddIngredient(ItemID.SnowBlock, 7);
-            recipe.AddTile(TileID.Furnaces);
+            Recipe recipe = CreateRecipe();   
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
             recipe.Register();
         }
         public override Vector2? HoldoutOffset()

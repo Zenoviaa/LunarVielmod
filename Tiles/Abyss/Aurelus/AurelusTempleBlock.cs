@@ -22,6 +22,9 @@ namespace Stellamod.Tiles.Abyss.Aurelus
             Main.tileBlockLight[Type] = true;
             RegisterItemDrop(ItemType<AurelusTempleTile>());
             AddMapEntry(new Color(6, 5, 7));
+            MineResist = 8f;
+            MinPick = 200;
+
         }
 
 
