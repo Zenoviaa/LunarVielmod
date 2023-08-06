@@ -105,6 +105,7 @@
     <None Remove="Items\Weapons\Melee\DragonWaveFury.png" />
     <None Remove="Items\Weapons\Melee\EventHorizon.png" />
     <None Remove="Items\Weapons\Melee\FrostBringer.png" />
+    <None Remove="Items\Weapons\Melee\Gintelze.png" />
     <None Remove="Items\Weapons\Melee\IrradiatedGreatBlade.png" />
     <None Remove="Items\Weapons\Melee\Myocardia.png" />
     <None Remove="Items\Weapons\Melee\ScarecrowSaber.png" />

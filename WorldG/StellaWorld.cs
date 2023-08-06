@@ -245,17 +245,101 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(abysmx - 150, abysmy + 100);
-					StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
+					
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
 
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
 
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+							Tuple.Create((int)ItemID.Acorn, 0.1),
+							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
+								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
+								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
+								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
+								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
+							Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(4))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
-					placed = true;
+								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+								break;
+							case 1:
+								itemsToAdd.Add((ItemID.Duck, 1));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								break;
+							case 2:
+								itemsToAdd.Add((ModContent.ItemType<MorrowRapier>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+							case 3:
+								itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+								break;
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+				placed = true;
 				}
 
 
 			}
 
-		}
+		
 		private void WorldGenAbysm(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Shifting Shadows deep in the Ice";
@@ -514,84 +598,89 @@ namespace Stellamod.WorldG
 				if (tile.HasTile)
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
-					Chest c = Main.chest[ChestIndexs[0]];
-					// itemsToAdd will hold type and stack data for each item we want to add to the chest
-					var itemsToAdd = new List<(int type, int stack)>();
-
-					// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-					int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-						Tuple.Create((int)ItemID.Acorn, 0.1),
-						Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
-						Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-							Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
-							Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
-							Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
-							Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
-						Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
-					);
-					if (specialItem != ItemID.None)
+					foreach (int chestIndex in ChestIndexs)
 					{
-						itemsToAdd.Add((specialItem, 1));
-					}
-					// Using a switch statement and a random choice to add sets of items.
-					switch (Main.rand.Next(4))
-					{
-						case 0:
-							itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
-							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-							itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+						var chest = Main.chest[chestIndex];
+  // etc
 
-							itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
-							itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-							break;
-						case 1:
-							itemsToAdd.Add((ItemID.Duck, 1));
-							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-							itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
-							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-							itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-							break;
-						case 2:
-							itemsToAdd.Add((ModContent.ItemType<MorrowRapier>(), Main.rand.Next(1, 1)));
-							itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
-							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-							itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-							itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-							itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
-							itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-							break;
-						case 3:
-							itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
-							itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
-							itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-							itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-							itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-							itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
 
-							break;
-					}
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+							Tuple.Create((int)ItemID.Acorn, 0.1),
+							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
+								Tuple.Create(ModContent.ItemType<MorrowValswa>(), 0.6),
+								Tuple.Create(ModContent.ItemType<MorrowSword>(), 0.9),
+								Tuple.Create(ModContent.ItemType<MorrowRapier>(), 0.7),
+								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
+							Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(4))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MorrowSalface>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 
-					// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-					int chestItemIndex = 0;
-					foreach (var itemToAdd in itemsToAdd)
-					{
-						Item item = new Item();
-						item.SetDefaults(itemToAdd.type);
-						item.stack = itemToAdd.stack;
-						c.item[chestItemIndex] = item;
-						chestItemIndex++;
-						if (chestItemIndex >= 40)
-							break; // Make sure not to exceed the capacity of the chest
+								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+								break;
+							case 1:
+								itemsToAdd.Add((ItemID.Duck, 1));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								break;
+							case 2:
+								itemsToAdd.Add((ModContent.ItemType<MorrowRapier>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+							case 3:
+								itemsToAdd.Add((ModContent.ItemType<MorrowWhipI>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+								break;
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
 					}
 				}
 			}
