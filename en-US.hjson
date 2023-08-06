@@ -3658,6 +3658,7 @@ Mods: {
 			SingularitySparkBig.DisplayName: Singularity Spark Big
 			LazerOrb.DisplayName: Lazer Orb
 			SingularityLazer.DisplayName: Singularity Lazer
+			SingularityLazer2.DisplayName: Singularity Lazer2
 		}
 
 		Projectiles: {

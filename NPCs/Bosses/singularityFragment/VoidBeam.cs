@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
-
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Owner.Center, 2212f, 8f);
             Projectile.scale = MathF.Sin(Time / 280 * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
