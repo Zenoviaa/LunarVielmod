@@ -807,7 +807,7 @@ namespace Stellamod
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<AurelusBlightBrooch>(), 0, 1f, Player.whoAmI);
 
 				Player.AddBuff(ModContent.BuffType<AurelusB>(), 1000);
-				SpragaldBCooldown = 1000;
+				AureBCooldown = 1000;
 			}
 
 			if (BroochSpragald && SpragaldBCooldown <= 0)
