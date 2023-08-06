@@ -60,8 +60,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.scale = 0;
             NPC.width = 100;
             NPC.height = 60;
-            NPC.damage = 0;
-            NPC.defense = 15;
+            NPC.damage = 2;
+            NPC.defense = 11;
             NPC.lifeMax = 3100;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
