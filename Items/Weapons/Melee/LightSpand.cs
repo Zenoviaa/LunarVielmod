@@ -13,6 +13,7 @@ using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
 using Stellamod.Projectiles.Magic;
+using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 
 namespace Stellamod.Items.Weapons.Melee
 {

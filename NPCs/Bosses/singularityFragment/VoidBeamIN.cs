@@ -12,7 +12,7 @@ using static Humanizer.In;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
-    public class VoidBeam : ModProjectile, IPixelPrimitiveDrawer
+    public class VoidBeamIN : ModProjectile, IPixelPrimitiveDrawer
     {
         internal PrimitiveTrailCopy BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
@@ -38,8 +38,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
             Projectile.scale = MathF.Sin(Time / 280 * MathHelper.Pi) * 3f;
-            if (Projectile.scale > 1f)
-                Projectile.scale = 1f;
+            if (Projectile.scale > 0.85f)
+                Projectile.scale = 0.85f;
             Projectile.velocity.X = Owner.ai[1];
             Projectile.velocity.Y = Owner.ai[3];
             Projectile.position = Owner.position;
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.White, Color.LightSkyBlue, 0.65f);
+            Color color = Color.Lerp(Color.Black, Color.Black, 0.65f);
             return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
         }
 
@@ -77,11 +77,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
-            Color middleColor = Color.Lerp(Color.Blue, Color.DarkBlue, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.DarkBlue, Color.Purple, 0.5f);
+            Color middleColor = Color.Lerp(Color.Black, Color.Black, 0.6f);
+            Color middleColor2 = Color.Lerp(Color.Black, Color.Black, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
-            TrailRegistry.GenericLaserVertexShader.UseColor(finalColor);
+            TrailRegistry.GenericLaserVertexShader.UseColor(Color.Black);
             TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.BulbTrail);
 
             List<float> originalRotations = new();

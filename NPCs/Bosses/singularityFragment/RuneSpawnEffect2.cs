@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
-    public class RuneSpawnEffect : ModProjectile
+    public class RuneSpawnEffect2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -33,9 +33,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 		float alphaCounter = 5;
 		int counter;
 		public override void AI()
-		{
-			alphaCounter -= 0.18f;
-		}
+        {
+            Projectile.ai[0]++;
+
+            alphaCounter -= 0.09f;
+
+        }
 
 
         public override bool PreDraw(ref Color lightColor)

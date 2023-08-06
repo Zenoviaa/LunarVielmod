@@ -68,7 +68,7 @@ namespace Stellamod.Items.Consumables
         {
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-
+            Lighting.AddLight(Item.Center, Color.LightSkyBlue.ToVector3() * 1.25f * Main.essScale);
             Rectangle frame;
 
             if (Main.itemAnimations[Item.type] != null)
