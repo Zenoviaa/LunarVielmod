@@ -3125,6 +3125,11 @@ Mods: {
 				DisplayName: Icebound Staff
 				Tooltip: ""
 			}
+
+			AurelusSummoni: {
+				DisplayName: Aurelus Summoni
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3242,6 +3247,7 @@ Mods: {
 			AurelusBanner1.MapEntry: Aurelus Banner1
 			AurelusPost.MapEntry: Aurelus Post
 			AurelusBorderS.MapEntry: Aurelus Border S
+			AurelusSummon.MapEntry: Aurelus Summon
 		}
 
 		Buffs: {
@@ -4061,6 +4067,10 @@ Mods: {
 			Venbullet.DisplayName: Venbullet
 			VenShotIN.DisplayName: Ven Shot I N
 			IceboundMinion.DisplayName: Icebound Minion
+			SingularitySparkProj.DisplayName: Singularity Spark Proj
+			PulsarBeam.DisplayName: Pulsar Beam
+			RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
+			VoidBeamIN.DisplayName: Void Beam I N
 		}
 	}
 }

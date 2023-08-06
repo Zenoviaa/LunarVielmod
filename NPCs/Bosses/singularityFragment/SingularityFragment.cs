@@ -185,8 +185,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
             if (NPC.ai[2] == 0)
             {
-                NPC.position.X = player.Center.X;
-                NPC.position.Y = player.Center.Y;
                 SingularityStart = NPC.position;
                 NPC.scale = 0;
                 Spawned = false;
