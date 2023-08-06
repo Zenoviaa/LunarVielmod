@@ -60,8 +60,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.scale = 0;
             NPC.width = 100;
             NPC.height = 60;
-            NPC.damage = 9999;
-            NPC.defense = 11;
+            NPC.damage = 0;
+            NPC.defense = 15;
             NPC.lifeMax = 3100;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
@@ -194,21 +194,34 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             SingularityPos = NPC.Center;
             if (Spawned)
             {
-                if (SingularityOrbs > 0)
+                if (NPC.ai[1] >= 5)
                 {
-                    SparkCountMax = 3;
+                    NPC.damage = 0;
                     NPC.dontTakeDamage = true;
                     NPC.dontCountMe = true;
                 }
                 else
                 {
-                    SparkCountMax = 1;
-                    NPC.dontTakeDamage = false;
-                    NPC.dontCountMe = false;
+                    if (SingularityOrbs > 0)
+                    {
+                        SparkCountMax = 3;
+                        NPC.dontTakeDamage = true;
+                        NPC.dontCountMe = true;
+                    }
+                    else
+                    {
+                        SparkCountMax = 1;
+                        NPC.dontTakeDamage = false;
+                        NPC.dontCountMe = false;
+                    }
+                    NPC.damage = 9999;
                 }
+      
+      
             }
             else
             {
+                NPC.damage = 0;
                 NPC.dontTakeDamage = true;
                 NPC.dontCountMe = true;
             }
@@ -497,7 +510,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                             float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                             float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 6 : 10;
+                            int damage = Main.expertMode ? 10 : 28;
 
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -509,13 +522,13 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                             Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                             direction.Normalize();
-                            int damage = Main.expertMode ? 6 : 10;
+                            int damage = Main.expertMode ? 10 : 28;
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Zero, ModContent.ProjectileType<RuneSpawnEffect>(), 0, 0f);
                             for (int j = -1; j <= 1; j++)
                             {
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Normalize(Main.player[base.NPC.target].Center - base.NPC.Center).RotatedBy((float)j * 0.5f) * 6f, ModContent.ProjectileType<SoulBlast>(), 30, 0f);
+                                    Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Normalize(Main.player[base.NPC.target].Center - base.NPC.Center).RotatedBy((float)j * 0.5f) * 6f, ModContent.ProjectileType<SoulBlast>(), damage, 0f);
                             }
                         }
                         if (NPC.ai[0] == 220)
@@ -553,7 +566,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             else
                             {
-                                NPC.velocity.Y -= 0.05f;
                                 NPC.scale += 0.015f;
                                 if (NPC.scale >= 1)
                                 {
@@ -647,7 +659,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             else
                             {
-                                NPC.velocity.Y -= 0.05f;
                                 NPC.scale += 0.015f;
                                 if (NPC.scale >= 1)
                                 {

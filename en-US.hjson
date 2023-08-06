@@ -3671,6 +3671,7 @@ Mods: {
 			DreadFireBombG.DisplayName: Dread Fire Bomb G
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			SingularityLazer2.DisplayName: Singularity Lazer2
 		}
 
 		Projectiles: {

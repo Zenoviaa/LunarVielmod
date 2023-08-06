@@ -76,8 +76,13 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 			TileID.Sets.DisableSmartCursor[Type] = true;
 		}
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
-
-		public override bool RightClick(int i, int j)
+        public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+        {
+            r = .154f * 3;
+            g = .010f * 3;
+            b = .355f * 3;
+        }
+        public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
 
@@ -95,13 +100,6 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 
 				Main.NewText("What are you doing?? Trying to summon another?", Color.LightSkyBlue);
 
-
-
-			}
-
-			else
-			{
-				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
 
 
 			}
