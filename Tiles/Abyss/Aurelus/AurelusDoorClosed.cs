@@ -65,7 +65,7 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 		{
 			Player player = Main.LocalPlayer;
 
-			int key = ModContent.ItemType<MoonflameLantern>();
+			int key = ModContent.ItemType<VoidKey>();
 			if (player.HasItem(key))
 			{
 
