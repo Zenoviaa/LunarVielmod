@@ -28,8 +28,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 32;
-			Item.useAnimation = 32;
+			Item.useTime = 12;
+			Item.useAnimation = 12;
 			Item.useStyle = 5;
 			Item.knockBack = 6;
 			Item.value = 100000;
@@ -46,18 +46,6 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(-2, 0);
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			var EntitySource = player.GetSource_FromThis();
-			float numberProjectiles = 1;
-			float rotation = MathHelper.ToRadians(2);
-			position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
-			for (int i = 0; i < numberProjectiles; i++)
-			{
-				Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-				Projectile.NewProjectile(EntitySource, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
-			}
-			return false;
-		}
+
 	}
 }
