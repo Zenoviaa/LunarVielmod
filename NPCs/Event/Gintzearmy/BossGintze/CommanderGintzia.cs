@@ -934,6 +934,10 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		public override void OnKill()
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedGintzlBoss, -1);
+			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+			{
+				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+			}
 
 		}
 

@@ -3115,6 +3115,16 @@ Mods: {
 				DisplayName: TON618 Crossbow
 				Tooltip: Expertly crafted by a special bowsman
 			}
+
+			Venatici: {
+				DisplayName: Venatici
+				Tooltip: ""
+			}
+
+			IceboundStaff: {
+				DisplayName: Icebound Staff
+				Tooltip: ""
+			}
 		}
 
 		Biomes: {
@@ -3528,6 +3538,11 @@ Mods: {
 			GintBroo: {
 				DisplayName: Gintzl Brooch
 				Description: Gives good defense
+			}
+
+			IceboundMinionBuff: {
+				DisplayName: Icebound Minion Buff
+				Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
 			}
 		}
 
@@ -4038,6 +4053,9 @@ Mods: {
 			TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
 			PiaCircle.DisplayName: Pia Circle
 			SpacticProj.DisplayName: Spactic Proj
+			Venbullet.DisplayName: Venbullet
+			VenShotIN.DisplayName: Ven Shot I N
+			IceboundMinion.DisplayName: Icebound Minion
 		}
 	}
 }
