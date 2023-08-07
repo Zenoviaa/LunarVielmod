@@ -109,8 +109,10 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         }
         public int rippleCount = 20;
         public int rippleSize = 5;
-        public int rippleSpeed = 25;
-        public float distortStrength = 600f;
+        public int rippleSpeed = 15;
+        public float distortStrength = 300f;
+
+
 
         int bee = 220;
         public Vector2 LastBacklash;
@@ -120,29 +122,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public int SparkCountMax;
         public override void AI()
         {
-            Timer ++;
-            if (Timer == 10)
-            {
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-                }
-            }
-            if (Timer >= 15)
-            {
-                Timer = 0;
-                if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-                }
-
-                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                {
-                    float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                    Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                }
-            }
+           
+           
 
 
 
@@ -273,7 +254,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                         {
                                             float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
                                             Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+
+
                                         }
+
+
                                         float radius = 250;
                                         float rot = MathHelper.TwoPi / 5;
                                         for (int I = 0; I < 5; I++)
