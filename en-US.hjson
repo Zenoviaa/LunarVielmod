@@ -1873,7 +1873,6 @@ Mods: {
 				DisplayName: Desert Whip
 			}
 
-			
 			Vinger: {
 				Tooltip: I dont remember the goblins using this...
 				DisplayName: Vinger
@@ -1920,9 +1919,7 @@ Mods: {
 
 			CloudSkaters: {
 				DisplayName: Cloud Skaters
-				Tooltip: '''
-					Stay airbourne for longer and defy gravity!
-					'''
+				Tooltip: Stay airbourne for longer and defy gravity!
 			}
 
 			CoralBand: {
@@ -1937,7 +1934,7 @@ Mods: {
 
 			EaglesGrace: {
 				DisplayName: Eagles Grace
-				Tooltip: A special eagle gives you flight from a sacred nest of the morrow 
+				Tooltip: A special eagle gives you flight from a sacred nest of the morrow
 			}
 
 			GhostExcalibur: {
@@ -1987,9 +1984,7 @@ Mods: {
 
 			RuneOfShade: {
 				DisplayName: Rune Of Shade
-				Tooltip: '''
-					+20 Max mana
-					'''
+				Tooltip: +20 Max mana
 			}
 
 			RuneOfStealth: {
@@ -2014,7 +2009,8 @@ Mods: {
 
 			SoulStrideres: {
 				DisplayName: Soul Strideres
-				Tooltip: '''
+				Tooltip:
+					'''
 					Increased movement speed and airtime!
 					Effects of rocket boots!
 					I dont wanna have my soul turned into boots :(
@@ -2023,7 +2019,8 @@ Mods: {
 
 			SpiritPendent: {
 				DisplayName: Spirit Pendent
-				Tooltip: '''
+				Tooltip:
+					'''
 					Provides small light
 
 					'''
@@ -2031,7 +2028,8 @@ Mods: {
 
 			StarflareBand: {
 				DisplayName: Starflare Band
-				Tooltip: '''
+				Tooltip:
+					'''
 					+20% Magic Damage
 					Increased Mana regeneration!
 					Reduced Mana cost :o
@@ -2268,7 +2266,6 @@ Mods: {
 				Tooltip: Little pieces of a bigger substance
 			}
 
-
 			BlankRune: {
 				DisplayName: Blank Rune
 				Tooltip: This doesn�t look like it will do anything by itself
@@ -2278,8 +2275,6 @@ Mods: {
 				DisplayName: Convulging Mater
 				Tooltip: A dark matter that has corrupted the fallen.
 			}
-
-
 
 			DarkEssence: {
 				DisplayName: Dark Essence
@@ -2415,7 +2410,6 @@ Mods: {
 				DisplayName: Storm Plating
 				Tooltip: ""
 			}
-
 
 			ArmorDrive: {
 				DisplayName: Armor Drive
@@ -3146,13 +3140,14 @@ Mods: {
 			}
 
 			VoidKey: {
-			DisplayName: Void Key
-			Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
-		}
+				DisplayName: Void Key
+				Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
+			}
 
 			Neptune8Card: {
 				DisplayName: Neptune8 Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					An igniter for dusts and powders!
 					Reaching from the depths of the galaxy!
 					Use a powder or dust, then use this!
@@ -3181,7 +3176,8 @@ Mods: {
 
 			AbyssalPowder: {
 				DisplayName: Abysmal Aurelus Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them!
 					A void crystal-like dust!
 					Use an Igniter / Card with this!
@@ -3190,7 +3186,8 @@ Mods: {
 
 			AivanPowder: {
 				DisplayName: Aivan Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them!
 					Stolen from gothivia's castle
 					Use an Igniter / Card with this!
@@ -3199,11 +3196,17 @@ Mods: {
 
 			GovheilPowder: {
 				DisplayName: Govheil Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them!
 					Pure sensation. :)
 					Use an Igniter / Card with this!
 					'''
+			}
+
+			TheSunAndMoonCard: {
+				Tooltip: ""
+				DisplayName: The Sun And Moon Card
 			}
 		}
 
