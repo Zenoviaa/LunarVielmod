@@ -64,6 +64,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ItemID.LifeCrystal, 1);
 			recipe.AddIngredient(ItemID.Leather, 9);

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Dusteffects
 {
-	public class AlcadDust : ModBuff
+	public class VoiddDust : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -18,7 +18,7 @@ namespace Stellamod.Buffs.Dusteffects
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 1;
+			npc.lifeRegen -= 5;
 
 			if (Main.rand.NextBool(2))
 			{

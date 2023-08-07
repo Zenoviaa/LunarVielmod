@@ -3174,6 +3174,21 @@ Mods: {
 				DisplayName: Aurelus Blight Brooch A
 				Tooltip: ""
 			}
+
+			AbyssalPowder: {
+				DisplayName: Abyssal Powder
+				Tooltip: ""
+			}
+
+			AivanPowder: {
+				DisplayName: Aivan Powder
+				Tooltip: ""
+			}
+
+			GovheilPowder: {
+				DisplayName: Govheil Powder
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3598,6 +3613,21 @@ Mods: {
 			AurelusB: {
 				DisplayName: Aurelus B
 				Description: Mods.Stellamod.Buffs.AurelusB.Description
+			}
+
+			AivanDust: {
+				DisplayName: Aivan Dust
+				Description: Mods.Stellamod.Buffs.AivanDust.Description
+			}
+
+			GovheilDust: {
+				DisplayName: Govheil Dust
+				Description: Mods.Stellamod.Buffs.GovheilDust.Description
+			}
+
+			VoiddDust: {
+				DisplayName: Voidd Dust
+				Description: Mods.Stellamod.Buffs.VoiddDust.Description
 			}
 		}
 
@@ -4143,6 +4173,12 @@ Mods: {
 			HolmbergScytheMirageProjBlue.DisplayName: Holmberg Scythe Mirage Proj Blue
 			HolmbergScytheProj.DisplayName: Holmberg Scythe Proj
 			AurelusBlightBrooch.DisplayName: Aurelus Blight Brooch
+			AivanKaboom.DisplayName: Aivan Kaboom
+			GovheilKaboom.DisplayName: Govheil Kaboom
+			AivanPowderProj.DisplayName: Aivan Powder Proj
+			GovheilPowderProj.DisplayName: Govheil Powder Proj
+			VoidPowderProj.DisplayName: Void Powder Proj
+			VoidKaboom.DisplayName: Void Kaboom
 		}
 	}
 

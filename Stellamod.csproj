@@ -17,6 +17,9 @@
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\DarkHold.png" />
+    <None Remove="Buffs\Dusteffects\AivanDust.png" />
+    <None Remove="Buffs\Dusteffects\GovheilDust.png" />
+    <None Remove="Buffs\Dusteffects\VoiddDust.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Dusts\RuneDust.png" />
@@ -196,6 +199,9 @@
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Projectiles\Powders\AivanPowderProj.png" />
+    <None Remove="Projectiles\Powders\GovheilPowderProj.png" />
+    <None Remove="Projectiles\Powders\VoidPowderProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />

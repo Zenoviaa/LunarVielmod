@@ -136,14 +136,35 @@ namespace Stellamod.Projectiles.IgniterEx
 				ShakeModSystem.Shake = 8;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcaneExplode"));
-				for (int j = 0; j < 18; j++)
+				for (int j = 0; j < 10; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
-					npc.RequestBuffRemoval(ModContent.BuffType<FlameDust>());
+					npc.SimpleStrikeNPC((int)(Projectile.damage * 1f), 1, crit: false, Projectile.knockBack);
+					npc.RequestBuffRemoval(ModContent.BuffType<ArcaneDust>());
+				}
+			}
+
+
+
+
+			if (npc.active && npc.HasBuff<AivanDust>())
+			{
+				ShakeModSystem.Shake = 6;
+
+		
+				for (int j = 0; j < 1; j++)
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
+					Projectile.scale = 1.5f;
+					ShakeModSystem.Shake = 10;
+					npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
+					npc.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
+					float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+					float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AivanKaboom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 				}
 			}
 
@@ -200,6 +221,60 @@ namespace Stellamod.Projectiles.IgniterEx
 				}
 			}
 
+			if (npc.active && npc.HasBuff<VoiddDust>())
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/HeatExplosion"));
+				for (int j = 0; j < 20; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					target.AddBuff(BuffID.OnFire, 720);
+					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
+
+					Projectile.timeLeft = 250;
+					Timer++;
+					if (Timer == 150)
+					{
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Burnbefore"));
+
+					}
+
+
+					if (Timer == 170)
+					{
+						Vector2 velocity = npc.velocity;
+						if (npc.active && npc.HasBuff<EXPtime>())
+						{
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Briskfly"));
+							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.NebulaArcanumExplosionShot, Projectile.damage, Projectile.knockBack);
+							Projectile.scale = 1.5f;
+							ShakeModSystem.Shake = 10;
+							npc.SimpleStrikeNPC(Projectile.damage * 19, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 19, 1, crit: false, Projectile.knockBack);
+							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa + 129, Projectile.position.Y + speedYa + 129, speedXa * 0, speedYa * 0, ModContent.ProjectileType<VoidKaboom>(), (int)(Projectile.damage * 6), 0f, Projectile.owner, 0f, 0f);
+
+
+
+						}
+
+					}
+					if (Timer == 200)
+					{
+						Projectile.Kill();
+						npc.RequestBuffRemoval(ModContent.BuffType<Dusted>());
+
+					}
+
+
+				}
+			}
+
+
+
+
 			if (npc.active && npc.HasBuff<AlcadDust>())
 			{
 
@@ -251,6 +326,81 @@ namespace Stellamod.Projectiles.IgniterEx
 
 				}
 			}
+
+
+			if (npc.active && npc.HasBuff<GovheilDust>())
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/HeatExplosion"));
+				for (int j = 0; j < 20; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+					ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<morrowstar>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					target.AddBuff(BuffID.Poisoned, 720);
+					target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
+
+					Projectile.timeLeft = 300;
+					Timer++;
+					if (Timer == 200)
+					{
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Burnbefore"));
+
+					}
+
+
+					if (Timer == 220)
+					{
+						Vector2 velocity = npc.velocity;
+						if (npc.active && npc.HasBuff<EXPtime>())
+						{
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"));
+
+							Projectile.scale = 1.5f;
+							ShakeModSystem.Shake = 7;
+							npc.SimpleStrikeNPC(Projectile.damage * 23, 1, crit: false, Projectile.knockBack);
+							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa + 200, Projectile.position.Y + speedYa + 200, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GovheilKaboom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+
+
+
+						}
+
+					}
+
+					if (Timer == 230)
+                    {
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"));
+						npc.SimpleStrikeNPC(Projectile.damage * 18, 1, crit: false, Projectile.knockBack);
+					}
+					if (Timer == 240)
+					{
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"));
+						npc.SimpleStrikeNPC(Projectile.damage * 14, 1, crit: false, Projectile.knockBack);
+					}
+					if (Timer == 250)
+					{
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Rune"));
+						npc.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
+					}
+					if (Timer == 251)
+					{
+						Projectile.Kill();
+						npc.RequestBuffRemoval(ModContent.BuffType<Dusted>());
+
+					}
+
+
+				}
+			}
+
+
+
+
+
+
+
+
 
 
 			if (npc.active && npc.HasBuff<ShadeDust>())
@@ -412,7 +562,7 @@ namespace Stellamod.Projectiles.IgniterEx
 					Vector2 speed2 = Main.rand.NextVector2Circular(1f, 1f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					ParticleManager.NewParticle(Projectile.Center, speed * 7, ParticleManager.NewInstance<FlowerParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					npc.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
+					npc.SimpleStrikeNPC(Projectile.damage * 1, 1, crit: false, Projectile.knockBack);
 
 				}
 			}
@@ -617,7 +767,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
 							npc.SimpleStrikeNPC(Projectile.damage * 16, 1, crit: false, Projectile.knockBack);
-							npc.SimpleStrikeNPC(Projectile.damage * 17, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomKaev>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);

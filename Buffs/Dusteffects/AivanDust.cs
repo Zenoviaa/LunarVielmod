@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Dusteffects
 {
-	public class TrickDust : ModBuff
+	public class AivanDust : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -18,8 +18,8 @@ namespace Stellamod.Buffs.Dusteffects
 		}
 		public override void Update(NPC npc, ref int buffIndex)
 		{
+		
 	
-			npc.onFrostBurn = true;
 			npc.stepSpeed -= 10;
 
 

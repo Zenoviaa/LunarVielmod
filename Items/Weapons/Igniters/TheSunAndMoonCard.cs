@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class GothivCard : ModItem
+	internal class TheSunAndMoonCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -23,12 +23,12 @@ namespace Stellamod.Items.Weapons.Igniters
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 7;
+			Item.damage = 9;
 			Item.mana = 5;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 50;
-			Item.useAnimation = 50;
+			Item.useTime = 40;
+			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Guitar;
 			Item.noMelee = true;
 			Item.knockBack = 0f;
@@ -60,6 +60,15 @@ namespace Stellamod.Items.Weapons.Igniters
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<DaedCard>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Neptune8Card>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<ScorcheCard>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<GothivCard>(), 1);
+			recipe.AddTile(TileID.DemonAltar);
+			recipe.Register();
+		}
 	}
 }

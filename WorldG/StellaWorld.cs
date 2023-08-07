@@ -273,7 +273,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(6))
+						switch (Main.rand.Next(7))
 						{
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
@@ -332,6 +332,15 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 6:
+								itemsToAdd.Add((ModContent.ItemType<AbyssalPowder>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Shiverthorn, Main.rand.Next(2, 15)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(2, 10)));
+								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 								break;
 						}
 

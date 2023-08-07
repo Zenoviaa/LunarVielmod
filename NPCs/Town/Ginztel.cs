@@ -27,6 +27,7 @@ using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.PowdersItem;
 
 namespace Stellamod.NPCs.Town
 {
@@ -285,6 +286,7 @@ namespace Stellamod.NPCs.Town
 				.Add(new Item(ModContent.ItemType<Alcarish>()) { shopCustomPrice = Item.buyPrice(gold: 3) })
 				.Add(new Item(ModContent.ItemType<GintzlSpear>()) { shopCustomPrice = Item.buyPrice(copper: 10) })
 				.Add(new Item(ModContent.ItemType<BroochesTableI>()) { shopCustomPrice = Item.buyPrice(gold: 1) })
+				.Add(new Item(ModContent.ItemType<AivanPowder>()) { shopCustomPrice = Item.buyPrice(gold: 7) })
 				.Add(new Item(ItemID.HermesBoots) { shopCustomPrice = Item.buyPrice(gold: 4) })
 				.Add(new Item(ItemID.CloudinaBottle) { shopCustomPrice = Item.buyPrice(gold: 1) });
 
