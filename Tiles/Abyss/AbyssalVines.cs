@@ -17,12 +17,10 @@ namespace Stellamod.Tiles.Abyss
         public override void SetStaticDefaults()
         {
             Main.tileCut[Type] = true;
-            Main.tileBlockLight[Type] = true;
             Main.tileLavaDeath[Type] = true;
             Main.tileNoFail[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLighted[Type] = true;
-            Main.tileBlockLight[Type] = true;
 
 
             TileID.Sets.VineThreads[Type] = true;
