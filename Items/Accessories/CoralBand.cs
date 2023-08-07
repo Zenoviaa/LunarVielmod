@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Melee) += 0.4f;
+            player.GetDamage(DamageClass.Melee) += 0.2f;
             player.GetCritChance(DamageClass.Melee) += 2;
         }
     }

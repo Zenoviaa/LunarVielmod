@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Powders
 		{
 			Projectile.tileCollide = false;
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, 0f);
-			Main.dust[dust].scale = 0.6f;
+			Main.dust[dust].scale = 1.5f;
 
 
 			return true;

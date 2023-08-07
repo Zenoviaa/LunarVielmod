@@ -1178,6 +1178,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A sparkly star dust that does double damage as the igniter!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1187,6 +1188,7 @@ Mods: {
 					'''
 					Throw magical dust on them and ignite
 					A blood dust that does high damage with igniters.
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1195,6 +1197,7 @@ Mods: {
 				Tooltip:
 					'''
 					Throw magical dust on them!
+					Use an Igniter / Card with this!
 					Forged from the gems you collect!
 					'''
 			}
@@ -1205,6 +1208,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A flamey dust that explodes with your igniter!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1214,6 +1218,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					Dusty ice dust that does continuous damage with the igniter!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1223,6 +1228,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A dirty dust... that does damage???!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1232,6 +1238,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A musical dust! that explodes with your igniter!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1241,6 +1248,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A shadow dust that explodes with your igniter!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1250,6 +1258,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A sparkly tricky dust that does a lot damage!
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1259,6 +1268,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A musical dust that has calming flowers
+					Use an Igniter / Card with this!
 					'''
 			}
 
@@ -1859,22 +1869,13 @@ Mods: {
 			}
 
 			DesertWhip: {
-				Tooltip: ""
+				Tooltip: A small little whip
 				DisplayName: Desert Whip
 			}
 
-			SandSlicer: {
-				DisplayName: Sand Slicer
-				Tooltip: ""
-			}
-
-			MetalDagger: {
-				Tooltip: ""
-				DisplayName: Metal Dagger
-			}
-
+			
 			Vinger: {
-				Tooltip: ""
+				Tooltip: I dont remember the goblins using this...
 				DisplayName: Vinger
 			}
 
@@ -1888,23 +1889,23 @@ Mods: {
 			}
 
 			Vheilatine: {
-				Tooltip: ""
+				Tooltip: Forged straight from the masters of gothivia's worshippers!
 				DisplayName: Vheilatine
 			}
 
 			AcidStaketers: {
 				DisplayName: Acid Staketers
-				Tooltip: ""
+				Tooltip: Makes the wearer run super fast!
 			}
 
 			AquaCrystal: {
 				DisplayName: Aqua Crystal
-				Tooltip: ""
+				Tooltip: Increased Critical Strike Chance!
 			}
 
 			AquaticHealingNecklace: {
 				DisplayName: Aquatic Healing Necklace
-				Tooltip: Aquatic Healing Necklace
+				Tooltip: Increased regeneration and movement speed!
 			}
 
 			ArncharMagazine: {
@@ -1914,32 +1915,34 @@ Mods: {
 
 			ClamsPearl: {
 				DisplayName: Clams Pearl
-				Tooltip: ""
+				Tooltip: A small light will emit off you :)
 			}
 
 			CloudSkaters: {
 				DisplayName: Cloud Skaters
-				Tooltip: ""
+				Tooltip: '''
+					Stay airbourne for longer and defy gravity!
+					'''
 			}
 
 			CoralBand: {
 				DisplayName: Coral Band
-				Tooltip: ""
+				Tooltip: Heavily increased Melee damage and Critical Strike Chance!
 			}
 
 			GintzlMetal: {
 				DisplayName: Gintzl Metal
-				Tooltip: ""
+				Tooltip: A metal stolen from Gothivia's castle, and has rotted and turned into gintze metal.
 			}
 
 			EaglesGrace: {
 				DisplayName: Eagles Grace
-				Tooltip: ""
+				Tooltip: A special eagle gives you flight from a sacred nest of the morrow 
 			}
 
 			GhostExcalibur: {
 				DisplayName: Ghost Excalibur
-				Tooltip: ""
+				Tooltip: Summons an excalibur to fight for you!
 			}
 
 			GiftOfLife: {
@@ -1959,12 +1962,12 @@ Mods: {
 
 			OceanScroll: {
 				DisplayName: Ocean Scroll
-				Tooltip: ""
+				Tooltip: Increased Magical Critical strike chance by 20%
 			}
 
 			OceansTrinket: {
 				DisplayName: Oceans Trinket
-				Tooltip: ""
+				Tooltip: Increases max minions by 1 and 8% increased summon damage!
 			}
 
 			RuneOfCorsage: {
@@ -1984,7 +1987,9 @@ Mods: {
 
 			RuneOfShade: {
 				DisplayName: Rune Of Shade
-				Tooltip: ""
+				Tooltip: '''
+					+20 Max mana
+					'''
 			}
 
 			RuneOfStealth: {
@@ -2004,22 +2009,33 @@ Mods: {
 
 			ShellSheid: {
 				DisplayName: Shell Sheid
-				Tooltip: ""
+				Tooltip: Shelly!
 			}
 
 			SoulStrideres: {
 				DisplayName: Soul Strideres
-				Tooltip: ""
+				Tooltip: '''
+					Increased movement speed and airtime!
+					Effects of rocket boots!
+					I dont wanna have my soul turned into boots :(
+					'''
 			}
 
 			SpiritPendent: {
 				DisplayName: Spirit Pendent
-				Tooltip: ""
+				Tooltip: '''
+					Provides small light
+
+					'''
 			}
 
 			StarflareBand: {
 				DisplayName: Starflare Band
-				Tooltip: ""
+				Tooltip: '''
+					+20% Magic Damage
+					Increased Mana regeneration!
+					Reduced Mana cost :o
+					'''
 			}
 
 			SunGlyph: {
@@ -2252,15 +2268,6 @@ Mods: {
 				Tooltip: Little pieces of a bigger substance
 			}
 
-			AzureaBar: {
-				DisplayName: Azurea Bar
-				Tooltip: ""
-			}
-
-			AzureFragments: {
-				DisplayName: Azure Fragments
-				Tooltip: ""
-			}
 
 			BlankRune: {
 				DisplayName: Blank Rune
@@ -2269,13 +2276,10 @@ Mods: {
 
 			ConvulgingMater: {
 				DisplayName: Convulging Mater
-				Tooltip: ""
+				Tooltip: A dark matter that has corrupted the fallen.
 			}
 
-			CoreGem: {
-				DisplayName: Core Gem
-				Tooltip: ""
-			}
+
 
 			DarkEssence: {
 				DisplayName: Dark Essence
@@ -2369,7 +2373,7 @@ Mods: {
 
 			IrradiatedBar: {
 				DisplayName: Irradiated Bar
-				Tooltip: ""
+				Tooltip: Deadly to the core.
 			}
 
 			Ivythorn: {
@@ -2412,10 +2416,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			Tallon: {
-				DisplayName: Tallon
-				Tooltip: ""
-			}
 
 			ArmorDrive: {
 				DisplayName: Armor Drive
@@ -2469,7 +2469,7 @@ Mods: {
 
 			TerrorFragments: {
 				DisplayName: Terror Fragments
-				Tooltip: ""
+				Tooltip: Terror-fying!
 			}
 
 			VirulentPlating: {
@@ -2488,13 +2488,13 @@ Mods: {
 			}
 
 			CellConverterI: {
-				DisplayName: Cell Converter I
+				DisplayName: Cell Converter
 				Tooltip: ""
 			}
 
 			RunicTablel: {
-				DisplayName: Runic Tablel
-				Tooltip: ""
+				DisplayName: Runic Table
+				Tooltip: Craft runes!
 			}
 
 			AcidicHamacxe: {
@@ -2594,7 +2594,7 @@ Mods: {
 
 			TheDeafen: {
 				DisplayName: The Deafen
-				Tooltip: ""
+				Tooltip: Shriek the howls of a bat!
 			}
 
 			TheShrieker: {
@@ -3146,48 +3146,64 @@ Mods: {
 			}
 
 			VoidKey: {
-				DisplayName: Void Key
-				Tooltip: ""
-			}
+			DisplayName: Void Key
+			Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
+		}
 
 			Neptune8Card: {
 				DisplayName: Neptune8 Card
-				Tooltip: ""
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Use a powder or dust, then use this!
+					'''
 			}
 
 			Gintelze: {
 				DisplayName: Gintelze
-				Tooltip: ""
+				Tooltip: Why would you steal this :c
 			}
 
 			HolmbergScythe: {
 				DisplayName: Holmberg Scythe
-				Tooltip: ""
+				Tooltip: Rip the universe in half!
 			}
 
 			Alcarish: {
 				DisplayName: Alcarish
-				Tooltip: ""
+				Tooltip: The gintze were bold for stealing such a useful item from soliders.
 			}
 
 			AurelusBlightBroochA: {
-				DisplayName: Aurelus Blight Brooch A
-				Tooltip: ""
+				DisplayName: Aurelus Blight Brooch
+				Tooltip: A brooch great for lighting!
 			}
 
 			AbyssalPowder: {
-				DisplayName: Abyssal Powder
-				Tooltip: ""
+				DisplayName: Abysmal Aurelus Powder
+				Tooltip: '''
+					Throw magical dust on them!
+					A void crystal-like dust!
+					Use an Igniter / Card with this!
+					'''
 			}
 
 			AivanPowder: {
 				DisplayName: Aivan Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them!
+					Stolen from gothivia's castle
+					Use an Igniter / Card with this!
+					'''
 			}
 
 			GovheilPowder: {
 				DisplayName: Govheil Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them!
+					Pure sensation. :)
+					Use an Igniter / Card with this!
+					'''
 			}
 		}
 

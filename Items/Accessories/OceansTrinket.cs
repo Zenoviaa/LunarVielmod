@@ -29,7 +29,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.maxMinions += 1;
-            player.GetDamage(DamageClass.Summon) += 0.3f;
+            player.GetDamage(DamageClass.Summon) += 0.1f;
         }
     }
     }

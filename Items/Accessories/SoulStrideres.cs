@@ -46,7 +46,7 @@ namespace Stellamod.Items.Accessories
             }
             player.desertBoots = true;
             player.rocketBoots = 5;
-            player.moveSpeed += 1.5f;
+            player.moveSpeed += 0.5f;
         }
     }
     }

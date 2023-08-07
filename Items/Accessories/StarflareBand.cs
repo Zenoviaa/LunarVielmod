@@ -38,14 +38,15 @@ namespace Stellamod.Items.Accessories
             recipe.AddIngredient(ItemID.FallenStar, 5);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 15);
             recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 25);
+            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(DamageClass.Magic) += 0.2f;
-            player.manaCost -= 0.2f;
-            player.manaRegen += 2;
+            player.manaCost -= 0.1f;
+            player.manaRegen += 1;
 
         }
     }
