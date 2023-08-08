@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 200;
+            Projectile.timeLeft = 190;
             Projectile.alpha = 255;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Owner.Center, 2212f, 8f);
-            Projectile.scale = MathF.Sin(Time / 200 * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Time / 190 * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
             Projectile.velocity.X = Owner.ai[1];
