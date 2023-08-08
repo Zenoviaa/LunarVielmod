@@ -27,6 +27,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Overworld.ShadowWraith;
+using Stellamod.NPCs.Bosses.Verlia;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -72,6 +73,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.noTileCollide = true;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SingularityFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
+            NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();
         }
         int frame = 0;
         public override void FindFrame(int frameHeight)
