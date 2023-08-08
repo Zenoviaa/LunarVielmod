@@ -223,7 +223,6 @@
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Items\Banners\" />
     <Folder Include="Items\Blocks\" />
-    <Folder Include="NPCs\Bosses\Daedus\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
   </ItemGroup>
