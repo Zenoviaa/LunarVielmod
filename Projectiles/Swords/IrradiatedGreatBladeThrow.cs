@@ -24,8 +24,8 @@ namespace Stellamod.Projectiles.Swords
 
         public override void SetDefaults()
         {
-            Projectile.width = 90;
-            Projectile.height = 90;
+            Projectile.width = 60;
+            Projectile.height = 60;
             Projectile.aiStyle = 3;
             Projectile.friendly = true;
             Projectile.penetrate = 13;
@@ -38,14 +38,19 @@ namespace Stellamod.Projectiles.Swords
         {
             if (Projectile.scale >= 0.4)
             {
-                counter -= 0.02f;
-                Projectile.scale -= 0.01f;
+                Projectile.scale -= 0.001f;
             }
 
             Projectile.rotation += 0.1f;
         }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            var EntitySource = Projectile.GetSource_Death();
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+                Projectile.NewProjectile(EntitySource, target.Center.X, target.Center.Y - 200, 0, -2, ModContent.ProjectileType<KilvierBONK>(), 5, 1, Main.myPlayer, 0, 0);
+        }
         float alphaCounter = 2;
-        float counter = 5;
+        float counter = 3;
         public override void PostDraw(Color lightColor)
         {
             if (Projectile.spriteDirection != 1)

@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 40;
+            Item.damage = 22;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -39,11 +39,11 @@ namespace Stellamod.Items.Weapons.Mage
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<VoidCharge2>();
+            Item.shoot = ModContent.ProjectileType<SingularitySparkProjG>();
             Item.shootSpeed = 10f;
-            Item.mana = 25;
-            Item.useAnimation = 45;
-            Item.useTime = 45;
+            Item.mana = 16;
+            Item.useAnimation = 9;
+            Item.useTime = 9;
             Item.consumeAmmoOnLastShotOnly = true;
         }
 

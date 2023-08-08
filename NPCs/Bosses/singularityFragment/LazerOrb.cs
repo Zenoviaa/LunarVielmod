@@ -33,6 +33,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
     public class LazerOrb : ModNPC
     {
+        public float LazerAdd;
         public bool Lazer;
         public float Timer;
         public override void SetStaticDefaults()
@@ -97,6 +98,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.rotation = -direction.ToRotation();
             if (!Lazer)
             {
+                LazerAdd += .006f;
                 if (global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.LazerType == 1)
                 {
                     Timer = -179f;
@@ -113,11 +115,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
             if(global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.LazerType == 0)
             {
-                Timer -= .01f;
+                Timer -= .01f + LazerAdd;
             }
             else
             {
-                Timer += .01f;
+                Timer += .01f + LazerAdd;
             }
 
             return false;

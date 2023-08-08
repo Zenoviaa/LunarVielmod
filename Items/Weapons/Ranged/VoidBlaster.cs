@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetDefaults()
 		{
 			Item.noMelee = true;
-			Item.damage = 15;
+			Item.damage = 8;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -68,7 +68,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 velocity.Y = velocity.Y / 2;
 				damage = Item.damage * 2;
                 velocity.X = velocity.X / 2;
-				SoundEngine.PlaySound(SoundID.Item90, player.position);
+				SoundEngine.PlaySound(SoundID.Item91, player.position);
 				Projectile.NewProjectile(source, position.X, position.Y, velocity.X, velocity.Y, ProjectileType<GraniteMagmumProj>(), damage, Item.knockBack, player.whoAmI, -8f, -8f);
 			}
 			return false; // return false because we don't want tmodloader to shoot projectile

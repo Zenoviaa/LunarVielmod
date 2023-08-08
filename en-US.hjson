@@ -3208,6 +3208,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: The Sun And Moon Card
 			}
+
+			Kilvier: {
+				DisplayName: Kilvier
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -4198,6 +4203,8 @@ Mods: {
 			GovheilPowderProj.DisplayName: Govheil Powder Proj
 			VoidPowderProj.DisplayName: Void Powder Proj
 			VoidKaboom.DisplayName: Void Kaboom
+			SingularitySparkProjG.DisplayName: Singularity Spark Proj G
+			KilvierBONK.DisplayName: Kilvier B O N K
 		}
 	}
 

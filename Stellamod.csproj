@@ -185,6 +185,7 @@
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer2.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazerFX.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularitySparkBig.png" />
+    <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularitySparkProj - Copy.png" />
     <None Remove="NPCs\Bosses\singularityFragment\RuneSpawnEffect.png" />
     <None Remove="NPCs\Bosses\singularityFragment\RuneSpawnEffect2.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Shockwave.png" />
