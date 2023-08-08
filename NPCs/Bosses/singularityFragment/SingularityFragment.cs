@@ -94,11 +94,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EventHorizon>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SingularityBag>()));
-
+            if (Main.expertMode || Main.masterMode)
+            {
+                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SingularityBag>()));
+            }
+            else
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EventHorizon>(), 2, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), 2, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), 2, 1, 1));
+            }
         }
 
         public void CasuallyApproachChild()
@@ -570,7 +575,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2"));
                             }
-                            if (NPC.ai[0] >= 525)
+                            if (NPC.ai[0] >= 440)
                             {
                                 Lazer = false;
                                 PrevAttac = 5;
@@ -663,7 +668,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2"));
                             }
-                            if (NPC.ai[0] >= 525)
+                            if (NPC.ai[0] >= 440)
                             {
                                 Lazer = false;
                                 PrevAttac = 6;

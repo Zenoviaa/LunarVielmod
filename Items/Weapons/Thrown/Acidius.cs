@@ -5,9 +5,11 @@ using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Stellamod.Projectiles.Thrown;
+using Stellamod.Projectiles.Swords;
+
 namespace Stellamod.Items.Weapons.Thrown
 {
-	public class Acidius : ModItem
+    public class Acidius : ModItem
 	{
         private Vector2 newVect;
 
