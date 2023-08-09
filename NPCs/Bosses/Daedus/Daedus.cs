@@ -140,7 +140,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			NPC.Size = new Vector2(120, 74);
 			NPC.damage = 1;
 			NPC.defense = 10;
-			NPC.lifeMax = 2000;
+			NPC.lifeMax = 2500;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -337,6 +337,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		private Vector2 originalHitbox;
 		int moveSpeed = 0;
 		int moveSpeedY = 0;
+		int Timer2 = 0;
 
 		public override void AI()
 		{
@@ -366,15 +367,26 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 
-		//	if (player.dead)
-		//	{
+			if (player.dead)
+			{
 				// If the targeted player is dead, flee
-		//		NPC.velocity.Y -= 0.5f;
-		//		NPC.noTileCollide = true;
-		//		NPC.noGravity = false;
+				NPC.velocity.Y -= 0.5f;
+				NPC.noTileCollide = true;
+				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-		//		NPC.EncourageDespawn(2);
-		//	}
+				NPC.EncourageDespawn(2);
+			}
+
+
+			//	if (player.dead)
+			//	{
+			// If the targeted player is dead, flee
+			//		NPC.velocity.Y -= 0.5f;
+			//		NPC.noTileCollide = true;
+			//		NPC.noGravity = false;
+			// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
+			//		NPC.EncourageDespawn(2);
+			//	}
 			switch (State)
 			{
 				case ActionState.Idle:
@@ -506,8 +518,9 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		{
 			NPC.spriteDirection = NPC.direction;
             Player player = Main.player[NPC.target];
+			Timer2++;
 
-            if (NPC.Center.X >= player.Center.X && moveSpeed >= - 90) // flies to players x position
+			if (NPC.Center.X >= player.Center.X && moveSpeed >= - 90) // flies to players x position
                 moveSpeed--;
             else if (NPC.Center.X <= player.Center.X && moveSpeed <= 90)
                 moveSpeed++;
@@ -526,9 +539,29 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
             NPC.velocity.Y = moveSpeedY * 0.08f;
             timer++;
-			
 
-			if (timer == 400)
+
+
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+				
+				if (Timer2 == 50)
+                {
+					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 50, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ProjectileID.GreekFire1, (int)(5), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 50, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+					Timer2 = 0;
+				}
+
+
+
+
+			}
+
+
+				if (timer == 400)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -623,17 +656,14 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				{
 
 
-					switch (Main.rand.Next(3))
+					switch (Main.rand.Next(2))
 					{
+
 						case 0:
-							State = ActionState.HandsoutLantern;
-							ResetTimers();
-							break;
-						case 1:
 							State = ActionState.HandsoutFlametornado;
 							ResetTimers();
 							break;
-						case 2:
+						case 1:
 							State = ActionState.HandsoutAxe;
 							ResetTimers();
 							break;
@@ -699,6 +729,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 			
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<VoidBomb>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 			}
 
@@ -741,18 +772,12 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 
-				if (NPC.life < NPC.lifeMax / 2)
-                {
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 210, NPC.position.Y - 35, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 210, NPC.position.Y - 35, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
-
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 70, NPC.position.Y - 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 70, NPC.position.Y - 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
-				}
+		
 
 			}
 
-			if (timer == 40)
+			
+				if (timer == 40)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
@@ -911,6 +936,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
+			Timer2 = 0;
 		}
 
 

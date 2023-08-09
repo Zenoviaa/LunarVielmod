@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.height = 60;
             Projectile.aiStyle = 3;
             Projectile.friendly = true;
-            Projectile.penetrate = 13;
+            Projectile.penetrate = -1;
             Projectile.timeLeft = 600;
             Projectile.extraUpdates = 1;
             Projectile.tileCollide = false;
@@ -43,12 +43,7 @@ namespace Stellamod.Projectiles.Swords
 
             Projectile.rotation += 0.1f;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-                Projectile.NewProjectile(EntitySource, target.Center.X, target.Center.Y - 200, 0, -2, ModContent.ProjectileType<KilvierBONK>(), 5, 1, Main.myPlayer, 0, 0);
-        }
+    
         float alphaCounter = 2;
         float counter = 3;
         public override void PostDraw(Color lightColor)
@@ -64,11 +59,9 @@ namespace Stellamod.Projectiles.Swords
                 DrawOffset.Y = Projectile.Center.Y;
             }
             Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
             Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
+
         }
         Vector2 DrawOffset;
         public override bool PreDraw(ref Color lightColor)

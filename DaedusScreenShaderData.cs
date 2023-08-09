@@ -5,18 +5,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod
 {
-	public class DaedussssScreenShaderData : ScreenShaderData
+	public class DaedusScreenShaderData : ScreenShaderData
 	{
 		private int GintzeIndex;
 
-		public AbyssScreenShaderData(string passName)
+		public DaedusScreenShaderData(string passName)
 			: base(passName)
 		{
 		}
 
 		private void UpdateMirageIndex()
 		{
-	
+
 			if (EventWorld.Gintzing)
 			{
 				return;
