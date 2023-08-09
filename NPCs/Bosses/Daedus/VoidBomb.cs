@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					if (npc.active)
 					{
 						float distance = Vector2.Distance(Projectile.Center, npc.Center);
-						if (distance <= 200)
+						if (distance <= 250)
 						{
 							Vector2 direction = npc.Center - Projectile.Center;
 							direction.Normalize();

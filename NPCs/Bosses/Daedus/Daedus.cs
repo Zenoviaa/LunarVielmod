@@ -587,32 +587,59 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			if (timer == 40)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(5))
+				if (NPC.life > NPC.lifeMax / 2)
 				{
-					case 0:
-						State = ActionState.HandsoutLantern;
-						ResetTimers();
-						break;
-					case 1:
-						State = ActionState.HandsoutFlametornado;
-						ResetTimers();
-						break;
-					case 2:
-						State = ActionState.HandsoutVoid;
-						ResetTimers();
-						break;
-					case 3:
-						State = ActionState.HandsoutAxe;
-						ResetTimers();
-						break;
-					case 4:
-						State = ActionState.HandsoutAxe;
-						ResetTimers();
-						break;
 
+
+					switch (Main.rand.Next(5))
+					{
+						case 0:
+							State = ActionState.HandsoutLantern;
+							ResetTimers();
+							break;
+						case 1:
+							State = ActionState.HandsoutFlametornado;
+							ResetTimers();
+							break;
+						case 2:
+							State = ActionState.HandsoutVoid;
+							ResetTimers();
+							break;
+						case 3:
+							State = ActionState.HandsoutAxe;
+							ResetTimers();
+							break;
+						case 4:
+							State = ActionState.HandsoutAxe;
+							ResetTimers();
+							break;
+
+					}
 				}
 
+
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+
+
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							State = ActionState.HandsoutLantern;
+							ResetTimers();
+							break;
+						case 2:
+							State = ActionState.HandsoutFlametornado;
+							ResetTimers();
+							break;
+						case 3:
+							State = ActionState.HandsoutAxe;
+							ResetTimers();
+							break;
+
+					}
+				}
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
 
@@ -671,7 +698,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 			
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<VoidBomb>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<VoidBomb>(), (int)(0), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 			}
 
@@ -716,11 +743,11 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 				if (NPC.life < NPC.lifeMax / 2)
                 {
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 180, NPC.position.Y - 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 180, NPC.position.Y - 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 210, NPC.position.Y - 35, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 210, NPC.position.Y - 35, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 120, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 120, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 70, NPC.position.Y - 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 70, NPC.position.Y - 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 				}
 
 			}
@@ -763,6 +790,19 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 			}
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+
+				if (timer == 30)
+				{
+					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+				}
+			}
+
+
 
 			if (timer == 40)
 			{
