@@ -48,7 +48,7 @@ namespace Stellamod.Items.Armors.Govheil
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());

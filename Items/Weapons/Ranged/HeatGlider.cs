@@ -40,12 +40,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useTime = 24;
             Item.consumeAmmoOnLastShotOnly = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();   
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-            recipe.Register();
-        }
+      
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
