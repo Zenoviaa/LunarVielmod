@@ -144,10 +144,9 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
-			NPC.noGravity = false;
-			NPC.noTileCollide = false;
+			NPC.noGravity = true;
+			NPC.noTileCollide = true;
 			NPC.value = Item.buyPrice(gold: 40);
-			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
@@ -183,7 +182,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Gintzia, Maybe a bit drunken and cheery, but their spirit is out of this world!")
+				new FlavorTextBestiaryInfoElement("A puppet, a guardian, and a follower of Gothivia, one of her finest creations")
 			});
 		}
 
@@ -440,7 +439,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.damage = 0;
 					counter++;
 					NPC.noGravity = true;
-					SummonVoid();
+
+					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+					}
+
+					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+					}
+
+				//	SummonVoid();
 					NPC.aiStyle = -1;
 					break;
 
@@ -448,6 +460,19 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.damage = 0;
 					counter++;
 					NPC.noGravity = true;
+
+					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+					}
+
+					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+					}
+
 					SummonLantern();
 					NPC.aiStyle = -1;
 					break;
@@ -456,7 +481,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.damage = 0;
 					counter++;
 					NPC.noGravity = true;
-					SummonTornado();
+
+					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+					}
+
+					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+					}
+
+				//	SummonTornado();
 					NPC.aiStyle = -1;
 					break;
 
@@ -464,7 +502,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.damage = 0;
 					counter++;
 					NPC.noGravity = true;
-					SummonAxe();
+
+					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
+
+					}
+
+					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+					{
+						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+					}
+
+				//	SummonAxe();
 					NPC.aiStyle = -1;
 					break;
 
@@ -484,98 +535,6 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.aiStyle = -1;
 					break;
 
-				case ActionState.StartGintze:
-					NPC.damage = 0;
-					counter++;
-					NPC.noGravity = false;
-					StartGintze();
-					NPC.aiStyle = -1;
-					break;
-
-				case ActionState.Rulse:
-					NPC.damage = 0;
-					counter++;
-					NPC.noGravity = false;
-					HandSummon();
-					NPC.aiStyle = -1;
-					break;
-
-
-
-				case ActionState.Jumpin:
-					NPC.damage = 0;
-					counter++;
-					NPC.aiStyle = -1;
-					JumpinGintze();
-		
-					break;
-
-
-				case ActionState.Jumpstartup:
-					NPC.damage = 0;
-					counter++;
-					NPC.aiStyle = -1;
-					StartJumpGintze();
-					break;
-
-				case ActionState.Stop:
-					NPC.damage = 0;
-					counter++;
-					IdleGintze();
-					break;
-
-				case ActionState.HandsNRun:
-					NPC.damage = 50;
-				
-					
-					counter++;
-					HandTime();
-					break;
-
-				case ActionState.Slammer:
-					NPC.damage = 0;
-					counter++;
-
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
-					counter++;
-					SlammerGintze();
-					break;
-
-
-				case ActionState.Fallin:
-					NPC.damage = 100;
-					NPC.velocity.Y *= 1.2f;
-					counter++;
-					NPC.aiStyle = -1;
-					NPC.noTileCollide = false;
-
-
-					
-					if (NPC.velocity.Y == 0)
-					{
-						NPC.velocity.X = 0;
-						State = ActionState.Slammer;
-						frameCounter = 0;
-						frameTick = 0;
-					}
-					break;
-
-
-
-
-
-
-
 
 				////////////////////////////////////////////////////////////////////////////////////
 				///
@@ -585,229 +544,22 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 	
 
-		private void StartJumpGintze()
+		private void IdleDaed()
 		{
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 			
-			if (timer == 2)
-			{
-				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-				NPC.velocity.X *= 0;
-				NPC.velocity.Y *= 0;
-			}
-
-
-			if (timer == 19)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
-				{
-					case 0:
-						State = ActionState.Jumpin;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
-		}
-
-		private void JumpinGintze()
-		{
-
-			Player player = Main.player[NPC.target];
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-			float speed = 25f;
-
-			if (timer == 2)
-			{
-				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-
-
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				NPC.velocity = new Vector2(NPC.direction * 2, -14f);
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-
-				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
-
-			}
-		/*	if (timer > 30)
-			{
-
-				int distance = Main.rand.Next(2, 2);
-				NPC.ai[3] = Main.rand.Next(1);
-				Vector2 Top = (player.Center - new Vector2(0, 100));
-
-				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-				Vector2 angle = new Vector2((float)anglex, (float)angley);
-				dashDirection = (Top - (angle * distance)) - NPC.Center;
-				dashDistance = dashDirection.Length();
-				dashDirection.Normalize();
-				dashDirection *= speed;
-				NPC.velocity = dashDirection;
 			
-			}
-*/
-
-			if (timer == 60)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
-				{
-					case 0:
-						State = ActionState.Fallin;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
-		}
-
-
-		private void SlammerGintze()
-		{
-			timer++;
-			if (timer == 1)
-			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
-				ShakeModSystem.Shake = 8;
-			}
-
-			if (timer < 9)
-			{
-
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(15), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(15), 0f, 0, 0f, 0f);
-
-			}
-
-			if (timer == 20)
-			{
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-				{
-					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
-				}
-
-				State = ActionState.Stop;
-
-
-				ResetTimers();
-			}
-
-
-
-		}
-
-
-		private void StartGintze()
-		{
-			timer++;
-	
-			if (timer == 10)
-            {
-				NPC.velocity.X *= 0;
-				NPC.velocity.Y *= 0;
-			}
-		
-
-			if (timer == 20)
-			{
-
-				State = ActionState.Jumpstartup;
-
-
-				ResetTimers();
-			}
-
-
-
-		}
-
-
-		private void IdleGintze()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-
-			
-
-
-
-			if (timer == 30)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(2))
-				{
-					case 0:
-						State = ActionState.StartGintze;
-						ResetTimers();
-						break;
-
-					case 1:
-						State = ActionState.Rulse;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
-		}
-
-		private void HandTime()
-		{
-			NPC.spriteDirection = NPC.direction;
-			timer++;
-
-			if (timer == 10)
-            {
-
-				NPC.aiStyle = 3;
-				AIType = NPCID.GoblinPeon;
-
-			}
-
 
 
 			if (timer == 400)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(2))
+				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.Jumpstartup;
-						ResetTimers();
-						break;
-
-					case 1:
-						State = ActionState.Stop;
+						State = ActionState.Stopp;
 						ResetTimers();
 						break;
 
@@ -819,34 +571,130 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			}
 
 		}
-		private void HandSummon()
+		private void Chill()
 		{
 			NPC.spriteDirection = NPC.direction;
 			timer++;
-			if (timer == 2)
-            {
-                var entitySource = NPC.GetSource_FromThis();
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
-                //Summon hands here
-            }
-			if (timer == 3)
-			{
-				//	GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
-				NPC.velocity.X *= 0;
-				NPC.velocity.Y *= 0;
-			}
 
-			if (timer == 50)
+			NPC.velocity *= 0.98f;
+
+
+
+			if (timer == 40)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
 				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.HandsNRun;
+						State = ActionState.Summonstart;
 						ResetTimers();
 						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonDaed()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+
+			NPC.velocity *= 0.98f;
+
+
+			if (timer == 40)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.HandsoutLantern;
+						ResetTimers();
+						break;
+					case 1:
+						State = ActionState.HandsoutLantern;
+						ResetTimers();
+						break;
+					case 2:
+						State = ActionState.HandsoutLantern;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.HandsoutLantern;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonLantern()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+
+			
+			if (timer == 0)
+            {
+				//var entitySource = NPC.GetSource_FromThis();
+				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
+
+			}
+
+			if (timer == 40)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.HandsIn;
+						ResetTimers();
+						break;
+	
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void UnSummon()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+			
+
+			if (timer == 24)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Idle;
+						ResetTimers();
+						break;
+
 
 				}
 
@@ -861,48 +709,6 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
 
 
 
