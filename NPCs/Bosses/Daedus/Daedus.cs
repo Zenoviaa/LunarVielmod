@@ -648,8 +648,8 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			
 			if (timer == 0)
             {
-				//var entitySource = NPC.GetSource_FromThis();
-				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<LanternOfHope>());
 
 			}
 
