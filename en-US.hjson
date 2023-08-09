@@ -3213,6 +3213,11 @@ Mods: {
 				DisplayName: Kilvier
 				Tooltip: ""
 			}
+
+			DaedussSunSheid: {
+				DisplayName: Daeduss Sun Sheid
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
