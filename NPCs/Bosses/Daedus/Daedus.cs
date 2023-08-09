@@ -328,7 +328,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 				case ActionState.Idle:
-					rect = new(0, 1 * 74, 120, 30 * 74);
+					rect = new(0, 1 * 74, 120, 30 * 74);					
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 30, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
@@ -372,10 +372,10 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			return false;
 		}
 
-		//Custom function so that I don't have to copy and paste the same thing in FindFrame
+        //Custom function so that I don't have to copy and paste the same thing in FindFrame
 
-
-		int bee = 220;
+        float HomeY = 330f;
+        int bee = 220;
 		private Vector2 originalHitbox;
 		int moveSpeed = 0;
 		int moveSpeedY = 0;
@@ -547,10 +547,28 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		private void IdleDaed()
 		{
 			NPC.spriteDirection = NPC.direction;
-			timer++;
-			
-			
+            Player player = Main.player[NPC.target];
 
+            if (NPC.Center.X >= player.Center.X && moveSpeed >= - 90) // flies to players x position
+                moveSpeed--;
+            else if (NPC.Center.X <= player.Center.X && moveSpeed <= 90)
+                moveSpeed++;
+
+            NPC.velocity.X = moveSpeed * 0.10f;
+
+            if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
+            {
+                moveSpeedY--;
+                HomeY = 200f;
+            }
+            else if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= 20)
+            {
+                moveSpeedY++;
+            }
+
+            NPC.velocity.Y = moveSpeedY * 0.13f;
+            timer++;
+			
 
 			if (timer == 400)
 			{
