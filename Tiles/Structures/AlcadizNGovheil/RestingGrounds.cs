@@ -19,6 +19,7 @@ using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
+using Stellamod.NPCs.Bosses.Daedus;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
@@ -103,11 +104,11 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			int key = ModContent.ItemType<GothiviasSeal>();
 
 
-			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Daedus>()))
 			{
 
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Jack>());
+				NPC.NewNPC(new EntitySource_TileBreak(i, j + 200), i * 16, j * 16, ModContent.NPCType<Daedus>());
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
@@ -115,7 +116,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			if (player.HasItem(key))
 			{
 
-				Main.NewText("I cannot raise my sword of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+				Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
 
 			}
 

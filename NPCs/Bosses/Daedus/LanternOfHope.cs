@@ -46,17 +46,16 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 		public override void SetDefaults()
 		{
-			NPC.width = 32; // The width of the NPC's hitbox (in pixels)
-			NPC.height = 32; // The height of the NPC's hitbox (in pixels)
+			NPC.width = 78; // The width of the NPC's hitbox (in pixels)
+			NPC.height = 110; // The height of the NPC's hitbox (in pixels)
 			NPC.aiStyle = -1; // This NPC has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.// The amount of damage that this NPC deals // The amount of defense that this NPC has // The amount of health that this NPC has
-			NPC.value = 250f; // How many copper coins the NPC will drop when killed.
+			NPC.value = 0f; // How many copper coins the NPC will drop when killed.
 			NPC.friendly = false;
 			NPC.lifeMax = 200;
-			NPC.dontTakeDamageFromHostiles = true;
 			NPC.noGravity = true;
 			NPC.knockBackResist = 0f;
 			NPC.damage = 1; // The amount of damage that this NPC deals
-			NPC.defense = 20; // The amount of defense that this NPC has
+			NPC.defense = 5; // The amount of defense that this NPC has
 		
 
 		}
@@ -64,7 +63,8 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{
-			NPC.velocity *= 0.9f;
+			NPC.damage = 0;
+		
 
 
 			float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -75,32 +75,32 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			if (timer2 <= 300)
 			{
-				NPC.aiStyle = 108;
-				AIType = NPCID.DD2KoboldFlyerT2;
+				NPC.aiStyle = 22;
+				AIType = NPCID.Pixie;
 
-
+				
 			}
 
 			if (timer2 == 310)
             {
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-			
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				
 
 			}
 
 			if (timer2 == 330)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
 			
 
 			}
 
 			if (timer2 == 350)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 60, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
 				timer2 = 0;
 
 			}
@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
 
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 66, 255, 86), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 66, 255, 46), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
 			}
 
 			// Using a rectangle to crop a texture can be imagined like this:

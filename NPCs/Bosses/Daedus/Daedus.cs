@@ -85,7 +85,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		}
 		// Current state
 
-		public ActionState State = ActionState.Jumpstartup;
+		public ActionState State = ActionState.Idle;
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		{
 			// DisplayName.SetDefault("Verlia of The Moon");
 
-			Main.npcFrameCount[Type] = 42;
+			Main.npcFrameCount[Type] = 46;
 
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
 			NPCID.Sets.TrailingMode[NPC.type] = 0;
@@ -173,7 +173,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gintzicane");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) - new Vector2(0, 68);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -60) ;
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -282,49 +282,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			switch (State)
 			{
-				case ActionState.Slammer:
-					rect = new(0, 9 * 74, 42, 3 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.Jumpin:
-					rect = new(0, 5 * 67, 42, 3 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 20, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-
-				case ActionState.Fallin:
-					rect = new(0, 8 * 67, 42, 1 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 80, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.Jumpstartup:
-					rect = new Rectangle(0, 1 * 67, 42, 3 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.Stop:
-					rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.Rulse:
-					rect = new Rectangle(0, 13 * 67, 42, 16 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 16, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.StartGintze:
-					rect = new Rectangle(0, 0 * 67, 42, 1 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 50, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-				case ActionState.HandsNRun:
-					rect = new Rectangle(0, 30 * 67, 42, 12 * 67);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 12, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
-					break;
-
-
-
+				
 
 
 				case ActionState.Idle:
@@ -452,7 +410,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 					}
 
-				//	SummonVoid();
+					SummonVoid();
 					NPC.aiStyle = -1;
 					break;
 
@@ -494,7 +452,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 					}
 
-				//	SummonTornado();
+					SummonFlametornado();
 					NPC.aiStyle = -1;
 					break;
 
@@ -515,7 +473,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 					}
 
-				//	SummonAxe();
+					SummonAxe();
 					NPC.aiStyle = -1;
 					break;
 
@@ -554,19 +512,19 @@ namespace Stellamod.NPCs.Bosses.Daedus
             else if (NPC.Center.X <= player.Center.X && moveSpeed <= 90)
                 moveSpeed++;
 
-            NPC.velocity.X = moveSpeed * 0.10f;
+            NPC.velocity.X = moveSpeed * 0.08f;
 
             if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
             {
                 moveSpeedY--;
-                HomeY = 200f;
+                HomeY = 140f;
             }
             else if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= 20)
             {
                 moveSpeedY++;
             }
 
-            NPC.velocity.Y = moveSpeedY * 0.13f;
+            NPC.velocity.Y = moveSpeedY * 0.08f;
             timer++;
 			
 
@@ -594,7 +552,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 
-			NPC.velocity *= 0.98f;
+			NPC.velocity *= 0.97f;
 
 
 
@@ -630,22 +588,26 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(4))
+				switch (Main.rand.Next(5))
 				{
 					case 0:
 						State = ActionState.HandsoutLantern;
 						ResetTimers();
 						break;
 					case 1:
-						State = ActionState.HandsoutLantern;
+						State = ActionState.HandsoutFlametornado;
 						ResetTimers();
 						break;
 					case 2:
-						State = ActionState.HandsoutLantern;
+						State = ActionState.HandsoutVoid;
 						ResetTimers();
 						break;
 					case 3:
-						State = ActionState.HandsoutLantern;
+						State = ActionState.HandsoutAxe;
+						ResetTimers();
+						break;
+					case 4:
+						State = ActionState.HandsoutAxe;
 						ResetTimers();
 						break;
 
@@ -664,11 +626,13 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			timer++;
 
 			
-			if (timer == 0)
+			if (timer == 2)
             {
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<LanternOfHope>());
-
+				NPC.NewNPC(entitySource, (int)NPC.position.X + 150, (int)NPC.position.Y - 50, ModContent.NPCType<LanternOfHope>());
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 			}
 
 			if (timer == 40)
@@ -686,6 +650,135 @@ namespace Stellamod.NPCs.Bosses.Daedus
 						ResetTimers();
 						break;
 	
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonVoid()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+
+
+			if (timer == 2)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+			
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<VoidBomb>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+			}
+
+			if (timer == 40)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.HandsIn;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonAxe()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+
+
+			if (timer == 2)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+
+				if (NPC.life < NPC.lifeMax / 2)
+                {
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 180, NPC.position.Y - 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 180, NPC.position.Y - 40, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 120, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 120, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+				}
+
+			}
+
+			if (timer == 40)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.HandsIn;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SummonFlametornado()
+		{
+			NPC.spriteDirection = NPC.direction;
+			timer++;
+
+
+			if (timer == 2)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+			}
+
+			if (timer == 40)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.HandsIn;
+						ResetTimers();
+						break;
+
 
 				}
 

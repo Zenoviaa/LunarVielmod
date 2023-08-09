@@ -3787,6 +3787,9 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			Daedus.DisplayName: Forgotten Puppet Daedus
+			LanternOfHope.DisplayName: Lantern Of Hope
 		}
 
 		Projectiles: {
@@ -4210,6 +4213,11 @@ Mods: {
 			VoidKaboom.DisplayName: Void Kaboom
 			SingularitySparkProjG.DisplayName: Singularity Spark Proj G
 			KilvierBONK.DisplayName: Kilvier B O N K
+			FlameTornado.DisplayName: Flame Tornado
+			LanturnSpear.DisplayName: Lanturn Spear
+			SummonSpawnEffect.DisplayName: Summon Spawn Effect
+			VoidBomb.DisplayName: Void Bomb
+			BouncySword.DisplayName: Bouncy Sword
 		}
 	}
 
@@ -4708,7 +4716,7 @@ Mods: {
 		Jack.DisplayName: Jack
 		JackDeath.DisplayName: Jack Death
 		Jackoslime.DisplayName: Jackoslime
-		SingularityFragment.DisplayName: Singularity Fragment
+		SingularityFragment.DisplayName: Singularity Of The Moon
 		Voidling.DisplayName: Voidling
 		SunStalker.DisplayName: Sun Stalker
 		SunStalkerDeath.DisplayName: Sun Stalker Death

@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
             {
                 Projectile.alpha = 255;
                 Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 120, Projectile.position.X + 120);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 120, Projectile.position.Y + 120);
+                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 80, Projectile.position.Y + 0);
             }
             if (Projectile.ai[1] == 2)
             {
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
             }
             if (Projectile.ai[1] == 20)
             {
-                Projectile.velocity = -Projectile.velocity;
+                Projectile.velocity = Projectile.velocity;
             }
             if (Projectile.ai[1] >= 21 && Projectile.ai[1] <= 60)
             {
@@ -78,17 +78,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
             float maxDetectRadius = 3f; // The maximum radius at which a projectile can detect a target
-            float projSpeed = 14f; // The speed at which the projectile moves towards the target
+            float projSpeed = 11f; // The speed at which the projectile moves towards the target
 
+            Timer++;
 
-
-            if (Timer == 1)
+            if (Timer <= 2)
             {
                 maxDetectRadius = 2000f;
 
+                float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
             }
 
-            if (Timer == 6)
+            if (Timer >= 4)
             {
                 maxDetectRadius = 0f;
             }
@@ -167,22 +170,22 @@ namespace Stellamod.NPCs.Bosses.Daedus
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            public override bool PreDraw(ref Color lightColor)
             {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(Color.Lerp(new Color(253, 255, 71), new Color(182, 83, 38), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-                Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                    Color color = Projectile.GetAlpha(Color.Lerp(new Color(253, 255, 71), new Color(182, 83, 38), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                    Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+                }
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                return true;
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return true;
-        }
-
+        
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleGoldenrod.ToVector3() * 1.75f * Main.essScale);
