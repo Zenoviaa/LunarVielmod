@@ -3255,7 +3255,8 @@ Mods: {
 
 			DaedenChestplate: {
 				DisplayName: Daeden Chestplate
-				Tooltip: '''
+				Tooltip:
+					'''
 					Absolutely Hideous.
 					+10% Summon and Melee Damage
 					+20 Armor penetration
@@ -3265,13 +3266,14 @@ Mods: {
 			}
 
 			DaedenLegs: {
-				DisplayName: Daeden Legs 
+				DisplayName: Daeden Legs
 				Tooltip: Increased movement speed
 			}
 
 			DaedenMask: {
 				DisplayName: Daeden Mask
-				Tooltip: '''
+				Tooltip:
+					'''
 					This is for all those masochists.
 					+30% Summon and Melee Damage
 					Heavy Increased mana regeneration!
