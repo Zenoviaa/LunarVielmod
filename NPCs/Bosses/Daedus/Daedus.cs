@@ -818,7 +818,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya1"));
 			}
 			if (NPC.life < NPC.lifeMax / 2)
 			{
@@ -829,7 +829,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya"));
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya1"));
 				}
 			}
 
@@ -906,7 +906,8 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
 
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GintziaBossBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

@@ -133,6 +133,15 @@ namespace Stellamod
 		public int GintBCooldown = 1;
 		public bool BroochAureBlight;
 		public int AureBCooldown = 1;
+
+		public bool BroochDread;
+		public int DreadBCooldown = 1;
+		public bool BroochMal;
+		public int MalBCooldown = 1;
+		public bool BroochVixed;
+		public int VixedBCooldown = 1;
+		public bool BroochBear;
+		public int BearBCooldown = 1;
 		//---------------------------------------------------------------------------------------------------------------
 
 
@@ -810,6 +819,40 @@ namespace Stellamod
 				Player.AddBuff(ModContent.BuffType<AurelusB>(), 1000);
 				AureBCooldown = 1000;
 			}
+
+			if (BroochDread && DreadBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<DreadBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<DreadB>(), 1000);
+				DreadBCooldown = 1000;
+			}
+
+			if (BroochBear && BearBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<BearBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<BearB>(), 1000);
+				BearBCooldown = 1000;
+			}
+
+			if (BroochVixed && VixedBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<VixedBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<VixedB>(), 1000);
+				VixedBCooldown = 1000;
+			}
+
+			if (BroochMal && MalBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MalShieldBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<MalB>(), 1000);
+				MalBCooldown = 1000;
+			}
+
+
 
 			if (BroochSpragald && SpragaldBCooldown <= 0)
 			{

@@ -3205,18 +3205,49 @@ Mods: {
 			}
 
 			TheSunAndMoonCard: {
-				Tooltip: ""
+				Tooltip: Burn with the power of the sun and moon...
 				DisplayName: The Sun And Moon Card
 			}
 
 			Kilvier: {
 				DisplayName: Kilvier
-				Tooltip: ""
+				Tooltip: This isnt a weapon is it?
 			}
 
 			DaedussSunSheid: {
-				DisplayName: Daeduss Sun Sheid
-				Tooltip: ""
+				DisplayName: Sun Sheid
+				Tooltip: Burns brightly with Gothivia and Verlia's names
+			}
+
+			BearBroochA: {
+				DisplayName: Bear of The Wild Brooch 
+				Tooltip: Heavily increased mana regeneration!
+			}
+
+			DreadBroochA: {
+				DisplayName: Dreaded Dreadmire Brooch
+				Tooltip: '''
+					+10 Health
+					You know maybe she wasn't all that bad.
+					'''
+			}
+
+			MalShieldBroochA: {
+				DisplayName: Malicious Shield Brooch
+				Tooltip: '''
+					Something tells me this isnt right...
+					+7 Defense
+					+7% Melee Damage!
+					'''
+			}
+
+			VixedBroochA: {
+				DisplayName: Forgotten Guard's Brooch
+				Tooltip: '''
+					This puppet was worn out.
+					+10% Damage
+					+40 Health
+					'''
 			}
 		}
 
@@ -3226,15 +3257,6 @@ Mods: {
 		}
 
 		Biomes: {
-			AbyssBiome: {
-				DisplayName: Abyss Biome
-				TownNPCDialogueName: the Abyss Biome
-			}
-
-			AcidBiome: {
-				DisplayName: Acid Biome
-				TownNPCDialogueName: the Acid Biome
-			}
 
 			AurelusBiome: {
 				DisplayName: Aurelus Biome
@@ -3657,6 +3679,26 @@ Mods: {
 			VoiddDust: {
 				DisplayName: Voidd Dust
 				Description: Mods.Stellamod.Buffs.VoiddDust.Description
+			}
+
+			BearB: {
+				DisplayName: Bear 
+				Description: Dont let em bite!
+			}
+
+			DreadB: {
+				DisplayName: Dreaded
+				Description: Dreadmire appraises you here.
+			}
+
+			MalB: {
+				DisplayName: Malled
+				Description: Become the shield
+			}
+
+			VixedB: {
+				DisplayName: Vixed 
+				Description: Vixy!
 			}
 		}
 
@@ -4218,6 +4260,10 @@ Mods: {
 			SummonSpawnEffect.DisplayName: Summon Spawn Effect
 			VoidBomb.DisplayName: Void Bomb
 			BouncySword.DisplayName: Bouncy Sword
+			BearBrooch.DisplayName: Bear Brooch
+			DreadBrooch.DisplayName: Dread Brooch
+			MalShieldBrooch.DisplayName: Mal Shield Brooch
+			VixedBrooch.DisplayName: Vixed Brooch
 		}
 	}
 
