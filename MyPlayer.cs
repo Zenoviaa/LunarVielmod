@@ -32,6 +32,7 @@ using Stellamod.Projectiles.Gun;
 using Stellamod.WorldG;
 using Terraria.GameContent;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Bosses.Daedus;
 
 namespace Stellamod
 {
@@ -509,7 +510,7 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
-
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<Daedus>()));
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
