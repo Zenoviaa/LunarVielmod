@@ -629,11 +629,11 @@ namespace Stellamod.NPCs.Bosses.Daedus
 							State = ActionState.HandsoutLantern;
 							ResetTimers();
 							break;
-						case 2:
+						case 1:
 							State = ActionState.HandsoutFlametornado;
 							ResetTimers();
 							break;
-						case 3:
+						case 2:
 							State = ActionState.HandsoutAxe;
 							ResetTimers();
 							break;
