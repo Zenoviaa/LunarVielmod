@@ -553,6 +553,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 50, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ProjectileID.GreekFire1, (int)(5), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 50, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 					Timer2 = 0;
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Jack_Throw"));
 				}
 
 
@@ -690,6 +691,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				var entitySource = NPC.GetSource_FromThis();
 				NPC.NewNPC(entitySource, (int)NPC.position.X + 150, (int)NPC.position.Y - 50, ModContent.NPCType<LanternOfHope>());
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CinderBraker"));
 			}
 
 			if (timer == 40)
@@ -731,6 +733,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<VoidBomb>(), (int)(0), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SingularityFragment_Shot1"));
 			}
 
 			if (timer == 40)
@@ -772,7 +775,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<BouncySword>(), (int)(30), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 150, NPC.position.Y - 50, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
 
-		
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/StormDragon_Bomb"));
 
 			}
 
@@ -814,6 +817,8 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
 				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya"));
 			}
 			if (NPC.life < NPC.lifeMax / 2)
 			{
@@ -824,6 +829,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 80, speedXb * 0, speedYb * 0, ModContent.ProjectileType<FlameTornado>(), (int)(0), 0f, 0, 0f, 0f);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 140, NPC.position.Y + speedYb + 20, speedXb * 0, speedYb * 0, ModContent.ProjectileType<SummonSpawnEffect>(), (int)(0), 0f, 0, 0f, 0f);
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Astalaiya"));
 				}
 			}
 
