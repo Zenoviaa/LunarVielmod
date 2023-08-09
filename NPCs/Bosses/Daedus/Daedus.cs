@@ -908,7 +908,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GintziaBossBag>()));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 

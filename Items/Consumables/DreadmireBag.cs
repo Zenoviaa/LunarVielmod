@@ -15,6 +15,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Accessories.Brooches;
 
 namespace Stellamod.Items.Consumables
 {
@@ -59,6 +60,10 @@ namespace Stellamod.Items.Consumables
             if (Main.rand.NextBool(2))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<Myocardia>());
+            }
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<DreadBroochA>());
             }
 
         }

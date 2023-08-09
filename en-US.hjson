@@ -3015,8 +3015,8 @@ Mods: {
 				DisplayName: Gothivias Seal
 				Tooltip:
 					'''
-					Take it to the depth of the Virulent, 
-					there lies a castle awaiting your arrival...
+					Take it to the depths of the Virulent.
+					There lies a castle awaiting your arrival...
 					'''
 			}
 
@@ -3220,13 +3220,14 @@ Mods: {
 			}
 
 			BearBroochA: {
-				DisplayName: Bear of The Wild Brooch 
+				DisplayName: Bear of The Wild Brooch
 				Tooltip: Heavily increased mana regeneration!
 			}
 
 			DreadBroochA: {
 				DisplayName: Dreaded Dreadmire Brooch
-				Tooltip: '''
+				Tooltip:
+					'''
 					+10 Health
 					You know maybe she wasn't all that bad.
 					'''
@@ -3234,7 +3235,8 @@ Mods: {
 
 			MalShieldBroochA: {
 				DisplayName: Malicious Shield Brooch
-				Tooltip: '''
+				Tooltip:
+					'''
 					Something tells me this isnt right...
 					+7 Defense
 					+7% Melee Damage!
@@ -3243,11 +3245,49 @@ Mods: {
 
 			VixedBroochA: {
 				DisplayName: Forgotten Guard's Brooch
-				Tooltip: '''
+				Tooltip:
+					'''
 					This puppet was worn out.
 					+10% Damage
 					+40 Health
 					'''
+			}
+
+			DaedenChestplate: {
+				DisplayName: Daeden Chestplate
+				Tooltip: '''
+					Absolutely Hideous.
+					+10% Summon and Melee Damage
+					+20 Armor penetration
+					+5 Crit
+					-15 Health
+					'''
+			}
+
+			DaedenLegs: {
+				DisplayName: Daeden Legs 
+				Tooltip: Increased movement speed
+			}
+
+			DaedenMask: {
+				DisplayName: Daeden Mask
+				Tooltip: '''
+					This is for all those masochists.
+					+30% Summon and Melee Damage
+					Heavy Increased mana regeneration!
+					+5 Crit
+					-40 Health
+					'''
+			}
+
+			DaedusBag: {
+				DisplayName: Daedus Bag
+				Tooltip: ""
+			}
+
+			Plate: {
+				DisplayName: Plate
+				Tooltip: I guess Daedus forgot to do the dishes.
 			}
 		}
 
@@ -3257,7 +3297,6 @@ Mods: {
 		}
 
 		Biomes: {
-
 			AurelusBiome: {
 				DisplayName: Aurelus Biome
 				TownNPCDialogueName: the Aurelus Biome
@@ -3281,6 +3320,16 @@ Mods: {
 			MorrowUndergroundBiome: {
 				DisplayName: Morrow Underground Biome
 				TownNPCDialogueName: the Morrow Underground Biome
+			}
+
+			AbyssBiome: {
+				DisplayName: Abyss Biome
+				TownNPCDialogueName: the Abyss Biome
+			}
+
+			AcidBiome: {
+				DisplayName: Acid Biome
+				TownNPCDialogueName: the Acid Biome
 			}
 		}
 
@@ -3682,7 +3731,7 @@ Mods: {
 			}
 
 			BearB: {
-				DisplayName: Bear 
+				DisplayName: Bear
 				Description: Dont let em bite!
 			}
 
@@ -3697,7 +3746,7 @@ Mods: {
 			}
 
 			VixedB: {
-				DisplayName: Vixed 
+				DisplayName: Vixed
 				Description: Vixy!
 			}
 		}
@@ -4264,6 +4313,7 @@ Mods: {
 			DreadBrooch.DisplayName: Dread Brooch
 			MalShieldBrooch.DisplayName: Mal Shield Brooch
 			VixedBrooch.DisplayName: Vixed Brooch
+			Plateproj.DisplayName: Plateproj
 		}
 	}
 
