@@ -77,6 +77,7 @@
     <None Remove="Items\Consumables\SunStalkerBag.png" />
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
+    <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineBUANI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />
