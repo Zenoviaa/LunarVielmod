@@ -59,7 +59,19 @@ namespace Stellamod.Items.Weapons.Igniters
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 11);
+			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<DaedCard>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 11);
+			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
 
-		
+			recipe.AddIngredient(ItemID.Leather, 9);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
+
 	}
 }

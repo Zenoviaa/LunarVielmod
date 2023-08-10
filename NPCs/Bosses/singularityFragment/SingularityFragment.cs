@@ -106,6 +106,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), 2, 1, 1));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), 2, 1, 1));
             }
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidLantern>(), 1, 1, 1));
         }
 
         public void CasuallyApproachChild()

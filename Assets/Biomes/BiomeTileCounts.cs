@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Abyss.Aurelus;
+using Stellamod.Tiles;
 
 namespace Stellamod
 {
@@ -20,11 +21,15 @@ namespace Stellamod
         public int AurelusCount;
         public static bool InAurelus => ModContent.GetInstance<BiomeTileCounts>().AurelusCount > 70;
 
+        public int GovheilCount;
+        public static bool InGovheil => ModContent.GetInstance<BiomeTileCounts>().GovheilCount > 30;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
             AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];
+            GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
 
         }
     }

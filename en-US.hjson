@@ -3291,6 +3291,31 @@ Mods: {
 				DisplayName: Plate
 				Tooltip: I guess Daedus forgot to do the dishes.
 			}
+
+			GovheilCastleBlock: {
+				DisplayName: Govheil Castle Block
+				Tooltip: ""
+			}
+
+			GovheilHallI: {
+				DisplayName: Govheil Hall I
+				Tooltip: ""
+			}
+
+			GovheilWallsI: {
+				DisplayName: Govheil Walls I
+				Tooltip: ""
+			}
+
+			GothivA: {
+				DisplayName: Gothiv A
+				Tooltip: ""
+			}
+
+			GothWall: {
+				DisplayName: Goth Wall
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3332,6 +3357,11 @@ Mods: {
 			AcidBiome: {
 				DisplayName: Acid Biome
 				TownNPCDialogueName: the Acid Biome
+			}
+
+			GovheilCastle: {
+				DisplayName: Govheil Castle
+				TownNPCDialogueName: the Govheil Castle
 			}
 		}
 
@@ -3414,6 +3444,12 @@ Mods: {
 			wall7.MapEntry: wall7
 			SunAlter.MapEntry: Sun Alter
 			VerianoreTile.MapEntry: Verianore Tile
+			GovheilHall.MapEntry: Govheil Hall
+			GovheilWall.MapEntry: Govheil Wall
+			VheilCurtainLeft.MapEntry: Vheil Curtain Left
+			VheilCurtainRight.MapEntry: Vheil Curtain Right
+			Gothiv.MapEntry: Gothiv
+			GothivDoorClosed.MapEntry: Gothiv Door Closed
 		}
 
 		Buffs: {
