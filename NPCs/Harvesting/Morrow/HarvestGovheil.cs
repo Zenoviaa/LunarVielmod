@@ -21,7 +21,7 @@ using Terraria.ModLoader.Utilities;
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
 	// This ModNPC serves as an example of a completely custom AI.
-	public class HarvestUM : ModNPC
+	public class HarvestGovheil : ModNPC
 	{
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
 		// These are for our benefit and the numbers could easily be used directly in the code below, but this is how we keep code organized.
@@ -77,23 +77,10 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.ZoneUndergroundDesert)
-            {
-					return SpawnCondition.Cavern.Chance * 0.2f;
-			}
-
-			if (spawnInfo.Player.ZoneNormalUnderground)
-			{
-				return SpawnCondition.Cavern.Chance * 0.2f;
-			}
-			
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+	
+			if (spawnInfo.Player.InModBiome<GovheilCastle>())
 			{
 				return SpawnCondition.Underground.Chance * 0.5f;
-			}
-			if (spawnInfo.Player.InModBiome<FableBiome>())
-			{
-				return SpawnCondition.Overworld.Chance * 0.5f;
 			}
 
 
@@ -146,19 +133,20 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 4, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LostScrap>(), 1, 1, 30));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, 1, 20));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 4, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 2, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 4, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 50));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 9));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 12));
 
 		}
 		public override void OnKill()
 		{
-			CombatText.NewText(NPC.getRect(), Color.White, "Morrow item Harvested!", true, false);
+			CombatText.NewText(NPC.getRect(), Color.White, "Govheil item Harvested!", true, false);
 			base.OnKill();
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
