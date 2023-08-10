@@ -1626,7 +1626,11 @@ namespace Stellamod
 		{
 			if (ThornedBook)
 			{
-				npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				if (npc.type != ModContent.NPCType<SingularityFragment>())
+                {
+					npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				}
+				
 			}
 
 			if (Lovestruck)
@@ -1634,8 +1638,11 @@ namespace Stellamod
 
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
 
-				npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
-			
+				if (npc.type != ModContent.NPCType<SingularityFragment>())
+				{
+					npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				}
+
 			}
 
 
