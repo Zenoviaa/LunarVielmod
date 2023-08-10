@@ -18,10 +18,10 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 63;
+			Item.damage = 62;
 			Item.mana = 30;
-			Item.width = 40;
-			Item.height = 40;
+			Item.width = 29;
+			Item.height = 31;
 			Item.useTime = 50;
 			Item.useAnimation = 50;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
@@ -29,14 +29,15 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
+			Item.scale = 0.5f;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.DD2_DarkMageAttack;
+			Item.UseSound = SoundID.DD2_DarkMageSummonSkeleton;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.ChlorophyteBullet;
 			Item.shootSpeed = 7f;
 			Item.autoReuse = true;
 			Item.crit = 22;
-			Item.noUseGraphic = true;
+			
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

@@ -82,6 +82,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				tasks.Insert(CathedralGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 			}
 
 
@@ -383,7 +384,7 @@ namespace Stellamod.WorldG
 			{
 
 
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+				int abysmx = WorldGen.genRand.Next(300, Main.maxTilesX - 300); // from 50 since there's a unaccessible area at the world's borders
 
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmy = ((Main.maxTilesY / 2));

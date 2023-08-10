@@ -36,8 +36,14 @@ namespace Stellamod.Items.Accessories.Brooches
 			};
 			tooltips.Add(line);
 
+			line = new TooltipLine(Mod, "Brooch of the TaGo", "You need an Advanced Brooches Backpack for this!")
+			{
+				OverrideColor = new Color(198, 124, 225)
 
-        }
+			};
+			tooltips.Add(line);
+
+		}
         public override void SetDefaults()
 		{
 			Item.width = 24;

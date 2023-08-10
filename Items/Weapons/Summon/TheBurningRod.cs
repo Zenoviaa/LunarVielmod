@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public override void SetDefaults()
 		{
-			Item.damage = 26;
+			Item.damage = 32;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 32;
@@ -145,7 +145,7 @@ namespace Stellamod.Items.Weapons.Summon
 				// Only determines the damage type
 				Projectile.minion = false;
 				// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-				Projectile.minionSlots = 0f;
+				Projectile.minionSlots = 1f;
 				// Needed so the minion doesn't despawn on collision with enemies or tiles
 				Projectile.penetrate = -1;
 			}
@@ -159,7 +159,7 @@ namespace Stellamod.Items.Weapons.Summon
 			// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
 			public override bool MinionContactDamage()
 			{
-				return true;
+				return false;
 			}
 			public override Color? GetAlpha(Color lightColor)
 			{
@@ -187,6 +187,7 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 				return true;
 			}
+			float TimerShoot = 0;
 			public override void AI()
 			{
 				Player player = Main.player[Projectile.owner];
@@ -202,6 +203,10 @@ namespace Stellamod.Items.Weapons.Summon
 					Projectile.timeLeft = 2;
 				}
 				#endregion
+
+				TimerShoot++;
+
+			
 
 				#region General behavior
 				Vector2 idlePosition = player.Center;
@@ -241,6 +246,7 @@ namespace Stellamod.Items.Weapons.Summon
 					}
 				}
 				#endregion
+
 
 				#region Find target
 				// Starting search distance
@@ -298,26 +304,34 @@ namespace Stellamod.Items.Weapons.Summon
 				// Default movement parameters (here for attacking)
 				float speed = 11f;
 				float inertia = 20f;
-				Projectile.spriteDirection = Projectile.direction;
-				Projectile.rotation = Projectile.velocity.X * 0.08f;
+
 				if (foundTarget)
 				{
-
-					// Minion has a target: attack (here, fly towards the enemy)
-					if (distanceFromTarget > 40f)
+					
+					if (distanceFromTarget > 100f)
 					{
+						// The immediate range around the target (so it doesn't latch onto it when close)
+						Vector2 direction = targetCenter - Projectile.Center;
+						direction.Normalize();
+						direction *= speed;
+						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
+
 						Projectile.ai[1]++;
 
 						if (Projectile.ai[1] >= 30)
 						{
-							Vector2 direction = targetCenter - Projectile.Center;
+
 							var EntitySource = Projectile.GetSource_Death();
 							if (Main.netMode != NetmodeID.MultiplayerClient)
-								Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.GoldenShowerFriendly, Projectile.damage, 1, Main.myPlayer, 0, 0);
+								Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.GoldenShowerFriendly, 30, 1, Main.myPlayer, 0, 0);
 							Projectile.ai[1] = 0;
 						}
-
 					}
+				}
+				else
+				{
+					
+					// Minion doesn't have a target: return to player and idle
 					if (distanceToIdlePosition > 600f)
 					{
 						// Speed up the minion if it's away from the player
@@ -346,42 +360,25 @@ namespace Stellamod.Items.Weapons.Summon
 						Projectile.velocity.Y = -0.05f;
 					}
 				}
-				else
-				{
-					// Minion doesn't have a target: return to player and idle
-					if (distanceToIdlePosition > 600f)
-					{
-						// Speed up the minion if it's away from the player
-						speed = 30f;
-						inertia = 60f;
-					}
-					else
-					{
-						// Slow down the minion if closer to the player
-						speed = 4f;
-						inertia = 80f;
-					}
-					if (distanceToIdlePosition > 60f)
-					{
-						// The immediate range around the player (when it passively floats about)
-
-						// This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-						vectorToIdlePosition.Normalize();
-						vectorToIdlePosition *= speed;
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-					}
-					else if (Projectile.velocity == Vector2.Zero)
-					{
-						// If there is a case where it's not moving at all, give it a little "poke"
-						Projectile.velocity.X = -0.15f;
-						Projectile.velocity.Y = -0.05f;
-					}
-				}
 				#endregion
+
+				if (TimerShoot >= 30 && foundTarget)
+				{
+
+					float speedXa = (Projectile.velocity.X / 6) + Main.rand.NextFloat(1f, 10f);
+					float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(1, 10);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+
+
+
+					TimerShoot = 0;
+
+				}
+
 
 				#region Animation and visuals
 				// So it will lean slightly towards the direction it's moving
-
 
 				// This is a simple "loop through all frames from top to bottom" animation
 				int frameSpeed = 5;
@@ -397,6 +394,7 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 
 				// Some visuals here
+				Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
 				#endregion
 			}
 		}

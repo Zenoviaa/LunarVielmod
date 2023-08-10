@@ -457,8 +457,11 @@ namespace Stellamod
 			BroochVerlia = false;
 			BroochAureBlight = false;
 			BroochGint = false;
-
-
+			BroochDread = false;
+			BroochMal = false;
+			BroochVixed = false;
+			BroochBear = false;
+			BroochGovheill = false;
 
 
 

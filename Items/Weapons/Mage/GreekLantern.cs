@@ -18,15 +18,16 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 33;
+			Item.damage = 30;
 			Item.mana = 2;
-			Item.width = 40;
-			Item.height = 40;
+			Item.width = 29;
+			Item.height = 31;
 			Item.useTime = 8;
 			Item.useAnimation = 8;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.noMelee = true;
 			Item.knockBack = 2f;
+			Item.scale = 0.5f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
@@ -36,7 +37,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shootSpeed = 8f;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			Item.noUseGraphic = true;
+			
 		}
 		
 

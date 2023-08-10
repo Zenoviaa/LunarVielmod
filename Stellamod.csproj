@@ -77,6 +77,7 @@
     <None Remove="Items\Consumables\SunStalkerBag.png" />
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
+    <None Remove="Items\Materials\AcidicalDirtBlock.png" />
     <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
     <None Remove="Items\Placeable\Govheil\GothivA.png" />
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
@@ -202,6 +203,7 @@
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
     <None Remove="Particles\IcingParticle.png" />
+    <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
