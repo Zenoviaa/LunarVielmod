@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Bow
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
            
-             Utilities.NewProjectileBetter(target.Center.X, target.Center.Y, 0, 0, ModContent.ProjectileType<AlcadizBombExplosion>(), 20, 0f, -1, 0, Projectile.whoAmI);
+             Utilities.NewProjectileBetter(target.Center.X, target.Center.Y, 0, 0, ModContent.ProjectileType<AlcadizBombExplosion>(), 7, 0f, -1, 0, Projectile.whoAmI);
                 
 
               

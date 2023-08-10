@@ -3988,6 +3988,7 @@ Mods: {
 
 			Daedus.DisplayName: Forgotten Puppet Daedus
 			LanternOfHope.DisplayName: Lantern Of Hope
+			HarvestGovheil.DisplayName: Harvest Govheil
 		}
 
 		Projectiles: {
