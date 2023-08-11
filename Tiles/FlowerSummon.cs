@@ -14,6 +14,7 @@ using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Consumables;
 using System;
+using Stellamod.NPCs.Bosses.INest;
 
 namespace Stellamod.Tiles
 {
@@ -92,15 +93,15 @@ namespace Stellamod.Tiles
 			Player player = Main.LocalPlayer;
 
 			int key = ModContent.ItemType<MoonflameLantern>();
-			if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
 			{
 
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<IrradiatedNest>());
 				SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
 			{
 
 				

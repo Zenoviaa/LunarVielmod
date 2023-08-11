@@ -57,8 +57,8 @@ namespace Stellamod
             if (npc.type == NPCID.Harpy)
             {
    
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudSkaters>(), 30, 1, 1));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Wingspand>(), 30, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudSkaters>(), 60, 1, 1));
+
             }
 
 
