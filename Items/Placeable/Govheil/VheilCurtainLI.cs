@@ -15,7 +15,7 @@ namespace Stellamod.Items.Placeable.Govheil
 		}
 		public override void SetDefaults()
 		{
-			
+			Item.DefaultToPlaceableTile(ModContent.TileType<VheilCurtainLeft>());
 			Item.value = 150;
 			Item.maxStack = 20;
 			Item.width = 38;

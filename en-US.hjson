@@ -3076,7 +3076,11 @@ Mods: {
 
 			GintzeCard: {
 				DisplayName: Gintze Card
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use a powder or dust and then use this!
+					Sometimes it takes a card to be a warrior.
+					'''
 			}
 
 			AurelusTempleTile: {
@@ -3291,6 +3295,86 @@ Mods: {
 				DisplayName: Plate
 				Tooltip: I guess Daedus forgot to do the dishes.
 			}
+
+			GovheilCastleBlock: {
+				DisplayName: Govheil Castle Block
+				Tooltip: ""
+			}
+
+			GovheilHallI: {
+				DisplayName: Govheil Hall I
+				Tooltip: ""
+			}
+
+			GovheilWallsI: {
+				DisplayName: Govheil Walls I
+				Tooltip: ""
+			}
+
+			GothivA: {
+				DisplayName: Gothiv A
+				Tooltip: ""
+			}
+
+			GothWall: {
+				DisplayName: Goth Wall
+				Tooltip: ""
+			}
+
+			Alcanine: {
+				DisplayName: Alcanine
+				Tooltip:
+					'''
+					Perfect for mages!
+					+3 Max minions!
+					13% increased summon damage!
+					'''
+			}
+
+			GovheilHolsterBroochA: {
+				DisplayName: Gothivia's Holstering Brooch
+				Tooltip:
+					'''
+					Halves the mana cost of any magic weapon!
+					+15% Magic damage
+					+2 Defense too!
+					'''
+			}
+
+			GovhenShield: {
+				DisplayName: Govhen Shield
+				Tooltip: ""
+			}
+
+			GreekLantern: {
+				DisplayName: Greek Lantern
+				Tooltip: Gothivia is greek???
+			}
+
+			LanternOfAFallen: {
+				DisplayName: Lantern Of A Fallen
+				Tooltip: A great tool for clearing out one enemy.
+			}
+
+			Blackdot: {
+				DisplayName: Blackdot
+				Tooltip: Who named tis?
+			}
+
+			Galvinie: {
+				DisplayName: Galvinie
+				Tooltip: Your mouse isn't gonna like this
+			}
+
+			TheBurningRod: {
+				DisplayName: The Burning Rod
+				Tooltip: They may be innacurate but they get the job done :P
+			}
+
+			AcidicalDirtBlock: {
+				DisplayName: Acidical Dirt Block
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3332,6 +3416,11 @@ Mods: {
 			AcidBiome: {
 				DisplayName: Acid Biome
 				TownNPCDialogueName: the Acid Biome
+			}
+
+			GovheilCastle: {
+				DisplayName: Govheil Castle
+				TownNPCDialogueName: the Govheil Castle
 			}
 		}
 
@@ -3414,6 +3503,12 @@ Mods: {
 			wall7.MapEntry: wall7
 			SunAlter.MapEntry: Sun Alter
 			VerianoreTile.MapEntry: Verianore Tile
+			GovheilHall.MapEntry: Govheil Hall
+			GovheilWall.MapEntry: Govheil Wall
+			VheilCurtainLeft.MapEntry: Vheil Curtain Left
+			VheilCurtainRight.MapEntry: Vheil Curtain Right
+			Gothiv.MapEntry: Gothiv
+			GothivDoorClosed.MapEntry: Gothiv Door Closed
 		}
 
 		Buffs: {
@@ -3578,12 +3673,12 @@ Mods: {
 			}
 
 			GintzelSheild: {
-				DisplayName: Gintzel Sheild
-				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+				DisplayName: Gintzel Shield
+				Description: Shielded
 			}
 
 			GintzelSheildCD: {
-				DisplayName: Gintzel Sheild C D
+				DisplayName: Gintzel Sheild
 				Description: True
 			}
 
@@ -3653,12 +3748,12 @@ Mods: {
 			}
 
 			FCBuff: {
-				DisplayName: F C Buff
+				DisplayName: Forest Core Buff
 				Description: You know I didnt expect you to look here.
 			}
 
 			HMMinionBuff: {
-				DisplayName: H M Minion Buff
+				DisplayName: Woa Minion Buff
 				Description: Idek what this is.
 			}
 
@@ -3749,7 +3844,17 @@ Mods: {
 
 			VixedB: {
 				DisplayName: Vixed
-				Description: Vixy!
+				Description: Vixy! or Vixyl?
+			}
+
+			GovheilB: {
+				DisplayName: Govheil Buff
+				Description: Don't worry youre a mage user!
+			}
+
+			TheBurningRodBuff: {
+				DisplayName: The Burning Rod Buff
+				Description: They are so bad at hitting things
 			}
 		}
 
@@ -3883,6 +3988,7 @@ Mods: {
 
 			Daedus.DisplayName: Forgotten Puppet Daedus
 			LanternOfHope.DisplayName: Lantern Of Hope
+			HarvestGovheil.DisplayName: Harvest Govheil
 		}
 
 		Projectiles: {
@@ -4316,6 +4422,10 @@ Mods: {
 			MalShieldBrooch.DisplayName: Mal Shield Brooch
 			VixedBrooch.DisplayName: Vixed Brooch
 			Plateproj.DisplayName: Plateproj
+			GovheilHolsterBrooch.DisplayName: Govheil Holster Brooch
+			TheBurningRodMinion.DisplayName: The Burning Rod Minion
+			GalvinieArrow1.DisplayName: Galvinie Arrow1
+			BlackdotProjectile.DisplayName: Blackdot Projectile
 		}
 	}
 

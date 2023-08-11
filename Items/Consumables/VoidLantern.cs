@@ -42,22 +42,8 @@ namespace Stellamod.Items.Consumables
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
         }
-        public override bool CanUseItem(Player player) => !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>());
 
-        public override bool? UseItem(Player player)
-        {
-            NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<SingularityFragment>());
-            return true;
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 40);
-            recipe.AddIngredient(ItemID.Bone, 15);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.Register();
-        }
+
 
     }
 }

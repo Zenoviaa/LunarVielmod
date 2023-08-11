@@ -59,9 +59,11 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.HallowedBar, 10);
+
             recipe.AddIngredient(ItemID.Gladius, 1);
             recipe.AddIngredient(ModContent.ItemType<Gallasis>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
             recipe.AddIngredient(ModContent.ItemType<GladiatorSpear>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArchariliteRaysword>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);

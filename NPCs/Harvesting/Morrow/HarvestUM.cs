@@ -91,6 +91,10 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			{
 				return SpawnCondition.Underground.Chance * 0.5f;
 			}
+			if (spawnInfo.Player.InModBiome<FableBiome>())
+			{
+				return SpawnCondition.Overworld.Chance * 0.5f;
+			}
 
 
 			return SpawnCondition.Cavern.Chance * 0f;
@@ -142,16 +146,14 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 4, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bongos>(), 30, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, 1, 20));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 5, 1, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 7, 5, 25));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 2));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 4, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bagitem>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 50));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 12));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 3, 1, 9));
 
 		}
 		public override void OnKill()

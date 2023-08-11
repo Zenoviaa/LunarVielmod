@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shootSpeed = 10f;
 
 			Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-			Item.damage = 87; // The damage your item deals.
+			Item.damage = 40; // The damage your item deals.
 			Item.knockBack = 12; // The force of knockback of the weapon. Maximum is 20
 			Item.crit = 62; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 

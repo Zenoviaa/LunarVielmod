@@ -142,6 +142,8 @@ namespace Stellamod
 		public int VixedBCooldown = 1;
 		public bool BroochBear;
 		public int BearBCooldown = 1;
+		public bool BroochGovheill;
+		public int GovheillBCooldown = 1;
 		//---------------------------------------------------------------------------------------------------------------
 
 
@@ -169,7 +171,8 @@ namespace Stellamod
         public bool ZoneAbyss;
 		public bool ZoneAurelus;
 		public bool ZoneAcid;
-        public float AssassinsSlashes;
+		public bool ZoneGovheil;
+		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
         public NPC AssassinsSlashnpc;
@@ -454,8 +457,11 @@ namespace Stellamod
 			BroochVerlia = false;
 			BroochAureBlight = false;
 			BroochGint = false;
-
-
+			BroochDread = false;
+			BroochMal = false;
+			BroochVixed = false;
+			BroochBear = false;
+			BroochGovheill = false;
 
 
 
@@ -520,8 +526,9 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<Daedus>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
 
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
@@ -922,6 +929,13 @@ namespace Stellamod
 				GintBCooldown = 1000;
 			}
 
+			if (BroochGovheill && AdvancedBrooches && GovheillBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<GovheilHolsterBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<GovheilB>(), 1000);
+				GovheillBCooldown = 1000;
+			}
 
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1209,7 +1223,7 @@ namespace Stellamod
 
 			}
 
-			if (Player.InModBiome<AcidBiome>())
+			if (Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>())
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
@@ -1612,7 +1626,11 @@ namespace Stellamod
 		{
 			if (ThornedBook)
 			{
-				npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				if (npc.type != ModContent.NPCType<SingularityFragment>())
+                {
+					npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				}
+				
 			}
 
 			if (Lovestruck)
@@ -1620,8 +1638,11 @@ namespace Stellamod
 
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
 
-				npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
-			
+				if (npc.type != ModContent.NPCType<SingularityFragment>())
+				{
+					npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
+				}
+
 			}
 
 
