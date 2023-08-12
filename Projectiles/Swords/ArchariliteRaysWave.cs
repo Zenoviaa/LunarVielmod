@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.Swords
         {
             for (int i = 0; i < 20; i++)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 10f);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;

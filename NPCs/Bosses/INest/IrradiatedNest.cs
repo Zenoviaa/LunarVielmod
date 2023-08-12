@@ -380,14 +380,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.netUpdate = true;
                 }
             }
-            Vector2 targetPos;
-            if (distance > 1000f && !ToFar)
-            {
-                ToFar = true;
-                NPC.ai[1] = 3;
-                NPC.ai[0] = 0;
-
-            }
             if (NPC.ai[2] == 1)
             {
                 switch (NPC.ai[1])
@@ -399,7 +391,7 @@ namespace Stellamod.NPCs.Bosses.INest
                         {
 
                             NPC.ai[0] = 0;
-                            NPC.ai[1] = 3;
+                            NPC.ai[1] = 1;
 
 
                         }
@@ -424,7 +416,7 @@ namespace Stellamod.NPCs.Bosses.INest
                         if (NPC.ai[0] == 480)
                         {
 
-                            NPC.ai[1] = Main.rand.Next(2, 3 + 1);
+                            NPC.ai[1] = Main.rand.Next(2, 2 + 1);
                             NPC.ai[0] = 0;
                             NPC.netUpdate = true;
                         }
@@ -478,91 +470,6 @@ namespace Stellamod.NPCs.Bosses.INest
                             }
                             NPC.netUpdate = true;
 
-                        }
-                        break;
-                    case 3:
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] == 50)
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Teleport"));
-                        }
-                        if (NPC.ai[0] >= 50 && NPC.ai[0] <= 100)
-                        {
-                            NPC.alpha += 30;
-
-                        }
-                        if (NPC.ai[0] == 100)
-                        {
-                            ToFar = false;
-                            NPC.alpha = 0;
-                            NPC.position.X = player.Center.X;
-                            NPC.position.Y = player.Center.Y + -800;
-                            NPC.netUpdate = true;
-                        }
-                        if (!HasHitGround && NPC.ai[0] >= 110)
-                        {
-                            if (NPC.collideY || NPC.collideX)
-                            {
-                                NPC.boss = true;
-                                DrugRidus = 50;
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land"));
-                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 256f);
-                                HasHitGround = true;
-                                NPC.ai[0] = 1000;
-                            }
-                        } 
-
-                        if (NPC.ai[0] == 1000)
-                        {
-                            int Chance2 = Main.rand.Next(1, 3 + 1);
-                            if (Chance2 == 1)
-                            {
-                                NPC.ai[1] = 2;
-                            }
-                            else
-                            {
-                                NPC.ai[1] = 1;
-                            }
-                            NPC.ai[0] = 0;
-                            NPC.netUpdate = true;
-                            HasHitGround = false;
-
-                        }
-                        break;
-                    case 4:
-                        NPC.ai[0]++;
-                        NPC.noGravity = true;
-                        if (NPC.ai[0] <= 60)
-                        {
-                            targetPos = player.Center;
-                            Movement(targetPos, 0f, -400f, 0.18f);
-                            NPC.netUpdate = true;
-                        }
-                        if (NPC.ai[0] >= 60)
-                        {
-                            NPC.velocity *= 0.90f;
-                        }
-                        if (NPC.ai[0] == 70)
-                        {
-                            DrugRidus = 50;
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_ComuicationRay"));
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
-                            Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 10, ModContent.ProjectileType<DesperationRay>(), 100, 0f, -1, 0, NPC.whoAmI);
-                            NPC.dontTakeDamage = false;
-                            NPC.dontCountMe = false;
-                            NPC.netUpdate = true;
-                        }
-                        if (NPC.ai[0] >= 70)
-                        {
-                            DrugRidus = 30;
-
-
-                        }
-                        if (NPC.ai[0] == 150)
-                        {
-
-                            NPC.ai[0] = 0;
-                            NPC.netUpdate = true;
                         }
                         break;
                 }
