@@ -28,6 +28,7 @@ using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {

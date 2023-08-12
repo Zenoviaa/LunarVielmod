@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Projectiles.Spears;
 using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 
 namespace Stellamod.Items.Weapons.Ranged
 {

@@ -32,6 +32,7 @@ using Stellamod.NPCs.Projectiles;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.WorldG;
 using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Overworld.ShadowWraith;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
@@ -100,9 +101,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
 		public float distortStrength = 300f;
-
-
-		public override void SetStaticDefaults()
+        public float GothiviaStartPosTime;
+        public Vector2 GothiviaStartPos;
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Verlia of The Moon");
 
@@ -211,7 +212,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
 		bool boom = false;
-		float turnMod = 0f;
+        bool p2 = false;
+        float turnMod = 0f;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 20; k++)
@@ -376,12 +378,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 		public override void AI()
 		{
-
-			bee--;
+            p2 = NPC.life < NPC.lifeMax * 0.5f;
+            bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
+			GothiviaStartPosTime++;
 
+            if (GothiviaStartPosTime <= 1)
+			{
 
+				GothiviaStartPos = NPC.position;
+
+            }
 
 			if (bee == 0)
 			{
@@ -541,7 +549,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 				case ActionState.JumpToMiddle:
 					NPC.damage = 350;
 					counter++;
-					NPC.noTileCollide = true;
 					JumpToMiddle();
 					NPC.aiStyle = -1;
                     break;
@@ -717,14 +724,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			//if (NPC.veloctity.x = 0?)
+			if (timer <= 1)
+			{
+				NPC.velocity.X += 20;
+            }
+
+            if (NPC.velocity.X == 0 && timer >= 5)
 			{
 
 
 				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.Idle;
+                        NPC.velocity.X -= 1;
+                        var entitySource = NPC.GetSource_FromThis();
+                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                        State = ActionState.Idle;
 						ResetTimers();
 						break;
 
@@ -773,14 +788,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			//if (NPC.veloctity.x = 0?)
+            if (timer <= 1)
+            {
+                NPC.velocity.X -= 20;
+            }
+            if (NPC.velocity.Y == 0 && timer >= 5)
 			{
 
 
 				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.Idle;
+
+                        NPC.velocity.X += 1;
+                        var entitySource = NPC.GetSource_FromThis();
+                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                        State = ActionState.Idle;
 						ResetTimers();
 						break;
 
@@ -815,7 +838,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			if (timer == 48)
+            if (timer == 12)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/bloodlamp"), NPC.position);
+                var entitySource = NPC.GetSource_FromThis();
+                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                int damage = Main.expertMode ? 4 : 7;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, 0, ModContent.ProjectileType<LaserShooterFirstPhase>(), damage, 1, Main.myPlayer, 0, 0);
+            }
+            if (timer == 48)
 			{
 
 
@@ -843,7 +879,66 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			if (timer == 48)
+			if (p2)
+			{
+                if (timer == 12)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                    float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<FlameBlast>(), damage, 1, Main.myPlayer, 0, 0);
+                }
+                if (timer == 33)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                    float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<FlameBlast>(), damage, 1, Main.myPlayer, 0, 0);
+                }
+            }
+			else
+			{
+                if (timer == 12)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                    float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                    int damage = Main.expertMode ? 34 : 37;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<FlameBlast>(), damage, 1, Main.myPlayer, 0, 0);
+                }
+                if (timer == 33)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                    float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                    int damage = Main.expertMode ? 34 : 37;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<FlameBlast>(), damage, 1, Main.myPlayer, 0, 0);
+                }
+            }
+
+            if (timer == 48)
 			{
 
 
@@ -872,7 +967,84 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			if (timer == 48)
+			if (p2)
+			{
+                if (timer == 12)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-10, 10);
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music2>(), damage, 1, Main.myPlayer, 0, 0);
+                         offsetX = Main.rand.Next(-10, 10);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music1>(), damage, 1, Main.myPlayer, 0, 0);
+                         offsetX = Main.rand.Next(-10, 10);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music1>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+
+				}
+                if (timer == 33)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-10, 10);
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+					{
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music2>(), damage, 1, Main.myPlayer, 0, 0);
+                         offsetX = Main.rand.Next(-10, 10);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music1>(), damage, 1, Main.myPlayer, 0, 0);
+                         offsetX = Main.rand.Next(-10, 10);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music2>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+				}
+			}
+			else
+			{
+                if (timer == 12)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-5, 5);
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music2>(), damage, 1, Main.myPlayer, 0, 0);
+                        offsetX = Main.rand.Next(-5, 5);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music1>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+
+                }
+                if (timer == 33)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+                    float offsetX = Main.rand.Next(-5, 5);
+                    int damage = Main.expertMode ? 44 : 47;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music2>(), damage, 1, Main.myPlayer, 0, 0);
+                        offsetX = Main.rand.Next(-5, 5);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, 0, ModContent.ProjectileType<Music1>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+                }
+            }
+
+            if (timer == 48)
 			{
 
 
@@ -932,11 +1104,26 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			timer++;
-			if (timer == 60)
+            if (timer <= 1)
+            {
+                NPC.noTileCollide = true;
+				NPC.velocity.Y -= 12.5f;
+				if(GothiviaStartPos.X <= NPC.position.X)
+				{
+                    NPC.velocity.X -= 15;
+				}
+				else
+				{
+                    NPC.velocity.X += 15;
+                }
+            }
+            if (NPC.velocity.Y >= 0)
+            {
+                NPC.noTileCollide = false;
+            }
+            if (timer == 60)
 			{
-
-
-				switch (Main.rand.Next(1))
+                switch (Main.rand.Next(1))
 				{
 					case 0:
 						State = ActionState.FallToMiddle;

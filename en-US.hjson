@@ -4428,6 +4428,11 @@ Mods: {
 			TheBurningRodMinion.DisplayName: The Burning Rod Minion
 			GalvinieArrow1.DisplayName: Galvinie Arrow1
 			BlackdotProjectile.DisplayName: Blackdot Projectile
+			FlameBlast.DisplayName: Flame Blast
+			LaserShooterFirstPhase.DisplayName: Laser Shooter First Phase
+			FlameArrow.DisplayName: Flame Arrow
+			Music2.DisplayName: Music2
+			Music1.DisplayName: Music1
 		}
 	}
 

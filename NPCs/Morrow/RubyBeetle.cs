@@ -5,6 +5,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Projectiles;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -38,8 +39,19 @@ namespace Stellamod.NPCs.Morrow
 			NPC.noTileCollide = false;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-		}
-		public override void AI()
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            Player player = spawnInfo.Player;
+            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+            {
+                return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
+            }
+
+
+            return 0f;
+        }
+        public override void AI()
 		{
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
 			{
@@ -109,26 +121,15 @@ namespace Stellamod.NPCs.Morrow
 
 			
 		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			if (spawnInfo.Player.ZoneDesert)
-			{
-				return SpawnCondition.Overworld.Chance * 0.5f;
-			}
-			if (spawnInfo.Player.ZoneJungle)
-			{
-				return SpawnCondition.Overworld.Chance * 0.3f;
-			}
 
-			return SpawnCondition.Overworld.Chance * 0f;
-		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 		
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 3, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
 
 		}
