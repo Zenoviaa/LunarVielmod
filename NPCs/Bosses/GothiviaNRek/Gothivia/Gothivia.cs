@@ -31,8 +31,9 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.WorldG;
+using Stellamod.NPCs.Bosses.Daedus;
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class Gothivia : ModNPC
@@ -286,12 +287,12 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 				case ActionState.Idle:
 					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 10, 2, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.StartGothivia:
 					rect = new(0, 1 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 10, 2, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.StartRollLeft:
@@ -306,12 +307,12 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 				case ActionState.RollLeft:
 					rect = new(0, 38 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.RollRight:
 					rect = new(0, 38 * 52, 56, 3 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 3, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.PunchingFirstPhaseLaserBomb:
@@ -331,7 +332,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 				case ActionState.Fall:
 					rect = new(0, 24 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 2, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.Land:
@@ -346,12 +347,12 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 				case ActionState.JumpToMiddle:
 					rect = new(0, 17 * 52, 56, 6 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 10, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.FallToMiddle:
 					rect = new(0, 24 * 52, 56, 1 * 52);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 2, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.LandToMiddle:
@@ -465,6 +466,30 @@ namespace Stellamod.NPCs.Bosses.Daedus
 					NPC.aiStyle = -1;
 					break;
 
+				case ActionState.PunchingFirstPhaseLaserBomb:
+					NPC.damage = 0;
+					counter++;
+
+					PunchFlameLaser();
+					NPC.aiStyle = -1;
+					break;
+				
+				case ActionState.PunchingSecondPhaseFlameBalls:
+					NPC.damage = 0;
+					counter++;
+
+					PunchFireballs();
+					NPC.aiStyle = -1;
+					break;
+
+				case ActionState.PunchingSecondPhaseStopSign:
+					NPC.damage = 0;
+					counter++;
+
+					PunchSign();
+					NPC.aiStyle = -1;
+					break;
+
 				case ActionState.RollRight:
 					NPC.damage = 350;
 					counter++;
@@ -516,7 +541,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				case ActionState.JumpToMiddle:
 					NPC.damage = 350;
 					counter++;
-
+					NPC.noTileCollide = true;
 					JumpToMiddle();
 					NPC.aiStyle = -1;
                     break;
@@ -907,7 +932,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 			timer++;
-			if (timer == 24)
+			if (timer == 60)
 			{
 
 
