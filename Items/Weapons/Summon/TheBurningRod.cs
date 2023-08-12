@@ -143,7 +143,7 @@ namespace Stellamod.Items.Weapons.Summon
 				// Only controls if it deals damage to enemies on contact (more on that later)
 				Projectile.friendly = true;
 				// Only determines the damage type
-				Projectile.minion = false;
+				Projectile.minion = true;
 				// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 				Projectile.minionSlots = 1f;
 				// Needed so the minion doesn't despawn on collision with enemies or tiles

@@ -32,8 +32,10 @@ using Stellamod.NPCs.Projectiles;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.WorldG;
 using Stellamod.NPCs.Bosses.Daedus;
-
-namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
+using Stellamod.Buffs;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
+namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
+	
 {
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class Rek : ModNPC
@@ -160,11 +162,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
-			NPC.value = Item.buyPrice(gold: 60);
+		
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2.5f;
-			NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
+			
 
 
 
@@ -245,7 +247,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -60);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2.5f) + new Vector2(0, -60);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -307,9 +309,28 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
+			for (int k = 0; k < Main.maxNPCs; k++)
+			{
+				NPC ba = Main.npc[k];
+				// Check if NPC able to be targeted. It means that NPC is
+				if (!ba.active && ba.type == ModContent.NPCType<Gothiviab>())
+				{
 
 
 
+					#region Active check
+					// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
+
+					#endregion
+				
+						NPC.Kill();
+					
+
+				}
+			}
+
+			NPC.HasBuff<Rekin>();
+			
 
 			if (bee == 0)
 			{
@@ -340,7 +361,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
 			}
-
+			
 
 			//	if (player.dead)
 			//	{
@@ -356,8 +377,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 				case ActionState.Fallslowly:
 					NPC.damage = 0;
 					counter++;
-					NPC.velocity.Y *= 0.6f; 
+					NPC.velocity.Y *= 0.7f; 
 					Fallslowly();
+					NPC.noTileCollide = true;
 					NPC.aiStyle = -1;
 					break;
 				
@@ -365,6 +387,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 					NPC.damage = 0;
 					counter++;
 					NPC.velocity.Y *= 0.93f;
+					NPC.noTileCollide = true;
 					Fallslowly2();
 					NPC.aiStyle = -1;
 					break;
@@ -374,6 +397,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 					NPC.damage = 0;
 					counter++;
 					NPC.velocity.Y *= 0.93f;
+					NPC.noTileCollide = true;
 					Riseslowly();
 					NPC.aiStyle = -1;
 					break;
@@ -381,32 +405,34 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 
 
 				case ActionState.Dashright:
-					NPC.damage = 0;
+					NPC.damage = 600;
 					counter++;
-					NPC.velocity.X *= 0.94f;
+					NPC.velocity.X *= 0.98f;
 					Dashright();
+					NPC.noTileCollide = false;
 					NPC.aiStyle = -1;
 					break;
 
 				case ActionState.Dashright2:
-					NPC.damage = 0;
+					NPC.damage = 600;
 					counter++;
-					NPC.velocity.X *= 0.94f;
+					NPC.velocity.X *= 0.97f;
+					NPC.noTileCollide = false;
 					Dashright2();
 					NPC.aiStyle = -1;
 					break;
 
 				case ActionState.StopRight:
-					NPC.damage = 0;
+					NPC.damage = 600;
 					counter++;
-					NPC.velocity.X *= 0.94f;
+					NPC.velocity.X *= 0.97f;
 					NPC.velocity.Y *= 0f;
 					StopRight();
 					NPC.aiStyle = -1;
 					break;
 
 				case ActionState.StopLeft:
-					NPC.damage = 0;
+					NPC.damage = 600;
 					counter++;
 					NPC.velocity.X *= 0.96f;
 					NPC.velocity.Y *= 0f;
@@ -415,17 +441,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 					break;
 			
 				case ActionState.Dashleft:
-					NPC.damage = 0;
+					NPC.damage = 600;
+					NPC.noTileCollide = false;
 					counter++;
-					NPC.velocity.X *= 0.94f;
+					NPC.velocity.X *= 0.98f;
 					Dashleft();
 					NPC.aiStyle = -1;
 					break;
 
 				case ActionState.Dashleft2:
-					NPC.damage = 0;
+					NPC.damage = 600;
 					counter++;
-					NPC.velocity.X *= 0.94f;
+					NPC.noTileCollide = false;
+					NPC.velocity.X *= 0.98f;
 					Dashleft2();
 					NPC.aiStyle = -1;
 					break;
@@ -433,7 +461,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 				case ActionState.Across:
 					NPC.damage = 0;
 					counter++;
-					NPC.velocity.X *= 0.98f;
+					NPC.noTileCollide = false;
+					NPC.velocity.X *= 0.985f;
 					Across();
 					NPC.aiStyle = -1;
 					break;
@@ -442,6 +471,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 					NPC.damage = 0;
 					counter++;
 					NPC.velocity.X *= 0.94f;
+					NPC.noTileCollide = false;
 					NPC.velocity.Y *= 0f;
 					Acrossfinish();
 					NPC.aiStyle = -1;
@@ -492,6 +522,21 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				var entitySource = NPC.GetSource_FromThis();
+				Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+				float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekGreek1>(), (int)10, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekEye2>(), (int)10, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekLava3>(), (int)10, 0f, 0, 0f, 0f);
+				}
+			
+
+
 				NPC.spriteDirection *= -1;
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
@@ -512,7 +557,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 				switch (Main.rand.Next(1))
 				{
 					case 0:
-						State = ActionState.Dashright;
+						State = ActionState.Across;
 						break;
 
 				}
@@ -646,12 +691,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
-				NPC.spriteDirection *= -1;
+				
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
-			if (timer == 3)
+			if (timer == 20)
 			{
-				NPC.velocity = new Vector2(NPC.direction * 2, +14f);
+				NPC.velocity = new Vector2(NPC.direction * 2, +22f);
 
 			}
 
@@ -660,7 +705,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 
 			if (timer == 40)
 			{
-
+				NPC.spriteDirection *= -1;
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
 				switch (Main.rand.Next(1))
@@ -689,12 +734,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
-				NPC.spriteDirection *= -1;
+				
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
-			if (timer == 3)
+			if (timer == 20)
 			{
-				NPC.velocity = new Vector2(NPC.direction * 2, -15f);
+				NPC.velocity = new Vector2(NPC.direction * 2, -22f);
 
 			}
 
@@ -705,7 +750,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			{
 
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
+				NPC.spriteDirection *= -1;
 				switch (Main.rand.Next(1))
 				{
 					case 0:
@@ -733,6 +778,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/RekRoar"));
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
 			if (timer < 3)
@@ -786,6 +832,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/RekRoar"));
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
 			if (timer < 3)
@@ -850,6 +897,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/RekRoar"));
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
 			if (timer < 3)
@@ -904,6 +952,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 			float speed = 25f;
 			if (timer == 1)
 			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/RekRoar"));
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
 			if (timer < 3)
@@ -1000,49 +1049,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Rek
 
 
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			//	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-
-
-
-			// ItemDropRule.MasterModeCommonDrop for the relic
-
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-
-			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-			// Boss masks are spawned with 1/7 chance
-			//notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-			// This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-			// We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-			// which requires these parameters to be defined
-			//int itemType = ModContent.ItemType<Gambit>();
-			//var parameters = new DropOneByOne.Parameters()
-			//{
-			//	ChanceNumerator = 1,
-			//	ChanceDenominator = 1,
-			//	MinimumStackPerChunkBase = 1,
-			//	MaximumStackPerChunkBase = 1,
-			//	MinimumItemDropsCount = 1,
-			//	MaximumItemDropsCount = 3,
-			//};
-
-			//notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-			// Finally add the leading rule
-			npcLoot.Add(notExpertRule);
-		}
+		
 		public void ResetTimers()
 		{
 			timer = 0;

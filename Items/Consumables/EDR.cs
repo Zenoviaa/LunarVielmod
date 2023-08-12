@@ -33,7 +33,7 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.Orange;
         }
 
-        public override void AddRecipes()
+      /*  public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 30);
@@ -43,7 +43,7 @@ namespace Stellamod.Items.Consumables
             recipe.Register();
         }
 
-
+*/
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
             if (player.ZoneAcid())

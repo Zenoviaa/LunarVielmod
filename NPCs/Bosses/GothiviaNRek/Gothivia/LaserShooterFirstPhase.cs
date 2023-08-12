@@ -34,10 +34,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Projectile.height = 35;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.penetrate = 10;
-            Projectile.timeLeft = 900;
+            Projectile.penetrate = 1000;
+            Projectile.timeLeft = 300;
             Projectile.tileCollide = false;
-            Projectile.damage = 45;
+            Projectile.damage = 70;
             Projectile.aiStyle = -1;
             Projectile.scale = 1.0f;
         }
@@ -73,14 +73,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             return false;
         }
-        public override void Kill(int timeLeft)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height,
-                    0, 0, 60, 206);
-            }
-        }
+        
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
@@ -88,15 +81,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
         public override void AI()
         {
             Timer++;
-            if(Timer >= 15)
+            if(Timer >= 5)
             {
                 Timer = 0;
                 var entitySource = Projectile.GetSource_FromThis();
-                Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, -50), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
-                Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, 50), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
+                Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, -100), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
+                Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(0, 100), Mod.Find<ModProjectile>("FlameArrow").Type, 26, 0);
+                //AssassinsKnifeHit
+                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
             }
 
-         
+
         }
     }
 }

@@ -22,6 +22,7 @@
     <None Remove="Buffs\Dusteffects\VoiddDust.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
+    <None Remove="Buffs\Rekin.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Gores\Bricks1.png" />
@@ -204,6 +205,7 @@
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
     <None Remove="Particles\IcingParticle.png" />
+    <None Remove="Particles\SpinewBigOrange.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />

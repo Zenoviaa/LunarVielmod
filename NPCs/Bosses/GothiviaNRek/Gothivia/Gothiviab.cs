@@ -33,11 +33,12 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.WorldG;
 using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Overworld.ShadowWraith;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-	public class Gothivia : ModNPC
+	public class Gothiviab : ModNPC
 	{
 		public Vector2 FirstStageDestination
 		{
@@ -65,6 +66,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			Idle,
+			ReallyIdle,
+			Idle2,
 			StartGothivia,
 			StartRollLeft,
 			RollLeft,
@@ -86,7 +89,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		}
 		// Current state
 
-		public ActionState State = ActionState.StartGothivia;
+		public ActionState State = ActionState.ReallyIdle;
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -128,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
 			{
-				CustomTexturePath = "Stellamod/NPCs/Bosses/Daedus/GintziaPreview",
+				
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
 
@@ -138,10 +141,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 		public override void SetDefaults()
 		{
-			NPC.Size = new Vector2(56, 52);
+			NPC.Size = new Vector2(40, 45);
 			NPC.damage = 1;
 			NPC.defense = 20;
-			NPC.lifeMax = 17000;
+			NPC.lifeMax = 11000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -206,6 +209,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 		}
 
+		bool axed = false;
 		int attackCounter;
 		int timeBetweenAttacks = 120;
 		Vector2 dashDirection = Vector2.Zero;
@@ -240,7 +244,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -60);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -40);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -288,6 +292,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 
 				case ActionState.Idle:
+					rect = new(0, 1 * 52, 56, 1 * 52);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.ReallyIdle:
+					rect = new(0, 1 * 52, 56, 1 * 52);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 300, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+
+				case ActionState.Idle2:
 					rect = new(0, 1 * 52, 56, 1 * 52);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
@@ -375,7 +390,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		int moveSpeed = 0;
 		int moveSpeedY = 0;
 		int Timer2 = 0;
-
+		float timert = 0;
 		public override void AI()
 		{
             p2 = NPC.life < NPC.lifeMax * 0.5f;
@@ -390,6 +405,44 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 				GothiviaStartPos = NPC.position;
 
             }
+
+
+			for (int k = 0; k < Main.maxNPCs; k++)
+			{
+				NPC ba = Main.npc[k];
+				// Check if NPC able to be targeted. It means that NPC is
+				if (!ba.active && ba.type == ModContent.NPCType<Rek>() && axed == false)
+				{
+					timert++;
+
+					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+					var entitySource = NPC.GetSource_FromThis();
+					Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+					float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+
+					if (timert == 600)
+                    {
+						if (Main.netMode != NetmodeID.MultiplayerClient)
+						{
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<Helios>(), (int)30, 0f, 0, 0f, 0f);
+
+						}
+
+						timert = 0;
+					}
+					
+
+
+
+
+					
+				}
+			}
+
+
+
+
 
 			if (bee == 0)
 			{
@@ -413,9 +466,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.5f;
+				NPC.velocity.Y += 0.5f;
 				NPC.noTileCollide = true;
-				NPC.noGravity = false;
+				NPC.noGravity = true;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
 			}
@@ -439,6 +492,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					counter++;
 				
 					IdleGothivia();
+					NPC.aiStyle = -1;
+					break;
+				
+				case ActionState.ReallyIdle:
+					NPC.damage = 0;
+					counter++;
+
+					ReallyIdleGothivia();
+					NPC.aiStyle = -1;
+					break;
+
+				case ActionState.Idle2:
+					NPC.damage = 0;
+					counter++;
+
+					IdleGothivia2();
 					NPC.aiStyle = -1;
 					break;
 
@@ -507,14 +576,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					break;
 
 				case ActionState.Fall:
-					NPC.damage = 350;
+					NPC.damage = 0;
 					counter++;
 					NPC.velocity.Y *= 1.3f;
 					NPC.aiStyle = -1;
 					NPC.noTileCollide = false;
 					if (NPC.velocity.Y == 0)
 					{
-						NPC.velocity.X = 0;
+						NPC.velocity.X *= 0.7f;
 						State = ActionState.Land;
 						frameCounter = 0;
 						frameTick = 0;
@@ -523,14 +592,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					break;
 
 				case ActionState.FallToMiddle:
-					NPC.damage = 350;
+					NPC.damage = 0;
 					counter++;
 					NPC.velocity.Y *= 1.3f;
 					NPC.aiStyle = -1;
 					NPC.noTileCollide = false;
 					if (NPC.velocity.Y == 0)
 					{
-						NPC.velocity.X = 0;
+						NPC.velocity.X = 0.7f;
 						State = ActionState.LandToMiddle;
 						frameCounter = 0;
 						frameTick = 0;
@@ -539,7 +608,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					break;
 
 				case ActionState.Land:
-					NPC.damage = 350;
+					NPC.damage = 0;
 					counter++;
 
 					Land();
@@ -547,14 +616,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					break;
 
 				case ActionState.JumpToMiddle:
-					NPC.damage = 350;
+					NPC.damage = 0;
 					counter++;
 					JumpToMiddle();
 					NPC.aiStyle = -1;
                     break;
 
 				case ActionState.LandToMiddle:
-					NPC.damage = 350;
+					NPC.damage = 0;
 					counter++;
 
 					LandToMiddle();
@@ -601,7 +670,54 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 			}
 		}
+		private void ReallyIdleGothivia()
+		{
+			NPC.spriteDirection = NPC.direction;
+			Player player = Main.player[NPC.target];
+			// You dont have to do anything here
 
+
+			timer++;
+
+			if (timer == 1)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y + 20, ModContent.NPCType<Rek>());
+			}
+
+			if (timer == 20)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y - 20, ModContent.NPCType<Train2>());
+			}
+
+			if (timer == 39)
+			{
+
+				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y - 20, ModContent.NPCType<Train1>());
+			}
+
+
+			if (timer == 40)
+			{
+
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.StartGothivia;
+							ResetTimers();
+							break;
+
+					}
+				
+
+			
+
+
+
+			}
+
+		}
 		private void IdleGothivia()
 		{
 			NPC.spriteDirection = NPC.direction;
@@ -615,7 +731,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			if (timer == 40)
 			{
 	
-				if (NPC.life >= NPC.lifeMax)
+				if (NPC.life >= NPC.lifeMax / 2)
                 {
 					switch (Main.rand.Next(1))
 					{
@@ -627,7 +743,62 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					}
 				}
 
-				if (NPC.life < NPC.lifeMax)
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							State = ActionState.PunchingFirstPhaseLaserBomb;
+							ResetTimers();
+							break;
+
+						case 1:
+							State = ActionState.PunchingSecondPhaseFlameBalls;
+							ResetTimers();
+							break;
+
+						case 2:
+							State = ActionState.PunchingSecondPhaseStopSign;
+							ResetTimers();
+							break;
+
+
+					}
+				}
+
+
+
+			}
+
+		}
+
+
+		private void IdleGothivia2()
+		{
+			NPC.spriteDirection = NPC.direction;
+			Player player = Main.player[NPC.target];
+			// You dont have to do anything here
+
+
+			timer++;
+
+
+			if (timer == 40)
+			{
+
+				if (NPC.life >= NPC.lifeMax / 2)
+				{
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.PunchingFirstPhaseLaserBomb;
+							ResetTimers();
+							break;
+
+					}
+				}
+
+				if (NPC.life < NPC.lifeMax / 2)
 				{
 					switch (Main.rand.Next(3))
 					{
@@ -679,6 +850,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 						ResetTimers();
 						break;
 
+					
+
+
 				}
 
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
@@ -726,10 +900,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			timer++;
 			if (timer <= 1)
 			{
-				NPC.velocity.X += 20;
+				NPC.velocity.X += 15;
             }
 
-            if (NPC.velocity.X == 0 && timer >= 5)
+            if (NPC.velocity.Y == 0 && timer >= 60)
 			{
 
 
@@ -738,8 +912,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 					case 0:
                         NPC.velocity.X -= 1;
                         var entitySource = NPC.GetSource_FromThis();
-                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                        State = ActionState.Idle;
+                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+                        State = ActionState.Idle2;
 						ResetTimers();
 						break;
 
@@ -790,9 +964,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			timer++;
             if (timer <= 1)
             {
-                NPC.velocity.X -= 20;
+                NPC.velocity.X -= 15;
             }
-            if (NPC.velocity.Y == 0 && timer >= 5)
+            if (NPC.velocity.Y == 0 && timer >= 60)
 			{
 
 
@@ -802,7 +976,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
                         NPC.velocity.X += 1;
                         var entitySource = NPC.GetSource_FromThis();
-                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                        Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
                         State = ActionState.Idle;
 						ResetTimers();
 						break;
@@ -840,16 +1014,21 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			timer++;
             if (timer == 12)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/bloodlamp"), NPC.position);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/bloodlamp"), NPC.position);
                 var entitySource = NPC.GetSource_FromThis();
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                 SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-                float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                 int damage = Main.expertMode ? 4 : 7;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, 0, ModContent.ProjectileType<LaserShooterFirstPhase>(), damage, 1, Main.myPlayer, 0, 0);
+				
+				
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, speedYb * 0, ModContent.ProjectileType<LaserShooterFirstPhase>(), (int)10, 0f, 0, 0f, 0f);
+				
             }
             if (timer == 48)
 			{
@@ -885,8 +1064,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -898,8 +1077,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -914,8 +1093,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -927,8 +1106,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
@@ -973,8 +1152,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-10, 10);
                     int damage = Main.expertMode ? 44 : 47;
@@ -992,8 +1171,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-10, 10);
                     int damage = Main.expertMode ? 44 : 47;
@@ -1013,8 +1192,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
+					Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
+					SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-5, 5);
                     int damage = Main.expertMode ? 44 : 47;
@@ -1030,7 +1209,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 {
                     var entitySource = NPC.GetSource_FromThis();
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage * 0, 0);
                     SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     float offsetX = Main.rand.Next(-5, 5);
@@ -1105,23 +1284,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 			timer++;
             if (timer <= 1)
-            {
-                NPC.noTileCollide = true;
-				NPC.velocity.Y -= 12.5f;
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Hyuh"), NPC.position);
+				NPC.noTileCollide = true;
+				NPC.velocity.Y -= 15.0f;
 				if(GothiviaStartPos.X <= NPC.position.X)
 				{
-                    NPC.velocity.X -= 15;
+                    NPC.velocity.X -= 9;
 				}
 				else
 				{
-                    NPC.velocity.X += 15;
+                    NPC.velocity.X += 9;
                 }
             }
             if (NPC.velocity.Y >= 0)
             {
                 NPC.noTileCollide = false;
             }
-            if (timer == 60)
+            if (timer == 80)
 			{
                 switch (Main.rand.Next(1))
 				{
@@ -1152,10 +1332,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			{
 
 
-				switch (Main.rand.Next(1))
+				switch (Main.rand.Next(2))
 				{
 					case 0:
-						State = ActionState.StartGothivia;
+						State = ActionState.StartRollLeft;
+						ResetTimers();
+						break;
+
+					case 1:
+						State = ActionState.StartRollRight;
 						ResetTimers();
 						break;
 

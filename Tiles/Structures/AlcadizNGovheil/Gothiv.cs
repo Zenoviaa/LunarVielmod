@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.Jack;
 using System;
 using Terraria;
@@ -81,15 +83,15 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-			if (!NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			if (!NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()))
 			{
 
 
-				NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Jack>());
+				NPC.NewNPC(new EntitySource_TileBreak(i, j / 2), i * 16, j * 16, ModContent.NPCType<Gothiviab>());
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-			if (NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+			if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()))
 			{
 
 				Main.NewText("...", Color.Gold);

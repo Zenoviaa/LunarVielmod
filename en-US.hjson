@@ -3856,6 +3856,11 @@ Mods: {
 				DisplayName: The Burning Rod Buff
 				Description: They are so bad at hitting things
 			}
+
+			Rekin: {
+				DisplayName: Rekin
+				Description: Mods.Stellamod.Buffs.Rekin.Description
+			}
 		}
 
 		NPCs: {
@@ -3991,6 +3996,9 @@ Mods: {
 			HarvestGovheil.DisplayName: Harvest Govheil
 			Gothivia.DisplayName: Gothivia
 			Rek.DisplayName: Rek
+			Train1.DisplayName: Train1
+			Train2.DisplayName: Train2
+			Gothiviab.DisplayName: Gothiviab
 		}
 
 		Projectiles: {
@@ -4433,6 +4441,10 @@ Mods: {
 			FlameArrow.DisplayName: Flame Arrow
 			Music2.DisplayName: Music2
 			Music1.DisplayName: Music1
+			RekGreek1.DisplayName: Rek Greek1
+			RekEye2.DisplayName: Rek Eye2
+			RekLava3.DisplayName: Rek Lava3
+			Helios.DisplayName: Helios
 		}
 	}
 
