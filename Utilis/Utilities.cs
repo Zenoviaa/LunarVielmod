@@ -66,6 +66,7 @@ namespace Stellamod.Utilis
 
     public static class ExtensionMethods
     {
+        public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
         public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
         public static bool ZoneAcid(this Player player) => player.InModBiome<AcidBiome>();
         public static bool ZoneAurelus(this Player player) => player.InModBiome<AurelusBiome>();
