@@ -219,6 +219,8 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
+    <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
+    <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />

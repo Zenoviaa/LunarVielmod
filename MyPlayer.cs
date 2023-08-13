@@ -33,6 +33,7 @@ using Stellamod.WorldG;
 using Terraria.GameContent;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 
 namespace Stellamod
 {
@@ -74,6 +75,7 @@ namespace Stellamod
 		public int GoldenSparkleCooldown = 0;
 		public int RayCooldown = 0;
 		public int VerliaBDCooldown = 5;
+		public int BurningGBDCooldown = 5;
 		public bool GovheilB;
 		public bool GovheilC;
 		public int GovheilBCooldown = 0;
@@ -144,6 +146,8 @@ namespace Stellamod
 		public int BearBCooldown = 1;
 		public bool BroochGovheill;
 		public int GovheillBCooldown = 1;
+		public bool BroochBurningG;
+		public int BurningGBCooldown = 1;
 		//---------------------------------------------------------------------------------------------------------------
 
 
@@ -462,7 +466,7 @@ namespace Stellamod
 			BroochVixed = false;
 			BroochBear = false;
 			BroochGovheill = false;
-
+			BroochBurningG = false;
 
 
 
@@ -919,6 +923,15 @@ namespace Stellamod
 
 				Player.AddBuff(ModContent.BuffType<VerliaBroo>(), 1000);
 				VerliaBCooldown = 1000;
+			}
+
+
+			if (BroochBurningG && AdvancedBrooches && BurningGBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<BurningGBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<BurningGB>(), 1000);
+				BurningGBCooldown = 1000;
 			}
 
 			if (BroochGint && GintBCooldown <= 0)
@@ -1565,6 +1578,28 @@ namespace Stellamod
 				VerliaBDCooldown = 220;
 			}
 
+			if (BroochBurningG && AdvancedBrooches && BurningGBDCooldown <= 0)
+			{
+
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
+
+
+					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ProjectileID.IchorSplash, 10, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<AlcadizBombExplosion>(), 30, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ProjectileID.IchorSplash, 55, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ProjectileID.IchorSplash, 45, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ProjectileID.IchorSplash, 65, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ProjectileID.IchorSplash, 40, 1f, Player.whoAmI);
+				}
+
+				BurningGBDCooldown = 220;
+			}
+
 		}
 
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
@@ -1619,6 +1654,30 @@ namespace Stellamod
 				VerliaBDCooldown = 220;
 			}
 
+
+			if (BroochBurningG && AdvancedBrooches && BurningGBDCooldown <= 0)
+			{
+
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
+
+
+					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ProjectileID.IchorSplash, 10, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<AlcadizBombExplosion>(), 30, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ProjectileID.IchorSplash, 55, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ProjectileID.IchorSplash, 45, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ProjectileID.IchorSplash, 65, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ProjectileID.IchorSplash, 40, 1f, Player.whoAmI);
+				}
+
+				BurningGBDCooldown = 220;
+			}
+
+
 		}
 
 
@@ -1626,7 +1685,7 @@ namespace Stellamod
 		{
 			if (ThornedBook)
 			{
-				if (npc.type != ModContent.NPCType<SingularityFragment>())
+				if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>())
                 {
 					npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
 				}
@@ -1638,7 +1697,7 @@ namespace Stellamod
 
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
 
-				if (npc.type != ModContent.NPCType<SingularityFragment>())
+				if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>())
 				{
 					npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
 				}

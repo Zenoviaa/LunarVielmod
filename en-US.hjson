@@ -3375,6 +3375,52 @@ Mods: {
 				DisplayName: Acidical Dirt Block
 				Tooltip: ""
 			}
+
+			BurningGBroochA: {
+				DisplayName: Brooch of the Sun and Ichor
+				Tooltip:
+					'''
+					When hitting enemies, ichor blasts and an explosion will come out.
+					+5% Melee Damage
+					'''
+			}
+
+			Twirlers: {
+				DisplayName: Twirlers
+				Tooltip:
+					'''
+					Wanna get flashy? Parraffin would be dissappointed.
+					Halves mana cost
+					Increased life regeneration
+					+20 Health
+					+30% Damage
+					'''
+			}
+
+			GothiviaBag: {
+				DisplayName: Gothivia Bag
+				Tooltip: ""
+			}
+
+			WeddingDay: {
+				DisplayName: Wedding Day
+				Tooltip: These two lovebugs are definitely for each other.
+			}
+
+			GothiviasCard: {
+				DisplayName: Gothivia's Flame Card
+				Tooltip: '''"Causes minor burns," thats at least the note she left.'''
+			}
+
+			Helios: {
+				DisplayName: Helios
+				Tooltip:
+					'''
+					Gothivia's masterpiece weapon
+					Will absolutely rek the mechanical bosses.
+					Forged from the inner core of the sun, and hard work this weapon exists.
+					'''
+			}
 		}
 
 		VoidKey: {
@@ -3861,6 +3907,11 @@ Mods: {
 				DisplayName: Rekin
 				Description: Mods.Stellamod.Buffs.Rekin.Description
 			}
+
+			BurningGB: {
+				DisplayName: Burning up
+				Description: You know the sun's light isn't all that bad...
+			}
 		}
 
 		NPCs: {
@@ -3999,6 +4050,7 @@ Mods: {
 			Train1.DisplayName: Train1
 			Train2.DisplayName: Train2
 			Gothiviab.DisplayName: Gothiviab
+			Gothiviabb.DisplayName: Gothiviabb
 		}
 
 		Projectiles: {
@@ -4445,6 +4497,10 @@ Mods: {
 			RekEye2.DisplayName: Rek Eye2
 			RekLava3.DisplayName: Rek Lava3
 			Helios.DisplayName: Helios
+			Speechbubble.DisplayName: Speechbubble
+			BurningGBrooch.DisplayName: Burning G Brooch
+			HeliosP.DisplayName: Helios P
+			HeliosProj.DisplayName: Helios Proj
 		}
 	}
 

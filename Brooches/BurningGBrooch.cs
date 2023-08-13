@@ -1,5 +1,4 @@
 ﻿
-
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -20,7 +19,7 @@ namespace Stellamod.Brooches
 	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
 	// If the player targets a certain NPC with right-click, it will fly through tiles to it
 	// If it isn't attacking, it will float near the player with minimal movement
-	public class FrileBrooch : ModProjectile
+	public class BurningGBrooch : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -214,7 +213,7 @@ namespace Stellamod.Brooches
 				else if (Projectile.velocity == Vector2.Zero)
 				{
 					// If there is a case where it's not moving at all, give it a little "poke"
-					Projectile.velocity.X = -0.35f;
+					Projectile.velocity.X = -0.29f;
 					Projectile.velocity.Y = -0.25f;
 				}
 			

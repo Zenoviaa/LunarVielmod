@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 		public override void SetDefaults()
 		{
-			Item.damage = 33;
+			Item.damage = 13;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -37,6 +37,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.UseSound = SoundID.Item5;
             Item.autoReuse = true;
 			Item.useAmmo = AmmoID.Arrow;
+			Item.scale = 0.5f;
 		}
 		public override Vector2? HoldoutOffset()
 		{

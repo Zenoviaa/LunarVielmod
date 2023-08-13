@@ -156,7 +156,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			NPC.Size = new Vector2(85, 45);
 			NPC.damage = 600;
 			NPC.defense = 20;
-			NPC.lifeMax = 10000;
+			NPC.lifeMax = 6000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -530,9 +530,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
 				if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekGreek1>(), (int)10, 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekEye2>(), (int)10, 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekLava3>(), (int)10, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekGreek1>(), (int)0, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekEye2>(), (int)0, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<RekLava3>(), (int)0, 0f, 0, 0f, 0f);
 				}
 			
 

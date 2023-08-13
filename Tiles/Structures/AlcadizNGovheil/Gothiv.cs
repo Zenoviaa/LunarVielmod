@@ -83,15 +83,15 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-			if (!NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()))
+			if (!NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
 			{
 
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j / 2), i * 16, j * 16, ModContent.NPCType<Gothiviab>());
+				NPC.NewNPC(new EntitySource_TileBreak(i, j / 2), i * 16, j * 16, ModContent.NPCType<Gothiviabb>());
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-			if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()))
+			if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) || NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
 			{
 
 				Main.NewText("...", Color.Gold);
