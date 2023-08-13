@@ -12,7 +12,10 @@ using Stellamod.Items.Materials;
 using Stellamod.Helpers;
 using Terraria.GameContent.UI;
 using Stellamod.Skies;
-
+using Terraria.Audio;
+using System.Numerics;
+using Microsoft.Xna.Framework;
+using Stellamod.Backgrounds;
 
 namespace Stellamod
 {
@@ -34,7 +37,7 @@ namespace Stellamod
             
         }
 
-
+       
         public static Player PlayerExists(int whoAmI)
         {
             return whoAmI > -1 && whoAmI < Main.maxPlayers && Main.player[whoAmI].active && !Main.player[whoAmI].dead && !Main.player[whoAmI].ghost ? Main.player[whoAmI] : null;
@@ -121,4 +124,34 @@ namespace Stellamod
             // NOTE: There is rarely a need to null-out values of static fields, since TML aims to completely dispose mod assemblies in-between mod reloads.
         }
     }
+
+
+    public class Stellamenu : ModMenu
+    {
+
+
+            private const string menuAssetPath = "Stellamod/Assets/Textures/Menutheme"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
+
+            public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
+
+          //  public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheSun");
+
+         //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
+
+
+            public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/LunarVeil");
+
+            public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<MarrowSurfaceBackgroundStyle>();
+
+            public override string DisplayName => "The Lunar Veil ModMenu";
+
+            public override void OnSelected()
+            {
+                SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected
+            }
+
+
+        
+    }
+
 }

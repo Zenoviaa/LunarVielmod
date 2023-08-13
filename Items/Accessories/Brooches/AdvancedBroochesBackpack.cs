@@ -7,6 +7,7 @@ using Stellamod;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 using System.Collections.Generic;
+using Stellamod.Tiles;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
@@ -63,7 +64,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			recipe.AddIngredient(ItemID.IceChest, 3);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-			recipe.AddTile(TileID.TinkerersWorkbench);
+			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();
 		}
 

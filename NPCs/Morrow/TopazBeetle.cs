@@ -14,7 +14,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class TopazBeetle : ModNPC
+	public class RubyBeetle : ModNPC
 	{
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
@@ -39,29 +39,19 @@ namespace Stellamod.NPCs.Morrow
 			NPC.noTileCollide = false;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			if (spawnInfo.Player.ZoneJungle)
-			{
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            Player player = spawnInfo.Player;
+            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+            {
+                return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
+            }
 
-				return SpawnCondition.OverworldDay.Chance * 0.2f;
 
-			}
-
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
-			{
-				return SpawnCondition.Underground.Chance * 0.5f;
-			}
-			if (spawnInfo.Player.ZoneDesert)
-			{
-
-				return SpawnCondition.OverworldDay.Chance * 0.3f;
-
-			}
-			return SpawnCondition.OverworldNight.Chance * 0f;
-		}
-		public override void AI()
+            return 0f;
+        }
+        public override void AI()
 		{
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
 			{
@@ -79,7 +69,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
 			NPC.rotation = NPC.velocity.X * 0.1f;
-			if (NPC.Center.X >= player.Center.X && moveSpeed >= -60)
+			if (NPC.Center.X >= player.Center.X && moveSpeed >= -60) 
 			{
 				moveSpeed--;
 			}
@@ -91,7 +81,7 @@ namespace Stellamod.NPCs.Morrow
 
 			NPC.velocity.X = moveSpeed * 0.09f;
 
-			if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -50)
+			if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -50) 
 			{
 				moveSpeedY--;
 				NPC.ai[0] = 150f;
@@ -129,15 +119,17 @@ namespace Stellamod.NPCs.Morrow
 				dash = false;
 			}
 
-
+			
 		}
 
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-
-			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 3, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
+		
+			npcLoot.Add(ItemDropRule.Common(ItemID.Topaz, 2, 1, 4));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
 
 		}

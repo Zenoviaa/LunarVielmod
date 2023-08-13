@@ -839,6 +839,14 @@ namespace Stellamod
 				DreadBCooldown = 1000;
 			}
 
+			if (BroochAmethyst && AmethystBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<AmethystBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<AmethystBroo>(), 1000);
+				AmethystBCooldown = 1000;
+			}
+
 			if (BroochBear && BearBCooldown <= 0)
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<BearBrooch>(), 0, 1f, Player.whoAmI);
