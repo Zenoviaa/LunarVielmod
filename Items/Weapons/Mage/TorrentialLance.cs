@@ -10,6 +10,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Stellamod.Projectiles.Magic;
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
         }
         public override void SetDefaults()
         {
-            Item.damage = 58;
+            Item.damage = 28;
             Item.DamageType = DamageClass.Magic;
             Item.width = 40;
             Item.height = 40;
@@ -42,5 +43,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.shootSpeed = 15f;
             Item.autoReuse = true;
         }
+
+       
     }
 }

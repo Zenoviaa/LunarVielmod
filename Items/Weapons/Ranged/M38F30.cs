@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 18;
+            Item.damage = 38;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemID.FlintlockPistol, 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
-            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

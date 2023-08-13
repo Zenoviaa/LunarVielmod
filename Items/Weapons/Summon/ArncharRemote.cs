@@ -91,7 +91,6 @@ namespace Stellamod.Items.Weapons.Summon
 		public override void AddRecipes()
 		{
             Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<LostScrap>(), 14);
 			recipe.AddIngredient(ItemType<ArnchaliteBar>(), 11);
 			recipe.AddTile(TileID.Furnaces);
 			recipe.Register();

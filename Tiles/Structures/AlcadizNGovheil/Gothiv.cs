@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
@@ -74,7 +75,9 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			Player player = Main.LocalPlayer;
 
-	
+
+
+			int key = ModContent.ItemType<Steali>();
 
 
 
@@ -83,7 +86,14 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-			if (!NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
+		
+
+
+
+
+
+
+			if (player.HasItemInAnyInventory(key) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
 			{
 
 
@@ -98,6 +108,11 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
+			}
+			if (!player.HasItemInAnyInventory(key))
+            {
+
+				Main.NewText("A Steali is required for this fight, otherwise you can't dodge a few attacks.", Color.Gold);
 			}
 		
 

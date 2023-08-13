@@ -51,7 +51,7 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.Anvils);
 
             recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
             recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
             recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
             recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);

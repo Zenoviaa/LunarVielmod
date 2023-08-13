@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void SetDefaults()
 		{
-			Item.damage = 31;
+			Item.damage = 37;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 56;
 			Item.height = 56;
@@ -63,18 +63,16 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Bone, 25);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<RangerDrive>(), 1);
 			recipe.AddIngredient(ItemID.PlatinumBar, 14);
-			recipe.AddTile(TileID.HeavyWorkBench);
+			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 
 
             Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ItemID.Bone, 25);
             recipe2.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-            recipe2.AddIngredient(ModContent.ItemType<RangerDrive>(), 1);
             recipe2.AddIngredient(ItemID.GoldBar, 14);
-            recipe2.AddTile(TileID.HeavyWorkBench);
+            recipe2.AddTile(TileID.Anvils);
             recipe2.Register();
         }
 	}

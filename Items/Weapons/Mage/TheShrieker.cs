@@ -48,9 +48,8 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<MagicDrive>(), 1);
             recipe.AddIngredient(ModContent.ItemType<TheDeafen>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 16);
+            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 26);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

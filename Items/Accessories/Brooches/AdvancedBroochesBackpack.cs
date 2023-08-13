@@ -8,6 +8,7 @@ using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 using System.Collections.Generic;
 using Stellamod.Tiles;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
@@ -56,7 +57,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<HikersBackpack>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
 			recipe.AddIngredient(ItemID.Wood, 50);
 			recipe.AddIngredient(ItemID.HellstoneBar, 10);
 			recipe.AddIngredient(ItemID.JungleSpores, 10);

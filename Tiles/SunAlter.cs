@@ -29,6 +29,8 @@ namespace Stellamod.Tiles
             TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinatePadding = 2;
+            MineResist = 4f;
+            MinPick = 200;
 
             TileObjectData.addTile(Type);
             DustType = DustID.Stone;
@@ -84,12 +86,17 @@ namespace Stellamod.Tiles
 
 
             Player player = Main.player[Main.myPlayer];
-            if (player.HasItem(ModContent.ItemType<SunClaw>()))
+            if (player.HasItem(ModContent.ItemType<SunClaw>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
             {
 
                 var entitySource = player.GetSource_FromThis();
                int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), (int)i * 16 + Main.rand.Next(-10, 10), (int)j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
                Main.npc[SSSpawn].netUpdate = true;
+            }
+            if (!player.HasItem(ModContent.ItemType<SunClaw>()))
+            {
+                Main.NewText("Come back with a sun claw to fight the warrior of the desert.", Color.Gold);
+
             }
             return false;
         }

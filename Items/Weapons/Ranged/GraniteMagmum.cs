@@ -86,9 +86,6 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.GraniteBlock, 25);
-            recipe.AddIngredient(ItemType<DriveConstruct>(), 1);
-			recipe.AddIngredient(ItemType<BrokenTech>(), 10);
-			recipe.AddIngredient(ItemType<RangerDrive>(), 1);
             recipe.AddIngredient(ItemType<DarkEssence>(), 15);
             recipe.AddTile(TileID.Anvils);
 			recipe.Register();

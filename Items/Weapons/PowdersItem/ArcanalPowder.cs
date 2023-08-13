@@ -47,6 +47,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<FrostedPowder>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
 			recipe.AddIngredient(ItemID.HallowedBar, 5);
 			recipe.AddIngredient(ItemID.FallenStar, 10);
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);

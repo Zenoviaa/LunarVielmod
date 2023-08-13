@@ -130,7 +130,7 @@ namespace Stellamod
     {
 
 
-            private const string menuAssetPath = "Stellamod/Assets/Textures/Menutheme"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
+            private const string menuAssetPath = "Stellamod/Assets/Textures/Menu"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
 
             public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
 
@@ -139,7 +139,7 @@ namespace Stellamod
          //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
 
 
-            public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/LunarVeil");
+            public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
 
             public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<MarrowSurfaceBackgroundStyle>();
 

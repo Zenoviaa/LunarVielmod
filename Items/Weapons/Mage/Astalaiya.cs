@@ -53,6 +53,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 14);
+
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
             recipe.AddIngredient(ItemID.ManaCrystal, 1);
             recipe.AddTile(TileID.Bottles);

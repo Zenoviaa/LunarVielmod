@@ -85,6 +85,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen + 9, new PassLegacy("World Gen Top structures2", WorldGenMed));
 				tasks.Insert(CathedralGen + 10, new PassLegacy("World Gen Top structures3", WorldGenBig));
+				tasks.Insert(CathedralGen + 11, new PassLegacy("World Gen Top structures4", WorldGenStalker));
 			}
 
 
@@ -218,7 +219,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Building Gintze houses";
 
 
-			for (int k = 0; k < 7; k++)
+			for (int k = 0; k < 5; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
@@ -269,7 +270,7 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy - Main.rand.Next(100, 200));
+						Point Loc = new Point(smx, smy - Main.rand.Next(150, 200));
 
 						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld2");
 						foreach (int chestIndex in ChestIndexs)
@@ -586,7 +587,72 @@ namespace Stellamod.WorldG
 
 		}
 
+		private void WorldGenStalker(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Bird building alters";
 
+
+			for (int k = 0; k < 3; k++)
+			{
+				bool placed = false;
+				int attempts = 0;
+				while (!placed && attempts++ < 1000000)
+				{
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int smx = WorldGen.genRand.Next(1400, (Main.maxTilesX) - 1400); // from 50 since there's a unaccessible area at the world's borders
+																										  // 50% of choosing the last 6th of the world
+																										  // Choose which side of the world to be on randomly
+					///if (WorldGen.genRand.NextBool())
+					///{
+					///	towerX = Main.maxTilesX - towerX;
+					///}
+
+					//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+					int smy = ((int)(Main.worldSurface - 50));
+
+					// We go down until we hit a solid tile or go under the world's surface
+					while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+					{
+						smy++;
+					}
+
+					// If we went under the world's surface, try again
+					if (smy > Main.worldSurface - 20)
+					{
+						continue;
+					}
+					Tile tile = Main.tile[smx, smy];
+					// If the type of the tile we are placing the tower on doesn't match what we want, try again
+					if (!(tile.TileType == TileID.Sand
+							|| tile.TileType == TileID.HardenedSand
+						|| tile.TileType == TileID.Sandstone))
+
+					{
+						continue;
+					}
+
+
+					// place the Rogue
+					//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+					//Main.npc[num].homeTileX = -1;
+					//	Main.npc[num].homeTileY = -1;
+					//	Main.npc[num].direction = 1;
+					//	Main.npc[num].homeless = true;
+
+
+
+					for (int da = 0; da < 1; da++)
+					{
+						Point Loc = new Point(smx, smy + Main.rand.Next(150, 300));
+						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter");
+						
+					}
+
+					placed = true;
+				}
+			}
+
+		}
 
 
 
@@ -1192,7 +1258,7 @@ namespace Stellamod.WorldG
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
 
-				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud))
+				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud || tile.TileType == TileID.Stone))
 				{
 					continue;
 				}
@@ -1302,7 +1368,7 @@ namespace Stellamod.WorldG
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
 
-				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud))
+				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud || tile.TileType == TileID.Stone))
 				{
 					continue;
 				}
@@ -1877,10 +1943,14 @@ namespace Stellamod.WorldG
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
 					Chest c = Main.chest[ChestIndexs[0]];
 
-					for (int db = 0; db < 7; db++)
+					foreach (int chestIndex in ChestIndexs)
 					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
 						// itemsToAdd will hold type and stack data for each item we want to add to the chest
 						var itemsToAdd = new List<(int type, int stack)>();
+
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
@@ -2467,28 +2537,28 @@ namespace Stellamod.WorldG
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-	}
-
-
-
-
-
-
-
-
-
 	
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

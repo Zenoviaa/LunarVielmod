@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 31;
             Item.useTime = 31;
             Item.channel = true;
+            Item.scale = 0.5f;
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
@@ -53,8 +54,8 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 14);
-            recipe.AddTile(TileID.HeavyWorkBench);
+
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

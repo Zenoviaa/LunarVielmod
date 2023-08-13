@@ -58,8 +58,8 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
-            recipe.AddTile(TileID.HeavyWorkBench);
+
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

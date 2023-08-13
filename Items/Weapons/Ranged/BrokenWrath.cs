@@ -14,6 +14,7 @@ using Stellamod.Projectiles.Gun;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Terraria.Audio;
+using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -92,11 +93,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
             Recipe recipe = CreateRecipe();
 
-            recipe.AddIngredient(ItemType<MetallicOmniSource>(), 1);
-			recipe.AddIngredient(ItemType<BrokenTech>(), 10);
             recipe.AddIngredient(ItemType<ArnchaliteBar>(), 20);
-			recipe.AddIngredient(ItemType<DriveConstruct>(), 1);
-			recipe.AddIngredient(ItemType<RangerDrive>(), 1);
+			recipe.AddIngredient(ItemType<Cinderscrap>(), 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

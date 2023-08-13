@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 16;
+			Item.damage = 23;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
@@ -49,7 +49,7 @@ namespace Stellamod.Items.Weapons.Mage
 		{
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.LeadBar, 6);
-            recipe.AddIngredient(ItemType<LostScrap>(), 15);
+            recipe.AddIngredient(ItemType<ConvulgingMater>(), 15);
 			recipe.AddTile(TileID.Furnaces);
 			recipe.Register();
 		}

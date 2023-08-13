@@ -3421,6 +3421,21 @@ Mods: {
 					Forged from the inner core of the sun, and hard work this weapon exists.
 					'''
 			}
+
+			AmethystBroochA: {
+				DisplayName: Amethyst Brooch A
+				Tooltip: ""
+			}
+
+			CrystalPowder: {
+				DisplayName: Crystal Powder
+				Tooltip: ""
+			}
+
+			SunSall: {
+				DisplayName: Sun Sall
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3912,6 +3927,16 @@ Mods: {
 				DisplayName: Burning up
 				Description: You know the sun's light isn't all that bad...
 			}
+
+			AmethystBroo: {
+				DisplayName: Amethyst Broo
+				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+			}
+
+			CrystalDust: {
+				DisplayName: Crystal Dust
+				Description: Mods.Stellamod.Buffs.CrystalDust.Description
+			}
 		}
 
 		NPCs: {
@@ -4051,6 +4076,8 @@ Mods: {
 			Train2.DisplayName: Train2
 			Gothiviab.DisplayName: Gothiviab
 			Gothiviabb.DisplayName: Gothiviabb
+			TopazBeetle.DisplayName: Topaz Beetle
+			GovheilProtector.DisplayName: Govheil Protector
 		}
 
 		Projectiles: {
@@ -4501,6 +4528,9 @@ Mods: {
 			BurningGBrooch.DisplayName: Burning G Brooch
 			HeliosP.DisplayName: Helios P
 			HeliosProj.DisplayName: Helios Proj
+			AmethystBrooch.DisplayName: Amethyst Brooch
+			CrystalBloom.DisplayName: Crystal Bloom
+			CrystalPowderProj.DisplayName: Crystal Powder Proj
 		}
 	}
 

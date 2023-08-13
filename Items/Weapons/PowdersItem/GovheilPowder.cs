@@ -43,17 +43,6 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = SoundID.Grass;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 12);
-			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-
-			recipe.Register();
-		}
+		
 	}
 }

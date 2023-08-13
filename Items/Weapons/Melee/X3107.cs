@@ -50,7 +50,6 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<MeleeDrive>(), 1);
             recipe.AddIngredient(ItemID.SoulofFright, 20);
             recipe.AddTile(TileID.AdamantiteForge);
             recipe.Register();
