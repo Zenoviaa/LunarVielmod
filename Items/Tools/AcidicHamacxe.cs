@@ -41,9 +41,8 @@ namespace Stellamod.Items.Tools
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Wood, 8);
-            recipe.AddIngredient(ItemType<ToolDrive>(), 1);
-            recipe.AddIngredient(ItemType<IrradiatedBar>(), 18);
 			recipe.AddIngredient(ItemType<VirulentPlating>(), 14);
+			recipe.AddIngredient(ItemType<LostScrap>(), 14);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

@@ -2091,7 +2091,6 @@ Mods: {
 				Tooltip: Increases movement speed by 20%
 			}
 
-
 			ElagentBody: {
 				DisplayName: Elagent Body
 				Tooltip: +1 Minion
@@ -2104,7 +2103,8 @@ Mods: {
 
 			ElagentLegs: {
 				DisplayName: Elagent Legs
-				Tooltip: '''
+				Tooltip:
+					'''
 					+10% Summon Damage
 					+2 Minions
 					Increased movement speed

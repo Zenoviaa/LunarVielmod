@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddIngredient(ItemID.BladeofGrass, 1);
             recipe.AddIngredient(ItemID.JungleSpores, 10);
             recipe.AddIngredient(ItemType<Ivythorn>(), 15);
-            recipe.AddIngredient(ItemType<IrradiatedBar>(), 10);
+            recipe.AddIngredient(ItemType<VirulentPlating>(), 10);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
