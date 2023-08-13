@@ -2043,37 +2043,37 @@ Mods: {
 
 			WoodShield: {
 				DisplayName: Wood Shield
-				Tooltip: ""
+				Tooltip: The cooler daniel.
 			}
 
 			AcidBody: {
-				DisplayName: Acid Body
-				Tooltip: ""
+				DisplayName: Virulent Body
+				Tooltip: Life regeneration is increased by a small amount.
 			}
 
 			AcidHelm: {
-				DisplayName: Acid Helm
-				Tooltip: ""
+				DisplayName: Virulent Helm
+				Tooltip: Slightly increased Melee damage and crit strike chance!
 			}
 
 			AcidLegs: {
-				DisplayName: Acid Legs
-				Tooltip: ""
+				DisplayName: Virulent Legs
+				Tooltip: Increased movement speed :P
 			}
 
 			AcidMask: {
-				DisplayName: Acid Mask
-				Tooltip: ""
+				DisplayName: Virulent Mask
+				Tooltip: Increased Ranged damage and crit chance!
 			}
 
 			AcidRobe: {
-				DisplayName: Acid Robe
-				Tooltip: ""
+				DisplayName: Virulent Robe
+				Tooltip: Increased Magic damage and crit chance!
 			}
 
 			AcidVisor: {
-				DisplayName: Acid Visor
-				Tooltip: ""
+				DisplayName: Virulent Visor
+				Tooltip: Increased Throwing damage and crit chance!
 			}
 
 			AstrasilkBody: {
@@ -2091,34 +2091,24 @@ Mods: {
 				Tooltip: Increases movement speed by 20%
 			}
 
-			DreamerBody: {
-				DisplayName: Dreamer Body
-				Tooltip: ""
-			}
-
-			DreamerHead: {
-				DisplayName: Dreamer Head
-				Tooltip: ""
-			}
-
-			DreamerLegs: {
-				DisplayName: Dreamer Legs
-				Tooltip: ""
-			}
 
 			ElagentBody: {
 				DisplayName: Elagent Body
-				Tooltip: ""
+				Tooltip: +1 Minion
 			}
 
 			ElagentHead: {
 				DisplayName: Elagent Head
-				Tooltip: ""
+				Tooltip: +20% Minion Damage
 			}
 
 			ElagentLegs: {
 				DisplayName: Elagent Legs
-				Tooltip: ""
+				Tooltip: '''
+					+10% Summon Damage
+					+2 Minions
+					Increased movement speed
+					'''
 			}
 
 			ForestCoreBody: {
@@ -2128,7 +2118,7 @@ Mods: {
 
 			ForestCoreHead: {
 				DisplayName: Forest Core Head
-				Tooltip: Increases ranged ramage by 2%
+				Tooltip: Increases ranged damage by 2%
 			}
 
 			ForestCoreLegs: {

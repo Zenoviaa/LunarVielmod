@@ -29,7 +29,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             Item.value = 10000;
             Item.rare = 6;
 
-            Item.defense = 5;
+            Item.defense = 2;
         }
 
         public override void UpdateEquip(Player player)
@@ -53,9 +53,7 @@ namespace Stellamod.Items.Armors.AcidArmour
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<ArmorDrive>(), 1);
             recipe.AddIngredient(ItemType<VirulentPlating>(), 5);
-            recipe.AddIngredient(ItemType<IrradiatedBar>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

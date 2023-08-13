@@ -51,7 +51,14 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-5f, 0f);
         }
 
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
+        }
 
     }
 }

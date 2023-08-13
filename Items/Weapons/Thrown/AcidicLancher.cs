@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Stellamod.Projectiles.Thrown;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
@@ -21,7 +22,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
 		public override void SetDefaults()
 		{
-			Item.damage = 27;
+			Item.damage = 47;
 			Item.DamageType = DamageClass.Throwing;
 			Item.width = 40;
 			Item.height = 40;
@@ -37,8 +38,17 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
 			Item.noUseGraphic = true;
 			Item.consumable = true;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 		}
 
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe(300);
+			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
 	}
 }

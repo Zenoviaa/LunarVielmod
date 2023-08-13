@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Bow;
 using Terraria.Audio;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -40,5 +41,15 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shootSpeed = 15f;
             Item.autoReuse = true;
         }
-    }
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
+
+	}
 }

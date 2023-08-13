@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.Elagent
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Summon) += 0.02f;
+            player.GetDamage(DamageClass.Summon) *= 1.2f;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)

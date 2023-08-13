@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria;
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -54,6 +55,15 @@ namespace Stellamod.Items.Weapons.Ranged
 				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
 			}
 			return false;
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
 		}
 	}
 }

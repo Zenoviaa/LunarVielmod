@@ -33,6 +33,8 @@ namespace Stellamod.Items.Armors.Elagent
         public override void UpdateEquip(Player player)
         {
             player.moveSpeed += 0.5f;
+            player.maxMinions += 2;
+            player.GetDamage(DamageClass.Summon) *= 1.1f;
         }
 
         public override void AddRecipes()

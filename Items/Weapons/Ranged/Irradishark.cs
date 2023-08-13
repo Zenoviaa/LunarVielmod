@@ -71,13 +71,11 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<RangerDrive>(), 1);
             recipe.AddIngredient(ItemID.Megashark, 1);
             recipe.AddIngredient(ItemID.ClockworkAssaultRifle, 1);
 			recipe.AddIngredient(ItemType<TychineGun>(), 1);
             recipe.AddIngredient(ItemID.HallowedBar, 10);
-            recipe.AddIngredient(ItemType<UnknownCircuitry>(), 15);
-			recipe.AddIngredient(ItemType<IrradiatedBar>(), 10);
+			recipe.AddIngredient(ItemType<VirulentPlating>(), 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
