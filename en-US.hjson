@@ -2228,7 +2228,7 @@ Mods: {
 
 			SunClaw: {
 				DisplayName: Sun Claw
-				Tooltip: ""
+				Tooltip: Use at a sun alter to fight a retired general of Gothivia's ranks.
 			}
 
 			SunStalkerBag: {
@@ -2573,7 +2573,7 @@ Mods: {
 
 			SunBlastStaff: {
 				DisplayName: Sun Blast Staff
-				Tooltip: ""
+				Tooltip: Blastin with the sun
 			}
 
 			TheDeafen: {
@@ -2583,7 +2583,7 @@ Mods: {
 
 			TheShrieker: {
 				DisplayName: The Shrieker
-				Tooltip: ""
+				Tooltip: Ow, my ears
 			}
 
 			TomeOfTheSingularity: {
@@ -3399,7 +3399,11 @@ Mods: {
 
 			GothiviasCard: {
 				DisplayName: Gothivia's Flame Card
-				Tooltip: '''"Causes minor burns," thats at least the note she left.'''
+				Tooltip:
+					'''
+					"Causes minor burns," thats at least the note she left.
+					Use a powder/ dust, then use this!
+					'''
 			}
 
 			Helios: {
