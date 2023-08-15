@@ -27,6 +27,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Terraria.GameContent.Bestiary;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
+using Stellamod.Helpers;
 
 
 //By Al0n37
@@ -692,6 +693,12 @@ namespace Stellamod.NPCs.Bosses.Jack
 
 
         }
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedJackBoss, -1);
+
+        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), 2, 1, 1));
@@ -701,6 +708,8 @@ namespace Stellamod.NPCs.Bosses.Jack
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 1, 7, 50));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, 7, 50));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.JackBossRel>()));
         }
+       
     }
 }

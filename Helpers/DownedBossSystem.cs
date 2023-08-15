@@ -15,19 +15,39 @@ namespace Stellamod.Helpers
 	public class DownedBossSystem : ModSystem
 	{
 		public static bool downedVeriBoss = false;
+		public static bool downedJackBoss = false;
+		public static bool downedDaedusBoss = false;
+		public static bool downedDreadBoss = false;
+		public static bool downedSOMBoss = false;
+		public static bool downedGothBoss = false;
+		public static bool downedSunsBoss = false;
 		public static bool downedGintzlBoss = false;
 		// public static bool downedOtherBoss = false;
 
 		public override void OnWorldLoad()
 		{
-			downedVeriBoss = false;
-			downedGintzlBoss = false;
+		downedVeriBoss = false;
+		 downedJackBoss = false;
+		 downedDaedusBoss = false;
+		 downedDreadBoss = false;
+		 downedSOMBoss = false;
+		 downedGothBoss = false;
+		 downedSunsBoss = false;
+		 downedGintzlBoss = false;
+		
+
 			// downedOtherBoss = false;
 		}
 
 		public override void OnWorldUnload()
 		{
 			downedVeriBoss = false;
+			downedJackBoss = false;
+			downedDaedusBoss = false;
+			downedDreadBoss = false;
+			downedSOMBoss = false;
+			downedGothBoss = false;
+			downedSunsBoss = false;
 			downedGintzlBoss = false;
 			// downedOtherBoss = false;
 		}
@@ -46,6 +66,34 @@ namespace Stellamod.Helpers
 				tag["downedGintzlBoss"] = true;
 			}
 
+			if (downedSunsBoss)
+			{
+				tag["downedSunsBoss"] = true;
+			}
+
+			if (downedGothBoss)
+			{
+				tag["downedGothBoss"] = true;
+			}
+
+			if (downedSOMBoss)
+			{
+				tag["downedSOMBoss"] = true;
+			}
+
+			if (downedJackBoss)
+			{
+				tag["downedJackBoss"] = true;
+			}
+			if (downedDaedusBoss)
+			{
+				tag["downedDaedusBoss"] = true;
+			}
+			if (downedDreadBoss)
+			{
+				tag["downedDreadBoss"] = true;
+			}
+
 			// if (downedOtherBoss) {
 			//	tag["downedOtherBoss"] = true;
 			// }
@@ -54,6 +102,12 @@ namespace Stellamod.Helpers
 		public override void LoadWorldData(TagCompound tag)
 		{
 			downedVeriBoss = tag.ContainsKey("downedVerliaBoss");
+			downedDreadBoss = tag.ContainsKey("downedDreadBoss");
+			downedSOMBoss = tag.ContainsKey("downedSOMBoss");
+			downedJackBoss = tag.ContainsKey("downedJackBoss");
+			downedDaedusBoss = tag.ContainsKey("downedDaedusBoss");
+			downedGothBoss = tag.ContainsKey("downedGothBoss");
+			downedSunsBoss = tag.ContainsKey("downedSunsBoss");
 			downedGintzlBoss = tag.ContainsKey("downedGintzlBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
@@ -64,6 +118,12 @@ namespace Stellamod.Helpers
 			var flags = new BitsByte();
 			flags[0] = downedVeriBoss;
 			flags[1] = downedGintzlBoss;
+			flags[2] = downedDaedusBoss;
+			flags[3] = downedDreadBoss;
+			flags[4] = downedSOMBoss;
+			flags[5] = downedGothBoss;
+			flags[6] = downedSunsBoss;
+			flags[7] = downedJackBoss;
 			// flags[1] = downedOtherBoss;
 			writer.Write(flags);
 
@@ -74,8 +134,14 @@ namespace Stellamod.Helpers
 		{
 			// Order of operations is important and has to match that of NetSend
 			BitsByte flags = reader.ReadByte();
-			downedVeriBoss = flags[0];
-			downedGintzlBoss = flags[1];
+			flags[0] = downedVeriBoss;
+			flags[1] = downedGintzlBoss;
+			flags[2] = downedDaedusBoss;
+			flags[3] = downedDreadBoss;
+			flags[4] = downedSOMBoss;
+			flags[5] = downedGothBoss;
+			flags[6] = downedSunsBoss;
+			flags[7] = downedJackBoss;
 			// downedOtherBoss = flags[1];
 
 			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:

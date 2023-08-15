@@ -3434,6 +3434,41 @@ Mods: {
 				DisplayName: Sun Sall
 				Tooltip: ""
 			}
+
+			DaedusBossRel: {
+				DisplayName: Daedus Boss Rel
+				Tooltip: ""
+			}
+
+			DreadBossRel: {
+				DisplayName: Dread Boss Rel
+				Tooltip: ""
+			}
+
+			GintzeBossRel: {
+				DisplayName: Gintze Boss Rel
+				Tooltip: ""
+			}
+
+			JackBossRel: {
+				DisplayName: Jack Boss Rel
+				Tooltip: ""
+			}
+
+			SOMBossRel: {
+				DisplayName: S O M Boss Rel
+				Tooltip: ""
+			}
+
+			SunsBossRel: {
+				DisplayName: Suns Boss Rel
+				Tooltip: ""
+			}
+
+			VerliBossRel: {
+				DisplayName: Verli Boss Rel
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3949,7 +3984,16 @@ Mods: {
 			BloodCystDead.DisplayName: Blood Cyst Dead
 			DreadFireBomb.DisplayName: Dread Fire Bomb
 			DreadFireCircle.DisplayName: Dread Fire Circle
-			DreadMire.DisplayName: Dread Mire
+
+			DreadMire: {
+				DisplayName: Dread Mire
+
+				BossChecklistIntegration: {
+					EntryName: Blood Goddess Dreadmire
+					SpawnInfo: Kill a blood cyst during a blood moon!
+				}
+			}
+
 			DreadMirePentagram.DisplayName: Dread Mire Pentagram
 			DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
 			DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
@@ -3963,19 +4007,42 @@ Mods: {
 			IrradiatedCreeper.DisplayName: Irradiated Creeper
 			IrradiatedNest.DisplayName: Irradiated Nest
 			IrradiatedNestDeath.DisplayName: Irradiated Nest Death
-			Jack.DisplayName: Jack
+
+			Jack: {
+				DisplayName: Jack
+				BossChecklistIntegration.SpawnInfo: Use a [i:5689] at a post in the Fabled Castle to the right at night.
+			}
+
 			JackDeath.DisplayName: Jack Death
 			Jackoslime.DisplayName: Jackoslime
 			LazerOrb.DisplayName: Lazer Orb
 			SingularityLazer.DisplayName: Singularity Lazer
 			SingularitySpark.DisplayName: Singularity Spark
 			SingularitySparkBig.DisplayName: Singularity Spark Big
-			SingularityFragment.DisplayName: Singularity Fragment
+
+			SingularityFragment: {
+				DisplayName: Singularity Fragment
+
+				BossChecklistIntegration: {
+					EntryName: Singularity of the Moon
+					SpawnInfo: Use a [i:5687] at an alter, in the Aurelus, deep in the ice.
+				}
+			}
+
 			SingularityOrb.DisplayName: Singularity Orb
 			Voidling.DisplayName: Voidling
 			Flowerball.DisplayName: Flowerball
 			StarrVeriplant.DisplayName: Starr Veriplant
-			SunStalker.DisplayName: Sun Stalker
+
+			SunStalker: {
+				DisplayName: Sun Stalker
+
+				BossChecklistIntegration: {
+					EntryName: Sunstalker
+					SpawnInfo: Use a [i:5683] at an alter in the desert.
+				}
+			}
+
 			SunStalkerDeath.DisplayName: Sun Stalker Death
 			SunStalkerLighting.DisplayName: Sun Stalker Lighting
 			SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
@@ -3988,8 +4055,21 @@ Mods: {
 			Sword2.DisplayName: Sword2
 			Sword3.DisplayName: Sword3
 			Viola.DisplayName: Viola
-			VerliaB.DisplayName: Verlia B
-			CommanderGintzia.DisplayName: Commander Gintzia
+
+			VerliaB: {
+				DisplayName: Verlia B
+
+				BossChecklistIntegration: {
+					EntryName: Verlia of the Moon
+					SpawnInfo: Use a [i:5679] at a shrine in the Cathedral on the right ocean!.
+				}
+			}
+
+			CommanderGintzia: {
+				DisplayName: Commander Gintzia
+				BossChecklistIntegration.SpawnInfo: Randomly each day, if you have 3 npcs, an army will raid you!
+			}
+
 			GintziaHand.DisplayName: Gintzia Hand
 			GintzeCaptain.DisplayName: Gintze Captain
 			GintzeSolider.DisplayName: Gintze Solider
@@ -4065,14 +4145,31 @@ Mods: {
 				}
 			}
 
-			Daedus.DisplayName: Forgotten Puppet Daedus
+			Daedus: {
+				DisplayName: Forgotten Puppet Daedus
+
+				BossChecklistIntegration: {
+					EntryName: Daedus the Forgotten
+					SpawnInfo: High at the Fabled castle lies a forgotten guardian of Gothivia's ranks.
+				}
+			}
+
 			LanternOfHope.DisplayName: Lantern Of Hope
 			HarvestGovheil.DisplayName: Harvest Govheil
 			Gothivia.DisplayName: Gothivia
 			Rek.DisplayName: Rek
 			Train1.DisplayName: Train1
 			Train2.DisplayName: Train2
-			Gothiviab.DisplayName: Gothivia
+
+			Gothiviab: {
+				DisplayName: Gothivia
+
+				BossChecklistIntegration: {
+					EntryName: Gothivia the Sun Goddess
+					SpawnInfo: Use a [i:5677] at a shrine in the Govheil Castle, underneath the Virulent
+				}
+			}
+
 			Gothiviabb.DisplayName: Gothivia?
 			TopazBeetle.DisplayName: Topaz Beetle
 			GovheilProtector.DisplayName: Govheil Protector

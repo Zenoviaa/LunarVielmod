@@ -24,6 +24,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
@@ -100,6 +101,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Firework_Red, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
                 }
             }
+        }
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadBoss, -1);
+
         }
         public override void AI()
         {
@@ -775,8 +782,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+      
 
-        }
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));
+
+        
+    }
         int frame = 0;
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";

@@ -29,6 +29,7 @@ using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
+using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -108,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidBlaster>(), 2, 1, 1));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TomeOfTheSingularity>(), 2, 1, 1));
             }
-
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SOMBossRel>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidLantern>(), 1, 1, 1));
         }
 
@@ -754,6 +755,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
             }
         }
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSOMBoss, -1);
+
+        }
+
         Vector2 targetPos;
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {

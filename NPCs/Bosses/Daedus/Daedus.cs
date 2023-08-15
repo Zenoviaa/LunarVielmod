@@ -760,7 +760,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			}
 
 		}
-
+		
 		private void SummonAxe()
 		{
 			NPC.spriteDirection = NPC.direction;
@@ -911,9 +911,13 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
+	
 
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
+
+	
+		// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
+		LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			// Boss masks are spawned with 1/7 chance
@@ -954,7 +958,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			{
 				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 			}
-
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
 		}
 
 	}

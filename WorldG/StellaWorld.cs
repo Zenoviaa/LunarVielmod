@@ -219,7 +219,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Building Gintze houses";
 
 
-			for (int k = 0; k < 5; k++)
+			for (int k = 0; k < 3; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
@@ -1727,7 +1727,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int g = 0; g < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 60); g++)
+			for (int g = 0; g < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 40); g++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);

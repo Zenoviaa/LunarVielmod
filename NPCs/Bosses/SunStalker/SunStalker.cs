@@ -15,6 +15,8 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Consumables;
 using System.Diagnostics.Metrics;
+using Stellamod.Helpers;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
@@ -75,6 +77,8 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<SunStalkerBag>(), 1, false, 0, false, false);
             }
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
+      
         }
         public override void AI()
         {
@@ -1023,5 +1027,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 }
             }
         }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+           
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SunsBossRel>()));
+       
+        }
+
     }
 }
