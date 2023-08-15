@@ -30,7 +30,7 @@ namespace Stellamod.Tiles
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinatePadding = 2;
             MineResist = 4f;
-            MinPick = 200;
+            MinPick = 25;
 
             TileObjectData.addTile(Type);
             DustType = DustID.Stone;

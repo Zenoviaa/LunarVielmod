@@ -39,33 +39,18 @@ namespace Stellamod.WorldG
 		public static bool SoulStorm;
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
-			/* int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Webs"));
-				if (MorrowGen != -1)
-				{
-
-					tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Morrow", WorldGenMorrow));
-
-				}
-
-				int MorrowDig = tasks.FindIndex(genpass => genpass.Name.Equals("World Gen Morrow"));
-				if (MorrowDig != -1)
-				{
-
-					tasks.Insert(MorrowDig + 1, new PassLegacy("World Gen Morrow Digging", WorldGenMorrowDig));
-
-				}
-			*/
+			
 
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
-				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+	
+				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 			}
 
-			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Gem Caves"));
 			if (ShiniesIndex != -1)
 			{
 
@@ -74,20 +59,21 @@ namespace Stellamod.WorldG
 				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
 			}
 
-			int CathedralGen = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
-			if (CathedralGen != -1)
+			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+			if (CathedralGen2 != -1)
 			{
-
-				tasks.Insert(CathedralGen + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen + 5, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen + 6, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				tasks.Insert(CathedralGen + 7, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-				tasks.Insert(CathedralGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-				tasks.Insert(CathedralGen + 9, new PassLegacy("World Gen Top structures2", WorldGenMed));
-				tasks.Insert(CathedralGen + 10, new PassLegacy("World Gen Top structures3", WorldGenBig));
-				tasks.Insert(CathedralGen + 11, new PassLegacy("World Gen Top structures4", WorldGenStalker));
+				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
+				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenBig));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenMed));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				
 			}
-
 
 
 
@@ -97,28 +83,7 @@ namespace Stellamod.WorldG
 
 		}
 
-		//private void WorldGenMorrowDig(GenerationProgress progress, GameConfiguration configuration)
-		//{
-		// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-		//	progress.Message = "Gild drilling";
-
-		//	int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-		//	int yz = WorldGen.genRand.Next((int)WorldGen.worldSurface, Main.maxTilesY);
-		//	for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-		//	{
-		// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-		//		Tile tile = Main.tile[xz, yz];
-		//		if (tile.HasTile && tile.TileType == ModContent.TileType<OvermorrowdirtTile>())
-		//		{
-
-		//		}
-		//
-		// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-
-
-		//	}
-		//}
-
+	
 
 
 
@@ -131,7 +96,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 1000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 600); // from 50 since there's a unaccessible area at the world's borders
@@ -664,7 +629,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 1000000)
 			{
 
 
@@ -832,7 +797,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 1000000)
 			{
 
 
@@ -1248,7 +1213,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Hunters getting kicked out";
 
 
-			for (int k = 0; k < (int)(5); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(500, Main.maxTilesX);
@@ -1358,7 +1323,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)(5); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(500, Main.maxTilesX);

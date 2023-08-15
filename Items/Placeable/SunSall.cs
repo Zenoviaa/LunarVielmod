@@ -26,6 +26,13 @@ namespace Stellamod.Items.Placeable
 			Item.height = 24;
 		}
 
-		
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.AntlionMandible, 1);
+			recipe.AddIngredient(ItemID.SandBlock, 100);
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+		}
 	}
 }

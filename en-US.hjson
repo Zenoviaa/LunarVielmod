@@ -3436,37 +3436,37 @@ Mods: {
 			}
 
 			DaedusBossRel: {
-				DisplayName: Daedus Boss Rel
+				DisplayName: Daedus Boss Relic
 				Tooltip: ""
 			}
 
 			DreadBossRel: {
-				DisplayName: Dread Boss Rel
+				DisplayName: Dreadmire Boss Relic
 				Tooltip: ""
 			}
 
 			GintzeBossRel: {
-				DisplayName: Gintze Boss Rel
+				DisplayName: Gintzia Boss Relic
 				Tooltip: ""
 			}
 
 			JackBossRel: {
-				DisplayName: Jack Boss Rel
+				DisplayName: Jack Boss Relic
 				Tooltip: ""
 			}
 
 			SOMBossRel: {
-				DisplayName: S O M Boss Rel
+				DisplayName: Singularity of the Moon Boss Relic
 				Tooltip: ""
 			}
 
 			SunsBossRel: {
-				DisplayName: Suns Boss Rel
+				DisplayName: Sunstalker Boss Relic
 				Tooltip: ""
 			}
 
 			VerliBossRel: {
-				DisplayName: Verli Boss Rel
+				DisplayName: Verlia of the Moon Boss Relic
 				Tooltip: ""
 			}
 		}
@@ -4039,7 +4039,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Sunstalker
-					SpawnInfo: Use a [i:5683] at an alter in the desert.
+					SpawnInfo: Use a [i:5683] at a sunsall alter in the desert at day.
 				}
 			}
 
