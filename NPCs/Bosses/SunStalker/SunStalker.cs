@@ -63,6 +63,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.boss = true;
             NPC.knockBackResist = 0f;
             NPC.noTileCollide = true;
+            NPC.npcSlots = 10f;
             NPC.noGravity = true;
             NPC.scale = 1f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
@@ -70,7 +71,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         Vector2 targetPos;
         public override void OnKill()
         {
-            if (Main.rand.Next(1) == 0)
+            if (Main.rand.NextBool(1))
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<SunStalkerBag>(), 1, false, 0, false, false);
             }

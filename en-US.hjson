@@ -2563,7 +2563,7 @@ Mods: {
 
 			StarFlowerStaff: {
 				DisplayName: Star Flower Staff
-				Tooltip: Shoot little balls of light 
+				Tooltip: Shoot little balls of light
 			}
 
 			StormsWrath: {
@@ -3418,7 +3418,8 @@ Mods: {
 
 			AmethystBroochA: {
 				DisplayName: Amethyst Brooch
-				Tooltip: '''
+				Tooltip:
+					'''
 					+20 Pick speed!
 					+2 defense
 					'''
@@ -3426,7 +3427,7 @@ Mods: {
 
 			CrystalPowder: {
 				DisplayName: Crystal Powder
-				Tooltip: "It's what we've been working for Jesse"
+				Tooltip: It's what we've been working for Jesse
 			}
 
 			SunSall: {
@@ -3866,7 +3867,7 @@ Mods: {
 			}
 
 			AurelusB: {
-				DisplayName: Aurelus 
+				DisplayName: Aurelus
 				Description: The aurelus biome buff :(
 			}
 

@@ -72,6 +72,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SingularityFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();

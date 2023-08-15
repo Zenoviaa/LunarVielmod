@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.boss = true;
             NPC.noTileCollide = true;
             NPC.dontTakeDamage = false;
-
+            NPC.npcSlots = 10f;
             NPC.HitSound = SoundID.NPCHit9;
             NPC.DeathSound = SoundID.NPCDeath23;
         }

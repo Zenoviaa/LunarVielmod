@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Ice.WinterbornBat
                 frame++;
                 NPC.frameCounter = 0;
             }
-            if (frame >= 5)
+            if (frame >= 4)
             {
                 frame = 0;
             }
