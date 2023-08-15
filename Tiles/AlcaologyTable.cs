@@ -47,9 +47,10 @@ namespace Stellamod.Tiles
 		{
 			num = fail ? 1 : 3;
 		}
+		public override bool CanExplode(int i, int j) => false;
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.AlcaologyI>());
+			
 		}
 	}
 }

@@ -2128,17 +2128,17 @@ Mods: {
 
 			HeavyMetalBody: {
 				DisplayName: Gintzl Body
-				Tooltip: ""
+				Tooltip: Just gives defense smh.
 			}
 
 			HeavyMetalHead: {
 				DisplayName: Gintzl Head
-				Tooltip: ""
+				Tooltip: It has a good summon set bonus, trust me.
 			}
 
 			HeavyMetalLegs: {
 				DisplayName: Gintzl Legs
-				Tooltip: ""
+				Tooltip: +5% Movement speed
 			}
 
 			LeatherBody: {
@@ -2273,7 +2273,7 @@ Mods: {
 
 			DreadFoil: {
 				DisplayName: Dread Foil
-				Tooltip: ""
+				Tooltip: Foil captured from dreadmire!
 			}
 
 			FlareGem: {
@@ -2463,12 +2463,12 @@ Mods: {
 
 			WanderingFlame: {
 				DisplayName: Wandering Flame
-				Tooltip: ""
+				Tooltip: Burning with Jack's will!
 			}
 
 			WinterbornShard: {
 				DisplayName: Winterborn Shard
-				Tooltip: ""
+				Tooltip: Frozen to the core :P
 			}
 
 			CellConverterI: {
@@ -2557,13 +2557,13 @@ Mods: {
 			}
 
 			StaffoftheIrradiaflare: {
-				DisplayName: Staffofthe Irradiaflare
+				DisplayName: Staff of the Irradiaflare
 				Tooltip: ""
 			}
 
 			StarFlowerStaff: {
 				DisplayName: Star Flower Staff
-				Tooltip: ""
+				Tooltip: Shoot little balls of light 
 			}
 
 			StormsWrath: {
@@ -2618,7 +2618,7 @@ Mods: {
 
 			CinderBraker: {
 				DisplayName: Cinder Braker
-				Tooltip: ""
+				Tooltip: A volley of cinder
 			}
 
 			DragonWaveFury: {
@@ -2967,7 +2967,7 @@ Mods: {
 			}
 
 			JPost: {
-				DisplayName: J Post
+				DisplayName: Jack Post
 				Tooltip: ""
 			}
 
@@ -3333,7 +3333,7 @@ Mods: {
 
 			GovhenShield: {
 				DisplayName: Govhen Shield
-				Tooltip: ""
+				Tooltip: A very sturdy shield
 			}
 
 			GreekLantern: {
@@ -3348,7 +3348,7 @@ Mods: {
 
 			Blackdot: {
 				DisplayName: Blackdot
-				Tooltip: Who named tis?
+				Tooltip: Who named this?
 			}
 
 			Galvinie: {
@@ -3417,13 +3417,16 @@ Mods: {
 			}
 
 			AmethystBroochA: {
-				DisplayName: Amethyst Brooch A
-				Tooltip: ""
+				DisplayName: Amethyst Brooch
+				Tooltip: '''
+					+20 Pick speed!
+					+2 defense
+					'''
 			}
 
 			CrystalPowder: {
 				DisplayName: Crystal Powder
-				Tooltip: ""
+				Tooltip: "It's what we've been working for Jesse"
 			}
 
 			SunSall: {
@@ -3579,7 +3582,7 @@ Mods: {
 
 			ArcaneDust: {
 				DisplayName: Arcane Dust
-				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+				Description: Arcanal
 			}
 
 			AssassinsSlashBuff: {
@@ -3649,7 +3652,7 @@ Mods: {
 
 			Dusted: {
 				DisplayName: Dusted
-				Description: Mods.Stellamod.Buffs.Dusted.Description
+				Description: Get dusted
 			}
 
 			AlcadDust: {
@@ -3754,7 +3757,7 @@ Mods: {
 
 			Irradiation: {
 				DisplayName: Irradiation
-				Description: Mods.Stellamod.Buffs.Irradiation.Description
+				Description: Dont start irradiating.
 			}
 
 			Love: {
@@ -3774,12 +3777,12 @@ Mods: {
 
 			MorrowWhipDebuff: {
 				DisplayName: Morrow Whip Debuff
-				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+				Description: Its a debuff from the whip
 			}
 
 			Whipdeath: {
 				DisplayName: Whipdeath
-				Description: Mods.Stellamod.Buffs.Whipdeath.Description
+				Description: Sometimes, whips cause death.
 			}
 
 			Wounded: {
@@ -3863,8 +3866,8 @@ Mods: {
 			}
 
 			AurelusB: {
-				DisplayName: Aurelus B
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
+				DisplayName: Aurelus 
+				Description: The aurelus biome buff :(
 			}
 
 			AivanDust: {
@@ -3914,7 +3917,7 @@ Mods: {
 
 			Rekin: {
 				DisplayName: Rekin
-				Description: Mods.Stellamod.Buffs.Rekin.Description
+				Description: Get rekt'ed
 			}
 
 			BurningGB: {
@@ -3923,13 +3926,13 @@ Mods: {
 			}
 
 			AmethystBroo: {
-				DisplayName: Amethyst Broo
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+				DisplayName: Amethyst Brooch
+				Description: Just shows that it exists
 			}
 
 			CrystalDust: {
 				DisplayName: Crystal Dust
-				Description: Mods.Stellamod.Buffs.CrystalDust.Description
+				Description: Crystal meth
 			}
 		}
 
@@ -4068,8 +4071,8 @@ Mods: {
 			Rek.DisplayName: Rek
 			Train1.DisplayName: Train1
 			Train2.DisplayName: Train2
-			Gothiviab.DisplayName: Gothiviab
-			Gothiviabb.DisplayName: Gothiviabb
+			Gothiviab.DisplayName: Gothivia
+			Gothiviabb.DisplayName: Gothivia?
 			TopazBeetle.DisplayName: Topaz Beetle
 			GovheilProtector.DisplayName: Govheil Protector
 		}
@@ -4650,7 +4653,7 @@ Mods: {
 	Buffs: {
 		ArcaneDust: {
 			DisplayName: Arcane Dust
-			Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+			Description: Arcanal stuff
 		}
 
 		Diarii: {
@@ -4675,7 +4678,7 @@ Mods: {
 
 		Morrow: {
 			DisplayName: Morrow
-			Description: The
+			Description: The Morrowed brooch..
 		}
 
 		Slimee: {
@@ -4780,7 +4783,7 @@ Mods: {
 
 		Harvester: {
 			DisplayName: Harvester
-			Description: Mods.Stellamod.Buffs.Harvester.Description
+			Description: They wanna be harvested
 		}
 
 		Love: {
@@ -4796,16 +4799,6 @@ Mods: {
 		SnowFlame: {
 			DisplayName: Snow Flame
 			Description: Snowy flames
-		}
-
-		MorrowWhipDebuff: {
-			DisplayName: Morrow Whip Debuff
-			Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-		}
-
-		Whipdeath: {
-			DisplayName: Whipdeath
-			Description: Whip death
 		}
 
 		Wounded: {
@@ -4865,17 +4858,17 @@ Mods: {
 
 		ArncharMinionBuff: {
 			DisplayName: Arnchar Minion Buff
-			Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+			Description: Little cool minion!
 		}
 
 		DripperBuff: {
 			DisplayName: Dripper Buff
-			Description: Mods.Stellamod.Buffs.DripperBuff.Description
+			Description: They drippin
 		}
 
 		FCBuff: {
-			DisplayName: F C Buff
-			Description: Mods.Stellamod.Buffs.FCBuff.Description
+			DisplayName: Forest Core minion!
+			Description: It shoots for you!
 		}
 
 		HMMinionBuff: {
@@ -4885,32 +4878,32 @@ Mods: {
 
 		IrradiatedCreeperBuff: {
 			DisplayName: Irradiated Creeper Buff
-			Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+			Description: Little minion!
 		}
 
 		IvyakenBuff: {
 			DisplayName: Ivyaken Buff
-			Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+			Description: Woa.
 		}
 
 		JellyMinionBuff: {
 			DisplayName: Jelly Minion Buff
-			Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+			Description: Its a jelly!
 		}
 
 		ProbeBuff: {
 			DisplayName: Probe Buff
-			Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+			Description: Dont get probed
 		}
 
 		SwarmerMinionBuff: {
 			DisplayName: Swarmer Minion Buff
-			Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+			Description: It swarms enemies!
 		}
 
 		VoidMinionBuff: {
 			DisplayName: Void Minion Buff
-			Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+			Description: It do be a black hole.
 		}
 
 		MoonMothBuff: {
@@ -4925,12 +4918,12 @@ Mods: {
 
 		GintzelSheild: {
 			DisplayName: Gintzel Shield
-			Description: + 15 Defence!
+			Description: + 15 Defense!
 		}
 
 		GintzelSheildCD: {
 			DisplayName: Gintzel Sheild Cool Down
-			Description: You can not have the Gintzel Sheild now
+			Description: You can not have the Gintzel Shield now
 		}
 
 		Gintzingwinds: {
@@ -4945,7 +4938,7 @@ Mods: {
 
 		IceboundMinionBuff: {
 			DisplayName: Icebound Minion Buff
-			Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+			Description: It's frozen but its also sweet :P
 		}
 	}
 
@@ -5037,7 +5030,7 @@ Mods: {
 		RoyalSlime.DisplayName: Royal Slime
 		ShadeSlime.DisplayName: Shade Slime
 		ShadowWraith.DisplayName: Shadow Wraith
-		DreadFireBombG.DisplayName: Dread Fire Bomb G
+		DreadFireBombG.DisplayName: Dread Fire Bomb
 		HeatBombLighting.DisplayName: Heat Bomb Lighting
 		HeatBombRayLight.DisplayName: Heat Bomb Ray Light
 		GintzeWindRider.DisplayName: Gintze Wind Rider
@@ -5052,7 +5045,7 @@ Mods: {
 		HarvestVirulent.DisplayName: Harvest Virulent
 		SingularityOrb.DisplayName: Singularity Orb
 		SingularitySpark.DisplayName: Singularity Spark
-		SingularitySparkBig.DisplayName: Singularity Spark Big
+		SingularitySparkBig.DisplayName: Singularity's bigger spark
 		LazerOrb.DisplayName: Lazer Orb
 		SingularityLazer.DisplayName: Singularity Lazer
 	}

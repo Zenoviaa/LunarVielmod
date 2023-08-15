@@ -37,7 +37,8 @@ namespace Stellamod.Tiles
         {
             Item.NewItem(new Terraria.DataStructures.EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, Mod.Find<ModItem>("CellConverterI").Type);
         }
-        public override void MouseOver(int i, int j)
+		public override bool CanExplode(int i, int j) => false;
+		public override void MouseOver(int i, int j)
 		{
 			//shows the Cryptic Crystal icon while mousing over this tile
 			Main.player[Main.myPlayer].cursorItemIconEnabled = true;

@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Crossbows.Gemmed
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.penetrate = 2;
             Projectile.arrow = true;
             Projectile.timeLeft = 380;

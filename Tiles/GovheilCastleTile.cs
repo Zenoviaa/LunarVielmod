@@ -36,7 +36,7 @@ namespace Stellamod.Tiles
                         p.Add(new Point(i + k, j + l));
             return p;
         }
-
+        public override bool CanExplode(int i, int j) => false;
         private bool HasOpening(int i, int j)
         {
             for (int k = -1; k < 2; ++k)

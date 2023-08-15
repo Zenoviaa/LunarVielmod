@@ -36,7 +36,6 @@ namespace Stellamod.Items.Consumables
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 1);
             recipe.AddIngredient(ItemID.AntlionMandible, 15);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();

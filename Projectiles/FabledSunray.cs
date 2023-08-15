@@ -17,8 +17,9 @@ namespace Stellamod.Projectiles
 			Projectile.width = 360;
 			Projectile.height = 360;
 
-			Projectile.timeLeft = 2000;
+			Projectile.timeLeft = 510;
 			Projectile.scale = 2f;
+			Projectile.alpha = 255;
 		}
 
 		public float Timer
@@ -38,20 +39,17 @@ namespace Stellamod.Projectiles
 
 			Timer++;
 
-			if (Timer < 200)
-            {
-				Projectile.alpha++;
-			}
-			
-			if (Timer > 200)
+			if (Timer < 255)
             {
 				Projectile.alpha--;
 			}
 			
-			if(Timer == 450)
+			if (Timer > 255)
             {
-				Timer = 0;
-            }
+				Projectile.alpha++;
+			}
+			
+
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{

@@ -55,5 +55,6 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			
 		}
+		public override bool CanExplode(int i, int j) => false;
 	}
 }

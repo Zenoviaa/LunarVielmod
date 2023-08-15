@@ -28,6 +28,7 @@ namespace Stellamod.Tiles
 		{
 			num = fail ? 1 : 3;
 		}
+		public override bool CanExplode(int i, int j) => false;
 		// TODO: implement
 		// public override void ChangeWaterfallStyle(ref int style) {
 		// 	style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");

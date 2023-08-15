@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Stellamod.Projectiles.Safunai.Halhurish;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
@@ -92,7 +93,13 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 
 			return false;
 		}
-
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 12);
+			recipe.Register();
+		}
 		public override float UseTimeMultiplier(Player player) => player.GetAttackSpeed(DamageClass.Melee); //Scale with melee speed buffs, like whips
 		public override void NetSend(BinaryWriter writer) => writer.Write(combo);
 		public override void NetReceive(BinaryReader reader) => combo = reader.ReadInt32();

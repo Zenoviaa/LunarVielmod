@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.height = 80;
 			NPC.damage = 20;
 			NPC.defense = 10;
-			NPC.lifeMax = 200;
+			NPC.lifeMax = 100;
 			NPC.noGravity = true;
 			NPC.value = 90f;
 			NPC.noTileCollide = false;

@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
 
         public override void UpdateEquip(Player player)
         {
-            player.moveSpeed += 0.05f;
+            player.moveSpeed *= 1.05f;
         }
         public override void AddRecipes()
         {

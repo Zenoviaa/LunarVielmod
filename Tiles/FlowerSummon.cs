@@ -73,7 +73,7 @@ namespace Stellamod.Tiles
 			TileObjectData.addTile(Type);
 		}
 
-		
+		public override bool CanExplode(int i, int j) => false;
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
 		{

@@ -94,7 +94,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			num = 1;
 		}
 
-
+		public override bool CanExplode(int i, int j) => false;
 		public bool Checked = false;
 		public override bool RightClick(int i, int j)
 		{
@@ -157,7 +157,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, ModContent.ItemType<ShrineI>());
+			
 		}
 		public override void MouseOver(int i, int j)
 		{

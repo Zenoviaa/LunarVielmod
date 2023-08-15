@@ -49,6 +49,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			// name.SetDefault("Hunter's Curtains");
 			AddMapEntry(new Color(47, 49, 33), name);
 		}
+		public override bool CanExplode(int i, int j) => false;
 		public override void NumDust(int x, int y, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;

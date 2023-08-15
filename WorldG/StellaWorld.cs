@@ -1013,7 +1013,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 10000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
@@ -1265,7 +1265,7 @@ namespace Stellamod.WorldG
 
 				if (tile.HasTile)
 				{
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Acid/A1");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Acid/A3");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -1375,7 +1375,7 @@ namespace Stellamod.WorldG
 
 				if (tile.HasTile)
 				{
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Acid/A1");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Acid/A3");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -1760,7 +1760,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 40); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 30); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);

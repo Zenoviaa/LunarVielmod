@@ -46,8 +46,6 @@ namespace Stellamod.Items.Consumables
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
             recipe.AddIngredient(ItemID.Wood, 20);
-            recipe.AddIngredient(ItemID.Hay, 15);
-            recipe.AddTile(TileID.Furnaces);
             recipe.Register();
         }
 

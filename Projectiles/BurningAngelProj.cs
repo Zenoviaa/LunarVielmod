@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles
             
             Projectile.penetrate = 1;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.height = 40;
             Projectile.width = 40;

@@ -60,7 +60,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			
 		}
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
-
+		public override bool CanExplode(int i, int j) => false;
 		public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
