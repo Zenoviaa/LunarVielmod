@@ -4010,7 +4010,7 @@ Mods: {
 
 			Jack: {
 				DisplayName: Jack
-				BossChecklistIntegration.SpawnInfo: Use a [i:5689] at a post in the Fabled Castle to the right at night.
+				BossChecklistIntegration.SpawnInfo: Use a [i:Stellamod/WanderingEssence] at a post in the Fabled Castle to the right at night.
 			}
 
 			JackDeath.DisplayName: Jack Death
@@ -4025,7 +4025,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Singularity of the Moon
-					SpawnInfo: Use a [i:5687] at an alter, in the Aurelus, deep in the ice.
+					SpawnInfo: Use a [i:Stellamod/VoidKey] at an alter, in the Aurelus, deep in the ice.
 				}
 			}
 
@@ -4039,7 +4039,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Sunstalker
-					SpawnInfo: Use a [i:5683] at a sunsall alter in the desert at day.
+					SpawnInfo: Use a [i:Stellamod/SunClaw] at a sunsall alter in the desert at day.
 				}
 			}
 
@@ -4061,7 +4061,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Verlia of the Moon
-					SpawnInfo: Use a [i:5679] at a shrine in the Cathedral on the right ocean!.
+					SpawnInfo: Use a [i:Stellamod/MoonflameLantern] at a shrine in the Cathedral on the right ocean!.
 				}
 			}
 
@@ -4166,7 +4166,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Gothivia the Sun Goddess
-					SpawnInfo: Use a [i:5677] at a shrine in the Govheil Castle, underneath the Virulent
+					SpawnInfo: Wake her up at her shrine in the Govheil Castle, underneath the Virulent
 				}
 			}
 
