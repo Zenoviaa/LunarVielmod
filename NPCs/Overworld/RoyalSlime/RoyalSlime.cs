@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 		}
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (Main.dayTime && spawnInfo.Player.ZoneOverworldHeight && !spawnInfo.Player.ZoneBeach && !spawnInfo.Player.ZoneJungle && !spawnInfo.Player.ZoneDesert && !spawnInfo.Player.ZoneSnow && !spawnInfo.Player.ZoneCrimson && !spawnInfo.Player.ZoneSkyHeight && !EventWorld.Gintzing ? (0.03f) : 0f);
+            return (Main.dayTime && spawnInfo.Player.ZoneOverworldHeight && !spawnInfo.Player.ZoneBeach && !spawnInfo.Player.ZoneJungle && !spawnInfo.Player.ZoneDesert && !spawnInfo.Player.ZoneSnow && !spawnInfo.Player.ZoneCrimson && !spawnInfo.Player.ZoneSkyHeight && !EventWorld.Gintzing ? (0.01f) : 0f);
         }
         public override void OnKill()
         {

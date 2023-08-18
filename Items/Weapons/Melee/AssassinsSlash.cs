@@ -74,7 +74,6 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<MeleeDrive>(), 1);
             recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 10);
             recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 15);
             recipe.AddIngredient(ItemID.Wood, 15);

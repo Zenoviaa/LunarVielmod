@@ -122,7 +122,10 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeCharm>(), 1, false, 0, false, false);
             }
 
-          
+          if (NPC.downedBoss1)
+            {
+                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
+            }
         }
 
 

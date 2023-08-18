@@ -87,7 +87,7 @@ namespace Stellamod.Tiles.Furniture
 			switch (placeStyle)
 			{
 				case 0:
-					itemType = ModContent.ItemType<Items.Placeable.VeriBossRel>();
+					itemType = ModContent.ItemType<Items.Placeable.GintzeBossRel>();
 					break;
 					// Optional: Add more cases here
 			}

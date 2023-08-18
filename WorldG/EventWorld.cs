@@ -110,7 +110,7 @@ namespace Stellamod.WorldG
             }
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(2))
                 {
                     Gintzing = true;
                     if (!GintzingText)
@@ -125,7 +125,7 @@ namespace Stellamod.WorldG
 
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
             {
-                if (Main.rand.NextBool(20))
+                if (Main.rand.NextBool(40))
                 {
                     Gintzing = true;
                     if (!GintzingText)
