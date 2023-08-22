@@ -132,5 +132,6 @@ namespace Stellamod.Tiles.Abyss.Aurelus
 		{
 
 		}
+		public override bool CanExplode(int i, int j) => false;
 	}
 }
