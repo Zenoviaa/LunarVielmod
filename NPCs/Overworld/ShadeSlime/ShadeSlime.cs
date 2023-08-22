@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest && !Main.dayTime && NPC.downedBoss1) ? (0.500f) : 0f;
+            return (spawnInfo.Player.ZoneForest && !Main.dayTime && NPC.downedBoss1) ? (0.300f) : 0f;
 
         }
         public override void SetDefaults()

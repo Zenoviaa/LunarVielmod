@@ -81,14 +81,19 @@ namespace Stellamod.Tiles.Structures
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
+			DustType = dustType;
 			if (Main.dayTime)
 			{
 				Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
 				return false;
 			}
+			else
+            {
+				return true;
+            }
 
-			DustType = dustType;
-			return true;
+			
+		
 		}
 
 		public static string MapChestName(string name, int i, int j)
