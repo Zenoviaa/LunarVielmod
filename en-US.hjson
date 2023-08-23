@@ -1462,6 +1462,7 @@ Mods: {
 				DisplayName: Curlistine
 				Tooltip:
 					'''
+					Only works if an enemy is nearby.
 					Shoots out many chained swords guided by the swirling stars..
 					Verlia's wish is granted upon you.
 					'''
@@ -1509,6 +1510,7 @@ Mods: {
 					'''
 					I love ya!
 					Summons a Curlistine sword that brings Verlia's small swords to life!
+					Only works if an enemy is nearby!
 					Activates Verlia's Brooch effects! 
 					(Inc mana by 50, Def by 5, Heavy snowflakes on hit!) 
 					'''
