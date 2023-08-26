@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 29;
+            Item.damage = 31;
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.width = 50;
@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
-
+            Item.noUseGraphic = false;
             Item.DamageType = DamageClass.Melee;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

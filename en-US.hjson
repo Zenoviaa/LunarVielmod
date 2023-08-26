@@ -2000,8 +2000,14 @@ Mods: {
 			}
 
 			ShadeScarf: {
-				DisplayName: Shade Scarf
-				Tooltip: ""
+				DisplayName: Shadei
+				Tooltip:
+					'''
+					Increased movement speed
+					+10% Damage
+					Gives effects of steali and adds +40 Health and +10% critical strike chance!
+					Increased life regeneration!
+					'''
 			}
 
 			ShellSheid: {
@@ -2615,7 +2621,7 @@ Mods: {
 
 			AssassinsSlash: {
 				DisplayName: Assassins Slash
-				Tooltip: ""
+				Tooltip: Once attacking enemies, a charge will build up and then right click for a slash!
 			}
 
 			CinderBraker: {
@@ -2630,7 +2636,7 @@ Mods: {
 
 			EventHorizon: {
 				DisplayName: Event Horizon
-				Tooltip: ""
+				Tooltip: Goodness gracious.
 			}
 
 			FrostBringer: {
@@ -2645,7 +2651,7 @@ Mods: {
 
 			Myocardia: {
 				DisplayName: Myocardia
-				Tooltip: ""
+				Tooltip: Mwahaha.. Im dracula!
 			}
 
 			ScarecrowSaber: {
@@ -2660,7 +2666,7 @@ Mods: {
 
 			GladiatorSpear: {
 				DisplayName: Gladiator Spear
-				Tooltip: ""
+				Tooltip: Tear through the bones of your fellow competitors.
 			}
 
 			Infernis: {
@@ -2700,7 +2706,7 @@ Mods: {
 
 			SwordOfTheJungleGoddess: {
 				DisplayName: Sword Of The Jungle Goddess
-				Tooltip: ""
+				Tooltip: Dont craft this please.
 			}
 
 			WoodenSaber: {
@@ -3553,7 +3559,7 @@ Mods: {
 			GovheilTile.MapEntry: Govheil Tile
 			HuntiacTile.MapEntry: Huntiac Tile
 			LostScrapT.MapEntry: Lost Scrap T
-			RunicTableT.MapEntry: Runic Table T
+			RunicTableT.MapEntry: Runic Table
 			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
 			ShrineBUAN.MapEntry: Shrine B U A N
 			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C

@@ -119,7 +119,7 @@ namespace Stellamod
 			int bossType3 = ModContent.NPCType<NPCs.Bosses.DreadMire.DreadMire>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight3 = 2.2f;
+			float weight3 = 2.6f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed3 = () => DownedBossSystem.downedDreadBoss;

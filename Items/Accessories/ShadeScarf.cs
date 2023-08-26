@@ -1,52 +1,66 @@
 ﻿
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+using Stellamod.Items.Accessories.Players;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories
 {
-    public class ShadeScarf : ModItem
-    {
-        public bool SScarf = false;
-        public override void SetStaticDefaults()
-        {
+	[AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
+	public class ShadeScarf : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Steali");
+			/* Tooltip.SetDefault("A small fast dash that provides invincibility as you dash" +
+				"\nIncreased regeneration" +
+				"\nYou may not attack while this is in use" +
+				"\nHollow Knight inspiried!"); */
 
-            // DisplayName.SetDefault("Shade Scarf");
-            // Tooltip.SetDefault("Has a chance to gift regeneration on striking an enemy");
-        }
-        public override void SetDefaults()
-        {
-            Item.value = Item.sellPrice(gold: 2);
-            Item.Size = new Vector2(20);
-            Item.accessory = true;
-            Item.value = Item.sellPrice(silver: 12);
-            Item.rare = ItemRarityID.Blue;
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<DarkEssence>(), 10);
-            recipe.AddIngredient(ItemID.Leather, 5);
-            recipe.AddIngredient(ItemID.DemoniteBar, 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
 
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemType<DarkEssence>(), 10);
-            recipe2.AddIngredient(ItemID.Leather, 5);
-            recipe2.AddIngredient(ItemID.CrimtaneBar, 10);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
-        }
-    }
+		public override void SetDefaults()
+		{
+			Item.width = 24;
+			Item.height = 28;
+			Item.value = Item.sellPrice(gold: 10);
+			Item.rare = ItemRarityID.Pink;
+			Item.accessory = true;
+
+
+			Item.lifeRegen = 5;
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<Steali>(), 1);
+			recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
+			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
+			recipe.AddTile(TileID.TinkerersWorkbench);
+			recipe.Register();
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+
+
+			player.GetModPlayer<DashPlayer2>().DashAccessoryEquipped = true;
+			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
+			player.lifeRegen += 1;
+			player.GetDamage(DamageClass.Generic) *= 1.10f;
+			player.moveSpeed += 0.3f;
+			player.GetCritChance(DamageClass.Generic) *= 1.10f;
+			player.statLifeMax2 += 40;
+
+		}
+
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+
+	}
+
 }

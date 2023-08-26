@@ -79,6 +79,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 			int key = ModContent.ItemType<Steali>();
 
+			int key2 = ModContent.ItemType<ShadeScarf>();
 
 
 
@@ -86,14 +87,13 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-		
 
 
 
 
 
 
-			if (player.HasItemInAnyInventory(key) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
+			if (player.HasItemInAnyInventory(key) || player.HasItemInAnyInventory(key2) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
 			{
 
 
@@ -109,10 +109,10 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 			}
-			if (!player.HasItemInAnyInventory(key))
+			if (!player.HasItemInAnyInventory(key) || player.HasItemInAnyInventory(key2))
             {
 
-				Main.NewText("A Steali is required for this fight, otherwise you can't dodge a few attacks.", Color.Gold);
+				Main.NewText("A Steali or higher is required for this fight, otherwise you can't dodge a few attacks.", Color.Gold);
 			}
 		
 

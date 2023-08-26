@@ -64,6 +64,7 @@
     <None Remove="Items\Accessories\ShadeCharm.png" />
     <None Remove="Items\Accessories\ShadeScarf.png" />
     <None Remove="Items\Accessories\ShadeScarf_Glow.png" />
+    <None Remove="Items\Accessories\ShadeScarf_Waist.png" />
     <None Remove="Items\Accessories\ShellSheid.png" />
     <None Remove="Items\Accessories\SoulStrideres.png" />
     <None Remove="Items\Accessories\SpiritPendent.png" />

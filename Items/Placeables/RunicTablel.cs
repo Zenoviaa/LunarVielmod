@@ -43,8 +43,7 @@ namespace Stellamod.Items.Placeables
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.LivingLoom, 1);
-            recipe.AddIngredient(ItemID.HeavyWorkBench, 1);
+            recipe.AddIngredient(ItemID.WorkBench, 1);
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
