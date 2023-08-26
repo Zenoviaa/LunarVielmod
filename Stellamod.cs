@@ -16,11 +16,12 @@ using Terraria.Audio;
 using System.Numerics;
 using Microsoft.Xna.Framework;
 using Stellamod.Backgrounds;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
 {
 
-    
+
     public class Stellamod : Mod
     {
         public const string EMPTY_TEXTURE = "Stellamod/Empty";
@@ -34,10 +35,10 @@ namespace Stellamod
         public Stellamod()
         {
             Instance = this;
-            
+
         }
 
-       
+
         public static Player PlayerExists(int whoAmI)
         {
             return whoAmI > -1 && whoAmI < Main.maxPlayers && Main.player[whoAmI].active && !Main.player[whoAmI].dead && !Main.player[whoAmI].ghost ? Main.player[whoAmI] : null;
@@ -97,13 +98,13 @@ namespace Stellamod
 
 
             //``````````````````````````````````````````````````````````````````````````````````````
-          
+
             Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
             SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
 
             SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
             Filters.Scene["Stellamod:GovheilSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
-           
+
             //`````````````````````````````````````````````````````````````````````````````
 
 
@@ -130,28 +131,34 @@ namespace Stellamod
     {
 
 
-            private const string menuAssetPath = "Stellamod/Assets/Textures/Menu"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
+        private const string menuAssetPath = "Stellamod/Assets/Textures/Menu"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
 
-            public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
+        public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo2");
 
-          //  public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheSun");
+        //  public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheSun");
 
-         //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
-
-
-            public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
-
-            public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<MarrowSurfaceBackgroundStyle>();
-
-            public override string DisplayName => "The Lunar Veil ModMenu";
-
-            public override void OnSelected()
-            {
-                SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected
-            }
+        //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
 
 
-        
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
+
+        public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<MarrowSurfaceBackgroundStyle>();
+
+        public override string DisplayName => "The Lunar Veil ModMenu";
+
+        public override void OnSelected()
+        {
+            SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected
+
+        }
+        public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
+        {
+            drawColor = Main.DiscoColor * 2f ; // Changes the draw color of the logo
+            return true;
+
+
+
+        }
+
     }
-
 }
