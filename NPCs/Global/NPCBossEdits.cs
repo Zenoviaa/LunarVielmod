@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -36,40 +37,41 @@ namespace Stellamod.NPCs.Global
 
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			
 			
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
 
-
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.SkeletronHead)
 			{
 
-
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			
 			if (npc.type == NPCID.KingSlime)
 			{
 
-
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			if (npc.type == NPCID.WallofFlesh)
 			{
 
-
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.QueenBee)
 			{
 
-
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
@@ -92,7 +94,7 @@ namespace Stellamod.NPCs.Global
 						normalDropRule.chanceDenominator = 2;
 				}
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-																						  // Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.																		  // Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
 				/*
 				npcLoot.RemoveWhere(
 					rule => rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff

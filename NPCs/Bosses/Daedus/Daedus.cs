@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
 			{
-				CustomTexturePath = "Stellamod/NPCs/Bosses/Daedus/GintziaPreview",
+				
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
 

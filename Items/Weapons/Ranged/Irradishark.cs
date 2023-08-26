@@ -68,17 +68,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			}
 			return false; // return false because we don't want tmodloader to shoot projectile
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Megashark, 1);
-            recipe.AddIngredient(ItemID.ClockworkAssaultRifle, 1);
-			recipe.AddIngredient(ItemType<TychineGun>(), 1);
-            recipe.AddIngredient(ItemID.HallowedBar, 10);
-			recipe.AddIngredient(ItemType<VirulentPlating>(), 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+
 
 	}
 }

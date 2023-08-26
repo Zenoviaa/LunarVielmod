@@ -115,7 +115,7 @@ namespace Stellamod.WorldG
                     Gintzing = true;
                     if (!GintzingText)
                     {
-                        Main.NewText("The Gintze army is aproching...", 34, 121, 100);
+                        Main.NewText("The Gintze army is approaching...", 34, 121, 100);
                         GintzingText = true;
                     }
                 }

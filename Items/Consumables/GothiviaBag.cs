@@ -56,7 +56,7 @@ namespace Stellamod.Items.Consumables
 
 			if (Main.rand.NextBool(1))
 			{
-				switch (Main.rand.Next(4))
+				switch (Main.rand.Next(5))
 				{
 
 

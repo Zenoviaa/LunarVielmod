@@ -33,14 +33,7 @@ namespace Stellamod.Items.Materials
             Item.maxStack = 999; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 4);
-            recipe.AddTile(TileID.Hellforge);
-            recipe.Register();
-        }
+     
 
     }
 }

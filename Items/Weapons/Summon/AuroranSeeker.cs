@@ -61,7 +61,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.noMelee = true; //so the Item's animation doesn't do damage
 			Item.knockBack = 4; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
 			Item.value = 10000; // how much the Item sells for (measured in copper)
-			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
+			Item.UseSound = SoundID.AbigailSummon; // The sound that this Item plays when used.
 			Item.autoReuse = true; // if you can hold click to automatically use it again
 			Item.shoot = ModContent.ProjectileType<AuroranSeekerProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
