@@ -388,6 +388,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             {
                                 JackFirerand = Main.rand.Next(25, 40 + 1);
                                 NPC.noGravity = true;
+                                NPC.noTileCollide = true;
                                 NPC.velocity.Y -= 15;
                             }
                             if (NPC.ai[0] <= 330 && NPC.ai[0] >= 25)
@@ -417,6 +418,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             if (NPC.ai[0] == 280)
                             {
                                 NPC.noGravity = false;
+                                NPC.noTileCollide = false;
                             }
                             if (NPC.ai[0] >= 330)
                             {
