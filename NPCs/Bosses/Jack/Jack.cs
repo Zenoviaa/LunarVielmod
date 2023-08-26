@@ -437,6 +437,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             NPC.velocity *= 0.92f;
                             if (NPC.ai[0] == 20)
                             {
+                                NPC.noTileCollide = true;
                                 Jumping = true;
                                 NPC.velocity.Y -= 10;
                                 if (NPC.position.X <= player.position.X)
@@ -450,6 +451,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                             }
                             if (NPC.ai[0] >= 20 && NPC.ai[0] <= 100)
                             {
+                                NPC.noTileCollide = false;
                                 if (NPC.ai[0] % 7 == 0)
                                 {
                                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, NPC.position);
