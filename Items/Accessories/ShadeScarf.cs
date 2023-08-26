@@ -53,7 +53,8 @@ namespace Stellamod.Items.Accessories
 			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
 			player.lifeRegen += 1;
 			player.GetDamage(DamageClass.Generic) *= 1.10f;
-			player.moveSpeed += 0.3f;
+			player.moveSpeed *= 1.3f;
+			player.maxRunSpeed *= 1.3f;
 			player.GetCritChance(DamageClass.Generic) *= 1.10f;
 			player.statLifeMax2 += 40;
 
