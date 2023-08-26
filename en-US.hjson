@@ -2166,17 +2166,17 @@ Mods: {
 
 			ShadeWraithBody: {
 				DisplayName: Shade Wraith Body
-				Tooltip: ""
+				Tooltip: Increased endurance and life by 20!
 			}
 
 			ShadeWraithHead: {
 				DisplayName: Shade Wraith Head
-				Tooltip: ""
+				Tooltip: +2% Damage for all classes (except throwing)
 			}
 
 			ShadeWraithLegs: {
 				DisplayName: Shade Wraith Legs
-				Tooltip: ""
+				Tooltip: Slightly increased movement speed.
 			}
 
 			TerricBody: {

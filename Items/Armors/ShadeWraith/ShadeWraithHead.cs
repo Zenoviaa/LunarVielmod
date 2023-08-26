@@ -51,6 +51,9 @@ namespace Stellamod.Items.Armors.ShadeWraith
         }
         public override void UpdateArmorSet(Player player)
         {
+            player.setBonus = "Increases max life if you are under 200 health!" +
+                "\nIncreased endurance and speed!";
+
             if (player.statLife <= player.statLifeMax2 / 2)
             {
                 player.statLifeMax2 += 20;
