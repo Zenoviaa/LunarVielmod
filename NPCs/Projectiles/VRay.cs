@@ -110,6 +110,6 @@ namespace Stellamod.NPCs.Projectiles
             Main.spriteBatch.ExitShaderRegion();
         }
 
-        public override bool? CanDamage() => Time >= 8f;
+        public override bool? CanDamage() => Time >= 60f;
     }
 }
