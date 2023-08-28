@@ -3477,6 +3477,11 @@ Mods: {
 				DisplayName: Verlia of the Moon Boss Relic
 				Tooltip: ""
 			}
+
+			StarbloomBlock: {
+				DisplayName: Starbloom Block
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {

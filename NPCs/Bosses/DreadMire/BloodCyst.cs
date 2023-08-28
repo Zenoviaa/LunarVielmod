@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         }
         public override void AI()
         {
-
+            NPC.damage = 0;
             NPC.ai[0]++;
             if (Main.dayTime)
             {
@@ -103,7 +103,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.noTileCollide = true;
             NPC.width = 25;
             NPC.height = 20;
-            NPC.damage = 30;
+            NPC.damage = 1;
             NPC.defense = 19;
             NPC.lifeMax = 200;
 
@@ -122,6 +122,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 new FlavorTextBestiaryInfoElement("A crystal which holds the power of summoning one of the three deities"),
             });
         }
+        
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
