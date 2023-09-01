@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Govheil
             NPC.damage = 40;
             NPC.defense = 10;
             NPC.lifeMax = 500;
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj4");
+            NPC.HitSound = SoundID.Tink;
             NPC.DeathSound = SoundID.Tink;
             NPC.value = 30f;
             NPC.buffImmune[BuffID.ShadowFlame] = true;
@@ -197,7 +197,7 @@ namespace Stellamod.NPCs.Govheil
 
             if (spawnInfo.Player.InModBiome<GovheilCastle>())
             {
-                return SpawnCondition.Cavern.Chance * 0.4f;
+                return SpawnCondition.Cavern.Chance * 0.3f;
             }
             return SpawnCondition.OverworldNight.Chance * 0f;
         }
