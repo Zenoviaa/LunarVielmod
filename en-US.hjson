@@ -3482,6 +3482,11 @@ Mods: {
 				DisplayName: Starbloom Block
 				Tooltip: ""
 			}
+
+			StarbloomDirtBlock: {
+				DisplayName: Starbloom Dirt Block
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -3616,6 +3621,7 @@ Mods: {
 			VheilCurtainRight.MapEntry: Vheil Curtain Right
 			Gothiv.MapEntry: Gothiv
 			GothivDoorClosed.MapEntry: Gothiv Door Closed
+			StarbloomDirt.MapEntry: Starbloom Dirt
 		}
 
 		Buffs: {
