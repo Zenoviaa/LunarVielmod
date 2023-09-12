@@ -21,7 +21,8 @@ namespace Stellamod.Tiles
             Main.tileBlockLight[Type] = true;
 
             AddMapEntry(new Color(84, 68, 53));
-
+            MineResist = 1f;
+            MinPick = 180;
 
         }
    
