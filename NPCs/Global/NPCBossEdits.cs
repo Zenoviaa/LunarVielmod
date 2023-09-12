@@ -44,34 +44,32 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.SkeletronHead)
 			{
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			
 			if (npc.type == NPCID.KingSlime)
 			{
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			if (npc.type == NPCID.WallofFlesh)
 			{
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.QueenBee)
 			{
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
