@@ -138,7 +138,7 @@ namespace Stellamod.NPCs.Morrow
 
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 3, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
 
 		}
 		public override void FindFrame(int frameHeight)
