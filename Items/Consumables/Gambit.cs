@@ -12,6 +12,8 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.UI.Panels;
 using Terraria.Audio;
 using Stellamod.Projectiles;
+using Stellamod.NPCs.Bosses.Jack;
+using Stellamod.NPCs;
 
 namespace Stellamod.Items.Consumables
 {
@@ -48,91 +50,14 @@ namespace Stellamod.Items.Consumables
 		public override void RightClick(Player player)
 		{
 			var entitySource = player.GetSource_OpenItem(Type);
-			switch (Main.rand.Next(5))
-			{
-
-				case 0:
-
-
-					CombatText.NewText(player.getRect(), Color.YellowGreen, "Wohooo", true, false);
-
-
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
-
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
-
-
-
-					break;
-
-				case 1:
-
-
-					CombatText.NewText(player.getRect(), Color.YellowGreen, "Omg, its something!", true, false);
-
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
-
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
-
-
-
-					break;
-
-				case 2:
-
-
-					CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you disappointed? You should be.", true, false);
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
-
-
-
-
-					break;
-
-				case 3:
-
-
-					CombatText.NewText(player.getRect(), Color.YellowGreen, "Wow, you have no maidens and no luck..", true, false);
-
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
-
-
-					break;
-
-
-					
-
-				case 4:
-
-					CombatText.NewText(player.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
-
-
-
-
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
-
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
-
-
-
-
-
-					break;
-
-
-
-					
-
-
-
-			}
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Rolldice"));
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Trick"));
 			float speedX = Main.rand.NextFloat(-4f, 4f);
 			float speedY = Main.rand.Next(-10, 11) * 0.2f;
 			Vector2 here = player.position;
-			Projectile.NewProjectile(entitySource, player.position.X, player.position.Y + 60, speedX * 0, speedY * 0, ModContent.ProjectileType<Dicein>(), 0, 0f, player.whoAmI, 0f, 0f);
-			player.GetModPlayer<MyPlayer>().Dice = true;
+
+
+            NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DiceinNPC>());
+            player.GetModPlayer<MyPlayer>().Dice = true;
 		}
 		// Below is code for the visuals
 
