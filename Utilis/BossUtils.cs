@@ -17,7 +17,7 @@ namespace Stellamod.Utilis
         /// <see cref="Player.LookForTileInteractions"/> Method ensures that.
         /// </summary>
         /// <param name="type">Type of boss need spawning</param>
-        public static void SpawnBossFromTile(int type)
+        public static void SpawnBossFromTileRightClick(int i, int j ,int type)
         {
             if (Main.netMode != NetmodeID.MultiplayerClient)
                 NPC.SpawnOnPlayer(Main.myPlayer, type);
