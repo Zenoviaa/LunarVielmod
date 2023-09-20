@@ -20,6 +20,7 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
 using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.Utilis;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
@@ -107,8 +108,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Daedus>()))
 			{
 
-
-				NPC.NewNPC(new EntitySource_TileBreak(i, j + 200), i * 16, j * 16, ModContent.NPCType<Daedus>());
+                BossUtils.SpawnBossFromTileRightClick(i, j, ModContent.NPCType<Daedus>());
 				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}

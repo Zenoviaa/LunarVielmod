@@ -31,6 +31,7 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.WorldG;
+using Stellamod.Utilis;
 
 namespace Stellamod.NPCs.Bosses.Daedus
 {
@@ -113,7 +114,9 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
-			NPCID.Sets.BossBestiaryPriority.Add(Type);
+			NPC.SetBossStaticDefault();
+
+
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
 			{
 				SpecificallyImmuneTo = new int[] {
