@@ -23,6 +23,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Buffs;
+using System.Linq;
 
 namespace Stellamod.WorldG
 {
@@ -57,15 +58,22 @@ namespace Stellamod.WorldG
         }
         public override void PostUpdateWorld()
         {
- 
-            Player player = Main.LocalPlayer;
-            if (!player.active)
-                return;
-            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
+            for (int playerIndex = 0; playerIndex < Main.maxPlayers; playerIndex++)
+            {
+                Player player = Main.player[playerIndex];
+                if (!player.active)
+                    return;
+                MyPlayer CVA = player.GetModPlayer<MyPlayer>();
 
+                GintzingConditionCheck(player);
+            }
+        }
+
+        private static void GintzingConditionCheck(Player player)
+        {
             if (Gintzing)
             {
-       
+
                 if (Main.expertMode)
                 {
                     if (GintzeKills >= 80)
@@ -77,11 +85,11 @@ namespace Stellamod.WorldG
                     }
 
                 }
-                else if(Main.masterMode)
+                else if (Main.masterMode)
                 {
                     if (GintzeKills >= 100)
                     {
-                        GintzingBoss = true;      
+                        GintzingBoss = true;
                         GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
@@ -99,7 +107,7 @@ namespace Stellamod.WorldG
                 }
 
 
-               
+
 
                 player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
             }
@@ -108,7 +116,7 @@ namespace Stellamod.WorldG
                 TryForGintze = false;
                 GintzeDayReset = false;
             }
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
                 if (Main.rand.NextBool(2))
                 {
@@ -123,7 +131,7 @@ namespace Stellamod.WorldG
             }
 
 
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
             {
                 if (Main.rand.NextBool(40))
                 {
@@ -136,7 +144,6 @@ namespace Stellamod.WorldG
                 }
                 TryForGintze = true;
             }
-
         }
     }
 }
