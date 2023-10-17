@@ -71,7 +71,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.spriteDirection = Projectile.direction;
     
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);

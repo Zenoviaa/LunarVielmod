@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Spears
             Projectile.spriteDirection = Projectile.direction;
 
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             int side = Math.Sign(Projectile.velocity.Y);

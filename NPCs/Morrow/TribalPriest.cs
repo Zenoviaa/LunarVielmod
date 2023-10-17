@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Morrow
 		{
 			Main.npcFrameCount[NPC.type] = 26;
 
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
+			NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData
 			{
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned,

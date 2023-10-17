@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.Thrown
             }
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
             int Gore1 = ModContent.Find<ModGore>("Stellamod/Bricks1").Type;

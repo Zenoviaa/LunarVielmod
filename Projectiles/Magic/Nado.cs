@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Magic
         {
             return Color.White;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 40; i++)

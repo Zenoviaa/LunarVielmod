@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Gun
 			Projectile.hide = true;
 		}
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (Main.rand.NextBool(4))
             {

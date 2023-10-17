@@ -24,7 +24,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.hostile = false;
             Projectile.friendly = true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
         }
         public override void AI()

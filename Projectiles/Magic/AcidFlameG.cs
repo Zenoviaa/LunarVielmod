@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.Magic
             }
             return true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_Death();
             NPC.NewNPC(entitySource, (int)Projectile.position.X, (int)Projectile.position.Y + 30, ModContent.NPCType<IRNDeathBomb>());

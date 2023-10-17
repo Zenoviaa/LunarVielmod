@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles
 			}
 		}
 		public MorrowValswaProj() : base(54, 12, 20, -1, 58, 5, 8, 1.7f, 12f) { }
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
 			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);

@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles
 			Projectile.damage = 20;
 			Projectile.penetrate = 3;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int num623 = 0; num623 < 25; num623++)
 			{

@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 5; i++)

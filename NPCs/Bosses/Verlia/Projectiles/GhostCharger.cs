@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Main.npcFrameCount[NPC.type] = 4; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
+			NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData
 			{
 
 			});

@@ -34,7 +34,7 @@ namespace Stellamod.NPCs.Bosses.INest
             Projectile.friendly = false;
 			Projectile.hostile = true;
 		}
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromThis();
             NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<IrradiatedCreeper>());

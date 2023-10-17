@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             Projectile.height = 35;
             Projectile.hostile = true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1024f, 54f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), Projectile.position);

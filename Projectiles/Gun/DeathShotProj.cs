@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Gun
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			return false;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
             if (Main.netMode != NetmodeID.MultiplayerClient)
