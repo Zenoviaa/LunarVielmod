@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Magic
         {
             if (target.boss)
             {
-                Kill(1);
+                OnKill(1);
             }
         }
         public override void SetDefaults()

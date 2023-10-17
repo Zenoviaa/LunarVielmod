@@ -38,10 +38,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Main.npcFrameCount[NPC.type] = 1; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData
-			{
-				
-			});
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 		}
 
 		public override void SetDefaults()
