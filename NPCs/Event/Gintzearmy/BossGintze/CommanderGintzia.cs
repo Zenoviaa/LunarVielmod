@@ -155,7 +155,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 					BuffID.Confused // Most NPCs have this
 				}
 			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+		
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)

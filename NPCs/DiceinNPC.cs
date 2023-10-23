@@ -40,7 +40,7 @@ namespace Stellamod.NPCs
             NPC.lavaImmune = true;
             NPC.width = 45;
             NPC.height = 45;
-            NPC.damage = 8;
+            NPC.damage = 0;
             NPC.defense = 8;
             NPC.lifeMax = 60;
             NPC.HitSound = SoundID.NPCHit25;

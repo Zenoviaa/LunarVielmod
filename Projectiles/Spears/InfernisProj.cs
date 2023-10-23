@@ -101,7 +101,7 @@ namespace Stellamod.Projectiles.Spears
 
         }
         Vector2 BombOffset;
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
  
 

@@ -88,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation += 0.08f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;

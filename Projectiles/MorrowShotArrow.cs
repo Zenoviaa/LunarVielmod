@@ -175,7 +175,7 @@ namespace Stellamod.Projectiles
 			// It's important to return false, otherwise we also draw the original texture.
 			return false;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
 			{

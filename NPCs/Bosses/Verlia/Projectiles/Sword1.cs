@@ -37,10 +37,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Main.npcFrameCount[NPC.type] = 1; // make sure to set this for your modNPCs.
 
 			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
-			{
-
-			});
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 		}
 
 		public override void SetDefaults()

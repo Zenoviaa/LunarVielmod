@@ -69,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
 
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
             {

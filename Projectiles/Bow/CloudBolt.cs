@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Bow
 			Projectile.timeLeft = 100;
 			Projectile.tileCollide = true; //Tells the game whether or not it can collide with a tile
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 			for (int i = 0; i < 40; i++)

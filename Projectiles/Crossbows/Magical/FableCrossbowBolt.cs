@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
             AIType = ProjectileID.WoodenArrowFriendly;
             Projectile.localNPCHitCooldown = 5;
         }
-        public override void Kill(int timeleft)
+        public override void OnKill(int timeleft)
         {
             for (var i = 0; i < 6; i++)
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 0, default, 0.5f);

@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 			if (Main.rand.Next(1) == 0)
 				target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 20; i++)
 			{

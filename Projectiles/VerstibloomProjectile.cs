@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = 5;
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int num623 = 0; num623 < 25; num623++)
 			{

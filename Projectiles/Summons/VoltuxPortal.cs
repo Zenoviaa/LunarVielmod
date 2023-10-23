@@ -68,7 +68,7 @@ namespace Stellamod.Projectiles.Summons
                 }
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
             Projectile.ownerHitCheck = true;

@@ -52,13 +52,8 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			Main.npcFrameCount[NPC.type] = 16; // make sure to set this for your modnpcs.
 
 			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned, // This NPC will be immune to the Poisoned debuff.
-					BuffID.OnFire
-				}
-			});
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 		}
 		public override void SetDefaults()
 		{

@@ -31,7 +31,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
      
             for (int i = 0; i < 50; i++)

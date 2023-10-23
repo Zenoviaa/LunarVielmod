@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             fallThrough = base.Projectile.position.Y <= base.Projectile.ai[1];
             return true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromThis();
             SoundEngine.PlaySound(SoundID.Grass, Projectile.position);

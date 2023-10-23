@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles
 			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, Projectile.oldVelocity.X * 0.3f, Projectile.oldVelocity.Y * 0.3f);
 			return false;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Shadowflame, Projectile.oldVelocity.X * 0.3f, Projectile.oldVelocity.Y * 0.3f);
 		}

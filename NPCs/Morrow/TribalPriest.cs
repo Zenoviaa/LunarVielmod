@@ -48,13 +48,8 @@ namespace Stellamod.NPCs.Morrow
 		{
 			Main.npcFrameCount[NPC.type] = 26;
 
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-					BuffID.OnFire
-				}
-			});
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 		}
 		public override void SetDefaults()
 		{

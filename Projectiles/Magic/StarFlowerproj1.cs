@@ -99,7 +99,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation += 0.08f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
         }
         public override Color? GetAlpha(Color lightColor)

@@ -82,7 +82,7 @@ namespace Stellamod.Projectiles.Swords
             }
 
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1212f, 62f);
             for (int i = 0; i < 14; i++)

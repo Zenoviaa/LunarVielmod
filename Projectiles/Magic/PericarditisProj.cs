@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Magic
         {
             if (target.boss)
             {
-                Kill(1);
+                OnKill(1);
             }
         }
         public override void SetDefaults()
@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Magic
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pericarditis"), Projectile.position);
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)

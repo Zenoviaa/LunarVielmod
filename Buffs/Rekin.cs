@@ -15,7 +15,7 @@ namespace Stellamod.Buffs
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
 			Main.buffNoTimeDisplay[Type] = true;
-			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
+			BuffID.Sets.IsATagBuff[Type] = true;
 			// DisplayName.SetDefault("DarkHold");
 			// Description.SetDefault("'Dark forces grip you tighly'");
 		}

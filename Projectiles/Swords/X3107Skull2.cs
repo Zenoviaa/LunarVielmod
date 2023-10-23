@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Swords
 
             Projectile.velocity.Y -= 0.01f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)

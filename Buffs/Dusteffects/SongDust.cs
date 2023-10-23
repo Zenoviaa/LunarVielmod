@@ -12,7 +12,7 @@ namespace Stellamod.Buffs.Dusteffects
 			// Description.SetDefault("A dust that is for the whimsical");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = false;
-			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
+			BuffID.Sets.IsATagBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
 
 		}

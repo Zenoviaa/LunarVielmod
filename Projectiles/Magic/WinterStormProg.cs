@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Magic
 
             Projectile.velocity.Y -= 0.01f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
             for (int i = 0; i < 3; i++)

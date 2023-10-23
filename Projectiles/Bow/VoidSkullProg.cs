@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Bow
             base.Projectile.ai[0] += 0.55f;
 
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
             {

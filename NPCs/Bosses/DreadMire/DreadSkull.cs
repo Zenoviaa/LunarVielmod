@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             base.Projectile.ai[0] += 0.55f;
             Dust.NewDustPerfect(base.Projectile.Center, 114, Vector2.Zero, 0, Color.White).noGravity = true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
             {

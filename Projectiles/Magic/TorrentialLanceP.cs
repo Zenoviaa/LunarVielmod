@@ -104,7 +104,7 @@ namespace Stellamod.Projectiles.Magic
 				Main.spriteBatch.Draw(texture2D4, vector29, new Microsoft.Xna.Framework.Rectangle?(TextureAssets.Projectile[Projectile.type].Value.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame)), color28, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects3, 0f);
 			}
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 20; i++)
 			{
