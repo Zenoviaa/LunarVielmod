@@ -908,7 +908,7 @@ Mods: {
 
 			VeriBossRel: {
 				DisplayName: Irradia N Havoc Boss Relic
-				Tooltip: Boss relic of a relic boss, good job 
+				Tooltip: Boss relic of a relic boss, good job
 			}
 
 			walla: {
@@ -3487,6 +3487,16 @@ Mods: {
 				DisplayName: Starbloom Dirt Block
 				Tooltip: ""
 			}
+
+			SepuvelScissors: {
+				DisplayName: Sepuvel Scissors
+				Tooltip: ""
+			}
+
+			FurihaMKIII: {
+				DisplayName: Furiha M K I I I
+				Tooltip: ""
+			}
 		}
 
 		VoidKey: {
@@ -4646,6 +4656,11 @@ Mods: {
 			AmethystBrooch.DisplayName: Amethyst Brooch
 			CrystalBloom.DisplayName: Crystal Bloom
 			CrystalPowderProj.DisplayName: Crystal Powder Proj
+			ScissorianHold.DisplayName: Scissorian Hold
+			ScissorianSlash.DisplayName: Scissorian Slash
+			ScissorianSlash2.DisplayName: Scissorian Slash2
+			Stardom.DisplayName: Stardom
+			Stardom2.DisplayName: Stardom2
 		}
 	}
 
