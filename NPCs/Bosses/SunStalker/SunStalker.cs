@@ -804,7 +804,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             else
                             {
 
-                                int ATT = Main.rand.Next(1, 5);
+                                int ATT = Main.rand.Next(1, Attacks);
                                 if (NPC.ai[3] == PrevAttack)
                                 {
                                     TPChance = false;

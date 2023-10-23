@@ -40,8 +40,7 @@ namespace Stellamod.Projectiles
 			{
 				Projectile.friendly = false;
 			}
-			if (Projectile.timeLeft % 3 == 0)
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<CryoDust>());
+
 			
 			Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
 		}

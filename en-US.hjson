@@ -907,7 +907,7 @@ Mods: {
 			}
 
 			VeriBossRel: {
-				DisplayName: "Gothivia N Rek" Boss Relic
+				DisplayName: Gothivia N Rek Boss Relic
 				Tooltip: Boss relic of a relic boss, good job :)
 			}
 
@@ -4175,16 +4175,16 @@ Mods: {
 
 			LanternOfHope.DisplayName: Lantern Of Hope
 			HarvestGovheil.DisplayName: Harvest Govheil
-			Gothivia.DisplayName: "Gothivia"
-			Rek.DisplayName: "Rek"
+			Gothivia.DisplayName: Gothivia
+			Rek.DisplayName: Rek
 			Train1.DisplayName: Train1
 			Train2.DisplayName: Train2
 
 			Gothiviab: {
-				DisplayName: "Gothivia"
+				DisplayName: Gothivia
 
 				BossChecklistIntegration: {
-					EntryName: "Gothivia the Sun Goddess"
+					EntryName: Gothivia the Sun Goddess
 					SpawnInfo: Wake her up at her shrine in the Govheil Castle, underneath the Virulent
 				}
 			}
