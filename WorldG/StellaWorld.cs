@@ -1884,7 +1884,7 @@ namespace Stellamod.WorldG
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 30); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
+				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh + 100, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
