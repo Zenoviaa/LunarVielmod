@@ -16,6 +16,11 @@ using Stellamod.Items.Accessories.Runes;
 
 using Stellamod.Projectiles.Spears;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles;
+using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -40,6 +45,8 @@ namespace Stellamod.Items.Weapons.Melee
             Item.rare = ItemRarityID.Gray;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
             Item.useTurn = true;
             Item.shoot = ModContent.ProjectileType<ArchariliteRaysWave>();
             Item.shootSpeed = 30f;
@@ -62,11 +69,35 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
+        public int AttackCounter = 1;
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
+            {
+         
+                type = ModContent.ProjectileType<ArchariliteRayswordSlash>();
+
+            }
+
+        }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 
+            int dir = AttackCounter;
+            if (player.direction == 1)
+            {
+                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter;
+            }
+            else
+            {
+                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter * -1;
 
-            return true;
+            }
+            AttackCounter = -AttackCounter;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWave>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            return false;
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {

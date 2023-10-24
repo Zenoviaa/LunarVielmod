@@ -71,6 +71,7 @@
     <None Remove="Items\Accessories\StarflareBand.png" />
     <None Remove="Items\Accessories\SunGlyph.png" />
     <None Remove="Items\Accessories\WoodShield.png" />
+    <None Remove="Items\Armors\Terric\TericGramNPC2.png" />
     <None Remove="Items\Consumables\DreadmireBag.png" />
     <None Remove="Items\Consumables\EDR.png" />
     <None Remove="Items\Consumables\JackoBag.png" />
@@ -189,6 +190,7 @@
     <None Remove="Items\Weapons\Summon\VoidStaff.png" />
     <None Remove="Items\Weapons\Summon\X3144.png" />
     <None Remove="NPCs\Bosses\Daedus\SummonSpawnEffect.png" />
+    <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
@@ -223,6 +225,7 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
+    <None Remove="Projectiles\Slashers\AuroranSwordProj - Copy.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />

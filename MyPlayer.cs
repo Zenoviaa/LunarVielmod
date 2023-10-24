@@ -34,6 +34,7 @@ using Terraria.GameContent;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.Items.Armors.Terric;
 
 namespace Stellamod
 {
@@ -218,8 +219,10 @@ namespace Stellamod
 
 
 
-
-
+		public bool Teric = false;
+		public int TericGramTime = 0;
+        public int TericGramLevel = 0;
+        public bool TericGram = false;
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
             this.shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
@@ -320,17 +323,27 @@ namespace Stellamod
 			{
 
 				if (Main.rand.NextBool(4))
-                {
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
-                    Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 400);
-                    WindRuneOn = true;
-  
+				{
+					var EntitySource = Player.GetSource_FromThis();
+					Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
+					Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 400);
+					WindRuneOn = true;
+
+				}
+			}
+			if (Teric)
+            {
+                TericGramTime = 0;
+       
+				if(TericGramLevel > 0)
+				{
+                    TericGramLevel -= 1;
                 }
 			}
 
-			if (StealthRune && StealthTime >= 500)
+
+            if (StealthRune && StealthTime >= 500)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StealthRune"), Player.position);
                 for (int m = 0; m < 20; m++)
@@ -437,7 +450,10 @@ namespace Stellamod
         public override void ResetEffects()
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-			TAuraSpawn = false;
+			Teric = false;
+
+
+            TAuraSpawn = false;
 			HikersBSpawn = false;
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
@@ -558,8 +574,52 @@ namespace Stellamod
                 Dead = false;
 
             }
-			//player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
-			if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
+
+
+            if (Teric)
+            {
+                if (TericGramLevel == 2)
+                {
+                    Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.5f * Main.essScale);
+                    player.GetCritChance(DamageClass.Magic) += 21;
+                }
+                if (TericGramLevel == 1)
+                {
+                    Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.25f * Main.essScale);
+                    player.GetCritChance(DamageClass.Magic) += 10;
+                }
+                TericGramTime++;
+				if(TericGramTime >= 340)
+				{
+					TericGramTime = 0;
+					if (TericGramLevel < 2)
+					{
+						if(TericGramLevel == 1)
+                        {
+                            var EntitySource = Player.GetSource_FromThis();
+                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
+                            TericGramLevel += 1;
+                        }
+						else
+                        {
+                            Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.75f * Main.essScale);
+                            var EntitySource = Player.GetSource_FromThis();
+                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
+                            TericGramLevel += 1;
+                        }
+			
+
+                    }
+                }
+
+            }
+            else
+            {
+                TericGramTime = 0;
+                TericGramLevel = 0;
+            }
+            //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
+            if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
                 WindRuneOn = false;

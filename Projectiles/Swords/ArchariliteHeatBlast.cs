@@ -10,7 +10,7 @@ using static Humanizer.In;
 
 namespace Stellamod.Projectiles.Swords
 {
-    internal class ArchariliteHeatBlast : ModProjectile
+    internal class ArchariliteRaysWave : ModProjectile
     {
         bool Moved;
 
@@ -36,9 +36,8 @@ namespace Stellamod.Projectiles.Swords
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 212f, 5f);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
-
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasherEle"), Projectile.position);
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 for (int j = 0; j < 10; j++)
@@ -76,7 +75,7 @@ namespace Stellamod.Projectiles.Swords
         {
             for (int i = 0; i < 20; i++)
             {
-
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 10f);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
                 int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;

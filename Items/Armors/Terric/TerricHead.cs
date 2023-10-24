@@ -51,6 +51,7 @@ namespace Stellamod.Items.Armors.Terric
 
         public override void UpdateArmorSet(Player player)
         {
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().Teric = true;
             player.statLifeMax2 += 20;
         }
     }

@@ -40,7 +40,7 @@ namespace Stellamod.Items.Armors.Vextin
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.statLifeMax2 += 20;
+			player.statLifeMax2 += 10;
 			player.GetDamage(DamageClass.Generic) *= 1.07f;
 		
 			

@@ -96,7 +96,7 @@ namespace Stellamod.Tiles
             }
             if (!player.HasItem(ModContent.ItemType<SunClaw>()))
             {
-                Main.NewText("Come back with a sun claw to fight the warrior of the desert.", Color.Gold);
+                Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
 
             }
             return false;

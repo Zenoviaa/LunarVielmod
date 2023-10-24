@@ -7,6 +7,7 @@ using Stellamod.Items.Ores;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
