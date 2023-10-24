@@ -32,6 +32,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Main.tileLavaDeath[Type] = false;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+		
 			// This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 			MineResist = 4f;
 			MinPick = 200;
@@ -54,6 +55,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
 			LocalizedText name = CreateMapEntryName();
+
 
 			// name.SetDefault("Hunter's Curtains");
 			AddMapEntry(new Color(147, 149, 93), name);
@@ -188,7 +190,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			b = 0.12f;
 		}
 
-		
+	
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
