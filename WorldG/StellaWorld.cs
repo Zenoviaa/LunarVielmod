@@ -48,7 +48,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 			}
 
-			int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
+			int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
 			if (FableGen != -1)
 			{
 				tasks.Insert(FableGen + 1, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
