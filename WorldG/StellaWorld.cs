@@ -1627,7 +1627,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
-				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 200, (int)GenVars.rockLayerHigh + 200);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
@@ -1750,7 +1750,7 @@ namespace Stellamod.WorldG
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
-				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 150, (int)GenVars.rockLayerHigh + 150);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
