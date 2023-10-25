@@ -39,7 +39,9 @@ namespace Stellamod.WorldG
 		public static bool SoulStorm;
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
+
 			
+
 
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (MorrowGen != -1)
@@ -48,12 +50,12 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 			}
 
-			int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
-			if (FableGen != -1)
-			{
-				tasks.Insert(FableGen + 1, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+	//		int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
+		//	if (FableGen != -1)
+		//	{
+		//		tasks.Insert(FableGen + 1, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 
-			}
+		//	}
 
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 			if (ShiniesIndex != -1)
@@ -67,10 +69,11 @@ namespace Stellamod.WorldG
 			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen2 != -1)
 			{
-				
-				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
-			//	tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+
+				//tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+			//	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
+				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
@@ -78,7 +81,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenMed));
 				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
 				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-			//	tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 
 				
 			}
@@ -133,6 +136,8 @@ namespace Stellamod.WorldG
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Sand
 					|| tile.TileType == TileID.Dirt
+					|| tile.TileType == TileID.Grass
+					|| tile.TileType == TileID.Stone
 					|| tile.TileType == TileID.Sandstone))
 				{
 					continue;
@@ -154,12 +159,12 @@ namespace Stellamod.WorldG
 					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome2");
 
 
-					Point Loc2 = new Point(smx - 10, smy + 30);
-					WorldUtils.Gen(Loc2, new Shapes.Mound(30, 80), new Actions.SetTile(TileID.Sand));
+					Point Loc2 = new Point(smx - 10, smy);
+					WorldUtils.Gen(Loc2, new Shapes.Mound(50, 140), new Actions.SetTile(TileID.Dirt));
 
 
-					Point Loc3 = new Point(smx + 455, smy + 30);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 80), new Actions.SetTile(TileID.Sand));
+				//	Point Loc3 = new Point(smx + 455, smy + 30);
+				//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 80), new Actions.SetTile(TileID.Sand));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -170,7 +175,8 @@ namespace Stellamod.WorldG
 					//		{
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
-
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					WorldGen.TileRunner(Loc2.X, Loc2.Y - 60, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(150, 150), TileID.Grass);
 					placed = true;
 				}
 
@@ -226,6 +232,7 @@ namespace Stellamod.WorldG
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
 					if (!(tile.TileType == TileID.Dirt
 						|| tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()
+						
 						|| tile.TileType == TileID.Mud))
 
 					{
@@ -377,7 +384,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Building Gintze houses";
 
 
-			for (int k = 0; k < 6; k++)
+			for (int k = 0; k < 5; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
@@ -409,6 +416,7 @@ namespace Stellamod.WorldG
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
 					if (!(tile.TileType == TileID.Dirt
+						|| tile.TileType == TileID.Sand
 						|| tile.TileType == TileID.Mud))
 
 					{
@@ -617,8 +625,8 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy + Main.rand.Next(0, 0));
-						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter");
+						Point Loc = new Point(smx, smy + 10);
+						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter2");
 						
 					}
 
@@ -853,9 +861,9 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx, abysmy + 170);
+					
 
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Huntria/GovheilCastle");
+					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, "Struct/Huntria/GovheilCastle");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -1062,8 +1070,10 @@ namespace Stellamod.WorldG
 			}
 		}
 
+	
 
-		private void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
+
+		public void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Virulifying the Morrow";
 
@@ -1122,144 +1132,16 @@ namespace Stellamod.WorldG
 
 					Point Loc = new Point(abysmx + 50, abysmy + 255);
 
-
-
-				
-
-
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Huntria/GovheilCastle");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
-							Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(9))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<GovheilPowder>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10))); ;
-								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-								break;
-							case 1:
-								itemsToAdd.Add((ModContent.ItemType<GreekLantern>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-								break;
-							case 2:
-								itemsToAdd.Add((ModContent.ItemType<Kilvier>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-								break;
-							case 3:
-								itemsToAdd.Add((ModContent.ItemType<Galvinie>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-
-								break;
-							case 4:
-								itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-								break;
-
-							case 5:
-								itemsToAdd.Add((ModContent.ItemType<GovhenShield>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-								break;
-
-							case 6:
-								itemsToAdd.Add((ModContent.ItemType<TheBurningRod>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
-								break;
-
-
-							case 7:
-								itemsToAdd.Add((ModContent.ItemType<GovheilHolsterBroochA>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
-								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
-								break;
-
-							case 9:
-								itemsToAdd.Add((ModContent.ItemType<Blackdot>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-								break;
+					pointL = new Point(abysmx + 50, abysmy + 255);
 
 
 
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-
-						WorldGen.DirtyRockRunner(0, Loc7.X + 300);
-						GenVars.structures.AddProtectedStructure(new Rectangle(abysmx + 50, abysmy + 255, 200, 200));
-					}
 
 
+
+					
+
+					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
 					placed = true;
 				}
 
@@ -1308,6 +1190,8 @@ namespace Stellamod.WorldG
 			
 
 		}
+
+		Point pointL;
 		// 6. This is the actual world generation code.
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
