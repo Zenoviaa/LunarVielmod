@@ -1068,7 +1068,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Virulifying the Morrow";
 
 
-
+			
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 100000)
@@ -1121,6 +1121,12 @@ namespace Stellamod.WorldG
 
 
 					Point Loc = new Point(abysmx + 50, abysmy + 255);
+
+
+
+				
+
+
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Huntria/GovheilCastle");
 					foreach (int chestIndex in ChestIndexs)
@@ -1250,6 +1256,7 @@ namespace Stellamod.WorldG
 						}
 
 						WorldGen.DirtyRockRunner(0, Loc7.X + 300);
+						GenVars.structures.AddProtectedStructure(new Rectangle(abysmx + 50, abysmy + 255, 200, 200));
 					}
 
 
