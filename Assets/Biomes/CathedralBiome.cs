@@ -36,7 +36,10 @@ namespace Stellamod.Assets.Biomes
 		{
 			// DisplayName.SetDefault("Cathedral of the Moon");
 		}
-
+		public override void SpecialVisuals(Player player, bool isActive)
+		{
+			player.ManageSpecialBiomeVisuals("Stellamod:StarbloomSky", isActive, player.Center);
+		}
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player)
 		{
