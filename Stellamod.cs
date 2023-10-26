@@ -90,7 +90,7 @@ namespace Stellamod
 
 
 
-                Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.1f, 0.2f, 0.3f).UseOpacity(0.9f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
             }
 

@@ -67,6 +67,7 @@ namespace Stellamod
 		public int SwordComboR;
 		public int lastSelectedI;
 		public bool Lovestruck;
+		public bool ZoneCathedral = false;
 		public int LovestruckBCooldown = 0;
 		public bool ADisease;
 		public bool ZoneFable = false;
@@ -543,7 +544,8 @@ namespace Stellamod
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
 			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
+		
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<Daedus>()));

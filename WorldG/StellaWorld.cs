@@ -160,9 +160,9 @@ namespace Stellamod.WorldG
 
 
 					Point Loc2 = new Point(smx - 10, smy);
-					Point Loc4 = new Point(smx + 233, smy + 30);
+					Point Loc4 = new Point(smx + 233, smy + 10);
 					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
-					WorldUtils.Gen(Loc4, new Shapes.Rectangle(60, 90), new Actions.SetTile(TileID.Dirt));
+					WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 90), new Actions.SetTile(TileID.Dirt));
 
 					Point Loc3 = new Point(smx + 455, smy + 30);
 					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
@@ -177,7 +177,7 @@ namespace Stellamod.WorldG
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
 					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
-					WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
 					WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
 				}
