@@ -176,7 +176,7 @@ namespace Stellamod.WorldG
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
 					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
-					WorldGen.TileRunner(Loc2.X, Loc2.Y - 60, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(150, 150), TileID.Grass);
+					WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
 				}
 
