@@ -119,7 +119,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.worldSurface - 50));
+				int smy = ((int)(Main.worldSurface - 200));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
@@ -160,11 +160,12 @@ namespace Stellamod.WorldG
 
 
 					Point Loc2 = new Point(smx - 10, smy);
-					WorldUtils.Gen(Loc2, new Shapes.Mound(50, 140), new Actions.SetTile(TileID.Dirt));
+					Point Loc4 = new Point(smx + 233, smy + 30);
+					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+					WorldUtils.Gen(Loc4, new Shapes.Rectangle(60, 90), new Actions.SetTile(TileID.Dirt));
 
-
-				//	Point Loc3 = new Point(smx + 455, smy + 30);
-				//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 80), new Actions.SetTile(TileID.Sand));
+					Point Loc3 = new Point(smx + 455, smy + 30);
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -177,6 +178,7 @@ namespace Stellamod.WorldG
 					//		}
 					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
 					WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
 				}
 
@@ -1227,10 +1229,10 @@ namespace Stellamod.WorldG
 			
 
 				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yz = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+				int yz = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 9), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 13), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
 			}
 
 
@@ -1251,7 +1253,7 @@ namespace Stellamod.WorldG
 				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 13), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
 			}
 		}
 		private void WorldGenVirulentStructures(GenerationProgress progress, GameConfiguration configuration)

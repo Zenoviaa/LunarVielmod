@@ -1,5 +1,6 @@
 ﻿using Stellamod.WorldG;
 using System;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -121,55 +122,55 @@ namespace Stellamod
 
 
                 Main.instance.LoadTiles(TileID.Dirt);
-                Main.tileTexture[TileID.Dirt] = GetTexture("Textures/DirtRE");
+                TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
 
                 Main.instance.LoadTiles(TileID.IceBlock);
-                Main.tileTexture[TileID.IceBlock] = GetTexture("Textures/IceRE");
+                TextureAssets.Tile[TileID.IceBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/IceRE");
 
                 Main.instance.LoadTiles(TileID.SnowBlock);
-                Main.tileTexture[TileID.SnowBlock] = GetTexture("Textures/SnowRE");
+                TextureAssets.Tile[TileID.SnowBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowRE");
 
                 Main.instance.LoadWall(WallID.Dirt);
-                Main.wallTexture[WallID.Dirt] = GetTexture("Textures/DirtWallRE");
+                TextureAssets.Wall[WallID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtWallRE");
 
                 Main.instance.LoadTiles(TileID.Stone);
-                Main.tileTexture[TileID.Stone] = GetTexture("Textures/StoneRE");
+                TextureAssets.Tile[TileID.Stone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneRE");
 
                 Main.instance.LoadTiles(TileID.Grass);
-                Main.tileTexture[TileID.Grass] = GetTexture("Textures/GrassRE");
+                TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GrassRE");
 
                 Main.instance.LoadTiles(TileID.ClayBlock);
-                Main.tileTexture[TileID.ClayBlock] = GetTexture("Textures/ClayRE");
+                TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/ClayRE");
 
                 Main.instance.LoadTiles(TileID.Sand);
-                Main.tileTexture[TileID.Sand] = GetTexture("Textures/SandRE");
+                TextureAssets.Tile[TileID.Sand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SandRE");
 
                 Main.instance.LoadTiles(TileID.HardenedSand);
-                Main.tileTexture[TileID.HardenedSand] = GetTexture("Textures/HardSandRE");
+                TextureAssets.Tile[TileID.HardenedSand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/HardSandRE");
 
                 Main.instance.LoadTiles(TileID.Sandstone);
-                Main.tileTexture[TileID.Sandstone] = GetTexture("Textures/StoneSandRE");
+                TextureAssets.Tile[TileID.Sandstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneSandRE");
 
                 Main.instance.LoadTiles(TileID.Mud);
-                Main.tileTexture[TileID.Mud] = GetTexture("Textures/MudRE");
+                TextureAssets.Tile[TileID.Mud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudRE");
 
-                Main.instance.LoadTiles(TileID.FleshGrass);
-                Main.tileTexture[TileID.FleshGrass] = GetTexture("Textures/CrimGrassRE");
+                Main.instance.LoadTiles(TileID.CrimsonGrass);
+                TextureAssets.Tile[TileID.CrimsonGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimGrassRE");
 
                 Main.instance.LoadTiles(TileID.JungleGrass);
-                Main.tileTexture[TileID.JungleGrass] = GetTexture("Textures/MudGrassRE");
+                TextureAssets.Tile[TileID.JungleGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudGrassRE");
 
                 Main.instance.LoadTiles(TileID.CorruptGrass);
-                Main.tileTexture[TileID.CorruptGrass] = GetTexture("Textures/CrorpGrassRE");
+                TextureAssets.Tile[TileID.CorruptGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpGrassRE");
 
                 Main.instance.LoadTiles(TileID.Crimstone);
-                Main.tileTexture[TileID.Crimstone] = GetTexture("Textures/CrimStoneRE");
+                TextureAssets.Tile[TileID.Crimstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimStoneRE");
 
                 Main.instance.LoadTiles(TileID.WoodBlock);
-                Main.tileTexture[TileID.WoodBlock] = GetTexture("Textures/WoodRE");
+                TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/WoodRE");
 
                 Main.instance.LoadTiles(TileID.GrayBrick);
-                Main.tileTexture[TileID.GrayBrick] = GetTexture("Textures/StoneBrickRE");
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
 
             }
             Instance = this;
@@ -182,40 +183,41 @@ namespace Stellamod
         {
             if (!Main.dedServ)
             {
-                Main.tileFrame[TileID.Dirt] = 0;
-                Main.tileSetsLoaded[TileID.Dirt] = false;
-                Main.wallFrame[WallID.Dirt] = 0;
-                Main.wallLoaded[WallID.Dirt] = false;
-                Main.tileFrame[TileID.Stone] = 0;
-                Main.tileSetsLoaded[TileID.Stone] = false;
-                Main.tileFrame[TileID.Grass] = 0;
-                Main.tileSetsLoaded[TileID.Grass] = false;
-                Main.tileFrame[TileID.ClayBlock] = 0;
-                Main.tileSetsLoaded[TileID.ClayBlock] = false;
-                Main.tileFrame[TileID.Sand] = 0;
-                Main.tileSetsLoaded[TileID.Sand] = false;
-                Main.tileFrame[TileID.Sandstone] = 0;
-                Main.tileSetsLoaded[TileID.Sandstone] = false;
-                Main.tileFrame[TileID.HardenedSand] = 0;
-                Main.tileSetsLoaded[TileID.HardenedSand] = false;
-                Main.tileFrame[TileID.Mud] = 0;
-                Main.tileSetsLoaded[TileID.Mud] = false;
-                Main.tileFrame[TileID.FleshGrass] = 0;
-                Main.tileSetsLoaded[TileID.FleshGrass] = false;
-                Main.tileFrame[TileID.CorruptGrass] = 0;
-                Main.tileSetsLoaded[TileID.CorruptGrass] = false;
-                Main.tileFrame[TileID.Crimstone] = 0;
-                Main.tileSetsLoaded[TileID.Crimstone] = false;
-                Main.tileFrame[TileID.JungleGrass] = 0;
-                Main.tileSetsLoaded[TileID.JungleGrass] = false;
-                Main.tileFrame[TileID.SnowBlock] = 0;
-                Main.tileSetsLoaded[TileID.SnowBlock] = false;
-                Main.tileFrame[TileID.IceBlock] = 0;
-                Main.tileSetsLoaded[TileID.IceBlock] = false;
-                Main.tileFrame[TileID.WoodBlock] = 0;
-                Main.tileSetsLoaded[TileID.WoodBlock] = false;
-                Main.tileFrame[TileID.GrayBrick] = 0;
-                Main.tileSetsLoaded[TileID.GrayBrick] = false;
+                /*  Main.tileFrame[TileID.Dirt] = 0;
+                  Main.tilesLoaded(TileID.Dirt) = false; 
+                  Main.wallFrame[WallID.Dirt] = 0;
+                  Main.wallLoaded[WallID.Dirt] = false;
+                  Main.tileFrame[TileID.Stone] = 0;
+                  Main.tileSetsLoaded[TileID.Stone] = false;
+                  Main.tileFrame[TileID.Grass] = 0;
+                  Main.tileSetsLoaded[TileID.Grass] = false;
+                  Main.tileFrame[TileID.ClayBlock] = 0;
+                  Main.instance.LoadTiles(TileID.ClayBlock) = false;
+                  Main.tileFrame[TileID.Sand] = 0;
+                  Main.tileSetsLoaded[TileID.Sand] = false;
+                  Main.tileFrame[TileID.Sandstone] = 0;
+                  Main.tileSetsLoaded[TileID.Sandstone] = false;
+                  Main.tileFrame[TileID.HardenedSand] = 0;
+                  Main.tileSetsLoaded[TileID.HardenedSand] = false;
+                  Main.tileFrame[TileID.Mud] = 0;
+                  Main.tileSetsLoaded[TileID.Mud] = false;
+                  Main.tileFrame[TileID.CrimsonGrass] = 0;
+                  Main.tileSetsLoaded[TileID.CrimsonGrass] = false;
+                  Main.tileFrame[TileID.CorruptGrass] = 0;
+                  Main.tileSetsLoaded[TileID.CorruptGrass] = false;
+                  Main.tileFrame[TileID.Crimstone] = 0;
+                  Main.tileSetsLoaded[TileID.Crimstone] = false;
+                  Main.tileFrame[TileID.JungleGrass] = 0;
+                  Main.tileSetsLoaded[TileID.JungleGrass] = false;
+                  Main.tileFrame[TileID.SnowBlock] = 0;
+                  Main.tileSetsLoaded[TileID.SnowBlock] = false;
+                  Main.tileFrame[TileID.IceBlock] = 0;
+                  Main.tileSetsLoaded[TileID.IceBlock] = false;
+                  Main.tileFrame[TileID.WoodBlock] = 0;
+                  Main.tileSetsLoaded[TileID.WoodBlock] = false;
+                  Main.tileFrame[TileID.GrayBrick] = 0;
+                 Main.tileSetsLoaded[TileID.GrayBrick] = false;
+                */
             }
         }
     }
