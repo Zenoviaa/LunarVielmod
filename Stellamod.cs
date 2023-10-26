@@ -86,6 +86,11 @@ namespace Stellamod
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
+
+
+
+                Filters.Scene["Stellamod:Raveyard"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                SkyManager.Instance["Stellamod:Raveyard"] = new StarbloomSky();
             }
 
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
@@ -111,18 +116,107 @@ namespace Stellamod
 
 
 
+            if (!Main.dedServ)
+            {
+
+
+                Main.instance.LoadTiles(TileID.Dirt);
+                Main.tileTexture[TileID.Dirt] = GetTexture("Textures/DirtRE");
+
+                Main.instance.LoadTiles(TileID.IceBlock);
+                Main.tileTexture[TileID.IceBlock] = GetTexture("Textures/IceRE");
+
+                Main.instance.LoadTiles(TileID.SnowBlock);
+                Main.tileTexture[TileID.SnowBlock] = GetTexture("Textures/SnowRE");
+
+                Main.instance.LoadWall(WallID.Dirt);
+                Main.wallTexture[WallID.Dirt] = GetTexture("Textures/DirtWallRE");
+
+                Main.instance.LoadTiles(TileID.Stone);
+                Main.tileTexture[TileID.Stone] = GetTexture("Textures/StoneRE");
+
+                Main.instance.LoadTiles(TileID.Grass);
+                Main.tileTexture[TileID.Grass] = GetTexture("Textures/GrassRE");
+
+                Main.instance.LoadTiles(TileID.ClayBlock);
+                Main.tileTexture[TileID.ClayBlock] = GetTexture("Textures/ClayRE");
+
+                Main.instance.LoadTiles(TileID.Sand);
+                Main.tileTexture[TileID.Sand] = GetTexture("Textures/SandRE");
+
+                Main.instance.LoadTiles(TileID.HardenedSand);
+                Main.tileTexture[TileID.HardenedSand] = GetTexture("Textures/HardSandRE");
+
+                Main.instance.LoadTiles(TileID.Sandstone);
+                Main.tileTexture[TileID.Sandstone] = GetTexture("Textures/StoneSandRE");
+
+                Main.instance.LoadTiles(TileID.Mud);
+                Main.tileTexture[TileID.Mud] = GetTexture("Textures/MudRE");
+
+                Main.instance.LoadTiles(TileID.FleshGrass);
+                Main.tileTexture[TileID.FleshGrass] = GetTexture("Textures/CrimGrassRE");
+
+                Main.instance.LoadTiles(TileID.JungleGrass);
+                Main.tileTexture[TileID.JungleGrass] = GetTexture("Textures/MudGrassRE");
+
+                Main.instance.LoadTiles(TileID.CorruptGrass);
+                Main.tileTexture[TileID.CorruptGrass] = GetTexture("Textures/CrorpGrassRE");
+
+                Main.instance.LoadTiles(TileID.Crimstone);
+                Main.tileTexture[TileID.Crimstone] = GetTexture("Textures/CrimStoneRE");
+
+                Main.instance.LoadTiles(TileID.WoodBlock);
+                Main.tileTexture[TileID.WoodBlock] = GetTexture("Textures/WoodRE");
+
+                Main.instance.LoadTiles(TileID.GrayBrick);
+                Main.tileTexture[TileID.GrayBrick] = GetTexture("Textures/StoneBrickRE");
+
+            }
+            Instance = this;
+
+
 
         }
 
         public override void Unload()
         {
-            // The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.
-            // Be sure to always write unloading code when there is a chance of some of your mod's objects being kept present inside the vanilla assembly.
-            // The most common reason for that to happen comes from using events, NOT counting On.* and IL.* code-injection namespaces.
-            // If you subscribe to an event - be sure to eventually unsubscribe from it.
-
-            // NOTE: When writing unload code - be sure use 'defensive programming'. Or, in other words, you should always assume that everything in the mod you're unloading might've not even been initialized yet.
-            // NOTE: There is rarely a need to null-out values of static fields, since TML aims to completely dispose mod assemblies in-between mod reloads.
+            if (!Main.dedServ)
+            {
+                Main.tileFrame[TileID.Dirt] = 0;
+                Main.tileSetsLoaded[TileID.Dirt] = false;
+                Main.wallFrame[WallID.Dirt] = 0;
+                Main.wallLoaded[WallID.Dirt] = false;
+                Main.tileFrame[TileID.Stone] = 0;
+                Main.tileSetsLoaded[TileID.Stone] = false;
+                Main.tileFrame[TileID.Grass] = 0;
+                Main.tileSetsLoaded[TileID.Grass] = false;
+                Main.tileFrame[TileID.ClayBlock] = 0;
+                Main.tileSetsLoaded[TileID.ClayBlock] = false;
+                Main.tileFrame[TileID.Sand] = 0;
+                Main.tileSetsLoaded[TileID.Sand] = false;
+                Main.tileFrame[TileID.Sandstone] = 0;
+                Main.tileSetsLoaded[TileID.Sandstone] = false;
+                Main.tileFrame[TileID.HardenedSand] = 0;
+                Main.tileSetsLoaded[TileID.HardenedSand] = false;
+                Main.tileFrame[TileID.Mud] = 0;
+                Main.tileSetsLoaded[TileID.Mud] = false;
+                Main.tileFrame[TileID.FleshGrass] = 0;
+                Main.tileSetsLoaded[TileID.FleshGrass] = false;
+                Main.tileFrame[TileID.CorruptGrass] = 0;
+                Main.tileSetsLoaded[TileID.CorruptGrass] = false;
+                Main.tileFrame[TileID.Crimstone] = 0;
+                Main.tileSetsLoaded[TileID.Crimstone] = false;
+                Main.tileFrame[TileID.JungleGrass] = 0;
+                Main.tileSetsLoaded[TileID.JungleGrass] = false;
+                Main.tileFrame[TileID.SnowBlock] = 0;
+                Main.tileSetsLoaded[TileID.SnowBlock] = false;
+                Main.tileFrame[TileID.IceBlock] = 0;
+                Main.tileSetsLoaded[TileID.IceBlock] = false;
+                Main.tileFrame[TileID.WoodBlock] = 0;
+                Main.tileSetsLoaded[TileID.WoodBlock] = false;
+                Main.tileFrame[TileID.GrayBrick] = 0;
+                Main.tileSetsLoaded[TileID.GrayBrick] = false;
+            }
         }
     }
 
