@@ -908,7 +908,7 @@ Mods: {
 
 			VeriBossRel: {
 				DisplayName: Irradia N Havoc Boss Relic
-				Tooltip: Boss relic of a relic boss, good job :)
+				Tooltip: Boss relic of a relic boss, good job
 			}
 
 			walla: {
@@ -3487,14 +3487,10 @@ Mods: {
 				DisplayName: Starbloom Dirt Block
 				Tooltip: ""
 			}
+		}
 
-			MushroomStave: {
-				DisplayName: Mushroom Stave
-				Tooltip: ""
-			}
-
-			M61X: {
-				DisplayName: M61 X
+			FurihaMKIII: {
+				DisplayName: Furiha M K I I I
 				Tooltip: ""
 			}
 		}
@@ -4665,12 +4661,6 @@ Mods: {
 			AmethystBrooch.DisplayName: Amethyst Brooch
 			CrystalBloom.DisplayName: Crystal Bloom
 			CrystalPowderProj.DisplayName: Crystal Powder Proj
-			MushroomStaveMinion.DisplayName: Mushroom Stave Minion
-			MushroomStaveMinionProg.DisplayName: Mushroom Stave Minion Prog
-			ArchariliteHeatBlast.DisplayName: Archarilite Heat Blast
-			ArchariliteRayswordSlash.DisplayName: Archarilite Raysword Slash
-			DaedusBombExplosion.DisplayName: Daedus Bomb Explosion
-			DLantern.DisplayName: D Lantern
 		}
 	}
 

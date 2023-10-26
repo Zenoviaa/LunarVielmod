@@ -11,7 +11,7 @@ namespace Stellamod.Tiles
 	{
 		public override void SetStaticDefaults()
 		{
-			TileID.Sets.Ore[Type] = true;
+			
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
  // Modifies the draw color slightly.
@@ -19,6 +19,8 @@ namespace Stellamod.Tiles
 			Main.tileMergeDirt[Type] = true;
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;
+			MineResist = 2f;
+			MinPick = 225;
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Huntiac Silk");
@@ -28,8 +30,7 @@ namespace Stellamod.Tiles
 		
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.HuntiacBlock>());
 			HitSound = SoundID.Tink;
-			MineResist = 1f;
-			 MinPick = 180;
+			
 		}
 		public override bool CanExplode(int i, int j) => false;
 		public override void NumDust(int i, int j, bool fail, ref int num)

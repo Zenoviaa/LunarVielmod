@@ -207,6 +207,7 @@
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
@@ -227,7 +228,7 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
-    <None Remove="Projectiles\Slashers\AuroranSwordProj - Copy.png" />
+    <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />

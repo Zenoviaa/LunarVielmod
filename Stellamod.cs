@@ -1,5 +1,6 @@
 ﻿using Stellamod.WorldG;
 using System;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -86,6 +87,11 @@ namespace Stellamod
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
+
+
+
+                Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
             }
 
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
@@ -111,18 +117,108 @@ namespace Stellamod
 
 
 
+            if (!Main.dedServ)
+            {
+
+
+                Main.instance.LoadTiles(TileID.Dirt);
+                TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
+
+                Main.instance.LoadTiles(TileID.IceBlock);
+                TextureAssets.Tile[TileID.IceBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/IceRE");
+
+                Main.instance.LoadTiles(TileID.SnowBlock);
+                TextureAssets.Tile[TileID.SnowBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SnowRE");
+
+                Main.instance.LoadWall(WallID.Dirt);
+                TextureAssets.Wall[WallID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtWallRE");
+
+                Main.instance.LoadTiles(TileID.Stone);
+                TextureAssets.Tile[TileID.Stone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneRE");
+
+                Main.instance.LoadTiles(TileID.Grass);
+                TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GrassRE");
+
+                Main.instance.LoadTiles(TileID.ClayBlock);
+                TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/ClayRE");
+
+                Main.instance.LoadTiles(TileID.Sand);
+                TextureAssets.Tile[TileID.Sand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/SandRE");
+
+                Main.instance.LoadTiles(TileID.HardenedSand);
+                TextureAssets.Tile[TileID.HardenedSand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/HardSandRE");
+
+                Main.instance.LoadTiles(TileID.Sandstone);
+                TextureAssets.Tile[TileID.Sandstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneSandRE");
+
+                Main.instance.LoadTiles(TileID.Mud);
+                TextureAssets.Tile[TileID.Mud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudRE");
+
+                Main.instance.LoadTiles(TileID.CrimsonGrass);
+                TextureAssets.Tile[TileID.CrimsonGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimGrassRE");
+
+                Main.instance.LoadTiles(TileID.JungleGrass);
+                TextureAssets.Tile[TileID.JungleGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MudGrassRE");
+
+                Main.instance.LoadTiles(TileID.CorruptGrass);
+                TextureAssets.Tile[TileID.CorruptGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpGrassRE");
+
+                Main.instance.LoadTiles(TileID.Crimstone);
+                TextureAssets.Tile[TileID.Crimstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrimStoneRE");
+
+                Main.instance.LoadTiles(TileID.WoodBlock);
+                TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/WoodRE");
+
+                Main.instance.LoadTiles(TileID.GrayBrick);
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
+
+            }
+            Instance = this;
+
+
 
         }
 
         public override void Unload()
         {
-            // The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.
-            // Be sure to always write unloading code when there is a chance of some of your mod's objects being kept present inside the vanilla assembly.
-            // The most common reason for that to happen comes from using events, NOT counting On.* and IL.* code-injection namespaces.
-            // If you subscribe to an event - be sure to eventually unsubscribe from it.
-
-            // NOTE: When writing unload code - be sure use 'defensive programming'. Or, in other words, you should always assume that everything in the mod you're unloading might've not even been initialized yet.
-            // NOTE: There is rarely a need to null-out values of static fields, since TML aims to completely dispose mod assemblies in-between mod reloads.
+            if (!Main.dedServ)
+            {
+                /*  Main.tileFrame[TileID.Dirt] = 0;
+                  Main.tilesLoaded(TileID.Dirt) = false; 
+                  Main.wallFrame[WallID.Dirt] = 0;
+                  Main.wallLoaded[WallID.Dirt] = false;
+                  Main.tileFrame[TileID.Stone] = 0;
+                  Main.tileSetsLoaded[TileID.Stone] = false;
+                  Main.tileFrame[TileID.Grass] = 0;
+                  Main.tileSetsLoaded[TileID.Grass] = false;
+                  Main.tileFrame[TileID.ClayBlock] = 0;
+                  Main.instance.LoadTiles(TileID.ClayBlock) = false;
+                  Main.tileFrame[TileID.Sand] = 0;
+                  Main.tileSetsLoaded[TileID.Sand] = false;
+                  Main.tileFrame[TileID.Sandstone] = 0;
+                  Main.tileSetsLoaded[TileID.Sandstone] = false;
+                  Main.tileFrame[TileID.HardenedSand] = 0;
+                  Main.tileSetsLoaded[TileID.HardenedSand] = false;
+                  Main.tileFrame[TileID.Mud] = 0;
+                  Main.tileSetsLoaded[TileID.Mud] = false;
+                  Main.tileFrame[TileID.CrimsonGrass] = 0;
+                  Main.tileSetsLoaded[TileID.CrimsonGrass] = false;
+                  Main.tileFrame[TileID.CorruptGrass] = 0;
+                  Main.tileSetsLoaded[TileID.CorruptGrass] = false;
+                  Main.tileFrame[TileID.Crimstone] = 0;
+                  Main.tileSetsLoaded[TileID.Crimstone] = false;
+                  Main.tileFrame[TileID.JungleGrass] = 0;
+                  Main.tileSetsLoaded[TileID.JungleGrass] = false;
+                  Main.tileFrame[TileID.SnowBlock] = 0;
+                  Main.tileSetsLoaded[TileID.SnowBlock] = false;
+                  Main.tileFrame[TileID.IceBlock] = 0;
+                  Main.tileSetsLoaded[TileID.IceBlock] = false;
+                  Main.tileFrame[TileID.WoodBlock] = 0;
+                  Main.tileSetsLoaded[TileID.WoodBlock] = false;
+                  Main.tileFrame[TileID.GrayBrick] = 0;
+                 Main.tileSetsLoaded[TileID.GrayBrick] = false;
+                */
+            }
         }
 
         internal class NPCs

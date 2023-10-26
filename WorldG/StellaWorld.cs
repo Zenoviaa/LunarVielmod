@@ -39,18 +39,25 @@ namespace Stellamod.WorldG
 		public static bool SoulStorm;
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
 		{
+
 			
+
 
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-	
-				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 			}
 
-			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Gem Caves"));
+	//		int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
+		//	if (FableGen != -1)
+		//	{
+		//		tasks.Insert(FableGen + 1, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+
+		//	}
+
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
 			if (ShiniesIndex != -1)
 			{
 
@@ -62,21 +69,25 @@ namespace Stellamod.WorldG
 			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen2 != -1)
 			{
+
+				//tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+			//	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
-				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenBig));
 				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenMed));
 				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
 				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+
 				
 			}
 
 
-
+			
 
 
 
@@ -96,10 +107,10 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 1000000)
+			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(Main.maxTilesX / 2, (Main.maxTilesX / 2) + 600); // from 50 since there's a unaccessible area at the world's borders
+				int smx = WorldGen.genRand.Next((Main.maxTilesX) / 2, (Main.maxTilesX / 2) + 200); // from 50 since there's a unaccessible area at the world's borders
 																								 // 50% of choosing the last 6th of the world
 																								 // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -108,7 +119,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.worldSurface - 50));
+				int smy = ((int)(Main.worldSurface - 200));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
@@ -123,8 +134,11 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[smx, smy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Dirt
-					|| tile.TileType == TileID.Stone))
+				if (!(tile.TileType == TileID.Sand
+					|| tile.TileType == TileID.Dirt
+					|| tile.TileType == TileID.Grass
+					|| tile.TileType == TileID.Stone
+					|| tile.TileType == TileID.Sandstone))
 				{
 					continue;
 				}
@@ -141,16 +155,17 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 70);
-					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome");
+					Point Loc = new Point(smx, smy + 0 );
+					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome2");
 
 
-					Point Loc2 = new Point(smx - 10, smy - 40);
-					WorldUtils.Gen(Loc2, new Shapes.Circle(30, 50), new Actions.SetTile(TileID.Dirt));
+					Point Loc2 = new Point(smx - 10, smy);
+					Point Loc4 = new Point(smx + 233, smy + 30);
+					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+					WorldUtils.Gen(Loc4, new Shapes.Rectangle(60, 90), new Actions.SetTile(TileID.Dirt));
 
-
-					Point Loc3 = new Point(smx + 616, smy - 40);
-					WorldUtils.Gen(Loc3, new Shapes.Circle(30, 70), new Actions.SetTile(TileID.Dirt));
+					Point Loc3 = new Point(smx + 455, smy + 30);
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -161,7 +176,9 @@ namespace Stellamod.WorldG
 					//		{
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
-
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
 				}
 
@@ -215,8 +232,9 @@ namespace Stellamod.WorldG
 					}
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					if (!(tile.TileType == TileID.SnowBlock
+					if (!(tile.TileType == TileID.Dirt
 						|| tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()
+						
 						|| tile.TileType == TileID.Mud))
 
 					{
@@ -337,6 +355,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
 									itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+									itemsToAdd.Add((ModContent.ItemType<GhostExcalibur>(), Main.rand.Next(1, 1)));
 									break;
 							}
 
@@ -367,15 +386,15 @@ namespace Stellamod.WorldG
 			progress.Message = "Building Gintze houses";
 
 
-			for (int k = 0; k < 3; k++)
+			for (int k = 0; k < 5; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next((Main.maxTilesX / 2) + 1400, (Main.maxTilesX) - 500); // from 50 since there's a unaccessible area at the world's borders
-																			// 50% of choosing the last 6th of the world
+					int smx = WorldGen.genRand.Next(500, (Main.maxTilesX) - 500); // from 50 since there's a unaccessible area at the world's borders
+																		// 50% of choosing the last 6th of the world
 																			// Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
 					///{
@@ -399,7 +418,7 @@ namespace Stellamod.WorldG
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
 					if (!(tile.TileType == TileID.Dirt
-							|| tile.TileType == TileID.SnowBlock
+						|| tile.TileType == TileID.Sand
 						|| tile.TileType == TileID.Mud))
 
 					{
@@ -557,15 +576,15 @@ namespace Stellamod.WorldG
 			progress.Message = "Bird building alters";
 
 
-			for (int k = 0; k < 3; k++)
+			for (int k = 0; k < 1; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(1400, (Main.maxTilesX) - 1400); // from 50 since there's a unaccessible area at the world's borders
-																										  // 50% of choosing the last 6th of the world
+					int smx = WorldGen.genRand.Next(75, (Main.maxTilesX) / 8); // from 50 since there's a unaccessible area at the world's borders
+																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
 					///{
@@ -573,7 +592,7 @@ namespace Stellamod.WorldG
 					///}
 
 					//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-					int smy = ((int)(Main.worldSurface - 50));
+					int smy = ((int)(Main.worldSurface - 200));
 
 					// We go down until we hit a solid tile or go under the world's surface
 					while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
@@ -582,7 +601,7 @@ namespace Stellamod.WorldG
 					}
 
 					// If we went under the world's surface, try again
-					if (smy > Main.worldSurface - 20)
+					if (smy > Main.worldSurface - 5)
 					{
 						continue;
 					}
@@ -608,8 +627,8 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy + Main.rand.Next(150, 300));
-						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter");
+						Point Loc = new Point(smx, smy + 10);
+						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter2");
 						
 					}
 
@@ -817,13 +836,21 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
+
+				
+
+
 				Tile tile = Main.tile[abysmx, abysmy];
+				
+
+
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
 				{
 					continue;
 				}
 
+			
 
 				// place the Rogue
 				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
@@ -836,9 +863,9 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx, abysmy + 50);
+					
 
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Huntria/GovheilCastle");
+					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, "Struct/Huntria/GovheilCastle");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -1043,15 +1070,17 @@ namespace Stellamod.WorldG
 
 
 			}
-		} 
+		}
+
 	
 
-		private void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
+
+		public void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Virulifying the Morrow";
 
 
-
+			
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 100000)
@@ -1097,14 +1126,32 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx, abysmy);
-					WorldGen.TileRunner(Loc.X + 200, Loc.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc.X + 200, Loc.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc.X + 200, Loc.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					Point Loc7 = new Point(abysmx, abysmy);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+
+
+					Point Loc = new Point(abysmx + 50, abysmy + 255);
+
+					pointL = new Point(abysmx + 50, abysmy + 255);
+
+
+
+
+
+
+					
+
+					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
 					placed = true;
-
-
 				}
+
+				
+			
+		
+
+
 
 			}
 
@@ -1145,6 +1192,8 @@ namespace Stellamod.WorldG
 			
 
 		}
+
+		Point pointL;
 		// 6. This is the actual world generation code.
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -1180,10 +1229,10 @@ namespace Stellamod.WorldG
 			
 
 				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yz = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+				int yz = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 9), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 13), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
 			}
 
 
@@ -1204,7 +1253,7 @@ namespace Stellamod.WorldG
 				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 13), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
 			}
 		}
 		private void WorldGenVirulentStructures(GenerationProgress progress, GameConfiguration configuration)
@@ -1213,10 +1262,10 @@ namespace Stellamod.WorldG
 			progress.Message = "Hunters getting kicked out";
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 5); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-				int xa = WorldGen.genRand.Next(500, Main.maxTilesX);
+				int xa = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
 				int ya = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, (int)GenVars.rockLayerHigh);
 				Point Loc = new Point(xa, ya);
 
@@ -1323,10 +1372,10 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 4); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-				int xa = WorldGen.genRand.Next(500, Main.maxTilesX);
+				int xa = WorldGen.genRand.Next(500, Main.maxTilesX - 200);
 				int ya = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, (int)GenVars.rockLayerHigh);
 				Point Loc = new Point(xa, ya);
 
@@ -1467,11 +1516,11 @@ namespace Stellamod.WorldG
 			progress.Message = "Hunters settling down";
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
+				int xa = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 200, (int)GenVars.rockLayerHigh + 200);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
@@ -1590,11 +1639,11 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow, (int)GenVars.rockLayerHigh);
+				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 150, (int)GenVars.rockLayerHigh + 150);
 				Point Loc = new Point(xa, ya);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
@@ -1728,7 +1777,7 @@ namespace Stellamod.WorldG
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 30); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
+				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh + 100, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
@@ -1847,7 +1896,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int towerX = WorldGen.genRand.Next(Main.maxTilesX - 300, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
+				int towerX = WorldGen.genRand.Next(0, Main.maxTilesX - 200); // from 50 since there's a unaccessible area at the world's borders
 																		 // 50% of choosing the last 6th of the world
 																		 // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -1871,9 +1920,8 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[towerX, towerY];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Dirt
-					|| tile.TileType == TileID.SnowBlock
-					|| tile.TileType == TileID.Sand))
+				if (!(tile.TileType == TileID.IceBlock
+					|| tile.TileType == TileID.SnowBlock))
 				{
 					continue;
 				}
