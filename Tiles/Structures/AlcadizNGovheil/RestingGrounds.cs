@@ -20,6 +20,7 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
 using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.DaedusRework;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {

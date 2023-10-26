@@ -189,6 +189,7 @@
     <None Remove="Items\Weapons\Summon\VoidMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidStaff.png" />
     <None Remove="Items\Weapons\Summon\X3144.png" />
+    <None Remove="NPCs\Bosses\Daedus\Daedus.png" />
     <None Remove="NPCs\Bosses\Daedus\SummonSpawnEffect.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
@@ -211,6 +212,7 @@
     <None Remove="Particles\GoldSparkleParticle2.png" />
     <None Remove="Particles\IcingParticle.png" />
     <None Remove="Particles\SpinewBigOrange.png" />
+    <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />

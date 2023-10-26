@@ -272,7 +272,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             }
             if (p2)
             {
-
+                NPC.noTileCollide = true;
                 NPC.rotation = NPC.velocity.X * 0.07f;
                 if (!GVI)
                 {

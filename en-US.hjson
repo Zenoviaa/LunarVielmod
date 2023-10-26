@@ -4210,6 +4210,8 @@ Mods: {
 			DiceinNPC.DisplayName: Dicein N P C
 			TericGramNPC.DisplayName: Teric Gram N P C
 			TericGramNPC2.DisplayName: Teric Gram N P C2
+			DaedusR.DisplayName: Daedus R
+			DRay.DisplayName: D Ray
 		}
 
 		Projectiles: {
@@ -4667,6 +4669,8 @@ Mods: {
 			MushroomStaveMinionProg.DisplayName: Mushroom Stave Minion Prog
 			ArchariliteHeatBlast.DisplayName: Archarilite Heat Blast
 			ArchariliteRayswordSlash.DisplayName: Archarilite Raysword Slash
+			DaedusBombExplosion.DisplayName: Daedus Bomb Explosion
+			DLantern.DisplayName: D Lantern
 		}
 	}
 

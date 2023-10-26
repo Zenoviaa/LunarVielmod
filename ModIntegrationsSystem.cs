@@ -7,14 +7,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod
 {
-	// Showcases using Mod.Call of other mods to facilitate mod integration/compatibility/support
-	// Mod.Call is explained here https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content#call-aka-modcall-intermediate
-	// This only showcases one way to implement such integrations, you are free to explore your own options and other mods examples
+    // Showcases using Mod.Call of other mods to facilitate mod integration/compatibility/support
+    // Mod.Call is explained here https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content#call-aka-modcall-intermediate
+    // This only showcases one way to implement such integrations, you are free to explore your own options and other mods examples
 
-	// You need to look for resources the mod developers provide regarding how they want you to add mod compatibility
-	// This can be their homepage, workshop page, wiki, github, discord, other contacts etc.
-	// If the mod is open source, you can visit its code distribution platform (usually GitHub) and look for "Call" in its Mod class
-	public class ModIntegrationsSystem : ModSystem
+    // You need to look for resources the mod developers provide regarding how they want you to add mod compatibility
+    // This can be their homepage, workshop page, wiki, github, discord, other contacts etc.
+    // If the mod is open source, you can visit its code distribution platform (usually GitHub) and look for "Call" in its Mod class
+    public class ModIntegrationsSystem : ModSystem
 	{
 		public override void PostSetupContent()
 		{
@@ -54,8 +54,8 @@ namespace Stellamod
 			// The NPC type of the boss
 			int bossType = ModContent.NPCType<NPCs.Bosses.Jack.Jack>();
 
-			// Value inferred from boss progression, see the wiki for details
-			float weight = 1.2f;
+            // Value inferred from boss progression, see the wiki for details
+            float weight = 1.2f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedJackBoss;

@@ -35,12 +35,13 @@ using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.Items.Armors.Terric;
+using Stellamod.NPCs.Bosses.DaedusRework;
 
 namespace Stellamod
 {
 
 
-	public class MyPlayer : ModPlayer
+    public class MyPlayer : ModPlayer
 	{
 		public bool Bossdeath = false;
 		public bool Boots = false;

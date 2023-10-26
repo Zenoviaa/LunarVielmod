@@ -30,6 +30,7 @@ using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DaedusRework;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {

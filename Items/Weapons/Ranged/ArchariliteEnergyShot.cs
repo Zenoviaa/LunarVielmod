@@ -42,7 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 31;
             Item.useTime = 31;
             Item.channel = true;
-            Item.scale = 0.5f;
+            Item.scale = 1f;
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
