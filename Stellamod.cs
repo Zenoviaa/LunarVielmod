@@ -89,8 +89,8 @@ namespace Stellamod
 
 
 
-                Filters.Scene["Stellamod:Raveyard"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
-                SkyManager.Instance["Stellamod:Raveyard"] = new StarbloomSky();
+                Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
             }
 
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
