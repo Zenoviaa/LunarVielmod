@@ -13,8 +13,8 @@ namespace Stellamod.Particles
 		{
 			width = 34;
 			height = 34;
-			Scale = 40f;
-			timeLeft = 400;
+			Scale = 20f;
+			timeLeft = 300;
 			oldPos = new Vector2[10];
 			oldRot = new float[1];
 			SpawnAction = Spawn;
@@ -23,17 +23,16 @@ namespace Stellamod.Particles
 		{
 			
 
-			Scale *= 0.99f;
+			Scale *= 0.97f;
 
-			velocity *= 0.98f;
-			velocity.Y += 0.2f;
-			rotation += 0.1f;
+			velocity *= 1.02f;
+			velocity.Y += 0.5f;
 			if (Scale <= 0f)
 				active = false;
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D tex = Request<Texture2D>("Stellamod/Particles/IcingParticle").Value;
+			Texture2D tex = Request<Texture2D>("Stellamod/Particles/IcingParticle2").Value;
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 
 			if (alpha < 0f)
