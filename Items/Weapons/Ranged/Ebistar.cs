@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -37,7 +38,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
+            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ItemID.IceBlock, 10);
 

@@ -14,7 +14,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class TopazBeetle : ModNPC
+	public class AmethystBeetle : ModNPC
 	{
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;
@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.ZoneDesert)
+			if (spawnInfo.Player.ZoneCorrupt)
 			{
 
 				return SpawnCondition.OverworldDay.Chance * 0.3f;
@@ -125,7 +125,7 @@ namespace Stellamod.NPCs.Morrow
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 
-			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 3, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Amethyst, 3, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
 

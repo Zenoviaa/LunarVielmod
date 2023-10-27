@@ -19,6 +19,7 @@ using Terraria.DataStructures;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Swords;
+using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -59,7 +60,8 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.FlintlockPistol, 1);
+
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
             recipe.AddTile(TileID.Anvils);

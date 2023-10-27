@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -54,7 +55,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ItemID.WoodenBow, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
