@@ -3502,6 +3502,11 @@ Mods: {
 				DisplayName: Mushroom Stave
 				Tooltip: ""
 			}
+
+			StarbloomTempleBlock: {
+				DisplayName: Starbloom Temple Block
+				Tooltip: ""
+			}
 		}
 
 		FurihaMKIII: {
@@ -3548,6 +3553,11 @@ Mods: {
 			MorrowUndergroundBiome: {
 				DisplayName: Morrow Underground Biome
 				TownNPCDialogueName: the Morrow Underground Biome
+			}
+
+			StarbloomBiome: {
+				DisplayName: Starbloom Biome
+				TownNPCDialogueName: the Starbloom Biome
 			}
 		}
 

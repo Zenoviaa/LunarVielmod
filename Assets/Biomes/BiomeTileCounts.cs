@@ -24,13 +24,16 @@ namespace Stellamod
         public int GovheilCount;
         public static bool InGovheil => ModContent.GetInstance<BiomeTileCounts>().GovheilCount > 30;
 
+        public int StarbloomCount;
+        public static bool InStarbloom => ModContent.GetInstance<BiomeTileCounts>().StarbloomCount > 20;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
             AbyssCount = tileCounts[ModContent.TileType<AbyssalDirt>()];
             AurelusCount = tileCounts[ModContent.TileType<AurelusTempleBlock>()];
             GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
-
+            StarbloomCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
         }
     }
 }

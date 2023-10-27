@@ -13,6 +13,10 @@
     <None Remove="FX\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Biomes\StarbloomWaterfallStyle.png" />
+    <None Remove="Assets\Biomes\StarbloomWaterStyle.png" />
+    <None Remove="Assets\Biomes\StarbloomWaterStyle_Block.png" />
+    <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
@@ -209,9 +213,13 @@
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
+    <None Remove="Particles\FabledParticle3.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
+    <None Remove="Particles\GoldRingParticle3.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
+    <None Remove="Particles\GoldSparkleParticle3.png" />
     <None Remove="Particles\IcingParticle.png" />
+    <None Remove="Particles\MoonTrailParticle2.png" />
     <None Remove="Particles\SpinewBigOrange.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
