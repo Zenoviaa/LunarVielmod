@@ -97,7 +97,84 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 		public override bool CanExplode(int i, int j) => false;
 		public bool Checked = false;
+
+
 		public override bool RightClick(int i, int j)
+		{
+
+			if (NPC.AnyNPCs(ModContent.NPCType<Jack>()) || NPC.AnyNPCs(ModContent.NPCType<Jack>())) //Do nothing if the boss is alive
+				return false;
+
+			Player player = Main.LocalPlayer;
+
+			int key = ModContent.ItemType<WanderingEssence>();
+
+
+
+			
+
+
+
+
+			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Main.NewText("Jack has awoken!", Color.Gold);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Jack>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
+
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Jack>(), i * 16, (j * 16) - 5);
+				}
+
+				return true;
+			}
+			if (NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+			{
+
+				Main.NewText("...", Color.Gold);
+
+
+
+			}
+			else
+			{
+				if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+				{
+
+					Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
+
+
+
+				}
+
+				else
+				{
+					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+
+
+				}
+				if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+				{
+					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
+				}
+			}
+
+
+
+
+
+			return true;
+
+		}
+
+
+	/*	public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
 
@@ -155,7 +232,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 			return true;
 		}
-
+	*/
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			

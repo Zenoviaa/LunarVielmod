@@ -18,6 +18,7 @@ using System.Numerics;
 using Microsoft.Xna.Framework;
 using Stellamod.Backgrounds;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using System.IO;
 
 namespace Stellamod
 {
@@ -38,6 +39,38 @@ namespace Stellamod
             Instance = this;
 
         }
+        public ModPacket GetPacket(MessageType type, int capacity)
+        {
+            ModPacket packet = GetPacket(capacity + 1);
+            packet.Write((byte)type);
+            return packet;
+        }
+
+        // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
+        public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
+        {
+            packet.Write(msg);
+
+            for (int m = 0; m < param.Length; m++)
+            {
+                object obj = param[m];
+                if (obj is bool) packet.Write((bool)obj);
+                else if (obj is byte) packet.Write((byte)obj);
+                else if (obj is int) packet.Write((int)obj);
+                else if (obj is float) packet.Write((float)obj);
+                else if (obj is double) packet.Write((double)obj);
+                else if (obj is short) packet.Write((short)obj);
+                else if (obj is ushort) packet.Write((ushort)obj);
+                else if (obj is sbyte) packet.Write((sbyte)obj);
+                else if (obj is uint) packet.Write((uint)obj);
+                else if (obj is decimal) packet.Write((decimal)obj);
+                else if (obj is long) packet.Write((long)obj);
+                else if (obj is string) packet.Write((string)obj);
+            }
+            return packet;
+        }
+
+        public override void HandlePacket(BinaryReader reader, int whoAmI) => StellaMultiplayer.HandlePacket(reader, whoAmI);
 
 
         public static Player PlayerExists(int whoAmI)
@@ -181,6 +214,11 @@ namespace Stellamod
 
         public override void Unload()
         {
+
+
+
+            StellaMultiplayer.Unload();
+
             if (!Main.dedServ)
             {
                 /*  Main.tileFrame[TileID.Dirt] = 0;
