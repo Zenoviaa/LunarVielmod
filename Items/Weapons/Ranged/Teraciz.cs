@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
@@ -66,8 +67,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
-	
-			recipe.AddIngredient(ItemID.RedPaint, 200);
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ItemID.RedPaint, 200);
 			recipe.AddIngredient(ItemID.BlackPaint, 200);
 			recipe.AddIngredient(ItemID.PurplePaint, 200);
 

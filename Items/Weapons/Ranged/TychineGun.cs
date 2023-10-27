@@ -75,6 +75,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
             recipe.AddIngredient(ItemID.IllegalGunParts, 1);
             recipe.AddIngredient(ItemID.Minishark, 1);

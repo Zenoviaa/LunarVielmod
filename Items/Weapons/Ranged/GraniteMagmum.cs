@@ -84,7 +84,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void AddRecipes()
 		{
-            Recipe recipe = CreateRecipe();
+			Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ItemID.GraniteBlock, 25);
             recipe.AddIngredient(ItemType<DarkEssence>(), 15);
             recipe.AddTile(TileID.Anvils);

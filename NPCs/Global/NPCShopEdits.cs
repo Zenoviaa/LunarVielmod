@@ -1,5 +1,6 @@
 ﻿
 using Stellamod.Items.Armors.Vanity.Astolfo;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -49,8 +50,8 @@ namespace Stellamod.NPCs.Global
 				// Adding an item to a vanilla NPC is easy:
 				// This item sells for the normal price.
 				shop.Add(ModContent.ItemType<FlamePowder>());
-
-				if (Main.hardMode)
+                shop.Add(ModContent.ItemType<BasicGunParts>());
+                if (Main.hardMode)
                 {
 					shop.Add(ModContent.ItemType<RustlockPistol>());
 					shop.Add(ModContent.ItemType<Rustvolver>());

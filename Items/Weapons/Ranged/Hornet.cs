@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
@@ -78,7 +79,8 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ItemID.Minishark, 1);

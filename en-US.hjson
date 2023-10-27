@@ -3502,6 +3502,16 @@ Mods: {
 				DisplayName: Mushroom Stave
 				Tooltip: ""
 			}
+
+			ShadegraveStaff: {
+				DisplayName: Shadegrave Staff
+				Tooltip: ""
+			}
+
+			BasicGunParts: {
+				DisplayName: Basic Gun Parts
+				Tooltip: ""
+			}
 		}
 
 		FurihaMKIII: {
@@ -3781,6 +3791,9 @@ Mods: {
 			DreadFireBombG.DisplayName: Dread Fire Bomb G
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			AmethystBeetle.DisplayName: Amethyst Beetle
+			EmeraldBeetle.DisplayName: Emerald Beetle
+			SapphireBeetle.DisplayName: Sapphire Beetle
 		}
 
 		Buffs: {
@@ -4616,6 +4629,7 @@ Mods: {
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			SGBolt.DisplayName: S G Bolt
 		}
 	}
 
