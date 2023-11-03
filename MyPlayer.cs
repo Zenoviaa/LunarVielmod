@@ -141,6 +141,8 @@ namespace Stellamod
 
 		public bool BroochDread;
 		public int DreadBCooldown = 1;
+		public bool BroochStone;
+		public int StoneBCooldown = 1;
 		public bool BroochMal;
 		public int MalBCooldown = 1;
 		public bool BroochVixed;
@@ -487,7 +489,7 @@ namespace Stellamod
 			BroochBear = false;
 			BroochGovheill = false;
 			BroochBurningG = false;
-
+			BroochStone = false;
 
 
 
@@ -1014,6 +1016,14 @@ namespace Stellamod
 
 				Player.AddBuff(ModContent.BuffType<GintBroo>(), 1000);
 				GintBCooldown = 1000;
+			}
+
+			if (BroochStone && StoneBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<StoneBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<StoneB>(), 1000);
+				StoneBCooldown = 1000;
 			}
 
 			if (BroochGovheill && AdvancedBrooches && GovheillBCooldown <= 0)
