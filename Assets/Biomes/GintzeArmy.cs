@@ -1,7 +1,7 @@
 ﻿
 using Terraria.ModLoader;
 using System;
-using Terraria.ModLoader;
+
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Terraria;
