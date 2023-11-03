@@ -289,7 +289,7 @@ namespace Stellamod.WorldG
 					Point Loc2 = new Point(smx - 10, smy);
 					Point Loc4 = new Point(smx + 233, smy + 10);
 					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
-					WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 90), new Actions.SetTile(TileID.Dirt));
+					WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 
 					Point Loc3 = new Point(smx + 455, smy + 30);
 					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
