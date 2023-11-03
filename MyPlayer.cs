@@ -547,10 +547,10 @@ namespace Stellamod
         public override void PostUpdateMiscEffects()
 		{
 
-			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
-			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
+			
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starblooms", ZoneStarbloom);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", ZoneStarbloom);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
@@ -684,7 +684,7 @@ namespace Stellamod
 			if (EventWorld.Aurorean)
 			{
 
-                if (Main.rand.Next(90) == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                if (Main.rand.NextBool(90)&& Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int offsetX = Main.rand.Next(-1000, 1000) * 2;
                     int offsetY = Main.rand.Next(-1000, 1000) - 1700;
