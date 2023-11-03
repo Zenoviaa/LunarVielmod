@@ -3517,6 +3517,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Basic Gun Parts
 			}
+
+			NoxianWood: {
+				DisplayName: Noxian Wood
+				Tooltip: ""
+			}
 		}
 
 		ShadegraveStaff: {
@@ -4644,6 +4649,11 @@ Mods: {
 			AbyssBiome: {
 				TownNPCDialogueName: the Abyss Biome
 				DisplayName: Abyss Biome
+			}
+
+			NaxtrinTemple: {
+				TownNPCDialogueName: the Naxtrin Temple
+				DisplayName: Naxtrin Temple
 			}
 		}
 	}
