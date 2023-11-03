@@ -1229,10 +1229,7 @@ namespace Stellamod
 
 			}
 
-			if (EventWorld.Aurorean)
-			{
-				MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
-			}
+		
 
 
 
