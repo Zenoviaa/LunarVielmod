@@ -180,6 +180,7 @@ namespace Stellamod
 		public bool ZoneStarbloom;
 		public bool ZoneAcid;
 		public bool ZoneGovheil;
+		public bool ZoneNaxtrin;
 		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;

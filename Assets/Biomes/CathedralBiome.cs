@@ -3,6 +3,7 @@ using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;
+using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
@@ -36,10 +37,14 @@ namespace Stellamod.Assets.Biomes
 		{
 			// DisplayName.SetDefault("Cathedral of the Moon");
 		}
-		//public override void SpecialVisuals(Player player, bool isActive)
-	//	{
-			//player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", isActive, player.Center);
-	//	}
+		public override void SpecialVisuals(Player player, bool isActive)
+		{
+
+			//   if (!SkyManager.Instance["Stellamod:NaxtrinSky"].IsActive() && isActive)
+		//		SkyManager.Instance.Activate("Stellamod:NaxtrinSky", player.Center);
+		//	if (SkyManager.Instance["Stellamod:NaxtrinSky"].IsActive() && !isActive)
+		//		SkyManager.Instance.Deactivate("Stellamod:NaxtrinSky");
+		}
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player)
 		{
