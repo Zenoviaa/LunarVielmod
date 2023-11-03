@@ -1,13 +1,16 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+using Microsoft.Xna.Framework.Graphics;
+using static Humanizer.In;
+using Terraria.GameContent;
+using Terraria.Audio;
+using Stellamod.Projectiles.Magic;
+using Stellamod.UI.Systems;
+using Stellamod.NPCs.Bosses.DaedusRework;
 
 namespace Stellamod.NPCs.Bosses.Daedus
 {
@@ -26,16 +29,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
         {
             Projectile.CloneDefaults(ProjectileID.ThornBall);
             AIType = ProjectileID.ThornBall;
-            Projectile.penetrate = 20;
-            Projectile.width = 104;
-            Projectile.height = 104;
+            Projectile.penetrate = 9;
+            Projectile.width = 150;
+            Projectile.height = 150;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.penetrate--;
             if (Projectile.penetrate <= 0)
+            {
                 Projectile.Kill();
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -10, Projectile.position.Y + -30,  0, 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f);
+            }
+
             else
             {
                 if (Projectile.velocity.X != oldVelocity.X)
@@ -147,8 +154,43 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 
 
+        float alphaCounter = 1;
+        int counter;
 
-        
+        Vector2 DrawOffset;
+        public override bool PreDraw(ref Color lightColor)
+        {
+
+            if (Projectile.spriteDirection != 1)
+            {
+                DrawOffset.X = Projectile.Center.X - 18;
+                DrawOffset.Y = Projectile.Center.Y;
+            }
+            else
+            {
+                DrawOffset.X = Projectile.Center.X - 25;
+                DrawOffset.Y = Projectile.Center.Y;
+            }
+
+
+
+            return true;
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Spiin").Value;
+            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation * 2, new Vector2(200, 200), 0.08f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation * 2, new Vector2(200, 200), 0.08f * (5 + 0.6f), SpriteEffects.None, 0f);
+            SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 scale = new(Projectile.scale, 1f);
+            Color drawColor = Color.Goldenrod;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
+
+        }
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)

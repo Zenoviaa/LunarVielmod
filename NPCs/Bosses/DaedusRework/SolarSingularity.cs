@@ -39,7 +39,7 @@ using Stellamod.NPCs.Bosses.Daedus;
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
 
-    public class DaedusR : ModNPC
+    public class SolarSingularity : ModNPC
     {
 
         public int PrevAtack;
@@ -48,7 +48,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         float DaedusDrug = 8;
         float HomeY = 330f;
         private bool p2 = false;
-        private bool Solar = false;
         bool Attack;
         bool Flying;
         Vector2 DaedusPos;
@@ -57,7 +56,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPCID.Sets.TrailCacheLength[NPC.type] = 4;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             // DisplayName.SetDefault("Jack");
-            Main.npcFrameCount[NPC.type] = 46;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
@@ -107,59 +105,23 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         public override void SetDefaults()
         {
             NPC.alpha = 0;
-            NPC.width = 230;
-            NPC.height = 230;
-            NPC.damage = 10;
-            NPC.defense = 6;
-            NPC.lifeMax = 650;
+            NPC.width = 100;
+            NPC.height = 60;
+            NPC.damage = 100000;
+            NPC.defense = 0;
+            NPC.lifeMax = 400;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
-            NPC.noGravity = false;
-            NPC.noTileCollide = false;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
             NPC.boss = true;
             NPC.npcSlots = 10f;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
         int frame = 0;
-        public override void FindFrame(int frameHeight)
-        {
-            NPC.frameCounter += 0.5f;
-
-            if (Attack)
-            {
-                if (NPC.frameCounter >= 8)
-                {
-                    frame++;
-                    NPC.frameCounter = 5;
-                }
-                if (frame >= 46)
-                {
-                    Attack = false;
-                    frame = 0;
-                }
-                if (frame < 30)
-                {
-                    frame = 30;
-                }
-            }
-            else
-            {
-                if (NPC.frameCounter >= 4)
-                {
-                    frame++;
-                    NPC.frameCounter = 0;
-                }
-                if (frame >= 30)
-                {
-                    frame = 0;
-                }
-            }
-
-            NPC.frame.Y = frameHeight * frame;
-        }
-
+       
 
         bool CutScene;
         private int Counter;
@@ -190,6 +152,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 }
             }
         }
+        public Vector2  DaedusPosAdd;
         public override void AI()
         {
             Player player = Main.player[NPC.target];
@@ -197,19 +160,19 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             if (Flying)
             {
-                if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
+                if (NPC.Center.X >= DaedusPosAdd.X && moveSpeed >= -120) // flies to players x position
                     moveSpeed--;
-                else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
+                else if (NPC.Center.X <= DaedusPosAdd.X && moveSpeed <= 120)
                     moveSpeed++;
 
                 NPC.velocity.X = moveSpeed * 0.10f;
 
-                if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
+                if (NPC.Center.Y >= DaedusPosAdd.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
                 {
                     moveSpeedY--;
-                    HomeY = 200f;
+                    HomeY = 0f;
                 }
-                else if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= 20)
+                else if (NPC.Center.Y <= DaedusPosAdd.Y - HomeY && moveSpeedY <= 20)
                 {
                     moveSpeedY++;
                 }
@@ -260,21 +223,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 NPC.ai[2] = 1;
             }
             p2 = NPC.life < NPC.lifeMax * 0.5f;
-            if (p2)
-            {
-                if (!Solar)
-                {
-                    Vector2 GPos;
-                    GPos.X = DaedusPos.X;
-                    GPos.Y = NPC.Center.Y;
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y, ModContent.NPCType<SolarSingularity>());
-                    var entitySource = NPC.GetSource_FromThis();
-                    Projectile.NewProjectile(entitySource, GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(GPos, 1212f, 62f);
-                    Solar = true;
-                }
-   
-            }
+
            
             if (NPC.ai[2] == 1)
             {
@@ -286,10 +235,10 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         if (NPC.ai[0] > 20)
                         {
                             DaedusPos = NPC.position;
-                            NPC.noGravity = true;
-                            NPC.noTileCollide = true;
+                            DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-50, 50);
+                            DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
                             Flying = true;
-                            NPC.ai[0] = 0;
+                            NPC.ai[0] = 290;
                             NPC.ai[1] = 1;
                         }
                         break;
@@ -297,83 +246,24 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 100)
                         {
-                            int Atack = Main.rand.Next(2, 5);
-                            if (Atack == PrevAtack)
-                            {
-                                Flying = true;
-                                NPC.ai[0] = 1;
-                            }
-                            else
-                            {
-                                Flying = true;
-                                NPC.ai[0] = 0;
-                                NPC.ai[1] = Atack;
-                            }
+       
+                            NPC.ai[1] = 2;
                         }
 
                         break;
                     case 2:
                         Vector2 DLightPos;
                         NPC.ai[0]++;
-                        if (NPC.ai[0] == 20)
-                        {
-                            Attack = true;
-                        }
-                        if (NPC.ai[0] >= 130)
-                        {
-                            PrevAtack = 2;
-                            NPC.ai[1] = 1;
-                            NPC.ai[0] = 0;
-                        }
-                        if (NPC.ai[0] == 90)
-                        {
-                            DLightPos.Y = DaedusPos.Y + 230;
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
-                        }
-                        break;
-                    case 3:
-  
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] == 20)
-                        {
-                            Attack = true;
-                        }
-                        if (NPC.ai[0] >= 110)
-                        {
-                            PrevAtack = 3;
-                            NPC.ai[1] = 1;
-                            NPC.ai[0] = 0;
-                        }
-                        if (NPC.ai[0] == 90)
-                        {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 1.5f), 0f);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                        }
-                        break;
-                    case 4:
 
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] == 20)
+                        if (NPC.ai[0] >= 300)
                         {
-                            Attack = true;
-                        }
-                        if (NPC.ai[0] >= 110)
-                        {
-                            PrevAtack = 4;
-                            NPC.ai[1] = 1;
+                            DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-90, 90);
+                            DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
                             NPC.ai[0] = 0;
-                        }
-                        if (NPC.ai[0] == 90)
-                        {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<BouncySword>(), (int)(NPC.damage * 1f), 0f);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SolarPortal>());
                         }
                         break;
+
                 }
             }
         }
