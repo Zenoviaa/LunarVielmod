@@ -45,7 +45,7 @@ namespace Stellamod
             packet.Write((byte)type);
             return packet;
         }
-
+        
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -277,7 +277,7 @@ namespace Stellamod
         }
     }
 
-
+   
     public class Stellamenu : ModMenu
     {
 
