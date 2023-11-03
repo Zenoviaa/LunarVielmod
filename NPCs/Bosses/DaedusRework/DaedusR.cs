@@ -273,7 +273,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(GPos, 1212f, 62f);
                     Solar = true;
                 }
-   
             }
            
             if (NPC.ai[2] == 1)

@@ -4077,6 +4077,8 @@ Mods: {
 			DreadFireBombG.DisplayName: Dread Fire Bomb G
 			HeatBombLighting.DisplayName: Heat Bomb Lighting
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			SolarPortal.DisplayName: Solar Portal
+			SolarSingularity.DisplayName: Solar Singularity
 		}
 
 		Tiles: {
