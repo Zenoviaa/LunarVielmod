@@ -572,8 +572,9 @@ namespace Stellamod
 		}
 		public override void PostUpdate()
         {
+			
 
-            if (Aurorean >= 0.5f)
+			if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
 
@@ -1228,9 +1229,9 @@ namespace Stellamod
 
 			}
 
+		
 
 
-			
 
 			if (Player.InModBiome<FableBiome>())
 			{
@@ -1498,7 +1499,7 @@ namespace Stellamod
 
 			}
 
-		    if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
+		    
 			if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
 			{
 			
@@ -1638,6 +1639,26 @@ namespace Stellamod
                 }
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (ArcaneM && ArcaneMCooldown == 601)
 			{
