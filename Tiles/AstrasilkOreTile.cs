@@ -29,8 +29,8 @@ namespace Stellamod.Tiles
 			DustType = DustID.BlueCrystalShard;
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.StarSilk>());
 			HitSound = SoundID.DD2_CrystalCartImpact;
-		 MineResist = 1f;
-		 MinPick = 35;
+		    MineResist = 1f;
+		    MinPick = 35;
 		}
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
