@@ -5,7 +5,7 @@ using Terraria.ObjectData;
 using Terraria.ID;
 using Terraria.Localization;
 
-namespace Stellamod.Tiles
+namespace Stellamod.Tiles.Ambient
 {
 	public class Stalagmite3 : ModTile
 	{

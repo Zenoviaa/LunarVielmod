@@ -66,23 +66,28 @@ namespace Stellamod.WorldG
 				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
 			}
 
-			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
+			if (CathedralGen3 != -1)
+			{
+				tasks.Insert(CathedralGen3 + 1, new PassLegacy("World Gen Ambience", WorldGenAmbience));
+			}
+				int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen2 != -1)
 			{
 
 				//tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				//	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenAmbience));
-				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
-				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenBig));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen More skies", WorldGenMed));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+			
+				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
+				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenBig));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenMed));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 
 				
 			}
@@ -107,30 +112,30 @@ namespace Stellamod.WorldG
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Dirt)
+                if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck1>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck1>(), 0, 0, -1, -1);
+                  
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Dirt)
+                if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck2>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck2>(), 0, 0, -1, -1);
+                  
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Dirt)
+                if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck3>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck3>(), 0, 0, -1, -1);
+                  
                 }
             }
 
@@ -138,81 +143,81 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock1>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock1>(), 0, 0, -1, -1);
+             
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock2>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock2>(), 0, 0, -1, -1);
+                
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock3>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock3>(), 0, 0, -1, -1);
+                
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock4>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock4>(), 0, 0, -1, -1);
+                  
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite1>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite1>(), 0, 0, -1, -1);
+               
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite2>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite2>(), 0, 0, -1, -1);
+                  
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite3>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite3>(), 0, 0, -1, -1);
+                  
                 }
             }
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceHigh, Main.maxTilesY);
-                if (Main.tile[X, Y].type == TileID.Stone || Main.tile[X, Y].type == TileID.ClayBlock)
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite4>());
-                    NetMessage.SendObjectPlacment(-1, X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite4>(), 0, 0, -1, -1);
+                   
                 }
             }
 
