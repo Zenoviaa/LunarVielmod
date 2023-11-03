@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-namespace Stellamod.Tiles
+namespace Stellamod.Tiles.Ambient
 {
 	public class OwlTrunck2 : ModTile
 	{

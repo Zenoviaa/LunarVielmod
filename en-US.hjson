@@ -4168,6 +4168,17 @@ Mods: {
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBorderS.MapEntry: Aurelus Border S
 			AbyssalStone.MapEntry: Abyssal Stone
+			BigRock1.MapEntry: Big Rock1
+			BigRock2.MapEntry: Big Rock2
+			BigRock3.MapEntry: Big Rock3
+			BigRock4.MapEntry: Big Rock4
+			OwlTrunck1.MapEntry: Owl Trunck1
+			OwlTrunck2.MapEntry: Owl Trunck2
+			OwlTrunck3.MapEntry: Owl Trunck3
+			Stalagmite1.MapEntry: Stalagmite1
+			Stalagmite2.MapEntry: Stalagmite2
+			Stalagmite3.MapEntry: Stalagmite3
+			Stalagmite4.MapEntry: Stalagmite4
 		}
 
 		Biomes: {
