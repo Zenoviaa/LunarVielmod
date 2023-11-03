@@ -3522,6 +3522,16 @@ Mods: {
 				DisplayName: Noxian Wood
 				Tooltip: ""
 			}
+
+			StoneKey: {
+				DisplayName: Stone Key
+				Tooltip: ""
+			}
+
+			StoneChesti: {
+				DisplayName: Stone Chesti
+				Tooltip: ""
+			}
 		}
 
 		ShadegraveStaff: {
@@ -3996,6 +4006,7 @@ Mods: {
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			StoneBrooch.DisplayName: Stone Brooch
 		}
 
 		NPCs: {
@@ -4515,6 +4526,11 @@ Mods: {
 				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
 				DisplayName: Abyssal Flame
 			}
+
+			StoneB: {
+				DisplayName: Stone B
+				Description: Mods.Stellamod.Buffs.StoneB.Description
+			}
 		}
 
 		Tiles: {
@@ -4603,6 +4619,7 @@ Mods: {
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBorderS.MapEntry: Aurelus Border S
 			AbyssalStone.MapEntry: Abyssal Stone
+			StoneChest.MapEntry: Stone Chest
 		}
 
 		Biomes: {
