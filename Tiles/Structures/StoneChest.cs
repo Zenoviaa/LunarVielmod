@@ -11,10 +11,11 @@ using Terraria.ObjectData;
 using Stellamod.Dusts;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod.Tiles.Structures
 {
-	public class MorrowChest : ModTile
+	public class StoneChest : ModTile
 	{
 
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
@@ -82,15 +83,9 @@ namespace Stellamod.Tiles.Structures
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
 			DustType = dustType;
-			if (Main.dayTime)
-			{
-				Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
-				return false;
-			}
-			else
-            {
+			
 				return true;
-            }
+           
 
 			
 		
@@ -187,31 +182,18 @@ namespace Stellamod.Tiles.Structures
 			}
 			else
 			{
-                
-					if (Main.dayTime)
-					{
-					return false;
-					}
-					else if (!Main.dayTime)
+				if (isLocked)
 				{
-						if (isLocked)
+					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
+					int key = ModContent.ItemType<StoneKey>();
+					if (player.HasItem(key) && Chest.Unlock(left, top))
+					{
+						if (Main.netMode == NetmodeID.MultiplayerClient)
 						{
-							// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
-							int key = ModContent.ItemType<MorrowChestKey>();
-							if (player.ConsumeItem(key) && Chest.Unlock(left, top))
-							{
-								if (Main.netMode == NetmodeID.MultiplayerClient)
-								{
-									NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
-								}
-							}
+							NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 						}
 					}
-
-				
-
-
-
+				}
 				else
 				{
 					int chest = Chest.FindChest(left, top);
@@ -268,7 +250,7 @@ namespace Stellamod.Tiles.Structures
 					player.cursorItemIconID = ModContent.ItemType<MorrowChesti>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MorrowChestKey>();
+						player.cursorItemIconID = ModContent.ItemType<StoneKey>();
 					}
 
 					player.cursorItemIconText = "";

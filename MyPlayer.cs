@@ -142,6 +142,8 @@ namespace Stellamod
 
 		public bool BroochDread;
 		public int DreadBCooldown = 1;
+		public bool BroochStone;
+		public int StoneBCooldown = 1;
 		public bool BroochMal;
 		public int MalBCooldown = 1;
 		public bool BroochVixed;
@@ -178,8 +180,10 @@ namespace Stellamod
         public float HMArmorTime;
         public bool ZoneAbyss;
 		public bool ZoneAurelus;
+		public bool ZoneStarbloom;
 		public bool ZoneAcid;
 		public bool ZoneGovheil;
+		public bool ZoneNaxtrin;
 		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -486,7 +490,7 @@ namespace Stellamod
 			BroochBear = false;
 			BroochGovheill = false;
 			BroochBurningG = false;
-
+			BroochStone = false;
 
 
 
@@ -545,7 +549,8 @@ namespace Stellamod
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
 			Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
-		
+
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starblooms", ZoneStarbloom);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
@@ -1049,6 +1054,14 @@ namespace Stellamod
 				GintBCooldown = 1000;
 			}
 
+			if (BroochStone && StoneBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<StoneBrooch>(), 0, 1f, Player.whoAmI);
+
+				Player.AddBuff(ModContent.BuffType<StoneB>(), 1000);
+				StoneBCooldown = 1000;
+			}
+
 			if (BroochGovheill && AdvancedBrooches && GovheillBCooldown <= 0)
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<GovheilHolsterBrooch>(), 0, 1f, Player.whoAmI);
@@ -1365,7 +1378,128 @@ namespace Stellamod
 
 			}
 
+			if (Player.InModBiome<StarbloomBiome>())
+			{
+				Main.windPhysicsStrength = 90;
+				Main.GraveyardVisualIntensity = 0.4f;
+				GoldenRingCooldown++;
+
+				GoldenSparkleCooldown++;
+				for (int j = 0; j < 5; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+
+			}
+
+			if (ZoneStarbloom)
+			{
+				Main.windPhysicsStrength = 90;
+				Main.GraveyardVisualIntensity = 0.4f;
+				GoldenRingCooldown++;
+
+				GoldenSparkleCooldown++;
+				for (int j = 0; j < 5; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+
+
+				for (int j = 0; j < 2; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+
+
+				for (int j = 0; j < 1; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+
+				for (int j = 0; j < 2; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+				if (GoldenRingCooldown > 2)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+						ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 2, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+						GoldenRingCooldown = 0;
+					}
+				}
+
+				if (GoldenSparkleCooldown > 100)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+						ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+						GoldenSparkleCooldown = 0;
+					}
+				}
+
+
+
+
+
+			}
+
 		    if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
+			if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
 			{
 			
 				Main.windPhysicsStrength = 50;
