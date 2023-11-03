@@ -54,7 +54,7 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 8);
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 7);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 2);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

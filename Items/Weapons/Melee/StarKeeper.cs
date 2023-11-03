@@ -49,9 +49,8 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 8);
-            recipe.AddIngredient(ItemID.EnchantedSword, 1);
-            recipe.AddIngredient(ItemID.FallenStar, 5);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<Gallasis>(),1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

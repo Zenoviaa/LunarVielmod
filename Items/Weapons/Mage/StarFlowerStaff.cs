@@ -48,6 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Daybloom, 5);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 15);
             recipe.AddIngredient(ItemID.FallenStar, 5);
             recipe.AddTile(TileID.Anvils);

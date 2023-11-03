@@ -3512,6 +3512,11 @@ Mods: {
 				DisplayName: Basic Gun Parts
 				Tooltip: ""
 			}
+
+			AuroreanStarI: {
+				DisplayName: Aurorean Star I
+				Tooltip: ""
+			}
 		}
 
 		FurihaMKIII: {
@@ -3794,6 +3799,7 @@ Mods: {
 			AmethystBeetle.DisplayName: Amethyst Beetle
 			EmeraldBeetle.DisplayName: Emerald Beetle
 			SapphireBeetle.DisplayName: Sapphire Beetle
+			StarSlime.DisplayName: Star Slime
 		}
 
 		Buffs: {
@@ -4630,6 +4636,7 @@ Mods: {
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
 			SGBolt.DisplayName: S G Bolt
+			AuroreanStar.DisplayName: Aurorean Star
 		}
 	}
 

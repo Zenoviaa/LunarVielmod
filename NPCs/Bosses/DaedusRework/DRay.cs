@@ -17,7 +17,6 @@ using ReLogic.Content;
 using Terraria.GameContent;
 using log4net.Util;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.Projectiles;
 using Terraria.Audio;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework

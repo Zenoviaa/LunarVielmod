@@ -36,6 +36,7 @@ using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.Items.Weapons.Melee;
 
 namespace Stellamod
 {
@@ -536,10 +537,10 @@ namespace Stellamod
 		}
 
 
-
-
-
-		public override void PostUpdateMiscEffects()
+        public static bool AuroreanBool;
+        public static float Aurorean;
+        public static float AuroreanB = 0.5f;
+        public override void PostUpdateMiscEffects()
 		{
 
 			bool fable = (Player.ZoneOverworldHeight && ZoneFable);
@@ -550,8 +551,8 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<Daedus>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
-
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", EventWorld.Aurorean);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
@@ -566,6 +567,30 @@ namespace Stellamod
 		}
 		public override void PostUpdate()
         {
+
+            if (Aurorean >= 0.5f)
+            {
+                AuroreanBool = true;
+
+            }
+            if (Aurorean <= 0f)
+            {
+                AuroreanBool = false;
+
+            }
+
+            if (AuroreanBool)
+			{
+                AuroreanB += 0.02f;
+                Aurorean -= 0.02f;
+
+			}
+			else
+            {
+                AuroreanB -= 0.02f;
+                Aurorean += 0.02f;
+            }
+
             Player player = Main.LocalPlayer;
             if (!player.active)
 				return;
@@ -650,6 +675,17 @@ namespace Stellamod
                 }
             }
 
+			if (EventWorld.Aurorean)
+			{
+
+                if (Main.rand.Next(90) == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    int offsetX = Main.rand.Next(-1000, 1000) * 2;
+                    int offsetY = Main.rand.Next(-1000, 1000) - 1700;
+                    int damage = Main.expertMode ? 0 : 0;
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
+                }
+            }
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
             {
@@ -1329,7 +1365,7 @@ namespace Stellamod
 
 			}
 
-				if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
+		    if (Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
 			{
 			
 				Main.windPhysicsStrength = 50;
@@ -1426,9 +1462,50 @@ namespace Stellamod
 
 
 
+            if (EventWorld.Aurorean)
+            {
+
+                Main.windPhysicsStrength = 50;
 
 
-			if (ArcaneM && ArcaneMCooldown == 601)
+                GoldenRingCooldown++;
+
+                GoldenSparkleCooldown++;
+                RayCooldown++;
+
+
+
+                for (int j = 0; j < 2; j++)
+                {
+                    RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                    RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                    RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                    Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                    ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+                }
+
+
+
+
+                for (int j = 0; j < 2; j++)
+                {
+                    RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+                    RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+                    RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+                    Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+                    ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
+
+                }
+            }
+
+
+            if (ArcaneM && ArcaneMCooldown == 601)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
 				for (int j = 0; j < 7; j++)

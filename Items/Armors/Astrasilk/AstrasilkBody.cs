@@ -29,7 +29,7 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 14);
-            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 11);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

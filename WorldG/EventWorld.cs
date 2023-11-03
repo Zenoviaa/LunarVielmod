@@ -41,7 +41,10 @@ namespace Stellamod.WorldG
         //SoulStorm--------------------------
         public static bool SoulStorm;
 
-
+        //AuroreanStars--------------------------
+        public static bool AuroreanSpawn;
+        public static bool Aurorean;
+        public static bool AuroreanText;
 
 
 
@@ -63,6 +66,37 @@ namespace Stellamod.WorldG
                 return;
             MyPlayer CVA = player.GetModPlayer<MyPlayer>();
 
+            //AuroreanStars--------------------------
+
+            if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
+            {
+                AuroreanSpawn = true;
+                if (Main.rand.NextBool(6))
+                {
+                    Aurorean = true;
+                    if (!AuroreanText)
+                    {
+                        Main.NewText("Aurorean Stars are falling!", 234, 96, 114);
+                        AuroreanText = true;
+                    }
+                }
+            }
+            if (Main.dayTime && Aurorean)
+            {
+                
+                Aurorean = false;
+                if (AuroreanText)
+                {
+                    Main.NewText("The Aurorean starfall has ended", 234, 96, 114);
+                    AuroreanText = false;
+                }
+            }
+            if (Main.dayTime)
+            {
+                AuroreanSpawn = false;
+
+            }
+            //------------------------------------------------------------------------------
             if (Gintzing)
             {
        
