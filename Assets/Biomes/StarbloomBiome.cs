@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.UI.Systems;
+using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;
@@ -20,7 +21,7 @@ namespace Stellamod.Assets.Biomes
 
 		// Select Music
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Starbloom");
+	
 		
 
 
@@ -36,16 +37,12 @@ namespace Stellamod.Assets.Biomes
 		{
 			// DisplayName.SetDefault("Cathedral of the Moon");
 		}
-		public override void SpecialVisuals(Player player, bool isActive)
-		{
-			player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", isActive, player.Center);
-			
-		}
+
 
 		public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneStarbloom = true;
 		public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneStarbloom = false;
 		// Calculate when the biome is active.
 
-		public override bool IsBiomeActive(Player player) => BiomeTileCounts.InStarbloom;
+		
 	}
 }
