@@ -12,7 +12,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Stellamod.NPCs.Bosses.DreadMire;
-
+using Terraria.GameContent.ItemDropRules;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.NPCs.Bosses.Jack;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
@@ -24,53 +31,60 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Blood Cyst");
-            Main.npcFrameCount[NPC.type] = 11;
             NPCID.Sets.TrailCacheLength[NPC.type] = 3;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            Hit = true;
+        }
         public override void AI()
         {
-            NPC.damage = 0;
-            NPC.ai[0]++;
-            if (Main.dayTime)
+            NPC.ai[1]++;
+            if (NPC.ai[1] >= 40)
             {
-                if (NPC.ai[0] == 2)
+                if (Main.rand.NextBool(9))
                 {
-                    BloodCystPos = NPC.position;
+                    var entitySource = NPC.GetSource_FromThis();
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<OverworldRuneLightBig>());
                 }
-                if (NPC.ai[0] >= 2)
-                {
-                    Movement(BloodCystPos, 0f, 2030f, 0.02f);
-                }
-
             }
-            else if (!Main.bloodMoon)
+            NPC.damage = 0;
+
+            NPC.ai[0]++;
+            if (Hit)
             {
-                if (NPC.ai[0] == 2)
+                NPC.ai[2]++;
+
+                if (NPC.ai[2] % 2 == 0)
                 {
-                    BloodCystPos = NPC.position;
-                }
-                if (NPC.ai[0] >= 2)
-                {
-                    Movement(BloodCystPos, 0f, 2030f, 0.02f);
+                    HitPos.Y = BloodCystPos.Y + Main.rand.Next(-8, 8);
+                    HitPos.X = BloodCystPos.X + Main.rand.Next(-8, 8);
                 }
 
+                NPC.position = Vector2.Lerp(NPC.position, HitPos, 0.6f);
+                if (NPC.ai[2] >= 10)
+                {
+                    NPC.ai[2] = 0;
+                    Hit = false;
+                }
             }
             else
             {
                 if (NPC.ai[0] == 2)
                 {
+                    HitPos = NPC.position;
                     BloodCystPos = NPC.position;
                 }
-                if (NPC.ai[0] >= 3 && NPC.ai[0] <= 50)
+                if (NPC.ai[0] >= 3 && NPC.ai[0] <= 100)
                 {
-                    Movement(BloodCystPos, 0f, 30f, 0.05f);
+                    Movement(BloodCystPos, 0f, 50f, 0.01f);
                 }
-                if (NPC.ai[0] >= 50 && NPC.ai[0] <= 100)
+                if (NPC.ai[0] >= 100 && NPC.ai[0] <= 200)
                 {
-                    Movement(BloodCystPos, 0f, 0f, 0.05f);
+                    Movement(BloodCystPos, 0f, 0f, 0.01f);
                 }
-                if (NPC.ai[0] == 100)
+                if (NPC.ai[0] == 200)
                 {
                     NPC.ai[0] = 3;
                 }
@@ -80,6 +94,8 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             float num = 1f - NPC.alpha / 255f;
         }
         int frame = 0;
+        Vector2 HitPos;
+        bool Hit;
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.2f;
@@ -97,38 +113,69 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         {
             NPC.noTileCollide = true;
             NPC.width = 25;
-            NPC.height = 20;
-            NPC.damage = 1;
+            NPC.height = 25;
+            NPC.damage = 0;
             NPC.defense = 19;
-            NPC.lifeMax = 200;
-
-            NPC.HitSound = SoundID.NPCHit9;
-            NPC.DeathSound = SoundID.NPCDeath23;
+            NPC.lifeMax = 40;
+            NPC.HitSound = SoundID.DD2_CrystalCartImpact;
+            NPC.DeathSound = SoundID.NPCDeath44;
             NPC.value = 60f;
             NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
             NPC.noGravity = true;
-
         }
 
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            if (NPC.life <= 0)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
-            }
-            else
-            {
-                for (int k = 0; k < 7; k++)
-                {
 
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
-                }
-            }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+
+            npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 5, 3, 5));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 7, 3, 30));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Geode, 5, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.HerbBag, 3, 1, 15));
+            npcLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 7, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 7, 1, 25));
+            npcLoot.Add(ItemDropRule.Common(ItemID.PlatinumOre, 3, 1, 25));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Musket, 40, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.WoodenCrate, 7, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ItemID.ApplePie, 9, 1, 7));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Apple, 10, 1, 7));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 10, 1, 7));
+            npcLoot.Add(ItemDropRule.Common(ItemID.EmptyBucket, 9, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.BandofStarpower, 15, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.HermesBoots, 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.MagicMirror, 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.PotionOfReturn, 20, 1, 20));
+            npcLoot.Add(ItemDropRule.Common(ItemID.WormholePotion, 20, 1, 20));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Bottle, 5, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Aglet, 13, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.SandstorminaBottle, 50, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.CloudinaBalloon, 50, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.CanOfWorms, 10, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ItemID.GoldenKey, 40, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 10, 1, 999));
+            npcLoot.Add(ItemDropRule.Common(ItemID.BambooLeaf, 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.BambooBlock, 7, 1, 10));
+            npcLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 9, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 7, 1, 9));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 5, 1, 12));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ViolinStick>(), 15, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 5, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CondensedDirt>(), 2, 1, 25));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 7, 5, 45));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HornedNail>(), 50, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<wowgun>(), 30, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CanOfLeaves>(), 15, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Ivythorn>(), 15, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 15, 1));
+        }
+        public override void OnKill()
+        {
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
+            CombatText.NewText(NPC.getRect(), Color.Green, "Overworld Harvest Collected!", true, false);
+            base.OnKill();
         }
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
@@ -154,7 +201,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             );
             SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
-            Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.LightBlue);
+            Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.Green);
             for (int num103 = 0; num103 < 4; num103++)
             {
                 Color color28 = color29;
@@ -170,8 +217,5 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             return true;
         }
 
-        public override void OnKill()  //Npc drop
-        {
-        }
     }
 }
