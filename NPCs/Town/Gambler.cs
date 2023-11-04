@@ -219,7 +219,8 @@ namespace Stellamod.NPCs.Town
 				"Zielie",
 				"Zemmie",
 				"Zeilie",
-				"Zielie"
+				"Zielie",
+				"Wenomechinimasama"
 			};
 		}
 
@@ -378,6 +379,18 @@ namespace Stellamod.NPCs.Town
 					.Add(new Item(ModContent.ItemType<Items.Consumables.Gambit>())
 					{
 						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCards>(), 300)
+					{
+						shopCustomPrice = 2,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
+
+					.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.ThrowingCards>(), 300)
+					{
+						shopCustomPrice = 1,
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 

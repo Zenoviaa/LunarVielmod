@@ -3537,6 +3537,16 @@ Mods: {
 				DisplayName: Stone Chesti
 				Tooltip: ""
 			}
+
+			IgniterCards: {
+				DisplayName: Igniter Cards
+				Tooltip: ""
+			}
+
+			ThrowingCards: {
+				DisplayName: Throwing Cards
+				Tooltip: ""
+			}
 		}
 
 		NoxianWood: {
@@ -4699,6 +4709,8 @@ Mods: {
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			Card1.DisplayName: Card1
+			Card2.DisplayName: Card2
 		}
 	}
 
