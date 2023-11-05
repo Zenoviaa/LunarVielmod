@@ -5,6 +5,7 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -387,6 +388,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ItemID.IronBar, 5, 1, 7));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

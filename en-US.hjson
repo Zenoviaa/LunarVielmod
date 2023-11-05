@@ -3547,6 +3547,11 @@ Mods: {
 				DisplayName: Throwing Cards
 				Tooltip: ""
 			}
+
+			Bread: {
+				DisplayName: Bread
+				Tooltip: ""
+			}
 		}
 
 		NoxianWood: {
