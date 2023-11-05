@@ -394,6 +394,27 @@ namespace Stellamod.NPCs.Town
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
+				
+          
+
+				.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.ThrowingCardsMKII>(), 150)
+				 {
+					 shopCustomPrice = 4,
+					 shopSpecialCurrency = Stellamod.MedalCurrencyID, // omit this line if shopCustomPrice should be in regular coins.
+					 
+				})
+
+				.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCardsMKII>(), 150)
+				{
+					shopCustomPrice = 8,
+					shopSpecialCurrency = Stellamod.MedalCurrencyID, // omit this line if shopCustomPrice should be in regular coins.
+
+				})
+
+
+
+
+
 					.Add(new Item(ModContent.ItemType<Medal>()) { shopCustomPrice = Item.buyPrice(gold: 15) })
 
 
