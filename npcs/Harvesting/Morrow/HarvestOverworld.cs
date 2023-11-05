@@ -134,7 +134,8 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HornedNail>(), 50, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<wowgun>(), 30, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CanOfLeaves>(), 15, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 15, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Ivythorn>(), 15, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GildedStaff>(), 15, 1));
 		}
 		public override void OnKill()
 		{

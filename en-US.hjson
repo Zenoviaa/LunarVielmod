@@ -4089,6 +4089,8 @@ Mods: {
 			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
 			SolarPortal.DisplayName: Solar Portal
 			SolarSingularity.DisplayName: Solar Singularity
+			OverworldRune.DisplayName: Overworld Rune
+			OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
 		}
 
 		Tiles: {
