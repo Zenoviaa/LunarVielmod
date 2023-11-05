@@ -335,6 +335,8 @@ namespace Stellamod.NPCs.Town
 
 		public override void AddShops()
 		{
+
+           
 			var npcShop = new NPCShop(Type, ShopName)
 
 
@@ -394,19 +396,19 @@ namespace Stellamod.NPCs.Town
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
-				
-          
 
-				.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.ThrowingCardsMKII>(), 150)
-				 {
-					 shopCustomPrice = 4,
-					 shopSpecialCurrency = Stellamod.MedalCurrencyID, // omit this line if shopCustomPrice should be in regular coins.
-					 
-				})
 
-				.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCardsMKII>(), 150)
+
+					.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.ThrowingCardsMKII>(), 70)
+					{
+						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID, // omit this line if shopCustomPrice should be in regular coins.
+
+					})
+
+				.Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCardsMKII>(), 100)
 				{
-					shopCustomPrice = 8,
+					shopCustomPrice = 10,
 					shopSpecialCurrency = Stellamod.MedalCurrencyID, // omit this line if shopCustomPrice should be in regular coins.
 
 				})
