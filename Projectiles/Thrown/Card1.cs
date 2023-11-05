@@ -29,6 +29,15 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            for (int i = 0; i < 35; i++)
+            {
+                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
+                var d = Dust.NewDustPerfect(Main.LocalPlayer.Center, DustID.FireworkFountain_Red, speed * 6, Scale: 0.9f);
+                ;
+                d.noGravity = true;
+
+                d.velocity *= 0.3f;
+            }
 
             NPC npc = target;
 
