@@ -3552,6 +3552,11 @@ Mods: {
 				DisplayName: Bread
 				Tooltip: ""
 			}
+
+			BowledCream: {
+				DisplayName: Bowled Cream
+				Tooltip: ""
+			}
 		}
 
 		NoxianWood: {
