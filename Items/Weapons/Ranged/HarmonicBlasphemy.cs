@@ -66,7 +66,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = false;
             Item.channel = true;
-            Item.UseSound = SoundID.GuitarEm;
+            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/HarmonicBlasphemy2");
 
         }
 
