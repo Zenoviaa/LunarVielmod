@@ -30,8 +30,8 @@ namespace Stellamod.NPCs.Bosses.Daedus
             Projectile.CloneDefaults(ProjectileID.ThornBall);
             AIType = ProjectileID.ThornBall;
             Projectile.penetrate = 9;
-            Projectile.width = 150;
-            Projectile.height = 150;
+            Projectile.width = 104;
+            Projectile.height = 104;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
             if (Projectile.penetrate <= 0)
             {
                 Projectile.Kill();
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -10, Projectile.position.Y + -30,  0, 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -40, Projectile.position.Y + -50,  0, 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f);
             }
 
             else
