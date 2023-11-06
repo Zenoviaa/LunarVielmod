@@ -24,7 +24,7 @@ using Stellamod.NPCs.Bosses.Jack;
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
 
-    public class OverworldRune : ModNPC
+    public class JungleRune : ModNPC
     {
         private int timer;
         private Vector2 BloodCystPos;
@@ -127,17 +127,17 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest) ? (0.100f) : 0f;
+            return (spawnInfo.Player.ZoneJungle) ? (0.100f) : 0f;
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OverworldRuneI>(), 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JungleRuneI>(), 1, 1));
         }
         public override void OnKill()
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
-            CombatText.NewText(NPC.getRect(), Color.Green, "Overworld Harvest Collected!", true, false);
+            CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Jungle Harvest Collected!", true, false);
             base.OnKill();
         }
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
@@ -149,7 +149,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             float num108 = 4;
             float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
             float num106 = 0f;
-            Color color1 = Color.Green * num107 * .8f;
+            Color color1 = Color.YellowGreen * num107 * .8f;
             var effects = NPC.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(
                 GlowTexture,
@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             );
             SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
-            Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.Green);
+            Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.YellowGreen);
             for (int num103 = 0; num103 < 4; num103++)
             {
                 Color color28 = color29;
@@ -176,7 +176,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Lighting.AddLight(NPC.Center, Color.Green.ToVector3() * 2.25f * Main.essScale);
+            Lighting.AddLight(NPC.Center, Color.YellowGreen.ToVector3() * 2.25f * Main.essScale);
             return true;
         }
 

@@ -210,6 +210,7 @@
     <None Remove="NPCs\Bosses\singularityFragment\SoulBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
+    <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="Particles\BurnParticle4.png" />

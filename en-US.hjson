@@ -3547,6 +3547,21 @@ Mods: {
 				DisplayName: Throwing Cards
 				Tooltip: ""
 			}
+
+			DesertRuneI: {
+				DisplayName: Ancient Rune
+				Tooltip: ""
+			}
+
+			OverworldRuneI: {
+				DisplayName: Ancient Rune
+				Tooltip: ""
+			}
+
+			JungleRuneI: {
+				DisplayName: Jungle Rune I
+				Tooltip: ""
+			}
 		}
 
 		NoxianWood: {
@@ -4091,6 +4106,9 @@ Mods: {
 			SolarSingularity.DisplayName: Solar Singularity
 			OverworldRune.DisplayName: Overworld Rune
 			OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
+			DesertRune.DisplayName: Desert Rune
+			DesertRuneLightBig.DisplayName: Desert Rune Light Big
+			JungleRune.DisplayName: Jungle Rune
 		}
 
 		Tiles: {
