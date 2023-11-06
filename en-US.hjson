@@ -3548,6 +3548,21 @@ Mods: {
 				Tooltip: ""
 			}
 
+			Bread: {
+				DisplayName: Bread
+				Tooltip: ""
+			}
+
+			BowledCream: {
+				DisplayName: Bowled Cream
+				Tooltip: ""
+			}
+
+			IgniterCardsMKII: {
+				DisplayName: Igniter Cards M K I I
+				Tooltip: ""
+			}
+
 			DesertRuneI: {
 				DisplayName: Ancient Rune
 				Tooltip: ""
@@ -3557,6 +3572,12 @@ Mods: {
 				DisplayName: Ancient Rune
 				Tooltip: ""
 			}
+
+			ThrowingCardsMKII: {
+				DisplayName: Throwing Cards M K I I
+				Tooltip: ""
+			}
+		}
 
 			JungleRuneI: {
 				DisplayName: Jungle Rune I
@@ -4729,6 +4750,8 @@ Mods: {
 			wowBullet.DisplayName: wow Bullet
 			Card1.DisplayName: Card1
 			Card2.DisplayName: Card2
+			Card3.DisplayName: Card3
+			Card4.DisplayName: Card4
 		}
 	}
 

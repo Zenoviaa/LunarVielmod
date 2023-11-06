@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
 using Stellamod.Dusts;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,8 +32,14 @@ namespace Stellamod.Projectiles.Powders
         {
 
 			Projectile.velocity *= 0.96f;
+			for (int j = 0; j < 3; j++)
+			{
+				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 1f);
+				ParticleManager.NewParticle(Projectile.Center, speed * 5, ParticleManager.NewInstance<ArcanalParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
 
-        }
+
+			}
+		}
         public override bool PreAI()
 		{
 			Projectile.tileCollide = false;

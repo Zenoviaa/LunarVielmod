@@ -213,6 +213,7 @@
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />

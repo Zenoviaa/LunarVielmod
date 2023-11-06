@@ -14,6 +14,7 @@ using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
 using Terraria.GameContent.ItemDropRules;
+using Stellamod.Items.Accessories.Foods;
 
 namespace Stellamod.NPCs.Event.Gintzearmy
 {
@@ -38,6 +39,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 6, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
         }
         public override void SetDefaults()
         {

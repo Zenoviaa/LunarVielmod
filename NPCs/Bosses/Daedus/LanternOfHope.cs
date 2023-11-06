@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Dusts;
 using Stellamod.Particles;
+using Stellamod.Utilis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,7 +58,17 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		
 
 		}
-		
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		{
+			Player player = spawnInfo.Player;
+			if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+			{
+				return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
+			}
+
+
+			return 0f;
+		}
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{
@@ -81,24 +92,24 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			if (timer2 == 310)
             {
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
 				
 
 			}
 
 			if (timer2 == 330)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
 			
 
 			}
 
 			if (timer2 == 350)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), (int)(12), 0f, 0, 0f, 0f);
 				timer2 = 0;
 
 			}
@@ -155,14 +166,14 @@ namespace Stellamod.NPCs.Bosses.Daedus
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
 
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(220, 173, 255, 34), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(220, 173, 255, 100), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
 
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 66, 255, 46), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, NPC.frame, new Color(140, 66, 255, 100), NPC.rotation, frameOrigin, NPC.scale, SpriteEffects.None, 0);
 			}
 
 			// Using a rectangle to crop a texture can be imagined like this:

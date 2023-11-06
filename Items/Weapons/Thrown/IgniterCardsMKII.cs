@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	public class ThrowingCards : ModItem
+	public class IgniterCardsMKII : ModItem
 	{
         private Vector2 newVect;
 
@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 13;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 30;
             Item.noUseGraphic = true;
@@ -36,8 +36,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.crit = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.shoot = ModContent.ProjectileType<Card1>();
-            Item.shootSpeed = 15f;
+            Item.shoot = ModContent.ProjectileType<Card3>();
+            Item.shootSpeed = 18f;
             Item.rare = 3;
             Item.consumable = true;
             Item.maxStack = 9999;
