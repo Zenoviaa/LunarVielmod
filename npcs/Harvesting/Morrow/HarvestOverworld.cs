@@ -66,13 +66,12 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.AddBuff(ModContent.BuffType<Harvester>(), 999999999);
 		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			// we would like this npc to spawn in the overworld.
-			return SpawnCondition.Overworld.Chance * 0.1f;
-		}
-		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
-		public override void AI()
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return (spawnInfo.Player.ZoneForest) ? (0.100f) : 0f;
+        }
+        // Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
+        public override void AI()
 		{
 			NPC.HasBuff<Harvester>();
 			// The npc starts in the asleep state, waiting for a player to enter range
