@@ -116,6 +116,7 @@ namespace Stellamod
 
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();
+         
 
 
             // ...other Load stuff goes here
@@ -299,8 +300,8 @@ namespace Stellamod
 
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Menutheme");
 
-        public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<MarrowSurfaceBackgroundStyle>();
-
+        public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
+       
         public override string DisplayName => "The Lunar Veil ModMenu";
 
         public override void OnSelected()

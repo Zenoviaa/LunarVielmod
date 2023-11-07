@@ -33,6 +33,7 @@ namespace Stellamod.Assets.Biomes
 					SkyManager.Instance.Activate("Stellamod:AlcadSky", player.Center);
 				if (SkyManager.Instance["Stellamod:AlcadSky"].IsActive() && !isActive)
 					SkyManager.Instance.Deactivate("Stellamod:AlcadSky");
+		
 		}
 
 		// Populate the Bestiary Filter

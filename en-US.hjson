@@ -3582,6 +3582,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Jungle Rune I
 			}
+
+			AlcadzBlock: {
+				DisplayName: Alcadz Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4741,6 +4746,11 @@ Mods: {
 			AbyssBiome: {
 				TownNPCDialogueName: the Abyss Biome
 				DisplayName: Abyss Biome
+			}
+
+			AlcadziaBiome: {
+				DisplayName: Alcadzia Biome
+				TownNPCDialogueName: the Alcadzia Biome
 			}
 		}
 	}

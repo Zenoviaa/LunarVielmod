@@ -14,13 +14,8 @@ namespace Stellamod.Assets.Biomes
         public override int ChooseWaterfallStyle() => ModContent.Find<ModWaterfallStyle>("Stellamod/StarbloomWaterfallStyle").Slot;
         public override int GetSplashDust() => DustID.PinkCrystalShard;
         public override int GetDropletGore() => GoreID.WaterDripHallow;
-        public override Color BiomeHairColor() => Color.Pink;
+        public override Color BiomeHairColor() => Color.LightGoldenrodYellow;
 
-        public override void LightColorMultiplier(ref float r, ref float g, ref float b)
-        {
-            r = 1.4f;
-            g = 1f;
-            b = 1.4f;
-        }
+       
     }
 }
