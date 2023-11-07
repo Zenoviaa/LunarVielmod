@@ -184,6 +184,7 @@ namespace Stellamod
 		public bool ZoneAcid;
 		public bool ZoneGovheil;
 		public bool ZoneNaxtrin;
+		public bool ZoneAlcadzia;
 		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -549,6 +550,7 @@ namespace Stellamod
 
 			
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:AlcadSky", ZoneAlcadzia);
 
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);

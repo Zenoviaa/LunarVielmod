@@ -7,6 +7,7 @@ using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Naxtrin;
+using Stellamod.Tiles.RoyalCapital;
 
 namespace Stellamod
 {
@@ -31,6 +32,9 @@ namespace Stellamod
         public int NaxtrinCount;
         public static bool InNaxtrin => ModContent.GetInstance<BiomeTileCounts>().NaxtrinCount > 10;
 
+        public int RoyalCapitalCount;
+        public static bool InRoyalCapital => ModContent.GetInstance<BiomeTileCounts>().RoyalCapitalCount > 10;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -39,6 +43,7 @@ namespace Stellamod
             GovheilCount = tileCounts[ModContent.TileType<GovheilCastleTile>()];
             StarbloomCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
             NaxtrinCount = tileCounts[ModContent.TileType<NoxianBlock>()];
+            RoyalCapitalCount = tileCounts[ModContent.TileType<AlcazBlock>()];
         }
     }
 }
