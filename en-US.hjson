@@ -3587,6 +3587,56 @@ Mods: {
 				DisplayName: Alcadz Block
 				Tooltip: ""
 			}
+
+			CarianWood: {
+				DisplayName: Carian Wood
+				Tooltip: ""
+			}
+
+			CarianWoodWall: {
+				DisplayName: Carian Wood Wall
+				Tooltip: ""
+			}
+
+			AlciteI: {
+				DisplayName: Alcite I
+				Tooltip: ""
+			}
+
+			AowerBottomI: {
+				DisplayName: Aower Bottom I
+				Tooltip: ""
+			}
+
+			AowerTopI: {
+				DisplayName: Aower Top I
+				Tooltip: ""
+			}
+
+			CurtainLeftRCI: {
+				DisplayName: Curtain Left R C I
+				Tooltip: ""
+			}
+
+			CurtainRightRCI: {
+				DisplayName: Curtain Right R C I
+				Tooltip: ""
+			}
+
+			CurtainTopI: {
+				DisplayName: Curtain Top I
+				Tooltip: ""
+			}
+
+			RectiteI: {
+				DisplayName: Rectite I
+				Tooltip: ""
+			}
+
+			SkullpileI: {
+				DisplayName: Skullpile I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4695,6 +4745,14 @@ Mods: {
 			AurelusChest.MapEntry: Aurelus Chest
 			AurelusBorderS.MapEntry: Aurelus Border S
 			AbyssalStone.MapEntry: Abyssal Stone
+			Alcite.MapEntry: Alcite
+			AowerBottom.MapEntry: Aower Bottom
+			AowerTop.MapEntry: Aower Top
+			CurtainLeftRC.MapEntry: Curtain Left R C
+			CurtainRightRC.MapEntry: Curtain Right R C
+			CurtainTop.MapEntry: Curtain Top
+			Rectite.MapEntry: Rectite
+			Skullpile.MapEntry: Skullpile
 		}
 
 		Biomes: {

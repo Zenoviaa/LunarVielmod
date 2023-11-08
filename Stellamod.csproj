@@ -91,7 +91,7 @@
     <None Remove="Items\Placeable\Alcadzia\AowerTopI.png" />
     <None Remove="Items\Placeable\Alcadzia\CurtainLeftRCI.png" />
     <None Remove="Items\Placeable\Alcadzia\CurtainRightRCI.png" />
-    <None Remove="Items\Placeable\Alcadzia\CurtainTop.png" />
+    <None Remove="Items\Placeable\Alcadzia\CurtainTopI.png" />
     <None Remove="Items\Placeable\Alcadzia\RectiteI.png" />
     <None Remove="Items\Placeable\Alcadzia\SkullpileI.png" />
     <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
