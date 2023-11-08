@@ -3489,7 +3489,7 @@ Mods: {
 			}
 
 			FurihaMKIII: {
-				DisplayName: Furiha M K I I I
+				DisplayName: Furiha MKIII
 				Tooltip: ""
 			}
 
@@ -3500,7 +3500,7 @@ Mods: {
 
 			MushroomStave: {
 				DisplayName: Mushroom Stave
-				Tooltip: ""
+				Tooltip: Get off me!
 			}
 
 			StarbloomTempleBlock: {
@@ -3519,8 +3519,8 @@ Mods: {
 			}
 
 			AuroreanStarI: {
-				DisplayName: Aurorean Star I
-				Tooltip: ""
+				DisplayName: Aurorean Star
+				Tooltip: A star merged with the alcadizic air to form this superstar!
 			}
 
 			StoneKey: {
@@ -3534,7 +3534,7 @@ Mods: {
 			}
 
 			StoneChesti: {
-				DisplayName: Stone Chesti
+				DisplayName: Stone Chest
 				Tooltip: ""
 			}
 
@@ -3550,16 +3550,20 @@ Mods: {
 
 			Bread: {
 				DisplayName: Bread
-				Tooltip: ""
+				Tooltip: The gintze dropped this...
 			}
 
 			BowledCream: {
 				DisplayName: Bowled Cream
-				Tooltip: ""
+				Tooltip:
+					'''
+					Eating gives you regeneration like honey!
+					Increased movement speed as an accessory!
+					'''
 			}
 
 			IgniterCardsMKII: {
-				DisplayName: Igniter Cards M K I I
+				DisplayName: Igniter Cards MKII
 				Tooltip: ""
 			}
 
@@ -3574,13 +3578,13 @@ Mods: {
 			}
 
 			ThrowingCardsMKII: {
-				DisplayName: Throwing Cards M K I I
+				DisplayName: Throwing Cards MKII
 				Tooltip: ""
 			}
 
 			JungleRuneI: {
 				Tooltip: ""
-				DisplayName: Jungle Rune I
+				DisplayName: Jungle Rune
 			}
 
 			AlcadzBlock: {
@@ -4808,7 +4812,7 @@ Mods: {
 
 			AlcadziaBiome: {
 				DisplayName: Alcadzia Biome
-				TownNPCDialogueName: the Alcadzia Biome
+				TownNPCDialogueName: Royal Capital Alcadzia
 			}
 		}
 	}
@@ -4820,11 +4824,11 @@ Mods: {
 
 	StoneKey: {
 		DisplayName: Stone Key
-		Tooltip: ""
+		Tooltip: A key to open every stone chest in existence!
 	}
 
 	StoneChesti: {
-		DisplayName: Stone Chesti
+		DisplayName: Stone Chest
 		Tooltip: ""
 	}
 
@@ -5985,12 +5989,12 @@ Mods: {
 
 ShadegraveStaff: {
 	DisplayName: Shadegrave Staff
-	Tooltip: ""
+	Tooltip: Funny that this exists.
 }
 
 BasicGunParts: {
 	DisplayName: Basic Gun Parts
-	Tooltip: ""
+	Tooltip: Gun parts for all!
 }
 
 Projectiles: {
@@ -6580,9 +6584,9 @@ NPCs: {
 		TownNPCMood: {
 			Content: I am content.
 			NoHome: I hate not having a home.
-			FarFromHome: I am too far from home.
-			LoveSpace: I love having so much space.
-			DislikeCrowded: I dislike how crowded I am.
+			FarFromHome: I am too far from the place I should be in.
+			LoveSpace: Space is ok.
+			DislikeCrowded: I dislike how crowded I am. I feel like I'm back in the army.
 			HateCrowded: I hate how crowded I am.
 			LoveBiome: I love {BiomeName}.
 			LikeBiome: I like {BiomeName}.
