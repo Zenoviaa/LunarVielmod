@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Tiles.RoyalCapital
 {
-    public class AlcazBlock : ModTile
+    public class AlcazPrisonBlock : ModTile
     {
         public override void SetStaticDefaults()
         {
@@ -21,10 +21,10 @@ namespace Stellamod.Tiles.RoyalCapital
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-            RegisterItemDrop(ItemType<AlcadzBlock>()); ;
-            AddMapEntry(new Color(40, 25, 37));
+            RegisterItemDrop(ItemType<CarianWood>());
+            AddMapEntry(new Color(120, 125, 137));
             MineResist = 1f;
-            MinPick = 200;
+            MinPick = 45;
 
         }
 

@@ -86,6 +86,14 @@
     <None Remove="Items\Consumables\VoidLantern.png" />
     <None Remove="Items\Consumables\WanderingEssence.png" />
     <None Remove="Items\Materials\AcidicalDirtBlock.png" />
+    <None Remove="Items\Placeable\Alcadzia\AlciteI.png" />
+    <None Remove="Items\Placeable\Alcadzia\AowerBottomI.png" />
+    <None Remove="Items\Placeable\Alcadzia\AowerTopI.png" />
+    <None Remove="Items\Placeable\Alcadzia\CurtainLeftRCI.png" />
+    <None Remove="Items\Placeable\Alcadzia\CurtainRightRCI.png" />
+    <None Remove="Items\Placeable\Alcadzia\CurtainTop.png" />
+    <None Remove="Items\Placeable\Alcadzia\RectiteI.png" />
+    <None Remove="Items\Placeable\Alcadzia\SkullpileI.png" />
     <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
     <None Remove="Items\Placeable\Govheil\GothivA.png" />
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
