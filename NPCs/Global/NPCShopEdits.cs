@@ -63,6 +63,25 @@ namespace Stellamod.NPCs.Global
 
 			};
 
+
+			if (shop.NpcType == NPCID.Wizard)
+			{
+				// Adding an item to a vanilla NPC is easy:
+				// This item sells for the normal price.
+			
+				if (Main.hardMode)
+				{
+					shop.Add(ItemID.Book);
+					shop.Add(ItemID.MagicMissile);
+					shop.Add(ItemID.Muramasa);
+				}
+				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
+				// Editing item.value in SetupShop is an incorrect approach.
+
+				// This shop entry sells for 2 Defenders Medals.
+
+			};
+
 		}
 		
 	}
