@@ -30,14 +30,14 @@ namespace Stellamod.NPCs.Global
 				npc.damage = 50;
 				if (Main.expertMode)
 				{
-					npc.life = 5000;
-					npc.lifeMax = 5000;
+					npc.life = 4500;
+					npc.lifeMax = 4500;
 				}
 
 				if (Main.masterMode)
 				{
-					npc.life = 6000;
-					npc.lifeMax = 6000;
+					npc.life = 4500;
+					npc.lifeMax = 4500;
 				}
 
 			}
@@ -45,17 +45,17 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.QueenBee)
 			{
 
-
+				npc.damage = 60;
 				if (Main.expertMode)
 				{
-					npc.life = 9000;
-					npc.lifeMax = 9000;
+					npc.life = 5000;
+					npc.lifeMax = 5000;
 				}
 
 				if (Main.masterMode)
 				{
-					npc.life = 10000;
-					npc.lifeMax = 10000;
+					npc.life = 5000;
+					npc.lifeMax = 5000;
 
 				}
 
@@ -68,16 +68,16 @@ namespace Stellamod.NPCs.Global
 				npc.damage = 70;
 				if (Main.expertMode)
 				{
-					npc.life = 10000;
-					npc.damage = 140;
-					npc.lifeMax = 10000;
+					npc.life = 6500;
+					npc.damage = 50;
+					npc.lifeMax = 6500;
 				}
 
 				if (Main.masterMode)
 				{
-					npc.life = 12000;
-					npc.damage = 150;
-					npc.lifeMax = 12000;
+					npc.life = 6500;
+					npc.damage = 50;
+					npc.lifeMax = 6500;
 				}
 			}
 
@@ -88,17 +88,24 @@ namespace Stellamod.NPCs.Global
 				npc.damage = 240;
 				if (Main.expertMode)
 				{
-					npc.life = 20000;
+					npc.life = 12000;
 					
-					npc.lifeMax = 20000;
+					npc.lifeMax = 12000;
 				}
 
 				if (Main.masterMode)
 				{
-					npc.life = 20000;
+					npc.life = 12000;
 				
-					npc.lifeMax = 20000;
+					npc.lifeMax = 12000;
 				}
+			}
+			if (npc.type == NPCID.WallofFleshEye)
+			{
+
+
+				npc.damage = 140;
+				
 			}
 		}
 

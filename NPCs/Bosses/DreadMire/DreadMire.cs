@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void SetDefaults()
         {
             NPC.noGravity = true;
-            NPC.lifeMax = 1700;
+            NPC.lifeMax = 3000;
             NPC.defense = 9;
             NPC.damage = 1;
             NPC.value = 65f;
