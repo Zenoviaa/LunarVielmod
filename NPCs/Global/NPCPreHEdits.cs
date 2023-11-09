@@ -18,10 +18,92 @@ namespace Stellamod.NPCs.Global
 {
 	public class NPCPreHEdits : GlobalNPC
 	{
-		// ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
-		// Here we go through all of them, and how they can be used.
-		// There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+        // ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
+        // Here we go through all of them, and how they can be used.
+        // There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+        public override void SetDefaults(NPC npc)
+        {
+			if (npc.type == NPCID.EyeofCthulhu)
+			{
 
+
+				npc.damage = 50;
+				if (Main.expertMode)
+				{
+					npc.life = 5000;
+					npc.lifeMax = 5000;
+				}
+
+				if (Main.masterMode)
+				{
+					npc.life = 6000;
+					npc.lifeMax = 6000;
+				}
+
+			}
+
+			if (npc.type == NPCID.QueenBee)
+			{
+
+
+				if (Main.expertMode)
+				{
+					npc.life = 9000;
+					npc.lifeMax = 9000;
+				}
+
+				if (Main.masterMode)
+				{
+					npc.life = 10000;
+					npc.lifeMax = 10000;
+
+				}
+
+			}
+
+			if (npc.type == NPCID.SkeletronHead)
+			{
+
+
+				npc.damage = 70;
+				if (Main.expertMode)
+				{
+					npc.life = 10000;
+					npc.damage = 140;
+					npc.lifeMax = 10000;
+				}
+
+				if (Main.masterMode)
+				{
+					npc.life = 12000;
+					npc.damage = 150;
+					npc.lifeMax = 12000;
+				}
+			}
+
+			if (npc.type == NPCID.WallofFlesh)
+			{
+
+
+				npc.damage = 240;
+				if (Main.expertMode)
+				{
+					npc.life = 20000;
+					
+					npc.lifeMax = 20000;
+				}
+
+				if (Main.masterMode)
+				{
+					npc.life = 20000;
+				
+					npc.lifeMax = 20000;
+				}
+			}
+		}
+
+       
+		
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 
@@ -202,7 +284,7 @@ namespace Stellamod.NPCs.Global
 			
 
 			}
-
+			
 		}
 	}
 }
