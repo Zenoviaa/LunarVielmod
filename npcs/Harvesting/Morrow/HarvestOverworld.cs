@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		}
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest) ? (0.100f) : 0f;
+            return (spawnInfo.Player.ZoneForest) ? (0.000f) : 0f;
         }
         // Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
         public override void AI()
