@@ -3568,13 +3568,13 @@ Mods: {
 			}
 
 			DesertRuneI: {
-				DisplayName: Ancient Rune
-				Tooltip: ""
+				DisplayName: Ancient Artifact
+				Tooltip: Maybe a scientist can look at this?
 			}
 
 			OverworldRuneI: {
-				DisplayName: Ancient Rune
-				Tooltip: ""
+				DisplayName: Ancient Artifact
+				Tooltip: Maybe a scientist can look at this?
 			}
 
 			ThrowingCardsMKII: {
@@ -3583,8 +3583,8 @@ Mods: {
 			}
 
 			JungleRuneI: {
-				Tooltip: ""
-				DisplayName: Jungle Rune
+				Tooltip: Maybe a scientist can look at this?
+				DisplayName: Ancient Artifact
 			}
 
 			AlcadzBlock: {
@@ -3639,6 +3639,21 @@ Mods: {
 
 			SkullpileI: {
 				DisplayName: Skullpile I
+				Tooltip: ""
+			}
+
+			GiaPants: {
+				DisplayName: Gia Pants
+				Tooltip: ""
+			}
+
+			GiaSuit: {
+				DisplayName: Gia Suit
+				Tooltip: ""
+			}
+
+			GiaWig: {
+				DisplayName: Gia Wig
 				Tooltip: ""
 			}
 		}
@@ -4272,6 +4287,43 @@ Mods: {
 			AbyssalSeeker.DisplayName: Abyssal Seeker
 			TericGramNPC2.DisplayName: Teric Gram N P C2
 			TericGramNPC.DisplayName: Teric Gram N P C
+
+			BoundGia: {
+				DisplayName: Bound Gia
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			Gia: {
+				DisplayName: Gia
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
 		}
 
 		Buffs: {

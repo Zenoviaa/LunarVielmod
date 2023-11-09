@@ -10,6 +10,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -73,13 +74,13 @@ namespace Stellamod.NPCs.Town
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<AcidBiome>())
+			if (spawnInfo.Player.ZoneRockLayerHeight)
 			{
-				return SpawnCondition.Cavern.Chance * 0.025f;
+				return spawnInfo.Player.ZoneAcid() ? 0.1f : 0f;
 			}
-			if (spawnInfo.Player.InModBiome<AcidBiome>())
+			if (spawnInfo.Player.ZoneOverworldHeight)
 			{
-				return SpawnCondition.Overworld.Chance * 0.05f;
+				return spawnInfo.Player.ZoneAcid() ? 0.2f : 0f;
 			}
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
@@ -95,13 +96,12 @@ namespace Stellamod.NPCs.Town
 			}
 
 			if (NPC.wet)
+			{
 				NPC.life = 250;
-
+			}
 			foreach (var player in Main.player)
 			{
-				if (!player.active)
-					continue;
-
+				if (!player.active) continue;
 				if (player.talkNPC == NPC.whoAmI)
 				{
 					Rescue();
