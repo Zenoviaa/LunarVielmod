@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 	
 			if (spawnInfo.Player.InModBiome<GovheilCastle>())
 			{
-				return SpawnCondition.Underground.Chance * 0.5f;
+				return SpawnCondition.Underground.Chance * 0.0f;
 			}
 
 

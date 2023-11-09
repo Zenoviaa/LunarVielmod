@@ -273,8 +273,8 @@ namespace Stellamod.NPCs.Town
 
 
 						case 0:
-					
 
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.DesertFossil, 100);
 							break;
 						case 1:
@@ -374,7 +374,7 @@ namespace Stellamod.NPCs.Town
 						case 5:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							break;
 
 						case 6:
@@ -406,7 +406,7 @@ namespace Stellamod.NPCs.Town
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Stick>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), 5);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BandofStarpower, 1);
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							break;
 
 						case 10:
@@ -427,7 +427,7 @@ namespace Stellamod.NPCs.Town
 						case 12:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<GildedStaff>(), 1);
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 
 							break;
 
@@ -492,6 +492,7 @@ namespace Stellamod.NPCs.Town
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 
 							break;
 
@@ -504,7 +505,7 @@ namespace Stellamod.NPCs.Town
 						case 5:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							break;
 
 						case 6:
