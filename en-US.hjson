@@ -4165,6 +4165,7 @@ Mods: {
 				}
 
 				DisplayName: Ginztel
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			Gambit: {
@@ -4187,6 +4188,7 @@ Mods: {
 				}
 
 				DisplayName: Gambit
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			ShadowWraith.DisplayName: Shadow Wraith
@@ -4328,6 +4330,8 @@ Mods: {
 					LikeNPC_Princess: I like {NPCName}.
 					Princess_LovesNPC: I like {NPCName}.
 				}
+
+				Census.SpawnCondition: Conditions unknown
 			}
 		}
 
