@@ -3670,6 +3670,11 @@ Mods: {
 					...Several fireflies were harmed in the making of this weapon
 					'''
 			}
+
+			StoniaBroochA: {
+				DisplayName: Stonia Brooch A
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
