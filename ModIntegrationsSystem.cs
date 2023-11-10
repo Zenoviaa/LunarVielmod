@@ -326,6 +326,7 @@ namespace Stellamod
 				weight,
 				downed,
 				bossType,
+				spawnInfo,
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem
@@ -340,6 +341,7 @@ namespace Stellamod
 						weight2,
 						downed2,
 						bossType2,
+						spawnInfo2,
 						new Dictionary<string, object>()
 						{
 							["spawnItems"] = summonItem2
@@ -355,6 +357,7 @@ namespace Stellamod
 			weight3,
 			downed3,
 			bossType3,
+			spawnInfo3,
 			new Dictionary<string, object>()
 			{
 				["spawnItems"] = summonItem3
@@ -370,6 +373,7 @@ namespace Stellamod
 				weight4,
 				downed4,
 				bossType4,
+				spawnInfo4,
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem4
@@ -385,6 +389,7 @@ namespace Stellamod
 			weight5,
 			downed5,
 			bossType5,
+			spawnInfo5,
 			new Dictionary<string, object>()
 			{
 				["spawnItems"] = summonItem5
@@ -400,6 +405,7 @@ namespace Stellamod
 			weight6,
 			downed6,
 			bossType6,
+			spawnInfo6,
 			new Dictionary<string, object>()
 			{
 				["spawnItems"] = summonItem6
@@ -415,6 +421,7 @@ namespace Stellamod
 			weight7,
 			downed7,
 			bossType7,
+			spawnInfo7,
 			new Dictionary<string, object>()
 			{
 				["spawnItems"] = summonItem7
@@ -430,6 +437,7 @@ namespace Stellamod
 			weight8,
 			downed8,
 			bossType8,
+			spawnInfo8,
 			new Dictionary<string, object>()
 			{
 				["spawnItems"] = summonItem8

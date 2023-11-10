@@ -5271,9 +5271,9 @@ Mods: {
 	}
 
 	NPCs: {
-		Gothiviab.DisplayName: Gothiviab
-		VerliaB.DisplayName: Verlia B
-		SingularityFragment.DisplayName: Singularity Fragment
+		Gothiviab.DisplayName: Irradia
+		VerliaB.DisplayName: Verlia Of The Moon
+		SingularityFragment.DisplayName: Singularity Of The Moon
 		SunStalker.DisplayName: Sun Stalker
 		CommanderGintzia.DisplayName: Commander Gintzia
 		DreadMire.DisplayName: Dread Mire
@@ -5328,7 +5328,7 @@ Mods: {
 		SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
 		SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
 		SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
-		CloneV.DisplayName: Clone V
+		CloneV.DisplayName: Clone Verlia
 		GhostCharger.DisplayName: Ghost Charger
 		StarteV.DisplayName: Starte V
 		Sword1.DisplayName: Sword1
