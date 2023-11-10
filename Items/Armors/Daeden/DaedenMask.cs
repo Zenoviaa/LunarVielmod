@@ -33,7 +33,7 @@ namespace Stellamod.Items.Armors.Daeden
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 5; // The amount of defense the item will give when equipped
+			Item.defense = 1; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
@@ -42,9 +42,8 @@ namespace Stellamod.Items.Armors.Daeden
 			player.GetDamage(DamageClass.Melee) *= 1.3f;
 			player.GetDamage(DamageClass.Summon) *= 1.3f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.statLifeMax2 -= 40;
 			player.manaRegen += 20;
-
+			player.statLifeMax2 -= 40;
 
 		}
 
@@ -57,10 +56,10 @@ namespace Stellamod.Items.Armors.Daeden
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "This armor is really scuffed..." +
-				"\n-40 HP, but 25% increased damage for Melee and Summoners";  // This is the setbonus tooltip
+				"\n-Stuck at 100 HP, but 25% increased damage for Melee and Summoners";  // This is the setbonus tooltip
 			player.GetDamage(DamageClass.Melee) *= 1.25f;
 			player.GetDamage(DamageClass.Summon) *= 1.25f;
-			player.statLifeMax2 -= 40;
+			player.statLifeMax2 = 100;
 
 		}
 

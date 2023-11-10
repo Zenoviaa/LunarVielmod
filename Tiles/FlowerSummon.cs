@@ -61,7 +61,7 @@ namespace Stellamod.Tiles
 			TileObjectData.newTile.Width = 5;
 			MineResist = 4f;
 			MinPick = 80;
-			TileObjectData.newTile.DrawYOffset = 0; // So the tile sinks into the ground
+			TileObjectData.newTile.DrawYOffset = 4; // So the tile sinks into the ground
 			TileObjectData.newTile.DrawXOffset = 4; // So the tile sinks into the ground
 
 
@@ -107,7 +107,7 @@ namespace Stellamod.Tiles
 			int top = j;
 
 			Main.LocalPlayer.cursorItemIconEnabled = true;
-			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+		
 			if (tile.TileFrameX % 36 != 0)
 			{
 				left--;
@@ -122,7 +122,7 @@ namespace Stellamod.Tiles
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Huntria's Shrine");
+				player.cursorItemIconText = Language.GetTextValue("Old Guard's Shrine");
 			}
 			else
 			{
@@ -133,7 +133,7 @@ namespace Stellamod.Tiles
 					player.cursorItemIconID = ModContent.ItemType<Flowersummon>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<MoonflameLantern>();
+						player.cursorItemIconID = ModContent.ItemType<StoneKey>();
 					}
 
 					player.cursorItemIconText = "";
@@ -163,24 +163,7 @@ namespace Stellamod.Tiles
 			b = 0.1f;
 		}
 
-		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-		{
-			Point p = new Point(i, j);
-			Tile tile = Main.tile[p.X, p.Y];
-
-			if (tile == null || !tile.HasTile) { return false; }
-
-			Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Particles/GradientPillar").Value;
-
-			Vector2 offScreen = new Vector2(Main.offScreenRange);
-			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
-			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.2f, 0.15f, 0.08f, 0.1f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
-
-			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
-
-			return true;
-		}
+		
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{

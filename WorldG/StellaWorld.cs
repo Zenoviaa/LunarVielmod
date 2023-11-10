@@ -48,6 +48,7 @@ namespace Stellamod.WorldG
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Alcad", WorldGenRoyalCapital));
 			}
 
 	//		int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
@@ -710,7 +711,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(75, (Main.maxTilesX) / 8); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(125, (Main.maxTilesX) / 8); // from 50 since there's a unaccessible area at the world's borders
 																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -1321,6 +1322,131 @@ namespace Stellamod.WorldG
 		}
 
 		Point pointL;
+
+
+
+		
+		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Fighting the Virulent";
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+																			   // 50% of choosing the last 6th of the world
+																			   // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int abysmy = (int)(Main.worldSurface - 50);
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
+				{
+					abysmy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmy > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.Mud))
+				{
+					continue;
+				}
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc7 = new Point(abysmx, abysmy);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+
+
+					Point Loc = new Point(abysmx + 50, abysmy + 255);
+
+					pointL = new Point(abysmx + 50, abysmy + 255);
+
+
+
+
+
+
+
+
+					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
+					placed = true;
+				}
+
+
+
+
+
+
+
+			}
+
+			for (int fa = 0; fa < 20; fa++)
+			{
+				int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
+				int abysmyd = (int)(Main.worldSurface - 50);
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
+				{
+					abysmyd++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmyd > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmxd, abysmyd];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()))
+				{
+					continue;
+				}
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmxd, abysmyd);
+
+
+					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
+				}
+
+
+
+
+			}
+
+
+		}
+
+		Point pointLA;
+
+
 		// 6. This is the actual world generation code.
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -1399,7 +1525,7 @@ namespace Stellamod.WorldG
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
 
-				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud || tile.TileType == TileID.Stone))
+				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>() || tile.TileType == TileID.Mud))
 				{
 					continue;
 				}
@@ -1417,15 +1543,11 @@ namespace Stellamod.WorldG
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-							Tuple.Create((int)ItemID.Acorn, 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+								Tuple.Create((int)ItemID.Acorn, 0.1),
+								Tuple.Create((int)ItemID.ManaCrystal, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-								Tuple.Create(ModContent.ItemType<IrradiatedGreatBlade>(), 0.6),
-								Tuple.Create(ModContent.ItemType<IrradiatedCreeperStaff>(), 0.7),
-								Tuple.Create(ModContent.ItemType<StaffoftheIrradiaflare>(), 0.7),
-								Tuple.Create(ModContent.ItemType<IrradieagleWrath>(), 0.7),
 								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
-		
+
 						);
 						if (specialItem != ItemID.None)
 						{
@@ -1436,7 +1558,6 @@ namespace Stellamod.WorldG
 						{
 							case 0:
 
-								itemsToAdd.Add((ModContent.ItemType<IrradiatedGreatBlade>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -1449,7 +1570,7 @@ namespace Stellamod.WorldG
 								break;
 							case 1:
 								itemsToAdd.Add((ItemID.JungleSpores, 7));
-								itemsToAdd.Add((ModContent.ItemType<IrradiatedCreeperStaff>(), Main.rand.Next(1, 1)));
+							
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -1460,7 +1581,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<IrradieagleWrath>(), Main.rand.Next(1, 1)));
+							
 								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -1470,7 +1591,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<StaffoftheIrradiaflare>(), Main.rand.Next(1, 1)));
+							
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -1528,12 +1649,8 @@ namespace Stellamod.WorldG
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 							Tuple.Create((int)ItemID.Acorn, 0.1),
-							Tuple.Create(ModContent.ItemType<MorrowSalface>(), 0.1),
+								Tuple.Create((int)ItemID.ManaCrystal, 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-								Tuple.Create(ModContent.ItemType<IrradiatedGreatBlade>(), 0.6),
-								Tuple.Create(ModContent.ItemType<IrradiatedCreeperStaff>(), 0.7),
-								Tuple.Create(ModContent.ItemType<StaffoftheIrradiaflare>(), 0.7),
-								Tuple.Create(ModContent.ItemType<IrradieagleWrath>(), 0.7),
 								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.7)
 
 						);
@@ -1546,7 +1663,7 @@ namespace Stellamod.WorldG
 						{
 							case 0:
 
-								itemsToAdd.Add((ModContent.ItemType<IrradiatedGreatBlade>(), Main.rand.Next(1, 1)));
+					
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
@@ -1559,7 +1676,7 @@ namespace Stellamod.WorldG
 								break;
 							case 1:
 								itemsToAdd.Add((ItemID.JungleSpores, 7));
-								itemsToAdd.Add((ModContent.ItemType<IrradiatedCreeperStaff>(), Main.rand.Next(1, 1)));
+			
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -1570,7 +1687,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<IrradieagleWrath>(), Main.rand.Next(1, 1)));
+			
 								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -1580,7 +1697,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<StaffoftheIrradiaflare>(), Main.rand.Next(1, 1)));
+					
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));

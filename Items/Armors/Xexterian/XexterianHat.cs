@@ -41,7 +41,7 @@ namespace Stellamod.Items.Armors.Xexterian
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 20;
-			player.GetDamage(DamageClass.Generic) *= 1.20f;
+			player.GetDamage(DamageClass.Generic) *= 1.10f;
 		
 			
 		}

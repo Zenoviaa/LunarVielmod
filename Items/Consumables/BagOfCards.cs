@@ -9,20 +9,17 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Weapons.Thrown;
 
 namespace Stellamod.Items.Consumables
 {
-	public class SirestiasStarterBag : ModItem
+	public class BagOfCards : ModItem
 	{
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Sirestias's Love Bag");
+			// DisplayName.SetDefault("Gilded Bag");
 			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
@@ -51,71 +48,48 @@ namespace Stellamod.Items.Consumables
 
 			var entitySource = player.GetSource_OpenItem(Type);
 
-			if (Main.rand.NextBool(1))
-			{
-				switch (Main.rand.Next(6))
+
+			if (Main.hardMode)
+            {
+
+
+				if (Main.rand.NextBool(4))
 				{
-
-
-					case 0:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstidust>());
-
-						break;
-					case 1:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
-
-						break;
-					case 2:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstibloom>());
-
-						break;
-					case 3:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<PaperPaws>());
-
-						break;
-					case 4:
-
-						player.QuickSpawnItem(entitySource, ItemID.LeadBar, Main.rand.Next(5, 20));
-
-						break;
-					case 5:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<AlcaologyI>());
-
-						break;
+					player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(1, 13));
 				}
+				if (Main.rand.NextBool(1))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<IgniterCards>(), Main.rand.Next(1, 200));
+				}
+				if (Main.rand.NextBool(2))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<ThrowingCards>(), Main.rand.Next(1, 200));
+				}
+				if (Main.rand.NextBool(3))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<IgniterCardsMKII>(), Main.rand.Next(1, 100));
+				}
+				if (Main.rand.NextBool(3))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<ThrowingCardsMKII>(), Main.rand.Next(1, 100));
+				}
+
+
 			}
 			
 
-			if (Main.rand.NextBool(1))
+			if (Main.rand.NextBool(4))
 			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
+				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(1, 13));
 			}
 			if (Main.rand.NextBool(1))
 			{
-				player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<IgniterCards>(), Main.rand.Next(1, 200));
 			}
-			if (Main.rand.NextBool(1))
+			if (Main.rand.NextBool(2))
 			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<ThrowingCards>(), Main.rand.Next(1, 200));
 			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<DiariBroochA>(), Main.rand.Next(1, 1));
-			}
-
 		}
 
 		// Below is code for the visuals

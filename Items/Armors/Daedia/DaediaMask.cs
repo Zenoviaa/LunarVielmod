@@ -80,8 +80,8 @@ namespace Stellamod.Items.Armors.Daedia
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 6);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 6);
 			recipe.AddIngredient(ItemID.Silk, 10);
-			recipe.AddIngredient(ItemID.LifeCrystal, 1);
-			recipe.AddIngredient(ItemID.Coral, 3);
+			recipe.AddIngredient(ItemID.LifeCrystal, 7);
+			recipe.AddIngredient(ItemID.SoulofNight, 10);
 			recipe.AddIngredient(ItemID.PinkThread, 3);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

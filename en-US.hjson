@@ -1400,7 +1400,7 @@ Mods: {
 			}
 
 			AlcadizScrap: {
-				DisplayName: Alcadiz Scrap
+				DisplayName: Fabled Scrap
 				Tooltip:
 					'''
 					Essence of high Materials, used for making very neat weapons
@@ -3654,6 +3654,11 @@ Mods: {
 
 			GiaWig: {
 				DisplayName: Gia Wig
+				Tooltip: ""
+			}
+
+			BagOfCards: {
+				DisplayName: Bag Of Cards
 				Tooltip: ""
 			}
 		}

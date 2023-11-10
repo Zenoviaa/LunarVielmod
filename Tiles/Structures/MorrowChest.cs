@@ -190,7 +190,31 @@ namespace Stellamod.Tiles.Structures
                 
 					if (Main.dayTime)
 					{
-					return false;
+						if (!isLocked)
+						{
+								int chest = Chest.FindChest(left, top);
+							if (chest >= 0)
+							{
+								Main.stackSplit = 600;
+								if (chest == player.chest)
+								{
+									player.chest = -1;
+									SoundEngine.PlaySound(SoundID.MenuClose);
+								}
+								else
+								{
+								SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+								player.OpenChest(left, top, chest);
+								}
+
+								Recipe.FindRecipes();
+							}
+						}
+
+						if (isLocked)
+                    {
+						Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+					}
 					}
 					else if (!Main.dayTime)
 				{
@@ -208,32 +232,14 @@ namespace Stellamod.Tiles.Structures
 						}
 					}
 
+
+
+
+
 				
-
-
-
-				else
-				{
-					int chest = Chest.FindChest(left, top);
-					if (chest >= 0)
-					{
-						Main.stackSplit = 600;
-						if (chest == player.chest)
-						{
-							player.chest = -1;
-							SoundEngine.PlaySound(SoundID.MenuClose);
-						}
-						else
-						{
-							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-							player.OpenChest(left, top, chest);
-						}
-
-						Recipe.FindRecipes();
-					}
-				}
 			}
-
+			
+		
 			return true;
 		}
 
