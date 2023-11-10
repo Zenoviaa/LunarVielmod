@@ -3661,6 +3661,15 @@ Mods: {
 				DisplayName: Bag Of Cards
 				Tooltip: ""
 			}
+
+			FireflyCannon: {
+				DisplayName: Firefly Cannon
+				Tooltip:
+					'''
+					Fires a spread of powerful exploding fireflies!
+					...Several fireflies were harmed in the making of this weapon
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -4137,6 +4146,7 @@ Mods: {
 			DesertWhipProj.DisplayName: Desert Whip Proj
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
+			FireflyBomb.DisplayName: Firefly Bomb
 		}
 
 		NPCs: {
