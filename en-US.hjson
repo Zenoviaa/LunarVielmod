@@ -2281,7 +2281,7 @@ Mods: {
 
 			DreadFoil: {
 				DisplayName: Dread Foil
-				Tooltip: Foil captured from dreadmire!
+				Tooltip: Foil captured from Dreadmire!
 			}
 
 			FlareGem: {
@@ -4309,7 +4309,7 @@ Mods: {
 			}
 
 			Gia: {
-				DisplayName: Gia
+				DisplayName: The Scientist
 
 				TownNPCMood: {
 					Content: I am content.
@@ -4328,533 +4328,1160 @@ Mods: {
 					LikeNPC_Princess: I like {NPCName}.
 					Princess_LovesNPC: I like {NPCName}.
 				}
-			}
-		}
-
-		Buffs: {
-			VoidMinionBuff: {
-				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
-				DisplayName: Void Minion Buff
-			}
-
-			TheBurningRodBuff: {
-				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-				DisplayName: The Burning Rod Buff
-			}
-
-			SwarmerMinionBuff: {
-				Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
-				DisplayName: Swarmer Minion Buff
-			}
-
-			SolMothBuff: {
-				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
-				DisplayName: Sol Moth Buff
-			}
-
-			ProbeBuff: {
-				Description: Mods.Stellamod.Buffs.ProbeBuff.Description
-				DisplayName: Probe Buff
-			}
-
-			MushroomStaveBuff: {
-				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-				DisplayName: Mushroom Stave Buff
-			}
-
-			ManaWandMinionBuff: {
-				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
-				DisplayName: Mana Wand Minion Buff
-			}
-
-			LifeWandMinionBuff: {
-				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
-				DisplayName: Life Wand Minion Buff
-			}
-
-			JellyMinionBuff: {
-				Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
-				DisplayName: Jelly Minion Buff
-			}
-
-			IvyakenBuff: {
-				Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
-				DisplayName: Ivyaken Buff
-			}
-
-			IrradiatedCreeperBuff: {
-				Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
-				DisplayName: Irradiated Creeper Buff
-			}
-
-			IceboundMinionBuff: {
-				Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
-				DisplayName: Icebound Minion Buff
-			}
-
-			HMMinionBuff: {
-				Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
-				DisplayName: H M Minion Buff
-			}
-
-			FCBuff: {
-				Description: Mods.Stellamod.Buffs.FCBuff.Description
-				DisplayName: F C Buff
-			}
-
-			DripperBuff: {
-				Description: Mods.Stellamod.Buffs.DripperBuff.Description
-				DisplayName: Dripper Buff
-			}
-
-			AuroranSeekerMinionBuff: {
-				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
-				DisplayName: Auroran Seeker Minion Buff
-			}
-
-			ArncharMinionBuff: {
-				Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
-				DisplayName: Arnchar Minion Buff
-			}
-
-			Wounded: {
-				Description: Mods.Stellamod.Buffs.Wounded.Description
-				DisplayName: Wounded
-			}
-
-			Whipdeath: {
-				Description: Mods.Stellamod.Buffs.Whipdeath.Description
-				DisplayName: Whipdeath
-			}
-
-			MorrowWhipDebuff: {
-				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-				DisplayName: Morrow Whip Debuff
-			}
-
-			Morrow: {
-				Description: Mods.Stellamod.Buffs.Morrow.Description
-				DisplayName: Morrow
-			}
-
-			SnowFlame: {
-				Description: Mods.Stellamod.Buffs.SnowFlame.Description
-				DisplayName: Snow Flame
-			}
-
-			Rekin: {
-				Description: Mods.Stellamod.Buffs.Rekin.Description
-				DisplayName: Rekin
-			}
-
-			PocketSandBuff: {
-				Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
-				DisplayName: Pocket Sand Buff
-			}
-
-			Love: {
-				Description: Mods.Stellamod.Buffs.Love.Description
-				DisplayName: Love
-			}
-
-			Irradiation: {
-				Description: Mods.Stellamod.Buffs.Irradiation.Description
-				DisplayName: Irradiation
-			}
-
-			Harvester: {
-				Description: Mods.Stellamod.Buffs.Harvester.Description
-				DisplayName: Harvester
-			}
-
-			Gintzingwinds: {
-				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
-				DisplayName: Gintzingwinds
-			}
-
-			GintzeSeen: {
-				Description: Mods.Stellamod.Buffs.GintzeSeen.Description
-				DisplayName: Gintze Seen
-			}
-
-			GintzelSheildCD: {
-				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
-				DisplayName: Gintzel Sheild C D
-			}
-
-			GintzelSheild: {
-				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
-				DisplayName: Gintzel Sheild
-			}
-
-			Elegance: {
-				Description: Mods.Stellamod.Buffs.Elegance.Description
-				DisplayName: Elegance
-			}
-
-			VoiddDust: {
-				Description: Mods.Stellamod.Buffs.VoiddDust.Description
-				DisplayName: Voidd Dust
-			}
-
-			TrickDust: {
-				Description: Mods.Stellamod.Buffs.TrickDust.Description
-				DisplayName: Trick Dust
-			}
-
-			SongDust: {
-				Description: Mods.Stellamod.Buffs.SongDust.Description
-				DisplayName: Song Dust
-			}
-
-			ShadeDust: {
-				Description: Mods.Stellamod.Buffs.ShadeDust.Description
-				DisplayName: Shade Dust
-			}
-
-			KaevDust: {
-				Description: Mods.Stellamod.Buffs.KaevDust.Description
-				DisplayName: Kaev Dust
-			}
-
-			IceDust: {
-				Description: Mods.Stellamod.Buffs.IceDust.Description
-				DisplayName: Ice Dust
-			}
-
-			GrassBuff: {
-				Description: Mods.Stellamod.Buffs.GrassBuff.Description
-				DisplayName: Grass Buff
-			}
-
-			GovheilDust: {
-				Description: Mods.Stellamod.Buffs.GovheilDust.Description
-				DisplayName: Govheil Dust
-			}
-
-			FlowerBuff: {
-				Description: Mods.Stellamod.Buffs.FlowerBuff.Description
-				DisplayName: Flower Buff
-			}
-
-			FlameDust: {
-				Description: Mods.Stellamod.Buffs.FlameDust.Description
-				DisplayName: Flame Dust
-			}
-
-			EXPtime4: {
-				Description: Mods.Stellamod.Buffs.EXPtime4.Description
-				DisplayName: E X Ptime4
-			}
-
-			EXPtime3: {
-				Description: Mods.Stellamod.Buffs.EXPtime3.Description
-				DisplayName: E X Ptime3
-			}
-
-			EXPtime2: {
-				Description: Mods.Stellamod.Buffs.EXPtime2.Description
-				DisplayName: E X Ptime2
-			}
-
-			EXPtime: {
-				Description: Mods.Stellamod.Buffs.EXPtime.Description
-				DisplayName: E X Ptime
-			}
-
-			CrystalDust: {
-				Description: Mods.Stellamod.Buffs.CrystalDust.Description
-				DisplayName: Crystal Dust
-			}
-
-			CoalBuff: {
-				Description: Mods.Stellamod.Buffs.CoalBuff.Description
-				DisplayName: Coal Buff
-			}
-
-			AlcadDust: {
-				Description: Mods.Stellamod.Buffs.AlcadDust.Description
-				DisplayName: Alcad Dust
-			}
-
-			AivanDust: {
-				Description: Mods.Stellamod.Buffs.AivanDust.Description
-				DisplayName: Aivan Dust
-			}
-
-			Dusted: {
-				Description: Mods.Stellamod.Buffs.Dusted.Description
-				DisplayName: Dusted
-			}
-
-			DeathMultiplierBloodLamp: {
-				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-				DisplayName: Death Multiplier Blood Lamp
-			}
-
-			DeathMultiplier: {
-				Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
-				DisplayName: Death Multiplier
-			}
-
-			DarkHold: {
-				Description: Mods.Stellamod.Buffs.DarkHold.Description
-				DisplayName: Dark Hold
-			}
-
-			VixedB: {
-				Description: Mods.Stellamod.Buffs.VixedB.Description
-				DisplayName: Vixed B
-			}
-
-			VerliaBroo: {
-				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
-				DisplayName: Verlia Broo
-			}
-
-			StoneB: {
-				Description: Mods.Stellamod.Buffs.StoneB.Description
-				DisplayName: Stone B
-			}
-
-			Spragald: {
-				Description: Mods.Stellamod.Buffs.Spragald.Description
-				DisplayName: Spragald
-			}
-
-			Slimee: {
-				Description: Mods.Stellamod.Buffs.Slimee.Description
-				DisplayName: Slimee
-			}
-
-			MalB: {
-				Description: Mods.Stellamod.Buffs.MalB.Description
-				DisplayName: Mal B
-			}
-
-			IceBrooch: {
-				Description: Mods.Stellamod.Buffs.IceBrooch.Description
-				DisplayName: Ice Brooch
-			}
-
-			GovheilB: {
-				Description: Mods.Stellamod.Buffs.GovheilB.Description
-				DisplayName: Govheil B
-			}
-
-			Goldren: {
-				Description: Mods.Stellamod.Buffs.Goldren.Description
-				DisplayName: Goldren
-			}
-
-			GintBroo: {
-				Description: Mods.Stellamod.Buffs.GintBroo.Description
-				DisplayName: Gint Broo
-			}
-
-			Flyfish: {
-				Description: Mods.Stellamod.Buffs.Flyfish.Description
-				DisplayName: Flyfish
-			}
-
-			DreadB: {
-				Description: Mods.Stellamod.Buffs.DreadB.Description
-				DisplayName: Dread B
-			}
-
-			Diarii: {
-				Description: Mods.Stellamod.Buffs.Diarii.Description
-				DisplayName: Diarii
-			}
-
-			BurningGB: {
-				Description: Mods.Stellamod.Buffs.BurningGB.Description
-				DisplayName: Burning G B
-			}
-
-			BearB: {
-				Description: Mods.Stellamod.Buffs.BearB.Description
-				DisplayName: Bear B
-			}
-
-			AurelusB: {
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
-				DisplayName: Aurelus B
-			}
-
-			AmethystBroo: {
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-				DisplayName: Amethyst Broo
-			}
-
-			AssassinsSlashBuff: {
-				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
-				DisplayName: Assassins Slash Buff
-			}
-
-			ArcaneDust: {
-				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
-				DisplayName: Arcane Dust
-			}
-
-			AcidFlame: {
-				Description: Mods.Stellamod.Buffs.AcidFlame.Description
-				DisplayName: Acid Flame
-			}
 
-			AbyssalFlame: {
-				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
-				DisplayName: Abyssal Flame
+				Buffs: {
+					VoidMinionBuff: {
+						Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+						DisplayName: Void Minion Buff
+					}
+
+					TheBurningRodBuff: {
+						Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+						DisplayName: The Burning Rod Buff
+					}
+
+					SwarmerMinionBuff: {
+						Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+						DisplayName: Swarmer Minion Buff
+					}
+
+					SolMothBuff: {
+						Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+						DisplayName: Sol Moth Buff
+					}
+
+					ProbeBuff: {
+						Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+						DisplayName: Probe Buff
+					}
+
+					MushroomStaveBuff: {
+						Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+						DisplayName: Mushroom Stave Buff
+					}
+
+					ManaWandMinionBuff: {
+						Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+						DisplayName: Mana Wand Minion Buff
+					}
+
+					LifeWandMinionBuff: {
+						Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+						DisplayName: Life Wand Minion Buff
+					}
+
+					JellyMinionBuff: {
+						Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+						DisplayName: Jelly Minion Buff
+					}
+
+					IvyakenBuff: {
+						Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+						DisplayName: Ivyaken Buff
+					}
+
+					IrradiatedCreeperBuff: {
+						Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+						DisplayName: Irradiated Creeper Buff
+					}
+
+					IceboundMinionBuff: {
+						Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+						DisplayName: Icebound Minion Buff
+					}
+
+					HMMinionBuff: {
+						Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+						DisplayName: H M Minion Buff
+					}
+
+					FCBuff: {
+						Description: Mods.Stellamod.Buffs.FCBuff.Description
+						DisplayName: F C Buff
+					}
+
+					DripperBuff: {
+						Description: Mods.Stellamod.Buffs.DripperBuff.Description
+						DisplayName: Dripper Buff
+					}
+
+					AuroranSeekerMinionBuff: {
+						Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+						DisplayName: Auroran Seeker Minion Buff
+					}
+
+					ArncharMinionBuff: {
+						Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+						DisplayName: Arnchar Minion Buff
+					}
+
+					Wounded: {
+						Description: Mods.Stellamod.Buffs.Wounded.Description
+						DisplayName: Wounded
+					}
+
+					Whipdeath: {
+						Description: Mods.Stellamod.Buffs.Whipdeath.Description
+						DisplayName: Whipdeath
+					}
+
+					MorrowWhipDebuff: {
+						Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+						DisplayName: Morrow Whip Debuff
+					}
+
+					Morrow: {
+						Description: Mods.Stellamod.Buffs.Morrow.Description
+						DisplayName: Morrow
+					}
+
+					SnowFlame: {
+						Description: Mods.Stellamod.Buffs.SnowFlame.Description
+						DisplayName: Snow Flame
+					}
+
+					Rekin: {
+						Description: Mods.Stellamod.Buffs.Rekin.Description
+						DisplayName: Rekin
+					}
+
+					PocketSandBuff: {
+						Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+						DisplayName: Pocket Sand Buff
+					}
+
+					Love: {
+						Description: Mods.Stellamod.Buffs.Love.Description
+						DisplayName: Love
+					}
+
+					Irradiation: {
+						Description: Mods.Stellamod.Buffs.Irradiation.Description
+						DisplayName: Irradiation
+					}
+
+					Harvester: {
+						Description: Mods.Stellamod.Buffs.Harvester.Description
+						DisplayName: Harvester
+					}
+
+					Gintzingwinds: {
+						Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+						DisplayName: Gintzingwinds
+					}
+
+					GintzeSeen: {
+						Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+						DisplayName: Gintze Seen
+					}
+
+					GintzelSheildCD: {
+						Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+						DisplayName: Gintzel Sheild C D
+					}
+
+					GintzelSheild: {
+						Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+						DisplayName: Gintzel Sheild
+					}
+
+					Elegance: {
+						Description: Mods.Stellamod.Buffs.Elegance.Description
+						DisplayName: Elegance
+					}
+
+					VoiddDust: {
+						Description: Mods.Stellamod.Buffs.VoiddDust.Description
+						DisplayName: Voidd Dust
+					}
+
+					TrickDust: {
+						Description: Mods.Stellamod.Buffs.TrickDust.Description
+						DisplayName: Trick Dust
+					}
+
+					SongDust: {
+						Description: Mods.Stellamod.Buffs.SongDust.Description
+						DisplayName: Song Dust
+					}
+
+					ShadeDust: {
+						Description: Mods.Stellamod.Buffs.ShadeDust.Description
+						DisplayName: Shade Dust
+					}
+
+					KaevDust: {
+						Description: Mods.Stellamod.Buffs.KaevDust.Description
+						DisplayName: Kaev Dust
+					}
+
+					IceDust: {
+						Description: Mods.Stellamod.Buffs.IceDust.Description
+						DisplayName: Ice Dust
+					}
+
+					GrassBuff: {
+						Description: Mods.Stellamod.Buffs.GrassBuff.Description
+						DisplayName: Grass Buff
+					}
+
+					GovheilDust: {
+						Description: Mods.Stellamod.Buffs.GovheilDust.Description
+						DisplayName: Govheil Dust
+					}
+
+					FlowerBuff: {
+						Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+						DisplayName: Flower Buff
+					}
+
+					FlameDust: {
+						Description: Mods.Stellamod.Buffs.FlameDust.Description
+						DisplayName: Flame Dust
+					}
+
+					EXPtime4: {
+						Description: Mods.Stellamod.Buffs.EXPtime4.Description
+						DisplayName: E X Ptime4
+					}
+
+					EXPtime3: {
+						Description: Mods.Stellamod.Buffs.EXPtime3.Description
+						DisplayName: E X Ptime3
+					}
+
+					EXPtime2: {
+						Description: Mods.Stellamod.Buffs.EXPtime2.Description
+						DisplayName: E X Ptime2
+					}
+
+					EXPtime: {
+						Description: Mods.Stellamod.Buffs.EXPtime.Description
+						DisplayName: E X Ptime
+					}
+
+					CrystalDust: {
+						Description: Mods.Stellamod.Buffs.CrystalDust.Description
+						DisplayName: Crystal Dust
+					}
+
+					CoalBuff: {
+						Description: Mods.Stellamod.Buffs.CoalBuff.Description
+						DisplayName: Coal Buff
+					}
+
+					AlcadDust: {
+						Description: Mods.Stellamod.Buffs.AlcadDust.Description
+						DisplayName: Alcad Dust
+					}
+
+					AivanDust: {
+						Description: Mods.Stellamod.Buffs.AivanDust.Description
+						DisplayName: Aivan Dust
+					}
+
+					Dusted: {
+						Description: Mods.Stellamod.Buffs.Dusted.Description
+						DisplayName: Dusted
+					}
+
+					DeathMultiplierBloodLamp: {
+						Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+						DisplayName: Death Multiplier Blood Lamp
+					}
+
+					DeathMultiplier: {
+						Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+						DisplayName: Death Multiplier
+					}
+
+					DarkHold: {
+						Description: Mods.Stellamod.Buffs.DarkHold.Description
+						DisplayName: Dark Hold
+					}
+
+					VixedB: {
+						Description: Mods.Stellamod.Buffs.VixedB.Description
+						DisplayName: Vixed B
+					}
+
+					VerliaBroo: {
+						Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+						DisplayName: Verlia Broo
+					}
+
+					StoneB: {
+						Description: Mods.Stellamod.Buffs.StoneB.Description
+						DisplayName: Stone B
+					}
+
+					Spragald: {
+						Description: Mods.Stellamod.Buffs.Spragald.Description
+						DisplayName: Spragald
+					}
+
+					Slimee: {
+						Description: Mods.Stellamod.Buffs.Slimee.Description
+						DisplayName: Slimee
+					}
+
+					MalB: {
+						Description: Mods.Stellamod.Buffs.MalB.Description
+						DisplayName: Mal B
+					}
+
+					IceBrooch: {
+						Description: Mods.Stellamod.Buffs.IceBrooch.Description
+						DisplayName: Ice Brooch
+					}
+
+					GovheilB: {
+						Description: Mods.Stellamod.Buffs.GovheilB.Description
+						DisplayName: Govheil B
+					}
+
+					Goldren: {
+						Description: Mods.Stellamod.Buffs.Goldren.Description
+						DisplayName: Goldren
+					}
+
+					GintBroo: {
+						Description: Mods.Stellamod.Buffs.GintBroo.Description
+						DisplayName: Gint Broo
+					}
+
+					Flyfish: {
+						Description: Mods.Stellamod.Buffs.Flyfish.Description
+						DisplayName: Flyfish
+					}
+
+					DreadB: {
+						Description: Mods.Stellamod.Buffs.DreadB.Description
+						DisplayName: Dread B
+					}
+
+					Diarii: {
+						Description: Mods.Stellamod.Buffs.Diarii.Description
+						DisplayName: Diarii
+					}
+
+					BurningGB: {
+						Description: Mods.Stellamod.Buffs.BurningGB.Description
+						DisplayName: Burning G B
+					}
+
+					BearB: {
+						Description: Mods.Stellamod.Buffs.BearB.Description
+						DisplayName: Bear B
+					}
+
+					AurelusB: {
+						Description: Mods.Stellamod.Buffs.AurelusB.Description
+						DisplayName: Aurelus B
+					}
+
+					AmethystBroo: {
+						Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+						DisplayName: Amethyst Broo
+					}
+
+					AssassinsSlashBuff: {
+						Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+						DisplayName: Assassins Slash Buff
+					}
+
+					ArcaneDust: {
+						Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+						DisplayName: Arcane Dust
+					}
+
+					AcidFlame: {
+						Description: Mods.Stellamod.Buffs.AcidFlame.Description
+						DisplayName: Acid Flame
+					}
+
+					AbyssalFlame: {
+						Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+						DisplayName: Abyssal Flame
+					}
+				}
+
+				Tiles: {
+					VerianoreTile.MapEntry: Verianore Tile
+					SunAlter.MapEntry: Sun Alter
+					wall7.MapEntry: wall7
+					wall6.MapEntry: wall6
+					wall5.MapEntry: wall5
+					wall4.MapEntry: wall4
+					wall3.MapEntry: wall3
+					wall2.MapEntry: wall2
+					wall1.MapEntry: wall1
+					StoneChest.MapEntry: Stone Chest
+					stand.MapEntry: stand
+					SpikeS.MapEntry: Spike S
+					SmallShroomS.MapEntry: Small Shroom S
+					PotmedS.MapEntry: Potmed S
+					MushroomBigS.MapEntry: Mushroom Big S
+					MorrowStoneS.MapEntry: Morrow Stone S
+					MorrowDeathS.MapEntry: Morrow Death S
+					MorrowDeath2S.MapEntry: Morrow Death2 S
+					MorrowChest.MapEntry: Morrow Chest
+					LogS.MapEntry: Log S
+					GrassMossS.MapEntry: Grass Moss S
+					GrassBigS.MapEntry: Grass Big S
+					VerliasShrine.MapEntry: Verlias Shrine
+					Orb1.MapEntry: Orb1
+					FlowerMulti.MapEntry: Flower Multi
+					Crystal2.MapEntry: Crystal2
+					Crystal1.MapEntry: Crystal1
+					CathedralChest.MapEntry: Cathedral Chest
+					BenchS.MapEntry: Bench S
+					BarS.MapEntry: Bar S
+					Zebi.MapEntry: Zebi
+					VheilCurtainRight.MapEntry: Vheil Curtain Right
+					VheilCurtainLeft.MapEntry: Vheil Curtain Left
+					RestingGrounds.MapEntry: Resting Grounds
+					MasistRight.MapEntry: Masist Right
+					MasistLeft.MapEntry: Masist Left
+					JackPost.MapEntry: Jack Post
+					GovheilWei.MapEntry: Govheil Wei
+					GovheilWall.MapEntry: Govheil Wall
+					GovheilHall.MapEntry: Govheil Hall
+					GovheilBore.MapEntry: Govheil Bore
+					GothivDoorClosed.MapEntry: Gothiv Door Closed
+					Gothiv.MapEntry: Gothiv
+					CurtainRight.MapEntry: Curtain Right
+					CurtainLeft.MapEntry: Curtain Left
+					StarbloomDirt.MapEntry: Starbloom Dirt
+					ShrineSolMothC.MapEntry: Shrine Sol Moth C
+					ShrineLights.MapEntry: Shrine Lights
+					ShrineLifeC.MapEntry: Shrine Life C
+					ShrineHalhurishC.MapEntry: Shrine Halhurish C
+					ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+					ShrineBUAN.MapEntry: Shrine B U A N
+					ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+					RunicTableT.MapEntry: Runic Table T
+					LostScrapT.MapEntry: Lost Scrap T
+					HuntiacTile.MapEntry: Huntiac Tile
+					GovheilTile.MapEntry: Govheil Tile
+					FrileOreTile.MapEntry: Frile Ore Tile
+					DiminishedMetal.MapEntry: Diminished Metal
+					CoreGemT.MapEntry: Core Gem T
+					CellConverter.MapEntry: Cell Converter
+					BroochesTable.MapEntry: Brooches Table
+					AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
+					Arnchar.MapEntry: Arnchar
+					Stalagmite4.MapEntry: Stalagmite4
+					Stalagmite3.MapEntry: Stalagmite3
+					Stalagmite2.MapEntry: Stalagmite2
+					Stalagmite1.MapEntry: Stalagmite1
+					OwlTrunck3.MapEntry: Owl Trunck3
+					OwlTrunck2.MapEntry: Owl Trunck2
+					OwlTrunck1.MapEntry: Owl Trunck1
+					BigRock4.MapEntry: Big Rock4
+					BigRock3.MapEntry: Big Rock3
+					BigRock2.MapEntry: Big Rock2
+					BigRock1.MapEntry: Big Rock1
+					AlcaologyTable.MapEntry: Alcaology Table
+					AcidStone.MapEntry: Acid Stone
+					AcidMush3.MapEntry: Acid Mush3
+					AcidMush2.MapEntry: Acid Mush2
+					AcidMush1.MapEntry: Acid Mush1
+					AcidialDirt.MapEntry: Acidial Dirt
+					AcidBush3.MapEntry: Acid Bush3
+					AcidBush2.MapEntry: Acid Bush2
+					AcidBush1.MapEntry: Acid Bush1
+					AcidBrick.MapEntry: Acid Brick
+					TealBulb3.MapEntry: Teal Bulb3
+					TealBulb2.MapEntry: Teal Bulb2
+					TealBulb.MapEntry: Teal Bulb
+					SoulOre.MapEntry: Soul Ore
+					BlueFlower2.MapEntry: Blue Flower2
+					BlueFlower.MapEntry: Blue Flower
+					AurelusSummon.MapEntry: Aurelus Summon
+					AurelusPost.MapEntry: Aurelus Post
+					AurelusDoorClosed.MapEntry: Aurelus Door Closed
+					AurelusChest.MapEntry: Aurelus Chest
+					AurelusBorderS.MapEntry: Aurelus Border S
+					AbyssalStone.MapEntry: Abyssal Stone
+					Alcite.MapEntry: Alcite
+					AowerBottom.MapEntry: Aower Bottom
+					AowerTop.MapEntry: Aower Top
+					CurtainLeftRC.MapEntry: Curtain Left R C
+					CurtainRightRC.MapEntry: Curtain Right R C
+					CurtainTop.MapEntry: Curtain Top
+					Rectite.MapEntry: Rectite
+					Skullpile.MapEntry: Skullpile
+				}
+
+				Biomes: {
+					StarbloomBiome: {
+						TownNPCDialogueName: the Starbloom Biome
+						DisplayName: Starbloom Biome
+					}
+
+					NaxtrinTemple: {
+						TownNPCDialogueName: the Naxtrin Temple
+						DisplayName: Naxtrin Temple
+					}
+
+					MorrowUndergroundBiome: {
+						TownNPCDialogueName: the Morrow Underground Biome
+						DisplayName: Morrow Underground Biome
+					}
+
+					MarrowSurfaceBiome: {
+						TownNPCDialogueName: the Marrow Surface Biome
+						DisplayName: Marrow Surface Biome
+					}
+
+					GovheilCastle: {
+						TownNPCDialogueName: the Govheil Castle
+						DisplayName: Govheil Castle
+					}
+
+					FableBiome: {
+						TownNPCDialogueName: the Fable Biome
+						DisplayName: Fable Biome
+					}
+
+					CathedralBiome: {
+						TownNPCDialogueName: the Cathedral Biome
+						DisplayName: Cathedral Biome
+					}
+
+					AurelusBiome: {
+						TownNPCDialogueName: the Aurelus Biome
+						DisplayName: Aurelus Biome
+					}
+
+					AcidBiome: {
+						TownNPCDialogueName: the Acid Biome
+						DisplayName: Acid Biome
+					}
+
+					AbyssBiome: {
+						TownNPCDialogueName: the Abyss Biome
+						DisplayName: Abyss Biome
+					}
+
+					AlcadziaBiome: {
+						DisplayName: Alcadzia Biome
+						TownNPCDialogueName: Royal Capital Alcadzia
+					}
+				}
+			}
+
+			NoxianWood: {
+				DisplayName: Noxian Wood
+				Tooltip: ""
+			}
+
+			StoneKey: {
+				DisplayName: Stone Key
+				Tooltip: A key to open every stone chest in existence!
+			}
+
+			StoneChesti: {
+				DisplayName: Stone Chest
+				Tooltip: ""
+			}
+
+			Buffs: {
+				IceboundMinionBuff: {
+					DisplayName: Icebound Minion Buff
+					Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+				}
+
+				HMMinionBuff: {
+					Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+					DisplayName: H M Minion Buff
+				}
+
+				FCBuff: {
+					Description: Mods.Stellamod.Buffs.FCBuff.Description
+					DisplayName: F C Buff
+				}
+
+				DripperBuff: {
+					Description: Mods.Stellamod.Buffs.DripperBuff.Description
+					DisplayName: Dripper Buff
+				}
+
+				AuroranSeekerMinionBuff: {
+					Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+					DisplayName: Auroran Seeker Minion Buff
+				}
+
+				ArncharMinionBuff: {
+					Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+					DisplayName: Arnchar Minion Buff
+				}
+
+				Wounded: {
+					Description: Mods.Stellamod.Buffs.Wounded.Description
+					DisplayName: Wounded
+				}
+
+				Whipdeath: {
+					Description: Mods.Stellamod.Buffs.Whipdeath.Description
+					DisplayName: Whipdeath
+				}
+
+				MorrowWhipDebuff: {
+					Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+					DisplayName: Morrow Whip Debuff
+				}
+
+				Morrow: {
+					Description: Mods.Stellamod.Buffs.Morrow.Description
+					DisplayName: Morrow
+				}
+
+				SnowFlame: {
+					Description: Mods.Stellamod.Buffs.SnowFlame.Description
+					DisplayName: Snow Flame
+				}
+
+				Rekin: {
+					Description: Mods.Stellamod.Buffs.Rekin.Description
+					DisplayName: Rekin
+				}
+
+				PocketSandBuff: {
+					Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+					DisplayName: Pocket Sand Buff
+				}
+
+				Love: {
+					Description: Mods.Stellamod.Buffs.Love.Description
+					DisplayName: Love
+				}
+
+				Irradiation: {
+					Description: Mods.Stellamod.Buffs.Irradiation.Description
+					DisplayName: Irradiation
+				}
+
+				Harvester: {
+					Description: Mods.Stellamod.Buffs.Harvester.Description
+					DisplayName: Harvester
+				}
+
+				Gintzingwinds: {
+					Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+					DisplayName: Gintzingwinds
+				}
+
+				GintzeSeen: {
+					Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+					DisplayName: Gintze Seen
+				}
+
+				GintzelSheildCD: {
+					Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+					DisplayName: Gintzel Sheild C D
+				}
+
+				GintzelSheild: {
+					Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+					DisplayName: Gintzel Sheild
+				}
+
+				Elegance: {
+					Description: Mods.Stellamod.Buffs.Elegance.Description
+					DisplayName: Elegance
+				}
+
+				VoiddDust: {
+					Description: Mods.Stellamod.Buffs.VoiddDust.Description
+					DisplayName: Voidd Dust
+				}
+
+				TrickDust: {
+					Description: Mods.Stellamod.Buffs.TrickDust.Description
+					DisplayName: Trick Dust
+				}
+
+				SongDust: {
+					Description: Mods.Stellamod.Buffs.SongDust.Description
+					DisplayName: Song Dust
+				}
+
+				ShadeDust: {
+					Description: Mods.Stellamod.Buffs.ShadeDust.Description
+					DisplayName: Shade Dust
+				}
+
+				KaevDust: {
+					Description: Mods.Stellamod.Buffs.KaevDust.Description
+					DisplayName: Kaev Dust
+				}
+
+				IceDust: {
+					Description: Mods.Stellamod.Buffs.IceDust.Description
+					DisplayName: Ice Dust
+				}
+
+				GrassBuff: {
+					Description: Mods.Stellamod.Buffs.GrassBuff.Description
+					DisplayName: Grass Buff
+				}
+
+				GovheilDust: {
+					Description: Mods.Stellamod.Buffs.GovheilDust.Description
+					DisplayName: Govheil Dust
+				}
+
+				FlowerBuff: {
+					Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+					DisplayName: Flower Buff
+				}
+
+				FlameDust: {
+					Description: Mods.Stellamod.Buffs.FlameDust.Description
+					DisplayName: Flame Dust
+				}
+
+				EXPtime4: {
+					Description: Mods.Stellamod.Buffs.EXPtime4.Description
+					DisplayName: E X Ptime4
+				}
+
+				EXPtime3: {
+					Description: Mods.Stellamod.Buffs.EXPtime3.Description
+					DisplayName: E X Ptime3
+				}
+
+				EXPtime2: {
+					Description: Mods.Stellamod.Buffs.EXPtime2.Description
+					DisplayName: E X Ptime2
+				}
+
+				EXPtime: {
+					Description: Mods.Stellamod.Buffs.EXPtime.Description
+					DisplayName: E X Ptime
+				}
+
+				CrystalDust: {
+					Description: Mods.Stellamod.Buffs.CrystalDust.Description
+					DisplayName: Crystal Dust
+				}
+
+				CoalBuff: {
+					Description: Mods.Stellamod.Buffs.CoalBuff.Description
+					DisplayName: Coal Buff
+				}
+
+				AlcadDust: {
+					Description: Mods.Stellamod.Buffs.AlcadDust.Description
+					DisplayName: Alcad Dust
+				}
+
+				AivanDust: {
+					Description: Mods.Stellamod.Buffs.AivanDust.Description
+					DisplayName: Aivan Dust
+				}
+
+				Dusted: {
+					Description: Mods.Stellamod.Buffs.Dusted.Description
+					DisplayName: Dusted
+				}
+
+				DeathMultiplierBloodLamp: {
+					Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+					DisplayName: Death Multiplier Blood Lamp
+				}
+
+				DeathMultiplier: {
+					Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+					DisplayName: Death Multiplier
+				}
+
+				DarkHold: {
+					Description: Mods.Stellamod.Buffs.DarkHold.Description
+					DisplayName: Dark Hold
+				}
+
+				VixedB: {
+					Description: Mods.Stellamod.Buffs.VixedB.Description
+					DisplayName: Vixed B
+				}
+
+				VerliaBroo: {
+					Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+					DisplayName: Verlia Broo
+				}
+
+				StoneB: {
+					Description: Mods.Stellamod.Buffs.StoneB.Description
+					DisplayName: Stone B
+				}
+
+				Spragald: {
+					Description: Mods.Stellamod.Buffs.Spragald.Description
+					DisplayName: Spragald
+				}
+
+				Slimee: {
+					Description: Mods.Stellamod.Buffs.Slimee.Description
+					DisplayName: Slimee
+				}
+
+				MalB: {
+					Description: Mods.Stellamod.Buffs.MalB.Description
+					DisplayName: Mal B
+				}
+
+				IceBrooch: {
+					Description: Mods.Stellamod.Buffs.IceBrooch.Description
+					DisplayName: Ice Brooch
+				}
+
+				GovheilB: {
+					Description: Mods.Stellamod.Buffs.GovheilB.Description
+					DisplayName: Govheil B
+				}
+
+				Goldren: {
+					Description: Mods.Stellamod.Buffs.Goldren.Description
+					DisplayName: Goldren
+				}
+
+				GintBroo: {
+					Description: Mods.Stellamod.Buffs.GintBroo.Description
+					DisplayName: Gint Broo
+				}
+
+				Flyfish: {
+					Description: Mods.Stellamod.Buffs.Flyfish.Description
+					DisplayName: Flyfish
+				}
+
+				DreadB: {
+					Description: Mods.Stellamod.Buffs.DreadB.Description
+					DisplayName: Dread B
+				}
+
+				Diarii: {
+					Description: Mods.Stellamod.Buffs.Diarii.Description
+					DisplayName: Diarii
+				}
+
+				BurningGB: {
+					Description: Mods.Stellamod.Buffs.BurningGB.Description
+					DisplayName: Burning G B
+				}
+
+				BearB: {
+					Description: Mods.Stellamod.Buffs.BearB.Description
+					DisplayName: Bear B
+				}
+
+				AurelusB: {
+					Description: Mods.Stellamod.Buffs.AurelusB.Description
+					DisplayName: Aurelus B
+				}
+
+				AmethystBroo: {
+					Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+					DisplayName: Amethyst Broo
+				}
+
+				AssassinsSlashBuff: {
+					Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+					DisplayName: Assassins Slash Buff
+				}
+
+				ArcaneDust: {
+					Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+					DisplayName: Arcane Dust
+				}
+
+				AcidFlame: {
+					Description: Mods.Stellamod.Buffs.AcidFlame.Description
+					DisplayName: Acid Flame
+				}
+
+				AbyssalFlame: {
+					Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+					DisplayName: Abyssal Flame
+				}
+
+				IrradiatedCreeperBuff: {
+					DisplayName: Irradiated Creeper Buff
+					Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+				}
+
+				IvyakenBuff: {
+					DisplayName: Ivyaken Buff
+					Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+				}
+
+				JellyMinionBuff: {
+					DisplayName: Jelly Minion Buff
+					Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+				}
+
+				LifeWandMinionBuff: {
+					DisplayName: Life Wand Minion Buff
+					Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+				}
+
+				ManaWandMinionBuff: {
+					DisplayName: Mana Wand Minion Buff
+					Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+				}
+
+				MushroomStaveBuff: {
+					DisplayName: Mushroom Stave Buff
+					Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+				}
+
+				ProbeBuff: {
+					DisplayName: Probe Buff
+					Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+				}
+
+				SolMothBuff: {
+					DisplayName: Sol Moth Buff
+					Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+				}
+
+				SwarmerMinionBuff: {
+					DisplayName: Swarmer Minion Buff
+					Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+				}
+
+				TheBurningRodBuff: {
+					DisplayName: The Burning Rod Buff
+					Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+				}
+
+				VoidMinionBuff: {
+					DisplayName: Void Minion Buff
+					Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+				}
+			}
+
+			NPCs: {
+				CommanderGintzia.DisplayName: Commander Gintzia
+
+				DreadMire: {
+					SpawnInfo: Kill a blood cyst during a blood moon.
+					DisplayName: Dreadmire
+
+					BossChecklistIntegration: {
+						EntryName: Dreadmire the Blood Goddess
+						SpawnInfo: During a blood moon kill a blood cyst
+					}
+				}
+
+				TericGramNPC.DisplayName: Teric Gram N P C
+				TericGramNPC2.DisplayName: Teric Gram N P C2
+				AbyssalSeeker.DisplayName: Abyssal Seeker
+				AbyssalSkull.DisplayName: Abyssal Skull
+				AbyssalSlime.DisplayName: Abyssal Slime
+				AcidProbe.DisplayName: Acid Probe
+				AcidSlime.DisplayName: Acid Slime
+				AcidSpirit.DisplayName: Acid Spirit
+				ToxicBoulder.DisplayName: Toxic Boulder
+				LanternOfHope.DisplayName: Lantern Of Hope
+				DaedusR.DisplayName: Daedus R
+				DRay.DisplayName: D Ray
+				BloodCyst.DisplayName: Blood Cyst
+				BloodCystDead.DisplayName: Blood Cyst Dead
+				DreadFireBomb.DisplayName: Dread Fire Bomb
+				DreadFireCircle.DisplayName: Dread Fire Circle
+				DreadMirePentagram.DisplayName: Dread Mire Pentagram
+				DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
+				DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
+				DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
+				DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
+				DreadSurvent.DisplayName: Dread Survent
+				DreadMiresHeart.DisplayName: Dread Mires Heart
+				Gothiviabb.DisplayName: Gothiviabb
+				Rek.DisplayName: Rek
+				Train1.DisplayName: Train1
+				Train2.DisplayName: Train2
+				Irradieagle.DisplayName: Irradieagle
+				IrradieagleSurvent.DisplayName: Irradieagle Survent
+				IRNDeathBomb.DisplayName: I R N Death Bomb
+				IrradiatedCreeper.DisplayName: Irradiated Creeper
+				IrradiatedNest.DisplayName: Irradiated Nest
+				IrradiatedNestDeath.DisplayName: Irradiated Nest Death
+				JackDeath.DisplayName: Jack Death
+				Jackoslime.DisplayName: Jackoslime
+				LazerOrb.DisplayName: Lazer Orb
+				SingularityLazer.DisplayName: Singularity Lazer
+				SingularityLazer2.DisplayName: Singularity Lazer2
+				SingularitySpark.DisplayName: Singularity Spark
+				SingularitySparkBig.DisplayName: Singularity Spark Big
+				SingularityOrb.DisplayName: Singularity Orb
+				Voidling.DisplayName: Voidling
+				Flowerball.DisplayName: Flowerball
+				StarrVeriplant.DisplayName: Starr Veriplant
+				SunStalkerDeath.DisplayName: Sun Stalker Death
+				SunStalkerLighting.DisplayName: Sun Stalker Lighting
+				SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
+				SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
+				SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
+				CloneV.DisplayName: Clone Verlia
+				GhostCharger.DisplayName: Ghost Charger
+				StarteV.DisplayName: Starte V
+				Sword1.DisplayName: Sword1
+				Sword2.DisplayName: Sword2
+				Sword3.DisplayName: Sword3
+				Viola.DisplayName: Viola
+				DiceinNPC.DisplayName: Dicein N P C
+				StarSlime.DisplayName: Star Slime
+				GintziaHand.DisplayName: Gintzia Hand
+				GintzeCaptain.DisplayName: Gintze Captain
+				GintzeSolider.DisplayName: Gintze Solider
+				GintzeSpearman.DisplayName: Gintze Spearman
+				GintzeWarrior.DisplayName: Gintze Warrior
+				GintzeWindRider.DisplayName: Gintze Wind Rider
+				Gintzling.DisplayName: Gintzling
+				GovheilProtector.DisplayName: Govheil Protector
+				HarvestIce.DisplayName: Harvest Ice
+				HarvestGovheil.DisplayName: Harvest Govheil
+				HarvestOverworld.DisplayName: Harvest Overworld
+				HarvestUM.DisplayName: Harvest U M
+				HarvestVirulent.DisplayName: Harvest Virulent
+				WinterbornBat.DisplayName: Winterborn Bat
+				WinterBornSlime.DisplayName: Winter Born Slime
+				WinterSoul1.DisplayName: Winter Soul1
+				WinterSoul2.DisplayName: Winter Soul2
+				WinterSoul3.DisplayName: Winter Soul3
+				AmethystBeetle.DisplayName: Amethyst Beetle
+				EmeraldBeetle.DisplayName: Emerald Beetle
+				MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
+				MossyZombie.DisplayName: Mossy Zombie
+				RubyBeetle.DisplayName: Ruby Beetle
+				SapphireBeetle.DisplayName: Sapphire Beetle
+				TopazBeetle.DisplayName: Topaz Beetle
+				TribalPeasant.DisplayName: Tribal Peasant
+				TribalPriest.DisplayName: Tribal Priest
+				IvythornSlime.DisplayName: Ivythorn Slime
+				RoyalSlime.DisplayName: Royal Slime
+				ShadeSlime.DisplayName: Shade Slime
+				ShadowWraith.DisplayName: Shadow Wraith
+
+				Gambit: {
+					DisplayName: Gambit
+
+					TownNPCMood: {
+						Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
+						NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
+						FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
+						LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
+						DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
+						HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
+						LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
+						LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
+						DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
+						LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
+						LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
+						DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
+						HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
+						LikeNPC_Princess: I like {NPCName}.
+						Princess_LovesNPC: I like {NPCName}.
+					}
+				}
+
+				Ginztel: {
+					DisplayName: Ginztel
+
+					TownNPCMood: {
+						Content: I am content.
+						NoHome: I hate not having a home.
+						FarFromHome: I am too far from home.
+						LoveSpace: I love having so much space.
+						DislikeCrowded: I dislike how crowded I am.
+						HateCrowded: I hate how crowded I am.
+						LoveBiome: I love {BiomeName}.
+						LikeBiome: I like {BiomeName}.
+						DislikeBiome: I dislike {BiomeName}.
+						LoveNPC: I love {NPCName}.
+						LikeNPC: I like {NPCName}.
+						DislikeNPC: I dislike {NPCName}.
+						HateNPC: I hate {NPCName}.
+						LikeNPC_Princess: I like {NPCName}.
+						Princess_LovesNPC: I like {NPCName}.
+					}
+				}
+
+				DreadFireBombG.DisplayName: Dread Fire Bomb G
+				HeatBombLighting.DisplayName: Heat Bomb Lighting
+				HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+				SolarPortal.DisplayName: Solar Portal
+				SolarSingularity.DisplayName: Solar Singularity
+				OverworldRune.DisplayName: Overworld Rune
+				OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
+				DesertRune.DisplayName: Desert Rune
+				DesertRuneLightBig.DisplayName: Desert Rune Light Big
+				JungleRune.DisplayName: Jungle Rune
+
+				Gothiviab: {
+					DisplayName: Irradia
+
+					BossChecklistIntegration: {
+						EntryName: Gothivia the Sun Goddess
+						SpawnInfo: Wake her up at her shrine in the Govheil Castle, underneath the Virulent
+					}
+				}
+
+				VerliaB: {
+					DisplayName: Verlia Of The Moon
+
+					BossChecklistIntegration: {
+						EntryName: Verlia of The Moon
+						SpawnInfo: Bring a Moonflame Lantern to the top of the Cathedral at night.
+					}
+				}
+
+				Jack: {
+					DisplayName: Jack
+
+					BossChecklistIntegration: {
+						EntryName: Jack
+						SpawnInfo: Use a Wandering essence at the bottom of the fable near a scarecrow
+					}
+				}
+
+				Daedus: {
+					DisplayName: The Forgotten Daedus
+
+					BossChecklistIntegration: {
+						EntryName: Forgotten Puppet Daedus
+						SpawnInfo: He lies at a shrine in the fable at the top
+					}
+				}
+
+				SingularityFragment: {
+					DisplayName: Singularity of The Moon
+
+					BossChecklistIntegration: {
+						EntryName: Singularity of The Moon
+						SpawnInfo: Find them in the Aureless deep in the ice, bring a void key.
+					}
+				}
+
+				SunStalker: {
+					DisplayName: Sunstalker
+
+					BossChecklistIntegration: {
+						EntryName: Sunstalker
+						SpawnInfo: Use a Sun Claw at a ritual near the left ocean during the day.
+					}
+				}
 			}
-		}
-
-		Tiles: {
-			VerianoreTile.MapEntry: Verianore Tile
-			SunAlter.MapEntry: Sun Alter
-			wall7.MapEntry: wall7
-			wall6.MapEntry: wall6
-			wall5.MapEntry: wall5
-			wall4.MapEntry: wall4
-			wall3.MapEntry: wall3
-			wall2.MapEntry: wall2
-			wall1.MapEntry: wall1
-			StoneChest.MapEntry: Stone Chest
-			stand.MapEntry: stand
-			SpikeS.MapEntry: Spike S
-			SmallShroomS.MapEntry: Small Shroom S
-			PotmedS.MapEntry: Potmed S
-			MushroomBigS.MapEntry: Mushroom Big S
-			MorrowStoneS.MapEntry: Morrow Stone S
-			MorrowDeathS.MapEntry: Morrow Death S
-			MorrowDeath2S.MapEntry: Morrow Death2 S
-			MorrowChest.MapEntry: Morrow Chest
-			LogS.MapEntry: Log S
-			GrassMossS.MapEntry: Grass Moss S
-			GrassBigS.MapEntry: Grass Big S
-			VerliasShrine.MapEntry: Verlias Shrine
-			Orb1.MapEntry: Orb1
-			FlowerMulti.MapEntry: Flower Multi
-			Crystal2.MapEntry: Crystal2
-			Crystal1.MapEntry: Crystal1
-			CathedralChest.MapEntry: Cathedral Chest
-			BenchS.MapEntry: Bench S
-			BarS.MapEntry: Bar S
-			Zebi.MapEntry: Zebi
-			VheilCurtainRight.MapEntry: Vheil Curtain Right
-			VheilCurtainLeft.MapEntry: Vheil Curtain Left
-			RestingGrounds.MapEntry: Resting Grounds
-			MasistRight.MapEntry: Masist Right
-			MasistLeft.MapEntry: Masist Left
-			JackPost.MapEntry: Jack Post
-			GovheilWei.MapEntry: Govheil Wei
-			GovheilWall.MapEntry: Govheil Wall
-			GovheilHall.MapEntry: Govheil Hall
-			GovheilBore.MapEntry: Govheil Bore
-			GothivDoorClosed.MapEntry: Gothiv Door Closed
-			Gothiv.MapEntry: Gothiv
-			CurtainRight.MapEntry: Curtain Right
-			CurtainLeft.MapEntry: Curtain Left
-			StarbloomDirt.MapEntry: Starbloom Dirt
-			ShrineSolMothC.MapEntry: Shrine Sol Moth C
-			ShrineLights.MapEntry: Shrine Lights
-			ShrineLifeC.MapEntry: Shrine Life C
-			ShrineHalhurishC.MapEntry: Shrine Halhurish C
-			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
-			ShrineBUAN.MapEntry: Shrine B U A N
-			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
-			RunicTableT.MapEntry: Runic Table T
-			LostScrapT.MapEntry: Lost Scrap T
-			HuntiacTile.MapEntry: Huntiac Tile
-			GovheilTile.MapEntry: Govheil Tile
-			FrileOreTile.MapEntry: Frile Ore Tile
-			DiminishedMetal.MapEntry: Diminished Metal
-			CoreGemT.MapEntry: Core Gem T
-			CellConverter.MapEntry: Cell Converter
-			BroochesTable.MapEntry: Brooches Table
-			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
-			Arnchar.MapEntry: Arnchar
-			Stalagmite4.MapEntry: Stalagmite4
-			Stalagmite3.MapEntry: Stalagmite3
-			Stalagmite2.MapEntry: Stalagmite2
-			Stalagmite1.MapEntry: Stalagmite1
-			OwlTrunck3.MapEntry: Owl Trunck3
-			OwlTrunck2.MapEntry: Owl Trunck2
-			OwlTrunck1.MapEntry: Owl Trunck1
-			BigRock4.MapEntry: Big Rock4
-			BigRock3.MapEntry: Big Rock3
-			BigRock2.MapEntry: Big Rock2
-			BigRock1.MapEntry: Big Rock1
-			AlcaologyTable.MapEntry: Alcaology Table
-			AcidStone.MapEntry: Acid Stone
-			AcidMush3.MapEntry: Acid Mush3
-			AcidMush2.MapEntry: Acid Mush2
-			AcidMush1.MapEntry: Acid Mush1
-			AcidialDirt.MapEntry: Acidial Dirt
-			AcidBush3.MapEntry: Acid Bush3
-			AcidBush2.MapEntry: Acid Bush2
-			AcidBush1.MapEntry: Acid Bush1
-			AcidBrick.MapEntry: Acid Brick
-			TealBulb3.MapEntry: Teal Bulb3
-			TealBulb2.MapEntry: Teal Bulb2
-			TealBulb.MapEntry: Teal Bulb
-			SoulOre.MapEntry: Soul Ore
-			BlueFlower2.MapEntry: Blue Flower2
-			BlueFlower.MapEntry: Blue Flower
-			AurelusSummon.MapEntry: Aurelus Summon
-			AurelusPost.MapEntry: Aurelus Post
-			AurelusDoorClosed.MapEntry: Aurelus Door Closed
-			AurelusChest.MapEntry: Aurelus Chest
-			AurelusBorderS.MapEntry: Aurelus Border S
-			AbyssalStone.MapEntry: Abyssal Stone
-			Alcite.MapEntry: Alcite
-			AowerBottom.MapEntry: Aower Bottom
-			AowerTop.MapEntry: Aower Top
-			CurtainLeftRC.MapEntry: Curtain Left R C
-			CurtainRightRC.MapEntry: Curtain Right R C
-			CurtainTop.MapEntry: Curtain Top
-			Rectite.MapEntry: Rectite
-			Skullpile.MapEntry: Skullpile
 		}
 
 		Biomes: {
-			StarbloomBiome: {
-				TownNPCDialogueName: the Starbloom Biome
-				DisplayName: Starbloom Biome
-			}
-
-			NaxtrinTemple: {
-				TownNPCDialogueName: the Naxtrin Temple
-				DisplayName: Naxtrin Temple
-			}
-
-			MorrowUndergroundBiome: {
-				TownNPCDialogueName: the Morrow Underground Biome
-				DisplayName: Morrow Underground Biome
-			}
-
-			MarrowSurfaceBiome: {
-				TownNPCDialogueName: the Marrow Surface Biome
-				DisplayName: Marrow Surface Biome
-			}
-
-			GovheilCastle: {
-				TownNPCDialogueName: the Govheil Castle
-				DisplayName: Govheil Castle
-			}
-
-			FableBiome: {
-				TownNPCDialogueName: the Fable Biome
-				DisplayName: Fable Biome
-			}
-
-			CathedralBiome: {
-				TownNPCDialogueName: the Cathedral Biome
-				DisplayName: Cathedral Biome
-			}
-
-			AurelusBiome: {
-				TownNPCDialogueName: the Aurelus Biome
-				DisplayName: Aurelus Biome
+			AbyssBiome: {
+				TownNPCDialogueName: the Abyss Biome
+				DisplayName: Abyss Biome
 			}
 
 			AcidBiome: {
@@ -4862,563 +5489,536 @@ Mods: {
 				DisplayName: Acid Biome
 			}
 
-			AbyssBiome: {
-				TownNPCDialogueName: the Abyss Biome
-				DisplayName: Abyss Biome
-			}
-
 			AlcadziaBiome: {
 				DisplayName: Alcadzia Biome
-				TownNPCDialogueName: Royal Capital Alcadzia
+				TownNPCDialogueName: the Alcadzia Biome
 			}
-		}
-	}
 
-	NoxianWood: {
-		DisplayName: Noxian Wood
-		Tooltip: ""
-	}
-
-	StoneKey: {
-		DisplayName: Stone Key
-		Tooltip: A key to open every stone chest in existence!
-	}
-
-	StoneChesti: {
-		DisplayName: Stone Chest
-		Tooltip: ""
-	}
-
-	Buffs: {
-		IceboundMinionBuff: {
-			DisplayName: Icebound Minion Buff
-			Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
-		}
-
-		HMMinionBuff: {
-			Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
-			DisplayName: H M Minion Buff
-		}
-
-		FCBuff: {
-			Description: Mods.Stellamod.Buffs.FCBuff.Description
-			DisplayName: F C Buff
-		}
-
-		DripperBuff: {
-			Description: Mods.Stellamod.Buffs.DripperBuff.Description
-			DisplayName: Dripper Buff
-		}
-
-		AuroranSeekerMinionBuff: {
-			Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
-			DisplayName: Auroran Seeker Minion Buff
-		}
-
-		ArncharMinionBuff: {
-			Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
-			DisplayName: Arnchar Minion Buff
-		}
-
-		Wounded: {
-			Description: Mods.Stellamod.Buffs.Wounded.Description
-			DisplayName: Wounded
-		}
-
-		Whipdeath: {
-			Description: Mods.Stellamod.Buffs.Whipdeath.Description
-			DisplayName: Whipdeath
-		}
-
-		MorrowWhipDebuff: {
-			Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-			DisplayName: Morrow Whip Debuff
-		}
-
-		Morrow: {
-			Description: Mods.Stellamod.Buffs.Morrow.Description
-			DisplayName: Morrow
-		}
-
-		SnowFlame: {
-			Description: Mods.Stellamod.Buffs.SnowFlame.Description
-			DisplayName: Snow Flame
-		}
-
-		Rekin: {
-			Description: Mods.Stellamod.Buffs.Rekin.Description
-			DisplayName: Rekin
-		}
-
-		PocketSandBuff: {
-			Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
-			DisplayName: Pocket Sand Buff
-		}
-
-		Love: {
-			Description: Mods.Stellamod.Buffs.Love.Description
-			DisplayName: Love
-		}
-
-		Irradiation: {
-			Description: Mods.Stellamod.Buffs.Irradiation.Description
-			DisplayName: Irradiation
-		}
-
-		Harvester: {
-			Description: Mods.Stellamod.Buffs.Harvester.Description
-			DisplayName: Harvester
-		}
-
-		Gintzingwinds: {
-			Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
-			DisplayName: Gintzingwinds
-		}
-
-		GintzeSeen: {
-			Description: Mods.Stellamod.Buffs.GintzeSeen.Description
-			DisplayName: Gintze Seen
-		}
-
-		GintzelSheildCD: {
-			Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
-			DisplayName: Gintzel Sheild C D
-		}
-
-		GintzelSheild: {
-			Description: Mods.Stellamod.Buffs.GintzelSheild.Description
-			DisplayName: Gintzel Sheild
-		}
-
-		Elegance: {
-			Description: Mods.Stellamod.Buffs.Elegance.Description
-			DisplayName: Elegance
-		}
-
-		VoiddDust: {
-			Description: Mods.Stellamod.Buffs.VoiddDust.Description
-			DisplayName: Voidd Dust
-		}
-
-		TrickDust: {
-			Description: Mods.Stellamod.Buffs.TrickDust.Description
-			DisplayName: Trick Dust
-		}
-
-		SongDust: {
-			Description: Mods.Stellamod.Buffs.SongDust.Description
-			DisplayName: Song Dust
-		}
-
-		ShadeDust: {
-			Description: Mods.Stellamod.Buffs.ShadeDust.Description
-			DisplayName: Shade Dust
-		}
-
-		KaevDust: {
-			Description: Mods.Stellamod.Buffs.KaevDust.Description
-			DisplayName: Kaev Dust
-		}
-
-		IceDust: {
-			Description: Mods.Stellamod.Buffs.IceDust.Description
-			DisplayName: Ice Dust
-		}
-
-		GrassBuff: {
-			Description: Mods.Stellamod.Buffs.GrassBuff.Description
-			DisplayName: Grass Buff
-		}
-
-		GovheilDust: {
-			Description: Mods.Stellamod.Buffs.GovheilDust.Description
-			DisplayName: Govheil Dust
-		}
-
-		FlowerBuff: {
-			Description: Mods.Stellamod.Buffs.FlowerBuff.Description
-			DisplayName: Flower Buff
-		}
-
-		FlameDust: {
-			Description: Mods.Stellamod.Buffs.FlameDust.Description
-			DisplayName: Flame Dust
-		}
-
-		EXPtime4: {
-			Description: Mods.Stellamod.Buffs.EXPtime4.Description
-			DisplayName: E X Ptime4
-		}
-
-		EXPtime3: {
-			Description: Mods.Stellamod.Buffs.EXPtime3.Description
-			DisplayName: E X Ptime3
-		}
-
-		EXPtime2: {
-			Description: Mods.Stellamod.Buffs.EXPtime2.Description
-			DisplayName: E X Ptime2
-		}
-
-		EXPtime: {
-			Description: Mods.Stellamod.Buffs.EXPtime.Description
-			DisplayName: E X Ptime
-		}
-
-		CrystalDust: {
-			Description: Mods.Stellamod.Buffs.CrystalDust.Description
-			DisplayName: Crystal Dust
-		}
-
-		CoalBuff: {
-			Description: Mods.Stellamod.Buffs.CoalBuff.Description
-			DisplayName: Coal Buff
-		}
-
-		AlcadDust: {
-			Description: Mods.Stellamod.Buffs.AlcadDust.Description
-			DisplayName: Alcad Dust
-		}
-
-		AivanDust: {
-			Description: Mods.Stellamod.Buffs.AivanDust.Description
-			DisplayName: Aivan Dust
-		}
-
-		Dusted: {
-			Description: Mods.Stellamod.Buffs.Dusted.Description
-			DisplayName: Dusted
-		}
-
-		DeathMultiplierBloodLamp: {
-			Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-			DisplayName: Death Multiplier Blood Lamp
-		}
-
-		DeathMultiplier: {
-			Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
-			DisplayName: Death Multiplier
-		}
-
-		DarkHold: {
-			Description: Mods.Stellamod.Buffs.DarkHold.Description
-			DisplayName: Dark Hold
-		}
-
-		VixedB: {
-			Description: Mods.Stellamod.Buffs.VixedB.Description
-			DisplayName: Vixed B
-		}
-
-		VerliaBroo: {
-			Description: Mods.Stellamod.Buffs.VerliaBroo.Description
-			DisplayName: Verlia Broo
-		}
-
-		StoneB: {
-			Description: Mods.Stellamod.Buffs.StoneB.Description
-			DisplayName: Stone B
-		}
-
-		Spragald: {
-			Description: Mods.Stellamod.Buffs.Spragald.Description
-			DisplayName: Spragald
-		}
-
-		Slimee: {
-			Description: Mods.Stellamod.Buffs.Slimee.Description
-			DisplayName: Slimee
-		}
-
-		MalB: {
-			Description: Mods.Stellamod.Buffs.MalB.Description
-			DisplayName: Mal B
-		}
-
-		IceBrooch: {
-			Description: Mods.Stellamod.Buffs.IceBrooch.Description
-			DisplayName: Ice Brooch
-		}
-
-		GovheilB: {
-			Description: Mods.Stellamod.Buffs.GovheilB.Description
-			DisplayName: Govheil B
-		}
-
-		Goldren: {
-			Description: Mods.Stellamod.Buffs.Goldren.Description
-			DisplayName: Goldren
-		}
-
-		GintBroo: {
-			Description: Mods.Stellamod.Buffs.GintBroo.Description
-			DisplayName: Gint Broo
-		}
-
-		Flyfish: {
-			Description: Mods.Stellamod.Buffs.Flyfish.Description
-			DisplayName: Flyfish
-		}
-
-		DreadB: {
-			Description: Mods.Stellamod.Buffs.DreadB.Description
-			DisplayName: Dread B
-		}
-
-		Diarii: {
-			Description: Mods.Stellamod.Buffs.Diarii.Description
-			DisplayName: Diarii
-		}
-
-		BurningGB: {
-			Description: Mods.Stellamod.Buffs.BurningGB.Description
-			DisplayName: Burning G B
-		}
-
-		BearB: {
-			Description: Mods.Stellamod.Buffs.BearB.Description
-			DisplayName: Bear B
-		}
-
-		AurelusB: {
-			Description: Mods.Stellamod.Buffs.AurelusB.Description
-			DisplayName: Aurelus B
-		}
-
-		AmethystBroo: {
-			Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-			DisplayName: Amethyst Broo
-		}
-
-		AssassinsSlashBuff: {
-			Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
-			DisplayName: Assassins Slash Buff
-		}
-
-		ArcaneDust: {
-			Description: Mods.Stellamod.Buffs.ArcaneDust.Description
-			DisplayName: Arcane Dust
-		}
-
-		AcidFlame: {
-			Description: Mods.Stellamod.Buffs.AcidFlame.Description
-			DisplayName: Acid Flame
-		}
-
-		AbyssalFlame: {
-			Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
-			DisplayName: Abyssal Flame
-		}
-
-		IrradiatedCreeperBuff: {
-			DisplayName: Irradiated Creeper Buff
-			Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
-		}
-
-		IvyakenBuff: {
-			DisplayName: Ivyaken Buff
-			Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
-		}
-
-		JellyMinionBuff: {
-			DisplayName: Jelly Minion Buff
-			Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
-		}
-
-		LifeWandMinionBuff: {
-			DisplayName: Life Wand Minion Buff
-			Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
-		}
-
-		ManaWandMinionBuff: {
-			DisplayName: Mana Wand Minion Buff
-			Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
-		}
-
-		MushroomStaveBuff: {
-			DisplayName: Mushroom Stave Buff
-			Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-		}
-
-		ProbeBuff: {
-			DisplayName: Probe Buff
-			Description: Mods.Stellamod.Buffs.ProbeBuff.Description
-		}
-
-		SolMothBuff: {
-			DisplayName: Sol Moth Buff
-			Description: Mods.Stellamod.Buffs.SolMothBuff.Description
-		}
-
-		SwarmerMinionBuff: {
-			DisplayName: Swarmer Minion Buff
-			Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
-		}
-
-		TheBurningRodBuff: {
-			DisplayName: The Burning Rod Buff
-			Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-		}
-
-		VoidMinionBuff: {
-			DisplayName: Void Minion Buff
-			Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
-		}
-	}
-
-	NPCs: {
-		Gothiviab.DisplayName: Irradia
-		VerliaB.DisplayName: Verlia Of The Moon
-		SingularityFragment.DisplayName: Singularity Of The Moon
-		SunStalker.DisplayName: Sun Stalker
-		CommanderGintzia.DisplayName: Commander Gintzia
-		DreadMire.DisplayName: Dread Mire
-		Daedus.DisplayName: Daedus
-		Jack.DisplayName: Jack
-		TericGramNPC.DisplayName: Teric Gram N P C
-		TericGramNPC2.DisplayName: Teric Gram N P C2
-		AbyssalSeeker.DisplayName: Abyssal Seeker
-		AbyssalSkull.DisplayName: Abyssal Skull
-		AbyssalSlime.DisplayName: Abyssal Slime
-		AcidProbe.DisplayName: Acid Probe
-		AcidSlime.DisplayName: Acid Slime
-		AcidSpirit.DisplayName: Acid Spirit
-		ToxicBoulder.DisplayName: Toxic Boulder
-		LanternOfHope.DisplayName: Lantern Of Hope
-		DaedusR.DisplayName: Daedus R
-		DRay.DisplayName: D Ray
-		BloodCyst.DisplayName: Blood Cyst
-		BloodCystDead.DisplayName: Blood Cyst Dead
-		DreadFireBomb.DisplayName: Dread Fire Bomb
-		DreadFireCircle.DisplayName: Dread Fire Circle
-		DreadMirePentagram.DisplayName: Dread Mire Pentagram
-		DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
-		DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
-		DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
-		DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
-		DreadSurvent.DisplayName: Dread Survent
-		DreadMiresHeart.DisplayName: Dread Mires Heart
-		Gothiviabb.DisplayName: Gothiviabb
-		Rek.DisplayName: Rek
-		Train1.DisplayName: Train1
-		Train2.DisplayName: Train2
-		Irradieagle.DisplayName: Irradieagle
-		IrradieagleSurvent.DisplayName: Irradieagle Survent
-		IRNDeathBomb.DisplayName: I R N Death Bomb
-		IrradiatedCreeper.DisplayName: Irradiated Creeper
-		IrradiatedNest.DisplayName: Irradiated Nest
-		IrradiatedNestDeath.DisplayName: Irradiated Nest Death
-		JackDeath.DisplayName: Jack Death
-		Jackoslime.DisplayName: Jackoslime
-		LazerOrb.DisplayName: Lazer Orb
-		SingularityLazer.DisplayName: Singularity Lazer
-		SingularityLazer2.DisplayName: Singularity Lazer2
-		SingularitySpark.DisplayName: Singularity Spark
-		SingularitySparkBig.DisplayName: Singularity Spark Big
-		SingularityOrb.DisplayName: Singularity Orb
-		Voidling.DisplayName: Voidling
-		Flowerball.DisplayName: Flowerball
-		StarrVeriplant.DisplayName: Starr Veriplant
-		SunStalkerDeath.DisplayName: Sun Stalker Death
-		SunStalkerLighting.DisplayName: Sun Stalker Lighting
-		SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
-		SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
-		SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
-		CloneV.DisplayName: Clone Verlia
-		GhostCharger.DisplayName: Ghost Charger
-		StarteV.DisplayName: Starte V
-		Sword1.DisplayName: Sword1
-		Sword2.DisplayName: Sword2
-		Sword3.DisplayName: Sword3
-		Viola.DisplayName: Viola
-		DiceinNPC.DisplayName: Dicein N P C
-		StarSlime.DisplayName: Star Slime
-		GintziaHand.DisplayName: Gintzia Hand
-		GintzeCaptain.DisplayName: Gintze Captain
-		GintzeSolider.DisplayName: Gintze Solider
-		GintzeSpearman.DisplayName: Gintze Spearman
-		GintzeWarrior.DisplayName: Gintze Warrior
-		GintzeWindRider.DisplayName: Gintze Wind Rider
-		Gintzling.DisplayName: Gintzling
-		GovheilProtector.DisplayName: Govheil Protector
-		HarvestIce.DisplayName: Harvest Ice
-		HarvestGovheil.DisplayName: Harvest Govheil
-		HarvestOverworld.DisplayName: Harvest Overworld
-		HarvestUM.DisplayName: Harvest U M
-		HarvestVirulent.DisplayName: Harvest Virulent
-		WinterbornBat.DisplayName: Winterborn Bat
-		WinterBornSlime.DisplayName: Winter Born Slime
-		WinterSoul1.DisplayName: Winter Soul1
-		WinterSoul2.DisplayName: Winter Soul2
-		WinterSoul3.DisplayName: Winter Soul3
-		AmethystBeetle.DisplayName: Amethyst Beetle
-		EmeraldBeetle.DisplayName: Emerald Beetle
-		MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
-		MossyZombie.DisplayName: Mossy Zombie
-		RubyBeetle.DisplayName: Ruby Beetle
-		SapphireBeetle.DisplayName: Sapphire Beetle
-		TopazBeetle.DisplayName: Topaz Beetle
-		TribalPeasant.DisplayName: Tribal Peasant
-		TribalPriest.DisplayName: Tribal Priest
-		IvythornSlime.DisplayName: Ivythorn Slime
-		RoyalSlime.DisplayName: Royal Slime
-		ShadeSlime.DisplayName: Shade Slime
-		ShadowWraith.DisplayName: Shadow Wraith
-
-		Gambit: {
-			DisplayName: Gambit
-
-			TownNPCMood: {
-				Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
-				NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
-				FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
-				LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
-				DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
-				HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
-				LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
-				LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
-				DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
-				LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
-				LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
-				DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
-				HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
-				LikeNPC_Princess: I like {NPCName}.
-				Princess_LovesNPC: I like {NPCName}.
+			AurelusBiome: {
+				DisplayName: Aurelus Biome
+				TownNPCDialogueName: the Aurelus Biome
+			}
+
+			CathedralBiome: {
+				DisplayName: Cathedral Biome
+				TownNPCDialogueName: the Cathedral Biome
+			}
+
+			FableBiome: {
+				DisplayName: Fable Biome
+				TownNPCDialogueName: the Fable Biome
+			}
+
+			GovheilCastle: {
+				DisplayName: Govheil Castle
+				TownNPCDialogueName: the Govheil Castle
+			}
+
+			MarrowSurfaceBiome: {
+				DisplayName: Marrow Surface Biome
+				TownNPCDialogueName: the Marrow Surface Biome
+			}
+
+			MorrowUndergroundBiome: {
+				DisplayName: Morrow Underground Biome
+				TownNPCDialogueName: the Morrow Underground Biome
+			}
+
+			NaxtrinTemple: {
+				DisplayName: Naxtrin Temple
+				TownNPCDialogueName: the Naxtrin Temple
+			}
+
+			StarbloomBiome: {
+				DisplayName: Starbloom Biome
+				TownNPCDialogueName: the Starbloom Biome
 			}
 		}
 
-		Ginztel: {
-			DisplayName: Ginztel
-
-			TownNPCMood: {
-				Content: I am content.
-				NoHome: I hate not having a home.
-				FarFromHome: I am too far from home.
-				LoveSpace: I love having so much space.
-				DislikeCrowded: I dislike how crowded I am.
-				HateCrowded: I hate how crowded I am.
-				LoveBiome: I love {BiomeName}.
-				LikeBiome: I like {BiomeName}.
-				DislikeBiome: I dislike {BiomeName}.
-				LoveNPC: I love {NPCName}.
-				LikeNPC: I like {NPCName}.
-				DislikeNPC: I dislike {NPCName}.
-				HateNPC: I hate {NPCName}.
-				LikeNPC_Princess: I like {NPCName}.
-				Princess_LovesNPC: I like {NPCName}.
-			}
+		Tiles: {
+			AbyssalStone.MapEntry: Abyssal Stone
+			AurelusBorderS.MapEntry: Aurelus Border S
+			AurelusChest.MapEntry: Aurelus Chest
+			AurelusDoorClosed.MapEntry: Aurelus Door Closed
+			AurelusPost.MapEntry: Aurelus Post
+			AurelusSummon.MapEntry: Aurelus Summon
+			BlueFlower.MapEntry: Blue Flower
+			BlueFlower2.MapEntry: Blue Flower2
+			SoulOre.MapEntry: Soul Ore
+			TealBulb.MapEntry: Teal Bulb
+			TealBulb2.MapEntry: Teal Bulb2
+			TealBulb3.MapEntry: Teal Bulb3
+			AcidBrick.MapEntry: Acid Brick
+			AcidBush1.MapEntry: Acid Bush1
+			AcidBush2.MapEntry: Acid Bush2
+			AcidBush3.MapEntry: Acid Bush3
+			AcidialDirt.MapEntry: Acidial Dirt
+			AcidMush1.MapEntry: Acid Mush1
+			AcidMush2.MapEntry: Acid Mush2
+			AcidMush3.MapEntry: Acid Mush3
+			AcidStone.MapEntry: Acid Stone
+			AlcaologyTable.MapEntry: Alcaology Table
+			BigRock1.MapEntry: Big Rock1
+			BigRock2.MapEntry: Big Rock2
+			BigRock3.MapEntry: Big Rock3
+			BigRock4.MapEntry: Big Rock4
+			OwlTrunck1.MapEntry: Owl Trunck1
+			OwlTrunck2.MapEntry: Owl Trunck2
+			OwlTrunck3.MapEntry: Owl Trunck3
+			Stalagmite1.MapEntry: Stalagmite1
+			Stalagmite2.MapEntry: Stalagmite2
+			Stalagmite3.MapEntry: Stalagmite3
+			Stalagmite4.MapEntry: Stalagmite4
+			Arnchar.MapEntry: Arnchar
+			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
+			BroochesTable.MapEntry: Brooches Table
+			CellConverter.MapEntry: Cell Converter
+			CoreGemT.MapEntry: Core Gem T
+			DiminishedMetal.MapEntry: Diminished Metal
+			FrileOreTile.MapEntry: Frile Ore Tile
+			GovheilTile.MapEntry: Govheil Tile
+			HuntiacTile.MapEntry: Huntiac Tile
+			LostScrapT.MapEntry: Lost Scrap T
+			Alcite.MapEntry: Alcite
+			AowerBottom.MapEntry: Aower Bottom
+			AowerTop.MapEntry: Aower Top
+			CurtainLeftRC.MapEntry: Curtain Left R C
+			CurtainLeft.MapEntry: Curtain Left
+			CurtainRightRC.MapEntry: Curtain Right R C
+			CurtainRight.MapEntry: Curtain Right
+			CurtainTop.MapEntry: Curtain Top
+			Rectite.MapEntry: Rectite
+			Skullpile.MapEntry: Skullpile
+			RunicTableT.MapEntry: Runic Table T
+			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+			ShrineBUAN.MapEntry: Shrine B U A N
+			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+			ShrineHalhurishC.MapEntry: Shrine Halhurish C
+			ShrineLifeC.MapEntry: Shrine Life C
+			ShrineLights.MapEntry: Shrine Lights
+			ShrineSolMothC.MapEntry: Shrine Sol Moth C
+			StarbloomDirt.MapEntry: Starbloom Dirt
+			Gothiv.MapEntry: Gothiv
+			GothivDoorClosed.MapEntry: Gothiv Door Closed
+			GovheilBore.MapEntry: Govheil Bore
+			GovheilHall.MapEntry: Govheil Hall
+			GovheilWall.MapEntry: Govheil Wall
+			GovheilWei.MapEntry: Govheil Wei
+			JackPost.MapEntry: Jack Post
+			MasistLeft.MapEntry: Masist Left
+			MasistRight.MapEntry: Masist Right
+			RestingGrounds.MapEntry: Resting Grounds
+			VheilCurtainLeft.MapEntry: Vheil Curtain Left
+			VheilCurtainRight.MapEntry: Vheil Curtain Right
+			Zebi.MapEntry: Zebi
+			BarS.MapEntry: Bar S
+			BenchS.MapEntry: Bench S
+			CathedralChest.MapEntry: Cathedral Chest
+			Crystal1.MapEntry: Crystal1
+			Crystal2.MapEntry: Crystal2
+			FlowerMulti.MapEntry: Flower Multi
+			Orb1.MapEntry: Orb1
+			VerliasShrine.MapEntry: Verlias Shrine
+			GrassBigS.MapEntry: Grass Big S
+			GrassMossS.MapEntry: Grass Moss S
+			LogS.MapEntry: Log S
+			MorrowChest.MapEntry: Morrow Chest
+			MorrowDeath2S.MapEntry: Morrow Death2 S
+			MorrowDeathS.MapEntry: Morrow Death S
+			MorrowStoneS.MapEntry: Morrow Stone S
+			MushroomBigS.MapEntry: Mushroom Big S
+			PotmedS.MapEntry: Potmed S
+			SmallShroomS.MapEntry: Small Shroom S
+			SpikeS.MapEntry: Spike S
+			stand.MapEntry: stand
+			StoneChest.MapEntry: Stone Chest
+			wall1.MapEntry: wall1
+			wall2.MapEntry: wall2
+			wall3.MapEntry: wall3
+			wall4.MapEntry: wall4
+			wall5.MapEntry: wall5
+			wall6.MapEntry: wall6
+			wall7.MapEntry: wall7
+			SunAlter.MapEntry: Sun Alter
+			VerianoreTile.MapEntry: Verianore Tile
 		}
 
-		DreadFireBombG.DisplayName: Dread Fire Bomb G
-		HeatBombLighting.DisplayName: Heat Bomb Lighting
-		HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-		SolarPortal.DisplayName: Solar Portal
-		SolarSingularity.DisplayName: Solar Singularity
-		OverworldRune.DisplayName: Overworld Rune
-		OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
-		DesertRune.DisplayName: Desert Rune
-		DesertRuneLightBig.DisplayName: Desert Rune Light Big
-		JungleRune.DisplayName: Jungle Rune
+		Buffs: {
+			AbyssalFlame: {
+				DisplayName: Abyssal Flame
+				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+			}
+
+			AcidFlame: {
+				DisplayName: Acid Flame
+				Description: Mods.Stellamod.Buffs.AcidFlame.Description
+			}
+
+			ArcaneDust: {
+				DisplayName: Arcane Dust
+				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+			}
+
+			AssassinsSlashBuff: {
+				DisplayName: Assassins Slash Buff
+				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+			}
+
+			AmethystBroo: {
+				DisplayName: Amethyst Broo
+				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+			}
+
+			AurelusB: {
+				DisplayName: Aurelus B
+				Description: Mods.Stellamod.Buffs.AurelusB.Description
+			}
+
+			BearB: {
+				DisplayName: Bear B
+				Description: Mods.Stellamod.Buffs.BearB.Description
+			}
+
+			BurningGB: {
+				DisplayName: Burning G B
+				Description: Mods.Stellamod.Buffs.BurningGB.Description
+			}
+
+			Diarii: {
+				DisplayName: Diarii
+				Description: Mods.Stellamod.Buffs.Diarii.Description
+			}
+
+			DreadB: {
+				DisplayName: Dread B
+				Description: Mods.Stellamod.Buffs.DreadB.Description
+			}
+
+			Flyfish: {
+				DisplayName: Flyfish
+				Description: Mods.Stellamod.Buffs.Flyfish.Description
+			}
+
+			GintBroo: {
+				DisplayName: Gint Broo
+				Description: Mods.Stellamod.Buffs.GintBroo.Description
+			}
+
+			Goldren: {
+				DisplayName: Goldren
+				Description: Mods.Stellamod.Buffs.Goldren.Description
+			}
+
+			GovheilB: {
+				DisplayName: Govheil B
+				Description: Mods.Stellamod.Buffs.GovheilB.Description
+			}
+
+			IceBrooch: {
+				DisplayName: Ice Brooch
+				Description: Mods.Stellamod.Buffs.IceBrooch.Description
+			}
+
+			MalB: {
+				DisplayName: Mal B
+				Description: Mods.Stellamod.Buffs.MalB.Description
+			}
+
+			Morrow: {
+				DisplayName: Morrow
+				Description: Mods.Stellamod.Buffs.Morrow.Description
+			}
+
+			Slimee: {
+				DisplayName: Slimee
+				Description: Mods.Stellamod.Buffs.Slimee.Description
+			}
+
+			Spragald: {
+				DisplayName: Spragald
+				Description: Mods.Stellamod.Buffs.Spragald.Description
+			}
+
+			StoneB: {
+				DisplayName: Stone B
+				Description: Mods.Stellamod.Buffs.StoneB.Description
+			}
+
+			VerliaBroo: {
+				DisplayName: Verlia Broo
+				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+			}
+
+			VixedB: {
+				DisplayName: Vixed B
+				Description: Mods.Stellamod.Buffs.VixedB.Description
+			}
+
+			DarkHold: {
+				DisplayName: Dark Hold
+				Description: Mods.Stellamod.Buffs.DarkHold.Description
+			}
+
+			DeathMultiplier: {
+				DisplayName: Death Multiplier
+				Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+			}
+
+			DeathMultiplierBloodLamp: {
+				DisplayName: Death Multiplier Blood Lamp
+				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+			}
+
+			Dusted: {
+				DisplayName: Dusted
+				Description: Mods.Stellamod.Buffs.Dusted.Description
+			}
+
+			AivanDust: {
+				DisplayName: Aivan Dust
+				Description: Mods.Stellamod.Buffs.AivanDust.Description
+			}
+
+			AlcadDust: {
+				DisplayName: Alcad Dust
+				Description: Mods.Stellamod.Buffs.AlcadDust.Description
+			}
+
+			CoalBuff: {
+				DisplayName: Coal Buff
+				Description: Mods.Stellamod.Buffs.CoalBuff.Description
+			}
+
+			CrystalDust: {
+				DisplayName: Crystal Dust
+				Description: Mods.Stellamod.Buffs.CrystalDust.Description
+			}
+
+			EXPtime: {
+				DisplayName: E X Ptime
+				Description: Mods.Stellamod.Buffs.EXPtime.Description
+			}
+
+			EXPtime2: {
+				DisplayName: E X Ptime2
+				Description: Mods.Stellamod.Buffs.EXPtime2.Description
+			}
+
+			EXPtime3: {
+				DisplayName: E X Ptime3
+				Description: Mods.Stellamod.Buffs.EXPtime3.Description
+			}
+
+			EXPtime4: {
+				DisplayName: E X Ptime4
+				Description: Mods.Stellamod.Buffs.EXPtime4.Description
+			}
+
+			FlameDust: {
+				DisplayName: Flame Dust
+				Description: Mods.Stellamod.Buffs.FlameDust.Description
+			}
+
+			FlowerBuff: {
+				DisplayName: Flower Buff
+				Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+			}
+
+			GovheilDust: {
+				DisplayName: Govheil Dust
+				Description: Mods.Stellamod.Buffs.GovheilDust.Description
+			}
+
+			GrassBuff: {
+				DisplayName: Grass Buff
+				Description: Mods.Stellamod.Buffs.GrassBuff.Description
+			}
+
+			IceDust: {
+				DisplayName: Ice Dust
+				Description: Mods.Stellamod.Buffs.IceDust.Description
+			}
+
+			KaevDust: {
+				DisplayName: Kaev Dust
+				Description: Mods.Stellamod.Buffs.KaevDust.Description
+			}
+
+			ShadeDust: {
+				DisplayName: Shade Dust
+				Description: Mods.Stellamod.Buffs.ShadeDust.Description
+			}
+
+			SongDust: {
+				DisplayName: Song Dust
+				Description: Mods.Stellamod.Buffs.SongDust.Description
+			}
+
+			TrickDust: {
+				DisplayName: Trick Dust
+				Description: Mods.Stellamod.Buffs.TrickDust.Description
+			}
+
+			VoiddDust: {
+				DisplayName: Voidd Dust
+				Description: Mods.Stellamod.Buffs.VoiddDust.Description
+			}
+
+			Elegance: {
+				DisplayName: Elegance
+				Description: Mods.Stellamod.Buffs.Elegance.Description
+			}
+
+			GintzelSheild: {
+				DisplayName: Gintzel Sheild
+				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+			}
+
+			GintzelSheildCD: {
+				DisplayName: Gintzel Sheild C D
+				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+			}
+
+			GintzeSeen: {
+				DisplayName: Gintze Seen
+				Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+			}
+
+			Gintzingwinds: {
+				DisplayName: Gintzingwinds
+				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+			}
+
+			Harvester: {
+				DisplayName: Harvester
+				Description: Mods.Stellamod.Buffs.Harvester.Description
+			}
+
+			Irradiation: {
+				DisplayName: Irradiation
+				Description: Mods.Stellamod.Buffs.Irradiation.Description
+			}
+
+			Love: {
+				DisplayName: Love
+				Description: Mods.Stellamod.Buffs.Love.Description
+			}
+
+			PocketSandBuff: {
+				DisplayName: Pocket Sand Buff
+				Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+			}
+
+			Rekin: {
+				DisplayName: Rekin
+				Description: Mods.Stellamod.Buffs.Rekin.Description
+			}
+
+			SnowFlame: {
+				DisplayName: Snow Flame
+				Description: Mods.Stellamod.Buffs.SnowFlame.Description
+			}
+
+			MorrowWhipDebuff: {
+				DisplayName: Morrow Whip Debuff
+				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+			}
+
+			Whipdeath: {
+				DisplayName: Whipdeath
+				Description: Mods.Stellamod.Buffs.Whipdeath.Description
+			}
+
+			Wounded: {
+				DisplayName: Wounded
+				Description: Mods.Stellamod.Buffs.Wounded.Description
+			}
+
+			ArncharMinionBuff: {
+				DisplayName: Arnchar Minion Buff
+				Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+			}
+
+			AuroranSeekerMinionBuff: {
+				DisplayName: Auroran Seeker Minion Buff
+				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+			}
+
+			DripperBuff: {
+				DisplayName: Dripper Buff
+				Description: Mods.Stellamod.Buffs.DripperBuff.Description
+			}
+
+			FCBuff: {
+				DisplayName: F C Buff
+				Description: Mods.Stellamod.Buffs.FCBuff.Description
+			}
+
+			HMMinionBuff: {
+				DisplayName: H M Minion Buff
+				Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+			}
+
+			IceboundMinionBuff: {
+				DisplayName: Icebound Minion Buff
+				Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+			}
+
+			IrradiatedCreeperBuff: {
+				DisplayName: Irradiated Creeper Buff
+				Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+			}
+
+			IvyakenBuff: {
+				DisplayName: Ivyaken Buff
+				Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+			}
+
+			JellyMinionBuff: {
+				DisplayName: Jelly Minion Buff
+				Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+			}
+
+			LifeWandMinionBuff: {
+				DisplayName: Life Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+			}
+
+			ManaWandMinionBuff: {
+				DisplayName: Mana Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+			}
+
+			MushroomStaveBuff: {
+				DisplayName: Mushroom Stave Buff
+				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+			}
+
+			ProbeBuff: {
+				DisplayName: Probe Buff
+				Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+			}
+
+			SolMothBuff: {
+				DisplayName: Sol Moth Buff
+				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+			}
+
+			SwarmerMinionBuff: {
+				DisplayName: Swarmer Minion Buff
+				Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+			}
+
+			TheBurningRodBuff: {
+				DisplayName: The Burning Rod Buff
+				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+			}
+
+			VoidMinionBuff: {
+				DisplayName: Void Minion Buff
+				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+			}
+		}
 	}
 
 	Tiles: {
