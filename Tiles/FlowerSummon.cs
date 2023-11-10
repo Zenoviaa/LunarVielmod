@@ -61,7 +61,7 @@ namespace Stellamod.Tiles
 			TileObjectData.newTile.Width = 5;
 			MineResist = 4f;
 			MinPick = 80;
-			TileObjectData.newTile.DrawYOffset = 4; // So the tile sinks into the ground
+			TileObjectData.newTile.DrawYOffset = 16; // So the tile sinks into the ground
 			TileObjectData.newTile.DrawXOffset = 4; // So the tile sinks into the ground
 
 
@@ -88,17 +88,6 @@ namespace Stellamod.Tiles
 
 
 		public bool Checked = false;
-		public override bool RightClick(int i, int j)
-		{
-
-			Player player = Main.LocalPlayer;
-
-		
-
-
-
-			return true;
-		}
 		public override void MouseOver(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -163,7 +152,57 @@ namespace Stellamod.Tiles
 			b = 0.1f;
 		}
 
-		
+
+		public override bool RightClick(int i, int j)
+		{
+
+			if (NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()) || NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>())) //Do nothing if the boss is alive
+				return false;
+
+			Player player = Main.LocalPlayer;
+
+	
+
+
+
+
+
+
+
+
+			if (!NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Main.NewText("Jack has awoken!", Color.Gold);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
+
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<StarrVeriplant>(), i * 16, (j * 16) - 5);
+				}
+
+				return true;
+			}
+			if (NPC.AnyNPCs(ModContent.NPCType<StarrVeriplant>()))
+			{
+
+				Main.NewText("...", Color.Gold);
+
+
+
+			}
+			
+
+
+			return true;
+
+		}
+
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{

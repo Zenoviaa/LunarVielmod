@@ -4242,7 +4242,7 @@ Mods: {
 			SunStalkerLighting.DisplayName: Sun Stalker Lighting
 			SunStalkerDeath.DisplayName: Sun Stalker Death
 			SunStalker.DisplayName: Sun Stalker
-			StarrVeriplant.DisplayName: Starr Veriplant
+			StarrVeriplant.DisplayName: Stone Guardian
 			Flowerball.DisplayName: Flowerball
 			Voidling.DisplayName: Voidling
 			SingularityOrb.DisplayName: Singularity Orb
@@ -5320,7 +5320,7 @@ Mods: {
 				SingularityOrb.DisplayName: Singularity Orb
 				Voidling.DisplayName: Voidling
 				Flowerball.DisplayName: Flowerball
-				StarrVeriplant.DisplayName: Starr Veriplant
+				StarrVeriplant.DisplayName: Stone Guardian
 				SunStalkerDeath.DisplayName: Sun Stalker Death
 				SunStalkerLighting.DisplayName: Sun Stalker Lighting
 				SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
@@ -5476,6 +5476,8 @@ Mods: {
 					}
 				}
 			}
+
+			StoneDeath.DisplayName: Stone Death
 		}
 
 		Biomes: {
@@ -7170,7 +7172,7 @@ NPCs: {
 	SingularityOrb.DisplayName: Singularity Orb
 	Voidling.DisplayName: Voidling
 	Flowerball.DisplayName: Flowerball
-	StarrVeriplant.DisplayName: Starr Veriplant
+	StarrVeriplant.DisplayName: Stone Guardian
 	SunStalkerDeath.DisplayName: Sun Stalker Death
 	SunStalkerLighting.DisplayName: Sun Stalker Lighting
 	SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
@@ -7559,7 +7561,7 @@ Buffs: {
 
 	NPCs: {
 		Flowerball.DisplayName: Flowerball
-		StarrVeriplant.DisplayName: Starr Veriplant
+		StarrVeriplant.DisplayName: Stone Guardian
 		CloneV.DisplayName: Verlia Clone
 		GhostCharger.DisplayName: Ghost Charger
 		Sword1.DisplayName: Sword of Maskillia

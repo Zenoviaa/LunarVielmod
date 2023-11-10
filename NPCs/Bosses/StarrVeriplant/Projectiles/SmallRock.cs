@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
             }
 			
 			float maxDetectRadius = 3f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 25f; // The speed at which the projectile moves towards the target
+			float projSpeed = 15f; // The speed at which the projectile moves towards the target
 
 			if (Timer2 == 0)
 			{

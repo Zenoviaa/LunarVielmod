@@ -72,8 +72,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
             SpinLONG,
             TeleportBIGSlam,
             BIGSlam,
-            BIGLand
-        }
+            BIGLand,
+			FallSlam,
+			FallBIGSlam,
+			StartSlam,
+			FallStartSlam,
+			TeleportStartSlam
+		}
 		// Current state
 
 		public ActionState State = ActionState.Start;
@@ -130,7 +135,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public override void SetDefaults()
 		{
 			NPC.width = 80;
-			NPC.height = 60;
+			NPC.height = 44;
 			NPC.damage = 1;
 			NPC.defense = 1;
 			NPC.lifeMax = 300;
@@ -160,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.aiStyle = -1;
 
 			// Custom boss bar
-			NPC.BossBar = ModContent.GetInstance<BossBarTest>();
+			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
 
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
@@ -174,7 +179,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("The beloved plant, a wonder across the stars, infected by the gild and serves as a protector to the Morrow and Veribloom.")
+				new FlavorTextBestiaryInfoElement("A beloved magical stone guardian, protected the natural life and would petrify anyone who disturbs it.")
 			});
 		}
 
@@ -203,11 +208,36 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
 		bool boom = false;
-	
-		
-			
 
-public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+
+		public override void HitEffect(NPC.HitInfo hit)
+		{
+			if (NPC.life <= 0)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X + 40, (int)NPC.Center.Y + 30, ModContent.NPCType<StoneDeath>());
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+			}
+			else
+			{
+				for (int k = 0; k < 7; k++)
+				{
+
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Stone, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Stone, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+				}
+			}
+		}
+
+		
+		
+		
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
 
@@ -222,7 +252,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			Rectangle rect;
 		
 			
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2);
+			originalHitbox = new Vector2(NPC.width / 100, (NPC.height / 2) + 46);
 
 
 
@@ -268,6 +298,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
+				case ActionState.TeleportStartSlam:
+					rect = new Rectangle(0, 46 * 89, 80, 7 * 89);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
 				case ActionState.TeleportBIGSlam:
 					rect = new Rectangle(0, 46 * 89, 80, 7 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
@@ -290,9 +325,29 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
+				case ActionState.StartSlam:
+					rect = new(0, 53 * 89, 80, 6 * 89);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
 				case ActionState.BIGSlam:
 					rect = new(0, 53 * 89, 80, 1 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 100, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.FallBIGSlam:
+					rect = new(0, 53 * 89, 80, 1 * 89);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.FallSlam:
+					rect = new(0, 53 * 89, 80, 1 * 89);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					break;
+
+				case ActionState.FallStartSlam:
+					rect = new(0, 53 * 89, 80, 1 * 89);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
 
 				case ActionState.BIGLand:
@@ -373,7 +428,9 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(2);
+				NPC.EncourageDespawn(1);
+				Falling();
+				
 			}
 				switch (State)
 			{
@@ -412,6 +469,12 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					NPC.damage = 0;
 					counter++;
 					Slam();
+					break;
+
+				case ActionState.StartSlam:
+					NPC.damage = 0;
+					counter++;
+					StartSlam();
 					break;
 
 				case ActionState.BIGLand:
@@ -457,6 +520,13 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					TeleportSlam();
 					break;
 
+				case ActionState.TeleportStartSlam:
+					NPC.damage = 0;
+					NPC.velocity *= 0;
+					counter++;
+					TeleportStartSlam();
+					break;
+
 				case ActionState.TeleportBIGSlam:
 					NPC.damage = 0;
 					NPC.velocity *= 0;
@@ -481,6 +551,28 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						}
 					counter++;
 					BIGSlam();
+					break;
+
+				case ActionState.FallBIGSlam:
+					NPC.damage = 0;
+					NPC.velocity *= 2;
+					counter++;
+					FallBIGSlam();
+					break;
+
+
+				case ActionState.FallSlam:
+					NPC.damage = 0;
+					NPC.velocity *= 2;
+					counter++;
+					FallSlam();
+					break;
+
+				case ActionState.FallStartSlam:
+					NPC.damage = 0;
+					NPC.velocity *= 2;
+					counter++;
+					FallStartSlam();
 					break;
 
 				case ActionState.TeleportWindUp:
@@ -514,18 +606,12 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					case 0:
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 1 * 1f , ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 1 * 3f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 3, speedY * 2f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
 						break;
 
@@ -536,18 +622,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					case 2:
 						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 3, speedYa - 1 * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 3, speedYa * 1f, ModContent.ProjectileType<SineButterfly>(), (int)(15), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 3, speedYa * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 2, speedYa - 3 * 1.5f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 1, speedYa - 1, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 3, speedYa - 2 * 2f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 1 * 1f, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 1, speedYa - 3, ProjectileID.DandelionSeed, (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 2, speedYa - 1 * 3f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 2f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(9), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(4), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(4), 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
 						break;
 
@@ -641,12 +717,37 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 						if (timer == 27)
 			{
-				State = ActionState.Slam;
+				State = ActionState.FallSlam;
 
 				ResetTimers();
 			}
 
 			
+		}
+
+
+		private void TeleportStartSlam()
+		{
+
+			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer == 1)
+			{
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + (int)(distanceY);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
+			}
+
+			if (timer == 27)
+			{
+				State = ActionState.FallStartSlam;
+
+				ResetTimers();
+			}
+
+
 		}
 
 
@@ -667,7 +768,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 			if (timer == 27)
 			{
-				State = ActionState.BIGSlam;
+				State = ActionState.FallBIGSlam;
 
 				ResetTimers();
 			}
@@ -727,14 +828,14 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 			Player player = Main.player[NPC.target];
 		
-			float speed = 25f;
+			float speed = 12f;
 			if (timer == 1)
             {
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
 			if (timer < 5)
             {
-				NPC.damage = 250;
+				NPC.damage = 30;
 				int distance = Main.rand.Next(3, 3);
 				NPC.ai[3] = Main.rand.Next(1);
 				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
@@ -811,11 +912,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 				switch (Main.rand.Next(2))
 				{
 					case 0:
-						State = ActionState.TeleportSlam;
+						State = ActionState.TeleportStartSlam;
 						ResetTimers();
 						break;
 					case 1:
-						State = ActionState.TeleportSlam;
+						State = ActionState.TeleportStartSlam;
 						break;
 				
 				}
@@ -828,8 +929,65 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
         }
 
 
+		private void FallSlam()
+        {
+			timer++;
+			if (NPC.collideY)
+			{
+				NPC.velocity.Y *= 0;
+				State = ActionState.Slam;
 
-        private void Slam()
+
+				ResetTimers();
+			}
+
+			if (timer > 120)
+			{
+				State = ActionState.Slam;
+				ResetTimers();
+			}
+		}
+
+		private void FallBIGSlam()
+		{
+			timer++;
+			if (NPC.collideY)
+			{
+				NPC.velocity.Y *= 0;
+				State = ActionState.BIGSlam;
+
+
+				ResetTimers();
+			}
+
+
+			if (timer > 120)
+            {
+				State = ActionState.BIGSlam;
+				ResetTimers();
+			}
+		}
+
+		private void FallStartSlam()
+		{
+			timer++;
+			if (NPC.collideY)
+			{
+				NPC.velocity.Y *= 0;
+				State = ActionState.StartSlam;
+
+
+				ResetTimers();
+			}
+
+
+			if (timer > 120)
+			{
+				State = ActionState.StartSlam;
+				ResetTimers();
+			}
+		}
+		private void Slam()
 		{
 			timer++;
 			if (timer == 3)
@@ -847,8 +1005,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(20), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(5), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(5), 0f, 0, 0f, 0f);
 
 
 					
@@ -865,11 +1023,74 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (timer == 27)
 				{
 				
+				if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
+
+				{
+					State = ActionState.WindUp;
+				}
+
+				if (NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
+
+				{
 					State = ActionState.WindUpSp;
-				
-				
+				}
+
+
 				ResetTimers();
 				}
+
+
+
+
+
+		}
+
+
+		private void StartSlam()
+		{
+			timer++;
+			if (timer == 3)
+			{
+				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
+
+			}
+
+			if (timer > 10)
+			{
+
+				if (NPC.velocity.Y == 0)
+				{
+
+					
+
+					ShakeModSystem.Shake = 8;
+
+				}
+			}
+			if (timer == 10)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
+			}
+
+
+			if (timer == 27)
+			{
+
+				if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
+
+				{
+					State = ActionState.WindUp;
+				}
+
+				if (NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
+
+				{
+					State = ActionState.WindUpSp;
+				}
+
+
+				ResetTimers();
+			}
 
 
 
@@ -911,6 +1132,15 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 
 		}
+
+
+		private void Falling()
+		{
+			timer++;
+			NPC.velocity *= 2.5f;
+
+		}
+
 		private void BIGSlam()
 		{
 			timer++;
@@ -929,8 +1159,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 6, speedY, ModContent.ProjectileType<StarBullet>(), (int)(10), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 6, speedY, ModContent.ProjectileType<StarBullet>(), (int)(10), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), (int)(3), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), (int)(3), 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifallstar"));
 
 
@@ -990,12 +1220,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX -2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1 , ModContent.ProjectileType<SmallRock2>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 2, speedY - 2 * 1, ModContent.ProjectileType<Rock2>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 80, speedX * 0.1f, speedY - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(40), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX -2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1 , ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
+
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
 						break;
 
@@ -1004,12 +1233,7 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXBb + 2 * 1, speedYb - 2 * 1, ModContent.ProjectileType<SmallRock2>(), (int)(10), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 2 * 2, speedYb - 2 * 1, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXBb + 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Rock>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 110, speedXb - 1 * 2, speedYb - 2 * 1, ModContent.ProjectileType<Rock2>(), (int)(20), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 80, speedXb * 0.1f, speedYb - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(40), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 60, speedXb * 0.1f, speedYb - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(11), 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
 						break;
 
@@ -1017,8 +1241,8 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Flowing>(), (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1, ModContent.ProjectileType<Flowing>(), (int)(5), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), (int)(5), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), (int)(5), 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Flowers"));
 
 
@@ -1057,14 +1281,14 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 			if (timer == 27)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (NPC.life < NPC.lifeMax / 2)
+				if (NPC.life > NPC.lifeMax / 2 && NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
 					
 				{
 					switch (Main.rand.Next(4))
 					{
 
 						case 0:
-							State = ActionState.Spin;
+							State = ActionState.Dash;
 							break;
 						case 1:
 							State = ActionState.Dash;
@@ -1074,12 +1298,14 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 							break;
 						case 3:
 
-							State = ActionState.Spin;
+							State = ActionState.Dash;
 							break;
 
 					}
 				}
-				if (NPC.life > NPC.lifeMax / 2)
+
+				if (NPC.life > NPC.lifeMax / 2 && NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
+
 				{
 					switch (Main.rand.Next(4))
 					{
@@ -1096,6 +1322,30 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 						case 3:
 
 							State = ActionState.SpinLONG;
+							break;
+
+					}
+				}
+
+
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					switch (Main.rand.Next(4))
+					{
+
+						case 0:
+							State = ActionState.Spin;
+							break;
+						case 1:
+							State = ActionState.Dash;
+							break;
+						case 2:
+							State = ActionState.Dash;
+							break;
+						case 3:
+
+							State = ActionState.Spin;
 							break;
 
 					}
@@ -1106,6 +1356,11 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 
 			}
 		}
+
+
+		
+
+
 
 		private void WindUpSp()
 		{
@@ -1168,14 +1423,14 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 				switch (Main.rand.Next(4))
 				{
 					case 0:
-						CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Slowness!", true, false);
-						player.AddBuff(BuffID.Slow, 180);
+						CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Weak!", true, false);
+						player.AddBuff(BuffID.Weak, 60);
 						break;
 
 
 					case 1:
 						CombatText.NewText(NPC.getRect(), Color.MistyRose, "Armor Broke!", true, false);
-						player.AddBuff(BuffID.BrokenArmor, 120);
+						player.AddBuff(BuffID.BrokenArmor, 60);
 						break;
 
 
@@ -1216,9 +1471,9 @@ public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color d
 		
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VeriBossRel>()));
+		
 		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VeribossBag>()));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
