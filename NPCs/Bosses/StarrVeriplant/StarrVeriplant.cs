@@ -144,7 +144,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(copper: 40);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
@@ -1472,7 +1472,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
 		
-		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

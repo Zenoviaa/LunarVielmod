@@ -46,7 +46,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useAnimation = 20;
             Item.useTime = 20;
             Item.consumable = true;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
         }
 
         public override void AddRecipes()

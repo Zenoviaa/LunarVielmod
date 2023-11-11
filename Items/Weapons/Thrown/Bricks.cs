@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.value = 10000;
             Item.rare = 2;
             Item.consumable = true;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
             Item.crit = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;

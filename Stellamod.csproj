@@ -28,6 +28,7 @@
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Gores\Bricks1.png" />
@@ -247,9 +248,14 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
+    <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
+    <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

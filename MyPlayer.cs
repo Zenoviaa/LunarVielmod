@@ -37,6 +37,7 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Armors.Alsis;
 
 namespace Stellamod
 {
@@ -65,6 +66,7 @@ namespace Stellamod
 		public bool NotiaB;
 		public int NotiaBCooldown = 0;
 		public int SwordCombo;
+		public int SwordComboSlash;
 		public int SwordComboR;
 		public int lastSelectedI;
 		public bool Lovestruck;
@@ -85,8 +87,8 @@ namespace Stellamod
 		public int GovheilBCooldown = 0;
 		public bool Daedstruck;
 		public int DaedstruckBCooldown = 1;
-
-
+		public bool MasteryMagic;
+		public int MasteryMagicBCooldown = 0;
 
 
 
@@ -507,8 +509,8 @@ namespace Stellamod
             StealthRune = false;
             Leather = false;
             ShadowCharm = false;
-
-            WindRune = false;
+			MasteryMagic = false;
+			WindRune = false;
 
 
 
@@ -808,7 +810,10 @@ namespace Stellamod
                 }
             }
 
-
+			if (SwordComboSlash > 5)
+            {
+				SwordComboSlash = 0;
+            }
 
             if (HMArmor)
             {
@@ -1122,7 +1127,15 @@ namespace Stellamod
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<LightBomb>(), 30, 1f, Player.whoAmI);
 
 			}
+	
+			
+			if (MasteryMagic && MasteryMagicBCooldown <= 0)
+			{
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MasteryofMagic>(), 0, 1f, Player.whoAmI);
 
+				Player.AddBuff(ModContent.BuffType<MasteryMagic>(), 1000);
+				MasteryMagicBCooldown = 1000;
+			}
 
 
 

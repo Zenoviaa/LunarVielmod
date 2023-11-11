@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
             Item.consumable = true;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
         }
         public override void AddRecipes()
         {
