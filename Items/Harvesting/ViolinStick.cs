@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class ViolinStick : ModItem
+    internal class ViolinStick : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

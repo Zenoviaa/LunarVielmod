@@ -1,15 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Voyager
 {
-	public class InkBullet1 : ModProjectile
+    public class InkBullet1 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -52,7 +46,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 					float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 					float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink1>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink1>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				}
 
 				if (Main.rand.NextBool(1))
@@ -60,7 +54,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 					float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 					float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink2a>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink2a>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				}
 
 				if (Main.rand.NextBool(3))
@@ -68,7 +62,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 					float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 					float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink3>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXabc * 0f, speedYabc * 0f, ModContent.ProjectileType<Ink3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				}
 
 

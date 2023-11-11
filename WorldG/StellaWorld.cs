@@ -1,40 +1,40 @@
 ﻿
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Stone;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Ranged.Crossbows;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Whips;
+using Stellamod.Tiles;
+using Stellamod.Tiles.Abyss;
+using Stellamod.Tiles.Acid;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.WorldBuilding;
-using System;
 using Terraria.IO;
-using Stellamod.Tiles;
-using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Whips;
-using Stellamod.Items.Materials;
-using Stellamod.Tiles.Abyss;
-using Stellamod.Tiles.Acid;
-using Stellamod.Items.Weapons.Ranged.Crossbows;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Armors.Stone;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG
 {
 
 
-	public class StellaWorld : ModSystem
+    public class StellaWorld : ModSystem
 	{
 
 		public static bool SoulStorm;
@@ -1411,28 +1411,12 @@ namespace Stellamod.WorldG
 					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
 					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
 
-
 					Point Loc = new Point(abysmx + 50, abysmy + 255);
-
 					pointL = new Point(abysmx + 50, abysmy + 255);
-
-
-
-
-
-
-					
 
 					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
 					placed = true;
 				}
-
-				
-			
-		
-
-
-
 			}
 
 			for (int fa = 0; fa < 20; fa++)
@@ -1481,8 +1465,6 @@ namespace Stellamod.WorldG
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Fighting the Virulent";
-
-
 
 			bool placed = false;
 			int attempts = 0;
@@ -1534,28 +1516,12 @@ namespace Stellamod.WorldG
 					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
 					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
 
-
 					Point Loc = new Point(abysmx + 50, abysmy + 255);
-
 					pointL = new Point(abysmx + 50, abysmy + 255);
-
-
-
-
-
-
-
 
 					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
 					placed = true;
 				}
-
-
-
-
-
-
-
 			}
 
 			for (int fa = 0; fa < 20; fa++)
@@ -1587,17 +1553,8 @@ namespace Stellamod.WorldG
 
 					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
 				}
-
-
-
-
 			}
-
-
 		}
-
-		Point pointLA;
-
 
 		// 6. This is the actual world generation code.
 		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)

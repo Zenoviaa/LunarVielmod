@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
@@ -11,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class Verstibloom : ModItem
+    public class Verstibloom : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

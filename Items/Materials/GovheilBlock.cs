@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class GovheilBlock : ModItem
+    public class GovheilBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

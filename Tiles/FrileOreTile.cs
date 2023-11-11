@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class FrileOreTile : ModTile
+    public class FrileOreTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

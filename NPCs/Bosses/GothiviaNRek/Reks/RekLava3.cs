@@ -1,14 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.NPCs.Bosses.Daedus;
-using Stellamod.UI.Systems;
 using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,8 +9,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 {
     public class RekLava3 : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-       
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -27,29 +18,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
         public override void SetDefaults()
         {
-
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.width = 27;
             Projectile.height = 34;
             Projectile.scale = 2.5f;
-
             Projectile.tileCollide = false;
             Projectile.timeLeft = 600;
-
         }
-
-
-
 
         public float Timer
         {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
+
         public float Timer2;
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
         public override void AI()
         {
             if (Projectile.timeLeft <= 10)

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class WickofSorcery : ModItem
+    internal class WickofSorcery : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

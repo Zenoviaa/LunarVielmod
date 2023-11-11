@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class HuntiacWall: ModWall
+    public class HuntiacWall: ModWall
 	{
 		public override void SetStaticDefaults()
 		{

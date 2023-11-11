@@ -1,9 +1,8 @@
-﻿using Terraria.ID;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Terraria;
 using System.Linq;
-using Humanizer;
+using Terraria;
+using Terraria.ID;
 
 namespace Stellamod.Utilis
 {

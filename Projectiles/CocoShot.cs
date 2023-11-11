@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class CocoShot : ModProjectile
+    public class CocoShot : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

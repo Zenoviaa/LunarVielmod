@@ -1,19 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {

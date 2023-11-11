@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Items.Materials;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Accessories
 {
-	public class Alcanine : ModItem
+    public class Alcanine : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

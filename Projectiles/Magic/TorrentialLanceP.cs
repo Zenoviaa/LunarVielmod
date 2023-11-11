@@ -1,15 +1,15 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ModLoader;
 using Terraria.ID;
-using System;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class TorrentialLanceP : ModProjectile
+    public class TorrentialLanceP : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -64,9 +64,9 @@ namespace Stellamod.Projectiles.Magic
 				for (int j = 0; j < 10; j++)
 				{
 					Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-					vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+					vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
 					vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-					int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 172, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+					int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.DungeonWater, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
 					Main.dust[num8].scale = 1.3f;
 					Main.dust[num8].noGravity = true;
 					Main.dust[num8].position = Projectile.Center + vector2;
@@ -78,8 +78,8 @@ namespace Stellamod.Projectiles.Magic
 			int num1222 = 74;
 			for (int k = 0; k < 2; k++)
 			{
-				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 172, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * (float)k;
+				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.DungeonWater, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
 				Main.dust[index2].scale = .95f;
 				Main.dust[index2].velocity *= 0f;
 				Main.dust[index2].noGravity = true;
@@ -100,7 +100,7 @@ namespace Stellamod.Projectiles.Magic
 				Color color28 = color29;
 				color28 = Projectile.GetAlpha(color28);
 				color28 *= 1f - num107;
-				Vector2 vector29 = new Vector2(Projectile.Center.X, Projectile.Center.Y) + ((float)num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + new Vector2(0, Projectile.gfxOffY) - Projectile.velocity * (float)num103;
+				Vector2 vector29 = new Vector2(Projectile.Center.X, Projectile.Center.Y) + (num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + new Vector2(0, Projectile.gfxOffY) - Projectile.velocity * num103;
 				Main.spriteBatch.Draw(texture2D4, vector29, new Microsoft.Xna.Framework.Rectangle?(TextureAssets.Projectile[Projectile.type].Value.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame)), color28, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects3, 0f);
 			}
 		}
@@ -108,13 +108,13 @@ namespace Stellamod.Projectiles.Magic
 		{
 			for (int i = 0; i < 20; i++)
 			{
-				int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 172, 0f, -2f, 0, default(Color), .8f);
+				int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
 				Main.dust[num1].noGravity = true;
 				Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				if (Main.dust[num1].position != Projectile.Center)
 					Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 172, 0f, -2f, 0, default(Color), .8f);
+				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
 				Main.dust[num].noGravity = true;
 				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;

@@ -1,34 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using ReLogic.Content;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Terraria.Graphics.Shaders;
-using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Projectiles.Swords
 {
     internal class X3107Skull : ModProjectile
     {
-        float SAdd;
-        bool Up2;
-        bool Up;
-        bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Rock");
             ProjectileID.Sets.TrailingMode[Type] = 1;
             ProjectileID.Sets.TrailCacheLength[Type] = 8;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Brown.ToVector3() * 1.75f * Main.essScale);
@@ -38,8 +28,8 @@ namespace Stellamod.Projectiles.Swords
                 Main.dust[dustnumber].noGravity = false;
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
+
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Shuriken);
@@ -56,8 +46,6 @@ namespace Stellamod.Projectiles.Swords
         }
         public override void AI()
         {
-
-
             Projectile.ai[1]++;
             if (Projectile.ai[1] >= 10)
             {
@@ -70,9 +58,9 @@ namespace Stellamod.Projectiles.Swords
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 256f, 16f);
             }
 
-
             Projectile.velocity.Y -= 0.01f;
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -97,20 +85,24 @@ namespace Stellamod.Projectiles.Swords
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-8, -1), ModContent.ProjectileType<X3107Skull2>(), 5, 1, Main.myPlayer, 0, 0);
             }
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.Red, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -118,9 +110,7 @@ namespace Stellamod.Projectiles.Swords
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
-
     }
 }

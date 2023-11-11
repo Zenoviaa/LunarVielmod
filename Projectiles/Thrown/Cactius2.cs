@@ -1,7 +1,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -10,10 +9,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-	public class Cactius2 : ModProjectile
+    public class Cactius2 : ModProjectile
 	{
-		public bool OptionallySomeCondition { get; private set; }
-
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Cactius2");
@@ -27,11 +24,13 @@ namespace Stellamod.Projectiles.Thrown
             AIType = ProjectileID.FrostDaggerfish;
             Projectile.penetrate = 3;
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool(2))
 				target.AddBuff(BuffID.Poisoned, 180);
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.penetrate--;
@@ -44,26 +43,27 @@ namespace Stellamod.Projectiles.Thrown
 
                 if (Projectile.velocity.Y != oldVelocity.Y)
                     Projectile.velocity.Y = -oldVelocity.Y;
-
-
             }
+
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
             for (int i = 0; i < 7; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.OasisCactus);
             }
             return false;
         }
+
         public override bool PreAI()
 		{
-			if (Main.rand.Next(3) == 1)
+			if (Main.rand.NextBool(3))
 			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.OasisCactus);
 			}
 			return true;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Thrown
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 			return false;
@@ -84,10 +84,9 @@ namespace Stellamod.Projectiles.Thrown
             for (int i = 0; i < 15; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.OasisCactus);
             }
         }
-
     }
 }

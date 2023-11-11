@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
+﻿using Stellamod.Dusts;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class StarSpike : ModProjectile
+    public class StarSpike : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

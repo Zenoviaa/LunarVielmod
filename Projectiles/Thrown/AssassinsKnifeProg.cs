@@ -1,38 +1,36 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
 
 namespace Stellamod.Projectiles.Thrown
 {
     internal class AssassinsKnifeProg : ModProjectile
     {
-        bool Moved;
-
+        private bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Knife");
             ProjectileID.Sets.TrailingMode[Type] = 1;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
         }
+
         public override void SetDefaults()
         {
-            base.Projectile.width = 12;
-            base.Projectile.height = 12;
-            base.Projectile.timeLeft = 700;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = true;
+            Projectile.width = 12;
+            Projectile.height = 12;
+            Projectile.timeLeft = 700;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = true;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -54,7 +52,7 @@ namespace Stellamod.Projectiles.Thrown
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
                     int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Firework_Red, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
@@ -88,13 +86,18 @@ namespace Stellamod.Projectiles.Thrown
                 Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num1].position != Projectile.Center)
+                {
                     Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
+                }
+
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num].position != Projectile.Center)
+                {
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                }
             }
 
         }
@@ -110,8 +113,11 @@ namespace Stellamod.Projectiles.Thrown
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
-            if (Main.rand.Next(3) == 0 && !target.boss)
+
+            if (Main.rand.NextBool(3) && !target.boss)
+            {
                 target.AddBuff(BuffID.Confused, 180);
+            }
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -134,16 +140,13 @@ namespace Stellamod.Projectiles.Thrown
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StringTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.75f * Main.essScale);
-
         }
     }
-
 }
 
 

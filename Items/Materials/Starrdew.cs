@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class Starrdew : ModItem
+    internal class Starrdew : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

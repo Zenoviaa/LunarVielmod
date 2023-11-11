@@ -1,24 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Safunai.Blackwhip;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-
-using Microsoft.Xna.Framework.Graphics;
-
-using System.Collections.Generic;
-using Terraria.DataStructures;
-using Stellamod.Projectiles.Safunai.Halhurish;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Harvesting;
-using Stellamod.Projectiles.Safunai.Blackwhip;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-	public class Blackwhip : ModItem
+    public class Blackwhip : ModItem
 	{
 		public int combo;
 

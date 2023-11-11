@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -10,7 +9,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Structures
 {
-	public class wall7 : ModTile
+    public class wall7 : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

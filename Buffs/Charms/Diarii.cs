@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class Diarii : ModBuff
+    public class Diarii : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,34 +1,30 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Projectiles.Magic;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Stellamod.Trails;
 
 namespace Stellamod.Projectiles.Bow
 {
     internal class ArchariliteArrow : ModProjectile
     {
-        bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.OnFire, 180);
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 9;
@@ -40,17 +36,13 @@ namespace Stellamod.Projectiles.Bow
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
             Projectile.velocity *= 1.02f;
-
-            if (Projectile.ai[1] == 100)
-            {
-
-
-            }
         }
+
         public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
@@ -68,13 +60,13 @@ namespace Stellamod.Projectiles.Bow
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-
         }
 
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -85,6 +77,7 @@ namespace Stellamod.Projectiles.Bow
         {
             return Color.Lerp(Color.SandyBrown, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))
@@ -101,6 +94,7 @@ namespace Stellamod.Projectiles.Bow
 
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
@@ -109,9 +103,6 @@ namespace Stellamod.Projectiles.Bow
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
-
-
     }
 }

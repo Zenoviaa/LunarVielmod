@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class SalfaCircle2 : ModProjectile
+    public class SalfaCircle2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -30,7 +30,7 @@ namespace Stellamod.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(0, 0, 0, 50) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(0, 0, 0, 50) * (1f - Projectile.alpha / 255f);
 		}
 		public override void AI()
 		{

@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 
 namespace Stellamod.Projectiles.Safunai.Parendine
 {
-	public class ParendineProj : ModProjectile
+    public class ParendineProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -44,6 +44,8 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 		public ref float AiState => ref Projectile.ai[1];
 		int afterImgCancelDrawCount = 0;
 
+		/*
+		
 		Vector2 endPoint;
 		Vector2 controlPoint1;
 		Vector2 controlPoint2;
@@ -51,7 +53,11 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 		Vector2 wantedEndPoint;
 		bool initialization = false;
 		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
+
+		*/
+
+		//Ok, I really wanna know the context behind these arrays
+		//public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
 		float t = 0;
 
 
@@ -131,7 +137,7 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<FrostKaboom>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<FrostKaboom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 
 
 		}
@@ -220,7 +226,7 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			afterImgColor.R = 96;
 			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;
@@ -237,7 +243,7 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
-					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}
 

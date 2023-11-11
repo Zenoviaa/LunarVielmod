@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
 
 namespace Stellamod.Projectiles.Bow
 {
@@ -39,7 +33,7 @@ namespace Stellamod.Projectiles.Bow
         {
             Projectile.alpha++;
 
-            float num = 1f - (float)Projectile.alpha / 255f;
+            float num = 1f - Projectile.alpha / 255f;
             Projectile.velocity *= .98f;
             num *= Projectile.scale;
             Lighting.AddLight(Projectile.Center, Color.LightSkyBlue.ToVector3() * 1.25f * Main.essScale);

@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class GoldSparkleParticle : Particle
+    public class GoldSparkleParticle : Particle
 	{
 		public override void SetDefaults()
 		{

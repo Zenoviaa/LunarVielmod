@@ -1,20 +1,17 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.UI;
-using Terraria.GameContent.UI.Elements;
-using Stellamod.UI.Panels;
-using Stellamod.Items.Materials;
 using ReLogic.Content;
 using Stellamod.Items.Consumables;
+using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.UI.Panels
 {
-	public class GambleButtons : UIElement
+    public class GambleButtons : UIElement
 	{
 		public static int selectedID = 0;
 		static int idCount = 1;

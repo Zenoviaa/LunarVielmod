@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Tools
 {
-	public class ArchariliteAxe : ModItem
+    public class ArchariliteAxe : ModItem
 	{
 		public override void SetStaticDefaults() 
 		{
@@ -27,7 +21,7 @@ namespace Stellamod.Items.Tools
 			Item.height = 40;
 			Item.useTime = 10;
 			Item.useAnimation = 10;
-			Item.useStyle = 1;
+			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 0, 20, 0);
 			Item.rare = ItemRarityID.Blue;

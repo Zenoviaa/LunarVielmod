@@ -1,6 +1,4 @@
 ﻿using Stellamod.Items.Harvesting;
-using Stellamod.Tiles;
-using Stellamod.Tiles.Structures;
 using Stellamod.Tiles.Structures.Cathedral;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class Crystal1I : ModItem
+    public class Crystal1I : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

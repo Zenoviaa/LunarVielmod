@@ -1,21 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Stellamod.Projectiles.Crossbows;
-using System.Collections.Generic;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class SupernovaSitar : ModItem
+    internal class SupernovaSitar : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

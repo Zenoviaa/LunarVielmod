@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Dusteffects
 {
-	public class VoiddDust : ModBuff
+    public class VoiddDust : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

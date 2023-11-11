@@ -1,6 +1,4 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-	public class VoidKey : ModItem
+    public class VoidKey : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

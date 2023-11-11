@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Global
 {
-	class NPCShopEdits : GlobalNPC
+    class NPCShopEdits : GlobalNPC
 	{
 
 

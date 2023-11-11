@@ -1,40 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
-using System;
+using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.UI.Systems;
+using Stellamod.WorldG;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
-using Terraria.ModLoader.Utilities;
-using System.IO;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.UI.Systems;
-using Terraria.Graphics.Effects;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.WorldG;
 
 namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 {
-	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
+    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class CommanderGintzia : ModNPC
 	{
 		public Vector2 FirstStageDestination
@@ -158,13 +141,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "Stellamod/NPCs/Event/Gintzearmy/BossGintze/GintziaPreview",
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
-
 			};
+
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -247,9 +230,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		int timeBetweenAttacks = 120;
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
-		Vector2 TeleportPos = Vector2.Zero;
-		bool boom = false;
-		float turnMod = 0f;
         public override void HitEffect(NPC.HitInfo hit)
         {
             for (int k = 0; k < 20; k++)
@@ -401,9 +381,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		int bee = 220;
 		private Vector2 originalHitbox;
-		int moveSpeed = 0;
-		int moveSpeedY = 0;
-
 		public override void AI()
 		{
 			
@@ -599,7 +576,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			Player player = Main.player[NPC.target];
 			NPC.spriteDirection = NPC.direction;
 			timer++;
-			float speed = 25f;
 
 			if (timer == 2)
 			{
@@ -672,8 +648,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(15), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(15), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 15, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 15, 0f, 0, 0f, 0f);
 
 			}
 

@@ -1,12 +1,9 @@
 ﻿
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;

@@ -5,19 +5,13 @@ using ReLogic.Content;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.Map;
-using Terraria.ModLoader;
 
 
 namespace Stellamod.Helpers.Separate

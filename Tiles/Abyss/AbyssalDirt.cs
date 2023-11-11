@@ -16,52 +16,48 @@ namespace Stellamod.Tiles.Abyss
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.IceBlock][Type] = true;
             Main.tileMerge[TileID.SnowBlock][Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-
             AddMapEntry(new Color(57, 55, 172));
-
-
         }
    
         public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-            Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
+            //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(3) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(3) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<BlueFlower2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.NextBool(2))
                 {
                     WorldGen.PlaceTile(i, j - 2, TileType<TealBulb>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.NextBool(2))
                 {
                     WorldGen.PlaceTile(i, j, TileType<TealBulb2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.Next(2) == 0)
+                if (Main.rand.NextBool(2))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<TealBulb3>(), true);
                 }

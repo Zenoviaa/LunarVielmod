@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 {
-	public class Windeffect : ModProjectile
+    public class Windeffect : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -42,7 +42,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(0, 255, 255, 255) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(0, 255, 255, 255) * (1f - Projectile.alpha / 255f);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{

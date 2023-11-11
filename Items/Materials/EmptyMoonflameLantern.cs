@@ -1,13 +1,11 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class EmptyMoonflameLantern : ModItem
+    public class EmptyMoonflameLantern : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

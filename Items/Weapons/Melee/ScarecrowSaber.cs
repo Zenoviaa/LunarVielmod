@@ -1,21 +1,10 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Spears;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Bow;
-using Terraria.DataStructures;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Items.Accessories.Runes;
-
-using Stellamod.Projectiles.Spears;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -69,8 +58,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            var entitySource = player.GetSource_FromThis();
-            if (Main.rand.Next(7) == 0)
+            if (Main.rand.NextBool(7))
             {
                 int dist = 40;
                 Vector2 targetExplosionPos = target.Center;

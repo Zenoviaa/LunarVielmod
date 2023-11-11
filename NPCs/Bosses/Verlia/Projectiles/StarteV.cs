@@ -1,28 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class StarteV : ModNPC
+    public class StarteV : ModNPC
 	{
 
 		// States
@@ -37,8 +24,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		// Current state
 		public float AI_Timer;
 		public float Beam_Timer;
-		private float rand = 100000;
-		private float rand2 = 0;
 		public ActionState State = ActionState.Starter;
 		// Current frame
 		public int frameCounter;
@@ -66,16 +51,11 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.defense = 0; // The amount of defense that this npc has
 			NPC.lifeMax = 10000; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
-
 			NPC.knockBackResist = 0f;
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
-
 			NPC.friendly = true;
-
 		}
-
-
 
 		public override void AI()
 		{
@@ -108,16 +88,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					counter++;
 					killyoself();
 					break;
-
-
 			}
-
-
-
-
-
-			
-
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
@@ -178,9 +149,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			// Every rectangle has an X, a Y, a Width, and a Height
 			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
 			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
-
-
-
 			return false;
 		}
 		
@@ -233,8 +201,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f - 2;
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 30, NPC.position.Y - 60, speedXb * 0, speedYb * 0.1f, ModContent.ProjectileType<VerliaHeadScreen>(), (int)(0), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText1>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 30, NPC.position.Y - 60, speedXb * 0, speedYb * 0.1f, ModContent.ProjectileType<VerliaHeadScreen>(), 0, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText1>(), 0, 0f, 0, 0f, 0f);
 			}
 
 			if (timer == 400)
@@ -243,7 +211,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f - 2;
 
 				
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText2>(), (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText2>(), 0, 0f, 0, 0f, 0f);
 			}
 
 			if (timer == 700)
@@ -256,9 +224,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		public void killyoself()
 		{
-			timer++;
-
-			
+			timer++;	
 			if (timer == 2)
 			{
 				int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VerliaB>());
@@ -267,7 +233,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			if (timer == 3)
 			{
 				NPC.SimpleStrikeNPC(99999, 1, crit: false, NPC.knockBackResist);
-
 			}
 		}
 
@@ -280,9 +245,5 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				new FlavorTextBestiaryInfoElement("Clone of a powerful sexy goddess :)")
 			});
 		}
-
-
-		
-
 	}
 }

@@ -1,33 +1,23 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.Bestiary;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
-using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Utilis;
+using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 //By Al0n37
@@ -54,6 +44,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             // DisplayName.SetDefault("Jack");
             Main.npcFrameCount[NPC.type] = 12;
         }
+
         public override void SetDefaults()
         {
             NPC.alpha = 255;
@@ -71,6 +62,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
@@ -124,9 +116,6 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.frame.Y = frameHeight * frame;
         }
 
-
-        bool CutScene;
-        private int Counter;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -134,6 +123,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                 new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
             });
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
@@ -181,30 +171,28 @@ namespace Stellamod.NPCs.Bosses.Jack
                     effects,
                     0
                 );
+
                 SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-                Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
+                //Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
                 Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.LightBlue);
                 for (int num103 = 0; num103 < 4; num103++)
                 {
                     Color color28 = color29;
                     color28 = NPC.GetAlpha(color28);
                     color28 *= 1f - num107;
-                    Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                    Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                     Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
                 }
             }
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 2.25f * Main.essScale);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
+            //var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
@@ -216,6 +204,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void AI()
         {
             Player player = Main.player[NPC.target];

@@ -1,14 +1,14 @@
 
-using Stellamod.Effects;
-using Stellamod.Utilis;
 using Microsoft.Xna.Framework;
+using Stellamod.Effects;
+using Stellamod.Trails;
+using Stellamod.Utilis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Trails;
 
 namespace Stellamod.Projectiles.Bow
 {

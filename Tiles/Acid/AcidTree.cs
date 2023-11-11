@@ -1,13 +1,9 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Tiles.Acid;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.Tiles.Acid
 {

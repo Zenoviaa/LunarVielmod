@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class JackBossRel : ModItem
+    public class JackBossRel : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

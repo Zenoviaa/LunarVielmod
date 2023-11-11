@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -61,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Color.Blue * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Color.Blue * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
             Main.spriteBatch.End();
@@ -116,13 +115,13 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 		{
 			for (int i = 0; i < 20; i++)
 			{
-				int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 172, 0f, -2f, 0, default(Color), .8f);
+				int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
 				Main.dust[num1].noGravity = true;
 				Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				if (Main.dust[num1].position != Projectile.Center)
 					Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 172, 0f, -2f, 0, default(Color), .8f);
+				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonWater, 0f, -2f, 0, default(Color), .8f);
 				Main.dust[num].noGravity = true;
 				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
 				Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;

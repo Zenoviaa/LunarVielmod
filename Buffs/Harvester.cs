@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Harvester : ModBuff
+    public class Harvester : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

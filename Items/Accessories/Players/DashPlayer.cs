@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
 using ParticleLibrary;
 using Stellamod.Particles;
-using Terraria.Audio;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Players
 {
-	public class DashPlayer : ModPlayer
+    public class DashPlayer : ModPlayer
 	{
 		// These indicate what direction is what in the timer arrays used
 		public const int DashDown = 0;

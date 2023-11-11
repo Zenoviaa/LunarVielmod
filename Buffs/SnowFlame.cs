@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class SnowFlame : ModBuff
+    public class SnowFlame : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

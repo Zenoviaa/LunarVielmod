@@ -1,8 +1,6 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;

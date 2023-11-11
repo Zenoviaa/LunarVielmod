@@ -1,7 +1,5 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class Gintelze : ModItem
+    public class Gintelze : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -33,7 +31,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.crit = 62; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
-            Item.rare = 3;
+            Item.rare = ItemRarityID.Orange;
             Item.UseSound = SoundID.Item1; // The sound when the weapon is being used.
 		}
 		public override void MeleeEffects(Player player, Rectangle hitbox)

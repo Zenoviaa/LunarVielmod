@@ -1,11 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Placeable.Cathedral;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -13,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Structures.Cathedral
 {
-	public class FlowerMulti : ModTile
+    public class FlowerMulti : ModTile
 	{
 		public const int FlowerVerticalFrameCount = 20;
 		public override void SetStaticDefaults()

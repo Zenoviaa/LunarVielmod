@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Stellamod.Projectiles.Magic;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class TorrentialLance : ModItem
+    public class TorrentialLance : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -33,7 +26,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.height = 40;
             Item.useTime = 19;
             Item.useAnimation = 19;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
             Item.mana = 15;
             Item.value = 100000;

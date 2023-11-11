@@ -1,33 +1,20 @@
-﻿
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Harvesting;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.NPCs.Bosses.Jack;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
 
     public class DesertRune : ModNPC
     {
-        private int timer;
         private Vector2 BloodCystPos;
         public override void SetStaticDefaults()
         {
@@ -35,14 +22,17 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             NPCID.Sets.TrailCacheLength[NPC.type] = 3;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneDesert) ? (0.100f) : 0f;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             Hit = true;
         }
+
         public override void AI()
         {
             NPC.ai[1]++;
@@ -54,8 +44,8 @@ namespace Stellamod.NPCs.Harvesting.Morrow
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DesertRuneLightBig>());
                 }
             }
-            NPC.damage = 0;
 
+            NPC.damage = 0;
             NPC.ai[0]++;
             if (Hit)
             {
@@ -94,13 +84,10 @@ namespace Stellamod.NPCs.Harvesting.Morrow
                     NPC.ai[0] = 3;
                 }
             }
-
-
-            float num = 1f - NPC.alpha / 255f;
         }
-        int frame = 0;
-        Vector2 HitPos;
-        bool Hit;
+
+        private Vector2 HitPos;
+        private bool Hit;
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.2f;
@@ -108,12 +95,13 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
+
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
-            Player player = Main.player[NPC.target];
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, target, 0.5f), NPC.Center.Distance(target) * Speed), 0.1f);
         }
+
         public override void SetDefaults()
         {
             NPC.noTileCollide = true;
@@ -130,11 +118,11 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             NPC.noGravity = true;
         }
 
-
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DesertRuneI>(), 1, 1));
         }
+
         public override void OnKill()
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
@@ -142,7 +130,8 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             CombatText.NewText(NPC.getRect(), Color.Orange, "Desert Harvest Collected!", true, false);
             base.OnKill();
         }
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
+
+        private Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;

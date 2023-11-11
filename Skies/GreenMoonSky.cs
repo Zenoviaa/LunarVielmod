@@ -2,14 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.Graphics;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
 namespace Stellamod.Skies
 {
-	public class GreenMoonSky : CustomSky
+    public class GreenMoonSky : CustomSky
 	{
 		private UnifiedRandom _random = new UnifiedRandom();
 
@@ -38,7 +37,7 @@ namespace Stellamod.Skies
 		{
 			if (maxDepth >= 3.40282347E+38f && minDepth < 3.40282347E+38f)
 			{
-				spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - (double)Main.screenPosition.Y - 700.0) * 0.10000000149011612)), Main.screenWidth, Main.screenHeight), new Color(94, 255, 120, 240) * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f * this._fadeOpacity));
+				spriteBatch.Draw(_bgTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - Main.screenPosition.Y - 700.0) * 0.10000000149011612)), Main.screenWidth, Main.screenHeight), new Color(94, 255, 120, 240) * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f * _fadeOpacity));
 			}
 		}
 

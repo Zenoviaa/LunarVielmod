@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.IgniterEx;
 using Terraria;
 using Terraria.Audio;
@@ -13,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class Neptune8Card : ModItem
+    internal class Neptune8Card : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

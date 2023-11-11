@@ -1,10 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Summons;
 
 namespace Stellamod.Projectiles.Crossbows.Magical
 {
@@ -53,8 +49,8 @@ namespace Stellamod.Projectiles.Crossbows.Magical
         {
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(0f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(1, 2) * 0.2f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.MedusaHeadRay, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.MedusaHeadRay, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.MedusaHeadRay, Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.MedusaHeadRay, Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
         }
 
 

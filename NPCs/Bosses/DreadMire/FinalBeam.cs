@@ -1,16 +1,16 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
-using System.Collections.Generic;
+using Stellamod.Effects;
+using Stellamod.Trails;
 using System;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-	public class FinalBeam : ModProjectile, IPixelPrimitiveDrawer
+    public class FinalBeam : ModProjectile, IPixelPrimitiveDrawer
     {
         internal PrimitiveTrailCopy BeamDrawer;
         public ref float Time => ref Projectile.ai[0];

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class SmallShroom : ModItem
+    public class SmallShroom : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

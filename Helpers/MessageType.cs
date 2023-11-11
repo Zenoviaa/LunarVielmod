@@ -1,6 +1,6 @@
 ﻿namespace Stellamod.Helpers
 {
-	public enum MessageType : byte
+    public enum MessageType : byte
 	{
 		None = 0,
 		ProjectileData,

@@ -5,7 +5,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Assets.Biomes
 {
-	public class MarrowWaterStyle : ModWaterStyle
+    public class MarrowWaterStyle : ModWaterStyle
 	{
 		public override int ChooseWaterfallStyle() => Find<ModWaterfallStyle>("Stellamod/MarrowWaterfallStyle").Slot;
 		public override int GetSplashDust() => DustType<Solution>();

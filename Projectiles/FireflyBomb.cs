@@ -27,7 +27,6 @@ namespace Stellamod.Projectiles
 
         public override Color? GetAlpha(Color lightColor)
         {
-            // return Color.White;
             return new Color(255, 255, 255, 0) * Projectile.Opacity;
         }
 
@@ -80,13 +79,12 @@ namespace Stellamod.Projectiles
             int num1222 = 74;
             for (int k = 0; k < 2; k++)
             {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 244, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
-                Main.dust[index2].scale = .95f;
-                Main.dust[index2].velocity *= 0f;
-                Main.dust[index2].noGravity = true;
-                Main.dust[index2].noLight = false;
+                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CopperCoin, Scale: 0.95f);
+                Main.dust[dust].position = Projectile.Center - Projectile.velocity / num1222 * k;
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].noLight = false;
             }
+
             return base.PreAI();
         }
 
@@ -119,7 +117,7 @@ namespace Stellamod.Projectiles
                 float degrees = k * degreesPer;
                 Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
                 Vector2 vel = direction * 2;
-                Dust.NewDust(Projectile.position, 0, 0, 244, vel.X, vel.Y);
+                Dust.NewDust(Projectile.position, 0, 0, DustID.CopperCoin, vel.X, vel.Y);
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starblast"), Projectile.position);

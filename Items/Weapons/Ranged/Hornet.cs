@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
@@ -7,14 +6,13 @@ using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Hornet : ModItem
+    public class Hornet : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

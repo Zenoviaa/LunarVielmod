@@ -1,7 +1,7 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Effects;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.INest
 {
-	public class CommunicationRay : ModProjectile, IPixelPrimitiveDrawer
+    public class CommunicationRay : ModProjectile, IPixelPrimitiveDrawer
     {
         internal PrimitiveTrailCopy BeamDrawer;
         public ref float Time => ref Projectile.ai[0];

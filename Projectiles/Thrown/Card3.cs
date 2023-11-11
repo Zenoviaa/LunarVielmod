@@ -1,20 +1,17 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Projectiles.IgniterEx;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Projectiles.IgniterEx;
 
 namespace Stellamod.Projectiles.Thrown
 {
     public class Card3 : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -28,34 +25,27 @@ namespace Stellamod.Projectiles.Thrown
             AIType = ProjectileID.JavelinFriendly;
             Projectile.penetrate = 1;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-
             NPC npc = target;
-          
-
-           
-
             if (Main.rand.NextBool(4))
             {
                 npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
                 float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                 float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
                 SoundEngine.PlaySound(SoundID.DD2_DarkMageHealImpact, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), (int)(22), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), 22, 0f, Projectile.owner, 0f, 0f);
             }
             else
             {
-
-             
-                    float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                    float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                    SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.Center);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), (int)(6), 0f, Projectile.owner, 0f, 0f);
-               
+                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.Center);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IgniterStart>(), 6, 0f, Projectile.owner, 0f, 0f); 
             }
-
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.penetrate--;
@@ -68,9 +58,8 @@ namespace Stellamod.Projectiles.Thrown
 
                 if (Projectile.velocity.Y != oldVelocity.Y)
                     Projectile.velocity.Y = -oldVelocity.Y;
-
-
             }
+
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
             for (int i = 0; i < 7; i++)
             {
@@ -78,15 +67,17 @@ namespace Stellamod.Projectiles.Thrown
             }
             return false;
         }
+
         public override bool PreAI()
         {
-            if (Main.rand.Next(3) == 1)
+            if (Main.rand.NextBool(3))
             {
-
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
+
             return true;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
@@ -97,7 +88,7 @@ namespace Stellamod.Projectiles.Thrown
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
             return false;
@@ -110,6 +101,5 @@ namespace Stellamod.Projectiles.Thrown
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
         }
-
     }
 }

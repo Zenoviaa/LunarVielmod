@@ -1,14 +1,10 @@
-using System;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class DarkHold : ModBuff
+    public class DarkHold : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -22,10 +18,9 @@ namespace Stellamod.Buffs
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.lifeRegen -= 8;
-
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool(2))
 			{
-				int dust = Dust.NewDust(npc.position, npc.width, npc.height, 206);
+				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.UnusedWhiteBluePurple);
 				Main.dust[dust].scale = 1.5f;
 				Main.dust[dust].noGravity = true;
 			}
@@ -33,7 +28,6 @@ namespace Stellamod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
         {
-
             player.bleed = true;
             player.maxFallSpeed = +20f;
 			player.blind = true;
@@ -42,11 +36,10 @@ namespace Stellamod.Buffs
             if (!Main.dayTime)
             {
                 player.lifeRegen -= 12;
-                int dust = Dust.NewDust(player.position, player.width, player.height, 206);
+                int dust = Dust.NewDust(player.position, player.width, player.height, DustID.UnusedWhiteBluePurple);
                 Main.dust[dust].scale = 3.5f;
                 Main.dust[dust].noGravity = true;
             }
-
         }
 	}
 }

@@ -1,15 +1,12 @@
-﻿using Stellamod.Items.Placeables;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.SunStalker;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.NPCs.Bosses.SunStalker;
 
 namespace Stellamod.Tiles
 {
@@ -91,7 +88,7 @@ namespace Stellamod.Tiles
             {
 
                 var entitySource = player.GetSource_FromThis();
-               int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), (int)i * 16 + Main.rand.Next(-10, 10), (int)j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
+               int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
                Main.npc[SSSpawn].netUpdate = true;
             }
             if (!player.HasItem(ModContent.ItemType<SunClaw>()))

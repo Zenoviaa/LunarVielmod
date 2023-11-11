@@ -1,11 +1,10 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Microsoft.Xna.Framework;
 
 namespace Stellamod.Skies
 {
-	class VignettePlayer : ModPlayer
+    class VignettePlayer : ModPlayer
 	{
 		private bool _lastTickVignetteActive;
 		private bool _vignetteActive;

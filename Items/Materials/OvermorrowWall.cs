@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class OvermorrowWall : ModItem
+    public class OvermorrowWall : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

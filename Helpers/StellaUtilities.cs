@@ -1,16 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.DataStructures;
 
 namespace Stellamod.Helpers
 {
-	public static class StellaUtilities
+    public static class StellaUtilities
 	{
 		// Drawing
 		public static Rectangle AnimationFrame(this Texture2D texture, ref int frame, ref int frameTick, int frameTime, int frameCount, Rectangle area, bool frameTickIncrease = true)

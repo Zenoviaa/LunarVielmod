@@ -1,15 +1,12 @@
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using XPT.Core.Audio.MP3Sharp.Decoding;
 
 namespace Stellamod.Projectiles.Gun
 {
-	public class RealityBolt : ModProjectile
+    public class RealityBolt : ModProjectile
     {
         bool Moved;
         public int Color;

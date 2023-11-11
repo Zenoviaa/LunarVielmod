@@ -1,10 +1,8 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -55,7 +53,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 40; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default, 1.5f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default, 1.5f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].scale = 1.9f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -99,7 +97,7 @@ namespace Stellamod.Projectiles.Magic
             int num1222 = 74;
             for (int k = 0; k < 2; k++)
             {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                 Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
                 Main.dust[index2].scale = .95f;
                 Main.dust[index2].velocity *= 0f;

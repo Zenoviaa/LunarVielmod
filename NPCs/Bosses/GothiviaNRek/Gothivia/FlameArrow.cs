@@ -1,19 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
@@ -29,7 +22,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.OnFire, 180);
         }
         public override void SetDefaults()

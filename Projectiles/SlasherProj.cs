@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public abstract class SlasherProj : ModProjectile
+    public abstract class SlasherProj : ModProjectile
 	{
 		public readonly int ChargeTime;
 		private readonly int DustType;
@@ -60,7 +60,6 @@ namespace Stellamod.Projectiles
 		private float _angularMomentum = 1;
 		private int _lingerTimer = 0;
 		private int _flickerTime = 0;
-		private bool _statBuffed = false;
 
 		public SpriteEffects Effects => ((Main.player[Projectile.owner].direction * (int)Main.player[Projectile.owner].gravDir) < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 		public float TrueRotation => ((float)radians + 3.9f) + ((Effects == SpriteEffects.FlipHorizontally) ? MathHelper.PiOver2 : 0);

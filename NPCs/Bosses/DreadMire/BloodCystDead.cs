@@ -1,14 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 namespace Stellamod.NPCs.Bosses.DreadMire
@@ -17,7 +15,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     public class BloodCystDead : ModNPC
     {
         private bool FalseSpawn;
-        private int timer;
         private Vector2 BloodCystPos;
         public override void SetStaticDefaults()
         {
@@ -26,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
-        int frame = 0;
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.2f;
@@ -34,11 +31,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
-        bool text;
+
+        private bool text;
         public override void AI()
         {
             NPC.ai[0]++;
-     
+
             if (NPC.ai[0] == 2)
             {
                 BloodCystPos = NPC.position;
@@ -114,15 +112,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             }
 
-            float num = 1f - (float)NPC.alpha / 255f;
+            float num = 1f - NPC.alpha / 255f;
             Lighting.AddLight(NPC.Center, 1.6f * num, 0.4f * num, 0.8f * num);
         }
+
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
-            Player player = Main.player[NPC.target];
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
+
         public override void SetDefaults()
         {
             NPC.noTileCollide = true;
@@ -140,25 +139,27 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.aiStyle = -1;
             NPC.noGravity = true;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
             }
             else
             {
                 for (int k = 0; k < 7; k++)
                 {
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 37, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Obsidian, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
                 }
             }
         }
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
+
+        private Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
@@ -179,15 +180,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
             }
 
-
-
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
-        }
-
-        public override void OnKill()  //Npc drop
-        {
         }
     }
 }

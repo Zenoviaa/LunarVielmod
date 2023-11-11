@@ -1,14 +1,10 @@
-using System;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Rekin : ModBuff
+    public class Rekin : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

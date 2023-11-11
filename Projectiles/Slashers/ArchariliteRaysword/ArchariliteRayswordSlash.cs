@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -18,7 +16,6 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
         public int combowombo;
         private bool _initialized;
         private int timer;
-        private bool ParticleSpawned;
         /*  public override void SetStaticDefaults()
           {
               ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
@@ -28,7 +25,6 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
           */
         public override void SetDefaults()
         {
-
             Projectile.damage = 10;
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;

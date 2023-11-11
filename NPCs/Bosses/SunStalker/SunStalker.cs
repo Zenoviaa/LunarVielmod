@@ -1,22 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Humanizer;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using System.Diagnostics.Metrics;
-using Stellamod.Helpers;
-using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
@@ -30,6 +23,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             Main.npcFrameCount[NPC.type] = 6;
         }
+
         bool Intro;
         bool Dir;
         bool Dashing;
@@ -49,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             Vector2 target = player.Center + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
-        bool IN;
+
         public override void SetDefaults()
         {
             NPC.width = 100;
@@ -70,6 +64,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.scale = 1f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }
+
         Vector2 targetPos;
         public override void OnKill()
         {
@@ -78,20 +73,19 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<SunStalkerBag>(), 1, false, 0, false, false);
             }
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
-      
         }
+
         public override void AI()
         {
-
             if (NPC.life < NPC.lifeMax / 2)
             {
                 Attacks = 6;
-
             }
             else
             {
                 Attacks = 5;
             }
+
             Player player = Main.player[NPC.target];
             if (Attack == 0)
             {
@@ -951,7 +945,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             for (float j = -(float)Math.PI; j <= (float)Math.PI / 3f; j += (float)Math.PI / 3f)
             {
-                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + (float)base.NPC.alpha * 0.25f + (float)spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
+                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
             }
             spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center - Main.screenPosition, base.NPC.frame, base.NPC.GetAlpha(lightColor), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
 

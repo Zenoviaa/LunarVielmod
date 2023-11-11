@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Projectiles.Pulser
 {
 
-	public class PulseShoter : ModProjectile
+    public class PulseShoter : ModProjectile
 	{
 		private static Asset<Texture2D> PulseShot;
 

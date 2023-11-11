@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Violarproj : ModProjectile
+    public class Violarproj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -79,9 +79,9 @@ namespace Stellamod.Projectiles
 					float speedX = Projectile.velocity.X * 2;
 					float speedY = Projectile.velocity.Y * 2;
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 
 					SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"));
 				}
@@ -90,9 +90,9 @@ namespace Stellamod.Projectiles
 					float speedX = Projectile.velocity.X * 2;
 					float speedY = Projectile.velocity.Y * 2;
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 
 					SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"));
 				}
@@ -101,9 +101,9 @@ namespace Stellamod.Projectiles
 					float speedX = Projectile.velocity.X * 2;
 					float speedY = Projectile.velocity.Y * 2;
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY * 2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * -2, speedY * -2, ProjectileID.Spark, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"));
 				}
 			}

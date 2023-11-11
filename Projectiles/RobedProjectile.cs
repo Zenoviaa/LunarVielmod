@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class RobedProjectile : ModProjectile
+    public class RobedProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

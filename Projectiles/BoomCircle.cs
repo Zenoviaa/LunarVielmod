@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class BoomCircle : ModProjectile
+    public class BoomCircle : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 248, 10, 0) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(255, 248, 10, 0) * (1f - Projectile.alpha / 255f);
 		}
 	}
 }

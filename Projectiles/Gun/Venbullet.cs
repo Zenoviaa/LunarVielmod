@@ -1,16 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-	public class Venbullet : ModProjectile
+    public class Venbullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -55,7 +48,7 @@ namespace Stellamod.Projectiles.Gun
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc - 20, Projectile.position.Y + speedYabc - 20, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<VenShotIN>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc - 20, Projectile.position.Y + speedYabc - 20, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<VenShotIN>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 

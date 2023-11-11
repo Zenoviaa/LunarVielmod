@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class AurelusBorderI : ModItem
+    public class AurelusBorderI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

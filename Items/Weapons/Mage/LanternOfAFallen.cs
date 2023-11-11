@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class LanternOfAFallen : ModItem
+    internal class LanternOfAFallen : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

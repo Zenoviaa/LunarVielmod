@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class GreekLantern : ModItem
+    internal class GreekLantern : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,19 +1,16 @@
 ﻿
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Runes;
-using Stellamod.Items.Materials;
-
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Utilis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Utilis;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-
 
 namespace Stellamod.NPCs.Abyssal
 {
@@ -47,7 +44,7 @@ namespace Stellamod.NPCs.Abyssal
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             for (float j = -(float)Math.PI; j <= (float)Math.PI / 2f; j += (float)Math.PI / 2f)
             {
-                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + (float)base.NPC.alpha * 0.25f + (float)spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
+                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
             }
             spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center - Main.screenPosition, base.NPC.frame, base.NPC.GetAlpha(lightColor), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
 
@@ -108,6 +105,7 @@ namespace Stellamod.NPCs.Abyssal
                     base.NPC.alpha = 255;
                 }
             }
+
             if (chargetimer == 230)
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -130,9 +128,9 @@ namespace Stellamod.NPCs.Abyssal
                     base.NPC.alpha = 0;
                 }
             }
+
             if (chargetimer >= 600 && !player.dead)
             {
-
                 chargetimer = 0;
                 Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                 direction.Normalize();
@@ -144,7 +142,7 @@ namespace Stellamod.NPCs.Abyssal
                 NPC.velocity.X *= 0.995f;
                 for (int i = 0; i < 20; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, 180, 0f, -2f, 0, default(Color), .8f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.DungeonSpirit, 0f, -2f, 0, default(Color), .8f);
                     Main.dust[num].noGravity = true;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -168,7 +166,7 @@ namespace Stellamod.NPCs.Abyssal
 
                 for (int i = 0; i < 20; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, 266, 0f, -2f, 0, default(Color), .8f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SomethingRed, 0f, -2f, 0, default(Color), .8f);
                     Main.dust[num].noGravity = true;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -177,15 +175,12 @@ namespace Stellamod.NPCs.Abyssal
                 }
             }
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(1, 4), false, 0, false, false);
-            if (Main.rand.Next(30) == 0)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<LunarBand>(), 1, false, 0, false, false);
-            }
-
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ItemType<LunarBand>(), 30));
         }
-
     }
 }

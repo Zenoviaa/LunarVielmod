@@ -1,15 +1,10 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.UI.Systems;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using System;
-using Terraria.GameContent.Drawing;
-using ParticleLibrary;
-using Stellamod.Particles;
-using Stellamod.UI.Systems;
-using Terraria.Audio;
 
 namespace Stellamod.Projectiles
 {
@@ -144,7 +139,7 @@ namespace Stellamod.Projectiles
             afterImgColor.R = 96;
             Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+            for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)
                 float rotationToDraw;
@@ -161,7 +156,7 @@ namespace Stellamod.Projectiles
                         interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
                         rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
                     }
-                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
                 }
             }
 

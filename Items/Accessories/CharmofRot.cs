@@ -1,16 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
-using Stellamod;
-using Stellamod.Items.Harvesting;
+﻿using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	public class CharmofRot : ModItem
+    public class CharmofRot : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

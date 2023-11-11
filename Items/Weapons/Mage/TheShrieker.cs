@@ -1,24 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class TheShrieker : ModItem
+    public class TheShrieker : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -33,10 +23,10 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.height = 40;
 			Item.useTime = 28;
 			Item.useAnimation = 28;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<ShriekerProg>();

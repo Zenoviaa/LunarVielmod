@@ -1,30 +1,26 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Projectiles.Magic;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using Stellamod.Utilis;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
     internal class CrysalizerArrow2 : ModProjectile
     {
-        bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 17;
@@ -36,6 +32,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
@@ -81,20 +78,15 @@ namespace Stellamod.Projectiles.Bow
         {
             Projectile.ai[1]++;
             Projectile.velocity *= 1.02f;
-
-            if (Projectile.ai[1] == 100)
-            {
-
-
-            }
         }
+
         public override void OnKill(int timeLeft)
         {
-
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.PinkTorch, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default, 1f).noGravity = false;
             }
+
             for (int i = 0; i < 50; i++)
             {
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, 0f, -2f, 0, default(Color), 1.5f);
@@ -105,13 +97,13 @@ namespace Stellamod.Projectiles.Bow
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-
         }
 
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -135,9 +127,9 @@ namespace Stellamod.Projectiles.Bow
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
@@ -146,9 +138,6 @@ namespace Stellamod.Projectiles.Bow
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PinkTorch, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
-
-
     }
 }

@@ -8,7 +8,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Structures
 {
-	public class MorrowStoneS : ModTile
+    public class MorrowStoneS : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

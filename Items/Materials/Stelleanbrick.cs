@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class Stelleanbrick : ModItem
+    public class Stelleanbrick : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

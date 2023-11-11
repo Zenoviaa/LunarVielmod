@@ -1,20 +1,15 @@
 ﻿
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.Items.Weapons.Ranged;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Spears;
 
 namespace Stellamod.Items.Consumables
 {

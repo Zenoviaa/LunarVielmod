@@ -1,25 +1,20 @@
 ﻿
 
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Gun;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
-using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -32,7 +27,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
-	public class TheBurningRod : ModItem
+    public class TheBurningRod : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -182,7 +177,7 @@ namespace Stellamod.Items.Weapons.Summon
 				for (int k = 0; k < Projectile.oldPos.Length; k++)
 				{
 					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+					Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 					Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0f);
 				}
 				return true;
@@ -367,8 +362,8 @@ namespace Stellamod.Items.Weapons.Summon
 
 					float speedXa = (Projectile.velocity.X / 6) + Main.rand.NextFloat(1f, 10f);
 					float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(1, 10);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 
 

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class ScissorianSlash2 : ModProjectile
+    public class ScissorianSlash2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
 		}
 		public override void AI()
 		{

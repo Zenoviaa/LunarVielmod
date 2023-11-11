@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class AlcadzBlock : ModItem
+    public class AlcadzBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

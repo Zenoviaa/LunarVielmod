@@ -9,18 +9,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class EbistarProj : ModProjectile
+    public class EbistarProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("dead");
 			Main.projFrames[Projectile.type] = 1;
 		}
-		private int ProjectileSpawnedCount;
-		private int ProjectileSpawnedMax;
-		private Projectile ParentProjectile;
-		private bool RunOnce = true;
-		private bool MouseLeftBool = false;
+
 		public override void SetDefaults()
 		{
 			Projectile.damage = 0;
@@ -34,11 +30,13 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void AI()
 		{
 			Timer++;
@@ -76,11 +74,8 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX / 6, speedY, ModContent.ProjectileType<SparkedStar>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX / 6, speedY, ModContent.ProjectileType<SparkedStar>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
-
-				
 			}
 
 		
@@ -99,9 +94,8 @@ namespace Stellamod.Projectiles
 					Projectile.frame = 0;
 				}
 			}
-
-		
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			SpriteEffects spriteEffects = SpriteEffects.None;
@@ -112,11 +106,10 @@ namespace Stellamod.Projectiles
 			int startY = frameHeight * Projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-			
 			return false;
 		}
 	}

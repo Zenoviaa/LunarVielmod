@@ -1,14 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class Flowder : ModProjectile
+    public class Flowder : ModProjectile
 	{
 		public int timer = 0;
 		public override void SetStaticDefaults()

@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Whips
 {
-	public class MorrowWhipProj : ModProjectile
+    public class MorrowWhipProj : ModProjectile
 	{
 		// The texture doesn't have the same name as the item, so this property points to it.
 	

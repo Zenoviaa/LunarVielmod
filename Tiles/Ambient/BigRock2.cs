@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 namespace Stellamod.Tiles.Ambient
 {
-	public class BigRock2 : ModTile
+    public class BigRock2 : ModTile
 	{
 		public override void SetStaticDefaults()
         {

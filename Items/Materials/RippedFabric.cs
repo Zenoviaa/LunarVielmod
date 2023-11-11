@@ -1,13 +1,12 @@
 ﻿
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Stellamod.Items.Harvesting;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class RippedFabric : ModItem
+    internal class RippedFabric : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

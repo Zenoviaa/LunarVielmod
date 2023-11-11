@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Whipfx
 {
-	public class MorrowWhipDebuff : ModBuff
+    public class MorrowWhipDebuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

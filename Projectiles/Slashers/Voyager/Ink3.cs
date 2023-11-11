@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.IgniterExplosions;
+﻿using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Voyager
 {
-	public class Ink3 : ModProjectile
+    public class Ink3 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,12 +1,11 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	internal class StumpBuster : ModItem
+    internal class StumpBuster : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

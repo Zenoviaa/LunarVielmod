@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.Jack;
-using System;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -22,7 +17,7 @@ using Terraria.ObjectData;
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 {
-	public class Gothiv : ModTile
+    public class Gothiv : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

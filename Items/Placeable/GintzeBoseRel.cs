@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class GintzeBossRel : ModItem
+    public class GintzeBossRel : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

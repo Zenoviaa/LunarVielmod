@@ -1,8 +1,6 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -100,7 +98,7 @@ namespace Stellamod.Projectiles.Swords
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 68, 0f, -2f, 0, default, 1.1f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default, 1.1f);
                 Main.dust[num].noGravity = true;
                 Dust expr_62_cp_0 = Main.dust[num];
                 expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);

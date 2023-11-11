@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class VerianRuneBlock : ModItem
+    public class VerianRuneBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

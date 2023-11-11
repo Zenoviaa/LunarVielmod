@@ -7,37 +7,32 @@ using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
 using Stellamod.Items.Accessories.Runes;
+using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
+using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DreadMire;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
+using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
-
+using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Swords;
+using Stellamod.WorldG;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Projectiles.Gun;
-using Stellamod.WorldG;
-using Terraria.GameContent;
-using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.NPCs.Bosses.Daedus;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.Items.Armors.Terric;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Armors.Alsis;
 
 namespace Stellamod
 {
@@ -166,8 +161,8 @@ namespace Stellamod
 
 
 		public float screenFlash;
-        private float screenFlashSpeed = 0.05f;
-        private Vector2? screenFlashCenter;
+        //private float screenFlashSpeed = 0.05f;
+        //private Vector2? screenFlashCenter;
         private float shakeDrama;
         public Vector2 startPoint;
 
@@ -235,37 +230,37 @@ namespace Stellamod
         public bool TericGram = false;
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
-            this.shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
+            shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
         }
         public override void ModifyScreenPosition()
         {
-            if (this.shouldFocus)
+            if (shouldFocus)
             {
-                if (this.focusLength > 0f)
+                if (focusLength > 0f)
                 {
-                    if (this.focusTransition <= 1f)
+                    if (focusTransition <= 1f)
                     {
-                        Main.screenPosition = Vector2.SmoothStep(this.startPoint, this.focusPoint, this.focusTransition += 0.05f);
+                        Main.screenPosition = Vector2.SmoothStep(startPoint, focusPoint, focusTransition += 0.05f);
                     }
                     else
                     {
-                        Main.screenPosition = this.focusPoint;
+                        Main.screenPosition = focusPoint;
                     }
-                    this.focusLength -= 0.05f;
+                    focusLength -= 0.05f;
                 }
-                else if (this.focusTransition >= 0f)
+                else if (focusTransition >= 0f)
                 {
-                    Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), this.focusPoint, this.focusTransition -= 0.05f);
+                    Main.screenPosition = Vector2.SmoothStep(base.Player.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), focusPoint, focusTransition -= 0.05f);
                 }
                 else
                 {
-                    this.shouldFocus = false;
+                    shouldFocus = false;
                 }
             }
-            if (this.shakeDrama > 0.5f)
+            if (shakeDrama > 0.5f)
             {
-                this.shakeDrama *= 0.92f;
-                Vector2 shake = new Vector2(Main.rand.NextFloat(this.shakeDrama), Main.rand.NextFloat(this.shakeDrama));
+                shakeDrama *= 0.92f;
+                Vector2 shake = new Vector2(Main.rand.NextFloat(shakeDrama), Main.rand.NextFloat(shakeDrama));
                 Main.screenPosition += shake;
             }
         }
@@ -273,11 +268,11 @@ namespace Stellamod
         {
             if (base.Player.Center.Distance(pos) < 2000f)
             {
-                this.focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-                this.focusTransition = 0f;
-                this.startPoint = Main.screenPosition;
-                this.focusLength = length;
-                this.shouldFocus = true;
+                focusPoint = pos - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+                focusTransition = 0f;
+                startPoint = Main.screenPosition;
+                focusLength = length;
+                shouldFocus = true;
             }
         }
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)

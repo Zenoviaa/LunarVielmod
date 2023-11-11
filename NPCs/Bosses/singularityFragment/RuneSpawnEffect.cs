@@ -1,10 +1,9 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
 
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
@@ -30,13 +29,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.width = 60;
             Projectile.extraUpdates = 1;
         }
+
 		float alphaCounter = 5;
-		int counter;
 		public override void AI()
 		{
 			alphaCounter -= 0.18f;
 		}
-
 
         public override bool PreDraw(ref Color lightColor)
         {

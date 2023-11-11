@@ -1,42 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class CloneV : ModNPC
+    public class CloneV : ModNPC
 	{
 
 		// States
 		public enum ActionState
 		{
-		
 			Wait,
 			Shoot
 		}
+
 		// Current state
 		public float AI_Timer;
 		public float Beam_Timer;
-		private float rand = 100000;
-		private float rand2 = 0;
 		public ActionState State = ActionState.Shoot;
 		// Current frame
 		public int frameCounter;
@@ -69,17 +55,13 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			NPC.alpha = 125;
-
 		}
-
-
 
 		public override void AI()
 		{
 			NPC.damage = 0;
 			switch (State)
 			{
-				
 				case ActionState.Shoot:
 					counter++;
 					NPC.velocity *= 0f;
@@ -92,22 +74,13 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					NPC.velocity *= 0.96f;
 					Wait();
 					break;
-
-
 			}
-
-
-
-
-
-			
-
 
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			// Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
@@ -133,17 +106,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					rect = new Rectangle(0, 1 * 104, 36, 1 * 104);
 					spriteBatch.Draw(texture, NPC.position - screenPos - new Vector2(15, 25), texture.AnimationFrame(ref frameCounter, ref frameTick, 60, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
-
 			}
 
-
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
-
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			for (int k = 0; k < NPC.oldPos.Length; k++)
@@ -161,9 +126,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			// Every rectangle has an X, a Y, a Width, and a Height
 			// Our X and Y values are the position on our texture where we start to sample from, using the top left corner as our origin
 			// Our Width and Height values specify how big of an area we want to sample starting from X and Y
-
-
-
 			return false;
 		}
 		
@@ -176,8 +138,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				NPC minionNPC = Main.npc[index];
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Upp"));
 			}
-			
-			 if (timer == 39)
+
+			if (timer == 39)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				State = ActionState.Wait;
@@ -188,8 +150,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public void Wait()
 		{
 			timer++;
-
-			
 			if (timer == 280)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
@@ -197,6 +157,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				ResetTimers();
 			}
 		}
+
 		public void ResetTimers()
 		{
 			timer = 0;
@@ -204,7 +165,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			frameTick = 0;
 		}
 
-		
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -214,9 +174,5 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				new FlavorTextBestiaryInfoElement("Clone of a powerful sexy goddess :)")
 			});
 		}
-
-
-		
-
 	}
 }

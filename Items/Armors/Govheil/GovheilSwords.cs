@@ -1,40 +1,28 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Govheil
 {
-	// - ModProjectile - the minion itself
+    // - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
-	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
-	// This is NOT an in-depth guide to advanced minion AI
+    // It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
+    // To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
+    // This is NOT an in-depth guide to advanced minion AI
 
-	// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+    // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
-	// This minion shows a few mandatory things that make it behave properly.
-	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-	// If the player targets a certain NPC with right-click, it will fly through tiles to it
-	// If it isn't attacking, it will float near the player with minimal movement
-	public class GovheilSwords : ModProjectile
+    // This minion shows a few mandatory things that make it behave properly.
+    // Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
+    // If the player targets a certain NPC with right-click, it will fly through tiles to it
+    // If it isn't attacking, it will float near the player with minimal movement
+    public class GovheilSwords : ModProjectile
 	{
-		NPC target;
 		int afterImgCancelDrawCount = 0;
-		int afterImgCancelDrawCount2 = 0;
-		Vector2 endPoint;
-		Vector2 controlPoint1;
-		Vector2 controlPoint2;
-		Vector2 initialPos;
-		Vector2 wantedEndPoint;
-		bool initialization = false;
-		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		 public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
+		 //public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
         float ta = 0;
 		public override void SetStaticDefaults()
 		{
@@ -48,15 +36,14 @@ namespace Stellamod.Items.Armors.Govheil
 			
 
 			// This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			// Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public int Timer = 0;
 		float jhe = 0;
 
 		public override void SetDefaults()
-		{
-			
+		{		
 			Projectile.width = 30;
 			Projectile.height = 30;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
@@ -68,62 +55,41 @@ namespace Stellamod.Items.Armors.Govheil
 			Projectile.scale = 0.7f;
 			Projectile.CloneDefaults(ProjectileID.DeadlySphere);
 			AIType = ProjectileID.DeadlySphere;
-
 		}
-		// Here you can decide if your minion breaks things like grass or pots
-		
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		float alphaCounter;
-		
-		
 
+		// Here you can decide if your minion breaks things like grass or pots	
+		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
 		public override void AI()
 		{
 			Projectile.minionSlots = 0f;
 			Projectile.minion = false;
-
 			Projectile.tileCollide = false;
 			if (ta > 1500)
-			{
-			
+			{		
 				afterImgCancelDrawCount++;
-			}
-			
+			}			
 
 			ta += 0.01f;
-
 			jhe++;
-
 			if (jhe == 1500)
             {
 				Projectile.Kill();
 				jhe = 0;
             }
-
 		}
 	
 		public override bool PreDraw(ref Color lightColor)
 		{
-			
-
-
 			Color afterImgColor = Main.hslToRgb(Projectile.ai[1], 1, 0.5f);
-			float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
+			//float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
 			afterImgColor.A = 40;
 			afterImgColor.B = 50;
 			afterImgColor.G = 50;
 			afterImgColor.R = 50;
 
-
-		
-
-
-
-
 			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;
@@ -140,16 +106,11 @@ namespace Stellamod.Items.Armors.Govheil
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
-					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}
-
-			
+	
 			return true;
 		}
-		
-		
-	
-
 	}
 }

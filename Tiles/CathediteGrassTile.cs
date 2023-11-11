@@ -2,11 +2,10 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Stellamod.Items.Placeable.Cathedral;
 
 namespace Stellamod.Tiles
 {
-	public class CathediteGrassTile: ModTile
+    public class CathediteGrassTile: ModTile
 	{
 		public override void SetStaticDefaults()
 		{

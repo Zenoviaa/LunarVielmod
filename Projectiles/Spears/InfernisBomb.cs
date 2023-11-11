@@ -1,28 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace Stellamod.Projectiles.Spears
 {
 
     internal class InfernisBomb : ModProjectile
     {
-        bool Moved;
-        float DownVel;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             Projectile.hide = true;
@@ -35,20 +31,15 @@ namespace Stellamod.Projectiles.Spears
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
         }
+
         public override void AI()
         {
             Projectile.velocity.Y += 3.2f;
             Projectile.velocity.X = 0;
             Projectile.ai[1]++;
-
-
-            if (Projectile.alpha >= 255)
-            {
-
-            }
             Projectile.spriteDirection = Projectile.direction;
-
         }
+
         public override void OnKill(int timeLeft)
         {
 
@@ -58,8 +49,8 @@ namespace Stellamod.Projectiles.Spears
             if (offsetY > Projectile.height)
             {
                 offsetY = Projectile.height;
-
             }
+
             Vector2 position9 = Projectile.position + ((side == -1) ? new Vector2(0f, Projectile.height - offsetY) : Vector2.Zero);
             Vector2 vector154 = Projectile.position + ((side == -1) ? new Vector2(0f, Projectile.height) : Vector2.Zero);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 50f);
@@ -94,9 +85,8 @@ namespace Stellamod.Projectiles.Spears
                 }
             }
         }
-        float alphaCounter = 0;
-        int counter;
 
+        float alphaCounter = 0;
         Vector2 DrawOffset;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -118,8 +108,6 @@ namespace Stellamod.Projectiles.Spears
             Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
 
-
-
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -134,18 +122,17 @@ namespace Stellamod.Projectiles.Spears
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(254, 231, 97), new Color(247, 118, 34), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Effects, 0);
             }
+
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return true;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
-
 }
 
 

@@ -1,19 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.Particles;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -22,7 +13,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class MorrowedJellyFish : ModNPC
+    public class MorrowedJellyFish : ModNPC
 	{
 		// States
 		public enum ActionState

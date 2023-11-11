@@ -8,7 +8,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-
 namespace Stellamod.Items.Weapons.Ranged
 {
     public class FireflyCannon : ModItem
@@ -65,7 +64,7 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Dust.NewDust(position, 0, 0, 244, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+                Dust.NewDust(position, 0, 0, DustID.CopperCoin, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
             }
 
             //Dust Burst in Circle at Muzzle
@@ -75,7 +74,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 float degrees = k * degreesPer;
                 Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
                 Vector2 vel = direction * 8;
-                Dust.NewDust(position, 0, 0, 244, vel.X * 0.5f, vel.Y * 0.5f);
+                Dust.NewDust(position, 0, 0, DustID.CopperCoin, vel.X * 0.5f, vel.Y * 0.5f);
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), player.position);

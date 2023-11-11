@@ -1,13 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
-using Stellamod.Items.Placeable.Cathedral;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class CathediteGrassWallTile : ModWall
+    public class CathediteGrassWallTile : ModWall
 	{
 		public override void SetStaticDefaults()
 		{

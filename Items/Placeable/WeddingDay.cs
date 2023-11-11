@@ -1,15 +1,11 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Stellamod.Tiles;
-using Stellamod.Tiles.Furniture;
+﻿using Stellamod.Tiles.Furniture;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class WeddingDay : ModItem
+    public class WeddingDay : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

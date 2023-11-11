@@ -1,15 +1,15 @@
 ﻿
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Materials;
 using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 namespace Stellamod.NPCs.Overworld.ShadeSlime
@@ -17,8 +17,6 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
 
     public class ShadeSlime : ModNPC
     {
-        private int timer;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shrowded Slime");
@@ -26,6 +24,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             NPCID.Sets.TrailCacheLength[NPC.type] = 20;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -33,14 +32,14 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
                 new FlavorTextBestiaryInfoElement("A slime formed of pure darkness conjured by powerful beasts")
             });
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneForest && !Main.dayTime && NPC.downedBoss1) ? (0.300f) : 0f;
-
         }
+
         public override void SetDefaults()
         {
-
             NPC.width = 47;
             NPC.height = 35;
             NPC.damage = 10;
@@ -52,6 +51,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             NPC.knockBackResist = 0.5f;
             NPC.aiStyle = 1;
         }
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.15f;
@@ -59,6 +59,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -81,6 +82,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
                 effects,
                 0
             );
+
             SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.Pink);
@@ -89,7 +91,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
@@ -100,16 +102,16 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
                 target.AddBuff(BuffID.Blackout, 180);
             }
         }
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(0, 2));
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
 
-          
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 0, maximumDropped: 2));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), minimumDropped: 1, maximumDropped: 3));
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             Lighting.AddLight(NPC.Center, Color.Purple.ToVector3() * 0.25f * Main.essScale);
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
@@ -155,7 +157,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             var effects = NPC.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            Vector2 vector2_3 = new Vector2((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
+            Vector2 vector2_3 = new Vector2(TextureAssets.Npc[NPC.type].Value.Width / 2, TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2);
             Vector2 drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Value.Width * 0.3f, (NPC.height / Main.npcFrameCount[NPC.type]) * 2f);
             if (NPC.velocity != Vector2.Zero)
             {

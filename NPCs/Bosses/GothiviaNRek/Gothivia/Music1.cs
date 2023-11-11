@@ -1,26 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
     internal class Music1 : ModProjectile
     {
-        float Timer;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Soul Blast");
@@ -64,13 +55,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
         }
         public override bool PreDraw(ref Color lightColor)
         {
-
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LightningTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
         public override void OnKill(int timeLeft)
@@ -78,13 +67,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height,
-                    0, 0, 60, 206);
+                    DustID.Dirt, 0, 60, 206);
             }
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public override void AI()
         {
             Projectile.velocity.Y -= 0.01f;

@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.StringnNeedles.Alcadiz;
-using Stellamod.Projectiles.StringnNeedles.Verl;
 using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.DataStructures;
@@ -13,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class LifeWandMinionBuff : ModBuff
+    public class LifeWandMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

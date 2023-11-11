@@ -1,23 +1,15 @@
 
 using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Utilis;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Acidic
 {
@@ -31,9 +23,6 @@ namespace Stellamod.NPCs.Acidic
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
-
-
-
         public override void SetDefaults()
         {
             NPC.width = 32;
@@ -126,24 +115,23 @@ namespace Stellamod.NPCs.Acidic
             }
             return 0f;
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(1, 2));
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<VirulentPlating>(), Main.rand.Next(1, 4), false, 0, false, false);
-            if (Main.rand.Next(30) == 0)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<AcidStaketers>(), 1, false, 0, false, false);
-            }
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 1, maximumDropped: 2));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 30));
         }
+
         public override void AI()
         {
             NPC.spriteDirection = NPC.direction;
         }
 
-
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.Poisoned, 180);
             }

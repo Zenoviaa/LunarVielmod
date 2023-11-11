@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Ultras
 {
-	public class CoralBubble : ModProjectile
+    public class CoralBubble : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

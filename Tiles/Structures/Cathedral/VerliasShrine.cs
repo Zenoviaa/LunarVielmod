@@ -1,27 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.Dusts;
-using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable.Cathedral;
-using System;
-using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.Tiles.Structures.Cathedral
 {
-	
-	public class VerliasShrine : ModTile
+
+    public class VerliasShrine : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{

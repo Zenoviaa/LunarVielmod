@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class HeatwaveTrailParticle : Particle
+    public class HeatwaveTrailParticle : Particle
 	{
 		public override void SetDefaults()
 		{

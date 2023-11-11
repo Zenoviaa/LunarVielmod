@@ -1,17 +1,14 @@
-﻿
-
-using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.ModLoader.Utilities;
-using Stellamod.Utilis;
+using Stellamod.Buffs;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Utilis;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.NPCs.Abyssal
@@ -19,7 +16,6 @@ namespace Stellamod.NPCs.Abyssal
 
     public class AbyssalSeeker : ModNPC
     {
-        private int timer;
         protected float speed = 2f;
         protected float acceleration = 0.1f;
         protected float speedY = 1.5f;
@@ -33,7 +29,9 @@ namespace Stellamod.NPCs.Abyssal
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
@@ -42,21 +40,18 @@ namespace Stellamod.NPCs.Abyssal
                 return spawnInfo.Player.ZoneAbyss() && Main.hardMode ? 1.0f : 0f;
             }
 
-
             return 0f;
         }
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(1, 4), false, 0, false, false);
-            if (Main.rand.Next(30) == 0)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<LunarBand>(), 1, false, 0, false, false);
-            }
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 30));
         }
+
         public override void SetDefaults()
         {
-
             NPC.width = 40;
             NPC.height = 40;
             NPC.damage = 80;
@@ -72,6 +67,7 @@ namespace Stellamod.NPCs.Abyssal
             Main.npcFrameCount[NPC.type] = 3;
             AIType = NPCID.GreenSlime;  //npc behavior
         }
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.15f;
@@ -79,11 +75,12 @@ namespace Stellamod.NPCs.Abyssal
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
+            target.AddBuff(ModContent.BuffType<AbyssalFlame>(), 200);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             spriteBatch.End();
@@ -99,20 +96,17 @@ namespace Stellamod.NPCs.Abyssal
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override bool PreAI()
         {
-
-            if (Main.rand.Next(3) == 1)
+            if (Main.rand.NextBool(3))
             {
-                int dust = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, 206, NPC.velocity.X * 0.5f, NPC.velocity.Y * 0.5f);
-                int dust1 = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, 206, NPC.velocity.X * 0.5f, NPC.velocity.Y * 0.5f);
-                Main.dust[dust].velocity *= 0f;
-                Main.dust[dust1].velocity *= 0f;
-                Main.dust[dust].scale = 2.5f;
-                Main.dust[dust1].scale = 2.5f;
+                int dust = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, Scale: 2.5f);
+                int dust1 = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, Scale: 2.5f);
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust1].noGravity = true;
             }
+
             return true;
         }
     }

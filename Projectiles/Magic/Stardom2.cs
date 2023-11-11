@@ -1,23 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Bow;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Trails;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -94,8 +85,8 @@ namespace Stellamod.Projectiles.Magic
             int num1222 = 74;
             for (int k = 0; k < 2; k++)
             {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * (float)k;
+                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
                 Main.dust[index2].scale = .95f;
                 Main.dust[index2].velocity *= 0f;
                 Main.dust[index2].noGravity = true;

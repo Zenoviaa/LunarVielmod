@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -12,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Nails
 {
-	public class EnergizedNailProj : ModProjectile
+    public class EnergizedNailProj : ModProjectile
 	{
 		public static bool swung = false;
 		public int SwingTime = 60;

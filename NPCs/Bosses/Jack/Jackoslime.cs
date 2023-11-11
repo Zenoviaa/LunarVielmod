@@ -1,20 +1,10 @@
 
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace Stellamod.NPCs.Bosses.Jack
 {
@@ -27,8 +17,6 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
         }
-
-
 
         public override void SetDefaults()
         {
@@ -57,10 +45,7 @@ namespace Stellamod.NPCs.Bosses.Jack
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 2.25f * Main.essScale);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -76,12 +61,10 @@ namespace Stellamod.NPCs.Bosses.Jack
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(1) == 0)
-            {
-                target.AddBuff(BuffID.OnFire, 180);
-            }
+            target.AddBuff(BuffID.OnFire, 180);
         }
     }
 }

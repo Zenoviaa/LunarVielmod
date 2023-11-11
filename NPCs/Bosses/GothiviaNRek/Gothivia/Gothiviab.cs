@@ -1,43 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
-using System;
+using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
-using Terraria.ModLoader.Utilities;
-using System.IO;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.UI.Systems;
-using Terraria.Graphics.Effects;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.WorldG;
-using Stellamod.NPCs.Bosses.Daedus;
-using Stellamod.NPCs.Overworld.ShadowWraith;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
+    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class Gothiviab : ModNPC
 	{
 		public Vector2 FirstStageDestination
@@ -118,6 +97,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
+
+			//Ermmm what's this for?
+
 			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
 			{
 				SpecificallyImmuneTo = new int[] {
@@ -127,16 +109,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 				}
 			};
 
+			//Is she suppoed to be immune to poison? cause if so she's only immune to confusion/fire
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
-			{
-				
+		
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+			{		
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
-
 			};
+
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
@@ -204,10 +187,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			attackCounter = reader.ReadInt32();
 			timeBetweenAttacks = reader.ReadInt32();
 
-
 			dashDirection = reader.ReadVector2();
 			dashDistance = reader.ReadSingle();
-
 		}
 
 		bool axed = false;
@@ -216,17 +197,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
-		bool boom = false;
         bool p2 = false;
-        float turnMod = 0f;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 20; k++)
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SolarFlare, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
 			}
-
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
@@ -384,13 +363,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		}
 
 		//Custom function so that I don't have to copy and paste the same thing in FindFrame
-
-		float HomeY = 330f;
 		int bee = 220;
 		private Vector2 originalHitbox;
-		int moveSpeed = 0;
-		int moveSpeedY = 0;
-		int Timer2 = 0;
+		//int Timer2 = 0;
 		float timert = 0;
 		public override void AI()
 		{
@@ -426,7 +401,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     {
 						if (Main.netMode != NetmodeID.MultiplayerClient)
 						{
-							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<Helios>(), (int)30, 0f, 0, 0f, 0f);
+							Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 0, speedYb * 0, ModContent.ProjectileType<Helios>(), 30, 0f, 0, 0f, 0f);
 
 						}
 
@@ -1028,7 +1003,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 				
 				
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, speedYb * 0, ModContent.ProjectileType<LaserShooterFirstPhase>(), (int)10, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX / 2, speedYb * 0, ModContent.ProjectileType<LaserShooterFirstPhase>(), 10, 0f, 0, 0f, 0f);
 				
             }
             if (timer == 48)
@@ -1419,7 +1394,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
-			Timer2 = 0;
+			//Timer2 = 0;
 		}
 
 

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Sword : ModProjectile
+    public class Sword : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles
 			int startY = frameHeight * Projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 60 : 60); // Customization of the sprite position
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 60 : 60; // Customization of the sprite position
 
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);

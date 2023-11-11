@@ -1,14 +1,9 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-
-
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Bestiary;
-using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Gun
 {

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class StarbloomTempleBlock : ModItem
+    public class StarbloomTempleBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

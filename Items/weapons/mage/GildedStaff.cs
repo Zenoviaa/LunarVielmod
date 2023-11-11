@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class GildedStaff : ModItem
+    internal class GildedStaff : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

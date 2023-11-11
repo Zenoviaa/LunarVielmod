@@ -1,8 +1,6 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -77,8 +75,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             }
             for (int i = 0; i < 4; i++)
             {
-                float x = Projectile.Center.X - Projectile.velocity.X / 10f * (float)i;
-                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * (float)i;
+                float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
+                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
             }
 
         }
@@ -114,12 +112,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 			for (int i = 0; i < 10; i++)
 			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 68, 0f, -2f, 0, default(Color), 1.1f);
+				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default(Color), 1.1f);
 				Main.dust[num].noGravity = true;
 				Dust expr_62_cp_0 = Main.dust[num];
-				expr_62_cp_0.position.X = expr_62_cp_0.position.X + ((float)(Main.rand.Next(-30, 31) / 20) - 1.5f);
+				expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
 				Dust expr_92_cp_0 = Main.dust[num];
-				expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + ((float)(Main.rand.Next(-30, 31) / 20) - 1.5f);
+				expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-30, 31) / 20 - 1.5f);
 				if (Main.dust[num].position != Projectile.Center)
 				{
 					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;

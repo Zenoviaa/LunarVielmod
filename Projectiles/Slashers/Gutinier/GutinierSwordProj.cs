@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod;
-using Stellamod.Dusts;
 using Stellamod.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Gutinier

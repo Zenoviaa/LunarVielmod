@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Placeable;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -11,7 +9,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Structures.Cathedral
 {
-	public class Crystal1 : ModTile
+    public class Crystal1 : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

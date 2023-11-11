@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Humanizer.In;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {

@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class BurningGB : ModBuff
+    public class BurningGB : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

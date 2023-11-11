@@ -1,15 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Items.Harvesting;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Accessories
 {
-	public class HikersBackpack : ModItem
+    public class HikersBackpack : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

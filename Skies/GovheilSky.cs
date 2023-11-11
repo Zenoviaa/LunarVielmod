@@ -2,16 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers.Separate;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-
-using Stellamod.Trails;
-
-using Stellamod.Helpers.Separate;
 using Terraria.Utilities;
 
 namespace Stellamod.Skies
@@ -19,7 +16,7 @@ namespace Stellamod.Skies
 {
 
 
-	public class GovheilSkyScene : ModSceneEffect
+    public class GovheilSkyScene : ModSceneEffect
 	{
 		public override bool IsSceneEffectActive(Player player)
 		{
@@ -38,17 +35,6 @@ namespace Stellamod.Skies
 
     public class GovheilSky : CustomSky
     {
-
-        private UnifiedRandom _random = new UnifiedRandom();
-
-        private Texture2D _bgTexture;
-
-
-        private bool _isActive;
-
-        private float _fadeOpacity;
-      
-
         public class Godray
         {
             public int Timer;

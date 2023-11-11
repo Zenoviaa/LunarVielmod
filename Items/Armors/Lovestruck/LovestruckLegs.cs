@@ -1,15 +1,14 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
+﻿using Stellamod.Items.Ores;
+using Terraria;
 using Terraria.GameContent.Creative;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Harvesting;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Lovestruck
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Legs value here will result in TML expecting a X_Legs.png file to be placed next to the item's main texture.
-	[AutoloadEquip(EquipType.Legs)]
+    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
+    // Providing the EquipType.Legs value here will result in TML expecting a X_Legs.png file to be placed next to the item's main texture.
+    [AutoloadEquip(EquipType.Legs)]
 	public class LovestruckLegs : ModItem
 	{
 		public override void SetStaticDefaults()

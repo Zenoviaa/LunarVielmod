@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Particles;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Aurora3 : ModProjectile
+    public class Aurora3 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -58,7 +54,7 @@ namespace Stellamod.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(20, 155, 80, 0) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(20, 155, 80, 0) * (1f - Projectile.alpha / 255f);
 		}
 	}
 }

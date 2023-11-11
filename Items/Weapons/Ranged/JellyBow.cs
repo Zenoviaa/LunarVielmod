@@ -1,19 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Ranged
-{ 
+{
     public class JellyBow : ModItem
 	{
 		public override void SetStaticDefaults()
@@ -29,10 +20,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 40;
 			Item.useTime = 23;
 			Item.useAnimation = 23;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.WoodenArrowFriendly;
 			Item.shootSpeed = 15f;

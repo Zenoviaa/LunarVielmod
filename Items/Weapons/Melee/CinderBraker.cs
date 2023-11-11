@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Swords;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -31,10 +25,10 @@ namespace Stellamod.Items.Weapons.Melee
             Item.height = 40;
             Item.useTime = 30;
             Item.useAnimation = 30;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 3, 20, 14);
-            Item.rare = 4;
+            Item.rare = ItemRarityID.LightRed;
 
             Item.autoReuse = true;
             Item.shoot = ProjectileType<CinderBrakerSword>();

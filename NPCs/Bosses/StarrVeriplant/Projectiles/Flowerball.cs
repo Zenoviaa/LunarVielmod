@@ -1,19 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class Flowerball : ModNPC
+    public class Flowerball : ModNPC
 	{
 
 
@@ -73,8 +66,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 
 			if (timer2 == 5)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 5, ModContent.ProjectileType<Flowder>(), (int)(10), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 5, ModContent.ProjectileType<Flowder>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 5, ModContent.ProjectileType<Flowder>(), 10, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 5, ModContent.ProjectileType<Flowder>(), 10, 0f, 0, 0f, 0f);
 				timer2 = 0;
 			}
 

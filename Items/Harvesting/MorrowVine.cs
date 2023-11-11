@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class MorrowVine : ModItem
+    internal class MorrowVine : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

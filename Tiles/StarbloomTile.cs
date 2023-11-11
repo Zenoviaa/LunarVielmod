@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class StarbloomTile : ModTile
+    public class StarbloomTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

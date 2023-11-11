@@ -1,18 +1,16 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Stellamod.NPCs.Acidic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
 
 namespace Stellamod.NPCs.Bosses.INest
 {
-	public class AEgg : ModProjectile
+    public class AEgg : ModProjectile
 	{
 		public override void SetStaticDefaults()
         {
@@ -34,6 +32,7 @@ namespace Stellamod.NPCs.Bosses.INest
             Projectile.friendly = false;
 			Projectile.hostile = true;
 		}
+
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromThis();
@@ -41,41 +40,49 @@ namespace Stellamod.NPCs.Bosses.INest
 
             for (int i = 0; i < 15; i++)
 			{
-				int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
-				int dust1 = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
 			}
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
 			}
+
 			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Land"));
 		}
+
 		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
 		{
 			width = (height = 8);
 			fallThrough = base.Projectile.position.Y <= base.Projectile.ai[1];
 			return true;
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (Main.rand.Next(2) == 0)
+			if (Main.rand.NextBool(2))
 				target.AddBuff(BuffID.Frostburn, 180);
 		}
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.GreenYellow, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -86,12 +93,5 @@ namespace Stellamod.NPCs.Bosses.INest
 
             return false;
         }
-        public override bool PreAI()
-		{
-
-
-			return true;
-		}
-
 	}
 }

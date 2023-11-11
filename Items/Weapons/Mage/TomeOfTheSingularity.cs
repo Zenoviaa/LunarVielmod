@@ -1,19 +1,8 @@
-﻿using Stellamod.Projectiles.Spears;
-using System;
-using Stellamod.Items.Materials;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Spears;
-using Stellamod.Projectiles.Magic;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.Items.Weapons.Mage
 {

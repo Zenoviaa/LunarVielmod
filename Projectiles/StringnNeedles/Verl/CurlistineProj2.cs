@@ -1,15 +1,10 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.UI.Systems;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using System;
-using Terraria.GameContent.Drawing;
-using ParticleLibrary;
-using Stellamod.Particles;
-using Stellamod.UI.Systems;
-using Terraria.Audio;
 
 namespace Stellamod.Projectiles.StringnNeedles.Verl
 {
@@ -144,7 +139,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
             afterImgColor.R = 96;
             Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+            for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)
                 float rotationToDraw;
@@ -161,7 +156,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
                         interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
                         rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
                     }
-                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
                 }
             }
 
@@ -176,14 +171,14 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
             float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(-10, 10);
 
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ModContent.ProjectileType<SwordsArmy2>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ModContent.ProjectileType<SwordsArmy2>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
             ShakeModSystem.Shake = 4;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(SoundID.Item110);
 
 

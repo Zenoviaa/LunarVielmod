@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class HuntiacBlock : ModItem
+    public class HuntiacBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

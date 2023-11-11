@@ -1,10 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Summons;
 
 namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 {
@@ -53,10 +49,10 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
         {
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.BoneDagger, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1.2f, speedY * 0.8f, ProjectileID.BoneDagger, (int)(Projectile.damage * 3), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0.6f, speedY * 1.4f, ProjectileID.BoneDagger, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0.8f, speedY * 1.2f, ProjectileID.BoneGloveProj, (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1, speedY * 1, ProjectileID.BoneDagger, Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 1.2f, speedY * 0.8f, ProjectileID.BoneDagger, Projectile.damage * 3, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0.6f, speedY * 1.4f, ProjectileID.BoneDagger, Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0.8f, speedY * 1.2f, ProjectileID.BoneGloveProj, Projectile.damage * 4, 0f, Projectile.owner, 0f, 0f);
         }
 
 

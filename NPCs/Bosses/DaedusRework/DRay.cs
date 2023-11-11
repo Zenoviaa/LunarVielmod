@@ -1,31 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using log4net.Util;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Terraria.Audio;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     internal class DRay : ModNPC
     {
         public bool Down;
-        public float Rot;
-        public bool Lightning;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker Lighting");
@@ -73,10 +59,9 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
         }
-        float alphaCounter = 0;
-        float counter = 6;
 
-
+        private float alphaCounter = 0;
+        private float counter = 6;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/NPCs/Bosses/DaedusRework/DRay").Value;
@@ -85,12 +70,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         }
         public override void AI()
         {
-
-
-
-
             NPC.ai[0]++;
-
             if (NPC.ai[0] == 100)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
@@ -107,20 +87,16 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 if (alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
             {
-
                 if (alphaCounter <= 0)
                 {
                     NPC.active = false;
-
                 }
                 alphaCounter -= 0.29f;
             }
-
         }
     }
 }

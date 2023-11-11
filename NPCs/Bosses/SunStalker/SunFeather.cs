@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Stellamod.Trails;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {

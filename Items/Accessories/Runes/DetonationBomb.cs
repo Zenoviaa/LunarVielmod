@@ -1,19 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
 
 namespace Stellamod.Items.Accessories.Runes
 {
     internal class DetonationBomb : ModProjectile
     {
-        bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
@@ -31,14 +25,13 @@ namespace Stellamod.Items.Accessories.Runes
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.velocity.X = 0;
             Projectile.velocity.Y = 0;
-
-
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -58,16 +51,13 @@ namespace Stellamod.Items.Accessories.Runes
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
-
         }
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
-
 }
 
 

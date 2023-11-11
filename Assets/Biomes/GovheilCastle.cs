@@ -1,13 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-	public class GovheilCastle : ModBiome
+    public class GovheilCastle : ModBiome
 	{
 		// Select all the scenery
 

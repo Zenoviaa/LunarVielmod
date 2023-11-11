@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Magical
 {
-	public class PiaCircle : ModProjectile
+    public class PiaCircle : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -33,7 +33,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
 		}
 		public override void AI()
 		{

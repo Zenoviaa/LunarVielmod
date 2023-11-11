@@ -1,32 +1,20 @@
-﻿
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Harvesting;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.NPCs.Bosses.Jack;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
 
     public class OverworldRune : ModNPC
     {
-        private int timer;
         private Vector2 BloodCystPos;
         public override void SetStaticDefaults()
         {
@@ -34,10 +22,12 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             NPCID.Sets.TrailCacheLength[NPC.type] = 3;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             Hit = true;
         }
+
         public override void AI()
         {
             NPC.ai[1]++;
@@ -90,10 +80,9 @@ namespace Stellamod.NPCs.Harvesting.Morrow
                 }
             }
 
-
-            float num = 1f - NPC.alpha / 255f;
+            //float num = 1f - NPC.alpha / 255f;
         }
-        int frame = 0;
+
         Vector2 HitPos;
         bool Hit;
         public override void FindFrame(int frameHeight)
@@ -179,6 +168,5 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             Lighting.AddLight(NPC.Center, Color.Green.ToVector3() * 2.25f * Main.essScale);
             return true;
         }
-
     }
 }

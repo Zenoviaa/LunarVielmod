@@ -1,7 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Tiles;
-using Stellamod.Tiles.ShrineBreakers.Govheil;
-using Stellamod.Tiles.Structures.AlcadizNGovheil;
+﻿using Stellamod.Tiles.Structures.AlcadizNGovheil;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -9,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Shrines.GovheilNAlca
 {
-	public class JPost : ModItem
+    public class JPost : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

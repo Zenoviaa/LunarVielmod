@@ -1,11 +1,7 @@
 ﻿
-using Terraria.ModLoader;
-using System;
-
-using Stellamod.Tiles.Abyss;
-using Stellamod.Tiles.Acid;
-using Terraria;
 using Stellamod.WorldG;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {

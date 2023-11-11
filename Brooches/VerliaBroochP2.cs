@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Brooches
 {
-   public class VerliaBroochP2 : ModProjectile
+    public class VerliaBroochP2 : ModProjectile
     {
 
         public override void SetDefaults()
@@ -33,7 +27,7 @@ namespace Stellamod.Brooches
         {
             Projectile.alpha++;
 
-            float num = 1f - (float)Projectile.alpha / 255f;
+            float num = 1f - Projectile.alpha / 255f;
             Projectile.velocity *= .98f;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f;
             num *= Projectile.scale;
@@ -50,7 +44,7 @@ namespace Stellamod.Brooches
         }
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 255f);
+            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 255f);
         }
 
 

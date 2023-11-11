@@ -2,12 +2,11 @@
 using Stellamod.Dusts;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Dicein : ModProjectile
+    public class Dicein : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

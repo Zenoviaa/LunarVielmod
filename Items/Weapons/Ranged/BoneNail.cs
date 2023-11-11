@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -8,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class BoneNail : ModItem
+    public class BoneNail : ModItem
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;

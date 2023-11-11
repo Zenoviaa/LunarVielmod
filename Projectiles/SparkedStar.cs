@@ -1,17 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Particles;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles
 {
-	public class SparkedStar : ModProjectile
+    public class SparkedStar : ModProjectile
 	{
 		float distance = 8;
 		int rotationalSpeed = 4;
@@ -95,7 +92,7 @@ namespace Stellamod.Projectiles
 			afterImgColor.G = 80;
 			afterImgColor.R = 70;
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;
@@ -112,7 +109,7 @@ namespace Stellamod.Projectiles
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
-					Main.EntitySpriteDraw(texture, (interpolatedPos - Main.screenPosition + Projectile.Size / 2) - new Vector2(32, 32) , null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, (interpolatedPos - Main.screenPosition + Projectile.Size / 2) - new Vector2(32, 32) , null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}
 

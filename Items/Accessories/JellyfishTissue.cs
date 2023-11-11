@@ -1,13 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod;
 
 namespace Stellamod.Items.Accessories
 {
-	public class JellyfishTissue : ModItem
+    public class JellyfishTissue : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

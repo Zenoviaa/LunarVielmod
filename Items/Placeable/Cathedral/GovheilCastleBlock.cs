@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class GovheilCastleBlock : ModItem
+    public class GovheilCastleBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

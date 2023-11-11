@@ -1,21 +1,19 @@
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Tiles
 {
-	public class CoreGemT : ModTile
+    public class CoreGemT : ModTile
 	{
         public override void SetStaticDefaults()
         {
             Main.tileSolid[Type] = true;
             Main.tileMerge[Type][Type] = true;
             Main.tileBlockLight[Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
 
             HitSound = SoundID.DD2_CrystalCartImpact;
             DustType = DustID.Copper;

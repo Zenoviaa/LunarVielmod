@@ -1,10 +1,6 @@
-
-
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Projectiles.Gun;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials.Tech;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -12,13 +8,12 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-
 using static Stellamod.Items.Weapons.Summon.X3144;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -32,7 +27,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class ProbeBuff : ModBuff
+    public class ProbeBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

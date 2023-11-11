@@ -1,18 +1,15 @@
-using Stellamod.Tiles.Acid;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
-using Terraria.GameContent.Metadata;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.RoyalCapital
 {
-	public class CarianTreeSapling : ModTile
+    public class CarianTreeSapling : ModTile
 	{
         public override void SetStaticDefaults()
         {

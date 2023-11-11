@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Pearlinator : ModItem
+    public class Pearlinator : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

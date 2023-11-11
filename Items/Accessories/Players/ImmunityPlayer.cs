@@ -2,7 +2,7 @@
 
 namespace Stellamod.Items.Accessories.Players
 {
-	public class ImmunityPlayer : ModPlayer
+    public class ImmunityPlayer : ModPlayer
 	{
 		public bool HasStealiImmunityAcc;
 

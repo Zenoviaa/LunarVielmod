@@ -1,10 +1,9 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class GintzeSeen : ModBuff
+    public class GintzeSeen : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
