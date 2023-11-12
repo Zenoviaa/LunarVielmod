@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
 			Projectile.width = 125;
 			Projectile.height = 125;
 			Projectile.friendly = true;
-			Projectile.timeLeft = 510;
+			Projectile.timeLeft = 255;
 			Projectile.scale = 1f;
 			
 		}
@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
 
 			Timer++;
 
-			if (Timer > 255)
+			if (Timer < 255)
 			{
 				Projectile.alpha++;
 			}
