@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles.Acid
-{ 
+{
 
     public class AcidWall : ModWall
 	{

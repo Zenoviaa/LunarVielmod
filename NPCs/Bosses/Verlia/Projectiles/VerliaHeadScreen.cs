@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class VerliaHeadScreen : ModProjectile
+    public class VerliaHeadScreen : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

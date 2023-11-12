@@ -1,15 +1,12 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
 
 namespace Stellamod.NPCs.Bosses.Jack
 {
@@ -35,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Jack
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.OnFire, 180);
         }
         float offsetRandom;
@@ -159,7 +156,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
             Main.spriteBatch.End();

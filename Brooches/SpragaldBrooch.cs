@@ -7,19 +7,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Brooches
 {
-	// - ModProjectile - the minion itself
+    // - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
-	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
-	// This is NOT an in-depth guide to advanced minion AI
+    // It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
+    // To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
+    // This is NOT an in-depth guide to advanced minion AI
 
-	// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+    // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
-	// This minion shows a few mandatory things that make it behave properly.
-	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-	// If the player targets a certain NPC with right-click, it will fly through tiles to it
-	// If it isn't attacking, it will float near the player with minimal movement
-	public class SpragaldBrooch : ModProjectile
+    // This minion shows a few mandatory things that make it behave properly.
+    // Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
+    // If the player targets a certain NPC with right-click, it will fly through tiles to it
+    // If it isn't attacking, it will float near the player with minimal movement
+    public class SpragaldBrooch : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

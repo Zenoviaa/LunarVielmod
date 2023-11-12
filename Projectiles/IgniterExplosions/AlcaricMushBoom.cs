@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class AlcaricMushBoom : ModProjectile
+    public class AlcaricMushBoom : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

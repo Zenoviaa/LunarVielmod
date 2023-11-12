@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Global
 {
-	public class NPCPreHEdits : GlobalNPC
+    public class NPCPreHEdits : GlobalNPC
 	{
         // ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
         // Here we go through all of them, and how they can be used.

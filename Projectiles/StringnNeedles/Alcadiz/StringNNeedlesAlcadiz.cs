@@ -72,8 +72,8 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 				float speedX = Projectile.velocity.X * 0;
 				float speedY = Projectile.velocity.Y * 0;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<Windeffect>(), Projectile.damage * 4, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<CharmSpragald>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 
 
 			}
@@ -113,7 +113,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			int startY = frameHeight * Projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);

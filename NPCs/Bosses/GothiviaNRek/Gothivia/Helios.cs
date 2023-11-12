@@ -1,15 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.NPCs.Bosses.Daedus;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,8 +10,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
     public class Helios : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
@@ -48,50 +39,34 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
                 if (Projectile.velocity.Y != oldVelocity.Y)
                     Projectile.velocity.Y = -oldVelocity.Y;
-
-
             }
 
           
             for (int i = 0; i < 7; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GoldFlame);
             }
+
             ShakeModSystem.Shake = 1;
-
-          
-
             return false;
         }
-
-
 
         public float Timer
         {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
+
         public float Timer2;
         int moveSpeed = 0;
-        int moveSpeedY = 0;
-
-
-      
-
         public override void AI()
         {
             Projectile.rotation += 0.3f;
             Timer2++;
-
-
-
             Timer++;
 
-
-
             float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
-
             Player closestplayer = FindClosestNPC(maxDetectRadius);
             if (Projectile.Center.X >= closestplayer.Center.X && moveSpeed >= -90) // flies to players x position
                 moveSpeed--;
@@ -146,27 +121,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     sqrMaxDetectDistance = sqrDistanceToTarget;
                     closestplayer = target;
                 }
-
             }
-
 
             return closestplayer;
         }
 
-
-
-
-
-        
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.OasisCactus);
             }
         }
-
     }
 }

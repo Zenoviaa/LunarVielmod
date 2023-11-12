@@ -1,36 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Buffs;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Buffs.PocketDustEffects;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Summons.Glyph;
-using Microsoft.Xna.Framework.Graphics;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Govheil
 {
-	public class GovheilBowsProj : ModProjectile
+    public class GovheilBowsProj : ModProjectile
 	{
 		float alphaCounter = 0;
-		int afterImgCancelDrawCount = 0;
-		int afterImgCancelDrawCount2 = 0;
-
-		bool initialization = false;
-		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
+		//public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
 		float ta = 0;
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("IgniterStart");
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
@@ -40,16 +30,10 @@ namespace Stellamod.Items.Armors.Govheil
 			Projectile.penetrate = 1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 200;
-
-
 		}
-	
-
 		public override void AI()
 		{
-
 			ta++;
-
 			if (ta == 1)
             {
 				for (int i = 0; i < 130; i++)
@@ -60,6 +44,7 @@ namespace Stellamod.Items.Armors.Govheil
 					d.noGravity = true;
 				}
 			}
+
 			float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 8f; // The speed at which the projectile moves towards the target
 
@@ -73,36 +58,19 @@ namespace Stellamod.Items.Armors.Govheil
 			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.tileCollide = false;
 			Projectile.rotation = Projectile.velocity.ToRotation();
-
-
 			if (alphaCounter > 9)
 			{
-
-
 				for (int r = 0; r < 37; r++)
 				{
-
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
 					ParticleManager.NewParticle(Projectile.Center, speed2 * 8, ParticleManager.NewInstance<BurnParticle>(), Color.Aqua, Main.rand.NextFloat(0.2f, 0.8f));
-
-
-
 				}
-
-			
 
 				Projectile.Kill();
 				ShakeModSystem.Shake = 3;
-
 			}
 
-
-
-
-
 			alphaCounter += 0.2f;
-
-
 		}
 
 		// Finding the closest NPC to attack within maxDetectDistance range
@@ -167,22 +135,11 @@ namespace Stellamod.Items.Armors.Govheil
 			ShakeModSystem.Shake = 3;
 			SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact);
 			Projectile.Kill();
-
-
-
-
-			base.OnHitNPC(target, hit, damageDone);
-			
-				
-			
+			base.OnHitNPC(target, hit, damageDone);	
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-
-
-
-
 			Texture2D texture2D4 = Request<Texture2D>("Stellamod/Trails/DimLight").Value;
 			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(90f * alphaCounter), (int)(90f * alphaCounter), (int)(90f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
 
@@ -195,9 +152,6 @@ namespace Stellamod.Items.Armors.Govheil
 			Texture2D texture2D7 = Request<Texture2D>("Stellamod/Trails/DimLight").Value;
 			Main.spriteBatch.Draw(texture2D7, Projectile.Center - Main.screenPosition, null, new Color((int)(45f * alphaCounter), (int)(103f * alphaCounter), (int)(103f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (alphaCounter + 0.2f), SpriteEffects.None, 0f);
 			return false;
-
-
-
 		}
 	}
 }

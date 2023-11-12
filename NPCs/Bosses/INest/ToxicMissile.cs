@@ -32,6 +32,7 @@ namespace Stellamod.NPCs.Bosses.INest
 			Projectile.damage = 60;
 			AIType = ProjectileID.Bullet;
 		}
+
 		int timer;
 		int colortimer;
 		public override bool PreAI()
@@ -41,14 +42,17 @@ namespace Stellamod.NPCs.Bosses.INest
 			{
 				colortimer++;
 			}
+
 			if (timer > 50)
 			{
 				colortimer--;
 			}
+
 			if (timer >= 100)
 			{
 				timer = 0;
             }
+
             Player player;
             if ((player = VectorHelper.GetNearestPlayerDirect(base.Projectile.position, Alive: true)) != null)
             {
@@ -61,23 +65,25 @@ namespace Stellamod.NPCs.Bosses.INest
                     Projectile.tileCollide = true;
                 }
             }
+
             return true;
 		}
+
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			{
-				Projectile.Kill();
-				SoundEngine.PlaySound(SoundID.Item109, Projectile.position);
-			}
+			Projectile.Kill();
+			SoundEngine.PlaySound(SoundID.Item109, Projectile.position);
 			for (int i = 0; i < 30; i++)
 			{
 				Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
 			}
+
 			for (int i = 0; i < 15; i++)
 			{
-				int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
-				int dust1 = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
 			}
+
 			return false;
 		}
 		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
@@ -91,9 +97,10 @@ namespace Stellamod.NPCs.Bosses.INest
 
 			for (int i = 0; i < 15; i++)
 			{
-				int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
-				int dust1 = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
+				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
 			}
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
@@ -107,7 +114,7 @@ namespace Stellamod.NPCs.Bosses.INest
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
 			return false;

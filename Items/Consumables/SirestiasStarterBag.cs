@@ -1,23 +1,20 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.PowdersItem;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Accessories.Brooches;
 
 namespace Stellamod.Items.Consumables
 {
-	public class SirestiasStarterBag : ModItem
+    public class SirestiasStarterBag : ModItem
 	{
 
 		public override void SetStaticDefaults()

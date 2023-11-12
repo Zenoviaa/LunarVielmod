@@ -1,21 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.Dusts;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Placeable.Cathedral;
-using Stellamod.Items.Consumables;
 
 namespace Stellamod.Tiles.Structures
 {
-	public class StoneChest : ModTile
+    public class StoneChest : ModTile
 	{
 
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)

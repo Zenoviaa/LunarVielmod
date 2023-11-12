@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
-using Stellamod.Dusts;
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Flameball2 : ModProjectile
+    public class Flameball2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

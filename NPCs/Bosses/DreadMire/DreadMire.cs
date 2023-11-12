@@ -1,37 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.Utilis;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.Utilis;
-using Stellamod.Items.Consumables;
-
-
-using Terraria.GameContent.Bestiary;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
     [AutoloadBossHead]
     public class DreadMire : ModNPC
     {
-        Vector2 FLPos;
         bool p3;
         bool p2;
         Vector2 Light;
@@ -42,11 +33,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         int Att = 0;
         public override void SetStaticDefaults()
         {
-
-
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+
         public override void SetDefaults()
         {
             NPC.noGravity = true;
@@ -78,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             NPC.netUpdate = true;
         }
-        internal int side;
+
         float alphaCounter;
         public int previousAttack;
         public override void HitEffect(NPC.HitInfo hit)
@@ -86,12 +76,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if (NPC.life <= 0)
             {
                 Player player = Main.player[NPC.target];
-                var EntitySource = NPC.GetSource_Death();
                 player.GetModPlayer<MyPlayer>().heartDead = 0;
                 player.GetModPlayer<MyPlayer>().heart = false;
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Firework_Red, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Firework_Red, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
-
             }
             else
             {
@@ -236,8 +224,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         {
                             if (NPC.ai[0] > 100 && NPC.ai[0] < 200)
                             {
-                                int heartDead = 0;
-                                bool heart = false;
                                 Main.bloodMoon = true;
                                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
                                 if (Main.netMode != NetmodeID.Server)
@@ -782,13 +768,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-      
+   
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));    
+        }
 
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));
-
-        
-    }
-        int frame = 0;
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -870,7 +853,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                  int spOff = NPC.alpha / 6;
             for (float j = -(float)Math.PI; j <= (float)Math.PI / 3f; j += (float)Math.PI / 3f)
             {
-                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + (float)base.NPC.alpha * 0.25f + (float)spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
+                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
             }
             spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center - Main.screenPosition, base.NPC.frame, base.NPC.GetAlpha(lightColor), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
             spriteBatch.End();

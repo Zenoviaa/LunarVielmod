@@ -1,20 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
-using Terraria.Audio;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Stellamod.Projectiles.Crossbows;
-using Stellamod.Projectiles.Crossbows.Gemmed;
-using Stellamod.Projectiles.Crossbows.Magical;
-using Stellamod.Projectiles.Crossbows.Ultras;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {

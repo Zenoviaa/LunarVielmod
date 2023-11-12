@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -7,9 +6,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Xexterian
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
-	[AutoloadEquip(EquipType.Body)]
+    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
+    // Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
+    [AutoloadEquip(EquipType.Body)]
 	public class XexterianHeatplate : ModItem
 	{
 		public override void SetStaticDefaults()

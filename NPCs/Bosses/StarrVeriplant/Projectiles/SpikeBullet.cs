@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class SpikeBullet : ModProjectile
+    public class SpikeBullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -55,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 				
 				
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<GroundSpike>(), (int)(0), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<GroundSpike>(), 0, 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 

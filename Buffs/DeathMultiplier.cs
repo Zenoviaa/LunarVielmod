@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class DeathMultiplier : ModBuff
+    public class DeathMultiplier : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

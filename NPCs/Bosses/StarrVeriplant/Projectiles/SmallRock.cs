@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class SmallRock : ModProjectile
+    public class SmallRock : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -2,7 +2,7 @@
 
 namespace Stellamod.Backgrounds
 {
-	public class StarbloomBackgroundStyle : ModSurfaceBackgroundStyle
+    public class StarbloomBackgroundStyle : ModSurfaceBackgroundStyle
 	{
 		// Use this to keep far Backgrounds like the mountains.
 		public override void ModifyFarFades(float[] fades, float transitionSpeed)

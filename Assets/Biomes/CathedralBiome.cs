@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.Graphics.Capture;
-using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-	// Shows setting up two basic biomes. For a more complicated example, please request.
-	public class CathedralBiome : ModBiome
+    // Shows setting up two basic biomes. For a more complicated example, please request.
+    public class CathedralBiome : ModBiome
 	{
 		public bool IsPrimaryBiome = true; // Allows this biome to impact NPC prices
 		

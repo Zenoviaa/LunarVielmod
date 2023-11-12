@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Buffs;
-using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Powders
 {
-	public class ArcanePowder : ModProjectile
+    public class ArcanePowder : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

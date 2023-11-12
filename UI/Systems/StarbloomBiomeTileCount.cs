@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Systems
 {
-	public class StarbloomBiomeTileCount : ModSystem
+    public class StarbloomBiomeTileCount : ModSystem
 	{
 		public int BlockCount;
 

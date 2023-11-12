@@ -1,10 +1,9 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class MasteryMagic : ModBuff
+    public class MasteryMagic : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

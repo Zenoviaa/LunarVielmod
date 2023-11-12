@@ -1,18 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
-using Stellamod;
-using Terraria.Audio;
 using ParticleLibrary;
-using Stellamod.Particles;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	public class SapContainer : ModItem
+    public class SapContainer : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

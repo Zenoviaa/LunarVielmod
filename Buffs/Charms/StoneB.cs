@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class StoneB : ModBuff
+    public class StoneB : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,17 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Powders;
+﻿using Stellamod.Projectiles.Powders;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class ShadowFlamePowder : ModItem
+    internal class ShadowFlamePowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

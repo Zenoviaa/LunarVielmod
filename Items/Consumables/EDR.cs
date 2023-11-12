@@ -1,15 +1,12 @@
 ﻿
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
-using Terraria.Audio;
-using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Utilis;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
@@ -25,11 +22,11 @@ namespace Stellamod.Items.Consumables
         {
             Item.width = 18;
             Item.height = 28;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.value = Item.sellPrice(0, 0, 0, 0);
             Item.useAnimation = 45;
             Item.useTime = 45;
-            Item.useStyle = 4;
+            Item.useStyle = ItemUseStyleID.HoldUp;
             Item.rare = ItemRarityID.Orange;
         }
 

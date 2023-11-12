@@ -1,25 +1,13 @@
-﻿using Stellamod.Projectiles.Spears;
-using System;
-using Stellamod.Items.Materials;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Spears;
-using Stellamod.Projectiles.Bow;
-using Terraria.Audio;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
     internal class HeatGlider : ModItem
     {
-        public int WinterboundArrow;
         public override void SetDefaults()
         {
             Item.damage = 25;
@@ -41,19 +29,18 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useTime = 24;
             Item.consumeAmmoOnLastShotOnly = true;
         }
-      
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-
             if (type == ProjectileID.WoodenArrowFriendly)
             {
                 type = ModContent.ProjectileType<HuntrianArrow>();
             }
         }
-
     }
 }

@@ -1,19 +1,14 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using System.Diagnostics.Metrics;
 
 namespace Stellamod.Projectiles.Swords
 {
-	public class IrradiatedGreatBladeThrow : ModProjectile
+    public class IrradiatedGreatBladeThrow : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

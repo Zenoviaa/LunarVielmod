@@ -1,27 +1,11 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using System;
-using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -34,6 +18,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             // DisplayName.SetDefault("Acid Flame");
             Main.projFrames[Projectile.type] = 5;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 32;
@@ -46,17 +31,26 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.aiStyle = -1;
             Projectile.scale = 1.2f;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
+            // This will always be true, so it's a nothing statement
+            /*
             if (Main.rand.Next(1) == 0)
                 target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
+            */
+
+            //Use ModContent.BuffType<> instead of Mod.Find, it's faster and cleaner
+            target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
 
         public override bool PreAI()
         {
             Projectile.alpha -= 40;
             if (Projectile.alpha < 0)
+            {
                 Projectile.alpha = 0;
+            }
 
             Projectile.spriteDirection = Projectile.direction;
             Projectile.frameCounter++;
@@ -65,16 +59,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 Projectile.frame++;
                 Projectile.frameCounter = 0;
                 if (Projectile.frame >= 5)
+                {
                     Projectile.frame = 0;
-
+                }
             }
             return true;
         }
+
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
         }
+
         public override Color? GetAlpha(Color lightColor) => Color.White;
         public override void PostDraw(Color lightColor)
         {
@@ -84,20 +81,15 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * 1), (int)(15f * 1), (int)(85f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
             Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
-
         }
+
         public override void AI()
         {
-
             Projectile.localAI[0] += 1f;
             Projectile.ai[0]++;
-            if (Projectile.ai[0] == 1)
-            {
-            }
+
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-
-
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 256f, 16f);
             if (Main.netMode != NetmodeID.Server)
             {
@@ -114,6 +106,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 dust.position = Projectile.Center - vector2_3;
                 Projectile.netUpdate = true;
             }
+
             if (Main.rand.NextBool(29))
             {
                 int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.BlueTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
@@ -127,8 +120,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 Main.dust[dust3].noGravity = true;
                 Main.dust[dust3].scale = 1.5f;
             }
-
         }
-
     }
 }

@@ -1,6 +1,6 @@
 
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -12,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class IvyakenBuff : ModBuff
+    public class IvyakenBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -329,15 +329,15 @@ namespace Stellamod.Items.Weapons.Summon
 						Projectile.frame = 0;
 					}
 				}
-				if (Main.rand.Next(3) == 1)
+
+				if (Main.rand.NextBool(3))
 				{
-					int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 0, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-					int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 40, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-					Main.dust[dust].velocity *= 0f;
-					Main.dust[dust1].velocity *= 0f;
+					int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Dirt);
+					int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.JunglePlants);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust1].noGravity = true;
 				}
+
 				#endregion
 			}
 		}

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class MorrowShotArrow : ModProjectile
+    public class MorrowShotArrow : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -133,7 +133,7 @@ namespace Stellamod.Projectiles
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
 			// SpriteEffects helps to flip texture horizontally and vertically
@@ -160,7 +160,7 @@ namespace Stellamod.Projectiles
 			// If image isn't centered or symmetrical you can specify origin of the sprite
 			// (0,0) for the upper-left corner
 			float offsetX = 20f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX);
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
 
 			// If sprite is vertical
 			// float offsetY = 20f;

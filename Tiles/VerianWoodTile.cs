@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class VerianWoodTile : ModTile
+    public class VerianWoodTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

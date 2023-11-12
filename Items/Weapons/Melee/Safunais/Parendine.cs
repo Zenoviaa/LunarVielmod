@@ -1,25 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Safunai.Parendine;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-
-using Microsoft.Xna.Framework.Graphics;
-
-using System.Collections.Generic;
-using Terraria.DataStructures;
-using Stellamod.Projectiles.Safunai.Halhurish;
-using Stellamod.Projectiles.Safunai.Parendine;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-	public class Parendine : ModItem
+    public class Parendine : ModItem
 	{
 		public int combo;
 

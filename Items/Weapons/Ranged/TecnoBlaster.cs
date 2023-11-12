@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Gun;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
@@ -33,10 +26,10 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.height = 40;
             Item.useTime = 11;
             Item.useAnimation = 11;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 20, 0);
-            Item.rare = 4;
+            Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
             Item.shoot = ProjectileType<StarBolt>();
             Item.shootSpeed = 15f;
@@ -57,7 +50,7 @@ namespace Stellamod.Items.Weapons.Ranged
             proj.netUpdate = true;
             for (int index1 = 0; index1 < 19; ++index1)
             {
-                int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, 205, velocity.X, velocity.X, (int)byte.MaxValue, new Color(), (float)Main.rand.Next(6, 10) * 0.1f);
+                int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.VenomStaff, velocity.X, velocity.X, byte.MaxValue, new Color(), Main.rand.Next(6, 10) * 0.1f);
                 Main.dust[index2].noGravity = true;
                 Main.dust[index2].velocity *= 0.5f;
                 Main.dust[index2].scale *= 1.2f;

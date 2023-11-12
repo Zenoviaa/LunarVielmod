@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class LeadGauntlets : ModItem
+    public class LeadGauntlets : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,11 +23,11 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.height = 40;
 			Item.useTime = 32;
 			Item.useAnimation = 32;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
             Item.noUseGraphic = true;
             Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<LeadFist>();

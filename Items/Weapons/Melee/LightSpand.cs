@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Projectiles.Magic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Projectiles.Bow;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -33,7 +22,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.height = 40;
 			Item.useTime = 27;
 			Item.useAnimation = 27;
-			Item.useStyle = 1;
+			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = 10000;
             Item.rare = ItemRarityID.LightPurple;

@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Terraria;
@@ -9,9 +8,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Govheil
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
-	[AutoloadEquip(EquipType.Head)]
+    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
+    // Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
+    [AutoloadEquip(EquipType.Head)]
 	public class GovheilMask : ModItem
 	{
 		public override void SetStaticDefaults()

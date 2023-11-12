@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class AlcadizDagger : ModItem
+    public class AlcadizDagger : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

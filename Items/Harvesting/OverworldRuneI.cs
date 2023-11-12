@@ -1,12 +1,9 @@
-﻿using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class OverworldRuneI : ModItem
+    internal class OverworldRuneI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

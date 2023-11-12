@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -10,7 +9,6 @@ namespace Stellamod.Projectiles.Swords
 {
     public class DragonWaveFriendly : ModProjectile
 	{
-		private int timer;
 		public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Dragon Wave");
@@ -59,7 +57,7 @@ namespace Stellamod.Projectiles.Swords
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(Color.Blue) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Color color = Projectile.GetAlpha(Color.Blue) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
             Main.spriteBatch.End();

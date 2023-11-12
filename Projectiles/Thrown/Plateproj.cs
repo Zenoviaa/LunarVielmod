@@ -1,23 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Effects.Primitives;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using System.Diagnostics.Metrics;
-using Stellamod.Effects.Primitives;
 
 namespace Stellamod.Projectiles.Thrown
 {
     internal class Plateproj : ModProjectile
     {
-        bool Moved;
-
+        private bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Knife");
@@ -55,7 +50,7 @@ namespace Stellamod.Projectiles.Thrown
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
                     int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
@@ -71,7 +66,6 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Projectile.tileCollide = true;
             }
-
 
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
@@ -89,15 +83,19 @@ namespace Stellamod.Projectiles.Thrown
                 Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num1].position != Projectile.Center)
+                {
                     Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
+                }
+
                 int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num].position != Projectile.Center)
+                {
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                }
             }
-
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -111,18 +109,20 @@ namespace Stellamod.Projectiles.Thrown
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
-            if (Main.rand.Next(2) == 0 && !target.boss)
+
+            if (Main.rand.NextBool(2) && !target.boss)
             {
                 target.AddBuff(BuffID.Confused, 180);
                 target.AddBuff(BuffID.Burning, 180);
                 target.AddBuff(BuffID.Ichor, 180);
             }
-              
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -135,14 +135,13 @@ namespace Stellamod.Projectiles.Thrown
         }
         public override bool PreDraw(ref Color lightColor)
         {
-
-
             if (Main.rand.NextBool(2))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f, 150, Color.OrangeRed, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
+
             SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -162,9 +161,10 @@ namespace Stellamod.Projectiles.Thrown
 
             return true;
         }
-        Vector2 DrawOffset;
-        float alphaCounter = 2;
-        float counter = 3;
+
+        private Vector2 DrawOffset;
+        private float alphaCounter = 2;
+        private float counter = 3;
         public override void PostDraw(Color lightColor)
         {
             if (Projectile.spriteDirection != 1)
@@ -180,12 +180,8 @@ namespace Stellamod.Projectiles.Thrown
             Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
             Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
-
         }
-
-      
     }
-
 }
 
 

@@ -1,21 +1,13 @@
-﻿
-using Stellamod.Items.Accessories;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets.Biomes;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Assets.Biomes;
-using Stellamod.Items.Harvesting;
 
 namespace Stellamod.NPCs.Govheil
 {
@@ -27,7 +19,6 @@ namespace Stellamod.NPCs.Govheil
         public int counter;
         public bool dash = false;
         public short npcCounter = 0;
-        float HomeY = 330f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Wraith");
@@ -35,6 +26,7 @@ namespace Stellamod.NPCs.Govheil
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             Main.npcFrameCount[NPC.type] = 9;
         }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -59,14 +51,12 @@ namespace Stellamod.NPCs.Govheil
             NPC.noGravity = true;
             NPC.noTileCollide = true;
         }
+
         int frame = 0;
         int games = 0;
         public override void AI()
         {
-
-
             games++; 
-
             if (games <= 760)
             {
                 NPC.velocity *= 0.99f;
@@ -77,7 +67,6 @@ namespace Stellamod.NPCs.Govheil
 
             if (games >= 1280)
             {
-
                 games = 0;
             }
 
@@ -86,7 +75,7 @@ namespace Stellamod.NPCs.Govheil
 
                 float speedXB = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f);
                 float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y , speedXB * 3, speedY, ProjectileID.GreekFire3, (int)(15), 0f, 0, 0f, 0f);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y , speedXB * 3, speedY, ProjectileID.GreekFire3, 15, 0f, 0, 0f, 0f);
 
             }
             if (games >= 761)

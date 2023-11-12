@@ -1,14 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
-using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Powders
 {
-	public class TrickPowderProj : ModProjectile
+    public class TrickPowderProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

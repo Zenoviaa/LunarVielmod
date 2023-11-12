@@ -1,19 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
+﻿using Stellamod.Items.Harvesting;
 using Stellamod.Projectiles.Powders;
-using Stellamod.Tiles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class CoalDust : ModItem
+    internal class CoalDust : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,20 +1,15 @@
-
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
-using Stellamod.Projectiles.Thrown;
+using Terraria.ModLoader;
+
 namespace Stellamod.Items.Weapons.Thrown
 {
-	public class Plate : ModItem
+    public class Plate : ModItem
 	{
-        private Vector2 newVect;
-
         public override void SetStaticDefaults() 
 		{
 			// DisplayName.SetDefault("Cactius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-
 		}
 
         public override void SetDefaults()
@@ -39,6 +34,5 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.consumable = true;
             Item.maxStack = 9999;
         }
-  
     }
 }

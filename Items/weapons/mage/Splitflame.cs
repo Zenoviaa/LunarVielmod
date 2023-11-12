@@ -1,13 +1,11 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
+﻿using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class Splitflame : ModItem
+    internal class Splitflame : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

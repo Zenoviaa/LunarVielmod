@@ -1,18 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class GhostCharger : ModNPC
+    public class GhostCharger : ModNPC
 	{
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;

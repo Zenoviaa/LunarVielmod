@@ -1,24 +1,16 @@
 ﻿
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
 using Microsoft.Xna.Framework;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Consumables;
 using Microsoft.Xna.Framework.Graphics;
-using System.Runtime.CompilerServices;
-using Terraria.GameContent;
-using System;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Trails;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.WorldG;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod
 {
@@ -28,8 +20,8 @@ namespace Stellamod
         {
             if (EventWorld.Gintzing)
             {
-                spawnRate = (int)((double)spawnRate * 0.01);
-                maxSpawns = (int)((float)maxSpawns * 4.3f);
+                spawnRate = (int)(spawnRate * 0.01);
+                maxSpawns = (int)(maxSpawns * 4.3f);
             }
         }
 

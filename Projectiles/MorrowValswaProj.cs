@@ -7,7 +7,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles
 {
-	class MorrowValswaProj : SlasherProj
+    class MorrowValswaProj : SlasherProj
 	{
 		public override void SetStaticDefaults()
 		{

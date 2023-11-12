@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class CondensedDirt : ModItem
+    internal class CondensedDirt : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

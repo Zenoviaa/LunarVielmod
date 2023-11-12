@@ -1,22 +1,14 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.NPCs.Bosses.Jack;
 
 namespace Stellamod.Projectiles.Magic
 {
     public class VoidCharge2 : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -38,9 +30,8 @@ namespace Stellamod.Projectiles.Magic
             AIType = ProjectileID.Bullet;
             Projectile.extraUpdates = 1;
         }
-        int counter = 6;
-        float alphaCounter = 4;
 
+        int counter = 6;
         public override void AI()
         {
             Projectile.rotation += 0.09f;
@@ -54,12 +45,11 @@ namespace Stellamod.Projectiles.Magic
                 float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
                 float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
             }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             int offsetRandom = Main.rand.Next(0, 50);
-
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
@@ -86,7 +76,7 @@ namespace Stellamod.Projectiles.Magic
             }
             for (int i = 0; i < 10; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 68, 0f, -2f, 0, default, 1.1f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default, 1.1f);
                 Main.dust[num].noGravity = true;
                 Dust expr_62_cp_0 = Main.dust[num];
                 expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
@@ -99,5 +89,4 @@ namespace Stellamod.Projectiles.Magic
             }
         }
     }
-
 }

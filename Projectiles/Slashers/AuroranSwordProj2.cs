@@ -184,7 +184,7 @@ namespace Stellamod.Projectiles.Slashers
 
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(96, 215, 255, 0) * (1f - (float)Projectile.alpha / 255f);
+            return new Color(96, 215, 255, 0) * (1f - Projectile.alpha / 255f);
         }
     }
 }

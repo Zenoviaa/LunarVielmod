@@ -1,28 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Events;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
 
 
 //By Al0n37
@@ -31,15 +15,9 @@ namespace Stellamod.NPCs.Bosses.Jack
 
     public class JackDeath : ModNPC
     {
-
-
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
-        float HomeY = 330f;
         private bool p2 = false;
-        bool Chucking;
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 4;
@@ -47,6 +25,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             // DisplayName.SetDefault("Jack");
             Main.npcFrameCount[NPC.type] = 4;
         }
+
         public override void SetDefaults()
         {
             NPC.alpha = 255;
@@ -64,6 +43,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.dontCountMe = true;
             NPC.alpha = 255;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
@@ -81,16 +61,14 @@ namespace Stellamod.NPCs.Bosses.Jack
 
             NPC.frame.Y = frameHeight * frame;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 2.25f * Main.essScale);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
+            //var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
@@ -102,6 +80,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void AI()
         {
             Player player = Main.player[NPC.target];

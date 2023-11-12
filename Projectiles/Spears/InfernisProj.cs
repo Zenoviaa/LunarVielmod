@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Projectiles.Spears
 {
@@ -16,13 +13,13 @@ namespace Stellamod.Projectiles.Spears
     internal class InfernisProj : ModProjectile
     {
         bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             Projectile.penetrate = 5;
@@ -34,6 +31,7 @@ namespace Stellamod.Projectiles.Spears
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.velocity *= .96f;
@@ -59,10 +57,7 @@ namespace Stellamod.Projectiles.Spears
                 }
                 Moved = true;
             }
-            if (Projectile.ai[1] == 1)
-            {
 
-            }
             Vector2 ParOffset;
             if (Projectile.ai[1] >= 60)
             {
@@ -91,21 +86,12 @@ namespace Stellamod.Projectiles.Spears
                 Projectile.rotation += -0.6f;
             }
 
-
-
-            if (Projectile.alpha >= 255)
-            {
-
-            }
             Projectile.spriteDirection = Projectile.direction;
-
         }
+
         Vector2 BombOffset;
         public override void OnKill(int timeLeft)
         {
- 
-
-
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
@@ -121,9 +107,6 @@ namespace Stellamod.Projectiles.Spears
                 BombOffset.Y = Projectile.Center.Y - 100;
                 Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
 
-
-
-
                 BombOffset.X = Projectile.Center.X - 150;
                 BombOffset.Y = Projectile.Center.Y - 400;
                 Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
@@ -131,9 +114,6 @@ namespace Stellamod.Projectiles.Spears
                 BombOffset.X = Projectile.Center.X + 170;
                 BombOffset.Y = Projectile.Center.Y - 400;
                 Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-
-
-
 
                 BombOffset.X = Projectile.Center.X - 250;
                 BombOffset.Y = Projectile.Center.Y - 700;
@@ -143,15 +123,9 @@ namespace Stellamod.Projectiles.Spears
                 BombOffset.Y = Projectile.Center.Y - 700;
                 Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
             }
-
-            for (int i = 0; i < 20; i++)
-            {
-
-            }
         }
-        float alphaCounter = 0;
-        int counter;
 
+        float alphaCounter = 0;
         Vector2 DrawOffset;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -215,13 +189,12 @@ namespace Stellamod.Projectiles.Spears
 
             return true;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
-
 }
 
 

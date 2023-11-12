@@ -1,24 +1,18 @@
 
 
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Gun;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -32,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class FCBuff : ModBuff
+    public class FCBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -133,7 +127,7 @@ namespace Stellamod.Items.Weapons.Summon
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0f);
             }
             return true;

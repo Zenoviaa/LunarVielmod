@@ -1,8 +1,4 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Whips;
+﻿using Stellamod.Projectiles.Whips;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -10,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-	public class DesertWhip : ModItem
+    public class DesertWhip : ModItem
 	{
 
 		public override void SetStaticDefaults()

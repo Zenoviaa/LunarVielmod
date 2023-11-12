@@ -1,17 +1,8 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
-using Terraria.ID;
-using Stellamod.Projectiles.Swords;
-using Stellamod.NPCs.Bosses.Jack;
 using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.NPCs.Bosses.DreadMire;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.INest.IEagle
 {

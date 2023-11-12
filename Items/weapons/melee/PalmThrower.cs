@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	internal class PalmThrower : ModItem
+    internal class PalmThrower : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

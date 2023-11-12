@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Stellamod.Helpers
 {
-	public abstract class EaseFunction
+    public abstract class EaseFunction
 	{
 		public static readonly EaseFunction Linear = new PolynomialEase((float x) => { return x; });
 

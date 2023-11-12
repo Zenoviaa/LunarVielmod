@@ -1,24 +1,18 @@
 using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Items.Materials;
 using System;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.NPCs.Ice.WinterSouls
 {
 
     public class WinterSoul2 : ModNPC
     {
-
-
         public bool Shooting;
         public float Timer;
         public override void SetStaticDefaults()
@@ -47,6 +41,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
             NPC.HitSound = SoundID.NPCHit30;
             NPC.DeathSound = SoundID.NPCDeath38;
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && spawnInfo.Player.ZoneSnow) ? (0.800f) : 0f;
@@ -55,11 +50,8 @@ namespace Stellamod.NPCs.Ice.WinterSouls
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
-
+            //bool expertMode = Main.expertMode;
+            //Player player = Main.player[NPC.target];
             NPC.frameCounter += 0.5f;
             if (NPC.frameCounter >= 5)
             {
@@ -71,8 +63,8 @@ namespace Stellamod.NPCs.Ice.WinterSouls
                 frame = 0;
             }
             NPC.frame.Y = frameHeight * frame;
-
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = DustID.Phantasmal;
@@ -95,12 +87,14 @@ namespace Stellamod.NPCs.Ice.WinterSouls
                 }
             }
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<WinterbornShard>(), Main.rand.Next(1, 3), false, 0, false, false);
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 1, maximumDropped: 3));
         }
+
         float alphaCounter;
-        float bloomCounter = 1;
         public override void AI()
         {
             if (Main.dayTime)

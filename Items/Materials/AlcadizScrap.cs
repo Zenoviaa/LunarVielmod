@@ -1,13 +1,9 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Stellamod.Tiles;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class AlcadizScrap : ModItem
+    internal class AlcadizScrap : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

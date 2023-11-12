@@ -1,32 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-
-using Terraria.Audio;
-
-using System.Transactions;
-using Terraria.GameContent;
 using Stellamod.UI.Systems;
 using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Sniper
 {
     public class SpiderillaCrossbowHold : ModProjectile
     {
-        private float AimResponsiveness = 0.6f;
-        private bool timerUp = false;
-
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void SetDefaults()
         {
 			Projectile.damage = 0;
@@ -41,11 +36,12 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = 103;
 		}
+
         public override bool? CanDamage()
         {
             return false;
         }
-        private bool recoilFX;
+
         public override void AI()
         {
 			Timer++;
@@ -53,11 +49,11 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 			{
 				// Our timer has finished, do something here:
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				
-
+			
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
 				Timer = 0;
 			}
+
 			Player player = Main.player[Projectile.owner];
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
@@ -85,13 +81,9 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 				float speedY = Projectile.velocity.Y * 7;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
-
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<AltaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<AltaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 			}
-
-			
-
-			
+	
 			if (Timer == 100)
 			{
 				ShakeModSystem.Shake = 8; 
@@ -104,7 +96,7 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
             {
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<SpiderillaCrossbowBolt>(), (int)(Projectile.damage * 5), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 2, speedY, ModContent.ProjectileType<SpiderillaCrossbowBolt>(), Projectile.damage * 5, 0f, Projectile.owner, 0f, 0f);
 			}
 
 
@@ -123,9 +115,8 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 					Projectile.frame = 0;
 				}
 			}
-
-			
 		}
+
         private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
         {
             Projectile.Center = playerhandpos;
@@ -136,35 +127,26 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
             player.heldProj = Projectile.whoAmI;
             player.itemTime = 3;
             player.itemAnimation = 3;
-
             player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-            Player player = Main.player[Projectile.owner];
-
+            //Player player = Main.player[Projectile.owner];
             SpriteEffects spriteEffects = SpriteEffects.None;
             if (Projectile.spriteDirection == -1)
                 spriteEffects = SpriteEffects.FlipHorizontally;
+
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
             Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
             Vector2 origin = sourceRectangle.Size() / 2f;
-            origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+            origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-
             return false;
-
-       
-           
         }
-
-       
-        
-
     }
 }

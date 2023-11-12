@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class HornedNailProj2 : ModProjectile
+    public class HornedNailProj2 : ModProjectile
 	{
 		public static bool swung = false;
 		public int SwingTime = 60;

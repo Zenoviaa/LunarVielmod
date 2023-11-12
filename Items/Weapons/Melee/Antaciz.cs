@@ -1,12 +1,8 @@
-﻿
-using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Items.Harvesting;
+﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

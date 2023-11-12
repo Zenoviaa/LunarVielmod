@@ -1,11 +1,7 @@
-
-using Stellamod.Tiles.Abyss;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using SpiritMod.Tiles;
 using System;
 using Terraria;
-using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.ModLoader;
 

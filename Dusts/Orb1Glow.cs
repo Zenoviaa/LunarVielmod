@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-	public class Orb1Glow : ModDust
+    public class Orb1Glow : ModDust
 	{
 		public override void OnSpawn(Dust dust)
 		{

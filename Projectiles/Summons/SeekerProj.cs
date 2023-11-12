@@ -1,37 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Buffs;
-using Stellamod.Particles;
+using Stellamod.Projectiles.Summons.Glyph;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Buffs.PocketDustEffects;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Projectiles.Summons.Glyph;
 
 namespace Stellamod.Projectiles.Summons
 {
-	public class SeekerProj : ModProjectile
+    public class SeekerProj : ModProjectile
 	{
-		int afterImgCancelDrawCount = 0;
-		int afterImgCancelDrawCount2 = 0;
-		Vector2 endPoint;
-		Vector2 controlPoint1;
-		Vector2 controlPoint2;
-		Vector2 initialPos;
-		Vector2 wantedEndPoint;
-		bool initialization = false;
-		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
-		float ta = 0;
+		public bool[] hitByThisStardustExplosion = new bool[200];// { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("IgniterStart");
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
@@ -41,15 +25,10 @@ namespace Stellamod.Projectiles.Summons
 			Projectile.penetrate = 1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 50;
-
-
 		}
 	
-
 		public override void AI()
 		{
-
-
 			float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 22f; // The speed at which the projectile moves towards the target
 
@@ -126,7 +105,7 @@ namespace Stellamod.Projectiles.Summons
 				case 0:
 
 					
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 1.1f, speedYa * -0.3f, ModContent.ProjectileType<Glyph1>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 1.1f, speedYa * -0.3f, ModContent.ProjectileType<Glyph1>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -143,7 +122,7 @@ namespace Stellamod.Projectiles.Summons
 
 					break;
 				case 1:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 0f, speedYa * 1f, ModContent.ProjectileType<Glyph6>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 0f, speedYa * 1f, ModContent.ProjectileType<Glyph6>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -161,7 +140,7 @@ namespace Stellamod.Projectiles.Summons
 						float speedYb = (Projectile.velocity.Y / 6) + Main.rand.Next(-3, 2);
 
 
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXb, speedYb, ModContent.ProjectileType<Coinspa>(), (int)(Projectile.damage) / 2, 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXb, speedYb, ModContent.ProjectileType<Coinspa>(), Projectile.damage / 2, 0f, Projectile.owner, 0f, 0f);
 					}
 					ShakeModSystem.Shake = 3;
 					SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact);
@@ -170,7 +149,7 @@ namespace Stellamod.Projectiles.Summons
 
 					break;
 				case 2:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 0.5f, speedYa * 0.2f, ModContent.ProjectileType<Glyph7>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 0.5f, speedYa * 0.2f, ModContent.ProjectileType<Glyph7>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -186,10 +165,10 @@ namespace Stellamod.Projectiles.Summons
 
 					break;
 				case 3:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 1f, speedYa * 1f, ModContent.ProjectileType<Glyph4>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 1f, speedYa * 1f, ModContent.ProjectileType<Glyph4>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 2f, speedYa * 0.2f, ProjectileID.BallofFire, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * -2f, speedYa * 0.2f, ProjectileID.BallofFire, (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * 2f, speedYa * 0.2f, ProjectileID.BallofFire, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * -2f, speedYa * 0.2f, ProjectileID.BallofFire, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -208,7 +187,7 @@ namespace Stellamod.Projectiles.Summons
 				case 4:
 
 					
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * -0.3f, speedYa * 0.7f, ModContent.ProjectileType<Glyph3>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X , Projectile.position.Y , speedXa * -0.3f, speedYa * 0.7f, ModContent.ProjectileType<Glyph3>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -241,7 +220,7 @@ namespace Stellamod.Projectiles.Summons
 
 					break;
 				case 5:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXa * 1f, speedYa * 2f, ModContent.ProjectileType<Glyph5>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXa * 1f, speedYa * 2f, ModContent.ProjectileType<Glyph5>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{
@@ -258,7 +237,7 @@ namespace Stellamod.Projectiles.Summons
 
 					break;
 				case 6:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXa * 0.3f, speedYa * -.5f, ModContent.ProjectileType<Glyph2>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXa * 0.3f, speedYa * -.5f, ModContent.ProjectileType<Glyph2>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 					for (int i = 0; i < 130; i++)
 					{

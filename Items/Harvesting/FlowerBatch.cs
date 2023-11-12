@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class FlowerBatch : ModItem
+    internal class FlowerBatch : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,22 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Safunai.Vinger;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-
-using Microsoft.Xna.Framework.Graphics;
-
-using System.Collections.Generic;
-using Terraria.DataStructures;
-using Stellamod.Projectiles.Safunai.Halhurish;
-using Stellamod.Projectiles.Safunai.Vinger;
 
 namespace Stellamod.Items.Weapons.Melee.Safunais
 {
-	public class Vinger : ModItem
+    public class Vinger : ModItem
 	{
 		public int combo;
 

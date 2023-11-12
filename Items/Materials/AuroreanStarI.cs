@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Stellamod.Tiles;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -10,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class AuroreanStarI : ModItem
+    internal class AuroreanStarI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

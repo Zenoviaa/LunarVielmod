@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class CocoSpark : ModItem
+    internal class CocoSpark : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

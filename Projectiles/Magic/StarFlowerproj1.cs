@@ -1,32 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 namespace Stellamod.Projectiles.Magic
 {
     internal class StarFlowerproj1 : ModProjectile
     {
-        bool Moved;
-
+        private bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             base.Projectile.penetrate = 35;
@@ -39,12 +33,16 @@ namespace Stellamod.Projectiles.Magic
             base.Projectile.ignoreWater = true;
             base.Projectile.tileCollide = false;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(3) == 0 && !target.boss)
+            if (Main.rand.NextBool(3) && !target.boss)
+            {
                 target.AddBuff(BuffID.OnFire, 180);
+            }
         }
-        float alphaCounter = 0;
+
+        private float alphaCounter = 0;
         public override void AI()
         {
             Projectile.velocity *= 0.96f;
@@ -76,7 +74,9 @@ namespace Stellamod.Projectiles.Magic
             {
                 var EntitySource = Projectile.GetSource_Death();
                 if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                }
             }
             if (Projectile.ai[1] == 160)
             {
@@ -99,23 +99,23 @@ namespace Stellamod.Projectiles.Magic
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation += 0.08f;
         }
-        public override void OnKill(int timeLeft)
-        {
-        }
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 0.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.Goldenrod, Color.LightYellow, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
@@ -127,17 +127,12 @@ namespace Stellamod.Projectiles.Magic
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BulbTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
-
         }
-
     }
-
 }
-
-

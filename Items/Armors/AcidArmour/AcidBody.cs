@@ -1,15 +1,8 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
@@ -21,13 +14,13 @@ namespace Stellamod.Items.Armors.AcidArmour
 			// DisplayName.SetDefault("AcidBody");
 			// Tooltip.SetDefault("Increases ranged damage by 13% and ranged speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 80000;
-            Item.rare = 8;
-
+            Item.rare = ItemRarityID.Yellow;
             Item.defense = 5;
         }
 

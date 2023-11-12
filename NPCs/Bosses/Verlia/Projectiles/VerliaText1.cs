@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class VerliaText1 : ModProjectile
+    public class VerliaText1 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

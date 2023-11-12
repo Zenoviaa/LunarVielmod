@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -45,9 +44,9 @@ namespace Stellamod.Projectiles.Magic
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -78,7 +77,7 @@ namespace Stellamod.Projectiles.Magic
             int num1222 = 74;
             for (int k = 0; k < 2; k++)
             {
-                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                 Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
                 Main.dust[index2].scale = .95f;
                 Main.dust[index2].velocity *= 0f;
@@ -113,7 +112,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 180; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default, 1.5f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default, 1.5f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].scale = 1.9f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -124,7 +123,7 @@ namespace Stellamod.Projectiles.Magic
             }
             for (int i = 0; i < 80; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default, 2.5f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default, 2.5f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;

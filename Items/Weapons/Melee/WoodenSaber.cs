@@ -1,12 +1,9 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -54,7 +51,7 @@ namespace Stellamod.Items.Weapons.Melee
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(5) == 0)
+            if (Main.rand.NextBool(5))
             {
                 int dist = 40;
                 Vector2 targetExplosionPos = target.Center;
@@ -68,10 +65,10 @@ namespace Stellamod.Items.Weapons.Melee
                 for (int i = 0; i < 15; ++i)
                 {
                     target.AddBuff(BuffID.Poisoned, 300, true);
-                    int newDust = Dust.NewDust(new Vector2(targetExplosionPos.X - (dist / 2), targetExplosionPos.Y - (dist / 2)), dist, dist, 40, 0f, 0f, 40, default(Color), 2.5f);
+                    int newDust = Dust.NewDust(new Vector2(targetExplosionPos.X - (dist / 2), targetExplosionPos.Y - (dist / 2)), dist, dist, DustID.JunglePlants, 0f, 0f, 40, default(Color), 2.5f);
                     Main.dust[newDust].noGravity = true;
                     Main.dust[newDust].velocity *= 5f;
-                    newDust = Dust.NewDust(new Vector2(targetExplosionPos.X - (dist / 2), targetExplosionPos.Y - (dist / 2)), dist, dist, 40, 0f, 0f, 40, default(Color), 1.5f);
+                    newDust = Dust.NewDust(new Vector2(targetExplosionPos.X - (dist / 2), targetExplosionPos.Y - (dist / 2)), dist, dist, DustID.JunglePlants, 0f, 0f, 40, default(Color), 1.5f);
                     Main.dust[newDust].velocity *= 3f;
                 }
             }

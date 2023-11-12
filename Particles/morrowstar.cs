@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class morrowstar : Particle
+    public class morrowstar : Particle
 	{
 		public override void SetDefaults()
 		{

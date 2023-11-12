@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 
 namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 {
@@ -21,11 +18,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
         int moveSpeedY = 0;
         float HomeY = 150f;
         int Dashes = 0;
-        Vector2 Light;
+
         public bool Dir = false;
         public int AtackNum = 4;
         public bool Barf = false;
-        int Att = 0;
         public override void SetStaticDefaults()
         {
 
@@ -115,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             Vector2 target = player.Center + new Vector2(PosX, PosY);
             NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, target, 0.5f), NPC.Center.Distance(target) * Speed), 0.1f);
         }
-        internal int side;
+
         float alphaCounter;
         public int previousAttack;
         public override void AI()
@@ -161,9 +157,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                     NPC.ai[2] = 1;
                 }
             }
-
-
-            Vector2 targetPos;
             if (NPC.ai[2] == 1)
             {
                 switch (NPC.ai[1])
@@ -440,7 +433,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }

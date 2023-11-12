@@ -1,14 +1,8 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Elagent
 {
@@ -25,7 +19,7 @@ namespace Stellamod.Items.Armors.Elagent
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = 6;
+            Item.rare = ItemRarityID.LightPurple;
 
             Item.defense = 7;
         }

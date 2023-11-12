@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Projectiles.Crossbows.Gemmed;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
-using Terraria.Audio;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Stellamod.Projectiles.Crossbows;
-using Stellamod.Projectiles.Crossbows.Gemmed;
 
 namespace Stellamod.Items.Weapons.Ranged.Crossbows
 {

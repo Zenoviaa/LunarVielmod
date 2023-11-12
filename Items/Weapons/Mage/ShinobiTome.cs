@@ -1,25 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Magic;
+using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Items.Ores;
-using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class ShinobiTome : ModItem
+    public class ShinobiTome : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -34,10 +25,10 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.height = 40;
 			Item.useTime = 23;
 			Item.useAnimation = 23;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
-            Item.rare = 3;
+            Item.rare = ItemRarityID.Orange;
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/SwordThrow");
             Item.autoReuse = true;
 			Item.shoot = ProjectileType<ShinobiKnife>();

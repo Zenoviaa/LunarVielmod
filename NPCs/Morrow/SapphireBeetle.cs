@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -14,7 +11,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class SapphireBeetle : ModNPC
+    public class SapphireBeetle : ModNPC
 	{
 		public int moveSpeed = 0;
 		public int moveSpeedY = 0;

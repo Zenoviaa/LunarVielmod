@@ -1,22 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod
 {
-	public static class StellaMultiplayer
+    public static class StellaMultiplayer
 	{
 		private struct Wait
 		{

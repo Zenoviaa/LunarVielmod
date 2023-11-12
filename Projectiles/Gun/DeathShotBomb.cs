@@ -1,16 +1,11 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-
-
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Bestiary;
-using Stellamod.Dusts;
-using Stellamod.Projectiles.Magic;
-using Terraria.Audio;
 
 namespace Stellamod.Projectiles.Gun
 {
@@ -35,19 +30,19 @@ namespace Stellamod.Projectiles.Gun
             Projectile.width = 1;
             Projectile.extraUpdates = 1;
         }
-        Vector2 ProjectilePos;
-        Vector2 alphaPos;
-        float alphaCounter = 0.1f;
-        float alphaCounter3 = 0.1f;
-        float alphaCounter2 = 0.2f;
-        int counter;
+
+        private Vector2 ProjectilePos;
+        private Vector2 alphaPos;
+        private float alphaCounter = 0.1f;
+        private float alphaCounter3 = 0.1f;
+        private float alphaCounter2 = 0.2f;
         public override void AI()
         {
-            ProjectilePos.Y =Projectile.Center.Y;
-            ProjectilePos.X =Projectile.Center.X;
             var EntitySource = Projectile.GetSource_FromThis();
+            ProjectilePos.Y = Projectile.Center.Y;
+            ProjectilePos.X = Projectile.Center.X;
             Projectile.ai[0]++;
-            if(Projectile.ai[0] == 2)
+            if (Projectile.ai[0] == 2)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.position, 2048f, 54f);
                 int Sound = Main.rand.Next(1, 3);
@@ -68,10 +63,12 @@ namespace Stellamod.Projectiles.Gun
                 {
 
                     if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
                         Projectile.NewProjectile(EntitySource, ProjectilePos.X += Main.rand.Next(-10, 10), ProjectilePos.Y += Main.rand.Next(-10, 10), Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<DeathShotBombFX>(), Projectile.damage / 2, 1, Main.myPlayer, 0, 0);
+                    }
                 }
-
             }
+
             if (Projectile.ai[0] <= 100)
             {
                 if (alphaCounter <= 1.5)
@@ -79,7 +76,6 @@ namespace Stellamod.Projectiles.Gun
                     alphaCounter3 += 0.08f;
                     alphaCounter += 0.08f;
                 }
-
             }
             else
             {
@@ -94,9 +90,8 @@ namespace Stellamod.Projectiles.Gun
             }
 
             alphaCounter2 *= 1.01f;
-
-
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             alphaPos.X = Projectile.Center.X;
@@ -105,9 +100,8 @@ namespace Stellamod.Projectiles.Gun
             Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
-             Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, alphaPos - Main.screenPosition, null, new Color((int)(65f * alphaCounter), (int)(15f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(24, 24), 0.4f * (alphaCounter3 + 0.6f), SpriteEffects.None, 0f);
             return true;
         }
-
     }
 }

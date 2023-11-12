@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Bow;
 
 namespace Stellamod.Projectiles.Swords
 {

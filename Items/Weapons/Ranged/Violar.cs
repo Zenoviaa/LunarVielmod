@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Violar : ModItem
+    public class Violar : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,16 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Items.Materials;
 
 
 namespace Stellamod.NPCs.Ice.WinterBornSlime
@@ -22,10 +16,12 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
             // DisplayName.SetDefault("Winterborn Slime");
             Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && !spawnInfo.Player.ZoneSkyHeight ? (1.30f) : 0f);
         }
+
         public override void SetDefaults()
         {
             NPC.damage = 6;
@@ -43,13 +39,9 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }
-        int frame = 0;
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-
-            if (NPC.life <= 0)
-            {
-            }
             int d = 180;
             for (int k = 0; k < 9; k++)
             {
@@ -61,10 +53,10 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
         float alphaCounter;
         public override void AI()
         {
-            float num = 1f - (float)NPC.alpha / 255f;
+            float num = 1f - NPC.alpha / 255f;
             alphaCounter += 0.04f;
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
@@ -74,8 +66,6 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 0, NPC.height - NPC.frame.Height + 0);
@@ -110,10 +100,12 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
 
             return true;
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<WinterbornShard>(), Main.rand.Next(1, 3), false, 0, false, false);
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(0, 2));
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 1, maximumDropped: 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 0, maximumDropped: 2));
         }
     }
 }

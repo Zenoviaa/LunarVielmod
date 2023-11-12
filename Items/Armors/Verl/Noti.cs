@@ -1,8 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Dusts;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Verl
 {
-	public class Noti : ModProjectile
+    public class Noti : ModProjectile
 	{
 		public int timer = 0;
 		public override void SetStaticDefaults()

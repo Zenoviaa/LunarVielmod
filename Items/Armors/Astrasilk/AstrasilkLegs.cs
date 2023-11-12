@@ -1,14 +1,7 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {
@@ -20,12 +13,13 @@ namespace Stellamod.Items.Armors.Astrasilk
 			// DisplayName.SetDefault("Astrasilk Boots");
 			// Tooltip.SetDefault("Increases movement speed by 20%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = 6;
+            Item.rare = ItemRarityID.LightPurple;
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }
@@ -34,6 +28,7 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             player.moveSpeed += 0.2f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -42,7 +37,5 @@ namespace Stellamod.Items.Armors.Astrasilk
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
-
-
     }
 }

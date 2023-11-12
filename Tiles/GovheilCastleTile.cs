@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Tiles
 {
@@ -16,7 +15,7 @@ namespace Stellamod.Tiles
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.IceBlock][Type] = true;
             Main.tileMerge[TileID.SnowBlock][Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
 

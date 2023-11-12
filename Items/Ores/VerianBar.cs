@@ -1,6 +1,4 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -8,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ores
 {
-	public class VerianBar : ModItem
+    public class VerianBar : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

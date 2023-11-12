@@ -1,7 +1,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -38,8 +37,8 @@ namespace Stellamod.Projectiles.Swords
 			}
 			for (int i = 0; i < 15; i++)
 			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 226);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 226);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
 			}
 			return false;
 		}

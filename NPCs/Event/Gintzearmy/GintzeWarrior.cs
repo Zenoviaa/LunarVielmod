@@ -1,20 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Ores;
+using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Stellamod.WorldG;
-using Stellamod.Items.Armors.Pieces.RareMetals;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Accessories.Foods;
 
 namespace Stellamod.NPCs.Event.Gintzearmy
 {
@@ -89,7 +85,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
@@ -138,7 +134,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
         float alphaCounter;
         public override void AI()
         {
-            float num = 1f - (float)NPC.alpha / 255f;
+            float num = 1f - NPC.alpha / 255f;
             NPC.rotation = NPC.velocity.X * 0.02f;
             alphaCounter += 0.04f;
             NPC.spriteDirection = NPC.direction;

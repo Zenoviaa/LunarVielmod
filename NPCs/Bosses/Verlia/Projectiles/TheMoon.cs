@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.UI.Systems;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -9,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class TheMoon : ModProjectile
+    public class TheMoon : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -60,7 +58,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				{
 
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(150, 150), speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<MoonOut>(), (int)(Projectile.damage), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(150, 150), speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<MoonOut>(), Projectile.damage, 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
 				}
 			}
@@ -112,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
 		
 

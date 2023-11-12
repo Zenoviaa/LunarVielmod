@@ -1,8 +1,6 @@
-﻿using Terraria.ID;
-using Terraria.GameContent.Creative;
+﻿using Stellamod.Tiles.Abyss.Aurelus;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Tiles.Structures;
-using Stellamod.Tiles.Abyss.Aurelus;
 
 namespace Stellamod.Items.Placeable
 {

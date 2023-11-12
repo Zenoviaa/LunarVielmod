@@ -1,22 +1,12 @@
-
-
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Gun;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Projectiles.Thrown;
 using System;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
-using Stellamod.Projectiles.Thrown;
-using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -134,7 +124,7 @@ namespace Stellamod.Items.Weapons.Summon
                 {
                     Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / Projectile.oldPos.Length / 2);
 
                     Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
 
@@ -156,7 +146,7 @@ namespace Stellamod.Items.Weapons.Summon
                 {
                     Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / Projectile.oldPos.Length / 2);
 
                     Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
 
@@ -456,7 +446,7 @@ namespace Stellamod.Items.Weapons.Summon
                 {
                     Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / Projectile.oldPos.Length / 2);
 
                     Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
 
@@ -478,7 +468,7 @@ namespace Stellamod.Items.Weapons.Summon
                 {
                     Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + (Projectile.Size / 2) + new Vector2(0f, Projectile.gfxOffY);
 
-                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length / 2);
+                    float alphaMod = (float)(((float)Projectile.oldPos.Length - k) / Projectile.oldPos.Length / 2);
 
                     Main.EntitySpriteDraw(texture, drawPos, drawFrame, Projectile.GetAlpha(lightColor) * alphaMod, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
 

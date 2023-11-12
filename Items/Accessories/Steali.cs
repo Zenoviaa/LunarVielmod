@@ -1,14 +1,12 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Stellamod.Items.Accessories.Players;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Items.Accessories.Players;
 
 namespace Stellamod.Items.Accessories
 {
-	[AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
+    [AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class Steali : ModItem
 	{
 		public override void SetStaticDefaults()

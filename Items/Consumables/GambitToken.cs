@@ -1,19 +1,14 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.UI.Panels;
 
 namespace Stellamod.Items.Consumables
 {
-	public class GambitToken : ModItem
+    public class GambitToken : ModItem
 	{
 
 		public override void SetStaticDefaults()

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class AurelusDoor : ModItem
+    public class AurelusDoor : ModItem
 	{
 		public override void SetDefaults()
 		{

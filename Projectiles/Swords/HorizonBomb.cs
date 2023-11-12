@@ -1,8 +1,6 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -14,8 +12,6 @@ namespace Stellamod.Projectiles.Swords
 {
     public class HorizonBomb : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -36,22 +32,26 @@ namespace Stellamod.Projectiles.Swords
             AIType = ProjectileID.Bullet;
             Projectile.extraUpdates = 1;
         }
+
         int counter = 9;
         float alphaCounter = 9;
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.RoyalBlue, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
@@ -75,13 +75,14 @@ namespace Stellamod.Projectiles.Swords
             {
                 counter = -1440;
             }
+
             for (int i = 0; i < 4; i++)
             {
-                float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
-                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
+                //float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
+                //float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
             }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 1212f, 62f);
@@ -89,22 +90,26 @@ namespace Stellamod.Projectiles.Swords
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
             }
+
             for (int i = 0; i < 40; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
             }
+
             for (int i = 0; i < 40; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 6f).noGravity = true;
             }
+
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.BlueTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
             }
+
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 68, 0f, -2f, 0, default, 1.1f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueCrystalShard, 0f, -2f, 0, default, 1.1f);
                 Main.dust[num].noGravity = true;
                 Dust expr_62_cp_0 = Main.dust[num];
                 expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
@@ -117,5 +122,4 @@ namespace Stellamod.Projectiles.Swords
             }
         }
     }
-
 }

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class GrassBig : ModItem
+    public class GrassBig : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

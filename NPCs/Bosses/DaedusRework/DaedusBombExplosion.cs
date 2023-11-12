@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
@@ -36,10 +35,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         }
         public override void AI()
         {
-            float AX = 0;
-            float AY = 0;
-
-           
             Vector3 RGB = new(2.89f, 2.53f, 0.55f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);

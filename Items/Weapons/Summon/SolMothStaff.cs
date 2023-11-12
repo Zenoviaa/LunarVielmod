@@ -1,7 +1,5 @@
-
-
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -10,11 +8,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Stellamod.Items.Weapons.Summon.SolMothStaff;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -28,7 +25,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class SolMothBuff : ModBuff
+    public class SolMothBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

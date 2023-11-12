@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class LenaSongParticle : Particle
+    public class LenaSongParticle : Particle
 	{
 		public override void SetDefaults()
 		{

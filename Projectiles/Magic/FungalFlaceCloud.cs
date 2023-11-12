@@ -1,12 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Microsoft.Xna.Framework;
 
 
 namespace Stellamod.Projectiles.Magic
@@ -36,7 +30,7 @@ namespace Stellamod.Projectiles.Magic
         {
             Projectile.alpha++;
 
-            float num = 1f - (float)Projectile.alpha / 255f;
+            float num = 1f - Projectile.alpha / 255f;
             Projectile.velocity *= .98f;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f;
             num *= Projectile.scale;

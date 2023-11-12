@@ -1,13 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod;
-using Stellamod.Particles;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,23 +18,17 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
         private int timer;
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
-          {
+        {
               ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
               ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-          }
-
+        }
 
         private Player Owner => Main.player[Projectile.owner];
-
        
         public float SwingDistance;
         public float Curvature;
-
      
         public ref float AiState => ref Projectile.ai[1];
-        int afterImgCancelDrawCount = 0;
-
-
         private Vector2 returnPosOffset; //The position of the projectile when it starts returning to the player from being hooked
         private Vector2 npcHookOffset = Vector2.Zero; //Used to determine the offset from the hooked npc's center
         private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
@@ -50,23 +39,13 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
         public const int HOOK_HITTIME = 20; //Time between damage ticks while hooked in
         public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
 
-        private int _flashTime;
-
         public bool Flip = false;
         public bool Slam = false;
         public bool PreSlam = false;
 
-        private List<float> oldRotation = new List<float>();
-        private List<Vector2> oldBase = new List<Vector2>();
-
         public Vector2 CurrentBase = Vector2.Zero;
-
-        private int slamTimer = 0;
-
         public override void SetDefaults()
         {
-
-      
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;

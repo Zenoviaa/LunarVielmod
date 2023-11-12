@@ -1,38 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.NPCs.Bosses.Daedus;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.Bestiary;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.Items.Armors.Terric;
-using Terraria.DataStructures;
-using Stellamod.NPCs.Bosses.Daedus;
 
 
 //By Al0n37
@@ -160,9 +133,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.frame.Y = frameHeight * frame;
         }
 
-
-        bool CutScene;
-        private int Counter;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -170,6 +140,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
             });
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)

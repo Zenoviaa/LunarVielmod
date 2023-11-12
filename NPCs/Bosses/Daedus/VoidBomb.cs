@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Dusts;
 using Stellamod.Particles;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Daedus
 {
-	public class VoidBomb : ModProjectile
+    public class VoidBomb : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -43,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		public float Timer2;
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(900, 900, 900, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(900, 900, 900, 0) * (1f - Projectile.alpha / 50f);
 		}
 
 		public override void OnSpawn(IEntitySource source)

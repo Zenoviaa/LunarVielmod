@@ -1,29 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using log4net.Util;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
 {
     internal class SingularityLazer : ModNPC
     {
         public bool Down;
-        public float Rot;
-        public bool Lightning;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker Lighting");
@@ -71,10 +58,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
         }
-        float alphaCounter = 0;
-        float counter = 6;
 
-
+        private float alphaCounter = 0;
+        private float counter = 6;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/NPCs/Bosses/singularityFragment/Phase1/SingularityLazerFX").Value;
@@ -83,26 +69,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
         }
         public override void AI()
         {
-
-
-
-            NPC.position = global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.SingularityPos;
+            NPC.position = SingularityFragment.SingularityPos;
             NPC.ai[0]++;
-
-
-
             if (!Down)
             {
                 alphaCounter += 0.09f;
                 if (alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
             {
-      
+
                 if (alphaCounter <= 0)
                 {
                     NPC.active = false;
@@ -110,7 +89,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
                 }
                 alphaCounter -= 0.09f;
             }
-
         }
     }
 }

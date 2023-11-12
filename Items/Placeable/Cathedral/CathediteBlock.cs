@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class CathediteBlock : ModItem
+    public class CathediteBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

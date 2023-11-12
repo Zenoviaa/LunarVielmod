@@ -1,6 +1,3 @@
-
-
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -29,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class SwarmerMinionBuff : ModBuff
+    public class SwarmerMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -157,7 +154,7 @@ namespace Stellamod.Items.Weapons.Summon
                 for (int k = 0; k < Projectile.oldPos.Length; k++)
                 {
                     Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                    Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                     Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
                 }
           

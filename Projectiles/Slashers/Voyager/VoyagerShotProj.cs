@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Voyager
 {
-	public class VoyagerShotProj : ModProjectile
+    public class VoyagerShotProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -91,7 +90,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
 
 		public override bool PreAI()

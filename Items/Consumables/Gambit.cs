@@ -1,23 +1,16 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.NPCs;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.UI.Panels;
-using Terraria.Audio;
-using Stellamod.Projectiles;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs;
 
 namespace Stellamod.Items.Consumables
 {
-	public class Gambit : ModItem
+    public class Gambit : ModItem
 	{
 
 		public override void SetStaticDefaults()

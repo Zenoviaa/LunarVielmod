@@ -1,14 +1,7 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.ForestCore
 {
@@ -27,7 +20,7 @@ namespace Stellamod.Items.Armors.ForestCore
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
 
             Item.defense = 2;
         }

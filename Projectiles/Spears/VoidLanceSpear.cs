@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
 
 namespace Stellamod.Projectiles.Spears
 {
@@ -14,21 +9,17 @@ namespace Stellamod.Projectiles.Spears
     {
         protected virtual float HoldoutRangeMin => 24f;
         protected virtual float HoldoutRangeMax => 96f;
-
-
-        bool Sounded = false;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Star Sheith");
-
         }
+
         public override void SetDefaults()
         {
-
             Projectile.DamageType = DamageClass.Melee;
             Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
@@ -37,15 +28,10 @@ namespace Stellamod.Projectiles.Spears
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch, 0f, 0f, 150, Color.LightGoldenrodYellow, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
-
 
         public override bool PreAI()
         {
-
-
-
             Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
             int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
 

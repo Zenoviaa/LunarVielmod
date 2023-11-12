@@ -1,33 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Foods;
-using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
 using Stellamod.WorldG;
 using System;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Event.Gintzearmy
 {
-	public class GintzeSolider : ModNPC
+    public class GintzeSolider : ModNPC
 	{
 		// States
 		Vector2 dashDirection = Vector2.Zero;

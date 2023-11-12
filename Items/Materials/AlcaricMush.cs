@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class AlcaricMush : ModItem
+    public class AlcaricMush : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

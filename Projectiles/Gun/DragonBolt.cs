@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-	public class DragonBolt : ModProjectile
+    public class DragonBolt : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -39,11 +38,11 @@ namespace Stellamod.Projectiles.Gun
 				{
 					float x = Projectile.position.X - 3 - Projectile.velocity.X / 10f * i;
 					float y = Projectile.position.Y - 3 - Projectile.velocity.Y / 10f * i;
-					int num = Dust.NewDust(new Vector2(x, y), 2, 2, 180);
+					int num = Dust.NewDust(new Vector2(x, y), 2, 2, DustID.DungeonSpirit);
 					Main.dust[num].alpha = Projectile.alpha;
 					Main.dust[num].velocity = Vector2.Zero;
                     Main.dust[num].noGravity = true;
-					int num2 = Dust.NewDust(new Vector2(x, y), 2, 2, 226);
+					int num2 = Dust.NewDust(new Vector2(x, y), 2, 2, DustID.Electric);
 					Main.dust[num2].alpha = Projectile.alpha;
 					Main.dust[num2].velocity = Vector2.Zero;
 					Main.dust[num2].noGravity = true;

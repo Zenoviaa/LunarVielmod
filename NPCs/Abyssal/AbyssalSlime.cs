@@ -1,33 +1,27 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using ReLogic.Content;
+using Stellamod.Buffs;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Utilis;
 using Terraria;
-using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using Stellamod.Buffs;
-using ReLogic.Content;
-using Stellamod.Utilis;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
-
 
 namespace Stellamod.NPCs.Abyssal
 {
 
     public class AbyssalSlime : ModNPC
     {
-        private int timer;
-
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BlueSlime];
             // DisplayName.SetDefault("Abyssal Slime");
         }
-
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -38,9 +32,10 @@ namespace Stellamod.NPCs.Abyssal
             }
             return 0f;
         }
+
         public override void SetDefaults()
         {
-            NPC.alpha = 60;                                      
+            NPC.alpha = 60;
             NPC.width = 25;
             NPC.height = 32;
             NPC.damage = 50;
@@ -48,7 +43,7 @@ namespace Stellamod.NPCs.Abyssal
             NPC.lifeMax = 100;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath29;
-            base.NPC.buffImmune[ModContent.BuffType<AbyssalFlame>()] = false;
+            NPC.buffImmune[BuffType<AbyssalFlame>()] = false;
             NPC.value = 60f;
             NPC.knockBackResist = 0.7f;
             NPC.aiStyle = 1;
@@ -57,47 +52,43 @@ namespace Stellamod.NPCs.Abyssal
             AnimationType = NPCID.BlueSlime;
         }
 
-
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
+            target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ConvulgingMater>(), Main.rand.Next(1, 4), false, 0, false, false);
-            if (Main.rand.Next(30) == 0)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<LunarBand>(), 1, false, 0, false, false);
-            }
-        }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = 1;
-            int d1 = DustID.BlueCrystalShard;
-            for (int k = 0; k < 30; k++)
-            {
-            }
             if (NPC.life <= 0)
             {
-
                 for (int i = 0; i < 20; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, 180, 0f, -2f, 0, default(Color), .8f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.DungeonSpirit, SpeedY: -2f, Scale: .8f);
                     Main.dust[num].noGravity = true;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     if (Main.dust[num].position != NPC.Center)
+                    {
                         Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+                    }
                 }
             }
         }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ItemType<LunarBand>(), 30));
+        }
+
         public override void AI()
         {
-            float num = 1f - (float)NPC.alpha / 255f;
+            float num = 1f - NPC.alpha / 255f;
             Lighting.AddLight(NPC.Center, 0.1f * num, 0.5f * num, 1.5f * num);
         }
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
+
+        private Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;

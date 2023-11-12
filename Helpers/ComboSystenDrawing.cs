@@ -1,14 +1,9 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.GameInput;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Security;
-using System.IO.Pipelines;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
@@ -102,7 +97,7 @@ namespace Stellamod.Helpers
                 Texture2D Pixel = (Texture2D)ModContent.Request<Texture2D>("DivergencyMod/Placeholder/WhitePixel");
 
                 int maxWidth = 100;
-                int width = (int)MathF.Floor((float)maxWidth * ((float)modPlr.Style / ((float)ComboSystem.MaxStyle)));
+                int width = (int)MathF.Floor(maxWidth * (modPlr.Style / ComboSystem.MaxStyle));
 
                 Vector2 drawOriginPos = new Vector2(Main.screenWidth / 2 - maxWidth, Main.screenHeight / 2 - 60f);
                 Vector2 barOrigin = new Vector2(0, 0);
@@ -110,13 +105,13 @@ namespace Stellamod.Helpers
                 Rectangle back = new Rectangle(0, 0, maxWidth, 12);
                 Rectangle fill = new Rectangle(0, 0, width, 12);
 
-                Vector3 resColor = comboItem.ColorStart + ((comboItem.ColorEnd - comboItem.ColorStart) / 100f * (float)width);
+                Vector3 resColor = comboItem.ColorStart + ((comboItem.ColorEnd - comboItem.ColorStart) / 100f * width);
 
                 drawInfo.DrawDataCache.Add(new DrawData(Pixel, drawOriginPos, back, Color.Gray, 0f, barOrigin, 1f, SpriteEffects.None, 0));
                 drawInfo.DrawDataCache.Add(new DrawData(Pixel, drawOriginPos, fill, new Color(resColor), 0f, barOrigin, 1f, SpriteEffects.None, 0));
 
                 // draw style meter reset timer
-                int widthReset = (int)MathF.Floor((float)maxWidth * ((float)modPlr.StyleResetTimer / ((float)ComboSystem.StyleResetTimerMax)));
+                int widthReset = (int)MathF.Floor(maxWidth * (modPlr.StyleResetTimer / ((float)ComboSystem.StyleResetTimerMax)));
 
                 drawOriginPos.Y -= 4;
 

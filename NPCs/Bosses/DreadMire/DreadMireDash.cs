@@ -1,25 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
-
-using Terraria.Graphics.Shaders;
-
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Dusts;
 using Stellamod.Trails;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-     
+
     internal class DreadMireDash : ModProjectile
     {
         int Spin = 0;
@@ -67,7 +59,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
 
         }
-        float alphaCounter = 0.8f;
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleVioletRed.ToVector3() * 1.75f * Main.essScale);

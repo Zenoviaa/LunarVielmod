@@ -1,20 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Items.Harvesting;
+﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.PocketProj;
-using Stellamod.Projectiles.Powders;
 using Stellamod.Tiles;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.PocketDust
 {
-	internal class PocketSand : ModItem
+    internal class PocketSand : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,10 +1,5 @@
-
-
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Projectiles.Magic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -13,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-	public class DeathShotProj : ModProjectile
+    public class DeathShotProj : ModProjectile
 	{
 		public bool OptionallySomeCondition { get; private set; }
 
@@ -41,7 +36,7 @@ namespace Stellamod.Projectiles.Gun
 			for (int k = 0; k < 2; k++)
 			{
 				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.RedTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * (float)k;
+				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
 				Main.dust[index2].scale = .95f;
 				Main.dust[index2].velocity *= 0f;
 				Main.dust[index2].noGravity = true;

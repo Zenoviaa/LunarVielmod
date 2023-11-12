@@ -1,13 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Tiles.RoyalCapital
 {
-	public class CarianWallNatural : ModWall
+    public class CarianWallNatural : ModWall
 	{
 		public override void SetStaticDefaults()
 		{

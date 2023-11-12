@@ -1,5 +1,4 @@
 using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -23,12 +22,12 @@ namespace Stellamod
             {
                 return;
             }
-            this.GintzeIndex = -1;
+            GintzeIndex = -1;
             for (int i = 0; i < Main.npc.Length; i++)
             {
                 if (VerliaBIndex)
                 {
-                    this.GintzeIndex = i;
+                    GintzeIndex = i;
                     break;
                 }
             }
@@ -36,10 +35,10 @@ namespace Stellamod
 
         public override void Apply()
         {
-            this.UpdateMirageIndex();
-            if (this.GintzeIndex != -1)
+            UpdateMirageIndex();
+            if (GintzeIndex != -1)
             {
-                base.UseTargetPosition(Main.npc[this.GintzeIndex].Center);
+                base.UseTargetPosition(Main.npc[GintzeIndex].Center);
             }
             base.Apply();
         }

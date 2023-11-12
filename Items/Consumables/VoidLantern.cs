@@ -1,18 +1,8 @@
 ﻿
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs.Bosses.singularityFragment;
 
 namespace Stellamod.Items.Consumables
 {

@@ -1,14 +1,9 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Terric
 {

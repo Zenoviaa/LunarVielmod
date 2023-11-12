@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.Projectiles.Bow;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -34,11 +29,13 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Frostburn, 180);
         }
+
         public override void AI()
         {
             Projectile.frame = (int)Projectile.ai[0] % 4 > 2 ? 1 : 0;
@@ -52,13 +49,11 @@ namespace Stellamod.Projectiles.Magic
                 float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                 float offsetY = Main.rand.Next(-200, 200) * 0.01f;
 
-
                 Projectile.velocity.X += offsetX;
                 Projectile.velocity.Y += offsetY;
-
             }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -76,22 +71,25 @@ namespace Stellamod.Projectiles.Magic
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
-
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.LightSkyBlue, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))
@@ -105,17 +103,13 @@ namespace Stellamod.Projectiles.Magic
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
-
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightSkyBlue.ToVector3() * 0.75f * Main.essScale);
-
         }
     }
-
 }
 

@@ -1,12 +1,10 @@
 ﻿
-using System;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using System;
+using Terraria;
+using Terraria.DataStructures;
 
 namespace Stellamod.Utilis
 {
@@ -49,18 +47,18 @@ namespace Stellamod.Utilis
         {
             Vector2 zoom = Main.GameViewMatrix.Zoom;
             Matrix zoomScaleMatrix = Matrix.CreateScale(zoom.X, zoom.Y, 1f);
-            Viewport viewport = ((Game)Main.instance).GraphicsDevice.Viewport;
+            Viewport viewport = Main.instance.GraphicsDevice.Viewport;
             int width = viewport.Width;
             int height = viewport.Height;
             viewMatrix = Matrix.CreateLookAt(Vector3.Zero, Vector3.UnitZ, Vector3.Up);
-            viewMatrix *= Matrix.CreateTranslation(0f, (float)(-height), 0f);
+            viewMatrix *= Matrix.CreateTranslation(0f, -height, 0f);
             viewMatrix *= Matrix.CreateRotationZ((float)Math.PI);
             if (Main.LocalPlayer.gravDir == -1f)
             {
-                viewMatrix *= Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, (float)height, 0f);
+                viewMatrix *= Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, height, 0f);
             }
             viewMatrix *= zoomScaleMatrix;
-            projectionMatrix = Matrix.CreateOrthographicOffCenter(0f, (float)width * zoom.X, 0f, (float)height * zoom.Y, 0f, 1f) * zoomScaleMatrix;
+            projectionMatrix = Matrix.CreateOrthographicOffCenter(0f, width * zoom.X, 0f, height * zoom.Y, 0f, 1f) * zoomScaleMatrix;
         }
     }
 

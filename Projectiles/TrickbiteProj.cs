@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -8,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class TrickbiteProj : ModProjectile
+    public class TrickbiteProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

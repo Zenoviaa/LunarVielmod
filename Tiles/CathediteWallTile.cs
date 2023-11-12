@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class CathediteWallTile : ModWall
+    public class CathediteWallTile : ModWall
 	{
 		public override void SetStaticDefaults()
 		{

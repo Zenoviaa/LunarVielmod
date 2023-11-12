@@ -1,15 +1,8 @@
-using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
@@ -27,8 +20,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = 5;
-
+            Item.rare = ItemRarityID.Pink;
             Item.defense = 3;
         }
 
@@ -42,15 +34,18 @@ namespace Stellamod.Items.Armors.AcidArmour
         {
             return body.type == Mod.Find<ModItem>("AcidBody").Type && legs.type == Mod.Find<ModItem>("AcidLegs").Type;
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             player.ThrownVelocity += 3;
             player.moveSpeed = 2f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

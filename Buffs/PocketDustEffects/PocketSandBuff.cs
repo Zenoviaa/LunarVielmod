@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.PocketDustEffects
 {
-	public class PocketSandBuff : ModBuff
+    public class PocketSandBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

@@ -5,19 +5,11 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Tiles.Abyss;
 
 namespace Stellamod.Tiles.Acid
 {
     public class AcidialDirt : ModTile
     {
-        private int music;
-
-
         public override void SetStaticDefaults()
         {
             Main.tileSolid[Type] = true;
@@ -25,13 +17,11 @@ namespace Stellamod.Tiles.Acid
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.Mud][Type] = true;
             Main.tileMerge[TileID.ClayBlock][Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(0, 120, 100), name);
-
-
         }
 
         public override void RandomUpdate(int i, int j)
@@ -39,26 +29,23 @@ namespace Stellamod.Tiles.Acid
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             Tile tileAbove = Framing.GetTileSafely(i, j - 1);
-
-
-
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(12) == 0)
+                if (Main.rand.NextBool(12))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<AcidMush1>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(12) == 0)
+                if (Main.rand.NextBool(12))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<AcidMush2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(12) == 0)
+                if (Main.rand.NextBool(12))
                 {
                     WorldGen.PlaceTile(i, j - 1, TileType<AcidMush3>(), true);
                 }
@@ -67,21 +54,21 @@ namespace Stellamod.Tiles.Acid
 
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(3) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     WorldGen.PlaceTile(i, j - 2, TileType<AcidBush1>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(3) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     WorldGen.PlaceTile(i, j - 2, TileType<AcidBush2>(), true);
                 }
             }
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
             {
-                if (Main.rand.Next(3) == 0)
+                if (Main.rand.NextBool(3))
                 {
                     WorldGen.PlaceTile(i, j - 2, TileType<AcidBush3>(), true);
                 }
@@ -112,12 +99,13 @@ namespace Stellamod.Tiles.Acid
                     tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(8) * 18);
                     WorldGen.SquareTileFrame(i, j + 1, true);
                     if (Main.netMode == NetmodeID.Server)
+                    {
                         NetMessage.SendTileSquare(-1, i, j - 1, 3, TileChangeType.None);
+                    }
                 }
             }
-
-
         }
+
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             Tile tile = Framing.GetTileSafely(i, j);
@@ -130,8 +118,6 @@ namespace Stellamod.Tiles.Acid
                 g = 0.15f;
                 b = 0.05f;
             }
-
         }
-
     }
 }

@@ -1,26 +1,19 @@
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.INest;
+using Stellamod.Utilis;
 using System;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.Utilis;
-using Stellamod.Items.Accessories;
-
 
 namespace Stellamod.NPCs.Acidic
 {
@@ -30,15 +23,12 @@ namespace Stellamod.NPCs.Acidic
         public bool Rocks;
         public float Timer;
         public float RotSpeed = 0.3f;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Acid Probe");
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
-
-
 
         public override void SetDefaults()
         {
@@ -57,6 +47,7 @@ namespace Stellamod.NPCs.Acidic
             NPC.knockBackResist = .75f;
             NPC.aiStyle = -1;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 74;
@@ -79,28 +70,21 @@ namespace Stellamod.NPCs.Acidic
                 }
             }
         }
+
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
-       
-
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-
-
-
-
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
+
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
             Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 5, NPC.height - NPC.frame.Height + 3);
@@ -145,6 +129,7 @@ namespace Stellamod.NPCs.Acidic
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
@@ -155,27 +140,23 @@ namespace Stellamod.NPCs.Acidic
 
             return 0f;
         }
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<VirulentPlating>(), Main.rand.Next(1, 4), false, 0, false, false);
-            if (Main.rand.Next(30) == 0)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<AcidStaketers>(), 1, false, 0, false, false);
-            }
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ItemType<AcidStaketers>(), chanceDenominator: 30));
         }
+
         public override void AI()
         {
             NPC.spriteDirection = NPC.direction;
-
-
-                 Player player = Main.player[NPC.target];
+            Player player = Main.player[NPC.target];
             int Distance = (int)(NPC.Center - player.Center).Length();
+
             if (Distance > 300f)
             {
-
                 Timer = 299;
-
             }
             else
             {
@@ -214,9 +195,6 @@ namespace Stellamod.NPCs.Acidic
                 NPC.netUpdate = true;
             }
 
- 
-
-
             float velMax = 1f;
             float acceleration = 0.011f;
             NPC.TargetClosest(true);
@@ -226,7 +204,6 @@ namespace Stellamod.NPCs.Acidic
             float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
             if (NPC.ai[1] > 200.0)
             {
-
                 if (NPC.ai[1] > 300.0)
                 {
                     NPC.ai[1] = 0f;
@@ -257,7 +234,6 @@ namespace Stellamod.NPCs.Acidic
                 }
             }
 
-
             if (Main.rand.NextBool(30) && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (Main.rand.NextBool(2))
@@ -285,6 +261,7 @@ namespace Stellamod.NPCs.Acidic
                 velMax = 2.5f;
                 acceleration = 0.13f;
             }
+
             float stepRatio = velMax / distance;
             float velLimitX = deltaX * stepRatio;
             float velLimitY = deltaY * stepRatio;
@@ -293,20 +270,21 @@ namespace Stellamod.NPCs.Acidic
                 velLimitX = (float)((NPC.direction * velMax) / 2.0);
                 velLimitY = (float)((-velMax) / 2.0);
             }
+            
             if (NPC.velocity.X < velLimitX)
                 NPC.velocity.X = NPC.velocity.X + acceleration;
             else if (NPC.velocity.X > velLimitX)
                 NPC.velocity.X = NPC.velocity.X - acceleration;
+
             if (NPC.velocity.Y < velLimitY)
                 NPC.velocity.Y = NPC.velocity.Y + acceleration;
             else if (NPC.velocity.Y > velLimitY)
                 NPC.velocity.Y = NPC.velocity.Y - acceleration;
         }
 
-
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.Poisoned, 180);
             }

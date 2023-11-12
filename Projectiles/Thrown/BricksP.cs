@@ -1,7 +1,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -10,10 +9,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-	public class BricksP : ModProjectile
+    public class BricksP : ModProjectile
 	{
-		public bool OptionallySomeCondition { get; private set; }
-
 		public override void SetStaticDefaults()
 		{
             // DisplayName.SetDefault("Brick");
@@ -26,20 +23,22 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.CloneDefaults(ProjectileID.FrostDaggerfish);
             AIType = ProjectileID.FrostDaggerfish;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Gray.ToVector3() * 0.75f * Main.essScale);
-
         }
+
         public override bool PreAI()
 		{
-			if (Main.rand.Next(3) == 1)
+			if (Main.rand.NextBool(3))
 			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone);
 			}
 			return true;
 		}
+
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
@@ -49,11 +48,12 @@ namespace Stellamod.Projectiles.Thrown
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
             return false;
         }
+
         public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Thrown
             {
 
                 SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 0);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone);
             }
         }

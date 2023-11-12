@@ -1,32 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-
-using Terraria.Audio;
-
-using System.Transactions;
-using Terraria.GameContent;
 using Stellamod.UI.Systems;
 using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 {
-	public class DungeonCrossbowHold : ModProjectile
+    public class DungeonCrossbowHold : ModProjectile
 	{
-		private float AimResponsiveness = 0.6f;
-		private bool timerUp = false;
-
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 1;//number of frames the animation has
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.damage = 0;
@@ -41,11 +37,12 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = 55;
 		}
+
 		public override bool? CanDamage()
 		{
 			return false;
 		}
-		private bool recoilFX;
+
 		public override void AI()
 		{
 			Timer++;
@@ -92,7 +89,7 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<DunCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 				ShakeModSystem.Shake = 2;
 			}
@@ -102,25 +99,25 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<DunCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 46)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 49)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 52)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<DunCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 
@@ -168,7 +165,7 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 			int startY = frameHeight * Projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);

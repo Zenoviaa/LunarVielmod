@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using XPT.Core.Audio.MP3Sharp.Decoding;
+using System;
+using System.Runtime.CompilerServices;
+using Terraria;
 
 namespace Stellamod
 {
@@ -19,7 +15,7 @@ namespace Stellamod
 
         public static Color MultiplyAlpha(this Color c, float alpha)
         {
-            return new Color(c.R, c.G, c.B, (int)((float)(int)c.A / 255f * MathHelper.Clamp(alpha, 0f, 1f) * 255f));
+            return new Color(c.R, c.G, c.B, (int)(c.A / 255f * MathHelper.Clamp(alpha, 0f, 1f) * 255f));
         }
 
         public static Vector2 Right => new Vector2(1f, 0f);

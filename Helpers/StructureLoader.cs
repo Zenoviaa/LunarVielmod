@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Terraria;
 using Terraria.ID;
-using System;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
-using Terraria.ObjectData;
-using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
@@ -39,7 +36,7 @@ namespace Stellamod.Helpers
 
                         for (int j = 0; j <= Ylenght; j++)
                         {
-                            Tile t = Framing.GetTileSafely((int)(BottomLeft.X + i), (int)(BottomLeft.Y - j));
+                            Tile t = Framing.GetTileSafely(BottomLeft.X + i, BottomLeft.Y - j);
                             t.ClearEverything();
                             //tile
                             bool hastile = reader.ReadBoolean();
@@ -75,7 +72,7 @@ namespace Stellamod.Helpers
                                 bool Chest = reader.ReadBoolean();
                                 if (Chest)
                                 {
-                                    ChestIndexs.Add(Terraria.Chest.CreateChest((int)(BottomLeft.X + i), (int)(BottomLeft.Y - j)));
+                                    ChestIndexs.Add(Terraria.Chest.CreateChest(BottomLeft.X + i, BottomLeft.Y - j));
                                 }
                                 //byte slope = reader.ReadByte();
 

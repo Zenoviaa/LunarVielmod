@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	internal class BloodLamp : ModItem
+    internal class BloodLamp : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

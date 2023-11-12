@@ -1,32 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-
-using Terraria.Audio;
-
-using System.Transactions;
-using Terraria.GameContent;
 using Stellamod.UI.Systems;
 using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Lead
 {
     public class IronCrossbowHold : ModProjectile
     {
-        private float AimResponsiveness = 0.6f;
-        private bool timerUp = false;
-
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void SetDefaults()
         {
 			Projectile.damage = 0;
@@ -41,26 +37,27 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = 55;
 		}
+
         public override bool? CanDamage()
         {
             return false;
         }
-        private bool recoilFX;
+
         public override void AI()
         {
 			Timer++;
 			if (Timer > 155)
 			{
 				// Our timer has finished, do something here:
-				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				
-
+				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.		
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
 				Timer = 0;
 			}
+
 			Player player = Main.player[Projectile.owner];
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
+
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
 			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
@@ -70,14 +67,13 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
 
+			Projectile.velocity = swordRotation.ToRotationVector2();
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
 				Projectile.rotation = Projectile.velocity.ToRotation();
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
-
 
 			if (Timer == 1)
 			{
@@ -92,7 +88,7 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<LeadCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 				ShakeModSystem.Shake = 2;
 			}
@@ -102,25 +98,25 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<LeadCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 46)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 49)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 			if (Timer == 52)
 			{
 
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), (int)(Projectile.damage * 1), Projectile.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<LeadCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
 				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
 			}
 
@@ -138,9 +134,7 @@ namespace Stellamod.Projectiles.Crossbows.Lead
 				{
 					Projectile.frame = 0;
 				}
-			}
-
-			
+			}		
 		}
         private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
         {
@@ -154,12 +148,10 @@ namespace Stellamod.Projectiles.Crossbows.Lead
             player.itemAnimation = 3;
 
             player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Player player = Main.player[Projectile.owner];
-
+            //Player player = Main.player[Projectile.owner];
             SpriteEffects spriteEffects = SpriteEffects.None;
             if (Projectile.spriteDirection == -1)
                 spriteEffects = SpriteEffects.FlipHorizontally;
@@ -168,19 +160,11 @@ namespace Stellamod.Projectiles.Crossbows.Lead
             int startY = frameHeight * Projectile.frame;
             Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
             Vector2 origin = sourceRectangle.Size() / 2f;
-            origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+            origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-
-            return false;
-
-       
-           
+            return false;    
         }
-
-       
-        
-
     }
 }

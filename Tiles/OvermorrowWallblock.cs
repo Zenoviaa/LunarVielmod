@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class OvermorrowWallblock : ModWall
+    public class OvermorrowWallblock : ModWall
 	{
 		public override void SetStaticDefaults()
 		{

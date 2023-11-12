@@ -1,16 +1,12 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
+using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Terraria.DataStructures;
-using Terraria.Audio;
-using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Weapons.Melee
 {

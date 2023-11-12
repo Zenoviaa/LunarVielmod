@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class IceBrooch : ModBuff
+    public class IceBrooch : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

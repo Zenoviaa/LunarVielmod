@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
 
 namespace Stellamod.Items.Materials.Tech
 {
@@ -27,7 +20,7 @@ namespace Stellamod.Items.Materials.Tech
             Item.rare = ItemRarityID.Blue;
             Item.useTime = 10;
             Item.useAnimation = 10;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
         }
     }
 }

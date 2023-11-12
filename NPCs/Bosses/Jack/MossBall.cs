@@ -1,7 +1,5 @@
-using Stellamod.NPCs.Bosses.INest;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -12,8 +10,6 @@ namespace Stellamod.NPCs.Bosses.Jack
 {
     public class MossBall : ModProjectile
     {
-        public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("JackoBall");
@@ -28,12 +24,12 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.friendly = false;
             Projectile.hostile = true;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Poisoned, 180);
         }
-
 
         public override bool PreAI()
         {
@@ -72,11 +68,12 @@ namespace Stellamod.NPCs.Bosses.Jack
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
             return false;
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             {
@@ -88,24 +85,24 @@ namespace Stellamod.NPCs.Bosses.Jack
             }
             for (int i = 0; i < 15; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
-                int dust1 = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, 74, 0f, -2f, 0, default(Color), .8f);
+                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
+                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
             }
             return false;
         }
+
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
         {
             width = (height = 8);
             fallThrough = base.Projectile.position.Y <= base.Projectile.ai[1];
             return true;
         }
+
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromThis();
             SoundEngine.PlaySound(SoundID.Grass, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundMiss, Projectile.position);
-
         }
-
     }
 }

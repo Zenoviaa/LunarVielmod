@@ -1,20 +1,13 @@
-using Stellamod.Items.Accessories;
-using Stellamod.Dusts;
-using Stellamod.Items.Weapons.Mage;
-
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using rail;
 using ReLogic.Content;
+using Stellamod.Dusts;
 using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
@@ -22,15 +15,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     public class DreadSurvent : ModNPC
     {
         bool Spawn;
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
-        float HomeY = 330f;
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             Main.npcFrameCount[NPC.type] = 3;
         }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -38,6 +29,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 new FlavorTextBestiaryInfoElement("Powerful skulls tainted by devilish intent (dreadmire must’ve got bored with this one)"),
             });
         }
+
         public override void SetDefaults()
         {
             NPC.width = 25;

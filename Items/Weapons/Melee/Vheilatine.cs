@@ -1,13 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Particles;
-using Stellamod.Projectiles;
-
-using Stellamod.Projectiles.Slashers.Hearstspire;
 using Stellamod.Projectiles.Slashers.Vheilatine;
 using System.Collections.Generic;
 using Terraria;
@@ -88,11 +83,11 @@ namespace Stellamod.Items.Weapons.Melee
             int dir = AttackCounter;
             if (player.direction == 1)
             {
-                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter;
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
             }
             else
             {
-                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter * -1;
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
 
             }
             AttackCounter = -AttackCounter;

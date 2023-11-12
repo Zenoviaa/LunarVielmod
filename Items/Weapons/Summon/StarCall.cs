@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.DataStructures;
@@ -12,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class StarCall : ModItem
+    public class StarCall : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

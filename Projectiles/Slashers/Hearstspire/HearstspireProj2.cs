@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Particles;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,8 +11,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Slashers.Hearstspire
 {
     public class HearstspireProj2 : ModProjectile
-    {
-        
+    {       
         float dr = 0;
         public static bool swung = false;
         public int SwingTime = 35;
@@ -28,40 +26,34 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
 
-
-        private Player Owner => Main.player[Projectile.owner];
-
-
         public float SwingDistance;
         public float Curvature;
-
-
         public ref float AiState => ref Projectile.ai[1];
-        int afterImgCancelDrawCount = 0;
 
+        /*
+         
+        int afterImgCancelDrawCount = 0;
 
         private Vector2 returnPosOffset; //The position of the projectile when it starts returning to the player from being hooked
         private Vector2 npcHookOffset = Vector2.Zero; //Used to determine the offset from the hooked npc's center
         private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
         private NPC hookNPC; //The npc the projectile is hooked into
 
+        */
+
         public const float THROW_RANGE = 320; //Peak distance from player when thrown out, in pixels
         public const float HOOK_MAXRANGE = 800; //Maximum distance between owner and hooked enemies before it automatically rips out
         public const int HOOK_HITTIME = 20; //Time between damage ticks while hooked in
         public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
 
-        private int _flashTime;
-
+        //private int _flashTime;
         public bool Flip = false;
         public bool Slam = false;
         public bool PreSlam = false;
 
-        private List<float> oldRotation = new List<float>();
-        private List<Vector2> oldBase = new List<Vector2>();
-
         public Vector2 CurrentBase = Vector2.Zero;
 
-        private int slamTimer = 0;
+        //private int slamTimer = 0;
         public override void SetDefaults()
         {
             Projectile.damage = 30;
@@ -94,14 +86,12 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
             if (!_initialized && Main.myPlayer == Projectile.owner)
             {
                 timer++;
-
                 SwingTime = (int)(30 / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
                 Projectile.timeLeft = SwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
-
             }
             else if (_initialized)
             {
@@ -192,17 +182,11 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
         }
 
         public override bool ShouldUpdatePosition() => false;
-
-
         public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Projectile.owner];
             player.statDefense += 10;
         }
-
-
-
-
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -219,13 +203,9 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
                 Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                 sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 
-
-
-
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Main.instance.LoadProjectile(Projectile.type);
-
 
             // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
@@ -235,16 +215,16 @@ namespace Stellamod.Projectiles.Slashers.Hearstspire
                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(93, 203, 243), new Color(59, 72, 168), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
+
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return false;
         }
 
 
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(255, 108, 180, 0) * (1f - (float)Projectile.alpha / 255f);
+            return new Color(255, 108, 180, 0) * (1f - Projectile.alpha / 255f);
         }
     }
 }

@@ -6,14 +6,14 @@ using Stellamod.WorldG;
 using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Overworld.RoyalSlime
 {
 
-	public class RoyalSlime : ModNPC
+    public class RoyalSlime : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{
@@ -27,6 +27,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
                 new FlavorTextBestiaryInfoElement("The slime kings Royal heir, it will take his place opon death...")
             });
         }
+
         public override void SetDefaults()
 		{
 			NPC.width = 32;
@@ -45,16 +46,20 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 			AIType = NPCID.BlueSlime;
 			AnimationType = NPCID.BlueSlime;
 		}
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (Main.dayTime && spawnInfo.Player.ZoneOverworldHeight && !spawnInfo.Player.ZoneBeach && !spawnInfo.Player.ZoneJungle && !spawnInfo.Player.ZoneDesert && !spawnInfo.Player.ZoneSnow && !spawnInfo.Player.ZoneCrimson && !spawnInfo.Player.ZoneSkyHeight && !EventWorld.Gintzing ? (0.01f) : 0f);
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.SlimeCrown, 1, false, 0, false, false);
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ItemID.Gel, Main.rand.Next(1, 20));
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemID.SlimeCrown));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 1, maximumDropped: 20));
         }
-		public override void AI()
+
+        public override void AI()
 		{
             NPC.spriteDirection = NPC.direction;
         }
@@ -81,34 +86,36 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
                 effects,
                 0
             );
+            
             SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
+            //Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.LightBlue);
             for (int num103 = 0; num103 < 4; num103++)
             {
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
             {
                 var EntitySource = NPC.GetSource_Death();
 
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 33, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 33, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Water, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Water, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
 
             }
             else
             {
                 for (int k = 0; k < 7; k++)
                 {
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 33, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 33, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Water, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Water, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
                 }
             }
         }

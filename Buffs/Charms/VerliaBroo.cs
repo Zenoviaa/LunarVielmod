@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class VerliaBroo : ModBuff
+    public class VerliaBroo : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

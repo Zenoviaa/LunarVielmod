@@ -1,14 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-	public class NaxtrinTemple : ModBiome
+    public class NaxtrinTemple : ModBiome
 	{
 		// Select all the scenery
 

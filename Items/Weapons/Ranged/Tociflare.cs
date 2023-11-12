@@ -1,21 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Gun;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Gun;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Tociflare : ModItem
+    public class Tociflare : ModItem
 	{
 		public override void SetStaticDefaults()
         {
@@ -31,7 +25,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.height = 40;
             Item.useTime = 27;
             Item.useAnimation = 27;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.Green;

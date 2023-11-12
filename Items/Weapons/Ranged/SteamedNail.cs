@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class SteamedNail : ModItem
+    public class SteamedNail : ModItem
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;

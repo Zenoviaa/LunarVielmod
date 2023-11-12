@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs
 {
-	public class DeathmultiBL : GlobalNPC
+    public class DeathmultiBL : GlobalNPC
 	{
 		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 		{

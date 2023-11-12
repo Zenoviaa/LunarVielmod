@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class PetalDance : ModProjectile
+    public class PetalDance : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

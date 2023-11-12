@@ -1,20 +1,14 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
     internal class AssassinsDischarge : ModItem
     {
-        public int WinterboundArrow;
         public override void SetDefaults()
         {
             Item.damage = 18;
@@ -36,6 +30,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useTime = 28;
             Item.consumeAmmoOnLastShotOnly = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -45,13 +40,15 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();
         }
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-20f, 0f);
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-        }
 
+        }
     }
 }

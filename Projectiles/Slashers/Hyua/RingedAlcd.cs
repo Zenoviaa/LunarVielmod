@@ -1,23 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-
-using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
-using Stellamod.UI.Systems;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Slashers.Hyua
 {
-	public class RingedAlcd : ModProjectile
+    public class RingedAlcd : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -89,7 +78,7 @@ namespace Stellamod.Projectiles.Slashers.Hyua
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 255f);
 		}
 
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class Stick : ModItem
+    internal class Stick : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,10 +1,9 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
 
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
@@ -30,23 +29,18 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Projectile.width = 60;
             Projectile.extraUpdates = 1;
         }
+
 		float alphaCounter = 5;
-		int counter;
 		public override void AI()
         {
             Projectile.ai[0]++;
-
             alphaCounter -= 0.09f;
-
         }
-
 
         public override bool PreDraw(ref Color lightColor)
         {
-
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_56").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(45f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
-
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(45f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.6f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             return true;
         }

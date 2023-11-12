@@ -1,24 +1,21 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Armors.Vanity.Verlia;
-using Stellamod.Items.Accessories.Brooches;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-	public class VerliaBossBag : ModItem
+    public class VerliaBossBag : ModItem
 	{
 
 		public override void SetStaticDefaults()

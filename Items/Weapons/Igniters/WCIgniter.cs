@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.IgniterEx;
 using Terraria;
 using Terraria.Audio;
@@ -11,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class WCIgniter : ModItem
+    internal class WCIgniter : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

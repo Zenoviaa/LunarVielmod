@@ -1,17 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,10 +12,6 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 {
     public class VoyagerProjThrow : ModProjectile
     {
-
-        private int Spawned;
-        private bool ParticleNo;
-
         public override void SetDefaults()
         {
             
@@ -37,8 +25,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             Projectile.scale = 1f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
-            Projectile.timeLeft = 100;
-         
+            Projectile.timeLeft = 100;       
         }
 
         public override void SetStaticDefaults()
@@ -47,7 +34,6 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-
 
         public float Timer
         {
@@ -135,14 +121,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
-         
-
-
-
-
         }
-
-
     }
 }
 

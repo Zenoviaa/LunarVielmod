@@ -1,36 +1,22 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Bosses.Verlia;
+using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Events;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-
-using Stellamod.NPCs.Bosses.Jack;
-using System.Reflection.Metadata;
-using Stellamod.Utilis;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
-using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
-using Stellamod.NPCs.Overworld.ShadowWraith;
-using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DaedusRework;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -54,11 +40,19 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.npcFrameCount[NPC.type] = 30;
             // DisplayName.SetDefault("Binding Abyss");
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
+            // This will always be true, so it's a nothing statement
+            /*
             if (Main.rand.Next(1) == 0)
                 target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
+            */
+
+            //Use ModContent.BuffType<> instead of Mod.Find, it's faster and cleaner
+            target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
+
         public override void SetDefaults()
         {
             NPC.scale = 0;
@@ -79,13 +73,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 0.5f;
-
             if (NPC.frameCounter >= 3)
             {
                 frame++;
@@ -95,9 +87,10 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 frame = 0;
             }
-            NPC.frame.Y = frameHeight * frame;
 
+            NPC.frame.Y = frameHeight * frame;
         }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             if (Main.expertMode || Main.masterMode)
@@ -118,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             Player player = Main.player[NPC.target];
             NPC.velocity.Y *= 0.94f;
-            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
         }
         public int rippleCount = 20;
         public int rippleSize = 5;
@@ -135,13 +128,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public int SparkCountMax;
         public override void AI()
         {
-           
-           
-
-
-
-
-
             PH2 = NPC.life < NPC.lifeMax * 0.4f;
             if (PH2)
             {
@@ -151,7 +137,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 MaxAttac = 5;
             }
-
 
             var entitySource = NPC.GetSource_FromThis();
             Player player = Main.player[NPC.target];
@@ -169,6 +154,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -210,8 +196,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     }
                     NPC.damage = 9999;
                 }
-      
-      
             }
             else
             {
@@ -219,8 +203,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 NPC.dontTakeDamage = true;
                 NPC.dontCountMe = true;
             }
-
-
 
             if (NPC.ai[2] == 1)
                 switch (NPC.ai[1])
@@ -526,7 +508,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             for (int j = -1; j <= 1; j++)
                             {
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Normalize(Main.player[base.NPC.target].Center - base.NPC.Center).RotatedBy((float)j * 0.5f) * 6f, ModContent.ProjectileType<SoulBlast>(), damage, 0f);
+                                    Projectile.NewProjectile(entitySource, base.NPC.Center, Vector2.Normalize(Main.player[base.NPC.target].Center - base.NPC.Center).RotatedBy(j * 0.5f) * 6f, ModContent.ProjectileType<SoulBlast>(), damage, 0f);
                             }
                         }
                         if (NPC.ai[0] == 220)
@@ -762,7 +744,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         }
 
-        Vector2 targetPos;
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
             Player player = Main.player[NPC.target];
@@ -770,7 +751,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, target, 0.5f), NPC.Center.Distance(target) * Speed), 0.1f);
         }
 
-        float alphaCounter = 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
@@ -846,7 +826,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 using Stellamod.UI.Panels;
 using System.Collections.Generic;
 using Terraria;
@@ -9,7 +8,7 @@ using Terraria.UI;
 
 namespace Stellamod.UI.Systems
 {
-	public class UISystem : ModSystem
+    public class UISystem : ModSystem
 	{
 		public UserInterface HarvestButtonLayer;
 		public HarvestButton HarvestButtonElement;

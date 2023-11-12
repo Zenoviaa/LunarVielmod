@@ -1,14 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Items.Harvesting;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod;
-using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Accessories
 {
-	public class PlantH : ModItem
+    public class PlantH : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

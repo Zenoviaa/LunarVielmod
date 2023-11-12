@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class NoxianWood : ModItem
+    public class NoxianWood : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

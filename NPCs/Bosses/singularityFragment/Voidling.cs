@@ -1,25 +1,19 @@
 using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Items.Materials;
 
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
-
     public class Voidling : ModNPC
     {
-
-
         public bool Shooting;
         public float Timer;
         public override void SetStaticDefaults()
@@ -48,11 +42,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/NPCHit/VoidHit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/NPCKilled/VoidDead2") with { PitchVariance = 0.1f };
         }
-        int frame = 0;
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-
-
             for (int k = 0; k < 20; k++)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.DungeonSpirit, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
@@ -75,9 +67,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 }
             }
         }
+
         Vector2 targetPos;
-        float alphaCounter;
-        float bloomCounter = 1;
         public override void AI()
         {
             Player player = Main.player[NPC.target];

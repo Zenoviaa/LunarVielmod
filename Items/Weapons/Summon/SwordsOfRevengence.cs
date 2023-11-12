@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.StringnNeedles.Alcadiz;
 using Stellamod.Projectiles.StringnNeedles.Verl;
 using Terraria;
 using Terraria.DataStructures;
@@ -9,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class SwordsOfRevengence : ModItem
+    public class SwordsOfRevengence : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

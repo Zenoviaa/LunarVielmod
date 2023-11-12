@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Wounded : ModBuff
+    public class Wounded : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

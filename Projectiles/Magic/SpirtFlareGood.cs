@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,7 +10,6 @@ namespace Stellamod.Projectiles.Magic
 {
     public class SpirtFlareGood : ModProjectile
 	{
-		private int timer;
 		public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Spirt Flare");
@@ -42,10 +40,12 @@ namespace Stellamod.Projectiles.Magic
 			Projectile.spriteDirection = Projectile.direction;
 			return true;
 		}
+
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return Color.White;
 		}
+
 		float alphaCounter;
 		public override void AI()
 		{
@@ -59,9 +59,9 @@ namespace Stellamod.Projectiles.Magic
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 226, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -73,8 +73,8 @@ namespace Stellamod.Projectiles.Magic
 			int num1222 = 74;
 			for (int k = 0; k < 2; k++)
 			{
-				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 226, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * (float)k;
+				int index2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+				Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
 				Main.dust[index2].scale = .95f;
 				Main.dust[index2].velocity *= 0f;
 				Main.dust[index2].noGravity = true;
@@ -88,18 +88,17 @@ namespace Stellamod.Projectiles.Magic
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
 			return false;
 		}
 		public override void OnKill(int timeLeft)
-		{
-		
+		{	
 			for (int i = 0; i < 15; i++)
 			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 226);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 226);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
 			}
 			SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 		}

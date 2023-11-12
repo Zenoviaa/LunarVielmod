@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Gun;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ModLoader;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Venatici : ModItem
+    public class Venatici : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,10 +23,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 10;
 			Item.useTime = 25;
 			Item.useAnimation = 25;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 2;
 			Item.value = 100000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/TON618");
 			Item.autoReuse = false;
 			Item.shoot = ProjectileType<Venbullet>();

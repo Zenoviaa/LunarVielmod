@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -26,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.damage = 42;
             Item.useTime = 13;
             Item.useAnimation = 13;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.autoReuse = true;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

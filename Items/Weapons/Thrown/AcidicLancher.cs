@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Thrown;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Stellamod.Projectiles.Thrown;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	public class AcidicLancher : ModItem
+    public class AcidicLancher : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -28,7 +22,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.height = 40;
 			Item.useTime = 22;
 			Item.useAnimation = 22;
-			Item.useStyle = 1;
+			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;
