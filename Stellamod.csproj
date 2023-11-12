@@ -241,6 +241,9 @@
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Projectiles\Magic\PoyaProj.png" />
+    <None Remove="Projectiles\Magic\Poyashot.png" />
+    <None Remove="Projectiles\Magic\Poyashot2.png" />
     <None Remove="Projectiles\Powders\AivanPowderProj.png" />
     <None Remove="Projectiles\Powders\CrystalPowderProj.png" />
     <None Remove="Projectiles\Powders\GovheilPowderProj.png" />

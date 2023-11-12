@@ -28,6 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.damage = 32;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
+            Item.mana = 100;
             Item.height = 25;
             Item.useTime = 9999;
             Item.useAnimation = 9999;

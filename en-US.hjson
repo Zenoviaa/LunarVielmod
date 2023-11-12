@@ -3725,6 +3725,11 @@ Mods: {
 				DisplayName: Hyua
 				Tooltip: ""
 			}
+
+			Poya: {
+				DisplayName: Poya
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4217,6 +4222,10 @@ Mods: {
 			InkBullet1.DisplayName: Ink Bullet1
 			VoyagerProjThrow.DisplayName: Voyager Proj Throw
 			Ink2a.DisplayName: Ink2a
+			AlcaricMushBoom2.DisplayName: Alcaric Mush Boom2
+			PoyaProj.DisplayName: Poya Proj
+			Poyashot.DisplayName: Poyashot
+			Poyashot2.DisplayName: Poyashot2
 		}
 
 		NPCs: {

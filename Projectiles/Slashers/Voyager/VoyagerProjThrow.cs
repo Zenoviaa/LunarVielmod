@@ -62,7 +62,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
                 player.GetModPlayer<MyPlayer>().SwordComboSlash += 1;
             }
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + (speedXa * 5), Projectile.position.Y + (speedYa * 5), speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+         //   Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + (speedXa * 5), Projectile.position.Y + (speedYa * 5), speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             if (Timer == 99)
             {
                 ShakeModSystem.Shake = 4;
