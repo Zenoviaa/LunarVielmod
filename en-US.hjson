@@ -3730,6 +3730,17 @@ Mods: {
 				DisplayName: Poya
 				Tooltip: ""
 			}
+
+			FireflyStaff: {
+				DisplayName: Firefly Staff
+				Tooltip:
+					'''
+					Summons a firefly to fight for you!
+					Right click to swap between attack mode and defense mode, gaining stats that scale with the number of fireflies
+					While in offense mode, you gain movement speed and flight mobility
+					While in defense mode, you gain defense and life regen, but your fireflies attack slower
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -4226,6 +4237,7 @@ Mods: {
 			PoyaProj.DisplayName: Poya Proj
 			Poyashot.DisplayName: Poyashot
 			Poyashot2.DisplayName: Poyashot2
+			FireflyMinion.DisplayName: Firefly Minion
 		}
 
 		NPCs: {
@@ -6118,6 +6130,11 @@ Mods: {
 			MasteryMagic: {
 				DisplayName: Mastery Magic
 				Description: Mods.Stellamod.Buffs.MasteryMagic.Description
+			}
+
+			FireflyMinionBuff: {
+				DisplayName: Firefly Blessing
+				Description: You are protected by fireflies!
 			}
 		}
 	}

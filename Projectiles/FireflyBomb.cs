@@ -77,13 +77,17 @@ namespace Stellamod.Projectiles
         public override bool PreAI()
         {
             int num1222 = 74;
-            for (int k = 0; k < 2; k++)
+            if (Main.rand.NextBool(4))
             {
-                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CopperCoin, Scale: 0.95f);
-                Main.dust[dust].position = Projectile.Center - Projectile.velocity / num1222 * k;
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].noLight = false;
+                for (int k = 0; k < 2; k++)
+                {
+                    int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CopperCoin, Scale: 0.95f);
+                    Main.dust[dust].position = Projectile.Center - Projectile.velocity / num1222 * k;
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].noLight = false;
+                }
             }
+
 
             return base.PreAI();
         }
