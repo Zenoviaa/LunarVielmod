@@ -179,6 +179,9 @@
     <None Remove="Items\Weapons\Summon\DripplerStaff.png" />
     <None Remove="Items\Weapons\Summon\FCBuff.png" />
     <None Remove="Items\Weapons\Summon\FCMinion.png" />
+    <None Remove="Items\Weapons\Summon\FireflyMinion.png" />
+    <None Remove="Items\Weapons\Summon\FireflyMinionBuff.png" />
+    <None Remove="Items\Weapons\Summon\FireflyStaff.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionLeft.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionRight.png" />
     <None Remove="Items\Weapons\Summon\HMMinionBuff.png" />
