@@ -28,6 +28,8 @@ namespace Stellamod.Items.Weapons.Summon
 			{
 				int fireflyCount = player.ownedProjectileCounts[ProjectileType<FireflyMinion>()];
 				int fireflyMinionType = ProjectileType<FireflyMinion>();
+				player.buffTime[buffIndex] = 18000;
+
 				for (int i = 0; i < Main.maxProjectiles; i++)
 				{
 					Projectile other = Main.projectile[i];
@@ -39,15 +41,14 @@ namespace Stellamod.Items.Weapons.Summon
 
 
 					FireflyMinion fireflyMinion = other.ModProjectile as FireflyMinion;
-					if(fireflyMinion.AttackStyle == FireflyMinion.AttackState.Defense_Mode)
-                    {
-						player.buffTime[buffIndex] = 18000;
+					if (fireflyMinion.AttackStyle == FireflyMinion.AttackState.Defense_Mode)
+					{
 						player.statDefense += fireflyCount * 7;
 						player.lifeRegen += fireflyCount * 3;
 						player.nightVision = true;
 						break;
 					} else
-                    {
+					{
 						//player.wingTime += fireflyCount * 1;
 						player.moveSpeed += 0.1f * fireflyCount;
 						player.wingRunAccelerationMult += 0.05f * fireflyCount;
@@ -190,8 +191,8 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public sealed override void SetDefaults()
 		{
-			Projectile.width = 18;
-			Projectile.height = 28;
+			Projectile.width = 32;
+			Projectile.height = 32;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 
 			// These below are needed for a minion weapon
@@ -358,7 +359,7 @@ namespace Stellamod.Items.Weapons.Summon
 					break;
 				case AttackState.Defense_Mode:
 					//float factor =  / (float)fireflyCount;
-					float t = _orbitingOffset + ((float)minionIndex / (float)fireflyCount) * minionIndex;
+					float t = _orbitingOffset + (minionIndex / (float)fireflyCount) * minionIndex;
 					float offset = VectorHelper.Osc(5, 10);
 					float x = 16 * MathF.Pow(MathF.Sin(t), 3);
 					float y = 13f * MathF.Cos(t) - 5 * MathF.Cos(2 * t) - 2 * MathF.Cos(3 * t) - MathF.Cos(4 * t);
