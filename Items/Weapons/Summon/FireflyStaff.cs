@@ -279,7 +279,7 @@ namespace Stellamod.Items.Weapons.Summon
 					break;
 				case AttackState.Attack_Mode:
 					_orbitingOffset += 0.33f;
-					attackCooldown = 17;
+					attackCooldown = 25;
 					break;
             }
 
@@ -291,7 +291,8 @@ namespace Stellamod.Items.Weapons.Summon
 				Vector2 vectorToTarget = targetCenter - Projectile.Center;
 				Vector2 directionToTarget = vectorToTarget.SafeNormalize(Vector2.Zero);
 				Vector2 velocity = directionToTarget * 30;
-				Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity, ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity, ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				projectile.DamageType = DamageClass.Summon;
 
 				//How many ticks between attacks?
 				_attackCooldown = attackCooldown;

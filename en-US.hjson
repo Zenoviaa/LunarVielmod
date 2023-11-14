@@ -3741,6 +3741,17 @@ Mods: {
 					While in defense mode, you gain defense and life regen, but your fireflies attack slower
 					'''
 			}
+
+			VampireScepter: {
+				DisplayName: Vampire Scepter
+				Tooltip:
+					'''
+					Summons a vampiric torch to aid you in battle
+					The torch completely negates life regen, however you have immense lifesteal while close to enemies
+					Greatly increases summon damage while active
+					There can only be one
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -4238,6 +4249,7 @@ Mods: {
 			Poyashot.DisplayName: Poyashot
 			Poyashot2.DisplayName: Poyashot2
 			FireflyMinion.DisplayName: Firefly Minion
+			VampireTorchMinion.DisplayName: Vampire Torch Minion
 		}
 
 		NPCs: {
@@ -6135,6 +6147,11 @@ Mods: {
 			FireflyMinionBuff: {
 				DisplayName: Firefly Blessing
 				Description: You are protected by fireflies!
+			}
+
+			VampireTorchMinionBuff: {
+				DisplayName: Sanguine Curse
+				Description: You are bloodthirsty!
 			}
 		}
 	}
