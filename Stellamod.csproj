@@ -201,6 +201,9 @@
     <None Remove="Items\Weapons\Summon\SwarmerMinion.png" />
     <None Remove="Items\Weapons\Summon\SwarmerMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\SwarmerStaff.png" />
+    <None Remove="Items\Weapons\Summon\VampireScepter.png" />
+    <None Remove="Items\Weapons\Summon\VampireTorchMinion.png" />
+    <None Remove="Items\Weapons\Summon\VampireTorchMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidMinion.png" />
     <None Remove="Items\Weapons\Summon\VoidMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidStaff.png" />
