@@ -310,7 +310,8 @@ namespace Stellamod.Items.Weapons.Summon
 				int count = 3;
 				for (int k = 0; k < count; k++)
 				{
-					Dust.NewDust(Projectile.position, 8, 8, DustID.Blood);
+					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(Projectile.Center, speed * 0, ParticleManager.NewInstance<Ink3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 			}
 
