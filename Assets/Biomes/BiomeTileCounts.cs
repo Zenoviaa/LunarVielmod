@@ -1,13 +1,12 @@
 ﻿
-using Terraria.ModLoader;
-using System;
-using Terraria.ModLoader;
-using Stellamod.Tiles.Abyss;
-using Stellamod.Tiles.Acid;
-using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles;
+using Stellamod.Tiles.Abyss;
+using Stellamod.Tiles.Abyss.Aurelus;
+using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Naxtrin;
 using Stellamod.Tiles.RoyalCapital;
+using System;
+using Terraria.ModLoader;
 
 namespace Stellamod
 {

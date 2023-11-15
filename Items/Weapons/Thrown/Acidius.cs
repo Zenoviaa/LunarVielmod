@@ -1,22 +1,18 @@
 
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
-using Stellamod.Projectiles.Thrown;
-using Stellamod.Projectiles.Swords;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
     public class Acidius : ModItem
 	{
-        private Vector2 newVect;
-
         public override void SetStaticDefaults() 
 		{
 			// DisplayName.SetDefault("Boralius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-
 		}
 
         public override void SetDefaults()
@@ -28,10 +24,10 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.height = 40;
             Item.useTime = 22;
             Item.useAnimation = 22;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.crit = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;

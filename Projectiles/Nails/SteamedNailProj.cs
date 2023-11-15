@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
 using Stellamod.Dusts;
-using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -13,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Nails
 {
-	public class SteamedNailProj : ModProjectile
+    public class SteamedNailProj : ModProjectile
 	{
 		public static bool swung = false;
 		public int SwingTime = 60;
@@ -105,7 +103,7 @@ namespace Stellamod.Projectiles.Nails
 			
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.StarAnise, (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f); ;
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 3, speedY * 3, ProjectileID.StarAnise, Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f); ;
 	
 
 			if (target.lifeMax <= 500)

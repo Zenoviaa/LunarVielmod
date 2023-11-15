@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	public class SunGlyph : ModItem
+    public class SunGlyph : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

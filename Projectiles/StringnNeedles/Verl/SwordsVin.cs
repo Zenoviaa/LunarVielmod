@@ -2,32 +2,30 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.StringnNeedles.Verl
 {
-	// - ModProjectile - the minion itself
+    // - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
-	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
-	// This is NOT an in-depth guide to advanced minion AI
+    // It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
+    // To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
+    // This is NOT an in-depth guide to advanced minion AI
 
-	// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+    // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
-	// This minion shows a few mandatory things that make it behave properly.
-	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-	// If the player targets a certain NPC with right-click, it will fly through tiles to it
-	// If it isn't attacking, it will float near the player with minimal movement
-	public class SwordsVin : ModProjectile
+    // This minion shows a few mandatory things that make it behave properly.
+    // Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
+    // If the player targets a certain NPC with right-click, it will fly through tiles to it
+    // If it isn't attacking, it will float near the player with minimal movement
+    public class SwordsVin : ModProjectile
 	{
 		NPC target;
 		int afterImgCancelDrawCount = 0;
-		int afterImgCancelDrawCount2 = 0;
+		//int afterImgCancelDrawCount2 = 0;
 		Vector2 endPoint;
 		Vector2 controlPoint1;
 		Vector2 controlPoint2;
@@ -35,7 +33,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 		Vector2 wantedEndPoint;
 		bool initialization = false;
 		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-		 public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
+		public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
         float t = 0;
 		public bool Hitbebeans;
 		public override void SetStaticDefaults()
@@ -93,7 +91,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 					flag53 = true;
 
 				int num997 = (int)Projectile.ai[1];
-				if (Projectile.localAI[0] >= (float)(60 * num996))
+				if (Projectile.localAI[0] >= 60 * num996)
 					flag52 = true;
 				else if (num997 < 0 || num997 >= 200)
 					flag52 = true;
@@ -219,7 +217,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
-			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;
@@ -236,7 +234,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
-					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}
 
@@ -273,14 +271,14 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 					float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(-10, 10);
 
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ModContent.ProjectileType<SwordsArmy2>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ModContent.ProjectileType<SwordsArmy2>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<SwordsArmy3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 					ShakeModSystem.Shake = 4;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 			SoundEngine.PlaySound(SoundID.Item110);
 				
 

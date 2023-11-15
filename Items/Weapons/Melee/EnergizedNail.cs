@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class EnergizedNail : ModItem
+    public class EnergizedNail : ModItem
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;

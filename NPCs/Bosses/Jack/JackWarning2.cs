@@ -1,10 +1,9 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
 
 
 namespace Stellamod.NPCs.Bosses.Jack
@@ -30,8 +29,8 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.width = 1;
             Projectile.extraUpdates = 1;
         }
+
         float alphaCounter = 0f;
-        int counter;
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -46,20 +45,15 @@ namespace Stellamod.NPCs.Bosses.Jack
             }
             alphaCounter += 0.008f;
         }
+
         bool Moved;
-
-
         public override bool PreDraw(ref Color lightColor)
         {
-
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/RayLight2").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(25f * alphaCounter), 0), Projectile.rotation, new Vector2(171 / 2, 51 / 2), 0.8f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
-
-
             return true;
         }
-
     }
 }

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Dusteffects
 {
-	public class EXPtime3 : ModBuff
+    public class EXPtime3 : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

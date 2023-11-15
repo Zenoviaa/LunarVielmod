@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 namespace Stellamod.Tiles.Ambient
 {
-	public class OwlTrunck1 : ModTile
+    public class OwlTrunck1 : ModTile
 	{
 		public override void SetStaticDefaults()
         {

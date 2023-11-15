@@ -1,16 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Items.Materials;
 
 
 
@@ -125,14 +119,15 @@ namespace Stellamod.NPCs.Ice.WinterbornBat
         public override void AI()
         {
             NPC.spriteDirection = NPC.direction;
-            float num = 1f - (float)NPC.alpha / 255f;
+            float num = 1f - NPC.alpha / 255f;
             alphaCounter += 0.04f;
             NPC.rotation = NPC.velocity.X * 0.03f;
         }
-        public override void OnKill()
-        {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<WinterbornShard>(), Main.rand.Next(1, 3), false, 0, false, false);
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WinterbornShard>(), minimumDropped: 1, maximumDropped: 3));
         }
     }
 }

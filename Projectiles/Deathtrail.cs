@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Deathtrail : ModProjectile
+    public class Deathtrail : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

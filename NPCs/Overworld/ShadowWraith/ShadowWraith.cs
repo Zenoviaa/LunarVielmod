@@ -1,28 +1,24 @@
 
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Overworld.ShadowWraith
 {
 
     public class ShadowWraith : ModNPC
     {
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
-        float HomeY = 330f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Wraith");
@@ -30,6 +26,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             Main.npcFrameCount[NPC.type] = 3;
         }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -37,6 +34,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 new FlavorTextBestiaryInfoElement("Powerful skulls sent by skeletron to roam the darkness for the next pray")
             });
         }
+
         public override void SetDefaults()
 		{
             NPC.width = 25;
@@ -54,43 +52,40 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             NPC.alpha = 0;
             NPC.noGravity = true;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 0.5f;
-
             if (NPC.frameCounter >= 4)
             {
                 frame++;
                 NPC.frameCounter = 0;
             }
+
             if (frame >= 3)
             {
                 frame = 0;
             }
-            NPC.frame.Y = frameHeight * frame;
 
+            NPC.frame.Y = frameHeight * frame;
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-
             return (spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && !Main.hardMode) ? (0.300f) : 0f;
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-
             int spOff = NPC.alpha / 20;
-
             for (float j = -(float)Math.PI; j <= (float)Math.PI / 2f; j += (float)Math.PI / 2f)
             {
-                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + (float)base.NPC.alpha * 0.25f + (float)spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(150 + spOff * 2, 60 + spOff * 2, 150 + spOff * 2, 255 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
+                spriteBatch.Draw((Texture2D)TextureAssets.Npc[base.NPC.type], base.NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(base.NPC.rotation + j) - Main.screenPosition, base.NPC.frame, Color.FromNonPremultiplied(150 + spOff * 2, 60 + spOff * 2, 150 + spOff * 2, 255 - base.NPC.alpha), base.NPC.rotation, base.NPC.frame.Size() / 2f, base.NPC.scale, Effects, 0f);
             }
 
             Main.spriteBatch.End();
@@ -102,13 +97,13 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-                Color color = NPC.GetAlpha(Color.Pink) * (float)(((float)(NPC.oldPos.Length - k) / (float)NPC.oldPos.Length) / 2);
+                Color color = NPC.GetAlpha(Color.Pink) * (float)(((NPC.oldPos.Length - k) / (float)NPC.oldPos.Length) / 2);
                 spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
             }
+
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
-
         }
 
         public override void OnKill()
@@ -122,12 +117,11 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeCharm>(), 1, false, 0, false, false);
             }
 
-          if (NPC.downedBoss1)
+            if (NPC.downedBoss1)
             {
                 Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
             }
         }
-
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -135,8 +129,8 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 3, 1, 3));
             }
-
         }
+
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
@@ -163,10 +157,9 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 0);
             }
         }
+
         public override void AI()
         {
-
-
             Player player = Main.player[NPC.target];
             if (Main.dayTime || player.dead)
             {
@@ -184,11 +177,11 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             NPC.spriteDirection = -NPC.direction;
             NPC.ai[0]++;
             NPC.rotation = NPC.velocity.X * 0.03f;
-
             if (NPC.alpha > 0)
             {
                 NPC.alpha -= 2;
             }
+
             if (NPC.ai[0] == 500)
             {
                 NPC.alpha = 40;
@@ -203,11 +196,12 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<ShadowFlare>(), damage, 1, Main.myPlayer, 0, 0);
             }
+
             if (NPC.ai[0] >= 400)
             {
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, 205);
+                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.VenomStaff);
                     dust.velocity *= -1f;
                     dust.scale *= .8f;
                     dust.noGravity = true;
@@ -220,26 +214,25 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                     dust.position = NPC.Center - vector2_3;
                     NPC.netUpdate = true;
                 }
+
                 NPC.velocity *= 0.92f;
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
             {
-                var EntitySource = NPC.GetSource_Death();
-
-
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 205, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 205, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
-
+                //var EntitySource = NPC.GetSource_Death();
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.VenomStaff, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.VenomStaff, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
             }
             else
             {
                 for (int k = 0; k < 7; k++)
                 {
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 205, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 205, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.VenomStaff, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.VenomStaff, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
                 }
             }
         }

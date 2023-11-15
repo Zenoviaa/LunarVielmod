@@ -1,20 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class RustlockPistol : ModItem
+    public class RustlockPistol : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,10 +24,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 56;
 			Item.useTime = 10;
 			Item.useAnimation = 10;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 100000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item11;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.Bullet;

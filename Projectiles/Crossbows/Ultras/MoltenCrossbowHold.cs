@@ -1,32 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-
-using Terraria.Audio;
-
-using System.Transactions;
-using Terraria.GameContent;
 using Stellamod.UI.Systems;
 using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Ultras
 {
     public class MoltenCrossbowHold : ModProjectile
     {
-        private float AimResponsiveness = 0.6f;
-        private bool timerUp = false;
-
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;//number of frames the animation has
         }
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void SetDefaults()
         {
 			Projectile.damage = 0;
@@ -41,11 +37,12 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = 90;
 		}
+
         public override bool? CanDamage()
         {
             return false;
         }
-        private bool recoilFX;
+
         public override void AI()
         {
 			Timer++;
@@ -53,8 +50,6 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 			{
 				// Our timer has finished, do something here:
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-				
-
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
 				Timer = 0;
 			}
@@ -86,7 +81,7 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MoltenCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MoltenCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 			}
 
 			
@@ -133,9 +128,7 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
 				{
 					Projectile.frame = 0;
 				}
-			}
-
-			
+			}	
 		}
         private void UpdatePlayerVisuals(Player player, Vector2 playerhandpos)
         {
@@ -149,12 +142,10 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
             player.itemAnimation = 3;
 
             player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Player player = Main.player[Projectile.owner];
-
+            //Player player = Main.player[Projectile.owner];
             SpriteEffects spriteEffects = SpriteEffects.None;
             if (Projectile.spriteDirection == -1)
                 spriteEffects = SpriteEffects.FlipHorizontally;
@@ -163,19 +154,11 @@ namespace Stellamod.Projectiles.Crossbows.Ultras
             int startY = frameHeight * Projectile.frame;
             Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
             Vector2 origin = sourceRectangle.Size() / 2f;
-            origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+            origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-
             return false;
-
-       
-           
         }
-
-       
-        
-
     }
 }

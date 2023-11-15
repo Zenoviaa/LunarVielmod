@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class StarBullet : ModProjectile
+    public class StarBullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -56,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc - 16, speedXabc * 0, speedYabc - 3 * 2, ModContent.ProjectileType<StarSpike>(), (int)(10), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc - 16, speedXabc * 0, speedYabc - 3 * 2, ModContent.ProjectileType<StarSpike>(), 10, 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 

@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class FabledSunray : ModProjectile
+    public class FabledSunray : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -53,7 +52,7 @@ namespace Stellamod.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 255f);
+			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 255f);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{

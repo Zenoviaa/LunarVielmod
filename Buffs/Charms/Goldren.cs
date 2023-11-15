@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class Goldren : ModBuff
+    public class Goldren : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

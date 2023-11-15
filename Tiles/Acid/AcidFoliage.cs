@@ -7,7 +7,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Acid
 {
-	public class AcidFoliage : ModTile
+    public class AcidFoliage : ModTile
 	{
         public override void SetStaticDefaults()
         {

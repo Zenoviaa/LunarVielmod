@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class GovheilTile : ModTile
+    public class GovheilTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

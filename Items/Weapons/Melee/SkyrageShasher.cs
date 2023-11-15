@@ -1,23 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Swords;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class SkyrageShasher : ModItem
+    public class SkyrageShasher : ModItem
 	{
 		public float ArrowCount = 0;
 		public override void SetStaticDefaults()
@@ -33,10 +26,10 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.height = 40;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
-			Item.useStyle = 1;
+			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 1, 20, 0);
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<WindSythe>();
 			Item.shootSpeed = 15f;
@@ -50,7 +43,7 @@ namespace Stellamod.Items.Weapons.Melee
 				Item.shootSpeed = 20f;
 				for (int index1 = 0; index1 < 19; ++index1)
 				{
-					int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.Electric, velocity.X, velocity.Y, (int)byte.MaxValue, new Color(), (float)Main.rand.Next(6, 10) * 0.1f);
+					int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.Electric, velocity.X, velocity.Y, byte.MaxValue, new Color(), Main.rand.Next(6, 10) * 0.1f);
 					Main.dust[index2].noGravity = true;
 					Main.dust[index2].velocity *= 0.5f;
 					Main.dust[index2].scale *= 1.2f;
@@ -63,7 +56,7 @@ namespace Stellamod.Items.Weapons.Melee
 				Item.shootSpeed = 15f;
 				for (int index1 = 0; index1 < 19; ++index1)
 				{
-					int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.Cloud, velocity.X, velocity.X, (int)byte.MaxValue, new Color(), (float)Main.rand.Next(6, 10) * 0.1f);
+					int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.Cloud, velocity.X, velocity.X, byte.MaxValue, new Color(), Main.rand.Next(6, 10) * 0.1f);
 					Main.dust[index2].noGravity = true;
 					Main.dust[index2].velocity *= 0.5f;
 					Main.dust[index2].scale *= 1.2f;

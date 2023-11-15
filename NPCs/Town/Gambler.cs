@@ -1,45 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Buffs;
+using Stellamod.Dusts;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.PowdersItem;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using ReLogic.Content;
-using Terraria.ModLoader.IO;
-using Stellamod.Dusts;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Buffs;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.NPCs.Town
 {
-	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	[AutoloadHead]
+    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+    [AutoloadHead]
 	public class Gambit : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
-	
-
-		private static int ShimmerHeadIndex;
-		private static Profiles.StackedNPCProfile NPCProfile;
-
 		public override void SetStaticDefaults()
 		{
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
@@ -56,7 +41,7 @@ namespace Stellamod.NPCs.Town
 			
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
@@ -81,7 +66,7 @@ namespace Stellamod.NPCs.Town
 
 
 			
-
+			// This is my favorite semicolon :) 
 			; // < Mind the semicolon!
 		}
 		

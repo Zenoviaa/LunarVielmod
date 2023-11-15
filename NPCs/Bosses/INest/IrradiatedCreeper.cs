@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 
 namespace Stellamod.NPCs.Bosses.INest
@@ -13,14 +12,13 @@ namespace Stellamod.NPCs.Bosses.INest
 
     public class IrradiatedCreeper : ModNPC
     {
-        private int timer;
-
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 8;
             NPCID.Sets.TrailingMode[NPC.type] = 1;
             // DisplayName.SetDefault("Irradiated Creeper");
         }
+
         public override void SetDefaults()
         {
 
@@ -38,20 +36,18 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.noGravity = true;
             NPC.noTileCollide = true;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-
+            /*
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
             Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+            */
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 4, NPC.height - NPC.frame.Height + 6);

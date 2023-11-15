@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Systems
 {
-	// Here is a class dedicated to showcasing projectile modifications
-	public class ProjectileModifications : GlobalProjectile
+    // Here is a class dedicated to showcasing projectile modifications
+    public class ProjectileModifications : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;
 
@@ -14,14 +14,15 @@ namespace Stellamod.UI.Systems
 		public bool sayTimesHitOnThirdHit;
 		// These are set when the user specifies that they want a trail.
 		private Color trailColor;
-		private bool trailActive;
+		//private bool trailActive;
 
 		// Here I have a method for setting the above fields.
 		public void SetTrail(Color color)
 		{
 			trailColor = color;
-			trailActive = true;
+			//trailActive = true;
 		}
+
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (sayTimesHitOnThirdHit)

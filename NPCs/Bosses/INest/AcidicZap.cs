@@ -7,18 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.INest
 {
-	public class AcidicZap : ModProjectile
+    public class AcidicZap : ModProjectile
     {
         Vector2 MissilePos;
         bool OnGround;
-		float distance = 8;
-		int rotationalSpeed = 4;
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Acid Zap");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.penetrate = 1;
@@ -34,8 +33,8 @@ namespace Stellamod.NPCs.Bosses.INest
 			Projectile.width = Projectile.height = 32;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 9;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-
         }
+
         float alphaCounter = 0;
 		public override void AI()
 		{

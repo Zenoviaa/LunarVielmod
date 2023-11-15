@@ -1,12 +1,10 @@
 
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Stellamod.Items.Weapons.Summon.DripplerStaff;
@@ -14,7 +12,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -28,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class DripperBuff : ModBuff
+    public class DripperBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -83,6 +81,7 @@ namespace Stellamod.Items.Weapons.Summon
             // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
             Item.shoot = ProjectileType<Drippler>();
         }
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -98,7 +97,7 @@ namespace Stellamod.Items.Weapons.Summon
 			player.AddBuff(Item.buffType, 2);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GSummon"), player.position);
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
-            position = Main.MouseWorld;
+            // position = Main.MouseWorld;
 			return true;
 		}
 
@@ -329,12 +328,11 @@ namespace Stellamod.Items.Weapons.Summon
 						Projectile.frame = 0;
 					}
 				}
-                if (Main.rand.Next(3) == 1)
+
+                if (Main.rand.NextBool(3))
                 {
-                    int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 25, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                    int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 25, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-                    Main.dust[dust].velocity *= 0f;
-                    Main.dust[dust1].velocity *= 0f;
+                    int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.MeteorHead);
+                    int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.MeteorHead);
                     Main.dust[dust].noGravity = true;
                     Main.dust[dust1].noGravity = true;
                 }

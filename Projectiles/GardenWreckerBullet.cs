@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
 using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class GardenWreckerBullet : ModProjectile
+    public class GardenWreckerBullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -90,7 +88,7 @@ namespace Stellamod.Projectiles
 			ShakeModSystem.Shake = 4;
 			float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ProjectileID.DaybreakExplosion, (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ProjectileID.DaybreakExplosion, Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<SkullShotKaboom>(), (int)(Projectile.damage * 1.1), 0f, Projectile.owner, 0f, 0f);
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"));
 

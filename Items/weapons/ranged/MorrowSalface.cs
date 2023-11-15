@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class MorrowSalface : ModItem
+    public class MorrowSalface : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -5,7 +5,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Assets.Biomes
 {
-	public class CathedralWaterStyle : ModWaterStyle
+    public class CathedralWaterStyle : ModWaterStyle
 	{
 		public override int ChooseWaterfallStyle() => Find<ModWaterfallStyle>("Stellamod/CathedralWaterfallStyle").Slot;
 		public override int GetSplashDust() => DustType<Solution>();

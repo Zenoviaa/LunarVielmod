@@ -8,17 +8,15 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
 {
-	// This ModNPC serves as an example of a completely custom AI.
-	public class HarvestOverworld : ModNPC
+    // This ModNPC serves as an example of a completely custom AI.
+    public class HarvestOverworld : ModNPC
 	{
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
 		// These are for our benefit and the numbers could easily be used directly in the code below, but this is how we keep code organized.

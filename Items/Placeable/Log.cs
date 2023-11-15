@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class Log : ModItem
+    public class Log : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,11 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class MalB : ModBuff
+    public class MalB : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

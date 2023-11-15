@@ -1,19 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
 using Stellamod.Buffs;
-using Stellamod.Particles;
-using Stellamod.UI.Systems;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Buffs.PocketDustEffects;
 
 namespace Stellamod.Brooches
 {
-	public class FrileBroochP : ModProjectile
+    public class FrileBroochP : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

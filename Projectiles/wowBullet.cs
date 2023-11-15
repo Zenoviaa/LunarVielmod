@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class wowBullet : ModProjectile
+    public class wowBullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

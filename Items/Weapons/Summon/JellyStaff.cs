@@ -1,6 +1,3 @@
-
-
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -13,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -27,7 +24,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class JellyMinionBuff : ModBuff
+    public class JellyMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

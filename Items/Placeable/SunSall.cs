@@ -1,14 +1,11 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class SunSall : ModItem
+    public class SunSall : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

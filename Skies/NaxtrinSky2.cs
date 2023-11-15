@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod;
+using System;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameInput;
-using Terraria.Graphics;
-using Terraria.Graphics.CameraModifiers;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.Skies
 {
-	public class NaxtrinSky2 : CustomSky
+    public class NaxtrinSky2 : CustomSky
 	{
 		public override void Activate(Vector2 position, params object[] args)
 		{

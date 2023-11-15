@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class AlcadizMetal : ModItem
+    internal class AlcadizMetal : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

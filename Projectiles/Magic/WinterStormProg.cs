@@ -1,33 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using ReLogic.Content;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
-using Stellamod.Effects;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
     internal class WinterStormProg : ModProjectile
     {
-        float SAdd;
-        bool Up2;
-        bool Up;
-        bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Winter Storm");
             ProjectileID.Sets.TrailingMode[Type] = 1;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.75f * Main.essScale);
@@ -37,8 +29,8 @@ namespace Stellamod.Projectiles.Magic
                 Main.dust[dustnumber].noGravity = false;
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
+
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Shuriken);
@@ -53,10 +45,9 @@ namespace Stellamod.Projectiles.Magic
             base.Projectile.ignoreWater = true;
             base.Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
-
-
             Projectile.ai[1]++;
             if (Projectile.ai[1] >= 10)
             {
@@ -65,6 +56,7 @@ namespace Stellamod.Projectiles.Magic
 
             Projectile.velocity.Y -= 0.01f;
         }
+
         public override void OnKill(int timeLeft)
         {
             var EntitySource = Projectile.GetSource_Death();
@@ -81,28 +73,31 @@ namespace Stellamod.Projectiles.Magic
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Main.myPlayer, 0, 0);
             }
+
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.Snow, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
             }
-
-
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.LightBlue, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;

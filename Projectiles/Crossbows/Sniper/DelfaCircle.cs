@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Crossbows.Sniper
 {
-	public class DelfaCircle : ModProjectile
+    public class DelfaCircle : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Crossbows.Sniper
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(255, 255, 100, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(255, 255, 100, 0) * (1f - Projectile.alpha / 50f);
 		}
 		public override void AI()
 		{

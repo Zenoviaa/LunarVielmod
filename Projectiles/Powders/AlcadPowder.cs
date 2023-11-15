@@ -2,7 +2,6 @@
 using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Dusteffects;
-using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Powders
 {
-	public class AlcadPowder : ModProjectile
+    public class AlcadPowder : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

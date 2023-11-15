@@ -1,14 +1,14 @@
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Tiles;
 using Terraria;
-using static Terraria.ModLoader.ModContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Tiles;
-using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Materials;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Placeables
 {
-	public class CellConverterI : ModItem
+    public class CellConverterI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

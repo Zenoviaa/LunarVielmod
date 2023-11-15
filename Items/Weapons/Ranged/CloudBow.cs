@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Bow;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Bow;
 
 namespace Stellamod.Items.Weapons.Ranged
 
 {
-	public class CloudBow : ModItem
+    public class CloudBow : ModItem
 	{
 
 		public override void SetStaticDefaults()
@@ -32,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 40;
 			Item.useTime = 37;
 			Item.useAnimation = 37;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 0, 20, 0);
 			Item.rare = ItemRarityID.Blue;

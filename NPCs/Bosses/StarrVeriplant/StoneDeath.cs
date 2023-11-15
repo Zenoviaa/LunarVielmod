@@ -1,29 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.Jack;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.Jack;
 
 
 //By Al0n37
@@ -32,16 +14,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
     public class StoneDeath : ModNPC
     {
-
-
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
-        float HomeY = 330f;
         private bool p2 = false;
-        bool Chucking;
-
         float timer = 0;
         public override void SetStaticDefaults()
         {
@@ -89,11 +64,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
         {
             NPC.damage = 0;
             timer++;
-
-                if (timer == 1)
+            if (timer == 1)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
             }
+
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
@@ -181,8 +156,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                     NPC.active = false;
                 }
             }
-
-
         }
     }
 }

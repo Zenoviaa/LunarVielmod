@@ -1,11 +1,10 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.Graphics.Effects;
-using Terraria.Utilities;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using ReLogic.Content;
+using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Skies
 {
@@ -24,7 +23,7 @@ namespace Stellamod.Skies
 
             public float Depth;
 
-            public int TextureIndex;
+            //public int TextureIndex;
 
             public float SinOffset;
 
@@ -191,7 +190,7 @@ namespace Stellamod.Skies
 
                 Texture2D SkyTexture = ModContent.Request<Texture2D>("Stellamod/Textures/StarbloomSkyBeam").Value;
 
-                spriteBatch.Draw(SkyTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - (double)Main.screenPosition.Y - 2000) * 0.1f)), Main.screenWidth, Main.screenHeight),
+                spriteBatch.Draw(SkyTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - Main.screenPosition.Y - 2000) * 0.1f)), Main.screenWidth, Main.screenHeight),
                 Color.Lerp(SkyColors[index], SkyColors[(index + 1) % 3], fade) * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f * opacity));
             }
         }
@@ -223,11 +222,11 @@ namespace Stellamod.Skies
 
             for (int i = 0; i < amount; i++)
             {
-                float XAmount = (float)i / (float)amount;
+                float XAmount = i / (float)amount;
                 for (int j = 0; j < amountMult; j++)
                 {
-                    float YAmount = (float)j / (float)amountMult;
-                    backgroundPillar[currentPillar].Position.X = XAmount * (float)Main.maxTilesX * 16f;
+                    float YAmount = j / (float)amountMult;
+                    backgroundPillar[currentPillar].Position.X = XAmount * Main.maxTilesX * 16f;
                     backgroundPillar[currentPillar].Position.Y = YAmount * ((float)Main.worldSurface * 16f + 3000f) - 1000f;
                     backgroundPillar[currentPillar].Depth = randomValue.NextFloat() * 8f + 2f;
                     backgroundPillar[currentPillar].SinOffset = randomValue.NextFloat() * 6.28f;

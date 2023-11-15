@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class OvermorrowdirtTile : ModTile
+    public class OvermorrowdirtTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

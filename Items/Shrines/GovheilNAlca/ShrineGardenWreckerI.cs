@@ -1,6 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Tiles;
-using Stellamod.Tiles.ShrineBreakers.Govheil;
+﻿using Stellamod.Tiles.ShrineBreakers.Govheil;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -8,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Shrines.GovheilNAlca
 {
-	public class ShrineGardenWreckerI : ModItem
+    public class ShrineGardenWreckerI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

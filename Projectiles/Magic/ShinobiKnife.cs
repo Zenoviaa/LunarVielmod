@@ -1,7 +1,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -13,14 +12,12 @@ namespace Stellamod.Projectiles.Magic
     public class ShinobiKnife : ModProjectile
     {
         public bool OptionallySomeCondition { get; private set; }
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
-
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Bullet);
@@ -49,15 +46,16 @@ namespace Stellamod.Projectiles.Magic
             }
             return false;
         }
+
         public override bool PreAI()
         {
-            if (Main.rand.Next(13) == 1)
+            if (Main.rand.NextBool(13))
             {
-
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
             return true;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);

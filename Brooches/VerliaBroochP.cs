@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Brooches
 {
-   public class VerliaBroochP : ModProjectile
+    public class VerliaBroochP : ModProjectile
     {
 
         public override void SetDefaults()
@@ -34,7 +28,7 @@ namespace Stellamod.Brooches
         {
             Projectile.alpha++;
 
-            float num = 1f - (float)Projectile.alpha / 255f;
+            float num = 1f - Projectile.alpha / 255f;
             Projectile.velocity *= .98f;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f;
             num *= Projectile.scale;

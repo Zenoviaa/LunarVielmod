@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles.Naxtrin
 {
-	public class NoxianBlock : ModTile
+    public class NoxianBlock : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

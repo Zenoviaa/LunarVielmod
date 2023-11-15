@@ -1,38 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.Bestiary;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.Items.Armors.Terric;
-using Terraria.DataStructures;
-using Stellamod.NPCs.Bosses.Daedus;
 
 
 //By Al0n37
@@ -102,6 +74,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             return true;
         }
+
         public override void SetDefaults()
         {
             NPC.alpha = 0;
@@ -117,14 +90,9 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.noTileCollide = true;
             NPC.boss = true;
             NPC.npcSlots = 10f;
-
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
-        int frame = 0;
-       
 
-        bool CutScene;
-        private int Counter;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -132,6 +100,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
             });
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
@@ -205,6 +174,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -252,7 +222,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
                         break;
                     case 2:
-                        Vector2 DLightPos;
                         NPC.ai[0]++;
 
                         if (NPC.ai[0] >= 300)
@@ -263,12 +232,8 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SolarPortal>());
                         }
                         break;
-
                 }
             }
         }
-
-
-
     }
 }

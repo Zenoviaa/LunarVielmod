@@ -2,7 +2,6 @@
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -10,7 +9,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles
 {
-	public class CellConverter : ModTile
+    public class CellConverter : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -30,7 +29,7 @@ namespace Stellamod.Tiles
 			TileObjectData.addTile(Type);
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Cell Converter");
-			this.AddMapEntry(Colors.RarityAmber, name);
+			AddMapEntry(Colors.RarityAmber, name);
 		}
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)

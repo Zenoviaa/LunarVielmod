@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles
 {
 
-	public class splitshot : ModProjectile
+    public class splitshot : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

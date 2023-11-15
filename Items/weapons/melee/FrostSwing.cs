@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class FrostSwing : ModItem
+    public class FrostSwing : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

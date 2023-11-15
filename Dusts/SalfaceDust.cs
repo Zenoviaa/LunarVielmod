@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-	public class SalfaceDust : ModDust
+    public class SalfaceDust : ModDust
 	{
 		public override void OnSpawn(Dust dust)
 		{

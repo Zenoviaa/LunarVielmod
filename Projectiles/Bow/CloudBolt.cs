@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
-	public class CloudBolt : ModProjectile
+    public class CloudBolt : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Bow
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 			for (int i = 0; i < 40; i++)
 			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default(Color), 1.5f);
+				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default(Color), 1.5f);
 				Main.dust[num].noGravity = true;
 				Main.dust[num].scale = 1.9f;
 				Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -52,10 +52,11 @@ namespace Stellamod.Projectiles.Bow
 				}
 			}
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-
-			if (Main.rand.Next(2) == 0)
+			//Does BlueLighting even exist??? Where is this buff from
+			if (Main.rand.NextBool(2))
 				target.AddBuff(Mod.Find<ModBuff>("BlueLighting").Type, 200);
 			Projectile.timeLeft = 1;
 		}
@@ -65,9 +66,9 @@ namespace Stellamod.Projectiles.Bow
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f;
 			//Create particles
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 212, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-			int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 212, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-			int dust2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 212, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.BubbleBurst_White, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.BubbleBurst_White, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust2 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.BubbleBurst_White, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust1].noGravity = true;
 			Main.dust[dust2].noGravity = true;
@@ -75,9 +76,9 @@ namespace Stellamod.Projectiles.Bow
 			Main.dust[dust1].scale = 0.9f;
 			Main.dust[dust2].scale = 0.9f;
 
-			int dust3 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-			int dust4 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-			int dust5 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 206, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust3 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust4 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+			int dust5 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
 			Main.dust[dust3].noGravity = true;
 			Main.dust[dust4].noGravity = true;
 			Main.dust[dust5].noGravity = true;
@@ -96,7 +97,7 @@ namespace Stellamod.Projectiles.Bow
 			{
 				for (int i = 0; i < 40; i++)
 				{
-					int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default(Color), 1.5f);
+					int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default(Color), 1.5f);
 					Main.dust[num].noGravity = true;
 					Main.dust[num].scale = 1.9f;
 					Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;

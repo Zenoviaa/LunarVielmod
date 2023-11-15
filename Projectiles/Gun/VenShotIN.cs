@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 
 {
-	public class VenShotIN : ModProjectile
+    public class VenShotIN : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -56,7 +55,7 @@ namespace Stellamod.Projectiles.Gun
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(100, 100, 100, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(100, 100, 100, 0) * (1f - Projectile.alpha / 50f);
 		}
 
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)

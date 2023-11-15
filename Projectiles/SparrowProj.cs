@@ -9,18 +9,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class SparrowProj : ModProjectile
+    public class SparrowProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("dead");
 			Main.projFrames[Projectile.type] = 1;
 		}
-		private int ProjectileSpawnedCount;
-		private int ProjectileSpawnedMax;
-		private Projectile ParentProjectile;
-		private bool RunOnce = true;
-		private bool MouseLeftBool = false;
+
 		public override void SetDefaults()
 		{
 			Projectile.damage = 0;
@@ -34,11 +30,13 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void AI()
 		{
 			Timer++;
@@ -54,6 +52,7 @@ namespace Stellamod.Projectiles
 			Player player = Main.player[Projectile.owner];
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
+
 			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
 			float swordRotation = 0f;
 			if (Main.myPlayer == Projectile.owner)
@@ -63,8 +62,8 @@ namespace Stellamod.Projectiles
 				if (!player.channel)
 					Projectile.Kill();
 			}
-			Projectile.velocity = swordRotation.ToRotationVector2();
 
+			Projectile.velocity = swordRotation.ToRotationVector2();
 			Projectile.spriteDirection = player.direction;
 			if (Projectile.spriteDirection == 1)
 				Projectile.rotation = Projectile.velocity.ToRotation();
@@ -76,8 +75,8 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
 			}
@@ -87,8 +86,8 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
 			}
 
@@ -97,8 +96,8 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY * 5, ModContent.ProjectileType<MorrowShotArrow>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowarrow"));
 			}
 
@@ -123,11 +122,11 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<SalfaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/bowpull"));
 			}
 
@@ -150,11 +149,10 @@ namespace Stellamod.Projectiles
 			int startY = frameHeight * Projectile.frame;
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 origin = sourceRectangle.Size() / 2f;
-			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30); // Customization of the sprite position
+			origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
 
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-			
 			return false;
 		}
 	}

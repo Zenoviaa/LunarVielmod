@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class OvermorrowDirt : ModItem
+    public class OvermorrowDirt : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
 
 namespace Stellamod.Projectiles.Swords
 {
@@ -44,9 +42,9 @@ namespace Stellamod.Projectiles.Swords
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 205, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.VenomStaff, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -73,13 +71,13 @@ namespace Stellamod.Projectiles.Swords
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                 SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.position);
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default(Color), .8f);
+                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num1].noGravity = true;
                 Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 if (Main.dust[num1].position != Projectile.Center)
                     Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, -2f, 0, default(Color), .8f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, -2f, 0, default(Color), .8f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -93,7 +91,7 @@ namespace Stellamod.Projectiles.Swords
         {
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 206, 0f, 0f, 150, Color.MediumPurple, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.UnusedWhiteBluePurple, 0f, 0f, 150, Color.MediumPurple, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }

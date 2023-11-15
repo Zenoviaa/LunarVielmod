@@ -1,12 +1,11 @@
-﻿using Stellamod.Tiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class OvermorrowdirtwallBlock : ModItem
+    public class OvermorrowdirtwallBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

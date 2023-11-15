@@ -1,19 +1,9 @@
-﻿using Stellamod.Projectiles.Magic;
-using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Spears;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Projectiles.Spears;
-using System;
-using Stellamod.Items.Materials;
-using Terraria;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Thrown;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
@@ -45,7 +35,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useAnimation = 20;
             Item.useTime = 20;
             Item.consumable = true;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
         }
 
         public override void AddRecipes()

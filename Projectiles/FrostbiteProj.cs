@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Particles;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class FrostbiteProj : ModProjectile
+    public class FrostbiteProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

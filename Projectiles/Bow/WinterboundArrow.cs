@@ -1,14 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Projectiles.Bow
 {
@@ -68,18 +65,17 @@ namespace Stellamod.Projectiles.Bow
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Main.myPlayer, 0, 0);
             }
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Frostburn, 180);
         }
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 180, 0f, 0f, 150, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonSpirit, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
-
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -96,20 +92,17 @@ namespace Stellamod.Projectiles.Bow
             }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return true;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightSkyBlue.ToVector3() * 1.75f * Main.essScale);
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 180, 0f, 0f, 150, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonSpirit, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
-
-
     }
 }

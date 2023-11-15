@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class VerstiDance : ModItem
+    public class VerstiDance : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

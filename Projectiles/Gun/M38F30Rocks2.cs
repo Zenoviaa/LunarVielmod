@@ -1,33 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using ReLogic.Content;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Projectiles.Gun
 {
     internal class M38F30Rocks2 : ModProjectile
     {
-        float SAdd;
-        bool Up2;
-        bool Up;
-        bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Rock");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Brown.ToVector3() * 1.75f * Main.essScale);
@@ -36,8 +27,8 @@ namespace Stellamod.Projectiles.Gun
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CopperCoin, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
-
         }
+
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.Shuriken);
@@ -52,10 +43,9 @@ namespace Stellamod.Projectiles.Gun
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
-
-
             Projectile.ai[1]++;
             if (Projectile.ai[1] >= 10)
             {
@@ -64,6 +54,7 @@ namespace Stellamod.Projectiles.Gun
 
             Projectile.velocity.Y -= 0.01f;
         }
+
         public override void OnKill(int timeLeft)
         {
             int Sound = Main.rand.Next(1, 3);
@@ -90,23 +81,25 @@ namespace Stellamod.Projectiles.Gun
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
-
-
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.SandyBrown, Color.Transparent, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -114,7 +107,6 @@ namespace Stellamod.Projectiles.Gun
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
     }

@@ -1,26 +1,16 @@
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.INest.IEagle
 {
 
     public class IrradieagleSurvent : ModNPC
     {
-        int moveSpeed = 0;
-        int moveSpeedY = 0;
-        float HomeY = 330f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Wraith");
@@ -28,6 +18,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             Main.npcFrameCount[NPC.type] = 4;
         }
+
         public override void SetDefaults()
         {
             NPC.width = 40;
@@ -46,38 +37,35 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.alpha = 0;
             NPC.noGravity = true;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 0.5f;
-
             if (NPC.frameCounter >= 4)
             {
                 frame++;
                 NPC.frameCounter = 0;
             }
+
             if (frame >= 3)
             {
                 frame = 0;
             }
-            NPC.frame.Y = frameHeight * frame;
 
+            NPC.frame.Y = frameHeight * frame;
         }
         private float Size;
         private bool CheckSize;
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 2.25f * Main.essScale);
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
+           // var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
@@ -88,7 +76,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
-
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
@@ -104,6 +91,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                 {
                     spriteEffects = SpriteEffects.FlipHorizontally;
                 }
+
                 Vector2 halfSize = new Vector2(GlowTexture.Width / 2, GlowTexture.Height / Main.npcFrameCount[NPC.type] / 2);
                 spriteBatch.Draw(
                     GlowTexture,
@@ -117,30 +105,31 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                 0);
             }
         }
+
         public override void AI()
         {
-
             if (!CheckSize)
             {
                 Size = Main.rand.NextFloat(0.75f, 1f);
                 CheckSize = true;
             }
-            Player player = Main.player[NPC.target];
+
+            //Player player = Main.player[NPC.target];
             NPC.spriteDirection = -NPC.direction;
             NPC.ai[0]++;
             NPC.rotation = NPC.velocity.X * 0.03f;
-
-
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = 74;
+            int d = DustID.GreenFairy;
             int d1 = DustID.CursedTorch;
             for (int k = 0; k < 30; k++)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default, .74f);
             }
+
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 20; i++)

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class Medal : ModItem
+    internal class Medal : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

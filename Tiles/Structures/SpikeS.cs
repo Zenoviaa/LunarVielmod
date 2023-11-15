@@ -8,7 +8,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Structures
 {
-	public class SpikeS : ModTile
+    public class SpikeS : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

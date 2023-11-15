@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class FrostSwProj2 : ModProjectile
+    public class FrostSwProj2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

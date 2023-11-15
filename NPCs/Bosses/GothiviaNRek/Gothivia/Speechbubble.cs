@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 {
-	public class Speechbubble : ModProjectile
+    public class Speechbubble : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

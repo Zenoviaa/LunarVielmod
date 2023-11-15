@@ -1,18 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
 
 
 namespace Stellamod.Items.Tools
 {
-	public class DirtPickaxe : ModItem
+    public class DirtPickaxe : ModItem
 	{
 		public override void SetStaticDefaults() 
 		{
@@ -28,10 +21,10 @@ namespace Stellamod.Items.Tools
 			Item.height = 40;
 			Item.useTime = 7;
 			Item.useAnimation = 7;
-			Item.useStyle = 3;
+			Item.useStyle = ItemUseStyleID.Thrust;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.pick = 20;

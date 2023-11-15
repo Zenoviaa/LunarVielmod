@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class MorrowShotArrow2 : ModProjectile
+    public class MorrowShotArrow2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

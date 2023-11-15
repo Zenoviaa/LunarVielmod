@@ -1,31 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Dusts;
+using Stellamod.Items.Consumables;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.Utilities;
-using Stellamod.Items.Consumables;
-using Stellamod.Dusts;
 
 namespace Stellamod.NPCs
 {
     internal class DiceinNPC : ModNPC
     {
-
-        float Frame = 0.15f;
+        private float Frame = 0.15f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cinder Bat");
-
         }
-        int frame = 0;
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += Frame;
@@ -54,11 +48,8 @@ namespace Stellamod.NPCs
             NPC.dontCountMe = true;
         }
 
-
         public override void AI()
         {
-
-
             Player player = Main.player[NPC.target];
             NPC.spriteDirection = -NPC.direction;
             NPC.ai[0]++;
@@ -84,6 +75,7 @@ namespace Stellamod.NPCs
                         d.noGravity = true;
                     }
                 }
+
                 var entitySource = player.GetSource_OpenItem(Type);
                 switch (Main.rand.Next(5))
                 {
@@ -118,7 +110,8 @@ namespace Stellamod.NPCs
 
             }
         }
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
+
+        private Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
@@ -140,6 +133,7 @@ namespace Stellamod.NPCs
                 effects,
                 0
             );
+
             SpriteEffects spriteEffects3 = (NPC.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
             Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.MediumPurple);
@@ -148,10 +142,9 @@ namespace Stellamod.NPCs
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
-
     }
 }

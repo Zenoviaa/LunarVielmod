@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Systems
 {
-	public class CathedralBiomeTileCount : ModSystem
+    public class CathedralBiomeTileCount : ModSystem
 	{
 		public int BlockCount;
 

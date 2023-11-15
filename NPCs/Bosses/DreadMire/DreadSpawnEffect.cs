@@ -1,17 +1,13 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Bestiary;
-
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-	public class DreadSpawnEffect : ModProjectile
+    public class DreadSpawnEffect : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,12 +28,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.width = 1;
             Projectile.extraUpdates = 1;
         }
+
 		float alphaCounter = 5;
-		int counter;
 		public override void AI()
 		{
 			alphaCounter -= 0.18f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
 

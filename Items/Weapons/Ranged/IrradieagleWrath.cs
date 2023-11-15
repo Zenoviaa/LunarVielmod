@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class IrradieagleWrath : ModItem
+    public class IrradieagleWrath : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -29,7 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 40;
 			Item.useTime = 27;
 			Item.useAnimation = 27;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;

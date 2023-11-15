@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class KaBoomShade : ModProjectile
+    public class KaBoomShade : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

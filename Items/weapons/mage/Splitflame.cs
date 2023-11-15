@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class Splitflame : ModItem
+    internal class Splitflame : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -36,5 +35,16 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.crit = 7;
 		}
 
-	}
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
+			recipe.AddRecipeGroup(nameof(ItemID.Candle), 1);
+			recipe.AddIngredient(ItemID.HellstoneBar, 12);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 7);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 7);
+			recipe.Register();
+		}
+    }
 }

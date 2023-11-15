@@ -1,7 +1,7 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {

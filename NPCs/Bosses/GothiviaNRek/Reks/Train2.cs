@@ -1,42 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
+using Stellamod.Buffs;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
-using Terraria.ModLoader.Utilities;
-using System.IO;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.UI.Systems;
-using Terraria.Graphics.Effects;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.WorldG;
-using Stellamod.NPCs.Bosses.Daedus;
-using Stellamod.Buffs;
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 {
 
-	public class Train2 : ModNPC
+    public class Train2 : ModNPC
 	{
 		public Vector2 FirstStageDestination
 		{
@@ -140,13 +119,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
-
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
-
 			};
+
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
@@ -220,30 +198,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
-		bool boom = false;
-		float turnMod = 0f;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 20; k++)
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SolarFlare, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
 			}
-
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
-
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
 			Vector2 position = NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY);
-
-			SpriteEffects effects = SpriteEffects.None;
-
-
-
-
-			Rectangle rect;
 			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -20);
 
 			///Animation Stuff for Verlia
@@ -284,32 +251,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			/// 13 - 29 Doublestart
 			/// 30 - 42 Tiptoe
 
-
-
-
-
-
 			return true;
 		}
 
 		//Custom function so that I don't have to copy and paste the same thing in FindFrame
 
-		float HomeY = 330f;
+		//float HomeY = 330f;
 		int bee = 220;
 		private Vector2 originalHitbox;
-		int moveSpeed = 0;
-		int moveSpeedY = 0;
-		int Timer2 = 0;
-
+		//int Timer2 = 0;
 		public override void AI()
 		{
-
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
-
-
 			NPC.HasBuff<Rekin>();
-
 			for (int k = 0; k < Main.maxNPCs; k++)
 			{
 				NPC ba = Main.npc[k];
@@ -338,17 +293,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 
-
 			Player player = Main.player[NPC.target];
-
 			NPC.TargetClosest();
-
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
 			{
 				NPC.TargetClosest();
 			}
-
-
 
 			if (player.dead)
 			{
@@ -475,11 +425,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 					NPC.aiStyle = -1;
 					break;
 
-
-
-
-
-
 					//case ActionState.HandsoutVoid:
 					/*	NPC.damage = 0;
                         counter++;
@@ -516,8 +461,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
@@ -568,8 +511,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
@@ -605,8 +546,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
@@ -642,8 +581,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
@@ -680,8 +617,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 
@@ -723,8 +658,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer++;
 
 			Player player = Main.player[NPC.target];
-
-			float speed = 25f;
 			if (timer == 1)
 			{
 
@@ -998,82 +931,57 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			Player player = Main.player[NPC.target];
 			float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 			float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-			float speed = 25f;
 			if (timer == 1)
 			{
 				// SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
+
 			if (timer < 30)
 			{
 				NPC.velocity.Y *= 0f;
 				NPC.velocity.X += 0.3f;
 			}
 
-
 			if (timer == 10)
-			{
-				
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(),NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-				
+			{		
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(),NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));		
 			}
 
 			if (timer == 30)
 			{
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-
 			}
 
 			if (timer == 50)
 			{
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-
 			}
 
 			if (timer == 70)
 			{
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-
 			}
 
 			if (timer == 90)
 			{
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-
 			}
 
 			if (timer == 110)
 			{
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, (int)(14), 0f, 0, 0f, 0f);
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, -10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXb * 0, 10, ProjectileID.EyeBeam, 14, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcharilitDrone1"));
-
 			}
 
 
@@ -1089,20 +997,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 						break;
 
 				}
+
 				ResetTimers();
-
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
 			}
-
-
 		}
-
-
-
-
-
-
 
 		
 		public void ResetTimers()
@@ -1110,19 +1009,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
-			Timer2 = 0;
+			//Timer2 = 0;
 		}
-
 
 		public override void OnKill()
 		{
-
 			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 			{
 				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 			}
-
 		}
-
 	}
 }

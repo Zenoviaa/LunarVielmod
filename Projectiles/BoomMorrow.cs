@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class BoomMorrow : ModProjectile
+    public class BoomMorrow : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
-using Stellamod.Buffs;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Dusts;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class Flowing : ModProjectile
+    public class Flowing : ModProjectile
 	{
 		public int timer = 0;
 		public override void SetStaticDefaults()

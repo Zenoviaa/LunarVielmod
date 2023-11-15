@@ -565,7 +565,7 @@ Mods: {
 				DisplayName: Sky Blue Dreas Flower
 				Tooltip:
 					'''
-					All the way from the Alcadiz temples..
+					All the way from the Morrowed temples..
 					Used for planting and harvesting
 					Best use for magical items and plants!
 					'''
@@ -611,7 +611,7 @@ Mods: {
 				Tooltip:
 					'''
 					A useful piece of string!
-					From some Alcadiz warriors of the morrow
+					From some Fabled warriors of the morrow
 					Used in many recipes for weapons, bags and such
 					'''
 			}
@@ -1333,7 +1333,7 @@ Mods: {
 			}
 
 			AlcadizDagger: {
-				DisplayName: Alcadiz String n Brooch
+				DisplayName: Morrowed String n Brooch
 				Tooltip:
 					'''
 					Your summons will target focused enemies
@@ -1375,7 +1375,7 @@ Mods: {
 			}
 
 			MorrowWhipI: {
-				DisplayName: Alcadiz Morrowed Whip
+				DisplayName: Fabled Morrowed Whip
 				Tooltip:
 					'''
 					Your summons will target focused enemies
@@ -1414,7 +1414,7 @@ Mods: {
 					'''
 					Shoots out many axes, beware they explode on impact
 					Steerable for a while and consectutive hits speed up next throw!
-					Made from heavy alcadiz metal!
+					Made from heavy fabled metal!
 					'''
 			}
 
@@ -1469,7 +1469,7 @@ Mods: {
 			}
 
 			AlcadizPowder: {
-				DisplayName: Alcadiz Powder
+				DisplayName: Fable Powder
 				Tooltip:
 					'''
 					Throw magical dust on them!
@@ -3676,24 +3676,81 @@ Mods: {
 				Tooltip: ""
 			}
 
-			LunarianVoidHead: {
-				DisplayName: Lunarian Void Head
+			AlcaricMush: {
+				DisplayName: Alcaric Mush
 				Tooltip: ""
 			}
 
-			LunarianVoidBody: {
-				Tooltip: ""
-				DisplayName: Lunarian Void Body
-			}
-
-			LunarianVoidLegs: {
-				DisplayName: Lunarian Void Legs
+			Blackwhip: {
+				DisplayName: Blackwhip
 				Tooltip: ""
 			}
 
-			SandStorm: {
-				DisplayName: Sand Storm
+			DarkWhip: {
+				DisplayName: Dark Whip
 				Tooltip: ""
+			}
+
+			AlsisChestplate: {
+				DisplayName: Alsis Chestplate
+				Tooltip: ""
+			}
+
+			AlsisGreaves: {
+				DisplayName: Alsis Greaves
+				Tooltip: ""
+			}
+
+			AlsisMask: {
+				DisplayName: Alsis Mask
+				Tooltip: ""
+			}
+
+			WickofSorcery: {
+				DisplayName: Wickof Sorcery
+				Tooltip: ""
+			}
+
+			Voyager: {
+				DisplayName: Voyager
+				Tooltip: ""
+			}
+
+			HyuaIgniter: {
+				DisplayName: Hyua Igniter
+				Tooltip: ""
+			}
+
+			Hyua: {
+				DisplayName: Hyua
+				Tooltip: ""
+			}
+
+			Poya: {
+				DisplayName: Poya
+				Tooltip: ""
+			}
+
+			FireflyStaff: {
+				DisplayName: Firefly Staff
+				Tooltip:
+					'''
+					Summons a firefly to fight for you!
+					Right click to swap between attack mode and defense mode, gaining stats that scale with the number of fireflies
+					While in offense mode, you gain movement speed and flight mobility
+					While in defense mode, you gain defense and life regen, but your fireflies attack slower
+					'''
+			}
+
+			VampireScepter: {
+				DisplayName: Vampire Scepter
+				Tooltip:
+					'''
+					Summons a vampiric torch to aid you in battle
+					The torch completely negates life regen, however you have immense lifesteal while close to enemies
+					Greatly increases summon damage while active
+					There can only be one
+					'''
 			}
 		}
 
@@ -4172,6 +4229,27 @@ Mods: {
 			MorrowWhipProj.DisplayName: Morrow Whip Proj
 			wowBullet.DisplayName: wow Bullet
 			FireflyBomb.DisplayName: Firefly Bomb
+			AlcaricMushBoom.DisplayName: Alcaric Mush Boom
+			DarkwhipProj.DisplayName: Darkwhip Proj
+			BlackWhipProj.DisplayName: Black Whip Proj
+			MasteryofMagic.DisplayName: Masteryof Magic
+			VoyaBullet.DisplayName: Voya Bullet
+			VoyagerProj.DisplayName: Voyager Proj
+			VoyagerShotProj.DisplayName: Voyager Shot Proj
+			HyuaProj.DisplayName: Hyua Proj
+			RingedAlcd.DisplayName: Ringed Alcd
+			Ink1.DisplayName: Ink1
+			Ink2.DisplayName: Ink2
+			Ink3.DisplayName: Ink3
+			InkBullet1.DisplayName: Ink Bullet1
+			VoyagerProjThrow.DisplayName: Voyager Proj Throw
+			Ink2a.DisplayName: Ink2a
+			AlcaricMushBoom2.DisplayName: Alcaric Mush Boom2
+			PoyaProj.DisplayName: Poya Proj
+			Poyashot.DisplayName: Poyashot
+			Poyashot2.DisplayName: Poyashot2
+			FireflyMinion.DisplayName: Firefly Minion
+			VampireTorchMinion.DisplayName: Vampire Torch Minion
 		}
 
 		NPCs: {
@@ -6054,6 +6132,26 @@ Mods: {
 			VoidMinionBuff: {
 				DisplayName: Void Minion Buff
 				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+			}
+
+			DarkWhipDebuff: {
+				DisplayName: Dark Whip Debuff
+				Description: Mods.Stellamod.Buffs.DarkWhipDebuff.Description
+			}
+
+			MasteryMagic: {
+				DisplayName: Mastery Magic
+				Description: Mods.Stellamod.Buffs.MasteryMagic.Description
+			}
+
+			FireflyMinionBuff: {
+				DisplayName: Firefly Blessing
+				Description: You are protected by fireflies!
+			}
+
+			VampireTorchMinionBuff: {
+				DisplayName: Sanguine Curse
+				Description: You are bloodthirsty!
 			}
 		}
 	}

@@ -43,8 +43,8 @@ namespace Stellamod.Projectiles.Spears
 			}
 			for (int i = 0; i > 4; i++)
 			{
-				float x = Projectile.Center.X + Projectile.velocity.X * 20f * (float)i;
-				float y = Projectile.Center.Y + Projectile.velocity.Y * 20f * (float)i;
+				float x = Projectile.Center.X + Projectile.velocity.X * 20f * i;
+				float y = Projectile.Center.Y + Projectile.velocity.Y * 20f * i;
 			}
 		}
 		public override bool PreDraw(ref Color lightColor)
@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles.Spears
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
 				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
                 Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 			}
             Main.spriteBatch.End();
@@ -69,12 +69,12 @@ namespace Stellamod.Projectiles.Spears
 			SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
 			for (int i = 0; i < 10; i++)
 			{
-				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 33, 0f, -2f, 0, default(Color), 1.1f);
+				int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Water, 0f, -2f, 0, default(Color), 1.1f);
 				Main.dust[num].noGravity = true;
 				Dust expr_62_cp_0 = Main.dust[num];
-				expr_62_cp_0.position.X = expr_62_cp_0.position.X + ((float)(Main.rand.Next(-30, 31) / 20) - 1.5f);
+				expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-30, 31) / 20 - 1.5f);
 				Dust expr_92_cp_0 = Main.dust[num];
-				expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + ((float)(Main.rand.Next(-30, 31) / 20) - 1.5f);
+				expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-30, 31) / 20 - 1.5f);
 				if (Main.dust[num].position != Projectile.Center)
 				{
 					Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;

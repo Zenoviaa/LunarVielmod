@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class GildParticle : Particle
+    public class GildParticle : Particle
 	{
 		public override void SetDefaults()
 		{

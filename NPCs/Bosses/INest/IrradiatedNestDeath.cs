@@ -1,21 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.DreadMire;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 //By Al0n37
@@ -24,13 +15,8 @@ namespace Stellamod.NPCs.Bosses.INest
 
     public class IrradiatedNestDeath : ModNPC
     {
-        private bool HasHitGround = false;
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
-        private bool Spawned = false;
-        private bool p2 = false;
-        bool ToFar;
-        bool Nukeing;
         bool Nukes;
 
         public override void SetStaticDefaults()
@@ -40,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.INest
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
         }
+
         public override void SetDefaults()
         {
             NPC.dontTakeDamage = true;
@@ -55,78 +42,44 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
             NPC.frameCounter++;
-
-            if (!Nukeing)
+            if (Nukes)
             {
-                if (Nukes)
+                if (frame <= 16)
                 {
-                    if (frame <= 16)
-                    {
-                        frame = 17;
-                    }
-                    if (NPC.frameCounter >= 21)
-                    {
-                        Nukes = false;
-                        frame++;
-                        NPC.frameCounter = 0;
-                    }
-                    if (frame >= 21)
-                    {
-                        Nukes = false;
-                        frame = 0;
-                    }
+                    frame = 17;
                 }
-                else
+                if (NPC.frameCounter >= 21)
                 {
-                    if (NPC.frameCounter >= 5)
-                    {
-                        frame++;
-                        NPC.frameCounter = 0;
-                    }
-                    if (frame >= 4)
-                    {
-                        frame = 0;
-                    }
+                    Nukes = false;
+                    frame++;
+                    NPC.frameCounter = 0;
                 }
-
+                if (frame >= 21)
+                {
+                    Nukes = false;
+                    frame = 0;
+                }
             }
-
-            if (Nukeing)
+            else
             {
-
-                if (frame <= 4)
-                {
-                    Nukes = true;
-                    frame = 5;
-                }
-
-
-                if (NPC.frameCounter >= 17)
+                if (NPC.frameCounter >= 5)
                 {
                     frame++;
-                    NPC.frameCounter = 13;
+                    NPC.frameCounter = 0;
                 }
-                if (frame >= 16)
+                if (frame >= 4)
                 {
-                    frame = 13;
+                    frame = 0;
                 }
             }
+
             NPC.frame.Y = frameHeight * frame;
-
         }
-
-
-        bool CutScene;
-        bool CutScene2;
-
 
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -168,19 +121,8 @@ namespace Stellamod.NPCs.Bosses.INest
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-
-            Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 10, NPC.height - NPC.frame.Height + 0);
@@ -228,6 +170,7 @@ namespace Stellamod.NPCs.Bosses.INest
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void AI()
         {
 
@@ -286,16 +229,13 @@ namespace Stellamod.NPCs.Bosses.INest
                             DrugRidus = 50;
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land"));
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 256f);
-                            HasHitGround = true;
                             NPC.ai[0] = 1000;
                         }
                         break;
-
                 }
             }
-
-
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 74;
@@ -320,9 +260,9 @@ namespace Stellamod.NPCs.Bosses.INest
                 }
             }
         }
+
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
-            Player player = Main.player[NPC.target];
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }

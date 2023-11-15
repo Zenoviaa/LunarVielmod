@@ -1,26 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Bow;
-using Terraria.DataStructures;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Items.Accessories.Runes;
-
-using Stellamod.Projectiles.Spears;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Slashers;
-using Stellamod.Projectiles;
-using Terraria.Audio;
+using Stellamod.Projectiles.Swords;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
@@ -28,7 +15,6 @@ namespace Stellamod.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
@@ -74,12 +60,13 @@ namespace Stellamod.Items.Weapons.Melee
         {
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
             {
-         
+
                 type = ModContent.ProjectileType<ArchariliteRayswordSlash>();
 
             }
 
         }
+       
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -87,11 +74,11 @@ namespace Stellamod.Items.Weapons.Melee
             int dir = AttackCounter;
             if (player.direction == 1)
             {
-                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter;
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
             }
             else
             {
-                player.GetModPlayer<CorrectSwing>().SwingChange = (int)AttackCounter * -1;
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
 
             }
             AttackCounter = -AttackCounter;
@@ -102,7 +89,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             var entitySource = player.GetSource_FromThis();
-            if (Main.rand.Next(7) == 0)
+            if (Main.rand.NextBool(7))
             {
                 int dist = 40;
                 Vector2 targetExplosionPos = target.Center;

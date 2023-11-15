@@ -1,11 +1,10 @@
 using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Shaders;
-using Terraria.ModLoader;
 
 namespace Stellamod
 {
-	public class AbyssScreenShaderData : ScreenShaderData
+    public class AbyssScreenShaderData : ScreenShaderData
 	{
 		private int GintzeIndex;
 
@@ -21,12 +20,12 @@ namespace Stellamod
 			{
 				return;
 			}
-			this.GintzeIndex = -1;
+			GintzeIndex = -1;
 			for (int i = 0; i < Main.npc.Length; i++)
 			{
 				if (EventWorld.Gintzing)
 				{
-					this.GintzeIndex = i;
+					GintzeIndex = i;
 					break;
 				}
 			}
@@ -34,10 +33,10 @@ namespace Stellamod
 
 		public override void Apply()
 		{
-			this.UpdateMirageIndex();
-			if (this.GintzeIndex != -1)
+			UpdateMirageIndex();
+			if (GintzeIndex != -1)
 			{
-				base.UseTargetPosition(Main.npc[this.GintzeIndex].Center);
+				base.UseTargetPosition(Main.npc[GintzeIndex].Center);
 			}
 			base.Apply();
 		}

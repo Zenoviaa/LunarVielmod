@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class HornetKaboom : ModProjectile
+    public class HornetKaboom : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,19 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Items.Materials;
-using Terraria.Audio;
-using Terraria.DataStructures;
 
 namespace Stellamod.Projectiles.Bow
 {
@@ -34,10 +25,10 @@ namespace Stellamod.Projectiles.Bow
             Item.height = 40;
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item73;
             Item.autoReuse = true;
             Item.shoot = ProjectileType<Zap>();

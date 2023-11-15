@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Elegance : ModBuff
+    public class Elegance : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

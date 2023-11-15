@@ -1,15 +1,13 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
-using Stellamod.Items.Accessories.Players;
+﻿using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Materials;
+using Terraria;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	[AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
+    [AutoloadEquip(EquipType.Waist)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class ShadeScarf : ModItem
 	{
 		public override void SetStaticDefaults()

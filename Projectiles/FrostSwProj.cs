@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
-using Stellamod.Dusts;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class FrostSwProj : ModProjectile
+    public class FrostSwProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 
 namespace Stellamod.Projectiles.Safunai.Alcarish
 {
-	public class AlcarishProj : ModProjectile
+    public class AlcarishProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

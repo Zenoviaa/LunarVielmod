@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using System.Collections.Generic;
 using Terraria;
@@ -8,20 +7,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.StringnNeedles.Verl
 {
-	public class CharmVerlia : ModProjectile
+    public class CharmVerlia : ModProjectile
 	{
-		private int ProjectileSpawnedCount = 0;
-		private int ProjectileSpawnedMax = 20;
-		private bool MouseRightBool = false;
-		private bool Morrowflames = false;
-		private bool MouseLeftBool = true;
-		private object player;
-
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Charm Spragald");
 			Main.projFrames[Projectile.type] = 1;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.damage = 0;
@@ -36,6 +29,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			DrawOriginOffsetX = -110;
 			DrawOriginOffsetY = -100;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
@@ -54,8 +48,8 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 			{
 				player.ChangeDir(Projectile.direction);
 				swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-
 			}
+
 			Projectile.velocity = swordRotation.ToRotationVector2();
 			if (Timer == 1)
 			{

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	internal class CanOfLeaves : ModItem
+    internal class CanOfLeaves : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

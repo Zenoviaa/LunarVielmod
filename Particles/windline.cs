@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Particles
 {
-	public class windline : Particle
+    public class windline : Particle
 	{
 		public override void SetDefaults()
 		{

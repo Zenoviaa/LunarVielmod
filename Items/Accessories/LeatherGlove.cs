@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	public class LeatherGlove : ModItem
+    public class LeatherGlove : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

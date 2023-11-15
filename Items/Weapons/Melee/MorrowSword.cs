@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class MorrowSword : ModItem
+    public class MorrowSword : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

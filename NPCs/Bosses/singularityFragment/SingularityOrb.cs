@@ -1,31 +1,15 @@
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Events;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-
-using Stellamod.NPCs.Bosses.Jack;
-using System.Reflection.Metadata;
-using Stellamod.Utilis;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.Bestiary;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
 
 namespace Stellamod.NPCs.Bosses.singularityFragment
 {
@@ -147,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
@@ -182,7 +166,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 global::Stellamod.NPCs.Bosses.singularityFragment.SingularityFragment.SingularityOrbs -= 1;
                 for (int i = 0; i < 20; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, 266, 0f, -2f, 0, default(Color), .8f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SomethingRed, 0f, -2f, 0, default(Color), .8f);
                     Main.dust[num].noGravity = true;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;

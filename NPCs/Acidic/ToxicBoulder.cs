@@ -1,23 +1,15 @@
 
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
+using Stellamod.Items.Materials;
+using Stellamod.Utilis;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-
 
 namespace Stellamod.NPCs.Acidic
 {
@@ -32,7 +24,6 @@ namespace Stellamod.NPCs.Acidic
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
-
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
@@ -41,11 +32,10 @@ namespace Stellamod.NPCs.Acidic
                 return spawnInfo.Player.ZoneAcid() ? 5.0f : 0f;
             }
             return 0f;
-
         }
+
         public override void SetDefaults()
         {
-
             NPC.width = 35;
             NPC.height = 35;
             NPC.damage = 23;
@@ -60,10 +50,13 @@ namespace Stellamod.NPCs.Acidic
             AIType = NPCID.Tumbleweed;  //npc behavior
             AnimationType = NPCID.Tumbleweed;
         }
-        public override void OnKill()
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<VirulentPlating>(), Main.rand.Next(1, 4), false, 0, false, false);
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 74;
@@ -86,18 +79,18 @@ namespace Stellamod.NPCs.Acidic
                 }
             }
         }
+
         public override void AI()
         {
-            if (Main.rand.Next(6) == 1)
+            if (Main.rand.NextBool(6))
             {
-                int dust = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, 74, NPC.velocity.X * 0.5f, NPC.velocity.Y * 0.5f);
-                int dust1 = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, 74, NPC.velocity.X * 0.5f, NPC.velocity.Y * 0.5f);
-                Main.dust[dust].velocity *= 0f;
-                Main.dust[dust1].velocity *= 0f;
+                int dust = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.GreenFairy);
+                int dust1 = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.GreenFairy);
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust1].noGravity = true;
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
@@ -116,10 +109,10 @@ namespace Stellamod.NPCs.Acidic
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(Mod.Find<ModBuff>("AcidFlame").Type, 200);
+            target.AddBuff(BuffType<AcidFlame>(), 200);
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Gintzingwinds : ModBuff
+    public class Gintzingwinds : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class MorrowDeath2 : ModItem
+    public class MorrowDeath2 : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

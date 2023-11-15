@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class Slimee : ModBuff
+    public class Slimee : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

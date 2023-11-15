@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Harvesting
 {
-	internal class Cinderscrap: ModItem
+    internal class Cinderscrap: ModItem
 	{
 		public override void SetStaticDefaults()
 		{

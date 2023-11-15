@@ -1,31 +1,25 @@
-﻿using Terraria;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using System;
-using Terraria.GameContent.Drawing;
-using ParticleLibrary;
-using Stellamod.Particles;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
 {
     public class AltideSword : ModProjectile
     {
-        Player target;
-        int afterImgCancelDrawCount = 0;
-        int afterImgCancelDrawCount2 = 0;
-        Vector2 endPoint;
-        Vector2 controlPoint1;
-        Vector2 controlPoint2;
-        Vector2 initialPos;
-        Vector2 wantedEndPoint;
-        bool initialization = false;
-        float AoERadiusSquared = 36000;//it's squared for less expensive calculations
+        private Player target;
+        private int afterImgCancelDrawCount = 0;
+        private Vector2 endPoint;
+        private Vector2 controlPoint1;
+        private Vector2 controlPoint2;
+        private Vector2 initialPos;
+        private Vector2 wantedEndPoint;
+        private bool initialization = false;
+        private float AoERadiusSquared = 36000;//it's squared for less expensive calculations
         public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
-        float t = 0;
-       
+        private float t = 0;
         public static Vector2 CubicBezier(Vector2 start, Vector2 controlPoint1, Vector2 controlPoint2, Vector2 end, float t)
         {
             float tSquared = t * t;
@@ -36,17 +30,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                 controlPoint2 * ((-3 * tCubed) + (3 * tSquared)) +
                 end * tCubed);
         }
-        
+
         public override void AI()
         {
-
-
-
-
-           
-
-
-
             if (!initialization)
             {
                 initialPos = Projectile.Center;
@@ -54,14 +40,17 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
             }
             float distanceSQ = float.MaxValue;
             if (target == null || !target.active)
+            {
                 for (int i = 0; i < Main.player.Length; i++)
                 {
-                    if ((target == null || Main.player[i].DistanceSQ(Projectile.Center) < distanceSQ) && Main.player[i].active )
+                    if ((target == null || Main.player[i].DistanceSQ(Projectile.Center) < distanceSQ) && Main.player[i].active)
                     {
                         target = Main.player[i];
                         distanceSQ = Projectile.Center.DistanceSQ(target.Center);
                     }
                 }
+            }
+
             if (target != null && target.DistanceSQ(Projectile.Center) < 500 && !hitByThisStardustExplosion[target.whoAmI])
             {
                 wantedEndPoint = initialPos - (target.Center - initialPos);
@@ -88,15 +77,15 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
             {
                 for (int i = 0; i < Main.maxPlayers; i++)
                 {
-                   Player npc = Main.player[i];
+                    Player npc = Main.player[i];
                     if (npc.Center.DistanceSQ(Projectile.Center) < AoERadiusSquared && !hitByThisStardustExplosion[npc.whoAmI])
                     {
-                        
+
                         NPC.HitInfo hitInfo = new();
                         hitInfo.Damage = Projectile.damage;
                         //(int)Main.player[Projectile.owner].GetDamage(DamageClass.Summon).ApplyTo(Projectile.damage)
-                       
-                        
+
+
                     }
                 }
                 afterImgCancelDrawCount++;
@@ -121,7 +110,9 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                 Projectile.Center = CubicBezier(initialPos, controlPoint1, controlPoint2, endPoint, t);
             }
             if (target == null || Projectile.ai[0] > 200)
+            {
                 Projectile.Kill();
+            }
 
             t += 0.01f;
 
@@ -147,10 +138,11 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
             Projectile.tileCollide = false;
             Projectile.timeLeft = 200;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Color afterImgColor = Main.hslToRgb(Projectile.ai[1], 1, 0.5f);
-            float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
+            //float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
             afterImgColor.A = 0;
             afterImgColor.B = 255;
             afterImgColor.G = 215;
@@ -158,7 +150,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
             Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
             Texture2D texture = TextureAssets.Projectile[ProjectileID.RainbowRodBullet].Value;
 
-            for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+            for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
             {
                 //if(i % 2 == 0)
                 float rotationToDraw;
@@ -175,14 +167,11 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                         interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
                         rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
                     }
-                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
                 }
             }
-          
+
             return false;
         }
-       
     }
-
-   
 }

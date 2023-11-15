@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class Spragald : ModBuff
+    public class Spragald : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

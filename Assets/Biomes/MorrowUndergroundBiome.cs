@@ -1,13 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets.Biomes
 {
-	public class MorrowUndergroundBiome : ModBiome
+    public class MorrowUndergroundBiome : ModBiome
 	{
 		// Select all the scenery
 		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("Stellamod/MorrowUndergroundBackgroundStyle");

@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class BackgroundOrb : ModProjectile
+    public class BackgroundOrb : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -70,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{

@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
 
 namespace Stellamod.Items.Accessories
 {
-	public class Heatspot : ModItem
+    public class Heatspot : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

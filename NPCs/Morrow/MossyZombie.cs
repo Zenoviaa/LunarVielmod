@@ -1,19 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Items.Harvesting;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using System.IO;
-using Stellamod.Assets.Biomes;
 using Terraria.ModLoader.Utilities;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Harvesting;
-using System.Timers;
 
 namespace Stellamod.NPCs.Morrow
 {
-	public class MossyZombie : ModNPC
+    public class MossyZombie : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{

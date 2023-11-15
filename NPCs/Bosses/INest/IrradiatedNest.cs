@@ -1,30 +1,19 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Melee.Spears;
-
+using Stellamod.NPCs.Bosses.INest.IEagle;
+using Stellamod.Utilis;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 //By Al0n37
 namespace Stellamod.NPCs.Bosses.INest
@@ -32,15 +21,12 @@ namespace Stellamod.NPCs.Bosses.INest
     [AutoloadBossHead]
     public class IrradiatedNest : ModNPC
     {
-        private bool HasHitGround = false;
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
         private bool Spawned = false;
         private bool p2 = false;
-        bool ToFar;
         bool Nukeing;
         bool Nukes;
-
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 14;
@@ -48,6 +34,7 @@ namespace Stellamod.NPCs.Bosses.INest
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
         }
+
         public override void SetDefaults()
         {
             NPC.alpha = 255;
@@ -61,15 +48,13 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
+            //bool expertMode = Main.expertMode;
+            //Player player = Main.player[NPC.target];
             NPC.frameCounter++;
-
             if (!Nukeing)
             {
                 if (Nukes)
@@ -102,18 +87,15 @@ namespace Stellamod.NPCs.Bosses.INest
                         frame = 0;
                     }
                 }
-
             }
 
             if (Nukeing)
             {
-
                 if (frame <= 4)
                 {
                     Nukes = true;
                     frame = 5;
                 }
-
 
                 if (NPC.frameCounter >= 17)
                 {
@@ -125,10 +107,9 @@ namespace Stellamod.NPCs.Bosses.INest
                     frame = 13;
                 }
             }
+
             NPC.frame.Y = frameHeight * frame;
-
         }
-
 
         bool CutScene;
         bool CutScene2;
@@ -139,8 +120,8 @@ namespace Stellamod.NPCs.Bosses.INest
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
-
         }
+
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
@@ -153,6 +134,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 {
                     spriteEffects = SpriteEffects.FlipHorizontally;
                 }
+
                 Vector2 halfSize = new Vector2(GlowTexture.Width / 2, GlowTexture.Height / Main.npcFrameCount[NPC.type] / 2);
                 spriteBatch.Draw(
                     GlowTexture,
@@ -168,19 +150,15 @@ namespace Stellamod.NPCs.Bosses.INest
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
-
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-
+            /*
             Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
             Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
             Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+            */
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 10, NPC.height - NPC.frame.Height + 0);

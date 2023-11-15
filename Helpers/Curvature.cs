@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stellamod.Helpers
 {
-	public class Curvature
+    public class Curvature
 	{
 		private Vector2[] _controlPoints;
 

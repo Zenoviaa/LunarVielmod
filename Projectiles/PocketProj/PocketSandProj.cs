@@ -1,15 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using Stellamod.Buffs.Dusteffects;
+﻿using Stellamod.Buffs;
 using Stellamod.Buffs.PocketDustEffects;
-using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.PocketProj
 {
-	public class PocketSandProj : ModProjectile
+    public class PocketSandProj : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

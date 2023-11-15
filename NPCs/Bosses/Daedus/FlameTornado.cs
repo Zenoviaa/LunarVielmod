@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Daedus
 {
-	public class FlameTornado : ModProjectile
+    public class FlameTornado : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -47,19 +46,19 @@ namespace Stellamod.NPCs.Bosses.Daedus
 				
 				float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, -10f);
 				float speedYa = Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(-10, -9) * 1.0f;
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.3f, speedYa * 0.5f, ProjectileID.DD2BetsyFireball, (int)(20), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.3f, speedYa * 0.5f, ProjectileID.DD2BetsyFireball, (int)(20), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.3f, speedYa * 0.5f, ProjectileID.DD2BetsyFireball, 20, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.3f, speedYa * 0.5f, ProjectileID.DD2BetsyFireball, 20, 0f, Projectile.owner, 0f, 0f);
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.6f, speedYa * 0.8f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.6f, speedYa * 0.8f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.8f, speedYa * 1f, ProjectileID.DD2BetsyFireball, (int)(30), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.8f, speedYa * 1f, ProjectileID.DD2BetsyFireball, (int)(30), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.6f, speedYa * 0.8f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.6f, speedYa * 0.8f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 0.8f, speedYa * 1f, ProjectileID.DD2BetsyFireball, 30, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -0.8f, speedYa * 1f, ProjectileID.DD2BetsyFireball, 30, 0f, Projectile.owner, 0f, 0f);
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 1.1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -1.1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, (int)(40), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 180, speedXa * 1.1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + 504, Projectile.position.Y + 183, speedXa * -1.1f, speedYa * 1.2f, ProjectileID.DD2BetsyFireball, 40, 0f, Projectile.owner, 0f, 0f);
 			}
 			
 
@@ -89,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
 		
 

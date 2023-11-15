@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class AstrasilkOreTile : ModTile
+    public class AstrasilkOreTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

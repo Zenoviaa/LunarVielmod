@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -15,9 +10,6 @@ namespace Stellamod.Projectiles
     public class AntacizProj : ModProjectile
     {
         public byte Timer;
-        private int Spawned;
-        private bool ParticleNo;
-
         public override void SetDefaults()
         {
             Projectile.damage = 15;
@@ -33,34 +25,24 @@ namespace Stellamod.Projectiles
             Projectile.localNPCHitCooldown = 5;
         }
 
-
-
-      
-
         public override void OnSpawn(IEntitySource source)
         {
             ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<Spinew>(), Color.Purple, 0.4f, Projectile.whoAmI);
-
         }
+
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
             float rotation = Projectile.rotation;
-
-
             player.RotatedRelativePoint(Projectile.Center);
-            Projectile.rotation  -= 0.5f;
-           
+            Projectile.rotation -= 0.5f;
 
             if (Main.mouseLeft)
             {
                 Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
-
             }
-
-            if (!Main.mouseLeft)
+            else
             {
-
                 Projectile.velocity = Projectile.DirectionTo(player.Center) * 20;
                 if (Projectile.Hitbox.Intersects(player.Hitbox))
                 {
@@ -68,11 +50,9 @@ namespace Stellamod.Projectiles
                 }
             }
 
-
             Vector3 RGB = new(2.55f, 2.55f, 0.94f);
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.Center, RGB.X, RGB.Y, RGB.Z);
-
 
             player.heldProj = Projectile.whoAmI;
             player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
@@ -80,10 +60,7 @@ namespace Stellamod.Projectiles
             player.itemAnimation = 2;
             player.itemRotation = rotation * player.direction;
             //Projectile.netUpdate = true;
-
         }
-       
-
     }
 }
 

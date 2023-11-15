@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	internal class Bongos : ModItem
+    internal class Bongos : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

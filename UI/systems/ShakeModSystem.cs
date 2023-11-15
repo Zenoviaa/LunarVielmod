@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.UI.Systems
 {
-	public class ShakeModSystem : ModSystem
+    public class ShakeModSystem : ModSystem
 	{
 
 		public static float Shake;

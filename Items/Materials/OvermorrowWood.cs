@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class OvermorrowWood : ModItem
+    public class OvermorrowWood : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

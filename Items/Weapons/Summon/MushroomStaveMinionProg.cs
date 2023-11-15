@@ -1,19 +1,9 @@
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Projectiles.Magic;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 
 
 namespace Stellamod.Items.Weapons.Summon
@@ -29,6 +19,7 @@ namespace Stellamod.Items.Weapons.Summon
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
             Main.projFrames[Projectile.type] = 4;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -41,8 +32,6 @@ namespace Stellamod.Items.Weapons.Summon
             Projectile.aiStyle = -1;
         }
 
-
-        float alphaCounter = 1.5f;
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 50; i++)
@@ -55,8 +44,8 @@ namespace Stellamod.Items.Weapons.Summon
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-         
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
@@ -72,18 +61,15 @@ namespace Stellamod.Items.Weapons.Summon
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.X * 0.1f;
             Projectile.localAI[1] += 1f;
             Projectile.ai[1] += 1f;
 
-
             Projectile.velocity.X += VEL;
-
             Projectile.velocity.Y += 0.01f;
-
-
             if (Projectile.ai[1] >= 60)
             {
                 VEL = Main.rand.NextFloat(-0.06f, 0.06f);
@@ -91,12 +77,6 @@ namespace Stellamod.Items.Weapons.Summon
  
                 VELAdd = true;
             }
-
-
-
-
-
         }
-
     }
 }

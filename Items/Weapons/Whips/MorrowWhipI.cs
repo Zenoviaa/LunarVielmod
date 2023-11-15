@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Whips
 {
-	public class MorrowWhipI : ModItem
+    public class MorrowWhipI : ModItem
 	{
 
 		public override void SetStaticDefaults()

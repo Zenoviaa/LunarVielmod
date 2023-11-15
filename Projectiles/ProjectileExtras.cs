@@ -7,15 +7,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public delegate void ExtraAction();
+    public delegate void ExtraAction();
 
 	public static class ProjectileExtras
 	{
 		public static void HomingAIVanilla(ModProjectile modProj, NPC target, float velocity = 4f, float weight = 0.0333f)
 		{
 			Projectile projectile = modProj.Projectile;
-			Vector2 pos = new Vector2(projectile.position.X + (float)(projectile.width >> 1), projectile.position.Y + (float)(projectile.height >> 1));
-			Vector2 aim = new Vector2(target.position.X + (float)(target.width >> 1), target.position.Y + (float)(target.height >> 1));
+			Vector2 pos = new Vector2(projectile.position.X + (projectile.width >> 1), projectile.position.Y + (projectile.height >> 1));
+			Vector2 aim = new Vector2(target.position.X + (target.width >> 1), target.position.Y + (target.height >> 1));
 			float num560 = aim.X - pos.X;
 			float num561 = aim.Y - pos.Y;
 			aim -= pos;
@@ -27,8 +27,8 @@ namespace Stellamod.Projectiles
 		public static void HomingAI(ModProjectile modProj, NPC target, float velocity = 4f, float acceleration = 0.1f)
 		{
 			Projectile projectile = modProj.Projectile;
-			Vector2 aim = new Vector2(target.position.X + (float)(target.width >> 1), target.position.Y + (float)(target.height >> 1));
-			Vector2 pos = new Vector2(projectile.position.X + (float)(projectile.width >> 1), projectile.position.Y + (float)(projectile.height >> 1));
+			Vector2 aim = new Vector2(target.position.X + (target.width >> 1), target.position.Y + (target.height >> 1));
+			Vector2 pos = new Vector2(projectile.position.X + (projectile.width >> 1), projectile.position.Y + (projectile.height >> 1));
 			aim -= pos;
 			aim *= velocity / aim.Length();
 			Vector2 diff = aim - projectile.velocity;
@@ -44,8 +44,8 @@ namespace Stellamod.Projectiles
 		public static void HomingAIPredictive(ModProjectile modProj, NPC target, float velocity = 4f, float acceleration = 0.1f)
 		{
 			Projectile projectile = modProj.Projectile;
-			Vector2 aim = new Vector2(target.position.X + (float)(target.width >> 1), target.position.Y + (float)(target.height >> 1));
-			Vector2 pos = new Vector2(projectile.position.X + (float)(projectile.width >> 1), projectile.position.Y + (float)(projectile.height >> 1));
+			Vector2 aim = new Vector2(target.position.X + (target.width >> 1), target.position.Y + (target.height >> 1));
+			Vector2 pos = new Vector2(projectile.position.X + (projectile.width >> 1), projectile.position.Y + (projectile.height >> 1));
 			aim -= pos;
 			aim += target.velocity * (aim.Length() / velocity);
 			aim *= velocity / aim.Length();
@@ -193,7 +193,7 @@ namespace Stellamod.Projectiles
 			{
 				projectile.localAI[0] += 1f;
 				if (flag)
-					projectile.localAI[0] += (float)Main.rand.Next(10, 31) * 0.1f;
+					projectile.localAI[0] += Main.rand.Next(10, 31) * 0.1f;
 
 				float num = projectile.localAI[0] / 60f;
 				num /= (1f + Main.player[projectile.owner].GetAttackSpeed(DamageClass.Melee)) / 2f;
@@ -212,7 +212,7 @@ namespace Stellamod.Projectiles
 				Main.player[projectile.owner].heldProj = projectile.whoAmI;
 				Main.player[projectile.owner].itemAnimation = 2;
 				Main.player[projectile.owner].itemTime = 2;
-				if (projectile.position.X + (float)(projectile.width / 2) > Main.player[projectile.owner].position.X + (float)(Main.player[projectile.owner].width / 2))
+				if (projectile.position.X + projectile.width / 2 > Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2)
 				{
 					Main.player[projectile.owner].ChangeDir(1);
 					projectile.direction = 1;
@@ -363,7 +363,7 @@ namespace Stellamod.Projectiles
 			}
 			else
 			{
-				num4 = (float)((int)((double)num4 * 0.8));
+				num4 = (int)((double)num4 * 0.8);
 				num3 *= 1.5f;
 				projectile.tileCollide = false;
 				Vector2 vector6 = Main.player[projectile.owner].position - projectile.Center;
@@ -393,8 +393,8 @@ namespace Stellamod.Projectiles
 			projectile.direction = Main.player[projectile.owner].direction;
 			Main.player[projectile.owner].heldProj = projectile.whoAmI;
 			Main.player[projectile.owner].itemTime = Main.player[projectile.owner].itemAnimation;
-			projectile.position.X = vector.X - (float)(projectile.width / 2);
-			projectile.position.Y = vector.Y - (float)(projectile.height / 2);
+			projectile.position.X = vector.X - projectile.width / 2;
+			projectile.position.Y = vector.Y - projectile.height / 2;
 			if (!Main.player[projectile.owner].frozen)
 			{
 				if (projectile.ai[0] == 0f)
@@ -411,7 +411,7 @@ namespace Stellamod.Projectiles
 			if (Main.player[projectile.owner].itemAnimation == 0)
 				projectile.Kill();
 
-			projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 2.355f;
+			projectile.rotation = (float)Math.Atan2(projectile.velocity.Y, projectile.velocity.X) + 2.355f;
 			if (projectile.spriteDirection == -1)
 				projectile.rotation -= 1.57f;
 
@@ -435,7 +435,7 @@ namespace Stellamod.Projectiles
 			Main.player[projectile.owner].itemAnimation = 10;
 			Main.player[projectile.owner].itemTime = 10;
 
-			if (projectile.position.X + (float)(projectile.width / 2) > Main.player[projectile.owner].position.X + (float)(Main.player[projectile.owner].width / 2))
+			if (projectile.position.X + projectile.width / 2 > Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2)
 			{
 				Main.player[projectile.owner].ChangeDir(1);
 				projectile.direction = 1;
@@ -446,7 +446,7 @@ namespace Stellamod.Projectiles
 				projectile.direction = -1;
 			}
 			Vector2 mountedCenter = Main.player[projectile.owner].MountedCenter;
-			Vector2 vector = new Vector2(projectile.position.X + (float)projectile.width * 0.5f, projectile.position.Y + (float)projectile.height * 0.5f);
+			Vector2 vector = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
 			float num = mountedCenter.X - vector.X;
 			float num2 = mountedCenter.Y - vector.Y;
 			float num3 = (float)Math.Sqrt((double)(num * num + num2 * num2));
@@ -491,7 +491,7 @@ namespace Stellamod.Projectiles
 					num5 *= 2f;
 
 				int num6 = (int)retractRange;
-				if (num3 > (float)num6 || !projectile.tileCollide)
+				if (num3 > num6 || !projectile.tileCollide)
 				{
 					num3 = num4 / num3;
 					num *= num3;
@@ -578,15 +578,15 @@ namespace Stellamod.Projectiles
 				projectile.localAI[1] = 1f;
 				initialize();
 			}
-			projectile.rotation += (Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y)) * 0.03f * (float)projectile.direction;
+			projectile.rotation += (Math.Abs(projectile.velocity.X) + Math.Abs(projectile.velocity.Y)) * 0.03f * projectile.direction;
 			projectile.localAI[0] += 1f;
-			if (projectile.localAI[0] >= (float)airTime)
+			if (projectile.localAI[0] >= airTime)
 			{
 				projectile.velocity.Y = projectile.velocity.Y + 0.4f;
 				projectile.velocity.X = projectile.velocity.X * 0.98f;
 			}
 			else
-				projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+				projectile.rotation = (float)Math.Atan2(projectile.velocity.Y, projectile.velocity.X) + 1.57f;
 
 			if (projectile.velocity.Y > 16f)
 				projectile.velocity.Y = 16f;
@@ -613,12 +613,12 @@ namespace Stellamod.Projectiles
 			if (!projectile.counterweight)
 			{
 				int num3 = -1;
-				if (projectile.position.X + (float)(projectile.width / 2) < Main.player[projectile.owner].position.X + (float)(Main.player[projectile.owner].width / 2))
+				if (projectile.position.X + projectile.width / 2 < Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2)
 				{
 					num3 = 1;
 				}
 				num3 *= -1;
-				Main.player[projectile.owner].itemRotation = (float)Math.Atan2((double)(num2 * (float)num3), (double)(num * (float)num3));
+				Main.player[projectile.owner].itemRotation = (float)Math.Atan2((double)(num2 * num3), (double)(num * num3));
 			}
 
 			bool flag = true;
@@ -634,8 +634,8 @@ namespace Stellamod.Projectiles
 				num2 *= num4;
 				vector.X -= num * 0.1f;
 				vector.Y -= num2 * 0.1f;
-				num = projectile.position.X + (float)projectile.width * 0.5f - vector.X;
-				num2 = projectile.position.Y + (float)projectile.height * 0.5f - vector.Y;
+				num = projectile.position.X + projectile.width * 0.5f - vector.X;
+				num2 = projectile.position.Y + projectile.height * 0.5f - vector.Y;
 			}
 
 			while (flag)
@@ -659,8 +659,8 @@ namespace Stellamod.Projectiles
 					num2 *= num6;
 					vector.X += num;
 					vector.Y += num2;
-					num = projectile.position.X + (float)projectile.width * 0.5f - vector.X;
-					num2 = projectile.position.Y + (float)projectile.height * 0.1f - vector.Y;
+					num = projectile.position.X + projectile.width * 0.5f - vector.X;
+					num2 = projectile.position.Y + projectile.height * 0.1f - vector.Y;
 					if (num7 > 12f)
 					{
 						float num8 = 0.3f;
@@ -736,10 +736,10 @@ namespace Stellamod.Projectiles
 					{
 						color = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB);
 					}
-					color.A = (byte)((float)color.A * 0.4f);
+					color.A = (byte)(color.A * 0.4f);
 					float num10 = 0.5f;
 					color = Lighting.GetColor((int)vector.X / 16, (int)(vector.Y / 16f), color);
-					color = new Color((int)((byte)((float)color.R * num10)), (int)((byte)((float)color.G * num10)), (int)((byte)((float)color.B * num10)), (int)((byte)((float)color.A * num10)));
+					color = new Color((byte)(color.R * num10), (byte)(color.G * num10), (byte)(color.B * num10), (byte)(color.A * num10));
 
 				}
 			}
@@ -752,7 +752,7 @@ namespace Stellamod.Projectiles
 			Vector2 vector = projectile.Center;
 			Rectangle? sourceRectangle = null;
 			Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
-			float num = (float)texture.Height;
+			float num = texture.Height;
 			Vector2 vector2 = to - vector;
 			float rotation = (float)Math.Atan2(vector2.Y, vector2.X) - 1.57f;
 			bool flag = true;
@@ -771,7 +771,7 @@ namespace Stellamod.Projectiles
 					vector += value * num;
 					vector2 = to - vector;
 					Color color = Color.White;
-					if (!white) color = Lighting.GetColor((int)vector.X / 16, (int)((double)vector.Y / 16.0));
+					if (!white) color = Lighting.GetColor((int)vector.X / 16, (int)(vector.Y / 16.0));
 					color = projectile.GetAlpha(color);
 					Main.spriteBatch.Draw(texture, vector - Main.screenPosition, sourceRectangle, color, rotation, origin, 1f, SpriteEffects.None, 0f);
 
@@ -784,7 +784,7 @@ namespace Stellamod.Projectiles
 		{
 			Projectile projectile = Main.projectile[index];
 			Texture2D texture2D = TextureAssets.Item[projectile.type].Value;
-			Vector2 origin = new Vector2((float)texture2D.Width * 0.5f, (float)(texture2D.Height / Main.projFrames[projectile.type]) * 0.5f);
+			Vector2 origin = new Vector2(texture2D.Width * 0.5f, texture2D.Height / Main.projFrames[projectile.type] * 0.5f);
 			SpriteEffects effects = (projectile.direction == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Main.spriteBatch.Draw(texture2D, projectile.Center - Main.screenPosition, new Rectangle?(Utils.Frame(texture2D, 1, Main.projFrames[projectile.type], 0, projectile.frame)), lightColor, projectile.rotation, origin, projectile.scale, effects, 0f);
 		}

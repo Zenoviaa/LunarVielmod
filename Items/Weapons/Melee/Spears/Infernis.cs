@@ -1,14 +1,9 @@
-﻿using Stellamod.Projectiles.Magic;
-using Terraria.ModLoader;
-using Terraria.Net;
-using Terraria.GameContent.NetModules;
-using Terraria.GameContent.Creative;
-using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Spears;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {

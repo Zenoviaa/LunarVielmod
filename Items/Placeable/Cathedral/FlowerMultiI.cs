@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class FlowerMultiI : ModItem
+    public class FlowerMultiI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,28 +1,7 @@
-﻿
-using System.Collections.Generic;
-using Terraria;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.WorldBuilding;
-using System;
-using Terraria.IO;
-using Stellamod.Tiles;
-using Microsoft.Xna.Framework;
-using Terraria.ModLoader.IO;
+﻿using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Whips;
-using Stellamod.Items.Materials;
-using Stellamod.Tiles.Abyss;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Buffs;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.WorldG
 {

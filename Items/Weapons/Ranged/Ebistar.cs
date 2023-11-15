@@ -1,5 +1,4 @@
-﻿using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class Ebistar : ModItem
+    public class Ebistar : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

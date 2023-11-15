@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-	public class CryoDust : ModDust
+    public class CryoDust : ModDust
 	{
 		public override void OnSpawn(Dust dust)
 		{

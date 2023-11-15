@@ -1,27 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
+using Stellamod.Items.Weapons.Ranged;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.Dusts;
-using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable.Cathedral;
-using System;
-using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.Tiles.ShrineBreakers.Govheil
 {
-	
-	public class ShrineBUAN : ModTile
+
+    public class ShrineBUAN : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{

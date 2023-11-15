@@ -28,6 +28,7 @@
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Gores\Bricks1.png" />
@@ -178,6 +179,9 @@
     <None Remove="Items\Weapons\Summon\DripplerStaff.png" />
     <None Remove="Items\Weapons\Summon\FCBuff.png" />
     <None Remove="Items\Weapons\Summon\FCMinion.png" />
+    <None Remove="Items\Weapons\Summon\FireflyMinion.png" />
+    <None Remove="Items\Weapons\Summon\FireflyMinionBuff.png" />
+    <None Remove="Items\Weapons\Summon\FireflyStaff.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionLeft.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionRight.png" />
     <None Remove="Items\Weapons\Summon\HMMinionBuff.png" />
@@ -197,6 +201,9 @@
     <None Remove="Items\Weapons\Summon\SwarmerMinion.png" />
     <None Remove="Items\Weapons\Summon\SwarmerMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\SwarmerStaff.png" />
+    <None Remove="Items\Weapons\Summon\VampireScepter.png" />
+    <None Remove="Items\Weapons\Summon\VampireTorchMinion.png" />
+    <None Remove="Items\Weapons\Summon\VampireTorchMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidMinion.png" />
     <None Remove="Items\Weapons\Summon\VoidMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidStaff.png" />
@@ -240,6 +247,9 @@
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
+    <None Remove="Projectiles\Magic\PoyaProj.png" />
+    <None Remove="Projectiles\Magic\Poyashot.png" />
+    <None Remove="Projectiles\Magic\Poyashot2.png" />
     <None Remove="Projectiles\Powders\AivanPowderProj.png" />
     <None Remove="Projectiles\Powders\CrystalPowderProj.png" />
     <None Remove="Projectiles\Powders\GovheilPowderProj.png" />
@@ -247,9 +257,14 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
+    <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
+    <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
+    <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

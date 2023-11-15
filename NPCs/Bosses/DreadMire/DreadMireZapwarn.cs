@@ -1,31 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Utilis;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria.ModLoader.Utilities;
-using static System.Formats.Asn1.AsnWriter;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using Stellamod.Items.Materials;
-using System.Collections.Generic;
-using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Projectiles.Magic;
-using Terraria.Audio;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.Utilis;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
     internal class DreadMireZapwarn : ModNPC
     {
         public bool Down;
-        public float Rot;
         public bool Lightning;
         public override void SetStaticDefaults()
         {

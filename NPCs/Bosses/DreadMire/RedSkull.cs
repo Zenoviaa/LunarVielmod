@@ -1,16 +1,11 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-	public class RedSkull : ModProjectile
+    public class RedSkull : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -66,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default);
                     int num8 = Dust.NewDust(Projectile.Center, 0, 0, DustID.RedTorch, 0f, 0f, 160, new Color(), 1f);
                     Main.dust[num8].scale = 1.3f;
@@ -81,7 +76,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             for (int k = 0; k < 2; k++)
             {
                 int index2 = Dust.NewDust(Projectile.position, 1, 1, DustID.RedTorch, 0.0f, 0.0f, 0, new Color(), 1f);
-                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * (float)k;
+                Main.dust[index2].position = Projectile.Center - Projectile.velocity / num1222 * k;
                 Main.dust[index2].scale = .95f;
                 Main.dust[index2].velocity *= 0f;
                 Main.dust[index2].noGravity = true;

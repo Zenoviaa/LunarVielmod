@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-	public class VixedB : ModBuff
+    public class VixedB : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

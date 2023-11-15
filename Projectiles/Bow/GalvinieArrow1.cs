@@ -1,24 +1,18 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Projectiles.Magic;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
 using Stellamod.Trails;
 using Stellamod.Utilis;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Bow
 {
     internal class GalvinieArrow1 : ModProjectile
     {
-        bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");

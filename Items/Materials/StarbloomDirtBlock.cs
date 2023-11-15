@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class StarbloomDirtBlock : ModItem
+    public class StarbloomDirtBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

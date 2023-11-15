@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ores
 {
-	public class FrileOre : ModItem
+    public class FrileOre : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

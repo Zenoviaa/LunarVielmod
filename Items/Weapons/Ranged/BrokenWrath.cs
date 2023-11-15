@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Gun;
+using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Gun;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
-using Terraria.Audio;
-using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class BrokenWrath : ModItem
+    public class BrokenWrath : ModItem
 	{
 		public override void SetStaticDefaults() 
 		{
@@ -33,7 +26,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.height = 40;
 			Item.useTime = 32;
 			Item.useAnimation = 32;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 0, 20, 0);
 			Item.rare = ItemRarityID.Blue;
@@ -61,12 +54,12 @@ namespace Stellamod.Items.Weapons.Ranged
 			proj.netUpdate = true;
             for (int index1 = 0; index1 < 19; ++index1)
             {
-                int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, 244, velocity.X, velocity.Y, (int)byte.MaxValue, new Color(), (float)Main.rand.Next(6, 10) * 0.1f);
+                int index2 = Dust.NewDust(new Vector2(position.X, position.Y), Item.width - 20, Item.height - 45, DustID.CopperCoin, velocity.X, velocity.Y, byte.MaxValue, new Color(), Main.rand.Next(6, 10) * 0.1f);
                 Main.dust[index2].noGravity = true;
                 Main.dust[index2].velocity *= 0.5f;
                 Main.dust[index2].scale *= 1.2f;
             }
-			damage = this.Item.damage / 2;
+			damage = Item.damage / 2;
 			Vector2 origVect = new Vector2(velocity.X, velocity.Y);
             //generate the remaining projectiles
             int Sound = Main.rand.Next(1, 3);

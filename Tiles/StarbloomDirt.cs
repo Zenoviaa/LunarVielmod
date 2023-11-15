@@ -4,20 +4,11 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Tiles.Abyss;
 
 namespace Stellamod.Tiles
 {
     public class StarbloomDirt : ModTile
     {
-        private int music;
-
-
         public override void SetStaticDefaults()
         {
             Main.tileSolid[Type] = true;
@@ -25,13 +16,11 @@ namespace Stellamod.Tiles
             Main.tileBlockLight[Type] = true;
             Main.tileMerge[TileID.Mud][Type] = true;
             Main.tileMerge[TileID.ClayBlock][Type] = true;
-            Main.tileBlendAll[this.Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(100, 120, 150), name);
-
-
         }
 
      /*   public override void RandomUpdate(int i, int j)

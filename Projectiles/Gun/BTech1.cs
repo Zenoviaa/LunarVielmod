@@ -2,7 +2,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -10,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-	public class BTech1 : ModProjectile
+    public class BTech1 : ModProjectile
 	{
 		public bool OptionallySomeCondition { get; private set; }
 

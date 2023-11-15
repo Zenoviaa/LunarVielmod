@@ -1,13 +1,9 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Ores;
-using Stellamod.Tiles;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	internal class PearlescentScrap : ModItem
+    internal class PearlescentScrap : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

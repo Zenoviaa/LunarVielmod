@@ -1,21 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Enums;
-using System;
-using ReLogic.Content;
-using Terraria.Localization;
 
 namespace Stellamod.Tiles.Furniture
 {
-	// Common code for a Master Mode boss relic
-	// Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
-	// And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
-	public class SunsBossRelic : ModTile
+    // Common code for a Master Mode boss relic
+    // Contains comments for optional Item.placeStyle handling if you wish to add more relics but use the same tile type (then it would be wise to name this class something more generic like BossRelic)
+    // And in case of wanting to add more relics but not wanting to go the optional way, scroll down to the bottom of the file
+    public class SunsBossRelic : ModTile
 	{
 		public const int FrameWidth = 18 * 3;
 		public const int FrameHeight = 18 * 4;

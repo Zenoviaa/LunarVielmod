@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class StelleanBricksTile : ModTile
+    public class StelleanBricksTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Audio;
-using static Humanizer.In;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
 
 namespace Stellamod.Projectiles.Thrown
 {
@@ -61,7 +58,7 @@ namespace Stellamod.Projectiles.Thrown
                 for (int j = 0; j < 10; j++)
                 {
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-                    vector2 += -Utils.RotatedBy(Vector2.UnitY, ((float)j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
+                    vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
                     int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
@@ -108,10 +105,10 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-
-            if (Main.rand.Next(3) == 0 && !target.boss)
+            if (Main.rand.NextBool(3) && !target.boss)
                 target.AddBuff(BuffID.Electrified, 180);
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
@@ -136,13 +133,12 @@ namespace Stellamod.Projectiles.Thrown
 
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.75f * Main.essScale);
-
         }
     }
-
 }
 
 

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class CarianWoodWall : ModItem
+    public class CarianWoodWall : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

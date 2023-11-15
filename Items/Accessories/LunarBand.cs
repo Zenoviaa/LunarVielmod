@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terraria;
 using Terraria.ModLoader;
-
-using Terraria;
-
-
-using Stellamod;
-using Microsoft.Xna.Framework;
-
+using Terraria.ID;
 
 namespace Stellamod.Items.Accessories
 {
@@ -27,7 +17,7 @@ namespace Stellamod.Items.Accessories
             Item.width = 20;
             Item.height = 20;
             Item.value = 2500;
-            Item.rare = 1;
+            Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
 

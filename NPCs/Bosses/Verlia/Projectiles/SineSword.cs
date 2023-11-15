@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class SineSword : ModProjectile
+    public class SineSword : ModProjectile
 	{
 		float distance = 8;
 		int rotationalSpeed = 4;
@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			afterImgColor.G = 188;
 			afterImgColor.R = 157;
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			for (int i = (int)afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
+			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
 			{
 				//if(i % 2 == 0)
 				float rotationToDraw;
@@ -116,7 +116,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
-					Main.EntitySpriteDraw(texture, (interpolatedPos - Main.screenPosition + Projectile.Size / 2) - new Vector2(32, 32) , null, afterImgColor * (1 - (float)i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, (interpolatedPos - Main.screenPosition + Projectile.Size / 2) - new Vector2(32, 32) , null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}
 

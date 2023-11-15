@@ -1,36 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
+using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Stellamod.Utilis;
-using Stellamod.Trails;
-using Terraria.Graphics.Shaders;
-using Stellamod.Effects;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Stellamod.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     internal class DLantern : ModProjectile
     {
-        bool Moved;
-
+        private bool Moved;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 9;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
-
-
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.timeLeft = 250;
@@ -40,12 +33,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
+            target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
-        float alphaCounter = 1;
+
+        private float alphaCounter = 1;
         public override void AI()
         {
             Projectile.velocity *= 0.98f;
@@ -57,7 +51,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 Projectile.alpha = 255;
                 Moved = true;
             }
-  
 
             if (Projectile.ai[1] <= 1)
             {

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class AlcaologyI : ModItem
+    public class AlcaologyI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

@@ -1,10 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.StarrVeriplant;
+using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
+using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,21 +16,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ParticleLibrary;
-using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Summon;
-using Stellamod.Particles;
-using System.Threading;
-using Terraria.ModLoader.Utilities;
-using System.IO;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.UI.Systems;
-using Terraria.Graphics.Effects;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant
 {
@@ -122,13 +110,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
 				CustomTexturePath = "Stellamod/NPCs/Bosses/StarrVeriplant/StarrPreview",
 				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
-				
 			};
+
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
@@ -144,17 +132,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(copper: 40);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
-			
-			
-		
-
-
-
 			// Take up open spawn slots, preventing random NPCs from spawning during the fight
 
 			// Don't set immunities like this as of 1.4:
@@ -191,6 +173,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			writer.Write(dashDistance);
 
 		}
+
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			attackCounter = reader.ReadInt32();
@@ -207,9 +190,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
-		bool boom = false;
-
-
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (NPC.life <= 0)
@@ -606,12 +586,12 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					case 0:
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, (int)(3), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
 						break;
 
@@ -622,8 +602,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					case 2:
 						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(4), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), (int)(4), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, ModContent.ProjectileType<CosButterfly>(), 4, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), 4, 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
 						break;
 
@@ -711,7 +691,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				{					
 					int distanceY = Main.rand.Next(-250, -250);
 						NPC.position.X = player.Center.X ;
-						NPC.position.Y = player.Center.Y + (int)(distanceY);
+						NPC.position.Y = player.Center.Y + distanceY;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
@@ -736,7 +716,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			{
 				int distanceY = Main.rand.Next(-250, -250);
 				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + (int)(distanceY);
+				NPC.position.Y = player.Center.Y + distanceY;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
@@ -762,7 +742,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 				int distanceY = Main.rand.Next(-300, -300);
 				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + (int)(distanceY);
+				NPC.position.Y = player.Center.Y + distanceY;
 
 			}
 
@@ -791,8 +771,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					case 0:
 						int distance = Main.rand.Next(20, 20);
 						int distanceY = Main.rand.Next(-110, -110);
-						NPC.position.X = player.Center.X + (int)(distance);
-						NPC.position.Y = player.Center.Y + (int)(distanceY);
+						NPC.position.X = player.Center.X + distance;
+						NPC.position.Y = player.Center.Y + distanceY;
 
 						break;
 
@@ -800,8 +780,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					case 1:
 						int distance2 = Main.rand.Next(-120, -120);
 						int distanceY2 = Main.rand.Next(-110, -110);
-						NPC.position.X = player.Center.X + (int)(distance2);
-						NPC.position.Y = player.Center.Y + (int)(distanceY2);
+						NPC.position.X = player.Center.X + distance2;
+						NPC.position.Y = player.Center.Y + distanceY2;
 
 						break;
 				}
@@ -1005,8 +985,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(5), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), (int)(5), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 5, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 5, 0f, 0, 0f, 0f);
 
 
 					
@@ -1107,7 +1087,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ShakeModSystem.Shake = 8;
 				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 				float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, (int)(0), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, 0, 0f, 0, 0f, 0f);
 		
 
 			}
@@ -1159,8 +1139,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), (int)(3), 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), (int)(3), 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), 3, 0f, 0, 0f, 0f);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), 3, 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifallstar"));
 
 
@@ -1220,10 +1200,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX -2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1 , ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), (int)(2), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX -2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1 , ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
 
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
 						break;
@@ -1233,7 +1213,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 60, speedXb * 0.1f, speedYb - 1 * 1, ModContent.ProjectileType<BigRock>(), (int)(11), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 60, speedXb * 0.1f, speedYb - 1 * 1, ModContent.ProjectileType<BigRock>(), 11, 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
 						break;
 
@@ -1241,8 +1221,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), (int)(5), 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), (int)(5), 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), 5, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), 5, 0f, 0, 0f, 0f);
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Flowers"));
 
 
@@ -1472,7 +1452,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
 		
-		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-	public class AcidicalDirtBlock : ModItem
+    public class AcidicalDirtBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

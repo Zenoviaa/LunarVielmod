@@ -1,25 +1,19 @@
 
 
-using Stellamod.Trails;
-using Stellamod.Effects;
-using Stellamod.Items.Materials;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using static Stellamod.Items.Weapons.Summon.VoidStaff;
 using static Stellamod.Items.Weapons.Summon.IceboundStaff;
+using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	/*
+    /*
 	 * This file contains all the code necessary for a minion
 	 * - ModItem
 	 *     the weapon which you use to summon the minion with
@@ -33,7 +27,7 @@ namespace Stellamod.Items.Weapons.Summon
 	 * This is NOT an in-depth guide to advanced minion AI
 	 */
 
-	public class IceboundMinionBuff : ModBuff
+    public class IceboundMinionBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -157,8 +151,7 @@ namespace Stellamod.Items.Weapons.Summon
 			{
 				return true;
 			}
-            int counter = 6;
-            float alphaCounter = 6;
+
             public override Color? GetAlpha(Color lightColor)
             {
                 return Color.White;

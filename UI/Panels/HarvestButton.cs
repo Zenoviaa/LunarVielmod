@@ -1,15 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
-using Terraria.UI;
+﻿using Terraria.UI;
 
 namespace Stellamod.UI.Panels
 {
-	public class HarvestButton : UIState
+    public class HarvestButton : UIState
 	{
 		/* public UIImageButton harvestButton;
 

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
 using Stellamod.Dusts;
-using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 {
-	public class CosButterfly : ModProjectile
+    public class CosButterfly : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -53,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 				float speedXabx = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 				float speedYabx = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, (int)(Projectile.damage * 0), 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, Projectile.damage * 0, 0f);
 						Projectile.Kill();
 				Timer = 0;	
 			}
@@ -204,7 +202,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			float speedYabx = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, (int)(Projectile.damage * 0), 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, Projectile.damage * 0, 0f);
 			Projectile.Kill();
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
@@ -213,7 +211,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			float speedXabx = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 			float speedYabx = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, (int)(Projectile.damage * 0), 0f);
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabx, Projectile.position.Y + speedYabx, speedXabx * 0, speedYabx * 0, ProjectileID.DaybreakExplosion, Projectile.damage * 0, 0f);
 			Projectile.Kill();
 			return false;
 		}

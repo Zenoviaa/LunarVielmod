@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class ShadeBall : ModProjectile
+    public class ShadeBall : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

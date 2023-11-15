@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Dusts
 {
-	public class RuneDust : ModDust
+    public class RuneDust : ModDust
 	{
         public override void OnSpawn(Dust dust)
         {

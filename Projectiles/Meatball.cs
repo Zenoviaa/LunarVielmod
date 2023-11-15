@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-	public class Meatball : ModProjectile
+    public class Meatball : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class VerianoreTile : ModTile
+    public class VerianoreTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

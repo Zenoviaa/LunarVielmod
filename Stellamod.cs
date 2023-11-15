@@ -1,24 +1,20 @@
-﻿using Stellamod.WorldG;
-using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Backgrounds;
+using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Skies;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ModLoader;
+using Terraria.GameContent.UI;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria;
-using Microsoft.Xna.Framework.Graphics;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Stellamod.Items.Materials;
-using Stellamod.Helpers;
-using Terraria.GameContent.UI;
-using Stellamod.Skies;
-using Terraria.Audio;
-using System.Numerics;
-using Microsoft.Xna.Framework;
-using Stellamod.Backgrounds;
+using Terraria.ModLoader;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using System.IO;
 
 namespace Stellamod
 {

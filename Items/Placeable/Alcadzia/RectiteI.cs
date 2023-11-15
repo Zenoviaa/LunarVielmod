@@ -1,11 +1,10 @@
 ﻿using Stellamod.Tiles.RoyalCapital;
-using Stellamod.Tiles.Structures.AlcadizNGovheil;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable.Alcadzia
 {
-	public class RectiteI : ModItem
+    public class RectiteI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

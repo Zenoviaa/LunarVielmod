@@ -1,13 +1,7 @@
-using Stellamod.Trails;
-using Stellamod.Effects;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.GameContent;
 using Terraria.ID;
-using Stellamod.Projectiles.Swords;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -60,9 +54,11 @@ namespace Stellamod.Projectiles.Magic
         public override Color? GetAlpha(Color lightColor) => Color.White;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(BuffID.OnFire, 180);
+            //This will always be true, so it's a nothing statement
+            //if (Main.rand.Next(1) == 0)
+            target.AddBuff(BuffID.OnFire, 180);
         }
+
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ores
 {
-	public class VerianOre : ModItem
+    public class VerianOre : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

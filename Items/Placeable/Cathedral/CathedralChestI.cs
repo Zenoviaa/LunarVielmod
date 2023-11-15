@@ -1,12 +1,11 @@
-﻿using Terraria.ID;
+﻿using Stellamod.Tiles.Structures.Cathedral;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Tiles.Structures;
-using Stellamod.Tiles.Structures.Cathedral;
 
 namespace Stellamod.Items.Placeable.Cathedral
 {
-	public class CathedralChestI : ModItem
+    public class CathedralChestI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

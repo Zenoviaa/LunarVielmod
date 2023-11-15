@@ -2,7 +2,7 @@
 
 namespace Stellamod.Assets.Biomes
 {
-	public class MorrowUndergroundBackgroundStyle : ModUndergroundBackgroundStyle
+    public class MorrowUndergroundBackgroundStyle : ModUndergroundBackgroundStyle
 	{
 		public override void FillTextureArray(int[] textureSlots)
 		{

@@ -1,24 +1,17 @@
 ﻿
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
 using Microsoft.Xna.Framework;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Consumables;
 using Microsoft.Xna.Framework.Graphics;
-using System.Runtime.CompilerServices;
-using Terraria.GameContent;
-using System;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Trails;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
-
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.DropRules;
 using Stellamod.WorldG;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod
 {
@@ -28,13 +21,14 @@ namespace Stellamod
         {
             if (EventWorld.Gintzing)
             {
-                spawnRate = (int)((double)spawnRate * 0.01);
-                maxSpawns = (int)((float)maxSpawns * 4.3f);
+                spawnRate = (int)(spawnRate * 0.01);
+                maxSpawns = (int)(maxSpawns * 4.3f);
             }
         }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            
             if (npc.type == NPCID.Zombie || npc.type == NPCID.BigSlimedZombie || npc.type == NPCID.TorchZombie || npc.type == NPCID.ArmedTorchZombie || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieElfGirl || npc.type == NPCID.ArmedZombieSwamp || npc.type == NPCID.ArmedZombieEskimo || npc.type == NPCID.ZombieElfBeard || npc.type == NPCID.ZombieEskimo || npc.type == NPCID.ZombieDoctor || npc.type == NPCID.ZombieElf || npc.type == NPCID.ZombieMerman || npc.type == NPCID.ZombieRaincoat || npc.type == NPCID.BigZombie || npc.type == NPCID.BigFemaleZombie || npc.type == NPCID.BaldZombie || npc.type == NPCID.ArmedZombieTwiggy || npc.type == NPCID.ArmedZombieSlimed)
             {
                 if (Main.bloodMoon)
@@ -45,29 +39,23 @@ namespace Stellamod
             }
             if (npc.type == NPCID.DemonEye || npc.type == NPCID.DemonEye2 || npc.type == NPCID.DemonEyeOwl || npc.type == NPCID.DemonEyeSpaceship)
             {
-                if (Main.bloodMoon)
-                {
-                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
-                }
+                LeadingConditionRule bloodmoonDropRule = new LeadingConditionRule(new BloodmoonDropRule());
+                bloodmoonDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
+                npcLoot.Add(bloodmoonDropRule);
             }
             if (npc.type == NPCID.GreekSkeleton)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GladiatorSpear>(), 8, 1, 1));
             }
+
             if (npc.type == NPCID.Harpy)
             {
-   
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudSkaters>(), 60, 1, 1));
-
             }
-
-
-
 
             if (npc.type == NPCID.BloodZombie || npc.type == NPCID.Drippler)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TerrorFragments>(), 2, 0, 5));
-
             }
 
             if (npc.type == NPCID.SkeletronHand)
@@ -79,10 +67,13 @@ namespace Stellamod
                 npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 1, 10, 35));
             }
 
-            if (npc.type == NPCID.Demon && NPC.downedBoss3)
+            if (npc.type == NPCID.Demon)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Infernis>(), 15, 1, 1));
+                LeadingConditionRule skeletronDropRule = new LeadingConditionRule(new SkeletronDropRule());
+                skeletronDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Infernis>(), 15, 1, 1));
+                npcLoot.Add(skeletronDropRule);
             }
+
             if (npc.type == NPCID.CaveBat)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheDeafen>(), 15, 1, 1));

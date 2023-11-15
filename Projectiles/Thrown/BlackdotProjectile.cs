@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-	public class BlackdotProjectile : ModProjectile
+    public class BlackdotProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{

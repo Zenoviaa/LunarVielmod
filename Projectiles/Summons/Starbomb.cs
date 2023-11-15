@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.UI.Systems;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
-using Terraria.Graphics.Effects; // Don't forget this one!
-using Stellamod.UI.Systems;
-using Terraria.Audio;
-using ParticleLibrary;
 
 namespace Stellamod.Projectiles.Summons
 {
@@ -42,28 +38,14 @@ namespace Stellamod.Projectiles.Summons
             Projectile.timeLeft = 300;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 5;
-            
-
         }
-        float alphaCounter;
+
         public override void AI()
         {
-
-
-
-      
-
-
-
-
             // ai[0] = state
             // 0 = unexploded
             // 1 = exploded
-           
-                Projectile.velocity *= 0.95f;
-            
-
-
+            Projectile.velocity *= 0.95f;
             if (Projectile.timeLeft == 180)
             {
                 ShakeModSystem.Shake = 6;
@@ -72,7 +54,7 @@ namespace Stellamod.Projectiles.Summons
                 {
 
                     Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<Starout>(), (int)(320 + Projectile.damage), 0f, 0, 0f, 0f);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<Starout>(), 320 + Projectile.damage, 0f, 0, 0f, 0f);
                 }
             }
             if (Projectile.timeLeft <= 180)
@@ -108,13 +90,13 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool PreDraw(ref Color lightColor)
         {
-           
+           /*
             Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
 
             // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
             Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
             float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);*/
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
@@ -145,19 +127,16 @@ namespace Stellamod.Projectiles.Summons
                 for (float i = 0f; i < 1f; i += 0.25f)
                 {
                     float radians = (i + timer) * MathHelper.TwoPi;
-
                     Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(209, 220, 34, 70), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
                 }
 
                 for (float i = 0f; i < 1f; i += 0.34f)
                 {
                     float radians = (i + timer) * MathHelper.TwoPi;
-
                     Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(209, 0, 180, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
                 }
             }
-           
-            
+                      
             return true;
         }
 
@@ -167,8 +146,6 @@ namespace Stellamod.Projectiles.Summons
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
-        }
-        
-        
+        }    
     }
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class Zap : ModProjectile
+    public class Zap : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -27,7 +27,6 @@ namespace Stellamod.Projectiles.Magic
 			Projectile.extraUpdates = 2;
 		}
 
-
 		private void Trail(Vector2 from, Vector2 to)
 		{
 			float distance = Vector2.Distance(from, to);
@@ -37,24 +36,32 @@ namespace Stellamod.Projectiles.Magic
 				Dust.NewDustPerfect(Vector2.Lerp(from, to, w * step), 226, Vector2.Zero).noGravity = true;
 			}
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.Next(1) == 0)
-            {
-                target.AddBuff(BuffID.Frostburn2, 380);
-                target.AddBuff(BuffID.Chilled, 380);
-                target.AddBuff(BuffID.Frozen, 380);
-            }
+			/* 
+			 * This will always be true, so it's a nothing statement
+			 * It translates to if 0 == 0
+			 if (Main.rand.Next(1) == 0)
+			 {
+				 target.AddBuff(BuffID.Frostburn2, 380);
+				 target.AddBuff(BuffID.Chilled, 380);
+				 target.AddBuff(BuffID.Frozen, 380);
+			 }*/
 
-        }
+			target.AddBuff(BuffID.Frostburn2, 380);
+			target.AddBuff(BuffID.Chilled, 380);
+			target.AddBuff(BuffID.Frozen, 380);
+		}
+
         public override bool PreAI()
         {
             Trail(Projectile.position, Projectile.position + Projectile.velocity);
             return true;
         }
+
 		public override void AI()
 		{
-
 			Projectile.frameCounter++;
             if (Projectile.frameCounter >= 11)
             {
@@ -68,8 +75,6 @@ namespace Stellamod.Projectiles.Magic
                 Main.projectile[proj].hostile = false;
                 Main.projectile[proj].velocity *= 7f;
             }
-
 		}
 	}
-
 }

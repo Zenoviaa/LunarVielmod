@@ -1,19 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 {
-	public class Viola : ModNPC
+    public class Viola : ModNPC
 	{
 
 
@@ -73,8 +66,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 			if (timer2 == 8)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<Notia>(), (int)(10), 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<Notia>(), (int)(10), 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<Notia>(), 10, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<Notia>(), 10, 0f, 0, 0f, 0f);
 				timer2 = 0;
 			}
 

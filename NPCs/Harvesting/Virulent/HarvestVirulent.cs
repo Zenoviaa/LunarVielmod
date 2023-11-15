@@ -3,16 +3,9 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Items.Placeable;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -21,8 +14,8 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Harvesting.Virulent
 {
-	// This ModNPC serves as an example of a completely custom AI.
-	public class HarvestVirulent : ModNPC
+    // This ModNPC serves as an example of a completely custom AI.
+    public class HarvestVirulent : ModNPC
 	{
 		// Our texture is 36x36 with 2 pixels of padding vertically, so 38 is the vertical spacing.
 		// These are for our benefit and the numbers could easily be used directly in the code below, but this is how we keep code organized.

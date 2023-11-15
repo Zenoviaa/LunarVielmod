@@ -1,13 +1,11 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Tiles;
+﻿using Stellamod.Tiles;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Placeable
 {
-	public class BroochesTableI : ModItem
+    public class BroochesTableI : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

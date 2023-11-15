@@ -1,18 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Events;
-using Terraria.ID;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Utilis;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 //By Al0n37
@@ -23,7 +18,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
     {
         bool Dir;
         float DashSpeed = 9;
-        internal int side;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradieagle");
@@ -31,6 +25,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             Main.npcFrameCount[NPC.type] = 8;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
+
         public override void SetDefaults()
         {
 
@@ -48,9 +43,8 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
-
         }
-        bool Enraged = false;
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.15f;
@@ -58,13 +52,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
-        float alphaCounter = 0;
+
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
-
-
-        private int Counter;
-
         private void Disappear()
         {
             Player obj = Main.player[base.NPC.target];
@@ -75,10 +65,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             }
             NPC.netUpdate = true;
         }
+
         public int previousAttack;
-
         public Vector2 PlayerPastPost;
-
         public override void AI()
         {
             Lighting.AddLight((int)((NPC.position.X + (NPC.width / 2)) / 16f), (int)((NPC.position.Y + (NPC.height / 2)) / 16f), 0.46f, 0.32f, .1f);

@@ -1,21 +1,19 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-	public class VeribossBag : ModItem
+    public class VeribossBag : ModItem
 	{
 
 		public override void SetStaticDefaults()

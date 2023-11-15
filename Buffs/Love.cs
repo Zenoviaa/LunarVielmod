@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
-	public class Love : ModBuff
+    public class Love : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

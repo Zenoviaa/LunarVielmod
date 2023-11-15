@@ -1,21 +1,18 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
+using Stellamod.Items.Consumables;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Stellamod.Dusts;
-using Terraria.Localization;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Placeable;
 
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
-	//TODO: Smart Cursor Outlines and tModLoader support
-	public class GothivDoorClosed : ModTile
+    //TODO: Smart Cursor Outlines and tModLoader support
+    public class GothivDoorClosed : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

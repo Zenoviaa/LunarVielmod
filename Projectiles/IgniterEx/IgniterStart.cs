@@ -1,20 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Buffs;
+using Stellamod.Buffs.Dusteffects;
+using Stellamod.Buffs.PocketDustEffects;
 using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using Stellamod.Buffs.Dusteffects;
-using Stellamod.Buffs.PocketDustEffects;
-using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles.IgniterEx
 {
-	public class IgniterStart : ModProjectile
+    public class IgniterStart : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -270,7 +269,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							npc.SimpleStrikeNPC(Projectile.damage * 19, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa + 129, Projectile.position.Y + speedYa + 129, speedXa * 0, speedYa * 0, ModContent.ProjectileType<VoidKaboom>(), (int)(Projectile.damage * 6), 0f, Projectile.owner, 0f, 0f);
+							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa + 129, Projectile.position.Y + speedYa + 129, speedXa * 0, speedYa * 0, ModContent.ProjectileType<VoidKaboom>(), Projectile.damage * 6, 0f, Projectile.owner, 0f, 0f);
 
 
 

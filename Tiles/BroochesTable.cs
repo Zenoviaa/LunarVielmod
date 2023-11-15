@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -9,7 +8,7 @@ using Terraria.ObjectData;
 
 namespace Stellamod.Tiles
 {
-	public class BroochesTable : ModTile
+    public class BroochesTable : ModTile
 	{
 		public override void SetStaticDefaults()
 		{

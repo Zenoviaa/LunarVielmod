@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class wowgun : ModItem
+    public class wowgun : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

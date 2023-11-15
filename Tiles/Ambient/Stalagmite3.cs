@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.ObjectData;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace Stellamod.Tiles.Ambient
 {
-	public class Stalagmite3 : ModTile
+    public class Stalagmite3 : ModTile
 	{
 		public override void SetStaticDefaults()
         {

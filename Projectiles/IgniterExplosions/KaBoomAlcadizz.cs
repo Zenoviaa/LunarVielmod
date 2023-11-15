@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class KaBoomAlcadizz : ModProjectile
+    public class KaBoomAlcadizz : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -61,7 +61,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - (float)Projectile.alpha / 50f);
+			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
 
 	}

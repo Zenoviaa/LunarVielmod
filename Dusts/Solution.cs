@@ -2,7 +2,7 @@
 
 namespace Stellamod.Dusts
 {
-	public class Solution : ModDust
+    public class Solution : ModDust
 	{
 		public override void SetStaticDefaults()
 		{

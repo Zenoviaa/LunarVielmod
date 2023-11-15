@@ -1,16 +1,14 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.INest.IEagle
 {
-	public class AcidBolt : ModProjectile
+    public class AcidBolt : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -31,23 +29,25 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 			Projectile.damage = 15;
 			Projectile.aiStyle = -1;
 		}
+
 		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 20; i++) {
 				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height,
-					0, 0, 60, 133);
+					DustID.Dirt, 0, 60, 133);
 			}
 		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return Color.White * ((float)(255 - base.Projectile.alpha) / 255f);
+			return Color.White * ((255 - Projectile.alpha) / 255f);
 		}
+		
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			if (Main.rand.Next(1) == 0)
-				target.AddBuff(Mod.Find<ModBuff>("AcidFlame").Type, 200);
+			target.AddBuff(ModContent.BuffType<Buffs.AcidFlame>(), 200);
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Texture2D tex = TextureAssets.Projectile[base.Projectile.type].Value;
@@ -56,17 +56,18 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 			for (int i = 0; i < base.Projectile.oldPos.Length; i++)
 			{
 				Vector2 drawPos = base.Projectile.oldPos[i] - Main.screenPosition + drawOrigin + new Vector2(0f, base.Projectile.gfxOffY);
-				Color color = Color.FromNonPremultiplied(152, 208, 113, 255 - base.Projectile.alpha) * ((float)(base.Projectile.oldPos.Length - i) / (float)base.Projectile.oldPos.Length);
+				Color color = Color.FromNonPremultiplied(152, 208, 113, 255 - base.Projectile.alpha) * ((base.Projectile.oldPos.Length - i) / (float)base.Projectile.oldPos.Length);
                 Main.spriteBatch.Draw(tex, drawPos, new Rectangle(0, 0, 22, 70), color, base.Projectile.rotation, drawOrigin, base.Projectile.scale, SpriteEffects.None, 0f);
 			}
             Main.spriteBatch.Draw(tex, base.Projectile.position - Main.screenPosition + drawOrigin + new Vector2(0f, base.Projectile.gfxOffY), new Rectangle(0, 0, 22, 70), Color.FromNonPremultiplied(255, 255, 255, 255 - base.Projectile.alpha), base.Projectile.rotation, drawOrigin, base.Projectile.scale, SpriteEffects.None, 0f);
 			Main.spriteBatch.EndBlendState();
 			return false;
 		}
+
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-            base.Projectile.ai[1] += 1f;
+            Projectile.ai[1] += 1f;
 			if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 30)
 			{
 				Projectile.velocity *= 0.79f;
@@ -80,8 +81,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 			{
 				SoundEngine.PlaySound(SoundID.Item63, Projectile.Center);
 			}
-
 		}
-
 	}
 }

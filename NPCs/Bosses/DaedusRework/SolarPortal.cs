@@ -1,38 +1,14 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.NPCs.Bosses.Daedus;
+using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Events;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using Steamworks;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Stellamod.Utilis;
-using Stellamod.NPCs.Acidic;
-using Stellamod.NPCs.Bosses.INest.IEagle;
-using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.SunStalker;
-using Terraria.GameContent.ItemDropRules;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Terraria.GameContent.Bestiary;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Harvesting;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Jack;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.Items.Armors.Terric;
-using Terraria.DataStructures;
-using Stellamod.NPCs.Bosses.Daedus;
 
 
 //By Al0n37
@@ -50,7 +26,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         private bool p2 = false;
         bool Attack;
         bool Flying;
-        Vector2 DaedusPos;
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 4;
@@ -79,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
-        int frame = 0;
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -110,13 +85,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 Color color28 = color29;
                 color28 = NPC.GetAlpha(color28);
                 color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + ((float)num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * (float)num103;
+                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
         }
 
-        bool CutScene;
-        private int Counter;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -144,18 +117,18 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 }
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
+           // Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             Lighting.AddLight(NPC.Center, Color.LightBlue.ToVector3() * 1.25f * Main.essScale);
             return true;
         }
+
         public Vector2  DaedusPosAdd;
         public override void AI()
         {
             Player player = Main.player[NPC.target];
-            bool expertMode = Main.expertMode;
-
             if (Flying)
             {
                 if (NPC.Center.X >= DaedusPosAdd.X && moveSpeed >= -120) // flies to players x position
@@ -246,7 +219,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
                         break;
                     case 2:
-                        Vector2 DLightPos;
                         NPC.ai[0]++;
                         var entitySource = NPC.GetSource_FromThis();
                         float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
@@ -262,7 +234,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
                             DaedusDrug = 10;
                         }
                         if (NPC.ai[0] == 250 - 50)
@@ -270,7 +242,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
                             DaedusDrug = 10;
                         }
                         if (NPC.ai[0] == 270 - 50)
@@ -278,7 +250,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
                             DaedusDrug = 10;
                         }
                         if (NPC.ai[0] == 290 - 50)
@@ -287,16 +259,12 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
                             Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), (int)(12), 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
                             DaedusDrug = 10;
                         }
                         break;
-
                 }
             }
         }
-
-
-
     }
 }

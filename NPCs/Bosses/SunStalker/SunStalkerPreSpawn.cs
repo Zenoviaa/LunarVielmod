@@ -1,29 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Humanizer;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Consumables;
-using System.Diagnostics.Metrics;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace Stellamod.NPCs.Bosses.SunStalker
 {
     internal class SunStalkerPreSpawn : ModNPC
     {
-        public bool Down;
-        public float Rot;
-        public bool Lightning;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker Lighting");
