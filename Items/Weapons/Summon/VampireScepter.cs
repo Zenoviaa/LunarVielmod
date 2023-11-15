@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using System;
@@ -10,11 +11,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-
 namespace Stellamod.Items.Weapons.Summon
 {
     public class VampirePlayer : ModPlayer
     {
+		public float rotation;
 		public bool lifesteal;
         public override void ResetEffects()
         {
@@ -27,13 +28,14 @@ namespace Stellamod.Items.Weapons.Summon
             base.PostUpdateBuffs();
 			if (lifesteal)
 			{
+				rotation+=2f;
 				float radius = 320;
 				int count = 64;
 				for (int i = 0; i < count; i++)
 				{
-					Vector2 position = Player.Center + new Vector2(radius, 0).RotatedBy((i * MathHelper.PiOver2 / count) * 4);
+					Vector2 position = Player.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count) + rotation) * 4);
 					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(position, speed * 0, ParticleManager.NewInstance<Ink3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(position, speed * 0, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
 				}
 			}
 		}
@@ -98,8 +100,6 @@ namespace Stellamod.Items.Weapons.Summon
 					}
 				}
 			}
-
-
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -222,90 +222,17 @@ namespace Stellamod.Items.Weapons.Summon
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
-			if (!CheckActive(owner))
-			{
+			if (!SummonHelper.CheckMinionActive<VampireTorchMinionBuff>(owner, Projectile))
 				return;
-			}
 
 			//This minion doesn't attack
 			Projectile.Center = owner.Center - new Vector2(0, 96);
 			Visuals();
 		}
 
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner)
-		{
-			if (owner.dead || !owner.active)
-			{
-				owner.ClearBuff(BuffType<VampireTorchMinionBuff>());
-				return false;
-			}
-
-			if (owner.HasBuff(BuffType<VampireTorchMinionBuff>()))
-			{
-				Projectile.timeLeft = 2;
-			}
-
-			return true;
-		}
-				private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter)
-		{
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-			if (owner.HasMinionAttackTargetNPC)
-			{
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f)
-				{
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget)
-			{
-				// This code is required either way, used for finding a target
-				for (int i = 0; i < Main.maxNPCs; i++)
-				{
-					NPC npc = Main.npc[i];
-					if (npc.CanBeChasedBy())
-					{
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-                        if (((closest && inRange) || !foundTarget) && lineOfSight)
-						{
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-                        }
-					}
-				}
-			}
-		}
 		private void Visuals()
 		{
-			// This is a simple "loop through all frames from top to bottom" animation
-			int frameSpeed = 5;
-			Projectile.frameCounter++;
-			if (Projectile.frameCounter >= frameSpeed)
-			{
-				Projectile.frameCounter = 0;
-				Projectile.frame++;
-				if (Projectile.frame >= Main.projFrames[Projectile.type])
-				{
-					Projectile.frame = 0;
-				}
-			}
-
-			//Bloody :3
+			DrawHelper.AnimateTopToBottom(Projectile, 5);
 			if (Main.rand.NextBool(12))
 			{
 				int count = 3;
@@ -315,7 +242,6 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 			}
 
-			// Some visuals here
 			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
 		}
 	}

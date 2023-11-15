@@ -3752,6 +3752,96 @@ Mods: {
 					There can only be one
 					'''
 			}
+
+			LunarianVoidBody: {
+				DisplayName: Lunarian Void Body
+				Tooltip: ""
+			}
+
+			LunarianVoidHead: {
+				DisplayName: Lunarian Void Head
+				Tooltip: ""
+			}
+
+			LunarianVoidLegs: {
+				DisplayName: Lunarian Void Legs
+				Tooltip: ""
+			}
+
+			SandStorm: {
+				DisplayName: Sand Storm
+				Tooltip: ""
+			}
+
+			ExploreMorrowedVillage: {
+				DisplayName: Explore Morrowed Village
+				Tooltip: ""
+			}
+
+			ExploreMorrowedVillageC: {
+				DisplayName: Explore Morrowed Village C
+				Tooltip: ""
+			}
+
+			Give100DustBags: {
+				DisplayName: Give100 Dust Bags
+				Tooltip: ""
+			}
+
+			Give100DustBagsC: {
+				DisplayName: Give100 Dust Bags C
+				Tooltip: ""
+			}
+
+			KillVerlia: {
+				DisplayName: Kill Verlia
+				Tooltip: ""
+			}
+
+			KillVerliaC: {
+				DisplayName: Kill Verlia C
+				Tooltip: ""
+			}
+
+			MakeMagicPaper: {
+				DisplayName: Make Magic Paper
+				Tooltip: ""
+			}
+
+			MakeMagicPaperC: {
+				DisplayName: Make Magic Paper C
+				Tooltip: ""
+			}
+
+			MakeUltimateScroll: {
+				DisplayName: Make Ultimate Scroll
+				Tooltip: ""
+			}
+
+			OldCarianTome: {
+				DisplayName: Old Carian Tome
+				Tooltip: ""
+			}
+
+			OrbOfTheMorrow: {
+				DisplayName: Orb Of The Morrow
+				Tooltip: ""
+			}
+
+			StolenMagicTome: {
+				DisplayName: Stolen Magic Tome
+				Tooltip: ""
+			}
+
+			TomeOfInfiniteSorcery: {
+				DisplayName: Tome Of Infinite Sorcery
+				Tooltip: ""
+			}
+
+			AlcadThrowingCards: {
+				DisplayName: Alcad Throwing Cards
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4250,6 +4340,7 @@ Mods: {
 			Poyashot2.DisplayName: Poyashot2
 			FireflyMinion.DisplayName: Firefly Minion
 			VampireTorchMinion.DisplayName: Vampire Torch Minion
+			Card5.DisplayName: Card5
 		}
 
 		NPCs: {
@@ -5591,6 +5682,7 @@ Mods: {
 			}
 
 			StoneDeath.DisplayName: Stone Death
+			Merena.DisplayName: Merena
 		}
 
 		Biomes: {
@@ -6152,6 +6244,11 @@ Mods: {
 			VampireTorchMinionBuff: {
 				DisplayName: Sanguine Curse
 				Description: You are bloodthirsty!
+			}
+
+			Alcadded: {
+				DisplayName: Alcadded
+				Description: Mods.Stellamod.Buffs.Alcadded.Description
 			}
 		}
 	}

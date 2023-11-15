@@ -41,11 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             //Funny Recoil
             float recoilStrength = 14;
             Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
-            if(player.velocity.Length() < targetVelocity.Length())
-            {
-                Vector2 diff = targetVelocity - player.velocity;
-                player.velocity += diff;
-            }
+            player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
 
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
