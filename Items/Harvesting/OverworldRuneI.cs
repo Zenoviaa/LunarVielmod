@@ -16,7 +16,7 @@ namespace Stellamod.Items.Harvesting
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 999;
+			Item.maxStack = 1;
 			Item.value = Item.sellPrice(silver: 20);
 		}
 	}

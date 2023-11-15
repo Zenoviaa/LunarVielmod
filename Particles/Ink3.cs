@@ -35,7 +35,7 @@ namespace Stellamod.Particles
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D tex = Request<Texture2D>("Stellamod/Particles/Ink3").Value;
+			Texture2D tex = Request<Texture2D>("Stellamod/Particles/Fiery").Value;
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 
 			if (alpha < 0f)

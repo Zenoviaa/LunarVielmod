@@ -19,6 +19,7 @@
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
+    <None Remove="Buffs\Alcadded.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\DarkHold.png" />
     <None Remove="Buffs\Dusteffects\AivanDust.png" />
@@ -232,6 +233,7 @@
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />
+    <None Remove="Particles\Fiery.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldRingParticle3.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
