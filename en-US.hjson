@@ -3675,6 +3675,26 @@ Mods: {
 				DisplayName: Stonia Brooch A
 				Tooltip: ""
 			}
+
+			LunarianVoidHead: {
+				DisplayName: Lunarian Void Head
+				Tooltip: ""
+			}
+
+			LunarianVoidBody: {
+				Tooltip: ""
+				DisplayName: Lunarian Void Body
+			}
+
+			LunarianVoidLegs: {
+				DisplayName: Lunarian Void Legs
+				Tooltip: ""
+			}
+
+			SandStorm: {
+				DisplayName: Sand Storm
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
