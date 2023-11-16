@@ -60,7 +60,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<HyuaProj>();
             Item.noUseGraphic = true;
-            Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.rare = ItemRarityID.LightPurple;
             Item.buyPrice(0, 0, 7, 0);
         }
