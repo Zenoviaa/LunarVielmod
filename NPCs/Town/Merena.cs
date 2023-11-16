@@ -43,7 +43,11 @@ namespace Stellamod.NPCs.Town
 			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[Type] = 8; // The amount of frames the NPC has
 
-			
+			NPCID.Sets.ActsLikeTownNPC[Type] = true;
+
+			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
+			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
+			NPCID.Sets.SpawnsWithCustomName[Type] = true;
 
 
 			// Influences how the NPC looks in the Bestiary
@@ -81,10 +85,10 @@ namespace Stellamod.NPCs.Town
 		public int counter;
 		public override void SetDefaults()
 		{
-			NPC.townNPC = false; // Sets NPC to be a Town NPC
+								 // Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
-			NPC.width = 18;
-			NPC.height = 40;
+			NPC.width = 62;
+			NPC.height = 90;
 			NPC.aiStyle = -1;
 			NPC.damage = 90;
 			NPC.defense = 42;
@@ -96,7 +100,13 @@ namespace Stellamod.NPCs.Town
 
 
 		}
-
+		public override void FindFrame(int frameHeight)
+		{
+			NPC.frameCounter += 0.22f;
+			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
+			int frame = (int)NPC.frameCounter;
+			NPC.frame.Y = frame * frameHeight;
+		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
