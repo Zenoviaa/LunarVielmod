@@ -317,7 +317,7 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			// So it will lean slightly towards the direction it's moving
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
-			DrawHelper.AnimateTopToBottom(Projectile, 5);
+			DrawHelper.AnimateTopToBottom(Projectile, 3);
             if (Main.rand.NextBool(12))
             {
 				int count = 3; 
