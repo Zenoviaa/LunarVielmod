@@ -93,7 +93,7 @@ namespace Stellamod.Items.Weapons.Summon
 					NPC npc = Main.npc[i];
 					float between = Vector2.Distance(npc.Center, player.Center);
 					bool inRange = between < distanceFromTarget;
-					if (inRange)
+					if (npc.CanBeChasedBy() && inRange)
 					{
 						foundTarget = true;
 						distanceFromTarget = between;
