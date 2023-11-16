@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -32,23 +32,7 @@ namespace Stellamod.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            // Center It
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (Projectile.spriteDirection == -1)
-                spriteEffects = SpriteEffects.FlipHorizontally;
-
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            int startY = frameHeight * Projectile.frame;
-
-            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-            Vector2 origin = sourceRectangle.Size() / 2f;
-            float offsetX = 20f;
-            origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
-            Color drawColor = Projectile.GetAlpha(lightColor);
-            Main.EntitySpriteDraw(texture,
-                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
+            DrawHelper.PreDrawAnimatedProjectile(this, ref lightColor);
 
             // It's important to return false, otherwise we also draw the original texture.
             return false;

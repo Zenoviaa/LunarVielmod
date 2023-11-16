@@ -22,6 +22,7 @@ namespace Stellamod.Items.Materials
 			Item.maxStack = 9999;
 			Item.value = Item.sellPrice(silver: 5);
 		}
+
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)

@@ -8,6 +8,75 @@ namespace Stellamod
 {
     public static class VectorHelper
     {
+        /// <summary>
+        /// Returns a point on a heart
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static Vector2 PointOnHeart(float t, float scale)
+        {
+            float x = 16 * MathF.Pow(MathF.Sin(t), 3);
+            float y = 13f * MathF.Cos(t) - 5 * MathF.Cos(2 * t) - 2 * MathF.Cos(3 * t) - MathF.Cos(4 * t);
+            return new Vector2(x, -y) * scale;
+        }
+
+        /// <summary>
+        /// Makes a velocity home into another position
+        /// <br>Homing strength should be between 0-1, with 1 being 100% accuracy. Use values below 0.2f for the best results</br>
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        /// <param name="speed"></param>
+        /// <param name="homingStrength"></param>
+        /// <returns></returns>
+        public static Vector2 VelocityHomingTo(Vector2 startPosition, Vector2 currentVelocity, Vector2 endPosition, float homingStrength)
+        {
+            Vector2 vectorToTarget = endPosition - startPosition;
+            Vector2 directionToTarget = vectorToTarget.SafeNormalize(Vector2.Zero);
+            Vector2 velocityToTarget = directionToTarget * currentVelocity.Length();
+            Vector2 newVelocity = Vector2.Lerp(currentVelocity, velocityToTarget, homingStrength);
+            return newVelocity;
+        }
+
+        /// <summary>
+        /// Returns a velocity towards a target position
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        /// <param name="speed"></param>
+        /// <returns></returns>
+        public static Vector2 VelocityDirectTo(Vector2 startPosition, Vector2 endPosition, float speed)
+        {
+            Vector2 direction = endPosition - startPosition;
+            direction = direction.SafeNormalize(Vector2.Zero);
+            Vector2 velocity = direction * speed;
+            return velocity;
+        }
+
+        /// <summary>
+        /// Moves the current velocity up to the target velocity, or does nothing if you are already moving faster than it
+        /// <br>Good for recoil effects</br>
+        /// </summary>
+        /// <param name="currentVelocity"></param>
+        /// <param name="targetVelocity"></param>
+        /// <returns></returns>
+        public static Vector2 VelocityUpTo(Vector2 currentVelocity, Vector2 targetVelocity)
+        {
+            if (currentVelocity.Length() < targetVelocity.Length())
+            {
+                Vector2 diff = targetVelocity - currentVelocity;
+                currentVelocity += diff;
+            }
+
+            return currentVelocity;
+        }
+
+        public static Vector2 NextPointOnCircle(Vector2 position, float radius, int index, int pointCount)
+        {
+            Vector2 newPosition = position + new Vector2(radius, 0).RotatedBy((index * MathHelper.PiOver2 / pointCount) * 4);
+            return newPosition;
+        }
+
         public static Color Alpha(this Color c, float alpha)
         {
             return new Color(c.R, c.G, c.B, (int)(255f * MathHelper.Clamp(alpha, 0f, 1f)));
@@ -17,8 +86,6 @@ namespace Stellamod
         {
             return new Color(c.R, c.G, c.B, (int)(c.A / 255f * MathHelper.Clamp(alpha, 0f, 1f) * 255f));
         }
-
-        public static Vector2 Right => new Vector2(1f, 0f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 GetPosition(this Rectangle rect)

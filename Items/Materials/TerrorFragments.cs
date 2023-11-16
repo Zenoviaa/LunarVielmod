@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,11 +14,13 @@ namespace Stellamod.Items.Materials
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Terror Fragment");
+            ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
         }
 
         public override void SetDefaults()
         {
-            Item.width = 40;
+            Item.width = 34;
             Item.height = 40;
             Item.maxStack = 999;
             Item.value = Item.sellPrice(0, 0, 20, 0);

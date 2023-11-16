@@ -19,6 +19,7 @@
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
+    <None Remove="Buffs\Alcadded.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\DarkHold.png" />
     <None Remove="Buffs\Dusteffects\AivanDust.png" />
@@ -76,6 +77,9 @@
     <None Remove="Items\Accessories\StarflareBand.png" />
     <None Remove="Items\Accessories\SunGlyph.png" />
     <None Remove="Items\Accessories\WoodShield.png" />
+    <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidBody_Body.png" />
+    <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidHead_Head.png" />
+    <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidLegs_Legs.png" />
     <None Remove="Items\Armors\Terric\TericGramNPC2.png" />
     <None Remove="Items\Consumables\DreadmireBag.png" />
     <None Remove="Items\Consumables\EDR.png" />
@@ -228,10 +232,13 @@
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="NPCs\Town\Merena_Head.png" />
+    <None Remove="NPCs\Town\Merena_Party.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />
+    <None Remove="Particles\Fiery.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldRingParticle3.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />

@@ -106,28 +106,13 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             return true;
         }
 
-        public override void OnKill()
-        {
-            if (Main.rand.NextBool(100))
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeHandTome>(), 1, false, 0, false, false);
-            }
-            if (Main.rand.NextBool(50))
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<ShadeCharm>(), 1, false, 0, false, false);
-            }
-
-            if (NPC.downedBoss1)
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<DarkEssence>(), Main.rand.Next(1, 3), false, 0, false, false);
-            }
-        }
-
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeHandTome>(), 100));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeCharm>(), 50));
             if (NPC.downedBoss1)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 3, 1, 3));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 3));
             }
         }
 
