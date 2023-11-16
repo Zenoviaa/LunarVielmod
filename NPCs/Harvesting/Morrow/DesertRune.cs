@@ -69,7 +69,9 @@ namespace Stellamod.NPCs.Harvesting.Morrow
                 if (NPC.ai[0] == 2)
                 {
                     HitPos = NPC.position;
+                    NPC.position.Y -= 100;
                     BloodCystPos = NPC.position;
+   
                 }
                 if (NPC.ai[0] >= 3 && NPC.ai[0] <= 100)
                 {

@@ -3842,10 +3842,15 @@ Mods: {
 				DisplayName: Alcad Throwing Cards
 				Tooltip: ""
 			}
+
+			OceanRuneI: {
+				DisplayName: Ancient Artifact
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
-			DisplayName: Jungle Rune I
+			DisplayName: Ancient Artifact
 			Tooltip: ""
 		}
 
@@ -5683,6 +5688,8 @@ Mods: {
 
 			StoneDeath.DisplayName: Stone Death
 			Merena.DisplayName: Merena
+			OceanRune.DisplayName: Ocean Rune
+			OceanRuneLightBig.DisplayName: Ocean Rune Light Big
 		}
 
 		Biomes: {
