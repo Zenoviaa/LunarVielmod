@@ -107,6 +107,13 @@ namespace Stellamod.NPCs.Town
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
 		}
+
+
+		public override bool CanChat()
+		{
+			return true;
+		}
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
