@@ -33,6 +33,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.rare = ItemRarityID.Orange;
             Item.consumable = true;
             Item.maxStack = 9999;
+            Item.buyPrice(0, 0, 10, 0);
         }
       
     }
