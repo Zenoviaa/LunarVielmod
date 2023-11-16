@@ -357,6 +357,24 @@ namespace Stellamod.NPCs.Town
 
 				}
 
+
+				if (!Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()) && Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerlia>()))
+				{
+
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+					Main.npcChatText = $"What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao";
+
+				
+
+
+
+
+
+					// Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
+
+
+				}
+
 			}
 
 

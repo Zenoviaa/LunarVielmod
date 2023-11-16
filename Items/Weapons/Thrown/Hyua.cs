@@ -49,7 +49,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useAnimation = 100;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
-            Item.value = 10000;
+            Item.value = 700;
             Item.noMelee = true;
             Item.shootSpeed = 16f;
             Item.useAnimation = 20;

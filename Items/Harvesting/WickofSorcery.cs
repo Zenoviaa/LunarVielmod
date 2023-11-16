@@ -27,6 +27,7 @@ namespace Stellamod.Items.Harvesting
 			Item.value = Item.sellPrice(silver: 20);
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.buyPrice(1, 0, 0, 0);
+			Item.value = 1000000;
 		}
 	}
 }

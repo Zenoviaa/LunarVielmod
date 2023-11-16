@@ -18,6 +18,7 @@ namespace Stellamod.Items.Materials
 			Item.maxStack = 999;
 			Item.value = Item.sellPrice(silver: 50);
 			Item.buyPrice(0, 0, 50, 0);
+			Item.value = 5000;
 		}
 
 		

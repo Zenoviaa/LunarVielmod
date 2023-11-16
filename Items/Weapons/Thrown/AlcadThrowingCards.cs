@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useAnimation = 13;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 10;
-            Item.value = 1;
+            Item.value = 1000;
             Item.rare = ItemRarityID.Green;
             Item.crit = 15;
             Item.UseSound = SoundID.Item1;
