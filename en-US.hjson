@@ -3752,6 +3752,26 @@ Mods: {
 					There can only be one
 					'''
 			}
+
+			LunarianVoidBody: {
+				DisplayName: Lunarian Void Body
+				Tooltip: ""
+			}
+
+			LunarianVoidHead: {
+				DisplayName: Lunarian Void Head
+				Tooltip: ""
+			}
+
+			LunarianVoidLegs: {
+				DisplayName: Lunarian Void Legs
+				Tooltip: ""
+			}
+
+			SandStorm: {
+				DisplayName: Sand Storm
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
