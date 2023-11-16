@@ -231,6 +231,7 @@
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
+    <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
