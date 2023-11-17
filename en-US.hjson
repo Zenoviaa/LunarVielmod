@@ -3850,10 +3850,7 @@ Mods: {
 
 			Starvast: {
 				DisplayName: Starvast
-				Tooltip:
-					'''
-					Hit enemies will explode with homing stars
-					'''
+				Tooltip: Hit enemies will explode with homing stars
 			}
 		}
 

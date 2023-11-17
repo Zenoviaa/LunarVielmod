@@ -10,7 +10,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Overworld.ShadeSlime
 {
@@ -35,7 +35,9 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest && !Main.dayTime && NPC.downedBoss1) ? (0.300f) : 0f;
+            if (!NPC.downedBoss1)
+                return 0f;
+            return SpawnCondition.OverworldNightMonster.Chance * 0.3f;
         }
 
         public override void SetDefaults()

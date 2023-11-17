@@ -178,6 +178,7 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
 			recipe.AddIngredient(ItemType<LostScrap>(), 10);
 			recipe.AddIngredient(ItemID.SoulofNight, 10);
+			recipe.AddIngredient(ItemType<TerrorFragments>(), 10);
 			recipe.AddIngredient(ItemID.BloodMoonStarter, 1);
 			recipe.AddIngredient(ItemID.SanguineStaff, 1);
 			recipe.Register();

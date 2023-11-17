@@ -9,6 +9,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Overworld.RoyalSlime
 {
@@ -49,7 +50,11 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (Main.dayTime && spawnInfo.Player.ZoneOverworldHeight && !spawnInfo.Player.ZoneBeach && !spawnInfo.Player.ZoneJungle && !spawnInfo.Player.ZoneDesert && !spawnInfo.Player.ZoneSnow && !spawnInfo.Player.ZoneCrimson && !spawnInfo.Player.ZoneSkyHeight && !EventWorld.Gintzing ? (0.01f) : 0f);
+            if(EventWorld.Gintzing)
+                return 0;
+            if (!spawnInfo.Player.ZonePurity)
+                return 0;
+            return SpawnCondition.OverworldDaySlime.Chance * 0.01f;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
