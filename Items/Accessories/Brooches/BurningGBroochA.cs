@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -24,22 +26,20 @@ namespace Stellamod.Items.Accessories.Brooches
         {
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-
 			line = new TooltipLine(Mod, "Brooch of the TaGoa", "Advanced Brooch!")
 			{
 				OverrideColor = new Color(254, 128, 10)
-
 			};
-			tooltips.Add(line);
 
+			tooltips.Add(line);
 			line = new TooltipLine(Mod, "Brooch of the TaGoa", "You need an Advanced Brooches Backpack for this!")
 			{
 				OverrideColor = new Color(198, 124, 225)
 
 			};
 			tooltips.Add(line);
-
 		}
+
         public override void SetDefaults()
 		{
 			Item.width = 24;
@@ -47,20 +47,17 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.value = Item.buyPrice(0, 0, 90);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochBurningG = true;
-			player.GetModPlayer<MyPlayer>().BurningGBCooldown--;
-			player.GetModPlayer<MyPlayer>().BurningGBDCooldown--;
-
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+            if (broochPlayer.hasAdvancedBrooches)
+            {
+				broochPlayer.KeepBroochAlive<BurningGBrooch, BurningGB>(ref broochPlayer.hasBurningGBrooch);
+				broochPlayer.burningGBCooldown--;
+			}
+		
 		}
-
-
-
-
 	}
 }

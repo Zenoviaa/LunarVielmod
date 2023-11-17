@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -41,22 +43,13 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.value = Item.buyPrice(0, 0, 90);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
-
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochBear = true;
-
-			player.GetModPlayer<MyPlayer>().BearBCooldown--;
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.KeepBroochAlive<BearBrooch, BearB>(ref broochPlayer.hasBearBrooch);
 			player.manaRegen += 2;
-			
 		}
-
-
-
-
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
@@ -47,8 +48,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.value = Item.buyPrice(0, 0, 90);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
 
 		public override void AddRecipes()
@@ -69,15 +68,10 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.hasAdvancedBrooches = true;
 			player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
 			player.GetDamage(DamageClass.Generic) *= 1.1f; // Increase ALL player damage by 100%
-			player.GetModPlayer<MyPlayer>().HikersBCooldown--;
-			player.GetModPlayer<MyPlayer>().AdvancedBrooches = true;
-
 		}
-
-
-
-
 	}
 }

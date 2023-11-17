@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using Stellamod.Items.Materials;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -55,9 +57,11 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochGovheill = true;
-			player.GetModPlayer<MyPlayer>().GovheillBCooldown--;
-
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+            if (broochPlayer.hasAdvancedBrooches)
+            {
+				broochPlayer.KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref broochPlayer.hasGovheilHolsterBrooch);
+			}
 		}
 
 

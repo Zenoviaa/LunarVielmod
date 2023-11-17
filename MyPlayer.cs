@@ -929,152 +929,6 @@ namespace Stellamod
                     CorsageTime = 0;
                 }
             }
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Brooches
-            if (BroochAureBlight && AureBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<AurelusBlightBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<AurelusB>(), 1000);
-				AureBCooldown = 1000;
-			}
-
-			if (BroochDread && DreadBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<DreadBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<DreadB>(), 1000);
-				DreadBCooldown = 1000;
-			}
-
-			if (BroochAmethyst && AmethystBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<AmethystBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<AmethystBroo>(), 1000);
-				AmethystBCooldown = 1000;
-			}
-
-			if (BroochBear && BearBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<BearBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<BearB>(), 1000);
-				BearBCooldown = 1000;
-			}
-
-			if (BroochVixed && VixedBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<VixedBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<VixedB>(), 1000);
-				VixedBCooldown = 1000;
-			}
-
-			if (BroochMal && MalBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MalShieldBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<MalB>(), 1000);
-				MalBCooldown = 1000;
-			}
-
-
-
-			if (BroochSpragald && SpragaldBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SpragaldBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<Spragald>(), 1000);
-				SpragaldBCooldown = 1000;
-			}
-
-
-
-			if (BroochFrile && FrileBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<FrileBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<IceBrooch>(), 1000);
-				FrileBCooldown = 1000;
-			}
-
-
-			if (BroochFlyfish && FlyfishBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<FlyfishBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<Flyfish>(), 1000);
-				FlyfishBCooldown = 1000;
-			}
-
-			if (BroochMorrow && MorrowBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MorrowedBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<Morrow>(), 1000);
-				MorrowBCooldown = 1000;
-			}
-
-
-			if (BroochSlime && SlimeBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<SlimeBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<Slimee>(), 1000);
-				SlimeBCooldown = 1000;
-			}
-
-			if (BroochDiari && DiariBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<DiariBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<Diarii>(), 1000);
-				DiariBCooldown = 1000;
-			}
-
-			if (BroochVerlia && VerliaBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<VerliaBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<VerliaBroo>(), 1000);
-				VerliaBCooldown = 1000;
-			}
-
-
-			if (BroochBurningG && AdvancedBrooches && BurningGBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<BurningGBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<BurningGB>(), 1000);
-				BurningGBCooldown = 1000;
-			}
-
-			if (BroochGint && GintBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<GintzlBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<GintBroo>(), 1000);
-				GintBCooldown = 1000;
-			}
-
-			if (BroochStone && StoneBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<StoneBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<StoneB>(), 1000);
-				StoneBCooldown = 1000;
-			}
-
-			if (BroochGovheill && AdvancedBrooches && GovheillBCooldown <= 0)
-			{
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<GovheilHolsterBrooch>(), 0, 1f, Player.whoAmI);
-
-				Player.AddBuff(ModContent.BuffType<GovheilB>(), 1000);
-				GovheillBCooldown = 1000;
-			}
-
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 
 
@@ -1086,7 +940,6 @@ namespace Stellamod
 			{
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1.1f, ModContent.ProjectileType<Stump>(), 10, 1f, Player.whoAmI);
 				HikersBCooldown = 30;
-
 			}
 
 
@@ -1921,49 +1774,7 @@ namespace Stellamod
 
 
 			}
-			if (BroochVerlia && VerliaBDCooldown <= 0)
-			{
-				
-				for (int d = 0; d < 4; d++)
-				{
-					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
-					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
 
-
-					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<VerliaBroochP3>(), 20, 1f, Player.whoAmI);
-				}
-
-				VerliaBDCooldown = 220;
-			}
-
-			if (BroochBurningG && AdvancedBrooches && BurningGBDCooldown <= 0)
-			{
-
-				for (int d = 0; d < 4; d++)
-				{
-					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
-					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
-
-
-					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ProjectileID.IchorSplash, 10, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<AlcadizBombExplosion>(), 30, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ProjectileID.IchorSplash, 55, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ProjectileID.IchorSplash, 45, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ProjectileID.IchorSplash, 65, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ProjectileID.IchorSplash, 40, 1f, Player.whoAmI);
-				}
-
-				BurningGBDCooldown = 220;
-			}
 
 		}
 
@@ -1979,70 +1790,11 @@ namespace Stellamod
 
 			if (Player.HeldItem.DamageType == DamageClass.Ranged && TAuraSpawn && TAuraCooldown <= 0)
 			{
-
-
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -4, ProjectileID.SpikyBall, 30, 1f, Player.whoAmI);
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 4, ProjectileID.SpikyBall, 20, 1f, Player.whoAmI);
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ProjectileID.SpikyBall, 50, 1f, Player.whoAmI);
 				TAuraCooldown = 600;
-
 			}
-
-
-			if (BroochFrile && FrileBDCooldown <= 0)
-			{
-
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<FrileBroochP>(), 3, 1f, Player.whoAmI);
-				FrileBDCooldown = 3;
-
-			}
-
-			if (BroochVerlia && VerliaBDCooldown <= 0)
-			{
-
-				for (int d = 0; d < 4; d++)
-				{
-					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
-					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
-
-
-					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<VerliaBroochP>(), 10, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<VerliaBroochP2>(), 15, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<VerliaBroochP3>(), 20, 1f, Player.whoAmI);
-				}
-
-				VerliaBDCooldown = 220;
-			}
-
-
-			if (BroochBurningG && AdvancedBrooches && BurningGBDCooldown <= 0)
-			{
-
-				for (int d = 0; d < 4; d++)
-				{
-					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
-					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
-
-
-					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa, speedYa, ProjectileID.IchorSplash, 10, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<AlcadizBombExplosion>(), 30, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ProjectileID.IchorSplash, 55, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ProjectileID.IchorSplash, 45, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ProjectileID.IchorSplash, 65, 1f, Player.whoAmI);
-					Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speedXa * 1f, speedYa * 1.5f, ProjectileID.IchorSplash, 40, 1f, Player.whoAmI);
-				}
-
-				BurningGBDCooldown = 220;
-			}
-
-
 		}
 
 
@@ -2053,20 +1805,16 @@ namespace Stellamod
 				if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>())
                 {
 					npc.SimpleStrikeNPC(hurtInfo.Damage * 7, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
-				}
-				
+				}	
 			}
 
 			if (Lovestruck)
 			{
-
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
-
 				if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>())
 				{
 					npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
 				}
-
 			}
 
 
@@ -2074,12 +1822,9 @@ namespace Stellamod
             {
 				switch (Main.rand.Next(8))
 				{
-
-
 					case 0:
 
 						npc.AddBuff((BuffID.Poisoned), 120);
-
 						break;
 					case 1:
 
