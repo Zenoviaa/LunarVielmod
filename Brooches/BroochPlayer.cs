@@ -53,6 +53,7 @@ namespace Stellamod.Brooches
             hasStoneBrooch = false;
             hasVerliaBrooch = false;
             hasVixedBrooch = false;
+            hasSlimeBrooch = false;
             hasAdvancedBrooches = false;
         }
 
