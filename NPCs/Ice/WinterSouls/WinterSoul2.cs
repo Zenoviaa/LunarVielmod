@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Ice.WinterSouls
 {
@@ -44,9 +45,12 @@ namespace Stellamod.NPCs.Ice.WinterSouls
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && spawnInfo.Player.ZoneSnow) ? (0.800f) : 0f;
-
+            float chance = SpawnCondition.OverworldNightMonster.Chance * 0.8f;
+            if (!spawnInfo.Player.ZoneSnow)
+                return 0f;
+            return chance;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {

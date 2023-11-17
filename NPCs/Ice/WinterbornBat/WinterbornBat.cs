@@ -5,8 +5,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-
-
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Ice.WinterbornBat
 {
@@ -19,8 +18,12 @@ namespace Stellamod.NPCs.Ice.WinterbornBat
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneSnow && spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && !spawnInfo.Player.ZoneSkyHeight ? (1.30f) : 0f);
+            float chance = SpawnCondition.OverworldNightMonster.Chance * 1.3f;
+            if (!spawnInfo.Player.ZoneSnow)
+                return 0f;
+            return chance;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {

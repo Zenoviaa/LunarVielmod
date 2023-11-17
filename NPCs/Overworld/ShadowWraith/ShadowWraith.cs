@@ -13,6 +13,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Overworld.ShadowWraith
 {
@@ -73,7 +74,9 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && !Main.dayTime && !Main.hardMode) ? (0.300f) : 0f;
+            if (!Main.hardMode)
+                return 0f;
+            return SpawnCondition.OverworldNightMonster.Chance * 0.3f;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

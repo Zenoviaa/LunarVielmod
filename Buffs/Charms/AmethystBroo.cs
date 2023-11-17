@@ -18,7 +18,7 @@ namespace Stellamod.Buffs.Charms
 		{
 			Lighting.AddLight(player.Center, Color.LightYellow.ToVector3() * 2.75f * Main.essScale);
 			player.statDefense += 2;
-			player.pickSpeed += 20;
+			player.pickSpeed -= 20;
 
 		}
 	}
