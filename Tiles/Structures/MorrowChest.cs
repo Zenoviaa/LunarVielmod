@@ -170,75 +170,71 @@ namespace Stellamod.Tiles.Structures
 			}
 
 			bool isLocked = Chest.IsLocked(left, top);
-			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked)
-			{
-				if (left == player.chestX && top == player.chestY && player.chest >= 0)
-				{
-					player.chest = -1;
-					Recipe.FindRecipes();
-					SoundEngine.PlaySound(SoundID.MenuClose);
+
+			//If locked, try to open the chest.
+            if (isLocked)
+            {
+				//It's daytime, cannot open the chest.
+                if (Main.dayTime)
+                {
+					Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+					
+					//Gotta return out of here
+					return true;
 				}
-				else
+
+				//Open the chest :) 
+				int key = ModContent.ItemType<MorrowChestKey>();
+				if (player.ConsumeItem(key) && Chest.Unlock(left, top))
 				{
-					NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, top);
-					Main.stackSplit = 600;
-				}
-			}
-			else
-			{
-                
-					if (Main.dayTime)
+					if (Main.netMode == NetmodeID.MultiplayerClient)
 					{
-						if (!isLocked)
-						{
-								int chest = Chest.FindChest(left, top);
-							if (chest >= 0)
-							{
-								Main.stackSplit = 600;
-								if (chest == player.chest)
-								{
-									player.chest = -1;
-									SoundEngine.PlaySound(SoundID.MenuClose);
-								}
-								else
-								{
-								SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-								player.OpenChest(left, top, chest);
-								}
-
-								Recipe.FindRecipes();
-							}
-						}
-
-						if (isLocked)
-                    {
-						Main.NewText("The chest cannot be open in the light of the day due to a lock, apparently these feral creatures use their weapons at night. Try again at night.", Color.Orange);
+						NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 					}
-					}
-					else if (!Main.dayTime)
+				}
+
+				return true;
+            }
+            else if(!isLocked)
+            {
+				//Chest isn't locked, OPEN IT UP NOW!
+				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
-						if (isLocked)
-						{
-							// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
-							int key = ModContent.ItemType<MorrowChestKey>();
-							if (player.ConsumeItem(key) && Chest.Unlock(left, top))
-							{
-								if (Main.netMode == NetmodeID.MultiplayerClient)
-								{
-									NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
-								}
-							}
-						}
+					if (left == player.chestX && top == player.chestY && player.chest >= 0)
+					{
+						player.chest = -1;
+						Recipe.FindRecipes();
+						SoundEngine.PlaySound(SoundID.MenuClose);
 					}
+					else
+					{
+						NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, top);
+						Main.stackSplit = 600;
+					}
+				}
+                else
+                {
+					//I'm not sure if this is needed, but I'm keeping it in lol
+					int chest = Chest.FindChest(left, top);
+					if (chest >= 0)
+					{
+						Main.stackSplit = 600;
+						if (chest == player.chest)
+						{
+							player.chest = -1;
+							SoundEngine.PlaySound(SoundID.MenuClose);
+						}
+						else
+						{
+							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+							player.OpenChest(left, top, chest);
+						}
 
-
-
-
-
-				
+						Recipe.FindRecipes();
+					}
+				}
 			}
-			
-		
+
 			return true;
 		}
 
