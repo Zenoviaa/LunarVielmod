@@ -17,10 +17,10 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 		{
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.width = 45;
-			Projectile.height = 45;
+			Projectile.width = 232;
+			Projectile.height = 149;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 17;
+			Projectile.timeLeft = 34;
 			Projectile.scale = 0.7f;
 			
 		}
@@ -38,17 +38,25 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
 			Player player = Main.player[Projectile.owner];
 
-			timer2++;
-			if (timer2 == 1)
-            {
-				player.GetModPlayer<MyPlayer>().SwordComboSlash += 1;
-
-			}
+			
 			Vector3 RGB = new(2.55f, 2.55f, 0.94f);
 			// The multiplication here wasn't doing anything
-			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-			Projectile.velocity *= .96f;
-			Projectile.ai[1]++;
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= 2)
+			{
+				Projectile.frame++;
+				Projectile.frameCounter = 0;
+			}
+			Vector2 angle = new Vector2(Projectile.ai[0], Projectile.ai[1]);
+			Projectile.rotation = angle.ToRotation();
+			Projectile.position = player.Center + angle - new Vector2(Projectile.width / 2, Projectile.height / 2);
+			if (Projectile.timeLeft == 2)
+			{
+				Projectile.friendly = false;
+			}
+
+
+			Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
 			if (!Moved && Projectile.ai[1] >= 0)
 			{
 				
