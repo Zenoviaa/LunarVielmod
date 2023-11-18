@@ -27,11 +27,11 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useTime = 23;
 			Item.useAnimation = 23;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.knockBack = 5;
+			Item.knockBack = 10;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.DD2_MonkStaffSwing;
+			Item.UseSound = SoundID.DD2_SonicBoomBladeSlash;
 			Item.autoReuse = false;
-			Item.value = Item.sellPrice(0, 0, 0, 20);
+			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<VoyagerShotProj>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;

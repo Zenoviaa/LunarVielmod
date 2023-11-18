@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Thrown
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
 
-            line = new TooltipLine(Mod, "Daeknad", "(B) Very good throwing igniter with good scaling!")
+            line = new TooltipLine(Mod, "Daeknasd", "(B) Very good throwing weapon that sticks around!")
             {
                 OverrideColor = new Color(108, 201, 255)
 
