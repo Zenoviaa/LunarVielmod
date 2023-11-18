@@ -5690,6 +5690,7 @@ Mods: {
 			Merena.DisplayName: Merena
 			OceanRune.DisplayName: Ocean Rune
 			OceanRuneLightBig.DisplayName: Ocean Rune Light Big
+			AbysmLunatic.DisplayName: Abysm Lunatic
 		}
 
 		Biomes: {
