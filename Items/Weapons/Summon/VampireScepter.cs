@@ -93,7 +93,7 @@ namespace Stellamod.Items.Weapons.Summon
 					NPC npc = Main.npc[i];
 					float between = Vector2.Distance(npc.Center, player.Center);
 					bool inRange = between < distanceFromTarget;
-					if (inRange)
+					if (npc.CanBeChasedBy() && inRange)
 					{
 						foundTarget = true;
 						distanceFromTarget = between;
@@ -178,6 +178,7 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
 			recipe.AddIngredient(ItemType<LostScrap>(), 10);
 			recipe.AddIngredient(ItemID.SoulofNight, 10);
+			recipe.AddIngredient(ItemType<TerrorFragments>(), 10);
 			recipe.AddIngredient(ItemID.BloodMoonStarter, 1);
 			recipe.AddIngredient(ItemID.SanguineStaff, 1);
 			recipe.Register();

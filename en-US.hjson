@@ -3847,6 +3847,11 @@ Mods: {
 				DisplayName: Ancient Artifact
 				Tooltip: ""
 			}
+
+			Starvast: {
+				DisplayName: Starvast
+				Tooltip: Hit enemies will explode with homing stars
+			}
 		}
 
 		JungleRuneI: {
@@ -4346,6 +4351,7 @@ Mods: {
 			FireflyMinion.DisplayName: Firefly Minion
 			VampireTorchMinion.DisplayName: Vampire Torch Minion
 			Card5.DisplayName: Card5
+			StarvastCustomSwingProjectile.DisplayName: Starvast Custom Swing Projectile
 		}
 
 		NPCs: {

@@ -42,14 +42,14 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void SetDefaults()
         {
             Item.damage = 70;
-            Item.DamageType = DamageClass.Melee;
+            Item.DamageType = DamageClass.Throwing;
             Item.width = 0;
             Item.height = 0;
             Item.useTime = 100;
             Item.useAnimation = 100;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
-            Item.value = 10000;
+            Item.value = 700;
             Item.noMelee = true;
             Item.shootSpeed = 16f;
             Item.useAnimation = 20;
@@ -60,8 +60,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<HyuaProj>();
             Item.noUseGraphic = true;
-            Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.rare = ItemRarityID.LightPurple;
+            Item.buyPrice(0, 0, 7, 0);
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

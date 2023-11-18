@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -48,14 +50,8 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochVixed = true;
-
-			player.GetModPlayer<MyPlayer>().VixedBCooldown--;
-			
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.KeepBroochAlive<VixedBrooch, VixedB>(ref broochPlayer.hasVixedBrooch);		
 		}
-
-
-
-
 	}
 }

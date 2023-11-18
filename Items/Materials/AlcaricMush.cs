@@ -44,6 +44,8 @@ namespace Stellamod.Items.Materials
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
+			Item.buyPrice(0, 0, 95, 0);
+			Item.value = 9500;
 
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -18,6 +18,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -36,7 +37,7 @@ namespace Stellamod.NPCs.Town
 	{
 		public int NumberOfTimesTalkedTo = 0;
 		public const string ShopName = "Shop";
-
+		public const string ShopName2 = "New Shop";
 		public override void SetStaticDefaults()
 		{
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
@@ -102,10 +103,22 @@ namespace Stellamod.NPCs.Town
 		}
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.22f;
+			NPC.frameCounter += 0.16f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
+		}
+
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		{
+			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
+			if (spawnInfo.Player.ZoneDirtLayerHeight)
+			{
+				return 0.34f;
+			}
+
+			//Else, the example bone merchant will not spawn if the above conditions are not met.
+			return 0f;
 		}
 
 
@@ -344,6 +357,24 @@ namespace Stellamod.NPCs.Town
 
 				}
 
+
+				if (Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerlia>()) && !Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
+				{
+
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+					Main.npcChatText = $"What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao";
+
+				
+
+
+
+
+
+					// Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
+
+
+				}
+
 			}
 
 
@@ -393,31 +424,24 @@ namespace Stellamod.NPCs.Town
 		{
 
 
-		
+			Player player = Main.LocalPlayer;
 
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
-				{
-				var npcShop = new NPCShop(Type, ShopName)
 
-				.Add(new Item(ModContent.ItemType<WickofSorcery>()) { shopCustomPrice = Item.buyPrice(platinum: 1) })
-				.Add(new Item(ModContent.ItemType<PearlescentScrap>()) { shopCustomPrice = Item.buyPrice(silver: 50) })
-				.Add(new Item(ModContent.ItemType<Hyua>()) { shopCustomPrice = Item.buyPrice(silver: 10) })
-				.Add(new Item(ModContent.ItemType<AlcadThrowingCards>()) { shopCustomPrice = Item.buyPrice(silver: 10) })
-				.Add(new Item(ModContent.ItemType<AlcaricMush>()) { shopCustomPrice = Item.buyPrice(gold: 2) })
-				.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
-				.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) });
-				npcShop.Register(); // Name of this shop tab
 
-				}
+			var npcShop = new NPCShop(Type, ShopName)
 
-            else
-            {
-				var npcShop = new NPCShop(Type, ShopName)
+			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
+			.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
 
-				.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) });
-		
-				npcShop.Register(); // Name of this shop tab
-			}
+			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
+			.Add<PearlescentScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))// { shopCustomPrice = Item.buyPrice(silver: 50) })
+			.Add<Hyua>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
+			.Add<AlcadThrowingCards>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))//{ shopCustomPrice = Item.buyPrice(silver: 10) })
+			.Add<AlcaricMush>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
+			 //{ shopCustomPrice = Item.buyPrice(gold: 1) });
+
+			npcShop.Register(); // Name of this shop tab
+			
 
 
 
@@ -471,6 +495,8 @@ namespace Stellamod.NPCs.Town
 
 	}
 
-
 	
+
+
+
 }

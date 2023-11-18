@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -68,13 +70,8 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochDiari = true;
-			player.GetModPlayer<MyPlayer>().DiariBCooldown--;
-
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.KeepBroochAlive<DiariBrooch, Diarii>(ref broochPlayer.hasDiariBrooch);
 		}
-
-
-
-
 	}
 }

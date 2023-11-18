@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Brooches;
+using Stellamod.Buffs.Charms;
 using Stellamod.Items.Harvesting;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -31,9 +33,6 @@ namespace Stellamod.Items.Accessories.Brooches
 
 			};
 			tooltips.Add(line);
-
-
-
 		}
 
 		public override void SetDefaults()
@@ -43,8 +42,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.value = Item.buyPrice(0, 0, 90);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
 
 		public override void AddRecipes()
@@ -61,14 +58,9 @@ namespace Stellamod.Items.Accessories.Brooches
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<MyPlayer>().BroochFrile = true;
-			player.GetModPlayer<MyPlayer>().FrileBCooldown--;
-			player.GetModPlayer<MyPlayer>().FrileBDCooldown--;
-
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.KeepBroochAlive<FrileBrooch, IceBrooch>(ref broochPlayer.hasFrileBrooch);
+			broochPlayer.frileBroochCooldown--;
 		}
-
-
-
-
 	}
 }
