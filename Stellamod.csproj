@@ -273,6 +273,8 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
+    <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
+    <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

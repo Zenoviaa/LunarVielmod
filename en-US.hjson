@@ -3889,6 +3889,16 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Blossoming Scissor
 			}
+
+			AltrideSlicer: {
+				Tooltip: ""
+				DisplayName: Altride Slicer
+			}
+
+			MooningSlicer: {
+				Tooltip: ""
+				DisplayName: Mooning Slicer
+			}
 		}
 
 		JungleRuneI: {
@@ -4390,6 +4400,12 @@ Mods: {
 			Card5.DisplayName: Card5
 			StarvastCustomSwingProjectile.DisplayName: Starvast Custom Swing Projectile
 			BloodWaterProj.DisplayName: Blood Water Proj
+			AltrideProj.DisplayName: Altride Proj
+			Altride3.DisplayName: Altride3
+			Altride2.DisplayName: Altride2
+			Altride1.DisplayName: Altride1
+			MooningProj.DisplayName: Mooning Proj
+			Altride4.DisplayName: Altride4
 		}
 
 		NPCs: {
