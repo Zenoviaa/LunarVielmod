@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if (hit.Crit)
+            if (hit.Crit && hasVampireCharm)
             {
                 if (Main.rand.NextBool(4))
                 {
