@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Stellamod.Projectiles.Swords;
 using Terraria;

@@ -216,6 +216,7 @@
     <None Remove="NPCs\Bosses\Daedus\SummonSpawnEffect.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
+    <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />

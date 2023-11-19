@@ -7,7 +7,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-    public class DreadSpawnEffect : ModProjectile
+    public class DreadSpawnEffectSmol : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -29,8 +29,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.extraUpdates = 1;
         }
 
-
-		float alphaCounter = 5;
+		float alphaCounter = 3;
 		public override void AI()
 		{
 			alphaCounter -= 0.18f;

@@ -3852,6 +3852,26 @@ Mods: {
 				DisplayName: Starvast
 				Tooltip: Hit enemies will explode with homing stars
 			}
+
+			GallinAlloy: {
+				DisplayName: Gallin Alloy
+				Tooltip: ""
+			}
+
+			GallinLock: {
+				DisplayName: Gallin Lock
+				Tooltip: ""
+			}
+
+			GallinSaber: {
+				DisplayName: Gallin Saber
+				Tooltip: ""
+			}
+
+			LarveinScripute: {
+				DisplayName: Larvein Scripute
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4352,6 +4372,15 @@ Mods: {
 			VampireTorchMinion.DisplayName: Vampire Torch Minion
 			Card5.DisplayName: Card5
 			StarvastCustomSwingProjectile.DisplayName: Starvast Custom Swing Projectile
+			GallinLockProj.DisplayName: Gallin Lock Proj
+			GallinLockProj2.DisplayName: Gallin Lock Proj2
+			GallinLockFX1.DisplayName: Gallin Lock F X1
+			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
+			GallinWave.DisplayName: Gallin Wave
+			GallinSaberSlash.DisplayName: Gallin Saber Slash
+			GallinWave2.DisplayName: Gallin Wave2
+			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
+			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
 		}
 
 		NPCs: {
