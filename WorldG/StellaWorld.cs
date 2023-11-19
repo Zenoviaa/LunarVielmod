@@ -63,9 +63,10 @@ namespace Stellamod.WorldG
 			if (ShiniesIndex != -1)
 			{
 
-				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
+				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));			
+				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -91,6 +92,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Bridget", WorldGenBridget));
 
 			}
 
@@ -284,12 +286,12 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 0 );
+					Point Loc = new Point(smx + 10, smy + 25 );
 					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome2");
 
 
 					Point Loc2 = new Point(smx - 10, smy);
-					Point Loc4 = new Point(smx + 233, smy - 5);
+					Point Loc4 = new Point(smx + 233, smy + 10);
 					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 					WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 
@@ -378,7 +380,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + Main.rand.Next(1, 5));
+					Point Loc = new Point(smx, smy + Main.rand.Next(5, 20));
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/StoneTemple");
 					foreach (int chestIndex in ChestIndexs)
@@ -910,6 +912,74 @@ namespace Stellamod.WorldG
 						Point Loc = new Point(smx, smy + 10);
 						StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter2");
 						
+					}
+
+					placed = true;
+				}
+			}
+
+		}
+
+
+		private void WorldGenBridget(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "The Almighty weapon being burried";
+
+
+			for (int k = 0; k < 1; k++)
+			{
+				bool placed = false;
+				int attempts = 0;
+				while (!placed && attempts++ < 1000000)
+				{
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 2) - 2, (Main.maxTilesX) / 2); // from 50 since there's a unaccessible area at the world's borders
+																				// 50% of choosing the last 6th of the world
+																				// Choose which side of the world to be on randomly
+					///if (WorldGen.genRand.NextBool())
+					///{
+					///	towerX = Main.maxTilesX - towerX;
+					///}
+
+					//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+					int smy = ((int)(Main.worldSurface - 200));
+
+					// We go down until we hit a solid tile or go under the world's surface
+					while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+					{
+						smy++;
+					}
+
+					// If we went under the world's surface, try again
+					if (smy > Main.worldSurface - 5)
+					{
+						continue;
+					}
+					Tile tile = Main.tile[smx, smy];
+					// If the type of the tile we are placing the tower on doesn't match what we want, try again
+					if (!(tile.TileType == TileID.Dirt
+							|| tile.TileType == TileID.Stone
+						|| tile.TileType == TileID.Grass))
+
+					{
+						continue;
+					}
+
+
+					// place the Rogue
+					//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+					//Main.npc[num].homeTileX = -1;
+					//	Main.npc[num].homeTileY = -1;
+					//	Main.npc[num].direction = 1;
+					//	Main.npc[num].homeless = true;
+
+
+
+					for (int da = 0; da < 1; da++)
+					{
+						Point Loc = new Point(smx, smy + 200);
+						StructureLoader.ReadStruct(Loc, "Struct/Overworld/Bridget");
+
 					}
 
 					placed = true;
@@ -1459,43 +1529,51 @@ namespace Stellamod.WorldG
 
 		Point pointL;
 
+		#region Royal Capital
 
 
-		
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = "Fighting the Virulent";
+			progress.Message = "Fighting the Virulent with magic";
+
+
+
+
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-																			   // 50% of choosing the last 6th of the world
-																			   // Choose which side of the world to be on randomly
+				int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 2) + - 500, (Main.maxTilesX / 2) - 400); // from 50 since there's a unaccessible area at the world's borders
+																										  // 50% of choosing the last 6th of the world
+																										  // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
 				///{
 				///	towerX = Main.maxTilesX - towerX;
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int abysmy = (int)(Main.worldSurface - 50);
+				int smy = ((int)(Main.worldSurface - 200));
 
 				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
+				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
 				{
-					abysmy++;
+					smy++;
 				}
 
 				// If we went under the world's surface, try again
-				if (abysmy > Main.worldSurface)
+				if (smy > Main.worldSurface - 20)
 				{
 					continue;
 				}
-				Tile tile = Main.tile[abysmx, abysmy];
+				Tile tile = Main.tile[smx, smy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Mud))
+				if (!(tile.TileType == TileID.Sand
+					|| tile.TileType == TileID.Dirt
+					|| tile.TileType == TileID.Grass
+					|| tile.TileType == TileID.Stone
+					|| tile.TileType == TileID.Sandstone))
 				{
 					continue;
 				}
@@ -1509,55 +1587,41 @@ namespace Stellamod.WorldG
 				//	Main.npc[num].homeless = true;
 
 
+
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc7 = new Point(abysmx, abysmy);
-					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y, 500, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 300, 400, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
-					WorldGen.TileRunner(Loc7.X + 200, Loc7.Y + 600, 300, 2, ModContent.TileType<Tiles.Acid.AcidialDirt>(), false, 0f, 0f, true, true);
+					Point Loc = new Point(smx - 10, smy + 25);
+					StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital");
 
-					Point Loc = new Point(abysmx + 50, abysmy + 255);
-					pointL = new Point(abysmx + 50, abysmy + 255);
 
-					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
+					Point Loc2 = new Point(smx - 10, smy);
+					Point Loc4 = new Point(smx + 233, smy + 10);
+				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
+
+					Point Loc3 = new Point(smx + 455, smy + 30);
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
+					//	Point resultPoint;
+					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
+					//	{
+					//new Conditions.IsSolid().AreaAnd(10, 10),
+					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
+					//	}), out resultPoint);
+					//		if (searchSuccessful)
+					//		{
+					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
+					//		}
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					//WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
+				//	WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
-				}
-			}
-
-			for (int fa = 0; fa < 20; fa++)
-			{
-				int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
-				int abysmyd = (int)(Main.worldSurface - 50);
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
-				{
-					abysmyd++;
-				}
-
-				// If we went under the world's surface, try again
-				if (abysmyd > Main.worldSurface)
-				{
-					continue;
-				}
-				Tile tile = Main.tile[abysmxd, abysmyd];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == ModContent.TileType<Tiles.Acid.AcidialDirt>()))
-				{
-					continue;
-				}
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmxd, abysmyd);
-
-
-					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
 				}
 			}
 		}
 
-		// 6. This is the actual world generation code.
-		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
+        #endregion
+        // 6. This is the actual world generation code.
+        private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Scorching Gild and Arnchar burning into the world";
@@ -1616,6 +1680,26 @@ namespace Stellamod.WorldG
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(2, 10), ModContent.TileType<FrileOreTile>());
+			}
+		}
+
+
+
+
+		private void WorldGenDarkstone(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Blackening Stones for racist effect";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 150), ModContent.TileType<DiminishedStone>());
 			}
 		}
 		private void WorldGenVirulentStructures(GenerationProgress progress, GameConfiguration configuration)

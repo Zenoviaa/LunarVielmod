@@ -67,15 +67,18 @@
     <None Remove="Items\Accessories\LunarBand.png" />
     <None Remove="Items\Accessories\OceanScroll.png" />
     <None Remove="Items\Accessories\OceansTrinket.png" />
+    <None Remove="Items\Accessories\SawtoothNecklace.png" />
     <None Remove="Items\Accessories\ShadeCharm.png" />
     <None Remove="Items\Accessories\ShadeScarf.png" />
     <None Remove="Items\Accessories\ShadeScarf_Glow.png" />
     <None Remove="Items\Accessories\ShadeScarf_Waist.png" />
+    <None Remove="Items\Accessories\ShadowCloak.png" />
     <None Remove="Items\Accessories\ShellSheid.png" />
     <None Remove="Items\Accessories\SoulStrideres.png" />
     <None Remove="Items\Accessories\SpiritPendent.png" />
     <None Remove="Items\Accessories\StarflareBand.png" />
     <None Remove="Items\Accessories\SunGlyph.png" />
+    <None Remove="Items\Accessories\VampireCharm.png" />
     <None Remove="Items\Accessories\WoodShield.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidBody_Body.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidHead_Head.png" />
@@ -111,6 +114,7 @@
     <None Remove="Items\Shrines\GovheilNAlca\ShrineHalhurishI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
+    <None Remove="Items\Shrines\Underground\ShrineBridgetI.png" />
     <None Remove="Items\Weapons\Mage\Aneuriliac.png" />
     <None Remove="Items\Weapons\Mage\Astalaiya.png" />
     <None Remove="Items\Weapons\Mage\Eclipsia.png" />
@@ -240,6 +244,7 @@
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />
+    <None Remove="Particles\FabledParticle5.png" />
     <None Remove="Particles\Fiery.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldRingParticle3.png" />
@@ -249,6 +254,7 @@
     <None Remove="Particles\MoonTrailParticle2.png" />
     <None Remove="Particles\SpinewBigOrange.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
+    <None Remove="Projectiles\BloodWaterProj.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
@@ -274,6 +280,11 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
+    <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
+    <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
+    <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
+    <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
+    <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
@@ -282,6 +293,7 @@
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineHalhurishC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineSolMothC.png" />
+    <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

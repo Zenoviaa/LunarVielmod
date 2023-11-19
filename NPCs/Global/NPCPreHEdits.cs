@@ -18,9 +18,83 @@ namespace Stellamod.NPCs.Global
 {
     public class NPCPreHEdits : GlobalNPC
 	{
-        // ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
-        // Here we go through all of them, and how they can be used.
-        // There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+
+		int Timerboss = 0;
+		// ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
+		// Here we go through all of them, and how they can be used.
+		// There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+
+		public override bool InstancePerEntity => true;
+		public override void AI(NPC npc)
+        {
+
+			Timerboss++;
+			if (npc.type == NPCID.Creeper)
+			{
+				
+			
+			
+				if (Timerboss == 180)
+				{
+					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+					float speedXnpc = npc.velocity.X;
+					float speedYnpc = npc.velocity.Y;
+
+					int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.IchorSplash, 13, 0f, 0, 0f, 0f);
+					Projectile ichor = Main.projectile[fireball];
+					ichor.hostile = true;
+					ichor.friendly = false;
+
+					Timerboss = 0;
+				}
+			}
+
+			if (npc.type == NPCID.EaterofWorldsHead)
+			{
+			
+
+				if (Timerboss == 100)
+				{
+
+					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+					float speedXnpc = npc.velocity.X;
+					float speedYnpc = npc.velocity.Y;
+
+					int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.CursedFlameFriendly, 20, 0f, 0, 0f, 0f);
+
+					Projectile ichor = Main.projectile[fireball];
+					ichor.hostile = true;
+					ichor.friendly = false;
+					Timerboss = 0;
+				}
+
+			
+
+			}
+
+
+
+			if (npc.type == NPCID.BrainofCthulhu)
+			{
+
+
+				npc.velocity *= 1.01f;
+
+
+
+			}
+
+
+
+
+
+
+
+		}
         public override void SetDefaults(NPC npc)
         {
 			if (npc.type == NPCID.EyeofCthulhu)
@@ -106,6 +180,33 @@ namespace Stellamod.NPCs.Global
 
 				npc.damage = 140;
 				
+			}
+
+			if (npc.type == NPCID.Creeper)
+			{
+				npc.life = 550;
+				npc.lifeMax = 550;
+			
+				npc.damage = 30;
+			
+			}
+
+			if (npc.type == NPCID.EaterofWorldsTail)
+			{
+				
+
+				npc.damage = 90;
+
+			}
+
+			if (npc.type == NPCID.EaterofWorldsHead)
+			{
+
+
+				npc.life = 1000;
+				npc.lifeMax = 1000;
+			
+
 			}
 		}
 

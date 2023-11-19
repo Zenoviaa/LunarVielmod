@@ -168,7 +168,7 @@ namespace Stellamod.Tiles
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Jack has awoken!", Color.Gold);
+					Main.NewText("The Stone Guardian has awoken!", Color.Gold);
 					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<StarrVeriplant>());
 					Main.npc[npcID].netUpdate2 = true;
 				}

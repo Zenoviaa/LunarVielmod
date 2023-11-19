@@ -79,8 +79,8 @@ namespace Stellamod.Items.Weapons.Melee
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 3, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 4, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 2, knockback, player.whoAmI, 1, dir);
             return false;
         }
 
