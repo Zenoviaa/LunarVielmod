@@ -3925,6 +3925,28 @@ Mods: {
 				DisplayName: Ztho Knives
 				Tooltip: ""
 			}
+
+			Climabaton: {
+				DisplayName: Climabaton
+				Tooltip: ""
+			}
+
+			Thunderstaff: {
+				DisplayName: Thunderstaff
+				Tooltip:
+					'''
+					Summons a lil' cloud to protect you!
+					The clouds perform different attacks based on the number that you have
+					 Lvl 1 - Frost Bolts
+					 Lvl 2 - Lightning Bolts
+					 Lvl 3 - Vortexes
+					'''
+			}
+
+			LarveinScripute: {
+				DisplayName: Larvein Scripute
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4443,6 +4465,17 @@ Mods: {
 			GoldsSlashProj.DisplayName: Golds Slash Proj
 			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
 			BurningKnife.DisplayName: Burning Knife
+			CloudMinion.DisplayName: Cloud Minion
+			LightningStrike.DisplayName: Lightning Strike
+			Tornado.DisplayName: Tornado
+			ClimateIceProj.DisplayName: Climate Ice Proj
+			ClimateLightningProj.DisplayName: Climate Lightning Proj
+			ClimateTornadoProj.DisplayName: Climate Tornado Proj
+			MooningKaboom.DisplayName: Mooning Kaboom
+			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
+			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
+			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
+			ClimateIceProjExplosion.DisplayName: Climate Ice Proj Explosion
 		}
 
 		NPCs: {
@@ -6365,6 +6398,11 @@ Mods: {
 			Alcadded: {
 				DisplayName: Alcadded
 				Description: Mods.Stellamod.Buffs.Alcadded.Description
+			}
+
+			CloudMinionBuff: {
+				DisplayName: Weather Forecast
+				Description: Clouds are storming around you ;)
 			}
 		}
 	}
