@@ -56,7 +56,8 @@ namespace Stellamod.Items.Armors.Artisan
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "3, 2, 1 .. Smile! Act like you're on stage will ya :p" +
-			"\nEvery little while you'll get a countdown, and when you hear Zero, your crit is 100% and damage output is doubled! " +
+			"\nEvery little while you'll get a countdown, and when you hear Zero," +
+			"\nyour crit is 100% and damage output is doubled! " +
 			"\nSmall bits of paint left in your tracks." +
 			"\nCrit chance and armor penetration increased by 20!";// This is the setbonus tooltip
 

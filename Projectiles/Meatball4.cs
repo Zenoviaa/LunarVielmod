@@ -17,11 +17,11 @@ namespace Stellamod.Projectiles
 		{
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
-			Projectile.width = 45;
-			Projectile.height = 45;
+			Projectile.width = 92;
+			Projectile.height = 92;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 32;
-			Projectile.scale = 0.8f;
+			Projectile.scale = 1f;
 			
 		}
 		public float Timer
