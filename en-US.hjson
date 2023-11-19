@@ -161,7 +161,7 @@ Mods: {
 
 			Paper: {
 				DisplayName: Paper
-				Tooltip: Its paper idk what you expected
+				Tooltip: It's paper idk what you expected
 			}
 
 			PlantH: {
@@ -395,7 +395,7 @@ Mods: {
 					'''
 					Shines with a blooming moon
 					+10% Ranged and Magic Damage!
-					+12 Penetration" +
+					+12 Penetration 
 					+5 Critical Strike Chance!
 					+20 Max Life
 					'''
@@ -508,7 +508,7 @@ Mods: {
 					'''
 					Woa this is super hard and magical..
 					Where does this ore come from?
-					Best use for metalic weapons and magical items!
+					Best used for metalic weapons and magical items!
 					'''
 			}
 
@@ -518,7 +518,7 @@ Mods: {
 					'''
 					A bag made for igniter dusts!
 					Where does this come from?
-					Used in every dust recipe, bring to the dust bench!
+					Used in every dust recipe, bring it to the dust bench!
 					'''
 			}
 
@@ -702,8 +702,8 @@ Mods: {
 				DisplayName: Ripped Fabric
 				Tooltip:
 					'''
-					From the knowledge of the Gilded to robes on enemies, wonderous!
-					A very magical Materials although..
+					From the knowledge of the Gilded to robes on enemies, it's wonderous!
+					A very magical material, although...
 					I feel like the item calls my name...
 					'''
 			}
@@ -712,7 +712,7 @@ Mods: {
 				DisplayName: Starr dew
 				Tooltip:
 					'''
-					Ew! Its sticky! I wonder what else is sticky...
+					Ew! It's sticky! I wonder what else is sticky...
 					A sticky substance that resonates with the stars and the morrow!
 					'''
 			}
@@ -734,7 +734,7 @@ Mods: {
 
 			FrileBar: {
 				DisplayName: Frile Bar
-				Tooltip: Frozen to the core, an essense of the moon and ice
+				Tooltip: Frozen to the core, an essence of the moon and ice
 			}
 
 			FrileOre: {
@@ -746,7 +746,7 @@ Mods: {
 				DisplayName: Verian Bar
 				Tooltip:
 					'''
-					Hot to the touch, filled with gild and glory of tribal warriors
+					Hot to the touch, filled with the gild and glory of tribal warriors
 					its so hot you can't even touch it, gotta use heated fabric...
 					'''
 			}
@@ -1081,7 +1081,7 @@ Mods: {
 				Tooltip:
 					'''
 					Sends shockwaves through the air
-					   Hitting enemies with sword will increase speed!
+					   Hitting enemies with the blade will increase your attack speed!
 					   Divergency Inspired!
 					'''
 			}
@@ -1300,7 +1300,7 @@ Mods: {
 
 			SteamedNail: {
 				DisplayName: Steamed Nail
-				Tooltip: Ram em' hard (thats what i said)
+				Tooltip: Ram em' hard (that's what I said)
 			}
 
 			Teraciz: {
@@ -1333,7 +1333,7 @@ Mods: {
 			}
 
 			AlcadizDagger: {
-				DisplayName: Morrowed String n Brooch
+				DisplayName: Morrowed String n' Brooch
 				Tooltip:
 					'''
 					Your summons will target focused enemies
@@ -1355,7 +1355,7 @@ Mods: {
 
 			CanOfLeaves: {
 				DisplayName: Box Of Leaves
-				Tooltip: Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...
+				Tooltip: Summon the leaves, don't bother picking them up, they are a bit aggressive, and magical...
 			}
 
 			StarCall: {
@@ -2011,7 +2011,7 @@ Mods: {
 			}
 
 			ShellSheid: {
-				DisplayName: Shell Sheid
+				DisplayName: Shell Shield
 				Tooltip: Shelly!
 			}
 
@@ -2021,17 +2021,13 @@ Mods: {
 					'''
 					Increased movement speed and airtime!
 					Effects of rocket boots!
-					I dont wanna have my soul turned into boots :(
+					I don't wanna have my soul turned into boots :(
 					'''
 			}
 
 			SpiritPendent: {
 				DisplayName: Spirit Pendent
-				Tooltip:
-					'''
-					Provides small light
-
-					'''
+				Tooltip: Provides a small light
 			}
 
 			StarflareBand: {
@@ -2706,7 +2702,7 @@ Mods: {
 
 			SwordOfTheJungleGoddess: {
 				DisplayName: Sword Of The Jungle Goddess
-				Tooltip: Dont craft this please.
+				Tooltip: Don't craft this please.
 			}
 
 			WoodenSaber: {
@@ -2796,7 +2792,7 @@ Mods: {
 
 			LAZER: {
 				DisplayName: L A Z E R
-				Tooltip: Im a lasering
+				Tooltip: I'm a lasering
 			}
 
 			M38F30: {
@@ -3138,7 +3134,7 @@ Mods: {
 
 			MagnusMagnum: {
 				DisplayName: Magnus Magnum
-				Tooltip: You know Harry, Ive never really cared for your two-shoe ass
+				Tooltip: You know Harry, I've never really cared for your two-shoe ass
 			}
 
 			VoidKey: {
@@ -5003,7 +4999,12 @@ Mods: {
 					MorrowStoneS.MapEntry: Morrow Stone S
 					MorrowDeathS.MapEntry: Morrow Death S
 					MorrowDeath2S.MapEntry: Morrow Death2 S
-					MorrowChest.MapEntry: Morrow Chest
+
+					MorrowChest: {
+						MapEntry0: Morrow Chest
+						MapEntry1: Locked Morrow Chest
+					}
+
 					LogS.MapEntry: Log S
 					GrassMossS.MapEntry: Grass Moss S
 					GrassBigS.MapEntry: Grass Big S

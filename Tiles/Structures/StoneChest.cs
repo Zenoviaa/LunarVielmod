@@ -20,8 +20,9 @@ namespace Stellamod.Tiles.Structures
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{
 			int option = frameX / 36;
-			return this.GetLocalization("MapEntry" + option);
+			return this.GetLocalization("MapEntry");
 		}
+
 		public override void SetStaticDefaults()
 		{
 			// Properties
