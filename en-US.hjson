@@ -3972,6 +3972,21 @@ Mods: {
 				DisplayName: Kaleidoscopic Ink
 				Tooltip: ""
 			}
+
+			ArtistsHeart: {
+				DisplayName: Artists Heart
+				Tooltip: ""
+			}
+
+			InkingSpire: {
+				DisplayName: Inking Spire
+				Tooltip: ""
+			}
+
+			PieceOfArt: {
+				DisplayName: Piece Of Art
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4505,6 +4520,23 @@ Mods: {
 			Paint2.DisplayName: Paint2
 			Paint3.DisplayName: Paint3
 			Paintdroplet.DisplayName: Paintdroplet
+			Artbar.DisplayName: Artbar
+			ArtistsHProj.DisplayName: Artists H Proj
+			PaintBomb1.DisplayName: Paint Bomb1
+			PaintBomb2.DisplayName: Paint Bomb2
+			PaintBomb3.DisplayName: Paint Bomb3
+			InkingSProj.DisplayName: Inking S Proj
+			InkingSProj2.DisplayName: Inking S Proj2
+			PaintBomb4.DisplayName: Paint Bomb4
+			PaintBomb5.DisplayName: Paint Bomb5
+			PaintBomb6.DisplayName: Paint Bomb6
+			InkingSThrow.DisplayName: Inking S Throw
+			PaintBomb7.DisplayName: Paint Bomb7
+			POAProj.DisplayName: P O A Proj
+			POAProj2.DisplayName: P O A Proj2
+			POAProj3.DisplayName: P O A Proj3
+			POAProj4.DisplayName: P O A Proj4
+			POAProj5.DisplayName: P O A Proj5
 		}
 
 		NPCs: {

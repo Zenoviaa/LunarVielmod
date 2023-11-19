@@ -8,6 +8,7 @@ using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
+using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
@@ -1094,8 +1095,10 @@ namespace Stellamod
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
-				}
 
+					
+				}
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
 				ThreeTwoOneSmileBCooldown = 1720;
 			}
 
@@ -1103,12 +1106,14 @@ namespace Stellamod
 			{
 				Player.GetDamage(DamageClass.Generic) *= 2f;
 				Player.GetCritChance(DamageClass.Generic) = 100f;
+
+
 			}
 
 			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
             {
 				RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(0f, 20f)));
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 30, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
 
 
 				PaintdropBCooldown = 25;
