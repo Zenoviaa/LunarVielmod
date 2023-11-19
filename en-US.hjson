@@ -3947,6 +3947,31 @@ Mods: {
 				DisplayName: Larvein Scripute
 				Tooltip: ""
 			}
+
+			ArtisanBreastplate: {
+				DisplayName: Artisan Breastplate
+				Tooltip: ""
+			}
+
+			ArtisanMask: {
+				DisplayName: Artisan Mask
+				Tooltip: ""
+			}
+
+			ArtisanThighs: {
+				DisplayName: Artisan Thighs
+				Tooltip: ""
+			}
+
+			ArtisanBar: {
+				DisplayName: Artisan Bar
+				Tooltip: ""
+			}
+
+			KaleidoscopicInk: {
+				DisplayName: Kaleidoscopic Ink
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4476,6 +4501,10 @@ Mods: {
 			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
 			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
 			ClimateIceProjExplosion.DisplayName: Climate Ice Proj Explosion
+			Meatball4.DisplayName: Meatball4
+			Paint2.DisplayName: Paint2
+			Paint3.DisplayName: Paint3
+			Paintdroplet.DisplayName: Paintdroplet
 		}
 
 		NPCs: {

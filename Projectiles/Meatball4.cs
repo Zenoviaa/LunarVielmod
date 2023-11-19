@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
 			Projectile.height = 45;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 32;
-			Projectile.scale = 0.7f;
+			Projectile.scale = 0.8f;
 			
 		}
 		public float Timer
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles
 
 			Projectile.velocity = swordRotation.ToRotationVector2();
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position			
-			Projectile.rotation += 0.1f;
+		
 		}
 		
 		public override bool PreAI()
