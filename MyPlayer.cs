@@ -1108,7 +1108,7 @@ namespace Stellamod
 			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
             {
 				RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(-10f, 10f)));
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 30, 1f, Player.whoAmI);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 30, 1f, Player.whoAmI);
 
 
 				PaintdropBCooldown = 25;
