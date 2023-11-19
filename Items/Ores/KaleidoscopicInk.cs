@@ -1,15 +1,16 @@
-﻿using Terraria;
+﻿
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Ores
 {
-    public class FrileBar : ModItem
+    public class KaleidoscopicInk : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// Tooltip.SetDefault("Frozen to the core, an essense of the moon and ice.");
+			// Tooltip.SetDefault("An ore too cold to place, used for many items with ice!");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 
@@ -25,17 +26,8 @@ namespace Stellamod.Items.Ores
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+		}
 		
-			
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 5);
-			recipe.AddTile(TileID.Furnaces);
-			recipe.Register();
-		}
-
 	}
 }

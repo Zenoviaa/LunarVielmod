@@ -3925,6 +3925,31 @@ Mods: {
 				DisplayName: Ztho Knives
 				Tooltip: ""
 			}
+
+			ArtisanBreastplate: {
+				DisplayName: Artisan Breastplate
+				Tooltip: ""
+			}
+
+			ArtisanMask: {
+				DisplayName: Artisan Mask
+				Tooltip: ""
+			}
+
+			ArtisanThighs: {
+				DisplayName: Artisan Thighs
+				Tooltip: ""
+			}
+
+			ArtisanBar: {
+				DisplayName: Artisan Bar
+				Tooltip: ""
+			}
+
+			KaleidoscopicInk: {
+				DisplayName: Kaleidoscopic Ink
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4443,6 +4468,10 @@ Mods: {
 			GoldsSlashProj.DisplayName: Golds Slash Proj
 			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
 			BurningKnife.DisplayName: Burning Knife
+			MooningKaboom.DisplayName: Mooning Kaboom
+			Paintdroplet.DisplayName: Paintdroplet
+			Paint2.DisplayName: Paint2
+			Paint3.DisplayName: Paint3
 		}
 
 		NPCs: {

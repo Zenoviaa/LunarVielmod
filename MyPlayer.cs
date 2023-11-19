@@ -26,6 +26,7 @@ using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
 using Stellamod.WorldG;
 using System.Collections.Generic;
@@ -86,6 +87,9 @@ namespace Stellamod
 		public bool MasteryMagic;
 		public int MasteryMagicBCooldown = 0;
 
+		public bool ThreeTwoOneSmile;
+		public int ThreeTwoOneSmileBCooldown = 1440;
+		public int PaintdropBCooldown = 3;
 
 
 
@@ -1042,6 +1046,75 @@ namespace Stellamod
 
 
 			}
+
+			#region 321smile
+
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 180)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Three"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 120)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Two"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 60)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/One"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 0)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/zero"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Spawn"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+				}
+
+				ThreeTwoOneSmileBCooldown = 1720;
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
+			{
+				Player.GetDamage(DamageClass.Generic) *= 2f;
+				Player.GetCritChance(DamageClass.Generic) = 100f;
+			}
+
+			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
+            {
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 30, 1f, Player.whoAmI);
+
+
+				PaintdropBCooldown = 25;
+			}
+
+
+			#endregion
 
 
 			if (Boots)
