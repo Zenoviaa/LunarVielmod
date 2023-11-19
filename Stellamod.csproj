@@ -114,6 +114,7 @@
     <None Remove="Items\Shrines\GovheilNAlca\ShrineHalhurishI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
+    <None Remove="Items\Shrines\Underground\ShrineBridgetI.png" />
     <None Remove="Items\Weapons\Mage\Aneuriliac.png" />
     <None Remove="Items\Weapons\Mage\Astalaiya.png" />
     <None Remove="Items\Weapons\Mage\Eclipsia.png" />
@@ -281,6 +282,8 @@
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
     <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
+    <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
+    <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
@@ -289,6 +292,7 @@
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineHalhurishC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineLights.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineSolMothC.png" />
+    <None Remove="Tiles\ShrineBreakers\Underground\ShrineBridgetC.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />

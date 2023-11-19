@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -8,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class ZthoKnives : ModItem
+    internal class FableKnives : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -18,7 +19,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 40;
+            Item.damage = 15;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
@@ -31,7 +32,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.DamageType = DamageClass.Throwing;
-            Item.shoot = ModContent.ProjectileType<ZthoKnife>();
+            Item.shoot = ModContent.ProjectileType<BurningKnife>();
             Item.shootSpeed = 35f;
             Item.useAnimation = 20;
             Item.useTime = 20;
@@ -42,10 +43,8 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 2);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
             recipe.AddIngredient(ItemID.ThrowingKnife, 50);
-            recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MeleeDrive>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

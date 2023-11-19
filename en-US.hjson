@@ -3900,6 +3900,31 @@ Mods: {
 				DisplayName: Evernean Slicer
 				Tooltip: ""
 			}
+
+			ShrineBridgetI: {
+				DisplayName: Shrine Bridget I
+				Tooltip: ""
+			}
+
+			Bridget: {
+				DisplayName: Bridget
+				Tooltip: ""
+			}
+
+			Reavestor: {
+				DisplayName: Reavestor
+				Tooltip: ""
+			}
+
+			FableKnives: {
+				DisplayName: Fable Knives
+				Tooltip: ""
+			}
+
+			ZthoKnives: {
+				DisplayName: Ztho Knives
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4411,6 +4436,13 @@ Mods: {
 			EverneanProj.DisplayName: Evernean Proj
 			Radial.DisplayName: Radial
 			Radial2.DisplayName: Radial2
+			BridgetProj.DisplayName: Bridget Proj
+			ReavBig.DisplayName: Reav Big
+			ReavestorSwordProj.DisplayName: Reavestor Sword Proj
+			ReavestorSwordProj2.DisplayName: Reavestor Sword Proj2
+			GoldsSlashProj.DisplayName: Golds Slash Proj
+			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
+			BurningKnife.DisplayName: Burning Knife
 		}
 
 		NPCs: {
@@ -5925,6 +5957,7 @@ Mods: {
 			wall7.MapEntry: wall7
 			SunAlter.MapEntry: Sun Alter
 			VerianoreTile.MapEntry: Verianore Tile
+			ShrineBridgetC.MapEntry: Shrine Bridget C
 		}
 
 		Buffs: {
