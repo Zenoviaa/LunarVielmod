@@ -19,7 +19,7 @@ namespace Stellamod.Tiles
 			MineResist = 2f;
 			MinPick = 50;
 			RegisterItemDrop(ItemID.StoneBlock);
-			AddMapEntry(new Color(7, 26, 2));
+			AddMapEntry(new Color(46, 26, 2));
 
 			// TODO: implement
 			// SetModTree(new Trees.ExampleTree());
