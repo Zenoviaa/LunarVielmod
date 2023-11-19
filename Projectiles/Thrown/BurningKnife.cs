@@ -46,11 +46,11 @@ namespace Stellamod.Projectiles.Thrown
                 }
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ZthoKnifes1"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ZthoKnifes2"), Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), Projectile.position);
                 }
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
@@ -60,7 +60,7 @@ namespace Stellamod.Projectiles.Thrown
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
                     vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
                     vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.Torch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -121,7 +121,7 @@ namespace Stellamod.Projectiles.Thrown
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Turquoise, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.Orange, Color.Transparent, completionRatio) * 0.7f;
         }
         public override bool PreDraw(ref Color lightColor)
         {

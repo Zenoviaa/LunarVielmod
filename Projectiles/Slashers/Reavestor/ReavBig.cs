@@ -92,7 +92,7 @@ namespace Stellamod.Projectiles.Slashers.Reavestor
 		}
 		public override void SetDefaults()
 		{
-			Projectile.scale = 0.7f;
+			Projectile.scale = 1f;
 			Projectile.rotation += 0.1f;
 			Projectile.friendly = true;
 			Projectile.hostile = false;
