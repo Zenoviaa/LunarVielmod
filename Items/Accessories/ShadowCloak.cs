@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Items.Materials;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +22,20 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
+
+            //Shadow Visual
+            if (Main.rand.NextBool(4))
+            {
+                float radius = 16;
+                int count = Main.rand.Next(6);
+                for (int i = 0; i < count; i++)
+                {
+                    Vector2 position = player.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count)) * 4);
+                    Vector2 speed = new Vector2(0, Main.rand.NextFloat(-0.2f, -1f));
+                    Color color = default(Color).MultiplyAlpha(0.1f);
+                    ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<Ink2>(), color, Main.rand.NextFloat(0.2f, 0.8f));
+                }
+            }
 
             //Increased armor pen
             player.statDefense += 8;
@@ -48,7 +64,7 @@ namespace Stellamod.Items.Accessories
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.FleshKnuckles, 1);
+            recipe.AddIngredient(ItemID.StarCloak, 1);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
             recipe.AddIngredient(ItemID.Ichor, 15);
             recipe.AddIngredient(ItemID.SoulofNight, 7);
