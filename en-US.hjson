@@ -3926,28 +3926,25 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ArtisanBreastplate: {
-				DisplayName: Artisan Breastplate
+			Climabaton: {
+				DisplayName: Climabaton
 				Tooltip: ""
 			}
 
-			ArtisanMask: {
-				DisplayName: Artisan Mask
-				Tooltip: ""
+			Thunderstaff: {
+				DisplayName: Thunderstaff
+				Tooltip:
+					'''
+					Summons a lil' cloud to protect you!
+					The clouds perform different attacks based on the number that you have
+					 Lvl 1 - Frost Bolts
+					 Lvl 2 - Lightning Bolts
+					 Lvl 3 - Vortexes
+					'''
 			}
 
-			ArtisanThighs: {
-				DisplayName: Artisan Thighs
-				Tooltip: ""
-			}
-
-			ArtisanBar: {
-				DisplayName: Artisan Bar
-				Tooltip: ""
-			}
-
-			KaleidoscopicInk: {
-				DisplayName: Kaleidoscopic Ink
+			LarveinScripute: {
+				DisplayName: Larvein Scripute
 				Tooltip: ""
 			}
 		}
@@ -4468,10 +4465,17 @@ Mods: {
 			GoldsSlashProj.DisplayName: Golds Slash Proj
 			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
 			BurningKnife.DisplayName: Burning Knife
+			CloudMinion.DisplayName: Cloud Minion
+			LightningStrike.DisplayName: Lightning Strike
+			Tornado.DisplayName: Tornado
+			ClimateIceProj.DisplayName: Climate Ice Proj
+			ClimateLightningProj.DisplayName: Climate Lightning Proj
+			ClimateTornadoProj.DisplayName: Climate Tornado Proj
 			MooningKaboom.DisplayName: Mooning Kaboom
-			Paintdroplet.DisplayName: Paintdroplet
-			Paint2.DisplayName: Paint2
-			Paint3.DisplayName: Paint3
+			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
+			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
+			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
+			ClimateIceProjExplosion.DisplayName: Climate Ice Proj Explosion
 		}
 
 		NPCs: {
@@ -5821,6 +5825,7 @@ Mods: {
 			Merena.DisplayName: Merena
 			OceanRune.DisplayName: Ocean Rune
 			OceanRuneLightBig.DisplayName: Ocean Rune Light Big
+			AbysmLunatic.DisplayName: Abysm Lunatic
 		}
 
 		Biomes: {
@@ -6393,6 +6398,11 @@ Mods: {
 			Alcadded: {
 				DisplayName: Alcadded
 				Description: Mods.Stellamod.Buffs.Alcadded.Description
+			}
+
+			CloudMinionBuff: {
+				DisplayName: Weather Forecast
+				Description: Clouds are storming around you ;)
 			}
 		}
 	}
