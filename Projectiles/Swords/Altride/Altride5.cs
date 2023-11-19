@@ -31,7 +31,7 @@ namespace Stellamod.Projectiles.Swords.Altride
         {
             Projectile.width = 40;
             Projectile.height = 40;
-            Projectile.penetrate = 10;
+            Projectile.penetrate = 1;
             Projectile.knockBack = 12.9f;
             Projectile.aiStyle = 1;
             AIType = ProjectileID.Bullet;
