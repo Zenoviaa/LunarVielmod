@@ -239,6 +239,7 @@
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />
+    <None Remove="Particles\FabledParticle5.png" />
     <None Remove="Particles\Fiery.png" />
     <None Remove="Particles\GoldRingParticle2.png" />
     <None Remove="Particles\GoldRingParticle3.png" />
@@ -274,6 +275,7 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
+    <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Textures\Backglow.png" />

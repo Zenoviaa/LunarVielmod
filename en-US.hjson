@@ -3899,6 +3899,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Mooning Slicer
 			}
+
+			EverneanSlicer: {
+				DisplayName: Evernean Slicer
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4406,6 +4411,10 @@ Mods: {
 			Altride1.DisplayName: Altride1
 			MooningProj.DisplayName: Mooning Proj
 			Altride4.DisplayName: Altride4
+			Altride5.DisplayName: Altride5
+			EverneanProj.DisplayName: Evernean Proj
+			Radial.DisplayName: Radial
+			Radial2.DisplayName: Radial2
 		}
 
 		NPCs: {
