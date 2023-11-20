@@ -3987,6 +3987,21 @@ Mods: {
 				DisplayName: Piece Of Art
 				Tooltip: ""
 			}
+
+			ShadeWraithWings: {
+				DisplayName: Shade Wraith Wings
+				Tooltip: Allows flight and slow fall
+			}
+
+			DirtWings: {
+				DisplayName: Dirt Wings
+				Tooltip:
+					'''
+					Allows flight and slow fall
+					W-wait... you made wings... out of dirt?
+					Are you ok?
+					'''
+			}
 		}
 
 		JungleRuneI: {
