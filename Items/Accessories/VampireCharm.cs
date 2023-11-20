@@ -46,13 +46,22 @@ namespace Stellamod.Items.Accessories
                     SoundEngine.PlaySound(SoundID.NPCHit18);
                 }
 
+                for (int i = 0; i < 32; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
+                    var d = Dust.NewDustPerfect(target.Center, DustID.BloodWater, speed * 11, Scale: 3f);
+                    d.noGravity = true;
+                }
+
+                SoundEngine.PlaySound(SoundID.Item171);
                 int projectilSpawnCount = Main.rand.Next(2, 5);
                 for (int d = 0; d < projectilSpawnCount; d++)
                 {
                     float speedX = Main.rand.Next(-15, 15);
                     float speedY = Main.rand.Next(-15, 15);
                     Vector2 speed = new Vector2(speedX, speedY);
-                    Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y, ModContent.ProjectileType<BloodWaterProj>(), 60, 1f, Player.whoAmI);
+                    Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y, 
+                        ModContent.ProjectileType<BloodWaterProj>(), 60, 1f, Player.whoAmI);
                 }
             }
         }
@@ -82,9 +91,9 @@ namespace Stellamod.Items.Accessories
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.PutridScent, 1);
+            recipe.AddIngredient(ItemID.BloodMoonStarter, 1);
             recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 30);
-            recipe.AddIngredient(ItemID.CursedFlame, 15);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
             recipe.AddIngredient(ItemID.SoulofNight, 7);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

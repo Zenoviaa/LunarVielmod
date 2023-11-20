@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddIngredient(ItemID.NimbusRod, 1);
-			recipe.AddIngredient(ItemID.SoulofFlight, 10);
+			recipe.AddIngredient(ItemID.SoulofFlight, 12);
 			recipe.AddIngredient(ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ItemType<PearlescentScrap>(), 8);
 			recipe.AddIngredient(ItemType<WinterbornShard>(), 6);
