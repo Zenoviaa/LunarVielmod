@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets.Biomes;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
@@ -27,6 +28,7 @@ using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
@@ -112,9 +114,12 @@ namespace Stellamod.NPCs.Town
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-			if (spawnInfo.Player.ZoneDirtLayerHeight)
+	
+			if (spawnInfo.Player.InModBiome<AlcadziaBiome>())
 			{
+
 				return 0.34f;
+
 			}
 
 			//Else, the example bone merchant will not spawn if the above conditions are not met.

@@ -6,11 +6,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    public class VerianRuneBlock : ModItem
+	public class MossyStones : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// Tooltip.SetDefault("This is a modded tile.");
+			// Tooltip.SetDefault("Super silk!");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
 
@@ -45,9 +45,8 @@ namespace Stellamod.Items.Materials
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.VerianRuneTile>();
+			Item.createTile = ModContent.TileType<Tiles.MossyStone>();
 		}
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{

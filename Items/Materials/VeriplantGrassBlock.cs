@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
-    public class VerianRuneBlock : ModItem
+    public class VeriplantGrassBlock : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -45,13 +45,9 @@ namespace Stellamod.Items.Materials
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.VerianRuneTile>();
+			Item.createTile = ModContent.TileType<Tiles.VeriplantGrass>();
 		}
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes()
-		{
-
-		}
+	
 	}
 }
