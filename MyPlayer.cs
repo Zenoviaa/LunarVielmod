@@ -1896,66 +1896,61 @@ namespace Stellamod
 
 
             for (int i = 0; i < player.inventory.Length; i++)
-
 			{
-
 				if (player.inventory[i].type == ModContent.ItemType<Bridget>())
-
 				{
 					Bridget++;
-
-
-
 					if (Bridget > 1080)
                     {
+						int combatText=-1;
 						switch (Main.rand.Next(30))
 						{
 
 							case 0:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "How can someone be so interesting?", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "How can someone be so interesting?", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 1:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Hiii its a me Bridget your friendly companion :3", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Hiii its a me Bridget your friendly companion :3", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 2:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Please dont replace me :(", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Please dont replace me :(", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 4:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "This world is soo pretty! Just like you :p", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "This world is soo pretty! Just like you :p", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 5:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Im so much better than Lucy :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Im so much better than Lucy :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 6:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I used to have a roommate, they stink really badly", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I used to have a roommate, they stink really badly", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 7:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I love these journeys! I hope you won't throw me away...", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I love these journeys! I hope you won't throw me away...", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1963,7 +1958,7 @@ namespace Stellamod
 
 							case 8:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you gonna get married someday? I'm always an option yknow >~<", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you gonna get married someday? I'm always an option yknow >~<", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1971,42 +1966,42 @@ namespace Stellamod
 
 							case 9:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "When I was in my human form I was the Queen of the uh, morrow? I forgot.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "When I was in my human form I was the Queen of the uh, morrow? I forgot.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 10:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Don't forget to brush your teeth! Its good for you :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Don't forget to brush your teeth! Its good for you :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 11:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I completely forgot what it feels like to be flat and everyday you hold me is a reminder.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I completely forgot what it feels like to be flat and everyday you hold me is a reminder.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 12:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I can't tell if I like you holding me or sexual assault.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I can't tell if I like you holding me or sexual assault.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 13:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I have so many stories I can share to you :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I have so many stories I can share to you :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 14:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "My sister turned me into a sword but I think you can get me out rightttt?", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "My sister turned me into a sword but I think you can get me out rightttt?", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -2014,63 +2009,63 @@ namespace Stellamod
 
 							case 15:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I totally don't like you at all, all you did was pull me from a stone yknow :(", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I totally don't like you at all, all you did was pull me from a stone yknow :(", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 16:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "You're soooo stupid :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "You're soooo stupid :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 17:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm you're daily reminder that you aren't alone :p", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm you're daily reminder that you aren't alone :p", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 18:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Hey so will you take me all the way to the end, I've taken a liking to you >:)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Hey so will you take me all the way to the end, I've taken a liking to you >:)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 19:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "It's not hehe, its HEHE", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "It's not hehe, its HEHE", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 20:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I loveee painting, I think I could get back to form if I'm merged with something related", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I loveee painting, I think I could get back to form if I'm merged with something related", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 21:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Use me for a spin will ya!", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Use me for a spin will ya!", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 22:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm not your normal yandere girl you know, please dont leave me :<", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm not your normal yandere girl you know, please dont leave me :<", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 23:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "It's all fun and games until you get slashed by a dirt sword with boobs", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "It's all fun and games until you get slashed by a dirt sword with boobs", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -2085,7 +2080,7 @@ namespace Stellamod
 
 							case 25:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Shawty get your head in the game", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Shawty get your head in the game", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -2100,25 +2095,33 @@ namespace Stellamod
 
 							case 27:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "You're holding me in all the right ways >:)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "You're holding me in all the right ways >:)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 28:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I dont care what you are, you obviously cared enough to get me :P", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I dont care what you are, you obviously cared enough to get me :P", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 29:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "LALALA you're wrong I'm right LALALALA", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "LALALA you're wrong I'm right LALALALA", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
+						}
+
+						//Checking if combatText not equal to -1 just incase it somehow didn't get set
+						if(combatText != -1)
+                        {
+							//360 ticks = 6 seconds
+							CombatText text = Main.combatText[combatText];
+							text.lifeTime = 360;
 						}
 					}
 
