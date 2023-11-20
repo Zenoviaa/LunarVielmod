@@ -4017,6 +4017,11 @@ Mods: {
 					Are you ok?
 					'''
 			}
+
+			BridgetII: {
+				DisplayName: Bridget I I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4569,6 +4574,7 @@ Mods: {
 			POAProj5.DisplayName: P O A Proj5
 			SmileForCamera.DisplayName: Smile For Camera
 			PaintBomb8.DisplayName: Paint Bomb8
+			BridgetIIProj.DisplayName: Bridget I I Proj
 		}
 
 		NPCs: {

@@ -78,12 +78,16 @@ namespace Stellamod.Projectiles
         {
   
             var EntitySource = Projectile.GetSource_Death();
-            for (int i = 0; i < 5; i++)
+            if (Main.rand.NextBool(5))
             {
-                Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.timeLeft = 2;
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<LarveinScriputeProg2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                }
             }
+            
 
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
