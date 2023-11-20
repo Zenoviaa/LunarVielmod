@@ -5,6 +5,7 @@ using ReLogic.Content;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.Utilis;
 using System;
@@ -41,9 +42,9 @@ namespace Stellamod.NPCs.Abyssal
         {
             NPC.width = 30;
             NPC.height = 90;
-            NPC.damage = 8;
-            NPC.defense = 2;
-            NPC.lifeMax = 40;
+            NPC.damage = 60;
+            NPC.defense = 8;
+            NPC.lifeMax = 200;
             NPC.HitSound = SoundID.DD2_SkeletonHurt;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 30f;
@@ -59,13 +60,13 @@ namespace Stellamod.NPCs.Abyssal
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.5f;
-            if (NPC.frameCounter >= 4)
+            if (NPC.frameCounter >= 3)
             {
                 frame++;
                 NPC.frameCounter = 0;
             }
 
-            if (frame >= 3)
+            if (frame >= 10)
             {
                 frame = 0;
             }
@@ -76,7 +77,7 @@ namespace Stellamod.NPCs.Abyssal
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
-            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon) && Main.hardMode)
             {
                 return spawnInfo.Player.ZoneAbyss() ? 1.5f : 0f;
             }
@@ -86,8 +87,9 @@ namespace Stellamod.NPCs.Abyssal
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 0, maximumDropped: 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 30));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 50));
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -125,7 +127,7 @@ namespace Stellamod.NPCs.Abyssal
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Lighting.AddLight(NPC.Center, Color.Blue.ToVector3() * 1.75f * Main.essScale);
+            Lighting.AddLight(NPC.Center, Color.LightBlue.ToVector3() * 1.75f * Main.essScale);
             if (GlowTexture is not null)
             {
                 SpriteEffects spriteEffects = SpriteEffects.None;
@@ -160,22 +162,28 @@ namespace Stellamod.NPCs.Abyssal
                 NPC.alpha -= 2;
             }
 
-            if (NPC.ai[0] == 500)
+            if (NPC.ai[0] == 400)
             {
                 NPC.alpha = 40;
                 NPC.ai[0] = 0;
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
-                SoundEngine.PlaySound(SoundID.Item8, NPC.position);
-                SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
+                SoundEngine.PlaySound(SoundID.Item104, NPC.position);
+                SoundEngine.PlaySound(SoundID.Zombie83, NPC.position);
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                int damage = Main.expertMode ? 4 : 7;
+                int damage = Main.expertMode ? 34 : 37;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<ShadowFlare>(), damage, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<VoidFlame>(), damage, 1, Main.myPlayer, 0, 0);
             }
+            if (NPC.ai[0] == 300)
+            {
+                SoundEngine.PlaySound(SoundID.Zombie82, NPC.position);
+                SoundEngine.PlaySound(SoundID.Zombie99, NPC.position);
 
-            if (NPC.ai[0] >= 400)
+                NPC.velocity *= 0.92f;
+            }
+            if (NPC.ai[0] >= 300)
             {
                 if (Main.netMode != NetmodeID.Server)
                 {

@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<LarveinScriputeProg>();
-			Item.shootSpeed = 15f;
+			Item.shootSpeed = 8f;
 			Item.mana = 5;
 
 

@@ -50,7 +50,7 @@ namespace Stellamod.WorldG
             if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
             {
                 AuroreanSpawn = true;
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(5))
                 {
                     Aurorean = true;
                     if (!AuroreanText)

@@ -3925,6 +3925,11 @@ Mods: {
 				DisplayName: Ztho Knives
 				Tooltip: ""
 			}
+
+			LarveinScripute: {
+				Tooltip: ""
+				DisplayName: Larvein Scripute
+			}
 		}
 
 		JungleRuneI: {
@@ -4443,6 +4448,10 @@ Mods: {
 			GoldsSlashProj.DisplayName: Golds Slash Proj
 			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
 			BurningKnife.DisplayName: Burning Knife
+			MooningKaboom.DisplayName: Mooning Kaboom
+			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
+			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
+			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
 		}
 
 		NPCs: {

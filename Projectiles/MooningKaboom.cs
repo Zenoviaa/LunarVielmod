@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles
 			Projectile.height = 220;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 56;
-			Projectile.scale = 2f;
+			Projectile.scale = 1f;
 			
 		}
 		public float Timer
