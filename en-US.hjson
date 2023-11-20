@@ -3677,57 +3677,64 @@ Mods: {
 
 			AlcaricMush: {
 				DisplayName: Alcaric Mush
-				Tooltip: ""
+				Tooltip: A strange magical mush that the Royal Capital was able to control.
 			}
 
 			Blackwhip: {
 				DisplayName: Blackwhip
-				Tooltip: ""
+				Tooltip: Whip em' back to where they belong.
 			}
 
 			DarkWhip: {
 				DisplayName: Dark Whip
-				Tooltip: ""
+				Tooltip: It's as bad as it sounds.
 			}
 
 			AlsisChestplate: {
 				DisplayName: Alsis Chestplate
-				Tooltip: ""
+				Tooltip: '''
+					+25 Health
+					+20% Magic Critical Strike Chance
+					+10% Magic Damage
+					'''
 			}
 
 			AlsisGreaves: {
 				DisplayName: Alsis Greaves
-				Tooltip: ""
+				Tooltip:  '''
+					+10 Health
+					Supa Speed
+					'''
 			}
 
 			AlsisMask: {
 				DisplayName: Alsis Mask
-				Tooltip: ""
+				Tooltip: '''
+					+10 Health
+					+5% Magic Critical Strike Chance
+					+10% Magic Damage
+					'''
 			}
 
 			WickofSorcery: {
-				DisplayName: Wickof Sorcery
-				Tooltip: ""
+				DisplayName: Wick of Sorcery
+				Tooltip: Truly the best stick of all time.
 			}
 
 			Voyager: {
 				DisplayName: Voyager
-				Tooltip: ""
+				Tooltip: I love slashing and passing, wait wrong game.
 			}
 
-			HyuaIgniter: {
-				DisplayName: Hyua Igniter
-				Tooltip: ""
-			}
 
 			Hyua: {
 				DisplayName: Hyua
-				Tooltip: ""
+				Tooltip: Throw these weird circular magic hoops, or balls, I dont know.
 			}
 
 			Poya: {
 				DisplayName: Poya
-				Tooltip: ""
+				Tooltip: Summons alcaric mush into reality and rip your enemies apart.
 			}
 
 			FireflyStaff: {
