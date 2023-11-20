@@ -189,7 +189,7 @@ namespace Stellamod.Projectiles.Paint
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.Black, Color.Transparent, completionRatio) * 0.7f;
         }
         public override bool PreDraw(ref Color lightColor)
         {

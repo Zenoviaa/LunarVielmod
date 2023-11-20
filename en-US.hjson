@@ -4022,6 +4022,21 @@ Mods: {
 				DisplayName: Bridget I I
 				Tooltip: ""
 			}
+
+			BlackWallBlock: {
+				DisplayName: Black Wall Block
+				Tooltip: ""
+			}
+
+			MossyStones: {
+				DisplayName: Mossy Stones
+				Tooltip: ""
+			}
+
+			VeriplantGrassBlock: {
+				DisplayName: Veriplant Grass Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6091,6 +6106,9 @@ Mods: {
 			SunAlter.MapEntry: Sun Alter
 			VerianoreTile.MapEntry: Verianore Tile
 			ShrineBridgetC.MapEntry: Shrine Bridget C
+			ChiseledStone.MapEntry: Chiseled Stone
+			MossyStone.MapEntry: Mossy Stone
+			VeriplantGrass.MapEntry: Veriplant Grass
 		}
 
 		Buffs: {

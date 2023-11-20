@@ -85,24 +85,24 @@ namespace Stellamod.NPCs.Bosses.Daedus
 
 			if (timer2 == 310)
             {
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
 				
 
 			}
 
 			if (timer2 == 330)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
 			
 
 			}
 
 			if (timer2 == 350)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear2>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY - 260, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
 				timer2 = 0;
 
 			}
