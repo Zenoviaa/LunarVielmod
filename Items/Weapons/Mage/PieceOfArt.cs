@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 22;
+			Item.damage = 10;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 0;
 			Item.height = 0;
@@ -49,11 +49,11 @@ namespace Stellamod.Items.Weapons.Mage
 
 			int dir = AttackCounter;
 		
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj2>(), damage * 2, knockback, player.whoAmI, 1, dir);
-			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj3>(), damage * 1, knockback, player.whoAmI, 1, dir);
-			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj4>(), damage * 2, knockback, player.whoAmI, 1, dir);
-			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj5>(), damage * 3, knockback, player.whoAmI, 1, dir);
+			Projectile.NewProjectile(source, position, velocity, type, damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2, knockback, player.whoAmI, 1, dir);
+			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj2>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
+			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj3>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), knockback, player.whoAmI, 1, dir);
+			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj4>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
+			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj5>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 3, knockback, player.whoAmI, 1, dir);
 			return false;
 		}
 		public override void AddRecipes()
@@ -63,6 +63,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
 			recipe.AddIngredient(ItemID.MagicMissile, 1);
+			recipe.AddIngredient(ItemID.Paintbrush, 1);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

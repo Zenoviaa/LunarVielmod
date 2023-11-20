@@ -62,9 +62,9 @@ namespace Stellamod.Items.Armors.Artisan
 			"\nCrit chance and armor penetration increased by 20!";// This is the setbonus tooltip
 
 
-			player.GetCritChance(DamageClass.Generic) += 20f;
-			player.GetArmorPenetration(DamageClass.Generic) += 20f;
-
+			player.GetCritChance(DamageClass.Generic) += 20f + player.GetModPlayer<MyPlayer>().PPCrit;
+			player.GetArmorPenetration(DamageClass.Generic) += 20f + player.GetModPlayer<MyPlayer>().PPCrit;
+			player.statDefense += 1 + player.GetModPlayer<MyPlayer>().PPDefense;
 			player.GetModPlayer<MyPlayer>().ThreeTwoOneSmile = true;
 			player.GetModPlayer<MyPlayer>().ThreeTwoOneSmileBCooldown--;
 			player.GetModPlayer<MyPlayer>().PaintdropBCooldown--;

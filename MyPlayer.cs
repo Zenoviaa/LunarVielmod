@@ -6,6 +6,7 @@ using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
+using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
@@ -94,10 +95,20 @@ namespace Stellamod
 
 
 
-
-
-
-
+		//--------------------------------------- Picture perfect stuff
+		public int PPDefense = 0;
+		public int PPDMG = 0;
+		public float PPPaintDMG = 0;
+		public int PPPaintDMG2 = 0;
+		public bool PPPaintI = false;
+		public bool PPPaintII = false;
+		public bool PPPaintIII = false;
+		public float PPSpeed = 0;
+		public int PPCrit = 0;
+		public int PPPaintTime = 0;
+		public int PPFrameTime = 0;
+		public bool Cameraaa = false;
+		public float CameraaaTime;
 
 
 
@@ -286,7 +297,8 @@ namespace Stellamod
         {
 			Dead = true;
             HMArmor = false;
-            if (damageSource.SourceOtherIndex == 8)
+			Cameraaa = false;
+			if (damageSource.SourceOtherIndex == 8)
                 CustomDeath(ref damageSource);
             return true;
         }
@@ -497,8 +509,7 @@ namespace Stellamod
 			BroochBurningG = false;
 			BroochStone = false;
 
-
-
+		
 
 			SpiritPendent = false;
             GHE = false;
@@ -506,7 +517,8 @@ namespace Stellamod
             FCArmor = false;
             ClamsPearl = false;
             HMArmor = false;
-            DetonationRune = false;
+			Cameraaa = false;
+			DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
             Leather = false;
@@ -525,7 +537,21 @@ namespace Stellamod
 			{
 				SwordComboR--;
 			}
-		}
+
+			PPDefense = 0;
+			PPDMG = 0;
+			PPPaintDMG = 0;
+			PPPaintDMG2 = 0;
+			PPPaintI = false;
+			PPPaintII = false;
+			PPPaintIII = false;
+			PPSpeed = 0;
+			PPCrit = 0;
+			PPPaintTime = 0;
+			PPFrameTime = 0;
+			Cameraaa = false;
+
+	}
 
 
 
@@ -611,7 +637,9 @@ namespace Stellamod
             {
                 HMArmorTime = 0;
                 HMArmor = false;
-                Dead = false;
+				CameraaaTime = 0;
+				Cameraaa = false;
+				Dead = false;
 
             }
 
@@ -838,7 +866,29 @@ namespace Stellamod
             }
 
 
-            if (FCArmor)
+
+			if (Cameraaa)
+			{
+				CameraaaTime++;
+				if (CameraaaTime <= 1)
+				{
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3"), player.position);
+					var EntitySource = Player.GetSource_FromThis();
+
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Main.myPlayer, 0, 0);
+				
+					player.AddBuff(ModContent.BuffType<CameraMinBuff>(), 99999);
+				}
+
+			}
+			else
+			{
+				player.ClearBuff(ModContent.BuffType<CameraMinBuff>());
+				CameraaaTime = 0;
+			}
+
+
+			if (FCArmor)
             {
                 FCArmorTime++;
                 if (FCArmorTime <= 1)
@@ -963,12 +1013,12 @@ namespace Stellamod
 
 
 			}
-			if (NotiaB && NotiaBCooldown > 300)
+		/*	if (NotiaB && NotiaBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 				Player.GetDamage(DamageClass.Ranged) *= 2f;
 
-			}
+			}*/
 			if (NotiaB && NotiaBCooldown == 420)
 			{
 				NotiaBCooldown = 0;
@@ -1009,12 +1059,12 @@ namespace Stellamod
 
 
 			}
-			if (GovheilB && GovheilBCooldown > 300)
+			/*if (GovheilB && GovheilBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 				Player.GetDamage(DamageClass.Summon) *= 2f;
 
-			}
+			}*/
 			if (GovheilB && GovheilBCooldown == 540)
 			{
 				GovheilBCooldown = 0;
@@ -1035,12 +1085,12 @@ namespace Stellamod
 
 
 			}
-			if (GovheilC && GovheilBCooldown > 300)
+	/*		if (GovheilC && GovheilBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Ranged) *= 2f;
 				Player.GetDamage(DamageClass.Melee) *= 2f;
 
-			}
+			}*/
 			if (GovheilC && GovheilBCooldown == 520)
 			{
 				GovheilBCooldown = 0;
@@ -1099,16 +1149,31 @@ namespace Stellamod
 					
 				}
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
-				ThreeTwoOneSmileBCooldown = 1720;
+				ThreeTwoOneSmileBCooldown = 1720 + PPPaintTime;
 			}
 
-			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
+		/*	if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
 			{
-				Player.GetDamage(DamageClass.Generic) *= 2f;
+				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
 				Player.GetCritChance(DamageClass.Generic) = 100f;
 
 
-			}
+				if (PPPaintI)
+                {
+					PPPaintDMG2 = 15;
+				}
+
+				if (PPPaintI && PPPaintII)
+				{
+					PPPaintDMG2 = 50;
+				}
+
+				if (PPPaintI && PPPaintII && PPPaintIII)
+				{
+					PPPaintDMG2 = 150;
+				}
+
+			}*/
 
 			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
             {
@@ -2209,9 +2274,93 @@ namespace Stellamod
 
 
 
+        public override void PostUpdateEquips()
+        {
+			if (ArcaneM && ArcaneMCooldown > 600)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 2f;
 
 
-		public override bool PreItemCheck()
+			}
+
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
+			{
+				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
+				Player.GetCritChance(DamageClass.Generic) = 100f;
+
+
+				if (PPPaintI)
+				{
+					PPPaintDMG2 = 15;
+				}
+
+				if (PPPaintI && PPPaintII)
+				{
+					PPPaintDMG2 = 50;
+				}
+
+				if (PPPaintI && PPPaintII && PPPaintIII)
+				{
+					PPPaintDMG2 = 150;
+				}
+
+			}
+
+			if (GovheilC && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Ranged) *= 1.5f;
+				Player.GetDamage(DamageClass.Melee) *= 1.5f;
+
+			}
+
+			if (GovheilB && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 1.2f;
+				Player.GetDamage(DamageClass.Summon) *= 1.2f;
+
+			}
+
+			if (NotiaB && NotiaBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 1.4f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
+
+			}
+
+			if (StealthRune)
+			{
+				if (StealthTime <= 500)
+				{
+					StealthTime++;
+				}
+				else
+				{
+					if (Main.rand.NextBool(5))
+					{
+						int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
+						Main.dust[dustnumber].velocity *= 0.3f;
+						Main.dust[dustnumber].noGravity = true;
+					}
+				}
+				Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
+				Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
+
+			}
+			if (SpiritPendent && ZoneAbyss)
+			{
+				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
+				Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
+			}
+		}
+
+        public override bool PreItemCheck()
 		{
 			if (Player.selectedItem != lastSelectedI)
 			{

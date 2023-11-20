@@ -3965,26 +3965,41 @@ Mods: {
 
 			ArtisanBar: {
 				DisplayName: Artisan Bar
-				Tooltip: ""
+				Tooltip: Made for only ture painters.
 			}
 
 			KaleidoscopicInk: {
 				DisplayName: Kaleidoscopic Ink
-				Tooltip: ""
+				Tooltip: A magical yet explosive technical ink that is on some psychedelics..
 			}
 
 			ArtistsHeart: {
-				DisplayName: Artists Heart
-				Tooltip: ""
+				DisplayName: Artists Heartius
+				Tooltip: I love painting!
 			}
 
 			InkingSpire: {
 				DisplayName: Inking Spire
-				Tooltip: ""
+				Tooltip: Dash through your enemies with invulnerability! Right click for antaciz combat!
 			}
 
 			PieceOfArt: {
-				DisplayName: Piece Of Art
+				DisplayName: Piece of Art
+				Tooltip: Drag your cursor and hit enemies with your paintbrush!
+			}
+
+			PicturePerfectI: {
+				DisplayName: Picture Perfect I
+				Tooltip: ""
+			}
+
+			PicturePerfectII: {
+				DisplayName: Picture Perfect I I
+				Tooltip: ""
+			}
+
+			PicturePerfectIII: {
+				DisplayName: Picture Perfect I I I
 				Tooltip: ""
 			}
 		}
@@ -4537,6 +4552,8 @@ Mods: {
 			POAProj3.DisplayName: P O A Proj3
 			POAProj4.DisplayName: P O A Proj4
 			POAProj5.DisplayName: P O A Proj5
+			SmileForCamera.DisplayName: Smile For Camera
+			PaintBomb8.DisplayName: Paint Bomb8
 		}
 
 		NPCs: {
@@ -6464,6 +6481,11 @@ Mods: {
 			CloudMinionBuff: {
 				DisplayName: Weather Forecast
 				Description: Clouds are storming around you ;)
+			}
+
+			CameraMinBuff: {
+				DisplayName: Camera Min Buff
+				Description: Mods.Stellamod.Buffs.CameraMinBuff.Description
 			}
 		}
 	}

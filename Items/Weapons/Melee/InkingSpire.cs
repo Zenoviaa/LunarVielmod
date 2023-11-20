@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 68;
+			Item.damage = 42;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 0;
 			Item.height = 0;
@@ -100,7 +100,7 @@ namespace Stellamod.Items.Weapons.Melee
 				combowombo++;
 				int dir = AttackCounter;
 				AttackCounter = -AttackCounter;
-				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+				Projectile.NewProjectile(source, position, velocity, type, (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), knockback, player.whoAmI, 1, dir);
 
 				if (combowombo == 3 || combowombo == 4)
 				{

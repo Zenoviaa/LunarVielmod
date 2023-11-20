@@ -130,6 +130,7 @@ namespace Stellamod.Projectiles.Paint
         }
         public override void OnKill(int timeLeft)
         {
+            Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
             for (int i = 0; i < 15; i++)
             {
@@ -143,7 +144,7 @@ namespace Stellamod.Projectiles.Paint
             {
                 float speedXa = Main.rand.NextFloat(-80f, 80f);
                 float speedYa =  Main.rand.Next(-80, 80);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb1>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb1>(), (Projectile.damage * 2) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Main.myPlayer, 0, 0);
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob3>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
             }
 
@@ -151,15 +152,37 @@ namespace Stellamod.Projectiles.Paint
             {
                 float speedXa = Main.rand.NextFloat(-80f, 80f);
                 float speedYa = Main.rand.Next(-80, 80);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb2>(), Projectile.damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Main.myPlayer, 0, 0);
             }
 
             if (Main.rand.NextBool(4))
             {
                 float speedXa = Main.rand.NextFloat(-80f, 80f);
                 float speedYa = Main.rand.Next(-80, 80);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb3>(), Projectile.damage * 3, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb3>(), (Projectile.damage * 3) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Main.myPlayer, 0, 0);
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob2>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+            }
+
+            if (player.GetModPlayer<MyPlayer>().PPPaintI)
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    float speedXa = Main.rand.NextFloat(-80f, 80f);
+                    float speedYa = Main.rand.Next(-80, 80);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb7>(), (Projectile.damage * 4) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Main.myPlayer, 0, 0);
+                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob5>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                }
+            }
+
+            if (player.GetModPlayer<MyPlayer>().PPPaintII)
+            {
+                if (Main.rand.NextBool(7))
+                {
+                    float speedXa = Main.rand.NextFloat(-35f, 35f);
+                    float speedYa = Main.rand.Next(-35, 35);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb8>(), (Projectile.damage * 3) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Main.myPlayer, 0, 0);
+                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob1>(), (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                }
             }
         }
     }

@@ -47,7 +47,7 @@ namespace Stellamod.Items.Armors.Artisan
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 5;
 			Projectile.scale = 1f;
-			Projectile.timeLeft = 180;
+		
 
 
 		}
@@ -259,9 +259,9 @@ namespace Stellamod.Items.Armors.Artisan
 		{
 			// So it will lean slightly towards the direction it's moving
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
-
+			Player player = Main.player[Projectile.owner];
 			// This is a simple "loop through all frames from top to bottom" animation
-			int frameSpeed = 6;
+			int frameSpeed = 6 + player.GetModPlayer<MyPlayer>().PPFrameTime;
 
 			Projectile.frameCounter++;
 
@@ -273,6 +273,7 @@ namespace Stellamod.Items.Armors.Artisan
 				if (Projectile.frame >= Main.projFrames[Projectile.type])
 				{
 					Projectile.frame = 0;
+					Projectile.Kill();
 				}
 			}
 
