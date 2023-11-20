@@ -3650,12 +3650,12 @@ Mods: {
 
 			GiaWig: {
 				DisplayName: Gia Wig
-				Tooltip: ""
+				Tooltip: I can't tell if you want to wear this...
 			}
 
 			BagOfCards: {
 				DisplayName: Bag Of Cards
-				Tooltip: ""
+				Tooltip: Open for some cards! Gives more cards in Hardmode!
 			}
 
 			FireflyCannon: {
@@ -3668,8 +3668,11 @@ Mods: {
 			}
 
 			StoniaBroochA: {
-				DisplayName: Stonia Brooch A
-				Tooltip: ""
+				DisplayName: Stonia Brooch
+				Tooltip: '''
+					No fall damage and 2 defense!
+					Increased Pick speed and glow in the dark but loose 15% damage.
+					'''
 			}
 
 			AlcaricMush: {
@@ -3945,22 +3948,40 @@ Mods: {
 
 			LarveinScripute: {
 				DisplayName: Larvein Scripute
-				Tooltip: ""
+				Tooltip: A little larva aww
 			}
 
 			ArtisanBreastplate: {
 				DisplayName: Artisan Breastplate
-				Tooltip: ""
+				Tooltip: '''
+					Woa, dont forget to cover yourself up, don't want paint on your skin right?
+					+10% Damage
+					 +5% Critical Strike Chance
+					 +25 Health
+					 Great for working in the arts :)
+					'''
 			}
 
 			ArtisanMask: {
 				DisplayName: Artisan Mask
-				Tooltip: ""
+				Tooltip: '''
+					Jamming out while making sprites and art is one of the most fun activities ever.
+					+10% Damage
+					 +5% Critical Strike Chance
+					 +10 Health
+					 You also look hot am I right?
+					'''
 			}
 
 			ArtisanThighs: {
 				DisplayName: Artisan Thighs
-				Tooltip: ""
+				Tooltip: '''
+					Shawty you better hide those thighs, someone is coming for you :(
+					+40% Increased Movement speed
+					 +5% Damage
+					 +25 Health
+					 Skating on paint like splatoon!
+					'''
 			}
 
 			ArtisanBar: {
@@ -3975,7 +3996,7 @@ Mods: {
 
 			ArtistsHeart: {
 				DisplayName: Artists Heartius
-				Tooltip: I love painting!
+				Tooltip: I love painting so much that I throw it at my enemies!
 			}
 
 			InkingSpire: {
@@ -3985,22 +4006,45 @@ Mods: {
 
 			PieceOfArt: {
 				DisplayName: Piece of Art
-				Tooltip: Drag your cursor and hit enemies with your paintbrush!
+				Tooltip: Drag your cursor and hit enemies with your paintbrush, be creative!
 			}
 
 			PicturePerfectI: {
 				DisplayName: Picture Perfect I
-				Tooltip: ""
+				Tooltip: '''
+					--Part I--
+					Upgrades the Artisan Armor 
+					Gain slightly more defense on Artisan Armor (5)
+					1 New highly damaging paint added to all paint weapons!
+					Artisan Armor set effect lasts slightly longer and the scales a bit more.
+					Shove that paint in their face!
+					Adds a little camera to help capture your best moments!
+					'''
 			}
 
 			PicturePerfectII: {
-				DisplayName: Picture Perfect I I
-				Tooltip: ""
+				DisplayName: Picture Perfect II
+				Tooltip: '''
+					--Part II--
+					Upgrades the Artisan Armor Greatly
+					Gain slightly more defense on Artisan Armor (10)
+					1 New highly damaging paint added to all paint weapons!
+					Artisan Armor set effect lasts moderately longer and the scales a decent bit more.
+					Damn, you look so nice in that outfit!
+					Adds a little camera to help capture your best moments!
+					'''
 			}
 
 			PicturePerfectIII: {
-				DisplayName: Picture Perfect I I I
-				Tooltip: ""
+				DisplayName: Picture Perfect III
+				Tooltip: '''
+					--Part III--
+					Upgrades the Artisan Armor Extremely
+					Gain slightly more defense on Artisan Armor (25)
+					Artisan Armor set effect lasts a lot longer and the scales a LOT more.
+					You are finally picture perfect aren't you?
+					Adds a little camera to help capture your best moments!
+					'''
 			}
 
 			ShadeWraithWings: {
