@@ -131,7 +131,7 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<BridgetII>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<ArtisanBar>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
