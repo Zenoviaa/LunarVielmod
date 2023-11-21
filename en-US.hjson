@@ -3930,6 +3930,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Larvein Scripute
 			}
+
+			LarveinGreatbow: {
+				DisplayName: Larvein Greatbow
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4452,6 +4457,8 @@ Mods: {
 			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
 			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
 			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
+			LarveinGreatbowL.DisplayName: Larvein Greatbow L
+			LarveinGreatbowR.DisplayName: Larvein Greatbow R
 		}
 
 		NPCs: {
