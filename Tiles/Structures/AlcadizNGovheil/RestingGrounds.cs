@@ -201,7 +201,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
 			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-			Color color = new Color(0.01f, 0.05f, 0.02f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+			Color color = new Color(0.02f, 0.01f, 0.01f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
 

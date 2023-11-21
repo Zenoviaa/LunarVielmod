@@ -6007,6 +6007,8 @@ Mods: {
 			AbysmLunatic.DisplayName: Abysm Lunatic
 			Shrewder.DisplayName: Shrewder
 			Shrewmet.DisplayName: Shrewmet
+			TribalWorshipper.DisplayName: Tribal Worshipper
+			TribalGuard.DisplayName: Tribal Guard
 		}
 
 		Biomes: {

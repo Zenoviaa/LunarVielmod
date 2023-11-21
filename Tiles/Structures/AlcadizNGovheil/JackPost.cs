@@ -108,7 +108,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
+			if (player.HasItem(key)  && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
@@ -136,13 +136,9 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			}
 			else
 			{
-				if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
+				if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
 				{
-
-					Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
-
-
-
+					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
 				}
 
 				else
@@ -151,10 +147,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 				}
-				if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-				{
-					Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-				}
+				
 			}
 
 

@@ -68,11 +68,6 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 	
-			if (spawnInfo.Player.InModBiome<GovheilCastle>())
-			{
-				return SpawnCondition.Underground.Chance * 0.0f;
-			}
-
 
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
