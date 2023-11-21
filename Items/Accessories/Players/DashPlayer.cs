@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Players
 {
-    public class DashPlayer : ModPlayer
+	public class DashPlayer : ModPlayer
 	{
 		// These indicate what direction is what in the timer arrays used
 		public const int DashDown = 0;
@@ -96,15 +96,15 @@ namespace Stellamod.Items.Accessories.Players
 			}
 
 			if (DashDelay > 0)
-            {
+			{
 				DashDelay--;
 			}
-				
+
 
 			if (DashTimer > 0)
 			{ // dash is active
 				Vector2 newVelocity = Player.velocity;
-				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = true;
+				Player.GetModPlayer<ImmunityPlayer2>().HasStealiImmunityAccc = true;
 				Player.armorEffectDrawShadowEOCShield = true;
 				for (int j = 0; j < 3; j++)
 				{
@@ -112,24 +112,20 @@ namespace Stellamod.Items.Accessories.Players
 					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<BurnParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 
-				for (int j = 0; j < 1; j++)
-				{
-					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Player.Center, speed * 6, ParticleManager.NewInstance<DashParticle>(), Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+				
 				Player.AddBuff(BuffID.Cursed, 1);
 
 				// count down frames remaining
-				
+
 				Player.velocity *= 0.98f;
 				DashTimer--;
 			}
 
-		
+
 			if (DashTimer == 0)
-            {
-				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = false;
-				
+			{
+				Player.GetModPlayer<ImmunityPlayer2>().HasStealiImmunityAccc = false;
+
 
 			}
 		}
@@ -138,7 +134,7 @@ namespace Stellamod.Items.Accessories.Players
 		{
 			return DashAccessoryEquipped
 				&& !Player.setSolar // player isn't wearing solar armor
-				
+
 				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}
 	}

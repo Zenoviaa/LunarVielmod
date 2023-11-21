@@ -4,6 +4,7 @@ using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -93,22 +94,59 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		{
 			Player player = Main.LocalPlayer;
 
+			if (NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) || NPC.AnyNPCs(ModContent.NPCType<DaedusR>())) //Do nothing if the boss is alive
+				return false;
+
+		
+
 			int key = ModContent.ItemType<GothiviasSeal>();
 
 
-			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<Daedus>()))
+
+
+
+
+
+
+			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
 			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Main.NewText("Forgotten Puppet Daedus has Awoken!", Color.Gold);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<DaedusR>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
 
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DaedusR>(), i * 16, (j * 16) - 5);
+				}
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j + 200), i * 16, j * 16, ModContent.NPCType<Daedus>());
-				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
-
-			if (player.HasItem(key))
+			if (NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
 			{
 
-				Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+				Main.NewText("...", Color.Gold);
+
+
+
+			}
+			else
+			{
+				if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
+				{
+					Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+				}
+
+				else
+				{
+					Main.NewText("I cannot raise my axe to one of such dedication to our goddess Gothivia, thank you for your efforts..", Color.Gold);
+
+
+				}
 
 			}
 
@@ -117,7 +155,14 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 
 			return true;
+
 		}
+
+		
+
+			
+
+		
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{

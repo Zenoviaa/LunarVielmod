@@ -1,9 +1,14 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.Daedus;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -83,15 +88,17 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.width = 230;
             NPC.height = 230;
             NPC.damage = 10;
-            NPC.defense = 6;
-            NPC.lifeMax = 650;
-            NPC.HitSound = SoundID.NPCHit16;
-            NPC.value = 60f;
-            NPC.knockBackResist = 0.0f;
-            NPC.noGravity = false;
-            NPC.noTileCollide = false;
+            NPC.defense = 10;
+            NPC.lifeMax = 2500;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.value = Item.buyPrice(gold: 40);
             NPC.boss = true;
             NPC.npcSlots = 10f;
+            NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
@@ -135,11 +142,36 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
+            // Sets the description of this NPC that is listed in the bestiary
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
+                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+				new FlavorTextBestiaryInfoElement("A puppet, a guardian, and a follower of Gothivia, one of her finest creations")
             });
         }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(attackCounter);
+            writer.Write(timeBetweenAttacks);
+            writer.WriteVector2(dashDirection);
+            writer.Write(dashDistance);
+
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            attackCounter = reader.ReadInt32();
+            timeBetweenAttacks = reader.ReadInt32();
+
+
+            dashDirection = reader.ReadVector2();
+            dashDistance = reader.ReadSingle();
+
+        }
+
+        private int attackCounter;
+        private int timeBetweenAttacks = 120;
+        private Vector2 dashDirection = Vector2.Zero;
+        private float dashDistance = 0f;
 
         public override void HitEffect(NPC.HitInfo hit)
         {
@@ -321,7 +353,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 1.5f), 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 80, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                         }
                         break;
@@ -346,6 +378,68 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         break;
                 }
             }
+        }
+
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
+
+            // Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+            //	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+
+
+
+
+            // ItemDropRule.MasterModeCommonDrop for the relic
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
+            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
+            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
+
+
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
+
+
+            // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+
+            // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
+            // Boss masks are spawned with 1/7 chance
+            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
+
+            // This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
+            // We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
+            // which requires these parameters to be defined
+            //int itemType = ModContent.ItemType<Gambit>();
+            //var parameters = new DropOneByOne.Parameters()
+            //{
+            //	ChanceNumerator = 1,
+            //	ChanceDenominator = 1,
+            //	MinimumStackPerChunkBase = 1,
+            //	MaximumStackPerChunkBase = 1,
+            //	MinimumItemDropsCount = 1,
+            //	MaximumItemDropsCount = 3,
+            //};
+
+            //notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
+
+            // Finally add the leading rule
+            npcLoot.Add(notExpertRule);
+        }
+       
+
+
+        public override void OnKill()
+        {
+
+            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+            {
+                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+            }
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
         }
 
 

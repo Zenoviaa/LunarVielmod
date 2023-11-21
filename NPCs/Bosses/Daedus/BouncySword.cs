@@ -23,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
         {
             Projectile.CloneDefaults(ProjectileID.ThornBall);
             AIType = ProjectileID.ThornBall;
-            Projectile.penetrate = 9;
+            Projectile.penetrate = 15;
             Projectile.width = 104;
             Projectile.height = 104;
         }
