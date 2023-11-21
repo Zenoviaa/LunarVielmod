@@ -118,7 +118,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.value = Item.buyPrice(gold: 40);
-            NPC.boss = true;
+            NPC.boss = false;
             NPC.npcSlots = 10f;
             NPC.scale = 2f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
