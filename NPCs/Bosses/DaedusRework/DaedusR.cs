@@ -36,6 +36,19 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             // DisplayName.SetDefault("Jack");
             Main.npcFrameCount[NPC.type] = 46;
+
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
+                PortraitPositionYOverride = 0f,
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
@@ -353,7 +366,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 80, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 65, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                         }
                         break;
