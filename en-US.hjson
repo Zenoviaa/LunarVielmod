@@ -3669,7 +3669,8 @@ Mods: {
 
 			StoniaBroochA: {
 				DisplayName: Stonia Brooch
-				Tooltip: '''
+				Tooltip:
+					'''
 					No fall damage and 2 defense!
 					Increased Pick speed and glow in the dark but loose 15% damage.
 					'''
@@ -3692,7 +3693,8 @@ Mods: {
 
 			AlsisChestplate: {
 				DisplayName: Alsis Chestplate
-				Tooltip: '''
+				Tooltip:
+					'''
 					+25 Health
 					+20% Magic Critical Strike Chance
 					+10% Magic Damage
@@ -3701,7 +3703,8 @@ Mods: {
 
 			AlsisGreaves: {
 				DisplayName: Alsis Greaves
-				Tooltip:  '''
+				Tooltip:
+					'''
 					+10 Health
 					Supa Speed
 					'''
@@ -3709,7 +3712,8 @@ Mods: {
 
 			AlsisMask: {
 				DisplayName: Alsis Mask
-				Tooltip: '''
+				Tooltip:
+					'''
 					+10 Health
 					+5% Magic Critical Strike Chance
 					+10% Magic Damage
@@ -3725,7 +3729,6 @@ Mods: {
 				DisplayName: Voyager
 				Tooltip: I love slashing and passing, wait wrong game.
 			}
-
 
 			Hyua: {
 				DisplayName: Hyua
@@ -3960,34 +3963,37 @@ Mods: {
 
 			ArtisanBreastplate: {
 				DisplayName: Artisan Breastplate
-				Tooltip: '''
+				Tooltip:
+					'''
 					Woa, dont forget to cover yourself up, don't want paint on your skin right?
 					+10% Damage
-					 +5% Critical Strike Chance
-					 +25 Health
-					 Great for working in the arts :)
+					+5% Critical Strike Chance
+					+25 Health
+					Great for working in the arts :)
 					'''
 			}
 
 			ArtisanMask: {
 				DisplayName: Artisan Mask
-				Tooltip: '''
+				Tooltip:
+					'''
 					Jamming out while making sprites and art is one of the most fun activities ever.
 					+10% Damage
-					 +5% Critical Strike Chance
-					 +10 Health
-					 You also look hot am I right?
+					+5% Critical Strike Chance
+					+10 Health
+					You also look hot am I right?
 					'''
 			}
 
 			ArtisanThighs: {
 				DisplayName: Artisan Thighs
-				Tooltip: '''
+				Tooltip:
+					'''
 					Shawty you better hide those thighs, someone is coming for you :(
 					+40% Increased Movement speed
-					 +5% Damage
-					 +25 Health
-					 Skating on paint like splatoon!
+					+5% Damage
+					+25 Health
+					Skating on paint like splatoon!
 					'''
 			}
 
@@ -4018,7 +4024,8 @@ Mods: {
 
 			PicturePerfectI: {
 				DisplayName: Picture Perfect I
-				Tooltip: '''
+				Tooltip:
+					'''
 					--Part I--
 					Upgrades the Artisan Armor 
 					Gain slightly more defense on Artisan Armor (5)
@@ -4031,7 +4038,8 @@ Mods: {
 
 			PicturePerfectII: {
 				DisplayName: Picture Perfect II
-				Tooltip: '''
+				Tooltip:
+					'''
 					--Part II--
 					Upgrades the Artisan Armor Greatly
 					Gain slightly more defense on Artisan Armor (10)
@@ -4044,7 +4052,8 @@ Mods: {
 
 			PicturePerfectIII: {
 				DisplayName: Picture Perfect III
-				Tooltip: '''
+				Tooltip:
+					'''
 					--Part III--
 					Upgrades the Artisan Armor Extremely
 					Gain slightly more defense on Artisan Armor (25)
