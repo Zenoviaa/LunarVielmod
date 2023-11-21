@@ -113,8 +113,25 @@ namespace Stellamod.NPCs.Town
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
+			bool npcAlreadyExists = false;
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC npc = Main.npc[i];
+				if (npc.type == ModContent.NPCType<Merena>())
+				{
+					npcAlreadyExists = true;
+					break;
+				}
+			}
+
+			//Don't spawn the npc if it already exists
+			if (npcAlreadyExists)
+			{
+				return 0f;
+			}
+
 			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-	
+
 			if (spawnInfo.Player.InModBiome<AlcadziaBiome>())
 			{
 
