@@ -226,7 +226,32 @@ namespace Stellamod.WorldG
             }
 
 
-        }
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY / 2);
+				if (Main.tile[X, Y].TileType == TileID.Dirt)
+				{
+					WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.TreeOver1>());
+
+				}
+
+
+			}
+
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
+				if (Main.tile[X, Y].TileType == TileID.Dirt)
+				{
+					WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.TreeOver2>());
+
+				}
+			}
+
+
+		}
 
 
 
@@ -1704,7 +1729,8 @@ namespace Stellamod.WorldG
 					continue;
 				}
 
-
+				int smxx = smx;
+				int smyy = smy - 20;
 				// place the Rogue
 				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
 				//Main.npc[num].homeTileX = -1;
@@ -1716,17 +1742,17 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx - 10, smy + 60);
+					Point Loc = new Point(smx - 10, smyy + 60);
 					StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital");
 
 
-					Point Loc2 = new Point(smx - 10, smy);
-					Point Loc4 = new Point(smx - 30, smy + 30);
+					Point Loc2 = new Point(smx - 10, smyy);
+					Point Loc4 = new Point(smx - 30, smyy + 40);
 					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
-					Point Loc3 = new Point(smx + 555, smy + 80);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					Point Loc3 = new Point(smx + 555, smyy + 60);
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 60), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -1737,7 +1763,7 @@ namespace Stellamod.WorldG
 					//		{
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
-					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smyy, 433, 100));
 					//WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
 				//	WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
@@ -2127,7 +2153,7 @@ namespace Stellamod.WorldG
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile)
+				if (tile.HasTile && Main.tile[xa, ya].TileType != TileID.LihzahrdBrick)
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
 					foreach (int chestIndex in ChestIndexs)
@@ -2250,7 +2276,7 @@ namespace Stellamod.WorldG
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && tile.TileType == TileID.Dirt)
+				if (tile.HasTile && tile.TileType == TileID.Dirt && Main.tile[xa, ya].TileType != TileID.LihzahrdBrick)
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowedSmallStruct");
 					Chest c = Main.chest[ChestIndexs[0]];
@@ -2357,7 +2383,7 @@ namespace Stellamod.WorldG
 				}
 
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile)
+				if (tile.HasTile && Main.tile[xab, yab].TileType != TileID.LihzahrdBrick)
 				{
 					StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowUnder1");
 				}

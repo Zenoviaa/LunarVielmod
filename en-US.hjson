@@ -6169,6 +6169,8 @@ Mods: {
 			ChiseledStone.MapEntry: Chiseled Stone
 			MossyStone.MapEntry: Mossy Stone
 			VeriplantGrass.MapEntry: Veriplant Grass
+			TreeOver1.MapEntry: Tree Over1
+			TreeOver2.MapEntry: Tree Over2
 		}
 
 		Buffs: {
