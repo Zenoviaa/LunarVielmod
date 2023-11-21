@@ -3650,12 +3650,12 @@ Mods: {
 
 			GiaWig: {
 				DisplayName: Gia Wig
-				Tooltip: ""
+				Tooltip: I can't tell if you want to wear this...
 			}
 
 			BagOfCards: {
 				DisplayName: Bag Of Cards
-				Tooltip: ""
+				Tooltip: Open for some cards! Gives more cards in Hardmode!
 			}
 
 			FireflyCannon: {
@@ -3668,63 +3668,76 @@ Mods: {
 			}
 
 			StoniaBroochA: {
-				DisplayName: Stonia Brooch A
-				Tooltip: ""
+				DisplayName: Stonia Brooch
+				Tooltip:
+					'''
+					No fall damage and 2 defense!
+					Increased Pick speed and glow in the dark but loose 15% damage.
+					'''
 			}
 
 			AlcaricMush: {
 				DisplayName: Alcaric Mush
-				Tooltip: ""
+				Tooltip: A strange magical mush that the Royal Capital was able to control.
 			}
 
 			Blackwhip: {
 				DisplayName: Blackwhip
-				Tooltip: ""
+				Tooltip: Whip em' back to where they belong.
 			}
 
 			DarkWhip: {
 				DisplayName: Dark Whip
-				Tooltip: ""
+				Tooltip: It's as bad as it sounds.
 			}
 
 			AlsisChestplate: {
 				DisplayName: Alsis Chestplate
-				Tooltip: ""
+				Tooltip:
+					'''
+					+25 Health
+					+20% Magic Critical Strike Chance
+					+10% Magic Damage
+					'''
 			}
 
 			AlsisGreaves: {
 				DisplayName: Alsis Greaves
-				Tooltip: ""
+				Tooltip:
+					'''
+					+10 Health
+					Supa Speed
+					'''
 			}
 
 			AlsisMask: {
 				DisplayName: Alsis Mask
-				Tooltip: ""
+				Tooltip:
+					'''
+					+10 Health
+					+5% Magic Critical Strike Chance
+					+10% Magic Damage
+					'''
 			}
 
 			WickofSorcery: {
-				DisplayName: Wickof Sorcery
-				Tooltip: ""
+				DisplayName: Wick of Sorcery
+				Tooltip: Truly the best stick of all time.
 			}
 
 			Voyager: {
 				DisplayName: Voyager
-				Tooltip: ""
-			}
-
-			HyuaIgniter: {
-				DisplayName: Hyua Igniter
-				Tooltip: ""
+				Tooltip: I love slashing and passing, wait wrong game.
 			}
 
 			Hyua: {
 				DisplayName: Hyua
-				Tooltip: ""
+				Tooltip: Throw these weird circular magic hoops, or balls, I dont know.
 			}
 
 			Poya: {
 				DisplayName: Poya
-				Tooltip: ""
+				Tooltip: Summons alcaric mush into reality and rip your enemies apart.
 			}
 
 			FireflyStaff: {
@@ -3926,13 +3939,162 @@ Mods: {
 				Tooltip: ""
 			}
 
-			LarveinScripute: {
+			Climabaton: {
+				DisplayName: Climabaton
 				Tooltip: ""
-				DisplayName: Larvein Scripute
 			}
 
-			LarveinGreatbow: {
-				DisplayName: Larvein Greatbow
+			Thunderstaff: {
+				DisplayName: Thunderstaff
+				Tooltip:
+					'''
+					Summons a lil' cloud to protect you!
+					The clouds perform different attacks based on the number that you have
+					 Lvl 1 - Frost Bolts
+					 Lvl 2 - Lightning Bolts
+					 Lvl 3 - Vortexes
+					'''
+			}
+
+			LarveinScripute: {
+				DisplayName: Larvein Scripute
+				Tooltip: A little larva aww
+			}
+
+			ArtisanBreastplate: {
+				DisplayName: Artisan Breastplate
+				Tooltip:
+					'''
+					Woa, dont forget to cover yourself up, don't want paint on your skin right?
+					+10% Damage
+					+5% Critical Strike Chance
+					+25 Health
+					Great for working in the arts :)
+					'''
+			}
+
+			ArtisanMask: {
+				DisplayName: Artisan Mask
+				Tooltip:
+					'''
+					Jamming out while making sprites and art is one of the most fun activities ever.
+					+10% Damage
+					+5% Critical Strike Chance
+					+10 Health
+					You also look hot am I right?
+					'''
+			}
+
+			ArtisanThighs: {
+				DisplayName: Artisan Thighs
+				Tooltip:
+					'''
+					Shawty you better hide those thighs, someone is coming for you :(
+					+40% Increased Movement speed
+					+5% Damage
+					+25 Health
+					Skating on paint like splatoon!
+					'''
+			}
+
+			ArtisanBar: {
+				DisplayName: Artisan Bar
+				Tooltip: Made for only ture painters.
+			}
+
+			KaleidoscopicInk: {
+				DisplayName: Kaleidoscopic Ink
+				Tooltip: A magical yet explosive technical ink that is on some psychedelics..
+			}
+
+			ArtistsHeart: {
+				DisplayName: Artists Heartius
+				Tooltip: I love painting so much that I throw it at my enemies!
+			}
+
+			InkingSpire: {
+				DisplayName: Inking Spire
+				Tooltip: Dash through your enemies with invulnerability! Right click for antaciz combat!
+			}
+
+			PieceOfArt: {
+				DisplayName: Piece of Art
+				Tooltip: Drag your cursor and hit enemies with your paintbrush, be creative!
+			}
+
+			PicturePerfectI: {
+				DisplayName: Picture Perfect I
+				Tooltip:
+					'''
+					--Part I--
+					Upgrades the Artisan Armor 
+					Gain slightly more defense on Artisan Armor (5)
+					1 New highly damaging paint added to all paint weapons!
+					Artisan Armor set effect lasts slightly longer and the scales a bit more.
+					Shove that paint in their face!
+					Adds a little camera to help capture your best moments!
+					'''
+			}
+
+			PicturePerfectII: {
+				DisplayName: Picture Perfect II
+				Tooltip:
+					'''
+					--Part II--
+					Upgrades the Artisan Armor Greatly
+					Gain slightly more defense on Artisan Armor (10)
+					1 New highly damaging paint added to all paint weapons!
+					Artisan Armor set effect lasts moderately longer and the scales a decent bit more.
+					Damn, you look so nice in that outfit!
+					Adds a little camera to help capture your best moments!
+					'''
+			}
+
+			PicturePerfectIII: {
+				DisplayName: Picture Perfect III
+				Tooltip:
+					'''
+					--Part III--
+					Upgrades the Artisan Armor Extremely
+					Gain slightly more defense on Artisan Armor (25)
+					Artisan Armor set effect lasts a lot longer and the scales a LOT more.
+					You are finally picture perfect aren't you?
+					Adds a little camera to help capture your best moments!
+					'''
+			}
+
+			ShadeWraithWings: {
+				DisplayName: Shade Wraith Wings
+				Tooltip: Allows flight and slow fall
+			}
+
+			DirtWings: {
+				DisplayName: Dirt Wings
+				Tooltip:
+					'''
+					Allows flight and slow fall
+					W-wait... you made wings... out of dirt?
+					Are you ok?
+					'''
+			}
+
+			BridgetII: {
+				DisplayName: Bridget I I
+				Tooltip: ""
+			}
+
+			BlackWallBlock: {
+				DisplayName: Black Wall Block
+				Tooltip: ""
+			}
+
+			MossyStones: {
+				DisplayName: Mossy Stones
+				Tooltip: ""
+			}
+
+			VeriplantGrassBlock: {
+				DisplayName: Veriplant Grass Block
 				Tooltip: ""
 			}
 		}
@@ -4453,12 +4615,41 @@ Mods: {
 			GoldsSlashProj.DisplayName: Golds Slash Proj
 			GoldsSpawnEffect.DisplayName: Golds Spawn Effect
 			BurningKnife.DisplayName: Burning Knife
+			CloudMinion.DisplayName: Cloud Minion
+			LightningStrike.DisplayName: Lightning Strike
+			Tornado.DisplayName: Tornado
+			ClimateIceProj.DisplayName: Climate Ice Proj
+			ClimateLightningProj.DisplayName: Climate Lightning Proj
+			ClimateTornadoProj.DisplayName: Climate Tornado Proj
 			MooningKaboom.DisplayName: Mooning Kaboom
-			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
-			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
 			DreadSpawnEffectSmol.DisplayName: Dread Spawn Effect Smol
-			LarveinGreatbowL.DisplayName: Larvein Greatbow L
-			LarveinGreatbowR.DisplayName: Larvein Greatbow R
+			LarveinScriputeProg.DisplayName: Larvein Scripute Prog
+			LarveinScriputeProg2.DisplayName: Larvein Scripute Prog2
+			ClimateIceProjExplosion.DisplayName: Climate Ice Proj Explosion
+			Meatball4.DisplayName: Meatball4
+			Paint2.DisplayName: Paint2
+			Paint3.DisplayName: Paint3
+			Paintdroplet.DisplayName: Paintdroplet
+			Artbar.DisplayName: Artbar
+			ArtistsHProj.DisplayName: Artists H Proj
+			PaintBomb1.DisplayName: Paint Bomb1
+			PaintBomb2.DisplayName: Paint Bomb2
+			PaintBomb3.DisplayName: Paint Bomb3
+			InkingSProj.DisplayName: Inking S Proj
+			InkingSProj2.DisplayName: Inking S Proj2
+			PaintBomb4.DisplayName: Paint Bomb4
+			PaintBomb5.DisplayName: Paint Bomb5
+			PaintBomb6.DisplayName: Paint Bomb6
+			InkingSThrow.DisplayName: Inking S Throw
+			PaintBomb7.DisplayName: Paint Bomb7
+			POAProj.DisplayName: P O A Proj
+			POAProj2.DisplayName: P O A Proj2
+			POAProj3.DisplayName: P O A Proj3
+			POAProj4.DisplayName: P O A Proj4
+			POAProj5.DisplayName: P O A Proj5
+			SmileForCamera.DisplayName: Smile For Camera
+			PaintBomb8.DisplayName: Paint Bomb8
+			BridgetIIProj.DisplayName: Bridget I I Proj
 		}
 
 		NPCs: {
@@ -5809,6 +6000,8 @@ Mods: {
 			OceanRune.DisplayName: Ocean Rune
 			OceanRuneLightBig.DisplayName: Ocean Rune Light Big
 			AbysmLunatic.DisplayName: Abysm Lunatic
+			Shrewder.DisplayName: Shrewder
+			Shrewmet.DisplayName: Shrewmet
 		}
 
 		Biomes: {
@@ -5975,6 +6168,11 @@ Mods: {
 			SunAlter.MapEntry: Sun Alter
 			VerianoreTile.MapEntry: Verianore Tile
 			ShrineBridgetC.MapEntry: Shrine Bridget C
+			ChiseledStone.MapEntry: Chiseled Stone
+			MossyStone.MapEntry: Mossy Stone
+			VeriplantGrass.MapEntry: Veriplant Grass
+			TreeOver1.MapEntry: Tree Over1
+			TreeOver2.MapEntry: Tree Over2
 		}
 
 		Buffs: {
@@ -6381,6 +6579,16 @@ Mods: {
 			Alcadded: {
 				DisplayName: Alcadded
 				Description: Mods.Stellamod.Buffs.Alcadded.Description
+			}
+
+			CloudMinionBuff: {
+				DisplayName: Weather Forecast
+				Description: Clouds are storming around you ;)
+			}
+
+			CameraMinBuff: {
+				DisplayName: Camera Min Buff
+				Description: Mods.Stellamod.Buffs.CameraMinBuff.Description
 			}
 		}
 	}

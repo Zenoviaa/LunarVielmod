@@ -16,7 +16,7 @@ namespace Stellamod.Items.Materials
         {
             Item.width = 40;
             Item.height = 40;
-            Item.maxStack = 999;
+            Item.maxStack = 9999;
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Orange;
             Item.useTime = 10;

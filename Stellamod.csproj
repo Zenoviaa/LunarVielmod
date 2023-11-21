@@ -30,6 +30,7 @@
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
+    <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
     <None Remove="Gores\Bricks1.png" />
@@ -265,6 +266,14 @@
     <None Remove="Projectiles\Magic\PoyaProj.png" />
     <None Remove="Projectiles\Magic\Poyashot.png" />
     <None Remove="Projectiles\Magic\Poyashot2.png" />
+    <None Remove="Projectiles\Meatball4.png" />
+    <None Remove="Projectiles\Paint\InkingSProj2.png" />
+    <None Remove="Projectiles\Paint\InkingSThrow.png" />
+    <None Remove="Projectiles\Paint\POAProj.png" />
+    <None Remove="Projectiles\Paint\POAProj2.png" />
+    <None Remove="Projectiles\Paint\POAProj3.png" />
+    <None Remove="Projectiles\Paint\POAProj4.png" />
+    <None Remove="Projectiles\Paint\POAProj5.png" />
     <None Remove="Projectiles\Powders\AivanPowderProj.png" />
     <None Remove="Projectiles\Powders\CrystalPowderProj.png" />
     <None Remove="Projectiles\Powders\GovheilPowderProj.png" />

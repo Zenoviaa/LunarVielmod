@@ -221,6 +221,14 @@ namespace Stellamod
                 Main.instance.LoadTiles(TileID.GrayBrick);
                 TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/StoneBrickRE");
 
+                Main.instance.LoadTiles(TileID.Pearlstone);
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlstoneRE");
+
+                Main.instance.LoadTiles(TileID.GraniteBlock);
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/GraniteRE");
+
+                Main.instance.LoadTiles(TileID.MarbleBlock);
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MarbRE");
             }
             Instance = this;
 

@@ -3,6 +3,8 @@ using ParticleLibrary;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,8 +12,20 @@ namespace Stellamod.Items.Accessories
 {
     internal class ShadowCloak : ModItem
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+            ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+        public override void PostUpdate()
+        {
+            Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
+        }
+
+        public override void SetDefaults()
+        {   
             Item.width = 32;
             Item.height = 36;
             Item.value = 2500;
@@ -24,7 +38,7 @@ namespace Stellamod.Items.Accessories
             base.UpdateAccessory(player, hideVisual);
 
             //Shadow Visual
-            if (Main.rand.NextBool(4))
+            if (Main.rand.NextBool(5) && !hideVisual)
             {
                 float radius = 16;
                 int count = Main.rand.Next(6);
@@ -66,7 +80,7 @@ namespace Stellamod.Items.Accessories
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.StarCloak, 1);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 30);
-            recipe.AddIngredient(ItemID.Ichor, 15);
+            recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
             recipe.AddIngredient(ItemID.SoulofNight, 7);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

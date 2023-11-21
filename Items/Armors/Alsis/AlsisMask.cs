@@ -38,7 +38,7 @@ namespace Stellamod.Items.Armors.Alsis
 		{
 
 			player.GetDamage(DamageClass.Magic) *= 1.1f;
-			player.GetCritChance(DamageClass.Generic) += 5f;
+			player.GetCritChance(DamageClass.Magic) += 5f;
 		
 			player.statLifeMax2 += 10;
 

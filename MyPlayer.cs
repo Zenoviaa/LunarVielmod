@@ -6,8 +6,10 @@ using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
+using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
+using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daedia;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
@@ -26,6 +28,7 @@ using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
 using Stellamod.WorldG;
 using System.Collections.Generic;
@@ -86,13 +89,26 @@ namespace Stellamod
 		public bool MasteryMagic;
 		public int MasteryMagicBCooldown = 0;
 
+		public bool ThreeTwoOneSmile;
+		public int ThreeTwoOneSmileBCooldown = 1440;
+		public int PaintdropBCooldown = 3;
 
 
 
-
-
-
-
+		//--------------------------------------- Picture perfect stuff
+		public int PPDefense = 0;
+		public int PPDMG = 0;
+		public float PPPaintDMG = 0;
+		public int PPPaintDMG2 = 0;
+		public bool PPPaintI = false;
+		public bool PPPaintII = false;
+		public bool PPPaintIII = false;
+		public float PPSpeed = 0;
+		public int PPCrit = 0;
+		public int PPPaintTime = 0;
+		public int PPFrameTime = 0;
+		public bool Cameraaa = false;
+		public float CameraaaTime;
 
 
 
@@ -281,7 +297,8 @@ namespace Stellamod
         {
 			Dead = true;
             HMArmor = false;
-            if (damageSource.SourceOtherIndex == 8)
+			Cameraaa = false;
+			if (damageSource.SourceOtherIndex == 8)
                 CustomDeath(ref damageSource);
             return true;
         }
@@ -492,8 +509,7 @@ namespace Stellamod
 			BroochBurningG = false;
 			BroochStone = false;
 
-
-
+		
 
 			SpiritPendent = false;
             GHE = false;
@@ -501,7 +517,8 @@ namespace Stellamod
             FCArmor = false;
             ClamsPearl = false;
             HMArmor = false;
-            DetonationRune = false;
+			Cameraaa = false;
+			DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
             Leather = false;
@@ -520,7 +537,21 @@ namespace Stellamod
 			{
 				SwordComboR--;
 			}
-		}
+
+			PPDefense = 0;
+			PPDMG = 0;
+			PPPaintDMG = 0;
+			PPPaintDMG2 = 0;
+			PPPaintI = false;
+			PPPaintII = false;
+			PPPaintIII = false;
+			PPSpeed = 0;
+			PPCrit = 0;
+			PPPaintTime = 0;
+			PPFrameTime = 0;
+			Cameraaa = false;
+
+	}
 
 
 
@@ -606,7 +637,9 @@ namespace Stellamod
             {
                 HMArmorTime = 0;
                 HMArmor = false;
-                Dead = false;
+				CameraaaTime = 0;
+				Cameraaa = false;
+				Dead = false;
 
             }
 
@@ -833,7 +866,29 @@ namespace Stellamod
             }
 
 
-            if (FCArmor)
+
+			if (Cameraaa)
+			{
+				CameraaaTime++;
+				if (CameraaaTime <= 1)
+				{
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3"), player.position);
+					var EntitySource = Player.GetSource_FromThis();
+
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Main.myPlayer, 0, 0);
+				
+					player.AddBuff(ModContent.BuffType<CameraMinBuff>(), 99999);
+				}
+
+			}
+			else
+			{
+				player.ClearBuff(ModContent.BuffType<CameraMinBuff>());
+				CameraaaTime = 0;
+			}
+
+
+			if (FCArmor)
             {
                 FCArmorTime++;
                 if (FCArmorTime <= 1)
@@ -958,12 +1013,12 @@ namespace Stellamod
 
 
 			}
-			if (NotiaB && NotiaBCooldown > 300)
+		/*	if (NotiaB && NotiaBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 				Player.GetDamage(DamageClass.Ranged) *= 2f;
 
-			}
+			}*/
 			if (NotiaB && NotiaBCooldown == 420)
 			{
 				NotiaBCooldown = 0;
@@ -1004,12 +1059,12 @@ namespace Stellamod
 
 
 			}
-			if (GovheilB && GovheilBCooldown > 300)
+			/*if (GovheilB && GovheilBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;
 				Player.GetDamage(DamageClass.Summon) *= 2f;
 
-			}
+			}*/
 			if (GovheilB && GovheilBCooldown == 540)
 			{
 				GovheilBCooldown = 0;
@@ -1030,18 +1085,107 @@ namespace Stellamod
 
 
 			}
-			if (GovheilC && GovheilBCooldown > 300)
+	/*		if (GovheilC && GovheilBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Ranged) *= 2f;
 				Player.GetDamage(DamageClass.Melee) *= 2f;
 
-			}
+			}*/
 			if (GovheilC && GovheilBCooldown == 520)
 			{
 				GovheilBCooldown = 0;
 
 
 			}
+
+			#region 321smile
+
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 180)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Three"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 120)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Two"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 60)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/One"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 0)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/zero"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Spawn"));
+				for (int j = 0; j < 5; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
+
+					
+				}
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
+				ThreeTwoOneSmileBCooldown = 1720 + PPPaintTime;
+			}
+
+		/*	if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
+			{
+				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
+				Player.GetCritChance(DamageClass.Generic) = 100f;
+
+
+				if (PPPaintI)
+                {
+					PPPaintDMG2 = 15;
+				}
+
+				if (PPPaintI && PPPaintII)
+				{
+					PPPaintDMG2 = 50;
+				}
+
+				if (PPPaintI && PPPaintII && PPPaintIII)
+				{
+					PPPaintDMG2 = 150;
+				}
+
+			}*/
+
+			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
+            {
+				RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(0f, 20f)));
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
+
+
+				PaintdropBCooldown = 25;
+			}
+
+
+			#endregion
 
 
 			if (Boots)
@@ -1752,66 +1896,61 @@ namespace Stellamod
 
 
             for (int i = 0; i < player.inventory.Length; i++)
-
 			{
-
 				if (player.inventory[i].type == ModContent.ItemType<Bridget>())
-
 				{
 					Bridget++;
-
-
-
 					if (Bridget > 1080)
                     {
+						int combatText=-1;
 						switch (Main.rand.Next(30))
 						{
 
 							case 0:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "How can someone be so interesting?", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "How can someone be so interesting?", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 1:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Hiii its a me Bridget your friendly companion :3", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Hiii its a me Bridget your friendly companion :3", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 2:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Please dont replace me :(", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Please dont replace me :(", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 4:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "This world is soo pretty! Just like you :p", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "This world is soo pretty! Just like you :p", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 5:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Im so much better than Lucy :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Im so much better than Lucy :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 6:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I used to have a roommate, they stink really badly", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I used to have a roommate, they stink really badly", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 7:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I love these journeys! I hope you won't throw me away...", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I love these journeys! I hope you won't throw me away...", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1819,7 +1958,7 @@ namespace Stellamod
 
 							case 8:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you gonna get married someday? I'm always an option yknow >~<", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Are you gonna get married someday? I'm always an option yknow >~<", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1827,42 +1966,42 @@ namespace Stellamod
 
 							case 9:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "When I was in my human form I was the Queen of the uh, morrow? I forgot.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "When I was in my human form I was the Queen of the uh, morrow? I forgot.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 10:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Don't forget to brush your teeth! Its good for you :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Don't forget to brush your teeth! Its good for you :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 11:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I completely forgot what it feels like to be flat and everyday you hold me is a reminder.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I completely forgot what it feels like to be flat and everyday you hold me is a reminder.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 12:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I can't tell if I like you holding me or sexual assault.", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I can't tell if I like you holding me or sexual assault.", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 13:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I have so many stories I can share to you :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I have so many stories I can share to you :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 14:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "My sister turned me into a sword but I think you can get me out rightttt?", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "My sister turned me into a sword but I think you can get me out rightttt?", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1870,63 +2009,63 @@ namespace Stellamod
 
 							case 15:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I totally don't like you at all, all you did was pull me from a stone yknow :(", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I totally don't like you at all, all you did was pull me from a stone yknow :(", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 16:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "You're soooo stupid :)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "You're soooo stupid :)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 17:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm you're daily reminder that you aren't alone :p", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm you're daily reminder that you aren't alone :p", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 18:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Hey so will you take me all the way to the end, I've taken a liking to you >:)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Hey so will you take me all the way to the end, I've taken a liking to you >:)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 19:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "It's not hehe, its HEHE", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "It's not hehe, its HEHE", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 20:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I loveee painting, I think I could get back to form if I'm merged with something related", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I loveee painting, I think I could get back to form if I'm merged with something related", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 21:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Use me for a spin will ya!", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Use me for a spin will ya!", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 22:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm not your normal yandere girl you know, please dont leave me :<", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I'm not your normal yandere girl you know, please dont leave me :<", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 23:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "It's all fun and games until you get slashed by a dirt sword with boobs", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "It's all fun and games until you get slashed by a dirt sword with boobs", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1941,7 +2080,7 @@ namespace Stellamod
 
 							case 25:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "Shawty get your head in the game", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "Shawty get your head in the game", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
@@ -1956,25 +2095,33 @@ namespace Stellamod
 
 							case 27:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "You're holding me in all the right ways >:)", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "You're holding me in all the right ways >:)", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 28:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "I dont care what you are, you obviously cared enough to get me :P", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "I dont care what you are, you obviously cared enough to get me :P", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
 							case 29:
 
-								CombatText.NewText(player.getRect(), Color.YellowGreen, "LALALA you're wrong I'm right LALALALA", true, false);
+								combatText = CombatText.NewText(player.getRect(), Color.YellowGreen, "LALALA you're wrong I'm right LALALALA", true, false);
 								Bridget = 0;
 								SoundEngine.PlaySound(SoundID.LucyTheAxeTalk);
 								break;
 
+						}
+
+						//Checking if combatText not equal to -1 just incase it somehow didn't get set
+						if(combatText != -1)
+                        {
+							//360 ticks = 6 seconds
+							CombatText text = Main.combatText[combatText];
+							text.lifeTime = 360;
 						}
 					}
 
@@ -2130,9 +2277,93 @@ namespace Stellamod
 
 
 
+        public override void PostUpdateEquips()
+        {
+			if (ArcaneM && ArcaneMCooldown > 600)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 2f;
 
 
-		public override bool PreItemCheck()
+			}
+
+
+			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
+			{
+				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
+				Player.GetCritChance(DamageClass.Generic) = 100f;
+
+
+				if (PPPaintI)
+				{
+					PPPaintDMG2 = 15;
+				}
+
+				if (PPPaintI && PPPaintII)
+				{
+					PPPaintDMG2 = 50;
+				}
+
+				if (PPPaintI && PPPaintII && PPPaintIII)
+				{
+					PPPaintDMG2 = 150;
+				}
+
+			}
+
+			if (GovheilC && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Ranged) *= 1.5f;
+				Player.GetDamage(DamageClass.Melee) *= 1.5f;
+
+			}
+
+			if (GovheilB && GovheilBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 1.2f;
+				Player.GetDamage(DamageClass.Summon) *= 1.2f;
+
+			}
+
+			if (NotiaB && NotiaBCooldown > 300)
+			{
+				Player.GetDamage(DamageClass.Magic) *= 1.4f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
+
+			}
+
+			if (StealthRune)
+			{
+				if (StealthTime <= 500)
+				{
+					StealthTime++;
+				}
+				else
+				{
+					if (Main.rand.NextBool(5))
+					{
+						int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
+						Main.dust[dustnumber].velocity *= 0.3f;
+						Main.dust[dustnumber].noGravity = true;
+					}
+				}
+				Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
+				Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
+
+			}
+			if (SpiritPendent && ZoneAbyss)
+			{
+				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
+				Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
+			}
+		}
+
+        public override bool PreItemCheck()
 		{
 			if (Player.selectedItem != lastSelectedI)
 			{
