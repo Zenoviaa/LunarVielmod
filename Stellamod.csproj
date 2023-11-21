@@ -217,6 +217,7 @@
     <None Remove="Items\Weapons\Summon\VoidMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VoidStaff.png" />
     <None Remove="Items\Weapons\Summon\X3144.png" />
+    <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Daedus\Daedus.png" />
     <None Remove="NPCs\Bosses\Daedus\SummonSpawnEffect.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />

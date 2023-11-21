@@ -1,20 +1,21 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.Desert
+namespace Stellamod.NPCs.Morrow
 {
-	public class Shrewmet : ModNPC
+	public class TribalWorshipper : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Morrowed Swampster");
-			Main.npcFrameCount[NPC.type] = 30;
+			Main.npcFrameCount[NPC.type] = 13;
 		}
 
 		public enum ActionState
@@ -34,41 +35,43 @@ namespace Stellamod.NPCs.Desert
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
 		{
-			NPC.width = 36;
-			NPC.height = 16;
-			NPC.damage = 20;
-			NPC.defense = 1;
-			NPC.lifeMax = 200;
-			NPC.HitSound = SoundID.NPCHit32;
-			NPC.DeathSound = SoundID.NPCDeath6;
+			NPC.width = 46;
+			NPC.height = 50;
+			NPC.damage = 50;
+			NPC.defense = 8;
+			NPC.lifeMax = 400;
+			NPC.HitSound = SoundID.FemaleHit;
+			NPC.DeathSound = SoundID.DD2_SkeletonDeath;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
-			NPC.aiStyle = 103;
-			AIType = NPCID.SandShark;
-			NPC.noTileCollide = true;
+			NPC.aiStyle = 3;
+			AIType = NPCID.SnowFlinx;
 
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.ZoneDesert)
+			Player player = spawnInfo.Player;
+			if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
 			{
-
-				return 0.2f;
-
+				return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
 			}
 
+		
 
-
-
-			return SpawnCondition.OverworldNight.Chance * 0f;
+			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			{
+				return SpawnCondition.Underground.Chance * 0.5f;
+			}
+			return 0f;
 		}
 		int invisibilityTimer;
+		int invsTimer;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 11; k++)
 			{
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Sand, 1, -1f, 1, default, .61f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 1, -1f, 1, default, .61f);
 			}
 
 
@@ -76,7 +79,7 @@ namespace Stellamod.NPCs.Desert
 
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.3f;
+			NPC.frameCounter += 0.15f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
@@ -84,9 +87,30 @@ namespace Stellamod.NPCs.Desert
 
 		public override void AI()
 		{
-
+			if (Main.dayTime)
+            {
+				NPC.damage = 0;
+				
+			}
 			timer++;
+			invsTimer++;
 			NPC.spriteDirection = NPC.direction;
+
+
+			if (invsTimer < 255)
+            {
+				NPC.alpha++;
+            }
+
+			if (invsTimer > 255)
+			{
+				NPC.alpha--;
+			}
+
+			if (invsTimer > 510)
+			{
+				invsTimer = 0;
+			}
 
 			invisibilityTimer++;
 			if (invisibilityTimer >= 100)
@@ -94,7 +118,7 @@ namespace Stellamod.NPCs.Desert
 				Speed();
 
 				for (int k = 0; k < 11; k++)
-					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.LavaMoss, NPC.direction, -1f, 1, default, .61f);
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenMoss, NPC.direction, -1f, 1, default, .61f);
 
 
 				invisibilityTimer = 0;
@@ -124,11 +148,11 @@ namespace Stellamod.NPCs.Desert
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ItemID.Amber, 5, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Vine, 3, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ArncharChunk>(), 5, 1, 5));
-
-
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 1, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 10, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 2));
 
 		}
 
@@ -160,18 +184,22 @@ namespace Stellamod.NPCs.Desert
 			if (timer > 50)
 			{
 
-				NPC.velocity.X *= 1f;
-				NPC.velocity.Y *= 0.5f;
-				for (int k = 0; k < 2; k++)
+				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
-
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 15, 0f, 0, 0f, 0f);
 				}
 
+				if (!Main.dayTime)
+				{
+					for (int k = 0; k < 5; k++)
+					{
+						Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
+						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
+						float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 15, 0f, 0, 0f, 0f);
+					}
+				}
 
 
 

@@ -4098,10 +4098,11 @@ Mods: {
 				Tooltip: ""
 			}
 
-			LarveinGreatbow: {
-				DisplayName: Larvein Greatbow
+			ChiseledStoneBlock: {
+				DisplayName: Chiseled Stone Block
 				Tooltip: ""
 			}
+		}
 
 			BubbleBlasher: {
 				DisplayName: Bubble Blasher
@@ -6015,6 +6016,8 @@ Mods: {
 			AbysmLunatic.DisplayName: Abysm Lunatic
 			Shrewder.DisplayName: Shrewder
 			Shrewmet.DisplayName: Shrewmet
+			TribalWorshipper.DisplayName: Tribal Worshipper
+			TribalGuard.DisplayName: Tribal Guard
 		}
 
 		Biomes: {

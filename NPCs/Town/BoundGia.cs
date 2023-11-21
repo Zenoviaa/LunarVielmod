@@ -59,18 +59,39 @@ namespace Stellamod.NPCs.Town
 			NPC.dontTakeDamageFromHostiles = true;
 			
 		}
+		
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
+			bool npcAlreadyExists = false;
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC npc = Main.npc[i];
+				if(npc.type == ModContent.NPCType<BoundGia>() || npc.type == ModContent.NPCType<Gia>())
+                {
+					npcAlreadyExists = true;
+					break;
+                }
+			}
+
+			//Don't spawn the npc if it already exists
+			if (npcAlreadyExists)
+            {
+				return 0f;
+			}
+
 			if (spawnInfo.Player.ZoneRockLayerHeight)
 			{
 				return spawnInfo.Player.ZoneAcid() ? 0.1f : 0f;
 			}
+
 			if (spawnInfo.Player.ZoneOverworldHeight)
 			{
 				return spawnInfo.Player.ZoneAcid() ? 0.2f : 0f;
 			}
+
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
+
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{

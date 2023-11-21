@@ -54,10 +54,10 @@ namespace Stellamod.NPCs.Bosses.Daedus
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			Player player = spawnInfo.Player;
-			if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
-			{
-				return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
-			}
+			//if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+			//{
+		//		return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
+		//	}
 
 
 			return 0f;
