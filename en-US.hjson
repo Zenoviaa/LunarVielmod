@@ -4097,6 +4097,11 @@ Mods: {
 				DisplayName: Veriplant Grass Block
 				Tooltip: ""
 			}
+
+			ChiseledStoneBlock: {
+				DisplayName: Chiseled Stone Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
