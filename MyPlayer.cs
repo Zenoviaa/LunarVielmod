@@ -1242,7 +1242,7 @@ namespace Stellamod
 
 
 
-			if (Player.InModBiome<FableBiome>())
+			if (Player.InModBiome<FableBiome>() || Player.InModBiome<MorrowUndergroundBiome>())
 			{
 				Main.GraveyardVisualIntensity = 0.4f;
 				Main.windPhysicsStrength = 50;
@@ -1327,17 +1327,19 @@ namespace Stellamod
 				}
 
 
-				
 
 
-					
+
+				if (Player.InModBiome<FableBiome>())
+				{
+
 
 					if (RayCooldown > 1000)
 					{
 						for (int j = 0; j < 1; j++)
 						{
 							RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(700f, 700f)));
-		
+
 
 							Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
@@ -1348,21 +1350,24 @@ namespace Stellamod
 						}
 					}
 
-				if (RayCooldown == 500)
-				{
-					for (int j = 0; j < 1; j++)
+					if (RayCooldown == 500)
 					{
-						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(700f, 800f)));
+						for (int j = 0; j < 1; j++)
+						{
+							RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(700f, 800f)));
 
 
-						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+							Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+							Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<FabledColoredSunray>(), 1, 1f, Player.whoAmI);
+							Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<FabledColoredSunray>(), 1, 1f, Player.whoAmI);
 
-						
+
+						}
 					}
 				}
+	
+					
 
 			}
 

@@ -311,24 +311,24 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx + 10, smy + 45 );
-					StructureLoader.ReadStruct(Loc, "Struct/Huntria/FableBiome2");
+					Point Loc = new Point(smx + 10, smy + 340 );
+					StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew");
 
 
 					Point Loc2 = new Point(smx - 10, smy + 20);
 					Point Loc4 = new Point(smx + 233, smy + 45);
-					WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
-					WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 
 					Point Loc5 = new Point(smx + 10, smy + 45);
-					WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
 
 
 
 					Point Loc3 = new Point(smx + 455, smy + 30);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
 					Point Loc6 = new Point(smx + 455, smy + 40);
-					WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -340,9 +340,9 @@ namespace Stellamod.WorldG
 					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
 					//		}
 					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
-					WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
-					WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
-					WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					//WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
+					//WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					placed = true;
 				}
 
@@ -1753,7 +1753,7 @@ namespace Stellamod.WorldG
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					Point Loc3 = new Point(smx + 555, smyy + 60);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 60), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 100), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
