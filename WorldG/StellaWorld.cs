@@ -394,6 +394,7 @@ namespace Stellamod.WorldG
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Sand
 					|| tile.TileType == TileID.Dirt
+					|| tile.TileType == ModContent.TileType<VeriplantGrass>()
 					|| tile.TileType == TileID.Grass
 					|| tile.TileType == TileID.Stone
 					|| tile.TileType == TileID.Sandstone))
@@ -2549,6 +2550,7 @@ namespace Stellamod.WorldG
 				Tile tile = Main.tile[towerX, towerY];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.IceBlock
+					|| tile.TileType == ModContent.TileType<StarbloomDirt>()
 					|| tile.TileType == TileID.SnowBlock))
 				{
 					continue;

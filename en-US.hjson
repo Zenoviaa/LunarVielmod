@@ -6000,6 +6000,8 @@ Mods: {
 			OceanRune.DisplayName: Ocean Rune
 			OceanRuneLightBig.DisplayName: Ocean Rune Light Big
 			AbysmLunatic.DisplayName: Abysm Lunatic
+			Shrewder.DisplayName: Shrewder
+			Shrewmet.DisplayName: Shrewmet
 		}
 
 		Biomes: {
