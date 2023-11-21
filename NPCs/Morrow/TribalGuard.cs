@@ -58,7 +58,7 @@ namespace Stellamod.NPCs.Morrow
 
 			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
 			{
-				return SpawnCondition.Cavern.Chance * 0.2f;
+				return SpawnCondition.Underground.Chance * 0.5f;
 			}
 
 			return 0f;
