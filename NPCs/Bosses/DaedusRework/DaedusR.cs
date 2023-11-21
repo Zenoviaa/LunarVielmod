@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 //By Al0n37
 namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-
+    [AutoloadBossHead]
     public class DaedusR : ModNPC
     {
 
