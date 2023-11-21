@@ -9,11 +9,33 @@ namespace Stellamod.NPCs.Global
 {
     public class NPCBossEdits : GlobalNPC
 	{
-		// ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
-		// Here we go through all of them, and how they can be used.
-		// There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
 
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        public override void SetDefaults(NPC npc)
+        {
+			if(npc.type == NPCID.TheDestroyer)
+            {
+				npc.lifeMax = 100000;
+			}
+			if(npc.type == NPCID.HallowBoss)
+            {
+				npc.lifeMax = 90000;
+            }
+			if(npc.type == NPCID.DukeFishron)
+            {
+				npc.lifeMax = 80000;
+            }
+			if(npc.type == NPCID.Plantera)
+            {
+				npc.lifeMax = 44000;
+            }
+        }
+
+
+        // ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
+        // Here we go through all of them, and how they can be used.
+        // There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
+
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 			
 			// We will now use the Guide to explain many of the other types of drop rules.
@@ -34,8 +56,6 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.EyeofCthulhu)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
@@ -43,8 +63,6 @@ namespace Stellamod.NPCs.Global
 			
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
@@ -55,21 +73,16 @@ namespace Stellamod.NPCs.Global
 			
 			if (npc.type == NPCID.KingSlime)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
 			if (npc.type == NPCID.WallofFlesh)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.QueenBee)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
@@ -91,6 +104,7 @@ namespace Stellamod.NPCs.Global
 					if (rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff)
 						normalDropRule.chanceDenominator = 2;
 				}
+
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.																		  // Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
 				/*

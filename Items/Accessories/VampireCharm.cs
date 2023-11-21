@@ -61,7 +61,7 @@ namespace Stellamod.Items.Accessories
                     float speedY = Main.rand.Next(-15, 15);
                     Vector2 speed = new Vector2(speedX, speedY);
                     Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y, 
-                        ModContent.ProjectileType<BloodWaterProj>(), 60, 1f, Player.whoAmI);
+                        ModContent.ProjectileType<BloodWaterProj>(), 30, 1f, Player.whoAmI);
                 }
             }
         }
