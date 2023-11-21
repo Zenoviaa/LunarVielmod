@@ -4097,6 +4097,16 @@ Mods: {
 				DisplayName: Veriplant Grass Block
 				Tooltip: ""
 			}
+
+			LarveinGreatbow: {
+				DisplayName: Larvein Greatbow
+				Tooltip: ""
+			}
+
+			BubbleBlasher: {
+				DisplayName: Bubble Blasher
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4650,6 +4660,9 @@ Mods: {
 			SmileForCamera.DisplayName: Smile For Camera
 			PaintBomb8.DisplayName: Paint Bomb8
 			BridgetIIProj.DisplayName: Bridget I I Proj
+			LarveinGreatbowL.DisplayName: Larvein Greatbow L
+			LarveinGreatbowR.DisplayName: Larvein Greatbow R
+			BBBubble.DisplayName: B B Bubble
 		}
 
 		NPCs: {

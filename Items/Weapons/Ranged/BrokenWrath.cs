@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item5;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<BrokenMissile>();
+			Item.shoot = ModContent.ProjectileType<BBBubble>();
 			Item.shootSpeed = 4f;
 			Item.useAmmo = AmmoID.Bullet;
 		}
