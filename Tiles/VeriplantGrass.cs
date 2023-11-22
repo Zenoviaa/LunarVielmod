@@ -20,7 +20,7 @@ namespace Stellamod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Huntiac Silk");
-			AddMapEntry(new Color(202, 84, 157), name);
+			AddMapEntry(new Color(10, 30, 60), name);
 
 
 			DustType = DustID.PinkFairy;
