@@ -16,7 +16,6 @@ namespace Stellamod.Items.Consumables
 {
     internal class DreadmireBag : ModItem
     {
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Treasure Bag");
@@ -39,6 +38,7 @@ namespace Stellamod.Items.Consumables
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
+            player.QuickSpawnItem(entitySource, ItemID.BloodMoonStarter);
             player.QuickSpawnItem(entitySource, ModContent.ItemType<DreadFoil>(), Main.rand.Next(40, 65));
             if (Main.rand.NextBool(2))
             {
@@ -60,7 +60,6 @@ namespace Stellamod.Items.Consumables
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<DreadBroochA>());
             }
-
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
