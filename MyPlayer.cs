@@ -28,6 +28,7 @@ using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
@@ -193,6 +194,12 @@ namespace Stellamod
         public bool FCArmor;
         public float FCArmorTime;
         public float HMArmorTime;
+
+
+
+
+
+
         public bool ZoneAbyss;
 		public bool ZoneAurelus;
 		public bool ZoneStarbloom;
@@ -200,6 +207,10 @@ namespace Stellamod
 		public bool ZoneGovheil;
 		public bool ZoneNaxtrin;
 		public bool ZoneAlcadzia;
+		public bool ZoneVeri;
+
+
+
 		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -586,6 +597,7 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
@@ -1372,7 +1384,7 @@ namespace Stellamod
 
 			}
 
-			if (Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>())
+			if (Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>() || Player.InModBiome<VeriplantUndergroundBiome>())
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
@@ -1393,6 +1405,65 @@ namespace Stellamod
 				}
 
 			}
+
+
+
+			if (Player.InModBiome<VeriplantUndergroundBiome>())
+			{
+
+
+				if (RayCooldown > 1000)
+				{
+					for (int j = 0; j < 2; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<GlowballVeri1>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+
+				if (RayCooldown == 500)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<GlowballVeri2>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+
+				if (RayCooldown == 750)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-3000f, 3000f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<GlowballVeri3>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+			}
+
+
+
+		
 
 
 			if (Player.InModBiome<AlcadziaBiome>())

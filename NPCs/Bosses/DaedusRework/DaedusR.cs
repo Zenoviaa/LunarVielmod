@@ -210,6 +210,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         {
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
+            NPC.damage = 0;
 
             if (Flying)
             {

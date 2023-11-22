@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Tiles
 {
-	public class VeriplantGrass : ModTile
+	public class VeriplantDirt : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -20,13 +20,13 @@ namespace Stellamod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Huntiac Silk");
-			AddMapEntry(new Color(202, 84, 157), name);
+			AddMapEntry(new Color(101, 42, 75), name);
+			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantDirtBlock>());
 
 
 			DustType = DustID.PinkFairy;
 			DustType = DustID.Grass;
 			RegisterItemDrop(ItemID.DirtBlock);
-			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantGrassBlock>());
 			HitSound = SoundID.Grass;
 			MineResist = 1f;
 			MinPick = 20;

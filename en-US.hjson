@@ -4102,6 +4102,16 @@ Mods: {
 				DisplayName: Chiseled Stone Block
 				Tooltip: ""
 			}
+
+			VeriplantDirtBlock: {
+				DisplayName: Veriplant Dirt Block
+				Tooltip: ""
+			}
+
+			VeriplantGrassWall: {
+				DisplayName: Veriplant Grass Wall
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4655,6 +4665,9 @@ Mods: {
 			SmileForCamera.DisplayName: Smile For Camera
 			PaintBomb8.DisplayName: Paint Bomb8
 			BridgetIIProj.DisplayName: Bridget I I Proj
+			GlowballVeri1.DisplayName: Glowball Veri1
+			GlowballVeri2.DisplayName: Glowball Veri2
+			GlowballVeri3.DisplayName: Glowball Veri3
 		}
 
 		NPCs: {
@@ -4798,7 +4811,7 @@ Mods: {
 			SolarSingularity.DisplayName: Solar Singularity
 			SolarPortal.DisplayName: Solar Portal
 			DRay.DisplayName: D Ray
-			DaedusR.DisplayName: Daedus R
+			DaedusR.DisplayName: Daedus The Forgotten Puppet
 			Daedus.DisplayName: Daedus
 			LanternOfHope.DisplayName: Lantern Of Hope
 			ToxicBoulder.DisplayName: Toxic Boulder
@@ -5810,7 +5823,7 @@ Mods: {
 				AcidSpirit.DisplayName: Acid Spirit
 				ToxicBoulder.DisplayName: Toxic Boulder
 				LanternOfHope.DisplayName: Lantern Of Hope
-				DaedusR.DisplayName: Daedus R
+				DaedusR.DisplayName: Daedus The Forgotten Puppet
 				DRay.DisplayName: D Ray
 				BloodCyst.DisplayName: Blood Cyst
 				BloodCystDead.DisplayName: Blood Cyst Dead
@@ -6066,6 +6079,11 @@ Mods: {
 				DisplayName: Starbloom Biome
 				TownNPCDialogueName: the Starbloom Biome
 			}
+
+			VeriplantUndergroundBiome: {
+				DisplayName: Veriplant Underground Biome
+				TownNPCDialogueName: the Veriplant Underground Biome
+			}
 		}
 
 		Tiles: {
@@ -6180,6 +6198,7 @@ Mods: {
 			VeriplantGrass.MapEntry: Veriplant Grass
 			TreeOver1.MapEntry: Tree Over1
 			TreeOver2.MapEntry: Tree Over2
+			VeriplantDirt.MapEntry: Veriplant Dirt
 		}
 
 		Buffs: {
@@ -7716,7 +7735,7 @@ NPCs: {
 	AcidSpirit.DisplayName: Acid Spirit
 	ToxicBoulder.DisplayName: Toxic Boulder
 	LanternOfHope.DisplayName: Lantern Of Hope
-	DaedusR.DisplayName: Daedus R
+	DaedusR.DisplayName: Daedus The Forgotten Puppet
 	DRay.DisplayName: D Ray
 	BloodCyst.DisplayName: Blood Cyst
 	BloodCystDead.DisplayName: Blood Cyst Dead
