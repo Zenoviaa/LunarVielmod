@@ -286,7 +286,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     GPos.Y = NPC.Center.Y;
                     NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y, ModContent.NPCType<SolarSingularity>());
                     var entitySource = NPC.GetSource_FromThis();
-                    Projectile.NewProjectile(entitySource, GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                    Projectile.NewProjectile(entitySource, GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, 10 / 9, 0);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(GPos, 1212f, 62f);
                     Solar = true;
                 }
@@ -386,7 +386,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<BouncySword>(), (int)(NPC.damage * 1f), 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<BouncySword>(), (int)(30 * 1f), 0f);
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                         }
                         break;
