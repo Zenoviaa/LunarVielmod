@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
 using Stellamod.Buffs;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;

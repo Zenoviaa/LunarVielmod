@@ -4115,12 +4115,23 @@ Mods: {
 
 			MiracleBody: {
 				DisplayName: Miracle Cloak
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases summon damage by 12%
+					Increases whip range by 20%
+					+1 Max Sentry
+					TODO
+					'''
 			}
 
 			MiracleHead: {
 				DisplayName: Miracle Hat
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases summon damage by 12%
+					+1 Max Sentry
+					TODO
+					'''
 			}
 
 			MiracleThread: {
@@ -4131,6 +4142,37 @@ Mods: {
 			MiracleWings: {
 				DisplayName: Miracle Wings
 				Tooltip: ""
+			}
+
+			Lacerator: {
+				DisplayName: Lacerator
+				Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					Hit enemies will split in two, leaving them with half of their original HP and reduced defense
+					Slice n' dice!
+					'''
+			}
+
+			PotOfGreed: {
+				DisplayName: Pot Of Greed
+				Tooltip:
+					'''
+					Summons a laughing pot that creates up to 10 shadow clones of your minions when you go near it
+					The shadow clones linger for a short while and deal less damage than the real thing
+					There can only be one
+					'''
+			}
+
+			Ripper: {
+				DisplayName: Ripper
+				Tooltip: TODO
+			}
+
+			XScissor: {
+				DisplayName: X-Scissor
+				Tooltip: TODO
 			}
 		}
 
@@ -4688,6 +4730,12 @@ Mods: {
 			GlowballVeri1.DisplayName: Glowball Veri1
 			GlowballVeri2.DisplayName: Glowball Veri2
 			GlowballVeri3.DisplayName: Glowball Veri3
+			LaceratorProj.DisplayName: Lacerator Proj
+			RipperSlashProjBig.DisplayName: Ripper Slash Proj Big
+			RipperSlashProjSmall.DisplayName: Ripper Slash Proj Small
+			PotOfGreedMinion.DisplayName: Pot Of Greed Minion
+			RipperMinion.DisplayName: Ripper Minion
+			XScissorMinion.DisplayName: X Scissor Minion
 		}
 
 		NPCs: {
@@ -6638,6 +6686,16 @@ Mods: {
 			CameraMinBuff: {
 				DisplayName: Camera Min Buff
 				Description: Mods.Stellamod.Buffs.CameraMinBuff.Description
+			}
+
+			LaceratorDebuff: {
+				DisplayName: Lacerator Debuff
+				Description: Mods.Stellamod.Buffs.LaceratorDebuff.Description
+			}
+
+			Lacerated: {
+				DisplayName: Lacerated
+				Description: Mods.Stellamod.Buffs.Lacerated.Description
 			}
 		}
 	}
