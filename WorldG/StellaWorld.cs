@@ -59,7 +59,7 @@ namespace Stellamod.WorldG
 
 		//	}
 
-			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
+			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (ShiniesIndex != -1)
 			{
 
@@ -67,6 +67,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));			
 				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+				tasks.Insert(ShiniesIndex + 5, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
+				tasks.Insert(ShiniesIndex + 6, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -84,16 +86,16 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
-				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenBig));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen More skies", WorldGenMed));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Bridget", WorldGenBridget));			
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				//tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenBig));
+				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenMed));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Bridget", WorldGenBridget));			
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 			}
 
 
@@ -314,8 +316,10 @@ namespace Stellamod.WorldG
 					Point Loc = new Point(smx + 10, smy + 340 );
 					StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew");
 
+					Point Loc2 = new Point(smx + 10, smy + 380);
+					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
 
-					Point Loc2 = new Point(smx - 10, smy + 20);
+		
 					Point Loc4 = new Point(smx + 233, smy + 45);
 				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
@@ -899,7 +903,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(125, (Main.maxTilesX) / 9); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next((Main.maxTilesX) - 500, (Main.maxTilesX) - 220); // from 50 since there's a unaccessible area at the world's borders
 																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -1701,9 +1705,9 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 5), (Main.maxTilesX / 2) - 700); // from 50 since there's a unaccessible area at the world's borders
-																										  // 50% of choosing the last 6th of the world
-																										  // Choose which side of the world to be on randomly
+				int smx = WorldGen.genRand.Next(220, (Main.maxTilesX) / 15); // from 50 since there's a unaccessible area at the world's borders
+																			// 50% of choosing the last 6th of the world
+																			// Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
 				///{
 				///	towerX = Main.maxTilesX - towerX;
@@ -1725,7 +1729,7 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[smx, smy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if ((tile.TileType == ModContent.TileType<StarbloomDirt>()))
+				if ((tile.TileType == TileID.Grass))
 				{
 					continue;
 				}
@@ -1893,6 +1897,72 @@ namespace Stellamod.WorldG
 				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 100), ModContent.TileType<VeriplantGrass>());
 			}
 
+		}
+
+
+
+		private void WorldGenVeriplantBlobs(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Veribloom forgetting their memories";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
+			{
+				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY - 300);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(2, 50), WorldGen.genRand.Next(1, 200), ModContent.TileType<VeriplantDirt>());
+			}
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+
+				int xa = WorldGen.genRand.Next(0, Main.maxTilesX );
+				int ya = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY - 300);
+				Point Loc = new Point(xa, ya);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				Tile tile = Main.tile[Loc.X, Loc.Y];
+
+				if (!(tile.TileType == ModContent.TileType<VeriplantDirt>()))
+				{
+					continue;
+				}
+
+				if (tile.HasTile)
+				{
+					switch (Main.rand.Next(5))
+					{
+						case 0:
+							StructureLoader.ReadStruct(Loc, "Struct/Veriplant/Veriplant1");
+							break;
+						case 1:
+							StructureLoader.ReadStruct(Loc, "Struct/Veriplant/Veriplant2");
+							break;
+						case 2:
+							StructureLoader.ReadStruct(Loc, "Struct/Veriplant/Veriplant3");
+							break;
+						case 3:
+						
+							StructureLoader.ReadStruct(Loc, "Struct/Veriplant/Veriplant4");
+							break;
+						
+						case 4:
+							WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 30, 3, false);
+					
+							break;
+
+					}
+
+					
+
+				}
+
+			}
 		}
 		private void WorldGenVirulentStructures(GenerationProgress progress, GameConfiguration configuration)
 		{

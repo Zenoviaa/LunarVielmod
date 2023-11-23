@@ -20,7 +20,7 @@ namespace Stellamod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Huntiac Silk");
-			AddMapEntry(new Color(101, 42, 75), name);
+			AddMapEntry(new Color(161, 170, 119), name);
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantDirtBlock>());
 
 
