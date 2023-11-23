@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Morrow
 		public int frameTick;
 		// Current state's timer
 		public float timer;
-
+		public float Mainframe;
 		// AI counter
 		public int counter;
 

@@ -6022,6 +6022,9 @@ Mods: {
 			Shrewmet.DisplayName: Shrewmet
 			TribalWorshipper.DisplayName: Tribal Worshipper
 			TribalGuard.DisplayName: Tribal Guard
+			GoliathCryogenicJelly.DisplayName: Goliath Cryogenic Jelly
+			GoliathCryogenicJellyfish.DisplayName: Goliath Cryogenic Jellyfish
+			GoliathJellyfish.DisplayName: Goliath Jellyfish
 		}
 
 		Biomes: {

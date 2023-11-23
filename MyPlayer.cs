@@ -26,6 +26,7 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
@@ -600,6 +601,8 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
