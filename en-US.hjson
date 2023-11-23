@@ -4112,6 +4112,26 @@ Mods: {
 				DisplayName: Veriplant Grass Wall
 				Tooltip: ""
 			}
+
+			MiracleBody: {
+				DisplayName: Miracle Cloak
+				Tooltip: ""
+			}
+
+			MiracleHead: {
+				DisplayName: Miracle Hat
+				Tooltip: ""
+			}
+
+			MiracleThread: {
+				DisplayName: Miracle Thread
+				Tooltip: It weaves the fabric of reality...
+			}
+
+			MiracleWings: {
+				DisplayName: Miracle Wings
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
