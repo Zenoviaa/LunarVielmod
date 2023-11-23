@@ -189,7 +189,8 @@ namespace Stellamod.NPCs.Minibosses
 				case ActionState.Wait:
 					counter++;
 					Wait();
-					NPC.aiStyle = 10;		
+					NPC.aiStyle = 10;
+					NPC.velocity *= 0.95f;
 					break;
 
 				case ActionState.Speed:
