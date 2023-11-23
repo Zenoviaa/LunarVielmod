@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Summon
 			player.AddBuff(Item.buffType, 2);
 
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+			position = Main.MouseWorld;
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
 
@@ -102,6 +103,9 @@ namespace Stellamod.Items.Weapons.Summon
 		public override void SetStaticDefaults()
 		{
 			// Sets the amount of frames this minion has on its spritesheet
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+
 			Main.projFrames[Projectile.type] = 4;
 			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
@@ -269,18 +273,37 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 
 		public Vector3 HuntrianColorXyz;
-		public override void PostDraw(Color lightColor)
+
+        public override bool PreDraw(ref Color lightColor)
+		{
+			switch (State)
+			{
+				case AttackState.Frost_Attack:
+					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.LightCyan, Color.White, ref lightColor);
+					break;
+				case AttackState.Lightning_Attack:
+					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.MediumPurple, Color.White, ref lightColor);
+					break;
+				case AttackState.Tornado_Attack:
+					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.LightGreen, Color.White, ref lightColor);
+					break;
+			}
+
+			return true;
+        }
+
+        public override void PostDraw(Color lightColor)
 		{
             switch (State)
             {
 				case AttackState.Frost_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightCyan, lightColor);
+					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightCyan, lightColor, 2);
 					break;
 				case AttackState.Lightning_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.MediumPurple, lightColor);
+					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.MediumPurple, lightColor, 2);
 					break;
 				case AttackState.Tornado_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightGreen, lightColor);
+					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightGreen, lightColor, 2);
 					break;
 			}
 		}
@@ -302,7 +325,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 					if (Main.rand.NextBool(12))
 					{
-						int count = 3;
+						int count = 2;
 						for (int k = 0; k < count; k++)
 						{
 							Dust.NewDust(Projectile.position, 8, 8, DustID.Frost);
@@ -327,7 +350,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 					if (Main.rand.NextBool(12))
 					{
-						int count = 3;
+						int count = 2;
 						for (int k = 0; k < count; k++)
 						{
 							Dust.NewDust(Projectile.position, 8, 8, DustID.Electric);
@@ -343,7 +366,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 					if (Main.rand.NextBool(12))
 					{
-						int count = 3;
+						int count = 2;
 						for (int k = 0; k < count; k++)
 						{
 							Dust.NewDust(Projectile.position, 8, 8, DustID.Vortex);
