@@ -161,7 +161,7 @@ namespace Stellamod.NPCs.Minibosses
             {
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TheWondering"));
 				ShakeModSystem.Shake = 4;
-				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 5f);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
 
 
 			}
