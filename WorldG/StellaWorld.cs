@@ -1671,7 +1671,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc7 = new Point(smx, smy);
-					WorldGen.TileRunner(Loc7.X, Loc7.Y, 100, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(Loc7.X, Loc7.Y, 1, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
 
 					Point Loc = new Point(smx + 50, smy + 255);
 
@@ -1756,7 +1756,7 @@ namespace Stellamod.WorldG
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					Point Loc3 = new Point(smx + 555, smyy + 60);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 100), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{
@@ -2214,7 +2214,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Hunters settling down";
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
@@ -2337,7 +2337,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
