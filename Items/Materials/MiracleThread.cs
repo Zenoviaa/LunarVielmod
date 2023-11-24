@@ -1,6 +1,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -38,99 +40,25 @@ namespace Stellamod.Items.Materials
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-			if (Main.itemAnimations[Item.type] != null)
-			{
-				// In case this item is animated, this picks the correct frame
-				frame = Main.itemAnimations[Item.type].GetFrame(texture);
-			}
-			else
-			{
-				frame = texture.Frame();
-			}
-
-			Vector2 frameOrigin = frame.Size() / 2;
-			Vector2 offset = new Vector2(Item.width - frameOrigin.X / 2, Item.height - frame.Height);
-			Vector2 drawPos = position;// + frameOrigin + offset;
-
-			float time = Main.GlobalTimeWrappedHourly;
-			float timer = Item.timeSinceItemSpawned / 240f + time * 0.04f;
-
-			time %= 4f;
-			time /= 2f;
-
-			if (time >= 1f)
-			{
-				time = 2f - time;
-			}
-
-			time = time * 0.5f + 0.5f;
-			for (float i = 0f; i < 1f; i += 0.25f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), 0, frameOrigin, scale, SpriteEffects.None, 0);
-			}
-
-			for (float i = 0f; i < 1f; i += 0.34f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), 0, frameOrigin, scale, SpriteEffects.None, 0);
-			}
-
+			DrawHelper.PreDrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
 			return true;
 		}
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-
-			Rectangle frame;
-
-			if (Main.itemAnimations[Item.type] != null)
-			{
-				// In case this item is animated, this picks the correct frame
-				frame = Main.itemAnimations[Item.type].GetFrame(texture, Main.itemFrameCounter[whoAmI]);
-			}
-			else
-			{
-				frame = texture.Frame();
-			}
-
-			Vector2 frameOrigin = frame.Size() / 2f;
-			Vector2 offset = new Vector2(Item.width / 2 - frameOrigin.X, Item.height - frame.Height);
-			Vector2 drawPos = Item.position - Main.screenPosition + frameOrigin + offset;
-
-			float time = Main.GlobalTimeWrappedHourly;
-			float timer = Item.timeSinceItemSpawned / 240f + time * 0.04f;
-
-			time %= 4f;
-			time /= 2f;
-
-			if (time >= 1f)
-			{
-				time = 2f - time;
-			}
-
-			time = time * 0.5f + 0.5f;
-
-			for (float i = 0f; i < 1f; i += 0.25f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), rotation, frameOrigin, scale, SpriteEffects.None, 0);
-			}
-
-			for (float i = 0f; i < 1f; i += 0.34f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
-			}
-
-			return true;
+            DrawHelper.PreDrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);
+            return true;
 		}
-	}
+
+        public override void Update(ref float gravity, ref float maxFallSpeed)
+        {
+			//The below code makes this item hover up and down in the world
+			//Don't forget to make the item have no gravity, otherwise there will be weird side effects
+			float hoverSpeed = 5;
+			float hoverRange = 0.2f;
+			float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
+			Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
+			Item.position = position;
+		}
+    }
 }

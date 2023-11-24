@@ -4120,7 +4120,6 @@ Mods: {
 					Increases summon damage by 12%
 					Increases whip range by 20%
 					+1 Max Sentry
-					TODO
 					'''
 			}
 
@@ -4130,7 +4129,6 @@ Mods: {
 					'''
 					Increases summon damage by 12%
 					+1 Max Sentry
-					TODO
 					'''
 			}
 
@@ -4736,6 +4734,7 @@ Mods: {
 			PotOfGreedMinion.DisplayName: Pot Of Greed Minion
 			RipperMinion.DisplayName: Ripper Minion
 			XScissorMinion.DisplayName: X Scissor Minion
+			MiracleSoulCollectibleProj.DisplayName: Miracle Soul Collectible Proj
 		}
 
 		NPCs: {
@@ -6696,6 +6695,11 @@ Mods: {
 			Lacerated: {
 				DisplayName: Lacerated
 				Description: Mods.Stellamod.Buffs.Lacerated.Description
+			}
+
+			MiracleBoost: {
+				DisplayName: Miracle Boost
+				Description: Your summons and whips are empowered by souls!
 			}
 		}
 	}
