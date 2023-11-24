@@ -43,9 +43,9 @@ namespace Stellamod.NPCs.Desert
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
-			NPC.aiStyle = 44;
-			AIType = NPCID.DiggerHead;
-			NPC.noTileCollide = true;
+			NPC.aiStyle = 38;
+			AIType = NPCID.MisterStabby;
+			NPC.noTileCollide = false;
 
 		}
 
