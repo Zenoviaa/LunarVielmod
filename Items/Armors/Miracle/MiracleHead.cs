@@ -1,13 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Summons.MiracleSoul;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Miracle
 {
+
     [AutoloadEquip(EquipType.Head)]
     public class MiracleHead : ModItem
     {
@@ -19,8 +22,8 @@ namespace Stellamod.Items.Armors.Miracle
 
         public override void SetDefaults()
         {
-            Item.width = 40;
-            Item.height = 30;
+            Item.width = 36;
+            Item.height = 24;
             Item.value = 10000;
             Item.rare = ItemRarityID.LightPurple;
             Item.defense = 8;
@@ -34,8 +37,12 @@ namespace Stellamod.Items.Armors.Miracle
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "+1 Max Sentry\nWIP";  // This is the setbonus tooltip
-            player.maxTurrets += 1;
+            player.setBonus = "+2 Max Sentries" +
+                "\nYour attacks have a chance to cleave out a part of the enemy's soul" +
+                "\nCollect these to gain a stacking increase to your whip speed and summon damage!" +
+                "\nTaking damage resets the stack";  // This is the setbonus tooltip
+            player.maxTurrets += 2;
+            player.GetModPlayer<MiraclePlayer>().hasMiracleSet = true;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -53,9 +60,9 @@ namespace Stellamod.Items.Armors.Miracle
             CreateRecipe()
                 .AddIngredient(ItemID.WizardHat, 1)
                 .AddIngredient(ModContent.ItemType<MiracleThread>(), 10)
-                .AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
-                .AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddIngredient(ModContent.ItemType<WanderingFlame>(), 6)
+                .AddIngredient(ModContent.ItemType<DarkEssence>(), 2)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 2)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

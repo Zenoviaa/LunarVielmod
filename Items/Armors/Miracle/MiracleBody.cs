@@ -19,8 +19,8 @@ namespace Stellamod.Items.Armors.Miracle
 
         public override void SetDefaults()
         {
-            Item.width = 32;
-            Item.height = 26;
+            Item.width = 40;
+            Item.height = 28;
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.LightPurple;
             Item.defense = 10;
