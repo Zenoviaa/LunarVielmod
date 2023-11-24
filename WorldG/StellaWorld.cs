@@ -86,7 +86,6 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
-				//tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenBig));
 				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenMed));
@@ -903,7 +902,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next((Main.maxTilesX) - 500, (Main.maxTilesX) - 220); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next((Main.maxTilesX) - 500, (Main.maxTilesX) - 125); // from 50 since there's a unaccessible area at the world's borders
 																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
