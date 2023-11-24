@@ -22,7 +22,7 @@ namespace Stellamod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Frile Ore");
-			AddMapEntry(new Color(184, 33, 96), name);
+			AddMapEntry(new Color(0, 19, 187), name);
 
 			DustType = 84;
 			DustType = DustID.Firework_Blue;

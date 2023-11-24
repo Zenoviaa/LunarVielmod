@@ -26,8 +26,10 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
@@ -193,6 +195,12 @@ namespace Stellamod
         public bool FCArmor;
         public float FCArmorTime;
         public float HMArmorTime;
+
+
+
+
+
+
         public bool ZoneAbyss;
 		public bool ZoneAurelus;
 		public bool ZoneStarbloom;
@@ -200,6 +208,10 @@ namespace Stellamod
 		public bool ZoneGovheil;
 		public bool ZoneNaxtrin;
 		public bool ZoneAlcadzia;
+		public bool ZoneVeri;
+
+
+
 		public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -586,8 +598,11 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
@@ -1372,7 +1387,7 @@ namespace Stellamod
 
 			}
 
-			if (Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>())
+			if (Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>() || Player.InModBiome<VeriplantUndergroundBiome>() && !Player.InModBiome<MorrowUndergroundBiome>())
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
@@ -1393,6 +1408,14 @@ namespace Stellamod
 				}
 
 			}
+
+
+
+			
+
+
+
+		
 
 
 			if (Player.InModBiome<AlcadziaBiome>())

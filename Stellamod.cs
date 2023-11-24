@@ -118,9 +118,12 @@ namespace Stellamod
             // ...other Load stuff goes here
             MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
             Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
+            Filters.Scene["Stellamod:Jellyfish1"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
+            Filters.Scene["Stellamod:Jellyfish2"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+            Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
             Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);

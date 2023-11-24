@@ -26,6 +26,7 @@ namespace Stellamod.Tiles
 			DustType = DustID.PinkFairy;
 			DustType = DustID.Grass;
 			RegisterItemDrop(ItemID.DirtBlock);
+			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantGrassBlock>());
 			HitSound = SoundID.Grass;
 			MineResist = 1f;
 			MinPick = 20;

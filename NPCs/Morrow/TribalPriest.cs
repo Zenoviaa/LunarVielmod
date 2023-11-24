@@ -165,7 +165,7 @@ namespace Stellamod.NPCs.Morrow
 			
 				
 
-				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 70f)
+				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 60f)
 				{
 					State = ActionState.Asleep;
 					ResetTimers();
