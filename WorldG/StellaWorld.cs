@@ -1906,14 +1906,14 @@ namespace Stellamod.WorldG
 			progress.Message = "Veribloom forgetting their memories";
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 - 10); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY - 300);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(2, 50), WorldGen.genRand.Next(1, 200), ModContent.TileType<VeriplantDirt>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(10, 80), WorldGen.genRand.Next(1, 200), ModContent.TileType<VeriplantDirt>());
 			}
 
 
@@ -2142,7 +2142,7 @@ namespace Stellamod.WorldG
 								break;
 							case 2:
 			
-								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ItemID.Daybloom, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
@@ -2152,7 +2152,7 @@ namespace Stellamod.WorldG
 								break;
 							case 3:
 					
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(30, 55)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
