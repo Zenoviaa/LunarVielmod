@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -12,7 +14,6 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
     {
         private bool _homeToOwner;
         public Vector3 HuntrianColorXyz;
-        public float Timer;
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
@@ -51,9 +52,14 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
                 for (int i = 0; i < 64; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                    var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, speed * 5f, Scale: 3f);
-                    d.noGravity = true;
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
+                        default(Color), 1/3f);
+                    p.layer = Particle.Layer.BeforeProjectiles;
                 }
+
+                int combatText = CombatText.NewText(miraclePlayer.Player.getRect(), Color.Magenta, miraclePlayer.miracleLevel, true);
+                CombatText numText = Main.combatText[combatText];
+                numText.lifeTime = 60;
             }
 
             //Visuals
@@ -88,7 +94,12 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Purple, lightColor, 1);
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                new Vector3(60, 0, 118),
+                new Vector3(117, 1, 187),
+                new Vector3(3, 3, 3), 0);
+
+            DrawHelper.PostDrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
             DrawHelper.PreDrawAdditiveAfterImage(Projectile, new Color(217, 48, 228), new Color(117, 1, 187), ref lightColor);
             return true;
         }
@@ -97,7 +108,7 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
         {
             for (int i = 0; i < 16; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, speed, Scale: 3f);
                 d.noGravity = true;
             }

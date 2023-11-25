@@ -306,6 +306,7 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
+    <None Remove="Projectiles\Summons\VoidMonsters\VoidEater.png" />
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
     <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />

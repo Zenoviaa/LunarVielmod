@@ -79,6 +79,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 	public class PotOfGreedMinion : ModProjectile
 	{
+		private int _particleCounter;
 		private int[] _shadowMinionLifeTime;
 		private Projectile[] _shadowMinions;
 		private int _newShadowMinionSpawnTimer;
@@ -88,6 +89,14 @@ namespace Stellamod.Items.Weapons.Summon
 		private const int Shadow_Minion_Lifetime = 900;
 		private const int Time_Between_Shadow_Minions = 10;
 		private const float Shadow_Minion_Summon_Radius = 128;
+
+
+		//Visuals 
+		private const float Body_Radius = 64;
+		private const int Body_Particle_Count = 12;
+
+		//Lower number = faster
+		private const int Body_Particle_Rate = 2;
 		public override void SetStaticDefaults()
 		{
 			// This is necessary for right-click targeting
@@ -148,17 +157,14 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = 0; k < Projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(Color.Lerp(Color.Black, new Color(81, 0, 159), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-				Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-			}
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			//Void Pre-Draw Effects
+			Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+				new Vector3(60, 0, 118),
+				new Vector3(117, 1, 187),
+				new Vector3(3, 3, 3), 0);
+
+			DrawHelper.PostDrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
+			DrawHelper.PreDrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
 			return true;
 		}
 
@@ -342,11 +348,27 @@ namespace Stellamod.Items.Weapons.Summon
 			_rotation += 0.05f;
 			int count = 4;
 
+			//This is the flame coming out of the pot
+			_particleCounter++;
+			if (_particleCounter > Body_Particle_Rate)
+			{
+				for (int i = 0; i < Body_Particle_Count; i++)
+				{
+					Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
+					position += new Vector2(Projectile.width / 2, -24);
+					Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
+						default(Color), Main.rand.NextFloat(0.5f, 1f));
+					p.layer = Particle.Layer.BeforeProjectiles;
+				}
+				_particleCounter = 0;
+			}
+
+
 			//This is the ring that shows where the shadow minions spawn
 			for (int i = 0; i < count; i++)
 			{
 				Vector2 position = Projectile.Center + new Vector2(Shadow_Minion_Summon_Radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count) + _rotation) * 4);
-				ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<CoalParticle>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
+				ParticleManager.NewParticle(position, new Vector2(0, -0.25f), ParticleManager.NewInstance<VoidParticle>(), default(Color), 1/3f);
 			}
 
 			float hoverSpeed = 5;
