@@ -277,7 +277,7 @@ namespace Stellamod.Items.Weapons.Summon
 					//Only chec stuff that this guy owns
 					if (projectileToClone.owner != Projectile.owner)
 						continue;
-					\
+					
 					//Only check minions\\\\
 					if (!projectileToClone.minion || projectileToClone.sentry)
 						continue;
