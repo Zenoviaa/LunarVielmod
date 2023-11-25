@@ -4735,6 +4735,7 @@ Mods: {
 			RipperMinion.DisplayName: Ripper Minion
 			XScissorMinion.DisplayName: X Scissor Minion
 			MiracleSoulCollectibleProj.DisplayName: Miracle Soul Collectible Proj
+			BULLET.DisplayName: B U L L E T
 		}
 
 		NPCs: {
@@ -6092,6 +6093,8 @@ Mods: {
 			GoliathCryogenicJelly.DisplayName: Goliath Cryogenic Jelly
 			GoliathCryogenicJellyfish.DisplayName: Goliath Cryogenic Jellyfish
 			GoliathJellyfish.DisplayName: Goliath Jellyfish
+			STARBOMBER.DisplayName: S T A R B O M B E R
+			STARBOMBERGUN.DisplayName: S T A R B O M B E R G U N
 		}
 
 		Biomes: {
