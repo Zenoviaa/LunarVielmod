@@ -90,7 +90,6 @@ namespace Stellamod.Items.Weapons.Summon
 		private const int Time_Between_Shadow_Minions = 10;
 		private const float Shadow_Minion_Summon_Radius = 128;
 
-
 		//Visuals 
 		private const float Body_Radius = 64;
 		private const int Body_Particle_Count = 12;
@@ -107,8 +106,6 @@ namespace Stellamod.Items.Weapons.Summon
 			// These below are needed for a minion
 			// Denotes that this projectile is a pet or minion
 			Main.projPet[Projectile.type] = true;
-
-
 
 			// This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
 			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
@@ -212,7 +209,6 @@ namespace Stellamod.Items.Weapons.Summon
 
 		private void KillShadowMinions()
         {
-
 			for (int i = 0; i < _shadowMinionLifeTime.Length; i++)
 			{
 				_shadowMinionLifeTime[i]--;
@@ -231,8 +227,8 @@ namespace Stellamod.Items.Weapons.Summon
 						Vector2 vel = direction * 8;
 						Dust.NewDust(shadowMinion.Center, 0, 0, DustID.GemAmethyst, vel.X * 0.5f, vel.Y * 0.5f);
 					}
-					SoundEngine.PlaySound(SoundID.NPCDeath9, Projectile.position);
 
+					SoundEngine.PlaySound(SoundID.NPCDeath9, Projectile.position);
 					shadowMinion.Kill();
 					_shadowMinions[i] = null;
 				}
@@ -281,9 +277,9 @@ namespace Stellamod.Items.Weapons.Summon
 					//Only chec stuff that this guy owns
 					if (projectileToClone.owner != Projectile.owner)
 						continue;
-
-					//Only check minions
-					if (!projectileToClone.minion)
+					\
+					//Only check minions\\\\
+					if (!projectileToClone.minion || projectileToClone.sentry)
 						continue;
 
 					if (IsShadowMinion(projectileToClone))

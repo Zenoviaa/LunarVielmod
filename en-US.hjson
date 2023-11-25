@@ -4170,17 +4170,7 @@ Mods: {
 
 			XScissor: {
 				DisplayName: X-Scissor
-				Tooltip:
-					'''
-					WIP:
-					 - Need to update visuals a bit
-					 - Add smaller void monsters so less visual clutter
-					 - Fix some issues with the ai
-					 - Actually add the X-slashing effect when you summon it, probably have some screenshake too
-					 - Fix some damage issues, dunno why the damage isn't scaling correctly??
-					 - Recasting should make the rift bigger and allow different monsters to be summoned, instead of making more :P
-					 - Maybe have the medium-sized void monsters home towards your mouse?
-					'''
+				Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
 			}
 		}
 
@@ -4748,6 +4738,7 @@ Mods: {
 			BULLET.DisplayName: B U L L E T
 			VoidEater.DisplayName: Void Eater
 			VoidRift.DisplayName: Void Rift
+			VoidEaterMini.DisplayName: Void Eater Mini
 		}
 
 		NPCs: {

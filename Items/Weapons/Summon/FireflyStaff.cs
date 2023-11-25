@@ -274,7 +274,8 @@ namespace Stellamod.Items.Weapons.Summon
 			{
 				//Fire Projectile
 				Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, targetCenter, 30);
-				Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity, ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				Projectile projectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.Center, velocity,
+					ProjectileType<FireflyBomb>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
 				projectile.DamageType = DamageClass.Summon;
 
 				//How many ticks between attacks?

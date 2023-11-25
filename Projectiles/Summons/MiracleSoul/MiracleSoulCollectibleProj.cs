@@ -40,8 +40,8 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
             Rectangle ownerRect = owner.getRect();
             if(Projectile.Colliding(myRect, ownerRect) && Projectile.active)
             {
-                //Add the buff for 10 seconds
-                int miracleDuration = 600;
+                //Add the buff for 12 seconds
+                int miracleDuration = 720;
                 owner.AddBuff(ModContent.BuffType<MiracleBoost>(), miracleDuration);
                 owner.Heal(2);
                 MiraclePlayer miraclePlayer = owner.GetModPlayer<MiraclePlayer>();

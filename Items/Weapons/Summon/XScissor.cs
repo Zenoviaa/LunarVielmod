@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Terraria;
@@ -16,7 +17,7 @@ namespace Stellamod.Items.Weapons.Summon
     {
         public override void SetDefaults()
         {
-			Item.damage = 71;
+			Item.damage = 100;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 76;
@@ -39,9 +40,24 @@ namespace Stellamod.Items.Weapons.Summon
         {
 			//Spawn at the mouse cursor position
 			position = Main.MouseWorld;
-			Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
+
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			projectile.originalDamage = Item.damage;
+
 			player.UpdateMaxTurrets();
 			return false;
+		}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ModContent.ItemType<MiracleThread>(), 12)
+				.AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
+				.AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
+				.AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
     }
 
@@ -49,10 +65,11 @@ namespace Stellamod.Items.Weapons.Summon
 	{
 		private int _fireCounter;
 		private Projectile _voidRiftProjectile;
+		private const int Void_Eater_Big_Chance = 12;
 		private const int Fire_Range = 768;
 
 		//Lower = faster
-		private const int Fire_Rate = 30;
+		private const int Fire_Rate = 49;
 		public override void SetStaticDefaults()
 		{
 			// This is necessary for right-click targeting
@@ -107,10 +124,17 @@ namespace Stellamod.Items.Weapons.Summon
 			_fireCounter++;
 			NPC npcToTarget = NPCHelper.FindClosestNPC(Projectile.position, Fire_Range);
 			if(_fireCounter >= Fire_Rate && npcToTarget != null)
-            {
+			{
+				Player owner = Main.player[Projectile.owner];
+				int projToFire = ModContent.ProjectileType<VoidEaterMini>();
+                if (Main.rand.NextBool(Void_Eater_Big_Chance))
+                {
+					projToFire = ModContent.ProjectileType<VoidEater>();
+				}
+
 				Vector2 velocityToTarget = VectorHelper.VelocityDirectTo(Projectile.position, npcToTarget.position, 5);
-				var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, velocityToTarget,
-					ModContent.ProjectileType<VoidEater>(), Projectile.damage, Projectile.knockBack);
+				var proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocityToTarget,
+					projToFire, Projectile.damage, Projectile.knockBack, owner.whoAmI);
 				proj.DamageType = DamageClass.Summon;
 
 				//Cool little circle visual
@@ -126,16 +150,20 @@ namespace Stellamod.Items.Weapons.Summon
 				SoundEngine.PlaySound(SoundID.Item73);
 				_fireCounter = 0;
             }
+
 			Visuals();
 		}
 
 		private void Visuals()
 		{
-			if(_voidRiftProjectile == null)
-            {
-				_voidRiftProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-					ModContent.ProjectileType<VoidRift>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }
+			if (_voidRiftProjectile == null)
+			{
+				Player owner = Main.player[Projectile.owner];
+				_voidRiftProjectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, Vector2.Zero,
+					ModContent.ProjectileType<VoidRift>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				_voidRiftProjectile.DamageType = DamageClass.Summon;
+			}
+
 			_voidRiftProjectile.timeLeft = 2;
 			_voidRiftProjectile.Center = Projectile.Center;
 			DrawHelper.AnimateTopToBottom(Projectile, 5);

@@ -9,22 +9,21 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.VoidMonsters
 {
-    public class VoidEater : ModProjectile
+    public class VoidEaterMini : ModProjectile
     {
         private int _particleCounter;
         private int _dustCounter;
         private float _projSpeed = 5;
         //AI Values
-        private const float Max_Proj_Speed = 24;
-
         //Visuals
-        private const float Body_Radius = 24;
-        private const int Body_Particle_Count = 4;
+        private const float Max_Proj_Speed = 16;
+        private const int Body_Radius = 4;
+        private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;
         private const int Explosion_Particle_Count = 8;
 
         //Lower number = faster
-        private const int Body_Particle_Rate = 2;
+        private const int Body_Particle_Rate = 1;
         private const int Body_Dust_Rate = 3;
 
         public override void SetStaticDefaults()
@@ -37,15 +36,12 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 72;
-            Projectile.height = 52;
+            Projectile.width = 52;
+            Projectile.height = 38;
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.timeLeft = 300;
-            Projectile.penetrate = 3;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 5;
         }
 
         public override void AI()
@@ -54,19 +50,18 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             //Wanna just home into enemies and then explode or something
             //On second thought, maybe have ai similar to charging type minions like optic staff
             //hmmm
-
-            Vector2 mouseWorld = Main.MouseWorld;
-            _projSpeed += 0.05f;
-            if (_projSpeed > Max_Proj_Speed)
+            NPC npcToHomeTo = NPCHelper.FindClosestNPC(Projectile.position, 512);
+            if(npcToHomeTo != null)
             {
-                _projSpeed = Max_Proj_Speed;
+                _projSpeed +=0.25f;
+                if(_projSpeed > Max_Proj_Speed)
+                {
+                    _projSpeed = Max_Proj_Speed;
+                }
+
+                Projectile.velocity = (npcToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
             }
-
-            float distanceToSlowDown = 32;
-            float distanceToTarget = Vector2.Distance(Projectile.position, mouseWorld);
-            float slowDown = distanceToTarget > distanceToSlowDown ? 1f : distanceToTarget / distanceToSlowDown;
-
-            Projectile.velocity = (mouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed * slowDown;
+            
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
         }
@@ -91,18 +86,19 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
+                //Main Body
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-                    Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
-                    position += new Vector2(Projectile.width / 2, 0);
-
-                    float size = Main.rand.NextFloat(0.75f, 1.33f);
+                    Vector2 position = Projectile.Center + 
+                        new Vector2(Main.rand.Next(0, Body_Radius), Main.rand.Next(0, Body_Radius));
+                    position -= new Vector2(16, 28);
+                    float size = Main.rand.NextFloat(0.75f, 1f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);
 
                     p.layer = Particle.Layer.BeforeProjectiles;
                     Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.1f);
+                        default(Color), size + 0.05f);
 
                     tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
                 }
