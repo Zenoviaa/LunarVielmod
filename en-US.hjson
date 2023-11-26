@@ -4744,6 +4744,9 @@ Mods: {
 			STARBOMBERGUN2.DisplayName: S T A R B O M B E R G U N2
 			SMALLBOMB.DisplayName: S M A L L B O M B
 			STARRAY.DisplayName: S T A R R A Y
+			VoidEater.DisplayName: Void Eater
+			VoidEaterMini.DisplayName: Void Eater Mini
+			VoidRift.DisplayName: Void Rift
 		}
 
 		NPCs: {

@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
-            Color middleColor = Color.Lerp(Color.White, Color.Violet, 0.6f);
+            Color middleColor = Color.Lerp(Color.White, Color.DarkViolet, 0.6f);
             Color middleColor2 = Color.Lerp(Color.Violet, Color.Purple, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 

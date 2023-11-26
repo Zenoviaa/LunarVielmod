@@ -1211,13 +1211,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 2)
 			{
 
-				float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedXa = 0;
 
 
 				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
 
 				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, speedXa - 2 * 0, speedYa - 1 * 4, ModContent.ProjectileType<SMALLBOMB>(), 50, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, 0, speedYa - 1 * 4, ModContent.ProjectileType<SMALLBOMB>(), 50, 0f, 0, 0f, 0f);
 
 
 			}
@@ -1447,12 +1447,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			
 				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-20f, 20f);
 				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y , speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), 30, 0f, 0, 0f, 0f);
+				//Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y , speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), 30, 0f, 0, 0f, 0f);
 
 				for (int j = 0; j < 50; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2Circular(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 5, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
 				}

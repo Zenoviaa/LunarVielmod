@@ -30,8 +30,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public override void SetDefaults()
 		{
 			Projectile.damage = 100;
-			Projectile.width = 40;
-			Projectile.height = 40;
+			Projectile.width = 80;
+			Projectile.height = 80;
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(-20,-20), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(40,40), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 				p.rotation = direction.ToRotation();
 				Timer = 0;
 

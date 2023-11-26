@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.width = 443;
+			Projectile.width = 444;
 			Projectile.height = 232;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 16;
