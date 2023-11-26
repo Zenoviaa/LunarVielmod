@@ -14,14 +14,15 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 
-namespace Stellamod.NPCs.Bosses.STARBOMBER
+
+namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-	public class BULLET : ModProjectile
+	public class STRIKEBULLET : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Frost Shot");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 			Main.projFrames[Projectile.type] = 1;
 			//The recording mode
@@ -29,12 +30,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		public override void SetDefaults()
 		{
 			Projectile.damage = 100;
-			Projectile.width = 20;
-			Projectile.height = 20;
+			Projectile.width = 40;
+			Projectile.height = 40;
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
-			Projectile.timeLeft = 1000;
+			Projectile.timeLeft = 500;
 			Projectile.tileCollide = true;
 			Projectile.penetrate = -1;
 			Projectile.hostile = true;
@@ -49,8 +50,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		public override void AI()
 		{
 			Timer2++;
-			Projectile.rotation += 0.2f;
-
+			Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
 			Timer++;
 			if (Timer == 3)
 			{
@@ -62,30 +62,43 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-			//	Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc - 20, Projectile.position.Y + speedYabc - 20, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<FrostShotIN>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(-20,-20), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				p.rotation = direction.ToRotation();
 				Timer = 0;
 
 
 			}
 
 
-			float maxDetectRadius = 3f; // The maximum radius at which a projectile can detect a target
+			float maxDetectRadius = 4f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 24f; // The speed at which the projectile moves towards the target
 
 
 
+	
+
 			if (Timer2 == 1)
 			{
 				maxDetectRadius = 2000f;
-				
+			
 			}
+
 
 			if (Timer2 == 6)
 			{
 				maxDetectRadius = 0f;
 				
 			}
+			
+			Player closestplayer = FindClosestNPC(maxDetectRadius);
+			if (closestplayer == null)
+				return;
 
+			if (Timer2 == 1)
+			{
+			
+				Projectile.rotation = Projectile.DirectionTo(closestplayer.Center).ToRotation() - MathHelper.PiOver2;
+			}
 
 			if (Timer2 < 30)
             {
@@ -105,13 +118,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 			// Trying to find NPC closest to the projectile
-			Player closestplayer = FindClosestNPC(maxDetectRadius);
-			if (closestplayer == null)
-				return;
+			
+			
 
 			// If found, change the velocity of the projectile and turn it in the direction of the target
 			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity = (closestplayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
+
+
 
 		}
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -173,45 +187,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 			}
 
-			for (int i = 0; i < 20; i++)
-			{
-
-
-				ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
-			}
 			return false;
 
 		}
 
 		
-		public PrimDrawer TrailDrawer { get; private set; } = null;
-		public float WidthFunction(float completionRatio)
-		{
-			float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-		}
-		public Color ColorFunction(float completionRatio)
-		{
-			return Color.Lerp(Color.FloralWhite, Color.Transparent, completionRatio) * 0.7f;
-		}
-		public override bool PreDraw(ref Color lightColor)
-		{
-			if (Main.rand.NextBool(5))
-			{
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<PaintBlob2>(), 0f, 0f, 150, Color.White, 1f);
-				Main.dust[dustnumber].velocity *= 0.3f;
-				Main.dust[dustnumber].noGravity = true;
-			}
-
-			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-			return false;
-		}
+		
 
 
 

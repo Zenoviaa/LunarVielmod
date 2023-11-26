@@ -902,7 +902,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next((Main.maxTilesX) - 500, (Main.maxTilesX) - 125); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(300, (Main.maxTilesX) - 130); // from 50 since there's a unaccessible area at the world's borders
 																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -946,7 +946,7 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy + 4);
+						Point Loc = new Point(smx, smy + 5);
 						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/SunAlter2");
 						foreach (int chestIndex in ChestIndexs)
 						{

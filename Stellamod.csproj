@@ -31,6 +31,7 @@
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Dusts\PaintBlob2.png" />
@@ -250,6 +251,13 @@
     <None Remove="NPCs\Bosses\singularityFragment\Shockwave.png" />
     <None Remove="NPCs\Bosses\singularityFragment\SoulBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SINESTAR.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARNBIG.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARRAY.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />

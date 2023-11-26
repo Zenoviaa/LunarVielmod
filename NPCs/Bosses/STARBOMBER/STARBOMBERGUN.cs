@@ -5,6 +5,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Particles;
 using Stellamod.Utilis;
 using System;
@@ -111,16 +112,22 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (Shooter > 530)
             {
-                NPC.Kill();
+              
 
                 for (int j = 0; j < 50; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 3f);
-                    ParticleManager.NewParticle(NPC.Center, speed * 6, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+                    ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
                 }
+                NPC.Kill();
             }
+
+
+           
+                
+            
         }
 
         public override bool PreAI()
@@ -131,7 +138,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
                 Player player = Main.player[NPC.target];
 
-                const float PI = (float)Math.PI;
+            
 
              
                 // First, calculate a Vector pointing towards what you want to look at

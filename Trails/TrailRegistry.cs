@@ -12,6 +12,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> BeamTrail2 => ModContent.Request<Texture2D>("Stellamod/Trails/BeamTrail");
         public static Asset<Texture2D> BulbTrail => ModContent.Request<Texture2D>("Stellamod/Trails/BulbTrail");
 
+        public static Asset<Texture2D> STARTRAIL => ModContent.Request<Texture2D>("Stellamod/Trails/BeamTrail");
 
         public static MiscShaderData GenericLaserVertexShader => GameShaders.Misc["VampKnives:GenericLaserShader"];
         public static MiscShaderData LightBeamVertexShader => GameShaders.Misc["VampKnives:LightBeamVertexShader"];

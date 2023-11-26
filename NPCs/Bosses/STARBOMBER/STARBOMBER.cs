@@ -1,12 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
+using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -96,11 +101,16 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			BomberStar,
 			BreakdownStar,
 			SpinStar,
+			SpinVerticleStar,
+			SpinGroundStar,
 			DisappearStar,
 			TeleportStar,
 			DropdownSpinStar,
 			RageSpinStar,
 			PullInStar,
+			LaserdrillStar,
+			WaitStar,
+			FallStar,
 
 		}
 		// Current state
@@ -160,8 +170,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
-			NPC.defense = 1;
-			NPC.lifeMax = 30050;
+			NPC.defense = 40;
+			NPC.lifeMax = 35050;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -451,31 +461,64 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 				case ActionState.BreakdownStar:
 					rect = new(0, 29 * 129, 206, 25 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 25, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 25, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.DropdownSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SpinGroundStar:
+					rect = new(0, 55 * 129, 206, 7 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.RageSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.PullInStar:
+					rect = new(0, 1 * 129, 206, 28 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.LaserdrillStar:
+					rect = new(0, 1 * 129, 206, 28 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SpinVerticleStar:
+					rect = new(0, 55 * 129, 206, 7 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.WaitStar:
+					rect = new(0, 55 * 129, 206, 1 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
-
-
+				case ActionState.FallStar:
+					rect = new(0, 1 * 129, 206, 1 * 129);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					NPC.netUpdate = true;
+					break;
 
 
 			}
@@ -496,8 +539,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
+			NPC.HasBuff<Starbombin>();
 
-			
 
 			if (bee == 0)
 			{
@@ -702,7 +745,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
 						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 					}
-					MoonStartSummonVerlia();
+					BombStar();
 					break;
 
 
@@ -710,8 +753,94 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				case ActionState.StartStar:
 					NPC.damage = 0;
 					counter++;
-
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
 					StartStar();
+					break;
+
+				case ActionState.IdleStar:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
+					IdleStar();
+					break;
+
+				case ActionState.BreakdownStar:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
+					BreakdownStar();
+					break;
+
+				case ActionState.GunStar:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
+					GUNSTAR();
+					break;
+
+				case ActionState.FallStar:
+					NPC.damage = 0;
+					counter++;
+
+					if (counter > 120)
+					{
+						NPC.scale += 0.02f;
+
+					}
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
+					FallStar();
+					break;
+
+				case ActionState.LaserdrillStar:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = false;
+					NPC.noGravity = false;
+					LaserStar();
+					break;
+
+				case ActionState.SpinStar:
+					NPC.damage = 100;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SpinStar();
+					break;
+
+				case ActionState.SpinGroundStar:
+					NPC.damage = 100;
+					counter++;
+					NPC.velocity.X *= 0f;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SpinGroundStar();
+					break;
+
+				case ActionState.SpinVerticleStar:
+					NPC.damage = 100;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SpinVerticleStar();
+					break;
+
+				case ActionState.RageSpinStar:
+					NPC.damage = 100;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+
+
+					if (counter < 201)
+					{
+						NPC.scale += 0.01f;
+					}
+					TeleportRageStar();
 					break;
 
 
@@ -719,15 +848,23 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 
+				case ActionState.TeleportStar:
+					NPC.damage = 0;
+					counter++;
+					if (counter < 201)
+					{
+						NPC.scale -= 0.01f;
+					}
+					TeleportStar();
+					break;
 
-
-
-
-
-
-
-
-
+				case ActionState.WaitStar:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					WaitStar();
+					break;
 
 
 
@@ -853,11 +990,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		private void StartStar()
 		{
 			timer++;
-
-		
-			if (timer < 255)
+			if (timer == 1)
             {
-
+				NPC.scale = 0f;
+				NPC.alpha = 255;
+            }
+		
+			if (timer < 201)
+            {
+				NPC.scale += 0.01f;
 				NPC.alpha--;
             }
 
@@ -928,7 +1069,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						ResetTimers();
 						break;
 					case 3:
-						State = ActionState.DisappearStar;
+						State = ActionState.LaserdrillStar;
 						ResetTimers();
 						break;
 				}
@@ -939,6 +1080,19 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 		}
+		private void Disappear()
+		{
+
+			Player obj = Main.player[NPC.target];
+			NPC.velocity.Y += 0.1f;
+			NPC.scale -= 0.01f;
+			if (NPC.scale <= 0)
+			{
+				NPC.active = false;
+			}
+			NPC.netUpdate = true;
+		}
+
 
 		private void GUNSTAR()
 		{
@@ -948,12 +1102,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 
 				float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 
 
-				int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<STARBOMBERGUN>());
+			//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
 
-
+				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y + speedYa + 110, 0, speedYa - 1 * 3, ModContent.ProjectileType<STARBOMBERGUN2>(), 5, 0f, 0, 0f, 0f);
 
 
 			}
@@ -972,7 +1126,482 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						ResetTimers();
 						break;
 					case 3:
-						State = ActionState.DisappearStar;
+						State = ActionState.LaserdrillStar;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		 
+		private void LaserStar()
+		{
+			timer++;
+
+			if (timer == 2)
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARNBIG>());
+
+
+			}
+
+			if (timer < 180)
+            {
+				for (int i = 0; i < Main.maxPlayers; i++)
+				{
+					Player npc = Main.player[i];
+
+					if (npc.active)
+					{
+						float distance = Vector2.Distance(NPC.Center, npc.Center);
+						if (distance <= 4000)
+						{
+							Vector2 direction = npc.Center - NPC.Center;
+							direction.Normalize();
+							npc.velocity -= direction * 0.5f;
+						}
+					}
+				}
+
+
+			}
+			if (timer > 360)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						State = ActionState.BreakdownStar;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.BomberStar;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		
+
+		}
+
+		private void BombStar()
+		{
+			timer++;
+
+			if (timer == 2)
+			{
+
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+
+
+				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
+
+				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, speedXa - 2 * 0, speedYa - 1 * 4, ModContent.ProjectileType<SMALLBOMB>(), 50, 0f, 0, 0f, 0f);
+
+
+			}
+			if (timer > 360)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.BreakdownStar;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+			
+
+		}
+
+
+		private void BreakdownStar()
+		{
+			timer++;
+
+
+			if (timer > 25)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.SpinGroundStar;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SpinStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void WaitStar()
+		{
+			timer++;
+
+			if (timer == 5)
+            {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
+
+			}
+
+			if (timer == 90)
+            {
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGUN"));
+			}
+			if (timer > 120)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+
+
+					case 0:
+						State = ActionState.SpinStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void FallStar()
+		{
+			timer++;
+
+			if (timer == 5)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
+
+			}
+			NPC.noTileCollide = false;
+			NPC.noGravity = false;
+			NPC.damage = 0;
+
+			Player player = Main.player[NPC.target];
+
+
+
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-150, -150);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + distanceY;
+			
+            
+
+            }
+
+
+			if (timer < 50)
+            {
+				NPC.velocity.Y += 0.4f;
+            }
+
+		
+			if (timer > 220)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+
+
+					case 0:
+						State = ActionState.IdleStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		private void TeleportStar()
+		{
+			timer++;
+
+			
+			NPC.velocity *= 0.96f;
+			if (timer == 5)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
+
+			}
+
+
+
+			if (timer > 255)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.FallStar;
+						ResetTimers();
+						break;
+
+					case 1:
+						State = ActionState.RageSpinStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		public float Voiden = 0;
+		private void TeleportRageStar()
+		{
+			timer++;
+			Voiden++;
+			Player player = Main.player[NPC.target];
+			NPC.velocity *= 0.96f;
+			if (timer == 5)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
+
+			}
+
+			if (timer < 201)
+            {
+				NPC.scale += 0.01f;
+            }
+
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-500, -500);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + distanceY;
+
+			}
+
+			if (Voiden == 5)
+            {
+			
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-20f, 20f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y , speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcaricMushBoom>(), 30, 0f, 0, 0f, 0f);
+
+				for (int j = 0; j < 50; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2Circular(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 5, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+				Voiden = 0;
+			}
+
+
+			
+
+
+		
+
+			float speed = 8f;
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
+
+			if (timer < 75)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180))) * 0;
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer < 302 && timer > 201)
+            {
+				NPC.scale -= 0.02f;
+			}
+
+			if (timer > 303)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.FallStar;
+						ResetTimers();
+						break;
+
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SpinGroundStar()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			float speed = 14f;
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
+
+			if (timer < 75)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = 0;
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				dashDirection.Y = 0;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer == 5)
+            {
+
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+			}
+
+
+			if (timer == 25)
+			{
+
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+			}
+
+			if (timer == 45)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+			}
+
+			if (timer == 55)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+			}
+
+			if (timer == 75)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+			}
+
+			if (timer == 95)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+			}
+
+			if (timer > 110)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						State = ActionState.SpinGroundStar;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SpinStar;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.SpinVerticleStar;
 						ResetTimers();
 						break;
 				}
@@ -985,6 +1614,229 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		}
 
 
+		private void SpinVerticleStar()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			float speed = 14f;
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
+
+			if (timer < 75)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180))) ;
+				Vector2 angle = new Vector2((float)0, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				dashDirection.X = 0;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer == 5)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
+			}
+
+
+		
+
+			if (timer == 45)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+			}
+
+			
+
+			if (timer == 75)
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+			}
+
+			if (timer == 105)
+			{
+
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/gun1"));
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0, ModContent.ProjectileType<SINESTAR>(), 50, 0f, 0, 0f, 0f);
+			}
+
+
+			if (timer > 180)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.WaitStar;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.WaitStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		public float spinst = 0;
+		public float constshoot = 0;
+		private void SpinStar()
+		{
+			timer++;
+			spinst++;
+			constshoot++;
+
+		
+			Player player = Main.player[NPC.target];
+		
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
+
+			float speed = 8f;
+
+			int distance = Main.rand.Next(2, 2);
+			NPC.ai[3] = Main.rand.Next(1);
+			double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+			double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+			Vector2 angle = new Vector2((float)anglex, (float)angley);
+			dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+			dashDistance = dashDirection.Length();
+			dashDirection.Normalize();
+			dashDirection *= speed;
+			NPC.velocity = dashDirection;
+			ShakeModSystem.Shake = 3;
+			if (spinst < 60)
+            {
+				 speed = 8f;
+
+				
+			}
+
+			if (spinst < 100 && spinst > 60)
+			{
+				speed = 12f;
+
+				
+			}
+
+
+			if (spinst < 180 && spinst > 100)
+			{
+				 speed = 8f;
+
+				
+			}
+
+			if (spinst < 240 && spinst > 180)
+			{
+				 speed = 12f;
+
+				
+			}
+
+
+
+			if (constshoot == 40)
+            {
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Bomb_2"));
+
+				constshoot = 0;
+			}
+				
+			
+
+			
+
+			if (timer > 240)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.TeleportStar;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SpinStar;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		//-------------------------------------------------------------------------------------------------
 		private void StartVerlia()
 		{
 			timer++;
