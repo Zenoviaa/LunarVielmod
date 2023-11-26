@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Particles;
+using Stellamod.Projectiles.Summons.VoidMonsters;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,14 +17,14 @@ namespace Stellamod.Items.Weapons.Summon
     {
         public override void SetDefaults()
         {
-			Item.damage = 8;
+			Item.damage = 100;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 76;
 			Item.height = 80;
 			Item.useTime = 36;
 			Item.useAnimation = 36;
-			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.buyPrice(0, 30, 0, 0);
 			Item.rare = ItemRarityID.LightPurple;
 			
@@ -28,20 +33,43 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.DamageType = DamageClass.Summon;
 
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			Item.shoot = ProjectileType<PotOfGreedMinion>();
+			Item.shoot = ProjectileType<XScissorMinion>();
 		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 			//Spawn at the mouse cursor position
 			position = Main.MouseWorld;
-			Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
+
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			projectile.originalDamage = Item.damage;
+
+			player.UpdateMaxTurrets();
 			return false;
+		}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ModContent.ItemType<MiracleThread>(), 12)
+				.AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
+				.AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
+				.AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
     }
 
 	public class XScissorMinion : ModProjectile
 	{
+		private int _fireCounter;
+		private Projectile _voidRiftProjectile;
+		private const int Void_Eater_Big_Chance = 12;
+		private const int Fire_Range = 768;
+
+		//Lower = faster
+		private const int Fire_Rate = 49;
 		public override void SetStaticDefaults()
 		{
 			// This is necessary for right-click targeting
@@ -68,7 +96,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Projectile.friendly = true;
 
 			// Only determines the damage type
-		//	Projectile.minion = true;
+			Projectile.minion = true;
 			Projectile.sentry = true;
 			Projectile.timeLeft = Terraria.Projectile.SentryLifeTime;
 
@@ -93,8 +121,61 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public override void AI()
 		{
+			_fireCounter++;
+			NPC npcToTarget = NPCHelper.FindClosestNPC(Projectile.position, Fire_Range);
+			if(_fireCounter >= Fire_Rate && npcToTarget != null)
+			{
+				Player owner = Main.player[Projectile.owner];
+				int projToFire = ModContent.ProjectileType<VoidEaterMini>();
+                if (Main.rand.NextBool(Void_Eater_Big_Chance))
+                {
+					projToFire = ModContent.ProjectileType<VoidEater>();
+				}
+
+				Vector2 velocityToTarget = VectorHelper.VelocityDirectTo(Projectile.position, npcToTarget.position, 5);
+				var proj = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, velocityToTarget,
+					projToFire, Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				proj.DamageType = DamageClass.Summon;
+
+				//Cool little circle visual
+				for (int i = 0; i < 16; i++)
+				{
+					Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+					Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
+						default(Color), 1 / 3f);
+					p.layer = Particle.Layer.BeforeProjectiles;
+				}
+
+				//Firing Sound :P
+				SoundEngine.PlaySound(SoundID.Item73);
+				_fireCounter = 0;
+            }
+
+			Visuals();
+		}
+
+		private void Visuals()
+		{
+			if (_voidRiftProjectile == null)
+			{
+				Player owner = Main.player[Projectile.owner];
+				_voidRiftProjectile = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, Vector2.Zero,
+					ModContent.ProjectileType<VoidRift>(), Projectile.damage, Projectile.knockBack, owner.whoAmI);
+				_voidRiftProjectile.DamageType = DamageClass.Summon;
+			}
+
+			_voidRiftProjectile.timeLeft = 2;
+			_voidRiftProjectile.Center = Projectile.Center;
 			DrawHelper.AnimateTopToBottom(Projectile, 5);
 			Lighting.AddLight(Projectile.Center, Color.Pink.ToVector3() * 0.28f);
 		}
-	}
+
+        public override void OnKill(int timeLeft)
+        {
+			if (_voidRiftProjectile != null)
+            {
+				_voidRiftProjectile.Kill();
+			}
+        }
+    }
 }

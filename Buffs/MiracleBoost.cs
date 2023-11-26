@@ -1,23 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
+using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.MiracleSoul;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Buffs
 {
     public class MiraclePlayer : ModPlayer
     {
+        private int _miracleSoulCooldown;
         public int miracleLevel;
         public int miracleTimeLeft;
         public bool hasMiracleSet;
 
+        private const int Particle_Count = 2;
+        private const int Miracle_Soul_Cooldown = 60;
         public override void ResetEffects()
         {
             if (miracleTimeLeft <= 0)
@@ -32,17 +31,43 @@ namespace Stellamod.Buffs
         public override void PostUpdateEquips()
         {
             miracleTimeLeft--;
-            float miracleWhipBoost = (float)miracleLevel * 0.1f;
-            float miracleDamageBoost = (float)miracleLevel * 0.05f;
+            _miracleSoulCooldown--;
+            float miracleLevelFloat = miracleLevel;
+            float miracleWhipBoost = miracleLevelFloat * 0.1f;
+            float miracleDamageBoost = miracleLevelFloat * 0.05f;
             Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += miracleWhipBoost;
             Player.GetDamage(DamageClass.Summon) += miracleDamageBoost;
+            MiracleVisuals();
+        }
+
+        private void MiracleVisuals()
+        {
+            if (miracleLevel <= 0)
+                return;
+
+            float miracleLevelFloat = miracleLevel;
+            float miracleVisualScaleFactor = miracleLevelFloat * 0.02f;
+            float minScale = 0.2f + miracleVisualScaleFactor;
+            float maxScale = 0.8f + miracleVisualScaleFactor;
+
+            for (int m = 0; m < Particle_Count; m++)
+            {
+                Vector2 position = Player.position - new Vector2(
+                    Main.rand.NextFloat(0, Player.width),
+                    Main.rand.NextFloat(0, Player.height));
+
+                Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
+                    default(Color), Main.rand.NextFloat(minScale, maxScale));
+                p.layer = Particle.Layer.BeforePlayersBehindNPCs;
+            }
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             //Chance to cleave out soul
-            if (hasMiracleSet && Main.rand.NextBool(15))
+            if (hasMiracleSet && _miracleSoulCooldown <= 0 && Main.rand.NextBool(10))
             {
+                _miracleSoulCooldown = Miracle_Soul_Cooldown;
                 Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, -8f));
                 Projectile.NewProjectile(Player.GetSource_FromThis(),
                     target.Center, velocity, ModContent.ProjectileType<MiracleSoulCollectibleProj>(), 0, 0, Player.whoAmI);

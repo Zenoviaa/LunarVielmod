@@ -4170,7 +4170,7 @@ Mods: {
 
 			XScissor: {
 				DisplayName: X-Scissor
-				Tooltip: TODO
+				Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
 			}
 		}
 
