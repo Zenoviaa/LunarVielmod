@@ -927,19 +927,24 @@ namespace Stellamod
                 {
                     player.AddBuff(ModContent.BuffType<Irradiation>(), 30);
                 }
+
+				//Update Rain
                 Main.raining = true;
-                Main.maxRaining = 0.8f;
+
+				//That way, if it is already raining, it won't be overriden
+				//And if it is not raining, it'll just be permanent until you leave the biome
+				if (Main.rainTime <= 2)
+					Main.rainTime = 2;
+				Main.maxRaining = 0.8f;
                 Main.maxRain = 140;
-                Main.rainTime = 18000;
-                var entitySource = Player.GetSource_FromThis();
-                Main.raining = true;
-                Main.maxRaining = 0.8f;
-                Main.maxRain = 140;
-                Main.rainTime = 18000;
+
+
+				//Create Gores
                 float goreScale = Main.rand.NextFloat(0.5f, 0.9f);
                 int x = (int)(Main.windSpeedCurrent > 0 ? Main.screenPosition.X - 100 : Main.screenPosition.X + Main.screenWidth + 100);
                 int y = (int)Main.screenPosition.Y + Main.rand.Next(-100, Main.screenHeight);
-                int a = Gore.NewGore(entitySource, new Vector2(x, y), Vector2.Zero, GoreID.TreeLeaf_Jungle, goreScale);
+                int a = Gore.NewGore(Player.GetSource_FromThis(), new Vector2(x, y), Vector2.Zero, GoreID.TreeLeaf_Jungle, goreScale);
+
                 Main.gore[a].rotation = 0f;
                 Main.gore[a].velocity.Y = Main.rand.NextFloat(1f, 3f);
             }
