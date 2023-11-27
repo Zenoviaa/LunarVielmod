@@ -41,33 +41,6 @@ namespace Stellamod.Helpers
 			return xyz;
 		}
 
-		/// <summary>
-		/// Simple draw function for animated projectiles
-		/// <br>Call this inside of PreDraw and return false</br>
-		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="lightColor"></param>
-		public static void PreDrawAnimatedProjectile(ModProjectile projectile, ref Color lightColor)
-        {
-			// Center It
-			SpriteEffects spriteEffects = SpriteEffects.None;
-
-			if (projectile.Projectile.spriteDirection == -1)
-				spriteEffects = SpriteEffects.FlipHorizontally;
-
-			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(projectile.Texture);
-			int frameHeight = texture.Height / Main.projFrames[projectile.Projectile.type];
-			int startY = frameHeight * projectile.Projectile.frame;
-
-			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-			Vector2 origin = sourceRectangle.Size() / 2f;
-			float offsetX = 20f;
-			origin.X = projectile.Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
-			Color drawColor = projectile.Projectile.GetAlpha(lightColor);
-			Main.EntitySpriteDraw(texture,
-				projectile.Projectile.Center - Main.screenPosition + new Vector2(0f, projectile.Projectile.gfxOffY),
-				sourceRectangle, drawColor, projectile.Projectile.rotation, origin, projectile.Projectile.scale, spriteEffects, 0);
-		}
 
 		/// <summary>
 		/// Draws an after image for the projectile, this should be called in PreDraw
@@ -77,7 +50,7 @@ namespace Stellamod.Helpers
 		/// <param name="startColor"></param>
 		/// <param name="endColor"></param>
 		/// <param name="lightColor"></param>
-		public static void PreDrawAdditiveAfterImage(Projectile projectile, Color startColor, Color endColor, ref Color lightColor)
+		public static void DrawAdditiveAfterImage(Projectile projectile, Color startColor, Color endColor, ref Color lightColor)
 		{
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -102,7 +75,7 @@ namespace Stellamod.Helpers
 			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 		}
 
-		public static void PreDrawGlowInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Color glowColor)
+		public static void DrawGlowInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Color glowColor)
         {
 			float sizeLimit = 34;
 			int numberOfCloneImages = 6;
@@ -120,7 +93,7 @@ namespace Stellamod.Helpers
 			}
 		}
 
-		public static void PreDrawGlow2InWorld(Item item, SpriteBatch spriteBatch, ref float rotation, ref float scale, int whoAmI)
+		public static void DrawGlow2InWorld(Item item, SpriteBatch spriteBatch, ref float rotation, ref float scale, int whoAmI)
         {
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
 			Texture2D texture = TextureAssets.Item[item.type].Value;
@@ -165,13 +138,13 @@ namespace Stellamod.Helpers
 		}
 
 		/// <summary>
-		/// Draws a dim light effect, this should be called in PostDraw
+		/// Draws a dim light effect, call this in any draw function
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="dimLightX"></param>
 		/// <param name="dimLightY"></param>
 		/// <param name="dimLightZ"></param>
-		public static void PostDrawDimLight(Projectile projectile, float dimLightX, float dimLightY, float dimLightZ, Color worldLightingColor, Color lightColor, int glowCount = 4)
+		public static void DrawDimLight(Projectile projectile, float dimLightX, float dimLightY, float dimLightZ, Color worldLightingColor, Color lightColor, int glowCount = 4)
         {
 			Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
 			for (int i = 0; i < glowCount; i++)

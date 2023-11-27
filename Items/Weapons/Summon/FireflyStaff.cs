@@ -229,7 +229,7 @@ namespace Stellamod.Items.Weapons.Summon
 		public float Timer;
         public override bool PreDraw(ref Color lightColor)
 		{
-			DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor, 2);
+			DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor, 2);
 			return base.PreDraw(ref lightColor);
         }
 

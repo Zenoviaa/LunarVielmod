@@ -40,13 +40,13 @@ namespace Stellamod.Items.Materials
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-			DrawHelper.PreDrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
+			DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
 			return true;
 		}
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
-            DrawHelper.PreDrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);
+            DrawHelper.DrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);
             return true;
 		}
 
