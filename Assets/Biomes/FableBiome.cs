@@ -37,16 +37,6 @@ namespace Stellamod.Assets.Biomes
 		}
 
 		// Calculate when the biome is active.
-		public override bool IsBiomeActive(Player player)
-		{
-			// First, we will use the exampleBlockCount from our added ModSystem for our first custom condition
-			bool b1 = ModContent.GetInstance<FabledBiomeTileCount>().BlockCount >= 20;
-
-			
-
-			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
-			bool b3 = player.ZoneNormalSpace || player.ZoneOverworldHeight;
-			return b1 && b3;
-		}
+		public override bool IsBiomeActive(Player player) => (player.ZoneOverworldHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InFable;
 	}
 }

@@ -51,18 +51,9 @@ namespace Stellamod.NPCs.Desert
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.ZoneDesert)
-			{
-
-				return 0.2f;
-
-			}
-
-
-
-
-			return SpawnCondition.OverworldNight.Chance * 0f;
+			return SpawnCondition.OverworldDayDesert.Chance * 0.8f;
 		}
+
 		int invisibilityTimer;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
