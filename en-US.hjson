@@ -1479,7 +1479,7 @@ Mods: {
 			}
 
 			VerliaBossBag: {
-				DisplayName: Verlia Boss Bag
+				DisplayName: Treasure Bag (Verlia)
 				Tooltip: ""
 			}
 
@@ -2206,8 +2206,8 @@ Mods: {
 			}
 
 			DreadmireBag: {
-				DisplayName: Dreadmire Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Dreadmire)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			EDR: {
@@ -2216,18 +2216,18 @@ Mods: {
 			}
 
 			JackoBag: {
-				DisplayName: Jacko Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Jack)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			NestBag: {
-				DisplayName: Nest Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Nest)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			SingularityBag: {
-				DisplayName: Singularity Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Singularity)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			SunClaw: {
@@ -2236,8 +2236,8 @@ Mods: {
 			}
 
 			SunStalkerBag: {
-				DisplayName: Sun Stalker Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Sun Stalker)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			VoidLantern: {
@@ -3064,8 +3064,12 @@ Mods: {
 			}
 
 			GintziaBossBag: {
-				DisplayName: Gintzia Treasure Bag
-				Tooltip: Special little secret inside
+				DisplayName: Treasure Bag (Gintzia)
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Special little secret inside
+					'''
 			}
 
 			GintzeCard: {
@@ -3281,8 +3285,8 @@ Mods: {
 			}
 
 			DaedusBag: {
-				DisplayName: Daedus Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Daedus)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			Plate: {
@@ -3392,8 +3396,8 @@ Mods: {
 			}
 
 			GothiviaBag: {
-				DisplayName: Gothivia Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Gothivia)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			WeddingDay: {
@@ -3655,7 +3659,11 @@ Mods: {
 
 			BagOfCards: {
 				DisplayName: Bag Of Cards
-				Tooltip: Open for some cards! Gives more cards in Hardmode!
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Open for some cards! Gives more cards in Hardmode!
+					'''
 			}
 
 			FireflyCannon: {
@@ -4857,7 +4865,7 @@ Mods: {
 			CommanderGintzia.DisplayName: Commander Gintzia
 			StarSlime.DisplayName: Star Slime
 			DiceinNPC.DisplayName: Dicein N P C
-			VerliaB.DisplayName: Verlia B
+			VerliaB.DisplayName: Verlia
 			Viola.DisplayName: Viola
 			Sword3.DisplayName: Sword3
 			Sword2.DisplayName: Sword2

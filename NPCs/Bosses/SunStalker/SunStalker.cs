@@ -2,7 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.Items.Weapons.Ranged;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -68,10 +72,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         Vector2 targetPos;
         public override void OnKill()
         {
-            if (Main.rand.NextBool(1))
-            {
-                Item.NewItem(NPC.GetSource_Death(), NPC.getRect(), ModContent.ItemType<SunStalkerBag>(), 1, false, 0, false, false);
-            }
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
 
@@ -1021,12 +1021,17 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 }
             }
         }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-           
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SunStalkerBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.SunsBossRel>()));
-       
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WingedFury>(), 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunGlyph>()));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StalkersTallon>(), 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunBlastStaff>(), 2));
+            npcLoot.Add(notExpertRule);
         }
-
     }
 }

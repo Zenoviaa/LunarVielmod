@@ -1,4 +1,5 @@
 ﻿using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
 using System.Collections.Generic;
 using Terraria.ModLoader;
@@ -81,7 +82,7 @@ namespace Stellamod
 			string internalName2 = "DaedustheForgotten";
 
 			// The NPC type of the boss
-			int bossType2 = ModContent.NPCType<NPCs.Bosses.Daedus.Daedus>();
+			int bossType2 = ModContent.NPCType<DaedusR>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight2 = 2.5f;
