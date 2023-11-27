@@ -14,20 +14,28 @@ namespace Stellamod.NPCs.Global
         {
 			if(npc.type == NPCID.TheDestroyer)
             {
-				npc.lifeMax = 100000;
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
 			}
 			if(npc.type == NPCID.HallowBoss)
             {
-				npc.lifeMax = 90000;
-            }
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.25f;
+				npc.lifeMax = (int)lifeMax;
+			}
 			if(npc.type == NPCID.DukeFishron)
             {
-				npc.lifeMax = 80000;
-            }
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.25f;
+				npc.lifeMax = (int)lifeMax;
+			}
 			if(npc.type == NPCID.Plantera)
             {
-				npc.lifeMax = 44000;
-            }
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
+			}
         }
 
 

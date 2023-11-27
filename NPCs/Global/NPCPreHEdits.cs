@@ -23,17 +23,12 @@ namespace Stellamod.NPCs.Global
 		// ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
 		// Here we go through all of them, and how they can be used.
 		// There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
-
 		public override bool InstancePerEntity => true;
 		public override void AI(NPC npc)
         {
-
 			Timerboss++;
 			if (npc.type == NPCID.Creeper)
 			{
-				
-			
-			
 				if (Timerboss == 180)
 				{
 					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
@@ -53,8 +48,6 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.EaterofWorldsHead)
 			{
-			
-
 				if (Timerboss == 100)
 				{
 
@@ -71,147 +64,90 @@ namespace Stellamod.NPCs.Global
 					ichor.friendly = false;
 					Timerboss = 0;
 				}
-
-			
-
 			}
-
-
 
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
-
-
 				npc.velocity *= 1.01f;
-
-
-
 			}
-
-
-
-
-
-
-
 		}
+
         public override void SetDefaults(NPC npc)
         {
 			if (npc.type == NPCID.EyeofCthulhu)
 			{
-
-
 				npc.damage = 50;
-				if (Main.expertMode)
-				{
-					npc.life = 4500;
-					npc.lifeMax = 4500;
-				}
 
-				if (Main.masterMode)
-				{
-					npc.life = 4500;
-					npc.lifeMax = 4500;
-				}
-
+				//Increase boss health by 50%
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.QueenBee)
 			{
 
 				npc.damage = 60;
-				if (Main.expertMode)
-				{
-					npc.life = 5000;
-					npc.lifeMax = 5000;
-				}
 
-				if (Main.masterMode)
-				{
-					npc.life = 5000;
-					npc.lifeMax = 5000;
-
-				}
-
+				//Increase boss health by 50%
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.SkeletronHead)
 			{
-
-
 				npc.damage = 70;
 				if (Main.expertMode)
 				{
-					npc.life = 6500;
 					npc.damage = 50;
-					npc.lifeMax = 6500;
 				}
 
 				if (Main.masterMode)
 				{
-					npc.life = 6500;
 					npc.damage = 50;
-					npc.lifeMax = 6500;
 				}
+
+				//Increase boss health by 50%
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.WallofFlesh)
 			{
-
-
 				npc.damage = 240;
-				if (Main.expertMode)
-				{
-					npc.life = 12000;
-					
-					npc.lifeMax = 12000;
-				}
-
-				if (Main.masterMode)
-				{
-					npc.life = 12000;
-				
-					npc.lifeMax = 12000;
-				}
+		
+				//Increase boss health by 50%
+				float lifeMax = npc.lifeMax;
+				lifeMax *= 1.5f;
+				npc.lifeMax = (int)lifeMax;
 			}
+
 			if (npc.type == NPCID.WallofFleshEye)
 			{
-
-
-				npc.damage = 140;
-				
+				npc.damage = 140;		
 			}
 
 			if (npc.type == NPCID.Creeper)
 			{
 				npc.life = 550;
 				npc.lifeMax = 550;
-			
-				npc.damage = 30;
-			
+				npc.damage = 30;		
 			}
 
 			if (npc.type == NPCID.EaterofWorldsTail)
 			{
-				
-
 				npc.damage = 90;
-
 			}
 
 			if (npc.type == NPCID.EaterofWorldsHead)
 			{
-
-
 				npc.life = 1000;
 				npc.lifeMax = 1000;
-			
-
 			}
 		}
 
-       
-		
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 
