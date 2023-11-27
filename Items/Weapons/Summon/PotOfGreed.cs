@@ -131,7 +131,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Projectile.timeLeft = Terraria.Projectile.SentryLifeTime;
 
 			// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.minionSlots = 1f;
+			Projectile.minionSlots = 0f;
 
 			// Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.penetrate = -1;

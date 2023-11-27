@@ -14,7 +14,7 @@ namespace Stellamod.Particles
         private int frameCount;
         private int frameTick;
         private const int Frame_Count = 13;
-        private const int Frame_Duration = 3;
+        private const int Frame_Duration = 1;
         public override void SetDefaults()
         {
             width = 32;

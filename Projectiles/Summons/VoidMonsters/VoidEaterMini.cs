@@ -16,7 +16,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
         private float _projSpeed = 5;
         //AI Values
         //Visuals
-        private const float Max_Proj_Speed = 16;
+        private const float Max_Proj_Speed = 8;
         private const int Body_Radius = 4;
         private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;
@@ -24,12 +24,12 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
 
         //Lower number = faster
         private const int Body_Particle_Rate = 1;
-        private const int Body_Dust_Rate = 3;
+        private const int Body_Dust_Rate = 9;
 
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -98,7 +98,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
 
                     p.layer = Particle.Layer.BeforeProjectiles;
                     Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.05f);
+                        default(Color), size + 0.025f);
 
                     tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
                 }
