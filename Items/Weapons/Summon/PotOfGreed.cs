@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
 			Item.damage = 61;
 			Item.knockBack = 3f;
-			Item.mana = 10;
+			Item.mana = 40;
 			Item.width = 54;
 			Item.height = 34;
 			Item.useTime = 36;

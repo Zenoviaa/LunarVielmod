@@ -4139,7 +4139,11 @@ Mods: {
 
 			MiracleWings: {
 				DisplayName: Miracle Wings
-				Tooltip: ""
+				Tooltip:
+					'''
+					Allows flight and slow fall
+					Yeah... it's a miracle these things let you fly at all
+					'''
 			}
 
 			Lacerator: {
@@ -4171,6 +4175,21 @@ Mods: {
 			XScissor: {
 				DisplayName: X-Scissor
 				Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
+			}
+
+			LittleScissor: {
+				DisplayName: Little Scissor
+				Tooltip:
+					'''
+					Double tap a direction to dash- but very quickly and on a short cooldown!
+					Leave behind damaging rifts in your path
+					(WIP)
+					'''
+			}
+
+			SyliaBag: {
+				DisplayName: Treasure Bag (Sylia)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 		}
 
