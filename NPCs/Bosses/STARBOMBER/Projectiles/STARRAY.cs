@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 600f * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Time / 300f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
@@ -94,11 +94,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.DarkViolet, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.Violet, Color.Purple, 0.5f);
+            Color middleColor2 = Color.Lerp(Color.White, Color.Purple, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
             TrailRegistry.GenericLaserVertexShader.UseColor(Color.Violet);
-            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.STARTRAIL);
+            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.STARTRAIL2);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

@@ -20,7 +20,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Projectile.height = 232;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 16;
-			Projectile.scale = 1f;
+			Projectile.scale = 0.6f;
 
 		}
 		public float Timer

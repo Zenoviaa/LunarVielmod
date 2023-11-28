@@ -266,6 +266,7 @@
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
+    <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />

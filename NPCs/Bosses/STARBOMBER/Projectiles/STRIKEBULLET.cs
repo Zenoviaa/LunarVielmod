@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(40,40), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 				p.rotation = direction.ToRotation();
 				Timer = 0;
 
@@ -74,14 +74,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			float projSpeed = 24f; // The speed at which the projectile moves towards the target
 
 
-
-	
-
-			if (Timer2 == 1)
-			{
-				maxDetectRadius = 2000f;
-			
-			}
 
 
 			if (Timer2 == 6)

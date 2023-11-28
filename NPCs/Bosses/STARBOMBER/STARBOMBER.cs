@@ -241,6 +241,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
+		public float squish = 0f;
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
@@ -251,12 +252,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			SpriteEffects effects = SpriteEffects.None;
 
-			
 
+			Vector2 spritesquish = new(1 - squish, 1 + squish);
 			
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 4) + new Vector2(120, 80);
+			originalHitbox = new Vector2(0, 60);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -295,137 +296,137 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				case ActionState.StartVerlia:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.BeggingingMoonStart:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.SummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.BigSwordSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.MoonSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.CloneSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.SummonIdle:
 					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 
 				case ActionState.Unsummon:
 					rect = new Rectangle(0, 8 * 92, 133, 4 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.HoldUP:
 					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.SwordUP:
 					rect = new Rectangle(0, 20 * 92, 133, 11 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.SwordSimple:
 					rect = new(0, 31 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 
 				case ActionState.SwordHold:
 					rect = new(0, 36 * 92, 133, 10 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 
 				case ActionState.TriShot:
 					rect = new(0, 46 * 92, 133, 22 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.Explode:
 					rect = new(0, 68 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.CutExplode:
 					rect = new(0, 70 * 92, 133, 6 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.In:
 					rect = new(0, 76 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.IdleInvis:
 					rect = new(0, 74 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.InvisCut:
 					rect = new(0, 74 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.Dienow:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.SummonBeamer:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 				case ActionState.idleSummonBeamer:
 					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
 
 				case ActionState.HoldUPdie:
 					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
                     NPC.netUpdate = true;
                     break;
 
@@ -437,86 +438,86 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 				case ActionState.StartStar:
 					rect = new(0, 1 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.IdleStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.GunStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BomberStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BreakdownStar:
-					rect = new(0, 29 * 129, 206, 25 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 25, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					rect = new(0, 29 * 129, 206, 26 * 129);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.DropdownSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinGroundStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.RageSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.PullInStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.LaserdrillStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinVerticleStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.WaitStar:
 					rect = new(0, 55 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.FallStar:
 					rect = new(0, 1 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
@@ -565,7 +566,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.5f;
+				NPC.velocity.Y += 0.5f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				NPC.alpha++;
@@ -786,11 +787,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					NPC.damage = 0;
 					counter++;
 
-					if (counter > 120)
-					{
-						NPC.scale += 0.02f;
-
-					}
+					
 					NPC.noTileCollide = false;
 					NPC.noGravity = false;
 					FallStar();
@@ -813,7 +810,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					break;
 
 				case ActionState.SpinGroundStar:
-					NPC.damage = 100;
+					NPC.damage = 0;
 					counter++;
 					NPC.velocity.X *= 0f;
 					NPC.noTileCollide = true;
@@ -836,10 +833,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					NPC.noGravity = true;
 
 
-					if (counter < 201)
-					{
-						NPC.scale += 0.01f;
-					}
+					
 					TeleportRageStar();
 					break;
 
@@ -851,10 +845,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				case ActionState.TeleportStar:
 					NPC.damage = 0;
 					counter++;
-					if (counter < 201)
-					{
-						NPC.scale -= 0.01f;
-					}
+					
 					TeleportStar();
 					break;
 
@@ -996,9 +987,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				NPC.alpha = 255;
             }
 		
-			if (timer < 201)
+			if (timer < 101)
             {
-				NPC.scale += 0.01f;
+				NPC.scale += 0.02f;
 				NPC.alpha--;
             }
 
@@ -1007,7 +998,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARBOMBERWAKE"));
 				
 			}
-			if (timer > 255)
+			if (timer > 130)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -1147,7 +1138,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARNBIG>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARNBIG>());
 
 
 			}
@@ -1217,13 +1208,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
 
 				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, 0, speedYa - 1 * 4, ModContent.ProjectileType<SMALLBOMB>(), 50, 0f, 0, 0f, 0f);
-
-
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, 0, speedYa - 1 * 1, ModContent.ProjectileType<SMALLBOMB>(), 30, 0f, 0, 0f, 0f);
+				
 			}
 			if (timer > 360)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
@@ -1254,7 +1245,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			timer++;
 
 
-			if (timer > 25)
+			if (timer > 26)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -1352,12 +1343,23 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 				NPC.velocity.Y += 0.4f;
             }
+			if (timer > 120)
+			{
+				NPC.scale += 0.02f;
 
-		
+			}
+
 			if (timer > 220)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				for (int j = 0; j < 50; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
+
+				}
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				NPC.scale = 2f;
 				switch (Main.rand.Next(1))
 				{
 
@@ -1380,7 +1382,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			timer++;
 
-			
+			NPC.scale -= 0.01f;
 			NPC.velocity *= 0.96f;
 			if (timer == 5)
 			{
@@ -1390,10 +1392,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 
-			if (timer > 255)
+			if (timer > 201)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				NPC.scale = 0f;
 
+				for (int j = 0; j < 25; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
 				switch (Main.rand.Next(2))
 				{
 					case 0:
@@ -1417,10 +1427,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		}
 
 		public float Voiden = 0;
+		public float missue = 0;
 		private void TeleportRageStar()
 		{
 			timer++;
 			Voiden++;
+			missue++;
 			Player player = Main.player[NPC.target];
 			NPC.velocity *= 0.96f;
 			if (timer == 5)
@@ -1431,12 +1443,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if (timer < 201)
             {
-				NPC.scale += 0.01f;
+				NPC.scale += 0.02f;
+			
             }
 
 			if (timer == 2)
 			{
-				int distanceY = Main.rand.Next(-500, -500);
+				int distanceY = Main.rand.Next(-600, -600);
 				NPC.position.X = player.Center.X;
 				NPC.position.Y = player.Center.Y + distanceY;
 
@@ -1460,7 +1473,23 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 
-			
+			if (missue == 25)
+            {
+
+				float speedXa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
+				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + speedXa, NPC.position.Y + speedYa + 110, speedXa, speedYa - 1 * 1, ProjectileID.SaucerMissile, 25, 0f, 0, 0f, 0f);
+
+				for (int j = 0; j < 30; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
+
+				missue = 0;
+            }
 
 
 		
@@ -1488,14 +1517,26 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer < 302 && timer > 201)
             {
 				NPC.scale -= 0.02f;
+
+				
 			}
 
 			if (timer > 303)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+			
+				for (int j = 0; j < 50; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
+
+				}
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				NPC.scale = 0f;
 				switch (Main.rand.Next(1))
 				{
+
+
 					case 0:
 						State = ActionState.FallStar;
 						ResetTimers();
@@ -1541,7 +1582,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 			}
@@ -1551,7 +1592,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 			}
 
@@ -1559,28 +1600,28 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 			}
 
 			if (timer == 55)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 			}
 
 			if (timer == 75)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 			}
 
 			if (timer == 95)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 				var entitySource = NPC.GetSource_FromThis();
-				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y, ModContent.NPCType<STARBOMBERLASERWARN>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 10, (int)NPC.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
 			}
 
 			if (timer > 110)
@@ -1778,19 +1819,35 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
 				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
 				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 4, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + 70, speedXa * -4, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Bomb_2"));
 
 				constshoot = 0;
-			}
-				
-			
 
-			
+				float speedXaz = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
+				float speedYaz = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + speedXaz, NPC.position.Y + speedYaz + 110, speedXaz * 0, speedYaz - 1 * 1, ProjectileID.ShadowBeamHostile, 25, 0f, 0, 0f, 0f);
+
+			}
+
+
+
+
 
 			if (timer > 240)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+
+				for (int j = 0; j < 50; j++)
+				{
+					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+
+				}
 
 				switch (Main.rand.Next(2))
 				{
