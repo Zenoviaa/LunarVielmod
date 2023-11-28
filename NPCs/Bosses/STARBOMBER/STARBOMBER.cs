@@ -13,6 +13,7 @@ using Stellamod.NPCs.Projectiles;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -171,7 +172,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
 			NPC.defense = 40;
-			NPC.lifeMax = 35050;
+			NPC.lifeMax = 20500;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -533,6 +534,38 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         int bee = 220;
 		private Vector2 originalHitbox;
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		{
+			bool npcAlreadyExists = false;
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC npc = Main.npc[i];
+				if (npc.type == ModContent.NPCType<STARBOMBER>())
+				{
+					npcAlreadyExists = true;
+					break;
+				}
+			}
+
+			//Don't spawn the npc if it already exists
+			if (npcAlreadyExists)
+			{
+				return 0f;
+			}
+
+			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
+
+			if (EventWorld.Aurorean && Main.hardMode)
+			{
+
+				return 0.34f;
+
+			}
+
+			//Else, the example bone merchant will not spawn if the above conditions are not met.
+			return 0f;
+		}
+
 
 		public override void AI()
 		{
@@ -572,6 +605,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				NPC.alpha++;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
 			}
 			switch (State)
 			{
@@ -981,12 +1019,25 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		private void StartStar()
 		{
 			timer++;
+			Player player = Main.player[NPC.target];
 			if (timer == 1)
             {
 				NPC.scale = 0f;
 				NPC.alpha = 255;
             }
-		
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-150, -150);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + distanceY;
+
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+			}
+
 			if (timer < 101)
             {
 				NPC.scale += 0.02f;
@@ -1106,7 +1157,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-				switch (Main.rand.Next(4))
+				switch (Main.rand.Next(2))
 				{
 					case 0:
 						State = ActionState.BomberStar;
@@ -1114,10 +1165,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						break;
 					case 1:
 						State = ActionState.BreakdownStar;
-						ResetTimers();
-						break;
-					case 3:
-						State = ActionState.LaserdrillStar;
 						ResetTimers();
 						break;
 				}
@@ -1178,6 +1225,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						State = ActionState.BreakdownStar;
 						ResetTimers();
 						break;
+					case 1:
+						State = ActionState.GunStar;
+						ResetTimers();
+						break;
 
 					case 2:
 						State = ActionState.BomberStar;
@@ -1206,10 +1257,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
-
-				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.position.Y + speedYa + 110, 0, speedYa - 1 * 1, ModContent.ProjectileType<SMALLBOMB>(), 30, 0f, 0, 0f, 0f);
-				
+				var entitySource = NPC.GetSource_FromThis();
+				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<STARLINGBIG>());
+				NPC minionNPC = Main.npc[index];
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARIGNITE"));
 			}
 			if (timer > 360)
 			{
@@ -1245,7 +1296,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			timer++;
 
 
-			if (timer > 26)
+			if (timer == 26)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -1819,9 +1870,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
 				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
 				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 4, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 100, NPC.position.Y + speedYa, speedXa * 5, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET2>(), 40, 0f, 0, 0f, 0f);
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + 70, speedXa * -4, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + 70, speedXa * -5, speedYa - 1 * 0, ModContent.ProjectileType<STRIKEBULLET>(), 40, 0f, 0, 0f, 0f);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Bomb_2"));
 
 				constshoot = 0;

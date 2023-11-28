@@ -255,9 +255,12 @@
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARNBIG.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARDREAM.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARLINGBIG.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARRAY.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET2.png" />
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />

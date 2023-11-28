@@ -6,6 +6,22 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.DropRules;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Daeden;
+using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs.Bosses.Daedus;
+using System.Collections.Generic;
+using System.IO;
+
+
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
 	public class STARLING : ModNPC
@@ -26,7 +42,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public int frameTick;
 		// Current state's timer
 		public float timer;
-
+		public int PrevAtack;
+		float DaedusDrug = 4;
 		// AI counter
 		public int counter;
 
@@ -37,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			NPC.height = 50;
 			NPC.damage = 70;
 			NPC.defense = 30;
-			NPC.lifeMax = 2000;
+			NPC.lifeMax = 1000;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 0f;
@@ -60,6 +77,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 
 		}
+		
 
 		public override void FindFrame(int frameHeight)
 		{
@@ -88,13 +106,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				invisibilityTimer = 0;
 			}
 
-			if (Shooting == 40)
+			if (Shooting == 80)
 			{
 				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 1, speedYb - 2 * 1, ProjectileID.BombSkeletronPrime, 47, 0f, 0, 0f, 0f);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 1, speedYb - 2 * 1, ProjectileID.BombSkeletronPrime, 30, 0f, 0, 0f, 0f);
 				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);

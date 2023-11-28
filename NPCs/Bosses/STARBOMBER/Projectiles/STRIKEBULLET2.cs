@@ -17,7 +17,7 @@ using Terraria.ID;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-	public class STRIKEBULLET : ModProjectile
+	public class STRIKEBULLET2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
 
 
-				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center - new Vector2(100,0), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 				p.rotation = direction.ToRotation();
 				Timer = 0;
 
