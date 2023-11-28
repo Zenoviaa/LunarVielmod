@@ -24,9 +24,6 @@ namespace Stellamod.WorldG
         public static bool AuroreanSpawn;
         public static bool Aurorean;
         public static bool AuroreanText;
-
-
-
         public static void GintzeWin()
         {
             if (GintzingBoss)
@@ -37,13 +34,12 @@ namespace Stellamod.WorldG
                 GintzingBoss = false;
             }
         }
+
         public override void PostUpdateWorld()
         {
- 
             Player player = Main.LocalPlayer;
             if (!player.active)
                 return;
-            MyPlayer CVA = player.GetModPlayer<MyPlayer>();
 
             //AuroreanStars--------------------------
 
@@ -73,13 +69,8 @@ namespace Stellamod.WorldG
             if (Main.dayTime)
             {
                 AuroreanSpawn = false;
-
             }
 
-            if (AuroreanSpawn)
-            {
-
-            }
             //------------------------------------------------------------------------------
             if (Gintzing)
             {
@@ -115,17 +106,16 @@ namespace Stellamod.WorldG
                         GintzeKills = 0;
                     }
                 }
-
-
-               
-
+      
                 player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
             }
+
             if (!Main.dayTime)
             {
                 TryForGintze = false;
                 GintzeDayReset = false;
             }
+
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 2 && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
                 if (Main.rand.NextBool(1))
@@ -154,7 +144,6 @@ namespace Stellamod.WorldG
                 }
                 TryForGintze = true;
             }
-
         }
     }
 }

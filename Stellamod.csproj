@@ -259,6 +259,7 @@
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
+    <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />

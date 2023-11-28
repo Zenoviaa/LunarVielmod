@@ -227,10 +227,11 @@ namespace Stellamod.Items.Weapons.Summon
 		public Vector3 HuntrianColorXyz;
 		public float HuntrianColorOffset;
 		public float Timer;
-        public override void PostDraw(Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
 		{
-			DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor);
-		}
+			DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor, 2);
+			return base.PreDraw(ref lightColor);
+        }
 
 		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
 		public override void AI()

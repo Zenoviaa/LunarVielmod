@@ -1,8 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
@@ -2896,15 +2903,27 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 
 			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
+
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
 			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
+				 ModContent.ItemType<VerliaHat>(),
+				 ModContent.ItemType<SwordsOfRevengence>(),
+				 ModContent.ItemType<SupernovaSitar>(),
+				 ModContent.ItemType<HarmonicBlasphemy>(),
+				 ModContent.ItemType<Curlistine>()));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Starrdew>(), minimumDropped: 3, maximumDropped: 25));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 3, maximumDropped: 25));
+
+			//Dunno if she should drop verlia brooch in classic mode or not
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			// Boss masks are spawned with 1/7 chance

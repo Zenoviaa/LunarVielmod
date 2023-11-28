@@ -2,42 +2,32 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee.Spears;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.NPCs.Bosses.SunStalker;
+using Stellamod.Items.Accessories.Wings;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    internal class SunStalkerBag : ModItem
+    internal class SyliaBag : ModItem
     {
-
         public override void SetStaticDefaults()
         {
-            //Research Counts
-            Item.ResearchUnlockCount = 3;
-
-            //Behave like a boss bag, this will make it also show up on the minimap
             ItemID.Sets.BossBag[Type] = true;
-
-            // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
-            ItemID.Sets.PreHardmodeLikeBossBag[Type] = true;
+            Item.ResearchUnlockCount = 3;
         }
 
         public override void SetDefaults()
         {
-            Item.width = 20; // The item texture's width
-            Item.height = 20; // The item texture's height
+            Item.width = 36; // The item texture's width
+            Item.height = 34; // The item texture's height
             Item.rare = ItemRarityID.Expert;
-            Item.maxStack = Item.CommonMaxStack; // The item's max stack value
-            Item.expert = true;
+            Item.maxStack = 9999; // The item's max stack value
             Item.consumable = true;
+            Item.expert = true;
         }
 
         public override bool CanRightClick() //this make so you can right click this item
@@ -45,13 +35,15 @@ namespace Stellamod.Items.Consumables
             return true;
         }
 
-        public override void ModifyItemLoot(ItemLoot itemLoot)
+        public override void RightClick(Player player)
         {
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WingedFury>(), 2));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SunGlyph>()));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StalkersTallon>(), 2));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SunBlastStaff>(), 2));
-            itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<SunStalker>()));
+            var entitySource = player.GetSource_OpenItem(Type);
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<LittleScissor>(), 1);
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<MiracleThread>(), Main.rand.Next(30, 40));
+            if (Main.rand.NextBool(4))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<MiracleWings>());
+            }
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

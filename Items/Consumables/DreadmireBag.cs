@@ -6,9 +6,10 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.NPCs.Bosses.DreadMire;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,48 +19,41 @@ namespace Stellamod.Items.Consumables
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Treasure Bag");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
+            //Research Counts
+            Item.ResearchUnlockCount = 3;
+
+            //Behave like a boss bag, this will make it also show up on the minimap
+            ItemID.Sets.BossBag[Type] = true;
+
+            // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+            ItemID.Sets.PreHardmodeLikeBossBag[Type] = true;
         }
 
         public override void SetDefaults()
         {
-            Item.width = 20; // The item texture's width
-            Item.height = 20; // The item texture's height
+            Item.width = 36; // The item texture's width
+            Item.height = 32; // The item texture's height
             Item.rare = ItemRarityID.Expert;
-            Item.maxStack = 999; // The item's max stack value
-            Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.maxStack = Item.CommonMaxStack; // The item's max stack value
+            Item.expert = true;
+            Item.consumable = true;
         }
+
         public override bool CanRightClick() //this make so you can right click this item
         {
             return true;
         }
 
-        public override void RightClick(Player player)
+        public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            var entitySource = player.GetSource_OpenItem(Type);
-            player.QuickSpawnItem(entitySource, ItemID.BloodMoonStarter);
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<DreadFoil>(), Main.rand.Next(40, 65));
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Aneuriliac>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<TheRedSkull>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Pericarditis>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Myocardia>());
-            }
-            if (Main.rand.NextBool(1))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<DreadBroochA>());
-            }
+            itemLoot.Add(ItemDropRule.Common(ItemID.BloodMoonStarter));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadFoil>(), minimumDropped: 40, maximumDropped: 65));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadBroochA>()));
+            itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<DreadMire>()));
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

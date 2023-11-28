@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
 			Item.damage = 61;
 			Item.knockBack = 3f;
-			Item.mana = 10;
+			Item.mana = 40;
 			Item.width = 54;
 			Item.height = 34;
 			Item.useTime = 36;
@@ -131,7 +131,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Projectile.timeLeft = Terraria.Projectile.SentryLifeTime;
 
 			// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.minionSlots = 1f;
+			Projectile.minionSlots = 0f;
 
 			// Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.penetrate = -1;
@@ -160,8 +160,8 @@ namespace Stellamod.Items.Weapons.Summon
 				new Vector3(117, 1, 187),
 				new Vector3(3, 3, 3), 0);
 
-			DrawHelper.PostDrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
-			DrawHelper.PreDrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
+			DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
+			DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
 			return true;
 		}
 

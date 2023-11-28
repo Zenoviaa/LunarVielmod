@@ -279,13 +279,13 @@ namespace Stellamod.Items.Weapons.Summon
 			switch (State)
 			{
 				case AttackState.Frost_Attack:
-					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.LightCyan, Color.White, ref lightColor);
+					DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightCyan, Color.White, ref lightColor);
 					break;
 				case AttackState.Lightning_Attack:
-					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.MediumPurple, Color.White, ref lightColor);
+					DrawHelper.DrawAdditiveAfterImage(Projectile, Color.MediumPurple, Color.White, ref lightColor);
 					break;
 				case AttackState.Tornado_Attack:
-					DrawHelper.PreDrawAdditiveAfterImage(Projectile, Color.LightGreen, Color.White, ref lightColor);
+					DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightGreen, Color.White, ref lightColor);
 					break;
 			}
 
@@ -297,13 +297,13 @@ namespace Stellamod.Items.Weapons.Summon
             switch (State)
             {
 				case AttackState.Frost_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightCyan, lightColor, 2);
+					DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightCyan, lightColor, 2);
 					break;
 				case AttackState.Lightning_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.MediumPurple, lightColor, 2);
+					DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.MediumPurple, lightColor, 2);
 					break;
 				case AttackState.Tornado_Attack:
-					DrawHelper.PostDrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightGreen, lightColor, 2);
+					DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.LightGreen, lightColor, 2);
 					break;
 			}
 		}

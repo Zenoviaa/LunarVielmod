@@ -1,8 +1,15 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.DropRules;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.Daedus;
 using System.Collections.Generic;
 using System.IO;
@@ -419,6 +426,21 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            int numResults = 5;
+
+            var armorRule = ItemDropRule.Common(ModContent.ItemType<DaedenLegs>(), chanceDenominator: numResults);
+            armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenChestplate>()));
+            armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenMask>()));
+
+            notExpertRule.OnSuccess(ItemDropRule.AlwaysAtleastOneSuccess(
+                ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
+                ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
+                ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
+                ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults),
+                armorRule));
+
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 
             // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
             // Boss masks are spawned with 1/7 chance
@@ -445,18 +467,14 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         }
        
 
-
         public override void OnKill()
         {
-
             if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
+
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
         }
-
-
-
     }
 }

@@ -29,6 +29,8 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.Expert;
             Item.maxStack = 999; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.expert = true;
+            Item.consumable = true;
         }
         public override bool CanRightClick() //this make so you can right click this item
         {

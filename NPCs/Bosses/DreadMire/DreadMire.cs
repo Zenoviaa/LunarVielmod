@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
@@ -760,16 +762,21 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), 2, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), 2, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), 2, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-   
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));    
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));
+
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DreadFoil>(), minimumDropped: 40, maximumDropped: 65));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Aneuriliac>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheRedSkull>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Pericarditis>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Myocardia>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DreadBroochA>()));
+            npcLoot.Add(notExpertRule);
         }
 
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;

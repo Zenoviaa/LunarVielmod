@@ -1,7 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.UI.Systems;
 using Stellamod.WorldG;
@@ -858,26 +864,26 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
+			//Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			//	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-
-
-		
+			//Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+			//npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.GintzeBossRel>()));
-
-		
-		// ItemDropRule.MasterModeCommonDrop for the relic
-
-		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GintziaBossBag>()));
+
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
 			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlBroochA>()));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlSpear>(), 4, minimumDropped: 900, maximumDropped: 3000));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
+			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
+				ModContent.ItemType<GintzlShield>(),
+				ModContent.ItemType<GintzlsSteed>(),
+				ModContent.ItemType<ShinobiTome>()));
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			// Boss masks are spawned with 1/7 chance

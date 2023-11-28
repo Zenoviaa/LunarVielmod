@@ -30,13 +30,6 @@ namespace Stellamod.Projectiles
             return new Color(255, 255, 255, 0) * Projectile.Opacity;
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            DrawHelper.PreDrawAnimatedProjectile(this, ref lightColor);
-
-            // It's important to return false, otherwise we also draw the original texture.
-            return false;
-        }
 
         public void FadeInAndOut()
         {
@@ -81,6 +74,7 @@ namespace Stellamod.Projectiles
             base.AI();
             Projectile.ai[0] += 1f;
             FadeInAndOut();
+            Visuals();
             Projectile.velocity *= 0.98f;
 
             //Animate It
@@ -94,6 +88,11 @@ namespace Stellamod.Projectiles
             //Despawn after 3 seconds.
             if (Projectile.ai[0] >= 180f)
                 Projectile.Kill();
+        }
+
+        private void Visuals()
+        {
+            DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
         public override void OnKill(int timeLeft)
