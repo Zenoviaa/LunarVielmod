@@ -692,17 +692,22 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedJackBoss, -1);
 
         }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), 2, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), 2, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<JackoBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 1, 7, 50));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, 7, 50));
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WanderingFlame>(), minimumDropped: 20, maximumDropped: 50));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<JackoShot>(), chanceDenominator: 2));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), chanceDenominator: 2));  
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), minimumDropped: 7, maximumDropped: 50));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 7, maximumDropped: 50));
+
+            //Dunno if she should drop verlia brooch in classic mode or not
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.JackBossRel>()));
+            npcLoot.Add(notExpertRule);
         }
-       
     }
 }

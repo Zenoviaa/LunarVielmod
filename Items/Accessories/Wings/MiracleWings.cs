@@ -11,6 +11,32 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Wings
 {
+	public class MiracleHoverPlayer : ModPlayer
+    {
+		public bool hasMiracleWings;
+        public override void ResetEffects()
+        {
+			hasMiracleWings = false;
+		}
+
+        public override void PostUpdateEquips()
+        {
+            if (!hasMiracleWings)
+            {
+				return;
+            }
+
+			if (Player.controlDown && Player.controlJump && !Player.mount.Active && Player.wingTime > 0)
+			{
+				Player.position.Y -= Player.velocity.Y;
+				if (Player.velocity.Y > 0.1f)
+					Player.velocity.Y = 0.1f;
+				else if (Player.velocity.Y < -0.1f)
+					Player.velocity.Y = -0.1f;
+			}
+		}
+    }
+
     [AutoloadEquip(EquipType.Wings)]
 	public class MiracleWings : ModItem
 	{
@@ -22,7 +48,7 @@ namespace Stellamod.Items.Accessories.Wings
 			// Acceleration multiplier: 2.5
 			ItemID.Sets.ItemNoGravity[Item.type] = true;
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(169, 9f, 1.5f, true, 9f);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(169, 9f, 1.5f, true, hoverFlySpeedOverride: 18f);
 		}
 
 		public override void SetDefaults()
@@ -34,7 +60,12 @@ namespace Stellamod.Items.Accessories.Wings
 			Item.accessory = true;
 		}
 
-		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+			player.GetModPlayer<MiracleHoverPlayer>().hasMiracleWings = true;
+		}
+
+        public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			ascentWhenFalling = 0.85f; // Falling glide speed

@@ -4150,6 +4150,7 @@ Mods: {
 				Tooltip:
 					'''
 					Allows flight and slow fall
+					Hold down to hover
 					Yeah... it's a miracle these things let you fly at all
 					'''
 			}
