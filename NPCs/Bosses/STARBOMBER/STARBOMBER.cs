@@ -24,6 +24,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER
 {
@@ -182,7 +183,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
-			NPC.scale = 2f;
+			NPC.scale = 0f;
 			NPC.alpha = 255;
 		
 
@@ -558,7 +559,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (EventWorld.Aurorean && Main.hardMode)
 			{
 
-				return 0.34f;
+				return 0f;
 
 			}
 

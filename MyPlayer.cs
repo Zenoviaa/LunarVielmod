@@ -25,6 +25,7 @@ using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
@@ -741,7 +742,35 @@ namespace Stellamod
                     int damage = Main.expertMode ? 0 : 0;
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
                 }
-            }
+				
+				
+				
+				bool npcAlreadyExists = false;
+				for (int i = 0; i < Main.maxNPCs; i++)
+				{
+					NPC npc = Main.npc[i];
+					if (npc.type == ModContent.NPCType<STARBOMBER>())
+					{
+						npcAlreadyExists = true;
+						break;
+					}
+				}
+
+				//Don't spawn the npc if it already exists
+				if (!npcAlreadyExists)
+				{
+					if (Main.rand.NextBool(4000) && Main.netMode != NetmodeID.MultiplayerClient && Main.hardMode)
+					{
+						int offsetX = Main.rand.Next(-10, 10) * 2;
+						int offsetY = Main.rand.Next(-500, 500) - 1700;
+						int damage = Main.expertMode ? 0 : 0;
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
+					}
+				}
+
+
+			
+			}
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
             {
