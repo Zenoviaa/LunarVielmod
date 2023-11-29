@@ -4172,6 +4172,16 @@ Mods: {
 				DisplayName: X-Scissor
 				Tooltip: TODO
 			}
+
+			LarveinGreatbow: {
+				Tooltip: ""
+				DisplayName: Larvein Greatbow
+			}
+
+			BubbleBlasher: {
+				Tooltip: ""
+				DisplayName: Bubble Blasher
+			}
 		}
 
 		JungleRuneI: {
@@ -4735,57 +4745,60 @@ Mods: {
 			RipperMinion.DisplayName: Ripper Minion
 			XScissorMinion.DisplayName: X Scissor Minion
 			MiracleSoulCollectibleProj.DisplayName: Miracle Soul Collectible Proj
+			BBBubble.DisplayName: B B Bubble
+			LarveinGreatbowR.DisplayName: Larvein Greatbow R
+			LarveinGreatbowL.DisplayName: Larvein Greatbow L
 		}
 
-	NPCs: {
-		HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-		HeatBombLighting.DisplayName: Heat Bomb Lighting
-		DreadFireBombG.DisplayName: Dread Fire Bomb G
-		DreadFireBomb.DisplayName: Dread Fire Bomb
+		NPCs: {
+			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			HeatBombLighting.DisplayName: Heat Bomb Lighting
+			DreadFireBombG.DisplayName: Dread Fire Bomb G
+			DreadFireBomb.DisplayName: Dread Fire Bomb
 
-		Ginztel: {
-			TownNPCMood: {
-				Princess_LovesNPC: I like {NPCName}.
-				LikeNPC_Princess: I like {NPCName}.
-				HateNPC: I hate {NPCName}.
-				DislikeNPC: I dislike {NPCName}.
-				LikeNPC: I like {NPCName}.
-				LoveNPC: I love {NPCName}.
-				DislikeBiome: I dislike {BiomeName}.
-				LikeBiome: I like {BiomeName}.
-				LoveBiome: I love {BiomeName}.
-				HateCrowded: I hate how crowded I am.
-				DislikeCrowded: I dislike how crowded I am.
-				LoveSpace: I love having so much space.
-				FarFromHome: I am too far from home.
-				NoHome: I hate not having a home.
-				Content: I am content.
+			Ginztel: {
+				TownNPCMood: {
+					Princess_LovesNPC: I like {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					HateNPC: I hate {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					LikeNPC: I like {NPCName}.
+					LoveNPC: I love {NPCName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					LoveBiome: I love {BiomeName}.
+					HateCrowded: I hate how crowded I am.
+					DislikeCrowded: I dislike how crowded I am.
+					LoveSpace: I love having so much space.
+					FarFromHome: I am too far from home.
+					NoHome: I hate not having a home.
+					Content: I am content.
+				}
+
+				DisplayName: Ginztel
 			}
 
-			DisplayName: Ginztel
-		}
+			Gambit: {
+				TownNPCMood: {
+					Princess_LovesNPC: I like {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
+					DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
+					LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
+					LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
+					DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
+					LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
+					LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
+					HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
+					DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
+					LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
+					FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
+					NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
+					Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
+				}
 
-		Gambit: {
-			TownNPCMood: {
-				Princess_LovesNPC: I like {NPCName}.
-				LikeNPC_Princess: I like {NPCName}.
-				HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
-				DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
-				LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
-				LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
-				DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
-				LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
-				LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
-				HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
-				DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
-				LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
-				FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
-				NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
-				Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
+				DisplayName: Gambit
 			}
-
-			DisplayName: Gambit
-		}
 
 			ShadowWraith.DisplayName: Shadow Wraith
 			ShadeSlime.DisplayName: Shade Slime
@@ -4891,101 +4904,609 @@ Mods: {
 			TericGramNPC2.DisplayName: Teric Gram N P C2
 			TericGramNPC.DisplayName: Teric Gram N P C
 
-		BoundGia: {
-			DisplayName: Bound Gia
+			BoundGia: {
+				DisplayName: Bound Gia
 
-			TownNPCMood: {
-				Content: I am content.
-				NoHome: I hate not having a home.
-				FarFromHome: I am too far from home.
-				LoveSpace: I love having so much space.
-				DislikeCrowded: I dislike how crowded I am.
-				HateCrowded: I hate how crowded I am.
-				LikeNPC_Princess: I like {NPCName}.
-				Princess_LovesNPC: I like {NPCName}.
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
 			}
-		}
 
-		Gia: {
-			DisplayName: The Scientist
+			Gia: {
+				DisplayName: The Scientist
 
-			TownNPCMood: {
-				Content: I am content.
-				NoHome: I hate not having a home.
-				FarFromHome: I am too far from home.
-				LoveSpace: I love having so much space.
-				DislikeCrowded: I dislike how crowded I am.
-				HateCrowded: I hate how crowded I am.
-				LoveBiome: I love {BiomeName}.
-				LikeBiome: I like {BiomeName}.
-				DislikeBiome: I dislike {BiomeName}.
-				LoveNPC: I love {NPCName}.
-				LikeNPC: I like {NPCName}.
-				DislikeNPC: I dislike {NPCName}.
-				HateNPC: I hate {NPCName}.
-				LikeNPC_Princess: I like {NPCName}.
-				Princess_LovesNPC: I like {NPCName}.
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+
+				Buffs: {
+					VoidMinionBuff: {
+						Description: OAJSIODJASIODJISA
+						DisplayName: Void Minion Buff
+					}
+
+					TheBurningRodBuff: {
+						Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+						DisplayName: The Burning Rod Buff
+					}
+
+					SwarmerMinionBuff: {
+						Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+						DisplayName: Swarmer Minion Buff
+					}
+
+					SolMothBuff: {
+						Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+						DisplayName: Sol Moth Buff
+					}
+
+					ProbeBuff: {
+						Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+						DisplayName: Probe Buff
+					}
+
+					MushroomStaveBuff: {
+						Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+						DisplayName: Mushroom Stave Buff
+					}
+
+					ManaWandMinionBuff: {
+						Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+						DisplayName: Mana Wand Minion Buff
+					}
+
+					LifeWandMinionBuff: {
+						Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+						DisplayName: Life Wand Minion Buff
+					}
+
+					JellyMinionBuff: {
+						Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+						DisplayName: Jelly Minion Buff
+					}
+
+					IvyakenBuff: {
+						Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+						DisplayName: Ivyaken Buff
+					}
+
+					IrradiatedCreeperBuff: {
+						Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+						DisplayName: Irradiated Creeper Buff
+					}
+
+					IceboundMinionBuff: {
+						Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+						DisplayName: Icebound Minion Buff
+					}
+
+					HMMinionBuff: {
+						Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+						DisplayName: H M Minion Buff
+					}
+
+					FCBuff: {
+						Description: Mods.Stellamod.Buffs.FCBuff.Description
+						DisplayName: F C Buff
+					}
+
+					DripperBuff: {
+						Description: Mods.Stellamod.Buffs.DripperBuff.Description
+						DisplayName: Dripper Buff
+					}
+
+					AuroranSeekerMinionBuff: {
+						Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+						DisplayName: Auroran Seeker Minion Buff
+					}
+
+					ArncharMinionBuff: {
+						Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+						DisplayName: Arnchar Minion Buff
+					}
+
+					Wounded: {
+						Description: Mods.Stellamod.Buffs.Wounded.Description
+						DisplayName: Wounded
+					}
+
+					Whipdeath: {
+						Description: Mods.Stellamod.Buffs.Whipdeath.Description
+						DisplayName: Whipdeath
+					}
+
+					MorrowWhipDebuff: {
+						Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+						DisplayName: Morrow Whip Debuff
+					}
+
+					Morrow: {
+						Description: Mods.Stellamod.Buffs.Morrow.Description
+						DisplayName: Morrow
+					}
+
+					SnowFlame: {
+						Description: Mods.Stellamod.Buffs.SnowFlame.Description
+						DisplayName: Snow Flame
+					}
+
+					Rekin: {
+						Description: Mods.Stellamod.Buffs.Rekin.Description
+						DisplayName: Rekin
+					}
+
+					PocketSandBuff: {
+						Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+						DisplayName: Pocket Sand Buff
+					}
+
+					Love: {
+						Description: Mods.Stellamod.Buffs.Love.Description
+						DisplayName: Love
+					}
+
+					Irradiation: {
+						Description: Mods.Stellamod.Buffs.Irradiation.Description
+						DisplayName: Irradiation
+					}
+
+					Harvester: {
+						Description: Mods.Stellamod.Buffs.Harvester.Description
+						DisplayName: Harvester
+					}
+
+					Gintzingwinds: {
+						Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+						DisplayName: Gintzingwinds
+					}
+
+					GintzeSeen: {
+						Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+						DisplayName: Gintze Seen
+					}
+
+					GintzelSheildCD: {
+						Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+						DisplayName: Gintzel Sheild C D
+					}
+
+					GintzelSheild: {
+						Description: Mods.Stellamod.Buffs.GintzelSheild.Description
+						DisplayName: Gintzel Sheild
+					}
+
+					Elegance: {
+						Description: Mods.Stellamod.Buffs.Elegance.Description
+						DisplayName: Elegance
+					}
+
+					VoiddDust: {
+						Description: Mods.Stellamod.Buffs.VoiddDust.Description
+						DisplayName: Voidd Dust
+					}
+
+					TrickDust: {
+						Description: Mods.Stellamod.Buffs.TrickDust.Description
+						DisplayName: Trick Dust
+					}
+
+					SongDust: {
+						Description: Mods.Stellamod.Buffs.SongDust.Description
+						DisplayName: Song Dust
+					}
+
+					ShadeDust: {
+						Description: Mods.Stellamod.Buffs.ShadeDust.Description
+						DisplayName: Shade Dust
+					}
+
+					KaevDust: {
+						Description: Mods.Stellamod.Buffs.KaevDust.Description
+						DisplayName: Kaev Dust
+					}
+
+					IceDust: {
+						Description: Mods.Stellamod.Buffs.IceDust.Description
+						DisplayName: Ice Dust
+					}
+
+					GrassBuff: {
+						Description: Mods.Stellamod.Buffs.GrassBuff.Description
+						DisplayName: Grass Buff
+					}
+
+					GovheilDust: {
+						Description: Mods.Stellamod.Buffs.GovheilDust.Description
+						DisplayName: Govheil Dust
+					}
+
+					FlowerBuff: {
+						Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+						DisplayName: Flower Buff
+					}
+
+					FlameDust: {
+						Description: Mods.Stellamod.Buffs.FlameDust.Description
+						DisplayName: Flame Dust
+					}
+
+					EXPtime4: {
+						Description: Mods.Stellamod.Buffs.EXPtime4.Description
+						DisplayName: E X Ptime4
+					}
+
+					EXPtime3: {
+						Description: Mods.Stellamod.Buffs.EXPtime3.Description
+						DisplayName: E X Ptime3
+					}
+
+					EXPtime2: {
+						Description: Mods.Stellamod.Buffs.EXPtime2.Description
+						DisplayName: E X Ptime2
+					}
+
+					EXPtime: {
+						Description: Mods.Stellamod.Buffs.EXPtime.Description
+						DisplayName: E X Ptime
+					}
+
+					CrystalDust: {
+						Description: Mods.Stellamod.Buffs.CrystalDust.Description
+						DisplayName: Crystal Dust
+					}
+
+					CoalBuff: {
+						Description: Mods.Stellamod.Buffs.CoalBuff.Description
+						DisplayName: Coal Buff
+					}
+
+					AlcadDust: {
+						Description: Mods.Stellamod.Buffs.AlcadDust.Description
+						DisplayName: Alcad Dust
+					}
+
+					AivanDust: {
+						Description: Mods.Stellamod.Buffs.AivanDust.Description
+						DisplayName: Aivan Dust
+					}
+
+					Dusted: {
+						Description: Mods.Stellamod.Buffs.Dusted.Description
+						DisplayName: Dusted
+					}
+
+					DeathMultiplierBloodLamp: {
+						Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+						DisplayName: Death Multiplier Blood Lamp
+					}
+
+					DeathMultiplier: {
+						Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+						DisplayName: Death Multiplier
+					}
+
+					DarkHold: {
+						Description: Mods.Stellamod.Buffs.DarkHold.Description
+						DisplayName: Dark Hold
+					}
+
+					VixedB: {
+						Description: Mods.Stellamod.Buffs.VixedB.Description
+						DisplayName: Vixed B
+					}
+
+					VerliaBroo: {
+						Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+						DisplayName: Verlia Broo
+					}
+
+					StoneB: {
+						Description: Mods.Stellamod.Buffs.StoneB.Description
+						DisplayName: Stone B
+					}
+
+					Spragald: {
+						Description: Mods.Stellamod.Buffs.Spragald.Description
+						DisplayName: Spragald
+					}
+
+					Slimee: {
+						Description: Mods.Stellamod.Buffs.Slimee.Description
+						DisplayName: Slimee
+					}
+
+					MalB: {
+						Description: Mods.Stellamod.Buffs.MalB.Description
+						DisplayName: Mal B
+					}
+
+					IceBrooch: {
+						Description: Mods.Stellamod.Buffs.IceBrooch.Description
+						DisplayName: Ice Brooch
+					}
+
+					GovheilB: {
+						Description: Mods.Stellamod.Buffs.GovheilB.Description
+						DisplayName: Govheil B
+					}
+
+					Goldren: {
+						Description: Mods.Stellamod.Buffs.Goldren.Description
+						DisplayName: Goldren
+					}
+
+					GintBroo: {
+						Description: Mods.Stellamod.Buffs.GintBroo.Description
+						DisplayName: Gint Broo
+					}
+
+					Flyfish: {
+						Description: Mods.Stellamod.Buffs.Flyfish.Description
+						DisplayName: Flyfish
+					}
+
+					DreadB: {
+						Description: Mods.Stellamod.Buffs.DreadB.Description
+						DisplayName: Dread B
+					}
+
+					Diarii: {
+						Description: Mods.Stellamod.Buffs.Diarii.Description
+						DisplayName: Diarii
+					}
+
+					BurningGB: {
+						Description: Mods.Stellamod.Buffs.BurningGB.Description
+						DisplayName: Burning G B
+					}
+
+					BearB: {
+						Description: Mods.Stellamod.Buffs.BearB.Description
+						DisplayName: Bear B
+					}
+
+					AurelusB: {
+						Description: Mods.Stellamod.Buffs.AurelusB.Description
+						DisplayName: Aurelus B
+					}
+
+					AmethystBroo: {
+						Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+						DisplayName: Amethyst Broo
+					}
+
+					AssassinsSlashBuff: {
+						Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+						DisplayName: Assassins Slash Buff
+					}
+
+					ArcaneDust: {
+						Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+						DisplayName: Arcane Dust
+					}
+
+					AcidFlame: {
+						Description: Mods.Stellamod.Buffs.AcidFlame.Description
+						DisplayName: Acid Flame
+					}
+
+					AbyssalFlame: {
+						Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+						DisplayName: Abyssal Flame
+					}
+				}
+
+				Tiles: {
+					VerianoreTile.MapEntry: Verianore Tile
+					SunAlter.MapEntry: Sun Alter
+					wall7.MapEntry: wall7
+					wall6.MapEntry: wall6
+					wall5.MapEntry: wall5
+					wall4.MapEntry: wall4
+					wall3.MapEntry: wall3
+					wall2.MapEntry: wall2
+					wall1.MapEntry: wall1
+					StoneChest.MapEntry: Stone Chest
+					stand.MapEntry: stand
+					SpikeS.MapEntry: Spike S
+					SmallShroomS.MapEntry: Small Shroom S
+					PotmedS.MapEntry: Potmed S
+					MushroomBigS.MapEntry: Mushroom Big S
+					MorrowStoneS.MapEntry: Morrow Stone S
+					MorrowDeathS.MapEntry: Morrow Death S
+					MorrowDeath2S.MapEntry: Morrow Death2 S
+
+					MorrowChest: {
+						MapEntry0: Morrow Chest
+						MapEntry1: Locked Morrow Chest
+					}
+
+					LogS.MapEntry: Log S
+					GrassMossS.MapEntry: Grass Moss S
+					GrassBigS.MapEntry: Grass Big S
+					VerliasShrine.MapEntry: Verlias Shrine
+					Orb1.MapEntry: Orb1
+					FlowerMulti.MapEntry: Flower Multi
+					Crystal2.MapEntry: Crystal2
+					Crystal1.MapEntry: Crystal1
+					CathedralChest.MapEntry: Cathedral Chest
+					BenchS.MapEntry: Bench S
+					BarS.MapEntry: Bar S
+					Zebi.MapEntry: Zebi
+					VheilCurtainRight.MapEntry: Vheil Curtain Right
+					VheilCurtainLeft.MapEntry: Vheil Curtain Left
+					RestingGrounds.MapEntry: Resting Grounds
+					MasistRight.MapEntry: Masist Right
+					MasistLeft.MapEntry: Masist Left
+					JackPost.MapEntry: Jack Post
+					GovheilWei.MapEntry: Govheil Wei
+					GovheilWall.MapEntry: Govheil Wall
+					GovheilHall.MapEntry: Govheil Hall
+					GovheilBore.MapEntry: Govheil Bore
+					GothivDoorClosed.MapEntry: Gothiv Door Closed
+					Gothiv.MapEntry: Gothiv
+					CurtainRight.MapEntry: Curtain Right
+					CurtainLeft.MapEntry: Curtain Left
+					StarbloomDirt.MapEntry: Starbloom Dirt
+					ShrineSolMothC.MapEntry: Shrine Sol Moth C
+					ShrineLights.MapEntry: Shrine Lights
+					ShrineLifeC.MapEntry: Shrine Life C
+					ShrineHalhurishC.MapEntry: Shrine Halhurish C
+					ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+					ShrineBUAN.MapEntry: Shrine B U A N
+					ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+					RunicTableT.MapEntry: Runic Table T
+					LostScrapT.MapEntry: Lost Scrap T
+					HuntiacTile.MapEntry: Huntiac Tile
+					GovheilTile.MapEntry: Govheil Tile
+					FrileOreTile.MapEntry: Frile Ore Tile
+					DiminishedMetal.MapEntry: Diminished Metal
+					CoreGemT.MapEntry: Core Gem T
+					CellConverter.MapEntry: Cell Converter
+					BroochesTable.MapEntry: Brooches Table
+					AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
+					Arnchar.MapEntry: Arnchar
+					Stalagmite4.MapEntry: Stalagmite4
+					Stalagmite3.MapEntry: Stalagmite3
+					Stalagmite2.MapEntry: Stalagmite2
+					Stalagmite1.MapEntry: Stalagmite1
+					OwlTrunck3.MapEntry: Owl Trunck3
+					OwlTrunck2.MapEntry: Owl Trunck2
+					OwlTrunck1.MapEntry: Owl Trunck1
+					BigRock4.MapEntry: Big Rock4
+					BigRock3.MapEntry: Big Rock3
+					BigRock2.MapEntry: Big Rock2
+					BigRock1.MapEntry: Big Rock1
+					AlcaologyTable.MapEntry: Alcaology Table
+					AcidStone.MapEntry: Acid Stone
+					AcidMush3.MapEntry: Acid Mush3
+					AcidMush2.MapEntry: Acid Mush2
+					AcidMush1.MapEntry: Acid Mush1
+					AcidialDirt.MapEntry: Acidial Dirt
+					AcidBush3.MapEntry: Acid Bush3
+					AcidBush2.MapEntry: Acid Bush2
+					AcidBush1.MapEntry: Acid Bush1
+					AcidBrick.MapEntry: Acid Brick
+					TealBulb3.MapEntry: Teal Bulb3
+					TealBulb2.MapEntry: Teal Bulb2
+					TealBulb.MapEntry: Teal Bulb
+					SoulOre.MapEntry: Soul Ore
+					BlueFlower2.MapEntry: Blue Flower2
+					BlueFlower.MapEntry: Blue Flower
+					AurelusSummon.MapEntry: Aurelus Summon
+					AurelusPost.MapEntry: Aurelus Post
+					AurelusDoorClosed.MapEntry: Aurelus Door Closed
+					AurelusChest.MapEntry: Aurelus Chest
+					AurelusBorderS.MapEntry: Aurelus Border S
+					AbyssalStone.MapEntry: Abyssal Stone
+					Alcite.MapEntry: Alcite
+					AowerBottom.MapEntry: Aower Bottom
+					AowerTop.MapEntry: Aower Top
+					CurtainLeftRC.MapEntry: Curtain Left R C
+					CurtainRightRC.MapEntry: Curtain Right R C
+					CurtainTop.MapEntry: Curtain Top
+					Rectite.MapEntry: Rectite
+					Skullpile.MapEntry: Skullpile
+				}
+
+				Biomes: {
+					StarbloomBiome: {
+						TownNPCDialogueName: the Starbloom Biome
+						DisplayName: Starbloom Biome
+					}
+
+					NaxtrinTemple: {
+						TownNPCDialogueName: the Naxtrin Temple
+						DisplayName: Naxtrin Temple
+					}
+
+					MorrowUndergroundBiome: {
+						TownNPCDialogueName: the Morrow Underground Biome
+						DisplayName: Morrow Underground Biome
+					}
+
+					MarrowSurfaceBiome: {
+						TownNPCDialogueName: the Marrow Surface Biome
+						DisplayName: Marrow Surface Biome
+					}
+
+					GovheilCastle: {
+						TownNPCDialogueName: the Govheil Castle
+						DisplayName: Govheil Castle
+					}
+
+					FableBiome: {
+						TownNPCDialogueName: the Fable Biome
+						DisplayName: Fable Biome
+					}
+
+					CathedralBiome: {
+						TownNPCDialogueName: the Cathedral Biome
+						DisplayName: Cathedral Biome
+					}
+
+					AurelusBiome: {
+						TownNPCDialogueName: the Aurelus Biome
+						DisplayName: Aurelus Biome
+					}
+
+					AcidBiome: {
+						TownNPCDialogueName: the Acid Biome
+						DisplayName: Acid Biome
+					}
+
+					AbyssBiome: {
+						TownNPCDialogueName: the Abyss Biome
+						DisplayName: Abyss Biome
+					}
+
+					AlcadziaBiome: {
+						DisplayName: Alcadzia Biome
+						TownNPCDialogueName: Royal Capital Alcadzia
+					}
+				}
+			}
+
+			NoxianWood: {
+				DisplayName: Noxian Wood
+				Tooltip: ""
+			}
+
+			StoneKey: {
+				DisplayName: Stone Key
+				Tooltip: A key to open every stone chest in existence!
+			}
+
+			StoneChesti: {
+				DisplayName: Stone Chest
+				Tooltip: ""
 			}
 
 			Buffs: {
-				VoidMinionBuff: {
-					Description: OAJSIODJASIODJISA
-					DisplayName: Void Minion Buff
-				}
-
-				TheBurningRodBuff: {
-					Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-					DisplayName: The Burning Rod Buff
-				}
-
-				SwarmerMinionBuff: {
-					Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
-					DisplayName: Swarmer Minion Buff
-				}
-
-				SolMothBuff: {
-					Description: Mods.Stellamod.Buffs.SolMothBuff.Description
-					DisplayName: Sol Moth Buff
-				}
-
-				ProbeBuff: {
-					Description: Mods.Stellamod.Buffs.ProbeBuff.Description
-					DisplayName: Probe Buff
-				}
-
-				MushroomStaveBuff: {
-					Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-					DisplayName: Mushroom Stave Buff
-				}
-
-				ManaWandMinionBuff: {
-					Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
-					DisplayName: Mana Wand Minion Buff
-				}
-
-				LifeWandMinionBuff: {
-					Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
-					DisplayName: Life Wand Minion Buff
-				}
-
-				JellyMinionBuff: {
-					Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
-					DisplayName: Jelly Minion Buff
-				}
-
-				IvyakenBuff: {
-					Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
-					DisplayName: Ivyaken Buff
-				}
-
-				IrradiatedCreeperBuff: {
-					Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
-					DisplayName: Irradiated Creeper Buff
-				}
-
 				IceboundMinionBuff: {
-					Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
 					DisplayName: Icebound Minion Buff
+					Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
 				}
 
 				HMMinionBuff: {
@@ -5302,583 +5823,75 @@ Mods: {
 					Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
 					DisplayName: Abyssal Flame
 				}
-			}
 
-			Tiles: {
-				VerianoreTile.MapEntry: Verianore Tile
-				SunAlter.MapEntry: Sun Alter
-				wall7.MapEntry: wall7
-				wall6.MapEntry: wall6
-				wall5.MapEntry: wall5
-				wall4.MapEntry: wall4
-				wall3.MapEntry: wall3
-				wall2.MapEntry: wall2
-				wall1.MapEntry: wall1
-				StoneChest.MapEntry: Stone Chest
-				stand.MapEntry: stand
-				SpikeS.MapEntry: Spike S
-				SmallShroomS.MapEntry: Small Shroom S
-				PotmedS.MapEntry: Potmed S
-				MushroomBigS.MapEntry: Mushroom Big S
-				MorrowStoneS.MapEntry: Morrow Stone S
-				MorrowDeathS.MapEntry: Morrow Death S
-				MorrowDeath2S.MapEntry: Morrow Death2 S
-
-				MorrowChest: {
-					MapEntry0: Morrow Chest
-					MapEntry1: Locked Morrow Chest
+				IrradiatedCreeperBuff: {
+					DisplayName: Irradiated Creeper Buff
+					Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
 				}
 
-				LogS.MapEntry: Log S
-				GrassMossS.MapEntry: Grass Moss S
-				GrassBigS.MapEntry: Grass Big S
-				VerliasShrine.MapEntry: Verlias Shrine
-				Orb1.MapEntry: Orb1
-				FlowerMulti.MapEntry: Flower Multi
-				Crystal2.MapEntry: Crystal2
-				Crystal1.MapEntry: Crystal1
-				CathedralChest.MapEntry: Cathedral Chest
-				BenchS.MapEntry: Bench S
-				BarS.MapEntry: Bar S
-				Zebi.MapEntry: Zebi
-				VheilCurtainRight.MapEntry: Vheil Curtain Right
-				VheilCurtainLeft.MapEntry: Vheil Curtain Left
-				RestingGrounds.MapEntry: Resting Grounds
-				MasistRight.MapEntry: Masist Right
-				MasistLeft.MapEntry: Masist Left
-				JackPost.MapEntry: Jack Post
-				GovheilWei.MapEntry: Govheil Wei
-				GovheilWall.MapEntry: Govheil Wall
-				GovheilHall.MapEntry: Govheil Hall
-				GovheilBore.MapEntry: Govheil Bore
-				GothivDoorClosed.MapEntry: Gothiv Door Closed
-				Gothiv.MapEntry: Gothiv
-				CurtainRight.MapEntry: Curtain Right
-				CurtainLeft.MapEntry: Curtain Left
-				StarbloomDirt.MapEntry: Starbloom Dirt
-				ShrineSolMothC.MapEntry: Shrine Sol Moth C
-				ShrineLights.MapEntry: Shrine Lights
-				ShrineLifeC.MapEntry: Shrine Life C
-				ShrineHalhurishC.MapEntry: Shrine Halhurish C
-				ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
-				ShrineBUAN.MapEntry: Shrine B U A N
-				ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
-				RunicTableT.MapEntry: Runic Table T
-				LostScrapT.MapEntry: Lost Scrap T
-				HuntiacTile.MapEntry: Huntiac Tile
-				GovheilTile.MapEntry: Govheil Tile
-				FrileOreTile.MapEntry: Frile Ore Tile
-				DiminishedMetal.MapEntry: Diminished Metal
-				CoreGemT.MapEntry: Core Gem T
-				CellConverter.MapEntry: Cell Converter
-				BroochesTable.MapEntry: Brooches Table
-				AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
-				Arnchar.MapEntry: Arnchar
-				Stalagmite4.MapEntry: Stalagmite4
-				Stalagmite3.MapEntry: Stalagmite3
-				Stalagmite2.MapEntry: Stalagmite2
-				Stalagmite1.MapEntry: Stalagmite1
-				OwlTrunck3.MapEntry: Owl Trunck3
-				OwlTrunck2.MapEntry: Owl Trunck2
-				OwlTrunck1.MapEntry: Owl Trunck1
-				BigRock4.MapEntry: Big Rock4
-				BigRock3.MapEntry: Big Rock3
-				BigRock2.MapEntry: Big Rock2
-				BigRock1.MapEntry: Big Rock1
-				AlcaologyTable.MapEntry: Alcaology Table
-				AcidStone.MapEntry: Acid Stone
-				AcidMush3.MapEntry: Acid Mush3
-				AcidMush2.MapEntry: Acid Mush2
-				AcidMush1.MapEntry: Acid Mush1
-				AcidialDirt.MapEntry: Acidial Dirt
-				AcidBush3.MapEntry: Acid Bush3
-				AcidBush2.MapEntry: Acid Bush2
-				AcidBush1.MapEntry: Acid Bush1
-				AcidBrick.MapEntry: Acid Brick
-				TealBulb3.MapEntry: Teal Bulb3
-				TealBulb2.MapEntry: Teal Bulb2
-				TealBulb.MapEntry: Teal Bulb
-				SoulOre.MapEntry: Soul Ore
-				BlueFlower2.MapEntry: Blue Flower2
-				BlueFlower.MapEntry: Blue Flower
-				AurelusSummon.MapEntry: Aurelus Summon
-				AurelusPost.MapEntry: Aurelus Post
-				AurelusDoorClosed.MapEntry: Aurelus Door Closed
-				AurelusChest.MapEntry: Aurelus Chest
-				AurelusBorderS.MapEntry: Aurelus Border S
-				AbyssalStone.MapEntry: Abyssal Stone
-				Alcite.MapEntry: Alcite
-				AowerBottom.MapEntry: Aower Bottom
-				AowerTop.MapEntry: Aower Top
-				CurtainLeftRC.MapEntry: Curtain Left R C
-				CurtainRightRC.MapEntry: Curtain Right R C
-				CurtainTop.MapEntry: Curtain Top
-				Rectite.MapEntry: Rectite
-				Skullpile.MapEntry: Skullpile
-			}
-
-			Biomes: {
-				StarbloomBiome: {
-					TownNPCDialogueName: the Starbloom Biome
-					DisplayName: Starbloom Biome
+				IvyakenBuff: {
+					DisplayName: Ivyaken Buff
+					Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
 				}
 
-				NaxtrinTemple: {
-					TownNPCDialogueName: the Naxtrin Temple
-					DisplayName: Naxtrin Temple
+				JellyMinionBuff: {
+					DisplayName: Jelly Minion Buff
+					Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
 				}
 
-				MorrowUndergroundBiome: {
-					TownNPCDialogueName: the Morrow Underground Biome
-					DisplayName: Morrow Underground Biome
+				LifeWandMinionBuff: {
+					DisplayName: Life Wand Minion Buff
+					Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
 				}
 
-				MarrowSurfaceBiome: {
-					TownNPCDialogueName: the Marrow Surface Biome
-					DisplayName: Marrow Surface Biome
+				ManaWandMinionBuff: {
+					DisplayName: Mana Wand Minion Buff
+					Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
 				}
 
-				GovheilCastle: {
-					TownNPCDialogueName: the Govheil Castle
-					DisplayName: Govheil Castle
+				MushroomStaveBuff: {
+					DisplayName: Mushroom Stave Buff
+					Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
 				}
 
-				FableBiome: {
-					TownNPCDialogueName: the Fable Biome
-					DisplayName: Fable Biome
+				ProbeBuff: {
+					DisplayName: Probe Buff
+					Description: Mods.Stellamod.Buffs.ProbeBuff.Description
 				}
 
-				CathedralBiome: {
-					TownNPCDialogueName: the Cathedral Biome
-					DisplayName: Cathedral Biome
+				SolMothBuff: {
+					DisplayName: Sol Moth Buff
+					Description: Mods.Stellamod.Buffs.SolMothBuff.Description
 				}
 
-				AurelusBiome: {
-					TownNPCDialogueName: the Aurelus Biome
-					DisplayName: Aurelus Biome
+				SwarmerMinionBuff: {
+					DisplayName: Swarmer Minion Buff
+					Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
 				}
 
-				AcidBiome: {
-					TownNPCDialogueName: the Acid Biome
-					DisplayName: Acid Biome
+				TheBurningRodBuff: {
+					DisplayName: The Burning Rod Buff
+					Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
 				}
 
-				AbyssBiome: {
-					TownNPCDialogueName: the Abyss Biome
-					DisplayName: Abyss Biome
-				}
-
-				AlcadziaBiome: {
-					DisplayName: Alcadzia Biome
-					TownNPCDialogueName: Royal Capital Alcadzia
+				VoidMinionBuff: {
+					DisplayName: Void Minion Buff
+					Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
 				}
 			}
-		}
 
-		NoxianWood: {
-			DisplayName: Noxian Wood
-			Tooltip: ""
-		}
+			NPCs: {
+				CommanderGintzia.DisplayName: Commander Gintzia
 
-		StoneKey: {
-			DisplayName: Stone Key
-			Tooltip: A key to open every stone chest in existence!
-		}
+				DreadMire: {
+					SpawnInfo: Kill a blood cyst during a blood moon.
+					DisplayName: Dreadmire
 
-		StoneChesti: {
-			DisplayName: Stone Chest
-			Tooltip: ""
-		}
-
-		Buffs: {
-			IceboundMinionBuff: {
-				DisplayName: Icebound Minion Buff
-				Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
-			}
-
-			HMMinionBuff: {
-				Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
-				DisplayName: H M Minion Buff
-			}
-
-			FCBuff: {
-				Description: Mods.Stellamod.Buffs.FCBuff.Description
-				DisplayName: F C Buff
-			}
-
-			DripperBuff: {
-				Description: Mods.Stellamod.Buffs.DripperBuff.Description
-				DisplayName: Dripper Buff
-			}
-
-			AuroranSeekerMinionBuff: {
-				Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
-				DisplayName: Auroran Seeker Minion Buff
-			}
-
-			ArncharMinionBuff: {
-				Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
-				DisplayName: Arnchar Minion Buff
-			}
-
-			Wounded: {
-				Description: Mods.Stellamod.Buffs.Wounded.Description
-				DisplayName: Wounded
-			}
-
-			Whipdeath: {
-				Description: Mods.Stellamod.Buffs.Whipdeath.Description
-				DisplayName: Whipdeath
-			}
-
-			MorrowWhipDebuff: {
-				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-				DisplayName: Morrow Whip Debuff
-			}
-
-			Morrow: {
-				Description: Mods.Stellamod.Buffs.Morrow.Description
-				DisplayName: Morrow
-			}
-
-			SnowFlame: {
-				Description: Mods.Stellamod.Buffs.SnowFlame.Description
-				DisplayName: Snow Flame
-			}
-
-			Rekin: {
-				Description: Mods.Stellamod.Buffs.Rekin.Description
-				DisplayName: Rekin
-			}
-
-			PocketSandBuff: {
-				Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
-				DisplayName: Pocket Sand Buff
-			}
-
-			Love: {
-				Description: Mods.Stellamod.Buffs.Love.Description
-				DisplayName: Love
-			}
-
-			Irradiation: {
-				Description: Mods.Stellamod.Buffs.Irradiation.Description
-				DisplayName: Irradiation
-			}
-
-			Harvester: {
-				Description: Mods.Stellamod.Buffs.Harvester.Description
-				DisplayName: Harvester
-			}
-
-			Gintzingwinds: {
-				Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
-				DisplayName: Gintzingwinds
-			}
-
-			GintzeSeen: {
-				Description: Mods.Stellamod.Buffs.GintzeSeen.Description
-				DisplayName: Gintze Seen
-			}
-
-			GintzelSheildCD: {
-				Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
-				DisplayName: Gintzel Sheild C D
-			}
-
-			GintzelSheild: {
-				Description: Mods.Stellamod.Buffs.GintzelSheild.Description
-				DisplayName: Gintzel Sheild
-			}
-
-			Elegance: {
-				Description: Mods.Stellamod.Buffs.Elegance.Description
-				DisplayName: Elegance
-			}
-
-			VoiddDust: {
-				Description: Mods.Stellamod.Buffs.VoiddDust.Description
-				DisplayName: Voidd Dust
-			}
-
-			TrickDust: {
-				Description: Mods.Stellamod.Buffs.TrickDust.Description
-				DisplayName: Trick Dust
-			}
-
-			SongDust: {
-				Description: Mods.Stellamod.Buffs.SongDust.Description
-				DisplayName: Song Dust
-			}
-
-			ShadeDust: {
-				Description: Mods.Stellamod.Buffs.ShadeDust.Description
-				DisplayName: Shade Dust
-			}
-
-			KaevDust: {
-				Description: Mods.Stellamod.Buffs.KaevDust.Description
-				DisplayName: Kaev Dust
-			}
-
-			IceDust: {
-				Description: Mods.Stellamod.Buffs.IceDust.Description
-				DisplayName: Ice Dust
-			}
-
-			GrassBuff: {
-				Description: Mods.Stellamod.Buffs.GrassBuff.Description
-				DisplayName: Grass Buff
-			}
-
-			GovheilDust: {
-				Description: Mods.Stellamod.Buffs.GovheilDust.Description
-				DisplayName: Govheil Dust
-			}
-
-			FlowerBuff: {
-				Description: Mods.Stellamod.Buffs.FlowerBuff.Description
-				DisplayName: Flower Buff
-			}
-
-			FlameDust: {
-				Description: Mods.Stellamod.Buffs.FlameDust.Description
-				DisplayName: Flame Dust
-			}
-
-			EXPtime4: {
-				Description: Mods.Stellamod.Buffs.EXPtime4.Description
-				DisplayName: E X Ptime4
-			}
-
-			EXPtime3: {
-				Description: Mods.Stellamod.Buffs.EXPtime3.Description
-				DisplayName: E X Ptime3
-			}
-
-			EXPtime2: {
-				Description: Mods.Stellamod.Buffs.EXPtime2.Description
-				DisplayName: E X Ptime2
-			}
-
-			EXPtime: {
-				Description: Mods.Stellamod.Buffs.EXPtime.Description
-				DisplayName: E X Ptime
-			}
-
-			CrystalDust: {
-				Description: Mods.Stellamod.Buffs.CrystalDust.Description
-				DisplayName: Crystal Dust
-			}
-
-			CoalBuff: {
-				Description: Mods.Stellamod.Buffs.CoalBuff.Description
-				DisplayName: Coal Buff
-			}
-
-			AlcadDust: {
-				Description: Mods.Stellamod.Buffs.AlcadDust.Description
-				DisplayName: Alcad Dust
-			}
-
-			AivanDust: {
-				Description: Mods.Stellamod.Buffs.AivanDust.Description
-				DisplayName: Aivan Dust
-			}
-
-			Dusted: {
-				Description: Mods.Stellamod.Buffs.Dusted.Description
-				DisplayName: Dusted
-			}
-
-			DeathMultiplierBloodLamp: {
-				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-				DisplayName: Death Multiplier Blood Lamp
-			}
-
-			DeathMultiplier: {
-				Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
-				DisplayName: Death Multiplier
-			}
-
-			DarkHold: {
-				Description: Mods.Stellamod.Buffs.DarkHold.Description
-				DisplayName: Dark Hold
-			}
-
-			VixedB: {
-				Description: Mods.Stellamod.Buffs.VixedB.Description
-				DisplayName: Vixed B
-			}
-
-			VerliaBroo: {
-				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
-				DisplayName: Verlia Broo
-			}
-
-			StoneB: {
-				Description: Mods.Stellamod.Buffs.StoneB.Description
-				DisplayName: Stone B
-			}
-
-			Spragald: {
-				Description: Mods.Stellamod.Buffs.Spragald.Description
-				DisplayName: Spragald
-			}
-
-			Slimee: {
-				Description: Mods.Stellamod.Buffs.Slimee.Description
-				DisplayName: Slimee
-			}
-
-			MalB: {
-				Description: Mods.Stellamod.Buffs.MalB.Description
-				DisplayName: Mal B
-			}
-
-			IceBrooch: {
-				Description: Mods.Stellamod.Buffs.IceBrooch.Description
-				DisplayName: Ice Brooch
-			}
-
-			GovheilB: {
-				Description: Mods.Stellamod.Buffs.GovheilB.Description
-				DisplayName: Govheil B
-			}
-
-			Goldren: {
-				Description: Mods.Stellamod.Buffs.Goldren.Description
-				DisplayName: Goldren
-			}
-
-			GintBroo: {
-				Description: Mods.Stellamod.Buffs.GintBroo.Description
-				DisplayName: Gint Broo
-			}
-
-			Flyfish: {
-				Description: Mods.Stellamod.Buffs.Flyfish.Description
-				DisplayName: Flyfish
-			}
-
-			DreadB: {
-				Description: Mods.Stellamod.Buffs.DreadB.Description
-				DisplayName: Dread B
-			}
-
-			Diarii: {
-				Description: Mods.Stellamod.Buffs.Diarii.Description
-				DisplayName: Diarii
-			}
-
-			BurningGB: {
-				Description: Mods.Stellamod.Buffs.BurningGB.Description
-				DisplayName: Burning G B
-			}
-
-			BearB: {
-				Description: Mods.Stellamod.Buffs.BearB.Description
-				DisplayName: Bear B
-			}
-
-			AurelusB: {
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
-				DisplayName: Aurelus B
-			}
-
-			AmethystBroo: {
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-				DisplayName: Amethyst Broo
-			}
-
-			AssassinsSlashBuff: {
-				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
-				DisplayName: Assassins Slash Buff
-			}
-
-			ArcaneDust: {
-				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
-				DisplayName: Arcane Dust
-			}
-
-			AcidFlame: {
-				Description: Mods.Stellamod.Buffs.AcidFlame.Description
-				DisplayName: Acid Flame
-			}
-
-			AbyssalFlame: {
-				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
-				DisplayName: Abyssal Flame
-			}
-
-			IrradiatedCreeperBuff: {
-				DisplayName: Irradiated Creeper Buff
-				Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
-			}
-
-			IvyakenBuff: {
-				DisplayName: Ivyaken Buff
-				Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
-			}
-
-			JellyMinionBuff: {
-				DisplayName: Jelly Minion Buff
-				Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
-			}
-
-			LifeWandMinionBuff: {
-				DisplayName: Life Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
-			}
-
-			ManaWandMinionBuff: {
-				DisplayName: Mana Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
-			}
-
-			MushroomStaveBuff: {
-				DisplayName: Mushroom Stave Buff
-				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-			}
-
-			ProbeBuff: {
-				DisplayName: Probe Buff
-				Description: Mods.Stellamod.Buffs.ProbeBuff.Description
-			}
-
-			SolMothBuff: {
-				DisplayName: Sol Moth Buff
-				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
-			}
-
-			SwarmerMinionBuff: {
-				DisplayName: Swarmer Minion Buff
-				Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
-			}
-
-			TheBurningRodBuff: {
-				DisplayName: The Burning Rod Buff
-				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-			}
-
-			VoidMinionBuff: {
-				DisplayName: Void Minion Buff
-				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
-			}
-		}
-
-		NPCs: {
-			CommanderGintzia.DisplayName: Commander Gintzia
-
-			DreadMire: {
-				SpawnInfo: Kill a blood cyst during a blood moon.
-				DisplayName: Dreadmire
-
-				BossChecklistIntegration: {
-					EntryName: Dreadmire the Blood Goddess
-					SpawnInfo: During a blood moon kill a blood cyst
+					BossChecklistIntegration: {
+						EntryName: Dreadmire the Blood Goddess
+						SpawnInfo: During a blood moon kill a blood cyst
+					}
 				}
-			}
 
 				TericGramNPC.DisplayName: Teric Gram N P C
 				TericGramNPC2.DisplayName: Teric Gram N P C2
@@ -5970,115 +5983,115 @@ Mods: {
 				ShadeSlime.DisplayName: Shade Slime
 				ShadowWraith.DisplayName: Shadow Wraith
 
-			Gambit: {
-				DisplayName: Gambit
+				Gambit: {
+					DisplayName: Gambit
 
-				TownNPCMood: {
-					Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
-					NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
-					FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
-					LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
-					DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
-					HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
-					LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
-					LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
-					DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
-					LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
-					LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
-					DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
-					HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
-					LikeNPC_Princess: I like {NPCName}.
-					Princess_LovesNPC: I like {NPCName}.
+					TownNPCMood: {
+						Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
+						NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
+						FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
+						LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
+						DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
+						HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
+						LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
+						LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
+						DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
+						LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
+						LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
+						DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
+						HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
+						LikeNPC_Princess: I like {NPCName}.
+						Princess_LovesNPC: I like {NPCName}.
+					}
+				}
+
+				Ginztel: {
+					DisplayName: Ginztel
+
+					TownNPCMood: {
+						Content: I am content.
+						NoHome: I hate not having a home.
+						FarFromHome: I am too far from home.
+						LoveSpace: I love having so much space.
+						DislikeCrowded: I dislike how crowded I am.
+						HateCrowded: I hate how crowded I am.
+						LoveBiome: I love {BiomeName}.
+						LikeBiome: I like {BiomeName}.
+						DislikeBiome: I dislike {BiomeName}.
+						LoveNPC: I love {NPCName}.
+						LikeNPC: I like {NPCName}.
+						DislikeNPC: I dislike {NPCName}.
+						HateNPC: I hate {NPCName}.
+						LikeNPC_Princess: I like {NPCName}.
+						Princess_LovesNPC: I like {NPCName}.
+					}
+				}
+
+				DreadFireBombG.DisplayName: Dread Fire Bomb G
+				HeatBombLighting.DisplayName: Heat Bomb Lighting
+				HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+				SolarPortal.DisplayName: Solar Portal
+				SolarSingularity.DisplayName: Solar Singularity
+				OverworldRune.DisplayName: Overworld Rune
+				OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
+				DesertRune.DisplayName: Desert Rune
+				DesertRuneLightBig.DisplayName: Desert Rune Light Big
+				JungleRune.DisplayName: Jungle Rune
+
+				Gothiviab: {
+					DisplayName: Irradia
+
+					BossChecklistIntegration: {
+						EntryName: Gothivia the Sun Goddess
+						SpawnInfo: Wake her up at her shrine in the Govheil Castle, underneath the Virulent
+					}
+				}
+
+				VerliaB: {
+					DisplayName: Verlia Of The Moon
+
+					BossChecklistIntegration: {
+						EntryName: Verlia of The Moon
+						SpawnInfo: Bring a Moonflame Lantern to the top of the Cathedral at night.
+					}
+				}
+
+				Jack: {
+					DisplayName: Jack
+
+					BossChecklistIntegration: {
+						EntryName: Jack
+						SpawnInfo: Use a Wandering essence at the bottom of the fable near a scarecrow
+					}
+				}
+
+				Daedus: {
+					DisplayName: The Forgotten Daedus
+
+					BossChecklistIntegration: {
+						EntryName: Forgotten Puppet Daedus
+						SpawnInfo: He lies at a shrine in the fable at the top
+					}
+				}
+
+				SingularityFragment: {
+					DisplayName: Singularity of The Moon
+
+					BossChecklistIntegration: {
+						EntryName: Singularity of The Moon
+						SpawnInfo: Find them in the Aureless deep in the ice, bring a void key.
+					}
+				}
+
+				SunStalker: {
+					DisplayName: Sunstalker
+
+					BossChecklistIntegration: {
+						EntryName: Sunstalker
+						SpawnInfo: Use a Sun Claw at a ritual near the left ocean during the day.
+					}
 				}
 			}
-
-			Ginztel: {
-				DisplayName: Ginztel
-
-				TownNPCMood: {
-					Content: I am content.
-					NoHome: I hate not having a home.
-					FarFromHome: I am too far from home.
-					LoveSpace: I love having so much space.
-					DislikeCrowded: I dislike how crowded I am.
-					HateCrowded: I hate how crowded I am.
-					LoveBiome: I love {BiomeName}.
-					LikeBiome: I like {BiomeName}.
-					DislikeBiome: I dislike {BiomeName}.
-					LoveNPC: I love {NPCName}.
-					LikeNPC: I like {NPCName}.
-					DislikeNPC: I dislike {NPCName}.
-					HateNPC: I hate {NPCName}.
-					LikeNPC_Princess: I like {NPCName}.
-					Princess_LovesNPC: I like {NPCName}.
-				}
-			}
-
-			DreadFireBombG.DisplayName: Dread Fire Bomb G
-			HeatBombLighting.DisplayName: Heat Bomb Lighting
-			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-			SolarPortal.DisplayName: Solar Portal
-			SolarSingularity.DisplayName: Solar Singularity
-			OverworldRune.DisplayName: Overworld Rune
-			OverworldRuneLightBig.DisplayName: Overworld Rune Light Big
-			DesertRune.DisplayName: Desert Rune
-			DesertRuneLightBig.DisplayName: Desert Rune Light Big
-			JungleRune.DisplayName: Jungle Rune
-
-			Gothiviab: {
-				DisplayName: Irradia
-
-				BossChecklistIntegration: {
-					EntryName: Gothivia the Sun Goddess
-					SpawnInfo: Wake her up at her shrine in the Govheil Castle, underneath the Virulent
-				}
-			}
-
-			VerliaB: {
-				DisplayName: Verlia Of The Moon
-
-				BossChecklistIntegration: {
-					EntryName: Verlia of The Moon
-					SpawnInfo: Bring a Moonflame Lantern to the top of the Cathedral at night.
-				}
-			}
-
-			Jack: {
-				DisplayName: Jack
-
-				BossChecklistIntegration: {
-					EntryName: Jack
-					SpawnInfo: Use a Wandering essence at the bottom of the fable near a scarecrow
-				}
-			}
-
-			Daedus: {
-				DisplayName: The Forgotten Daedus
-
-				BossChecklistIntegration: {
-					EntryName: Forgotten Puppet Daedus
-					SpawnInfo: He lies at a shrine in the fable at the top
-				}
-			}
-
-			SingularityFragment: {
-				DisplayName: Singularity of The Moon
-
-				BossChecklistIntegration: {
-					EntryName: Singularity of The Moon
-					SpawnInfo: Find them in the Aureless deep in the ice, bring a void key.
-				}
-			}
-
-			SunStalker: {
-				DisplayName: Sunstalker
-
-				BossChecklistIntegration: {
-					EntryName: Sunstalker
-					SpawnInfo: Use a Sun Claw at a ritual near the left ocean during the day.
-				}
-			}
-		}
 
 			StoneDeath.DisplayName: Stone Death
 			Merena.DisplayName: Merena
@@ -6094,56 +6107,56 @@ Mods: {
 			GoliathJellyfish.DisplayName: Goliath Jellyfish
 		}
 
-	Biomes: {
-		AbyssBiome: {
-			TownNPCDialogueName: the Abyss Biome
-			DisplayName: Abyss Biome
-		}
+		Biomes: {
+			AbyssBiome: {
+				TownNPCDialogueName: the Abyss Biome
+				DisplayName: Abyss Biome
+			}
 
-		AcidBiome: {
-			TownNPCDialogueName: the Acid Biome
-			DisplayName: Acid Biome
-		}
+			AcidBiome: {
+				TownNPCDialogueName: the Acid Biome
+				DisplayName: Acid Biome
+			}
 
-		AlcadziaBiome: {
-			DisplayName: Alcadzia Biome
-			TownNPCDialogueName: the Alcadzia Biome
-		}
+			AlcadziaBiome: {
+				DisplayName: Alcadzia Biome
+				TownNPCDialogueName: the Alcadzia Biome
+			}
 
-		AurelusBiome: {
-			DisplayName: Aurelus Biome
-			TownNPCDialogueName: the Aurelus Biome
-		}
+			AurelusBiome: {
+				DisplayName: Aurelus Biome
+				TownNPCDialogueName: the Aurelus Biome
+			}
 
-		CathedralBiome: {
-			DisplayName: Cathedral Biome
-			TownNPCDialogueName: the Cathedral Biome
-		}
+			CathedralBiome: {
+				DisplayName: Cathedral Biome
+				TownNPCDialogueName: the Cathedral Biome
+			}
 
-		FableBiome: {
-			DisplayName: Fable Biome
-			TownNPCDialogueName: the Fable Biome
-		}
+			FableBiome: {
+				DisplayName: Fable Biome
+				TownNPCDialogueName: the Fable Biome
+			}
 
-		GovheilCastle: {
-			DisplayName: Govheil Castle
-			TownNPCDialogueName: the Govheil Castle
-		}
+			GovheilCastle: {
+				DisplayName: Govheil Castle
+				TownNPCDialogueName: the Govheil Castle
+			}
 
-		MarrowSurfaceBiome: {
-			DisplayName: Marrow Surface Biome
-			TownNPCDialogueName: the Marrow Surface Biome
-		}
+			MarrowSurfaceBiome: {
+				DisplayName: Marrow Surface Biome
+				TownNPCDialogueName: the Marrow Surface Biome
+			}
 
-		MorrowUndergroundBiome: {
-			DisplayName: Morrow Underground Biome
-			TownNPCDialogueName: the Morrow Underground Biome
-		}
+			MorrowUndergroundBiome: {
+				DisplayName: Morrow Underground Biome
+				TownNPCDialogueName: the Morrow Underground Biome
+			}
 
-		NaxtrinTemple: {
-			DisplayName: Naxtrin Temple
-			TownNPCDialogueName: the Naxtrin Temple
-		}
+			NaxtrinTemple: {
+				DisplayName: Naxtrin Temple
+				TownNPCDialogueName: the Naxtrin Temple
+			}
 
 			StarbloomBiome: {
 				DisplayName: Starbloom Biome
@@ -6271,416 +6284,416 @@ Mods: {
 			VeriplantDirt.MapEntry: Veriplant Dirt
 		}
 
-	Buffs: {
-		AbyssalFlame: {
-			DisplayName: Abyssal Flame
-			Description: Burn
-		}
-
-		AcidFlame: {
-			DisplayName: Acid Flame
-			Description: Burn more
-		}
-
-		ArcaneDust: {
-			DisplayName: Arcane Dust
-			Description: Arcanal stuff
-		}
-
-		AssassinsSlashBuff: {
-			DisplayName: Assassins Slash Buff
-			Description: Slashin
-		}
-
-		AmethystBroo: {
-			DisplayName: Amethyst Broo
-			Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-		}
-
-		AurelusB: {
-			DisplayName: Aurelus B
-			Description: Mods.Stellamod.Buffs.AurelusB.Description
-		}
-
-		BearB: {
-			DisplayName: Bear B
-			Description: Mods.Stellamod.Buffs.BearB.Description
-		}
-
-		BurningGB: {
-			DisplayName: Burning G B
-			Description: Mods.Stellamod.Buffs.BurningGB.Description
-		}
-
-		Diarii: {
-			DisplayName: Diarii
-			Description: Diari Brooch
-		}
-
-		DreadB: {
-			DisplayName: Dread B
-			Description: Mods.Stellamod.Buffs.DreadB.Description
-		}
-
-		Flyfish: {
-			DisplayName: Flyfish
-			Description: Flying Fish brooch
-		}
-
-		GintBroo: {
-			DisplayName: Gintzl Brooch
-			Description: Gives good defense
-		}
-
-		Goldren: {
-			DisplayName: Goldren
-			Description: Golded
-		}
-
-		GovheilB: {
-			DisplayName: Govheil B
-			Description: Mods.Stellamod.Buffs.GovheilB.Description
-		}
-
-		IceBrooch: {
-			DisplayName: Ice Brooch
-			Description: Ice brooch
-		}
-
-		MalB: {
-			DisplayName: Mal B
-			Description: Mods.Stellamod.Buffs.MalB.Description
-		}
-
-		Morrow: {
-			DisplayName: Morrow
-			Description: The Morrowed brooch..
-		}
-
-		Slimee: {
-			DisplayName: Slimee
-			Description: Slime brooch
-		}
-
-		Spragald: {
-			DisplayName: Spragald
-			Description: Morrowed Spragald Brooch +10 Def
-		}
-
-		StoneB: {
-			DisplayName: Stone B
-			Description: Mods.Stellamod.Buffs.StoneB.Description
-		}
-
-		VerliaBroo: {
-			Description: Verlia's enchantment
-			DisplayName: Verlia Brooch
-		}
-
-		VixedB: {
-			DisplayName: Vixed B
-			Description: Mods.Stellamod.Buffs.VixedB.Description
-		}
-
-		DarkHold: {
-			DisplayName: Dark Hold
-			Description: You feel like everything around you is darker.
-		}
-
-		DeathMultiplier: {
-			DisplayName: Death Multiplier
-			Description: Death
-		}
-
-		DeathMultiplierBloodLamp: {
-			DisplayName: Death Multiplier Blood Lamp
-			Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-		}
-
-		Dusted: {
-			DisplayName: Dusted
-			Description: Mods.Stellamod.Buffs.Dusted.Description
-		}
-
-		AivanDust: {
-			DisplayName: Aivan Dust
-			Description: Mods.Stellamod.Buffs.AivanDust.Description
-		}
-
-		AlcadDust: {
-			DisplayName: Alcad Dust
-			Description: Mods.Stellamod.Buffs.AlcadDust.Description
-		}
-
-		CoalBuff: {
-			DisplayName: Coal Buff
-			Description: Mods.Stellamod.Buffs.CoalBuff.Description
-		}
-
-		CrystalDust: {
-			DisplayName: Crystal Dust
-			Description: Mods.Stellamod.Buffs.CrystalDust.Description
-		}
-
-		EXPtime: {
-			DisplayName: E X Ptime
-			Description: Mods.Stellamod.Buffs.EXPtime.Description
-		}
-
-		EXPtime2: {
-			DisplayName: E X Ptime2
-			Description: Mods.Stellamod.Buffs.EXPtime2.Description
-		}
-
-		EXPtime3: {
-			DisplayName: E X Ptime3
-			Description: Mods.Stellamod.Buffs.EXPtime3.Description
-		}
-
-		EXPtime4: {
-			DisplayName: E X Ptime4
-			Description: Mods.Stellamod.Buffs.EXPtime4.Description
-		}
-
-		FlameDust: {
-			DisplayName: Flame Dust
-			Description: Mods.Stellamod.Buffs.FlameDust.Description
-		}
-
-		FlowerBuff: {
-			DisplayName: Flower Buff
-			Description: Mods.Stellamod.Buffs.FlowerBuff.Description
-		}
-
-		GovheilDust: {
-			DisplayName: Govheil Dust
-			Description: Mods.Stellamod.Buffs.GovheilDust.Description
-		}
-
-		GrassBuff: {
-			DisplayName: Grass Buff
-			Description: Mods.Stellamod.Buffs.GrassBuff.Description
-		}
-
-		IceDust: {
-			DisplayName: Ice Dust
-			Description: Mods.Stellamod.Buffs.IceDust.Description
-		}
-
-		KaevDust: {
-			DisplayName: Kaev Dust
-			Description: Mods.Stellamod.Buffs.KaevDust.Description
-		}
-
-		ShadeDust: {
-			DisplayName: Shade Dust
-			Description: Mods.Stellamod.Buffs.ShadeDust.Description
-		}
-
-		SongDust: {
-			DisplayName: Song Dust
-			Description: Mods.Stellamod.Buffs.SongDust.Description
-		}
-
-		TrickDust: {
-			DisplayName: Trick Dust
-			Description: Mods.Stellamod.Buffs.TrickDust.Description
-		}
-
-		VoiddDust: {
-			DisplayName: Voidd Dust
-			Description: Mods.Stellamod.Buffs.VoiddDust.Description
-		}
-
-		Elegance: {
-			DisplayName: Elegance
-			Description: Move along with the wind
-		}
-
-		GintzelSheild: {
-			DisplayName: Gintzel Shield
-			Description: + 15 Defense!
-		}
-
-		GintzelSheildCD: {
-			DisplayName: Gintzel Sheild Cool Down
-			Description: You can not have the Gintzel Shield now
-		}
-
-		GintzeSeen: {
-			DisplayName: Gintze Seen
-			Description: You're being seen!
-		}
-
-		Gintzingwinds: {
-			DisplayName: Gintzingwinds
-			Description: The winds are rising, something is coming
-		}
-
-		Harvester: {
-			DisplayName: Harvester
-			Description: They wanna be harvested
-		}
-
-		Irradiation: {
-			DisplayName: Irradiation
-			Description: Poisoned
-		}
-
-		Love: {
-			DisplayName: Love
-			Description: In Love!
-		}
-
-		PocketSandBuff: {
-			DisplayName: Pocket Sand Buff
-			Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
-		}
-
-		Rekin: {
-			DisplayName: Rekin
-			Description: Mods.Stellamod.Buffs.Rekin.Description
-		}
-
-		SnowFlame: {
-			DisplayName: Snow Flame
-			Description: Snowy flames
-		}
-
-		MorrowWhipDebuff: {
-			DisplayName: Morrow Whip Debuff
-			Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-		}
-
-		Whipdeath: {
-			DisplayName: Whipdeath
-			Description: Mods.Stellamod.Buffs.Whipdeath.Description
-		}
-
-		Wounded: {
-			DisplayName: Wounded
-			Description: You are taking damage
-		}
-
-		ArncharMinionBuff: {
-			DisplayName: Arnchar Minion Buff
-			Description: Little cool minion!
-		}
-
-		AuroranSeekerMinionBuff: {
-			DisplayName: Auroran Seeker Minion Buff
-			Description: Summons for your little cute books :P
-		}
-
-		DripperBuff: {
-			DisplayName: Dripper Buff
-			Description: They drippin
-		}
-
-		FCBuff: {
-			DisplayName: Forest Core minion!
-			Description: It shoots for you!
-		}
-
-		HMMinionBuff: {
-			DisplayName: Gintzl Soliders
-			Description: Thai soliders shall protect thee
-		}
-
-		IceboundMinionBuff: {
-			DisplayName: Icebound Minion Buff
-			Description: It's frozen but its also sweet :P
-		}
-
-		IrradiatedCreeperBuff: {
-			DisplayName: Irradiated Creeper Buff
-			Description: Little minion!
-		}
-
-		IvyakenBuff: {
-			DisplayName: Ivyaken Buff
-			Description: Woa.
-		}
-
-		JellyMinionBuff: {
-			DisplayName: Jelly Minion Buff
-			Description: Its a jelly!
-		}
-
-		LifeWandMinionBuff: {
-			DisplayName: Life Wand Minion Buff
-			Description: Wand of life!
-		}
-
-		ManaWandMinionBuff: {
-			Description: Wand of Mana!
-			DisplayName: Mana Wand Minion Buff
-		}
-
-		MushroomStaveBuff: {
-			DisplayName: Mushroom Stave Buff
-			Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-		}
-
-		ProbeBuff: {
-			DisplayName: Probe Buff
-			Description: Dont get probed
-		}
-
-		SolMothBuff: {
-			DisplayName: Sol Moth Buff
-			Description: Moth helpers!
-		}
-
-		SwarmerMinionBuff: {
-			DisplayName: Swarmer Minion Buff
-			Description: It swarms enemies!
-		}
-
-		TheBurningRodBuff: {
-			DisplayName: The Burning Rod Buff
-			Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-		}
-
-		VoidMinionBuff: {
-			DisplayName: Void Minion Buff
-			Description: It do be a black hole.
-		}
-
-		DarkWhipDebuff: {
-			DisplayName: Dark Whip Debuff
-			Description: Mods.Stellamod.Buffs.DarkWhipDebuff.Description
-		}
-
-		MasteryMagic: {
-			DisplayName: Mastery Magic
-			Description: Mods.Stellamod.Buffs.MasteryMagic.Description
-		}
-
-		MoonMothBuff: {
-			DisplayName: Moon Moth Buff
-			Description: The moon moths
-		}
-
-		FireflyMinionBuff: {
-			DisplayName: Firefly Blessing
-			Description: You are protected by fireflies!
-		}
-
-		VampireTorchMinionBuff: {
-			DisplayName: Sanguine Curse
-			Description: You are bloodthirsty!
-		}
-
-		Alcadded: {
-			DisplayName: Alcadded
-			Description: Mods.Stellamod.Buffs.Alcadded.Description
-		}
-
-		CloudMinionBuff: {
-			DisplayName: Weather Forecast
-			Description: Clouds are storming around you ;)
-		}
+		Buffs: {
+			AbyssalFlame: {
+				DisplayName: Abyssal Flame
+				Description: Burn
+			}
+
+			AcidFlame: {
+				DisplayName: Acid Flame
+				Description: Burn more
+			}
+
+			ArcaneDust: {
+				DisplayName: Arcane Dust
+				Description: Arcanal stuff
+			}
+
+			AssassinsSlashBuff: {
+				DisplayName: Assassins Slash Buff
+				Description: Slashin
+			}
+
+			AmethystBroo: {
+				DisplayName: Amethyst Broo
+				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+			}
+
+			AurelusB: {
+				DisplayName: Aurelus B
+				Description: Mods.Stellamod.Buffs.AurelusB.Description
+			}
+
+			BearB: {
+				DisplayName: Bear B
+				Description: Mods.Stellamod.Buffs.BearB.Description
+			}
+
+			BurningGB: {
+				DisplayName: Burning G B
+				Description: Mods.Stellamod.Buffs.BurningGB.Description
+			}
+
+			Diarii: {
+				DisplayName: Diarii
+				Description: Diari Brooch
+			}
+
+			DreadB: {
+				DisplayName: Dread B
+				Description: Mods.Stellamod.Buffs.DreadB.Description
+			}
+
+			Flyfish: {
+				DisplayName: Flyfish
+				Description: Flying Fish brooch
+			}
+
+			GintBroo: {
+				DisplayName: Gintzl Brooch
+				Description: Gives good defense
+			}
+
+			Goldren: {
+				DisplayName: Goldren
+				Description: Golded
+			}
+
+			GovheilB: {
+				DisplayName: Govheil B
+				Description: Mods.Stellamod.Buffs.GovheilB.Description
+			}
+
+			IceBrooch: {
+				DisplayName: Ice Brooch
+				Description: Ice brooch
+			}
+
+			MalB: {
+				DisplayName: Mal B
+				Description: Mods.Stellamod.Buffs.MalB.Description
+			}
+
+			Morrow: {
+				DisplayName: Morrow
+				Description: The Morrowed brooch..
+			}
+
+			Slimee: {
+				DisplayName: Slimee
+				Description: Slime brooch
+			}
+
+			Spragald: {
+				DisplayName: Spragald
+				Description: Morrowed Spragald Brooch +10 Def
+			}
+
+			StoneB: {
+				DisplayName: Stone B
+				Description: Mods.Stellamod.Buffs.StoneB.Description
+			}
+
+			VerliaBroo: {
+				Description: Verlia's enchantment
+				DisplayName: Verlia Brooch
+			}
+
+			VixedB: {
+				DisplayName: Vixed B
+				Description: Mods.Stellamod.Buffs.VixedB.Description
+			}
+
+			DarkHold: {
+				DisplayName: Dark Hold
+				Description: You feel like everything around you is darker.
+			}
+
+			DeathMultiplier: {
+				DisplayName: Death Multiplier
+				Description: Death
+			}
+
+			DeathMultiplierBloodLamp: {
+				DisplayName: Death Multiplier Blood Lamp
+				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+			}
+
+			Dusted: {
+				DisplayName: Dusted
+				Description: Mods.Stellamod.Buffs.Dusted.Description
+			}
+
+			AivanDust: {
+				DisplayName: Aivan Dust
+				Description: Mods.Stellamod.Buffs.AivanDust.Description
+			}
+
+			AlcadDust: {
+				DisplayName: Alcad Dust
+				Description: Mods.Stellamod.Buffs.AlcadDust.Description
+			}
+
+			CoalBuff: {
+				DisplayName: Coal Buff
+				Description: Mods.Stellamod.Buffs.CoalBuff.Description
+			}
+
+			CrystalDust: {
+				DisplayName: Crystal Dust
+				Description: Mods.Stellamod.Buffs.CrystalDust.Description
+			}
+
+			EXPtime: {
+				DisplayName: E X Ptime
+				Description: Mods.Stellamod.Buffs.EXPtime.Description
+			}
+
+			EXPtime2: {
+				DisplayName: E X Ptime2
+				Description: Mods.Stellamod.Buffs.EXPtime2.Description
+			}
+
+			EXPtime3: {
+				DisplayName: E X Ptime3
+				Description: Mods.Stellamod.Buffs.EXPtime3.Description
+			}
+
+			EXPtime4: {
+				DisplayName: E X Ptime4
+				Description: Mods.Stellamod.Buffs.EXPtime4.Description
+			}
+
+			FlameDust: {
+				DisplayName: Flame Dust
+				Description: Mods.Stellamod.Buffs.FlameDust.Description
+			}
+
+			FlowerBuff: {
+				DisplayName: Flower Buff
+				Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+			}
+
+			GovheilDust: {
+				DisplayName: Govheil Dust
+				Description: Mods.Stellamod.Buffs.GovheilDust.Description
+			}
+
+			GrassBuff: {
+				DisplayName: Grass Buff
+				Description: Mods.Stellamod.Buffs.GrassBuff.Description
+			}
+
+			IceDust: {
+				DisplayName: Ice Dust
+				Description: Mods.Stellamod.Buffs.IceDust.Description
+			}
+
+			KaevDust: {
+				DisplayName: Kaev Dust
+				Description: Mods.Stellamod.Buffs.KaevDust.Description
+			}
+
+			ShadeDust: {
+				DisplayName: Shade Dust
+				Description: Mods.Stellamod.Buffs.ShadeDust.Description
+			}
+
+			SongDust: {
+				DisplayName: Song Dust
+				Description: Mods.Stellamod.Buffs.SongDust.Description
+			}
+
+			TrickDust: {
+				DisplayName: Trick Dust
+				Description: Mods.Stellamod.Buffs.TrickDust.Description
+			}
+
+			VoiddDust: {
+				DisplayName: Voidd Dust
+				Description: Mods.Stellamod.Buffs.VoiddDust.Description
+			}
+
+			Elegance: {
+				DisplayName: Elegance
+				Description: Move along with the wind
+			}
+
+			GintzelSheild: {
+				DisplayName: Gintzel Shield
+				Description: + 15 Defense!
+			}
+
+			GintzelSheildCD: {
+				DisplayName: Gintzel Sheild Cool Down
+				Description: You can not have the Gintzel Shield now
+			}
+
+			GintzeSeen: {
+				DisplayName: Gintze Seen
+				Description: You're being seen!
+			}
+
+			Gintzingwinds: {
+				DisplayName: Gintzingwinds
+				Description: The winds are rising, something is coming
+			}
+
+			Harvester: {
+				DisplayName: Harvester
+				Description: They wanna be harvested
+			}
+
+			Irradiation: {
+				DisplayName: Irradiation
+				Description: Poisoned
+			}
+
+			Love: {
+				DisplayName: Love
+				Description: In Love!
+			}
+
+			PocketSandBuff: {
+				DisplayName: Pocket Sand Buff
+				Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+			}
+
+			Rekin: {
+				DisplayName: Rekin
+				Description: Mods.Stellamod.Buffs.Rekin.Description
+			}
+
+			SnowFlame: {
+				DisplayName: Snow Flame
+				Description: Snowy flames
+			}
+
+			MorrowWhipDebuff: {
+				DisplayName: Morrow Whip Debuff
+				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+			}
+
+			Whipdeath: {
+				DisplayName: Whipdeath
+				Description: Mods.Stellamod.Buffs.Whipdeath.Description
+			}
+
+			Wounded: {
+				DisplayName: Wounded
+				Description: You are taking damage
+			}
+
+			ArncharMinionBuff: {
+				DisplayName: Arnchar Minion Buff
+				Description: Little cool minion!
+			}
+
+			AuroranSeekerMinionBuff: {
+				DisplayName: Auroran Seeker Minion Buff
+				Description: Summons for your little cute books :P
+			}
+
+			DripperBuff: {
+				DisplayName: Dripper Buff
+				Description: They drippin
+			}
+
+			FCBuff: {
+				DisplayName: Forest Core minion!
+				Description: It shoots for you!
+			}
+
+			HMMinionBuff: {
+				DisplayName: Gintzl Soliders
+				Description: Thai soliders shall protect thee
+			}
+
+			IceboundMinionBuff: {
+				DisplayName: Icebound Minion Buff
+				Description: It's frozen but its also sweet :P
+			}
+
+			IrradiatedCreeperBuff: {
+				DisplayName: Irradiated Creeper Buff
+				Description: Little minion!
+			}
+
+			IvyakenBuff: {
+				DisplayName: Ivyaken Buff
+				Description: Woa.
+			}
+
+			JellyMinionBuff: {
+				DisplayName: Jelly Minion Buff
+				Description: Its a jelly!
+			}
+
+			LifeWandMinionBuff: {
+				DisplayName: Life Wand Minion Buff
+				Description: Wand of life!
+			}
+
+			ManaWandMinionBuff: {
+				Description: Wand of Mana!
+				DisplayName: Mana Wand Minion Buff
+			}
+
+			MushroomStaveBuff: {
+				DisplayName: Mushroom Stave Buff
+				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+			}
+
+			ProbeBuff: {
+				DisplayName: Probe Buff
+				Description: Dont get probed
+			}
+
+			SolMothBuff: {
+				DisplayName: Sol Moth Buff
+				Description: Moth helpers!
+			}
+
+			SwarmerMinionBuff: {
+				DisplayName: Swarmer Minion Buff
+				Description: It swarms enemies!
+			}
+
+			TheBurningRodBuff: {
+				DisplayName: The Burning Rod Buff
+				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+			}
+
+			VoidMinionBuff: {
+				DisplayName: Void Minion Buff
+				Description: It do be a black hole.
+			}
+
+			DarkWhipDebuff: {
+				DisplayName: Dark Whip Debuff
+				Description: Mods.Stellamod.Buffs.DarkWhipDebuff.Description
+			}
+
+			MasteryMagic: {
+				DisplayName: Mastery Magic
+				Description: Mods.Stellamod.Buffs.MasteryMagic.Description
+			}
+
+			MoonMothBuff: {
+				DisplayName: Moon Moth Buff
+				Description: The moon moths
+			}
+
+			FireflyMinionBuff: {
+				DisplayName: Firefly Blessing
+				Description: You are protected by fireflies!
+			}
+
+			VampireTorchMinionBuff: {
+				DisplayName: Sanguine Curse
+				Description: You are bloodthirsty!
+			}
+
+			Alcadded: {
+				DisplayName: Alcadded
+				Description: Mods.Stellamod.Buffs.Alcadded.Description
+			}
+
+			CloudMinionBuff: {
+				DisplayName: Weather Forecast
+				Description: Clouds are storming around you ;)
+			}
 
 			CameraMinBuff: {
 				DisplayName: Camera Min Buff
@@ -6704,1097 +6717,188 @@ Mods: {
 		}
 	}
 
-Tiles: {
-	AlcaologyTable.MapEntry: Alcaology Table
-	BroochesTable.MapEntry: Brooches Table
-	FrileOreTile.MapEntry: Frile Ore
-	HuntiacTile.MapEntry: Huntiac
-	BarS.MapEntry: Bar S
-	BenchS.MapEntry: Bench S
-	CathedralChest.MapEntry: Cathedral Chest
-	Crystal1.MapEntry: Crystal1
-	Crystal2.MapEntry: Crystal2
-	FlowerMulti.MapEntry: Flower Multi
-	Orb1.MapEntry: Orb1
-	VerliasShrine.MapEntry: Verlias Shrine
-	GrassBigS.MapEntry: Grass Big S
-	GrassMossS.MapEntry: Grass Moss S
-	CurtainLeft.MapEntry: Curtain Left
-	CurtainRight.MapEntry: Curtain Right
-	LogS.MapEntry: Log S
-	MorrowChest.MapEntry: Morrow Chest
-	MorrowDeath2S.MapEntry: Morrow Death2 S
-	MorrowDeathS.MapEntry: Morrow Death S
-	MorrowStoneS.MapEntry: Morrow Stone S
-	MushroomBigS.MapEntry: Mushroom Big S
-	PotmedS.MapEntry: Potmed S
-	SmallShroomS.MapEntry: Small Shroom S
-	SpikeS.MapEntry: Spike S
-	stand.MapEntry: stand
-	wall1.MapEntry: wall1
-	wall2.MapEntry: wall2
-	wall3.MapEntry: wall3
-	wall4.MapEntry: wall4
-	wall5.MapEntry: wall5
-	wall6.MapEntry: wall6
-	wall7.MapEntry: wall7
-	VerianoreTile.MapEntry: Verian Ore
-	GovheilTile.MapEntry: Govheil Block
-	GovheilBore.MapEntry: Govheil Bore
-	GovheilWei.MapEntry: Govheil Wei
-	MasistLeft.MapEntry: Masist Left
-	MasistRight.MapEntry: Masist Right
-	Zebi.MapEntry: Zebi
-	ShrineLifeC.MapEntry: Shrine Life C
-	SunAlter.MapEntry: Sun Alter
-	RunicTableT.MapEntry: Runic Table T
-	LostScrapT.MapEntry: Lost Scrap T
-	DiminishedMetal.MapEntry: Diminished Metal
-	CoreGemT.MapEntry: Core Gem T
-	CellConverter.MapEntry: Cell Converter
-	Arnchar.MapEntry: Arnchar
-	AcidStone.MapEntry: Acid Stone
-	AcidMush3.MapEntry: Acid Mush3
-	AcidMush2.MapEntry: Acid Mush2
-	AcidMush1.MapEntry: Acid Mush1
-	AcidialDirt.MapEntry: Acidial Dirt
-	AcidBush3.MapEntry: Acid Bush3
-	AcidBush2.MapEntry: Acid Bush2
-	AcidBush1.MapEntry: Acid Bush1
-	AcidBrick.MapEntry: Acid Brick
-	SoulOre.MapEntry: Soul Ore
-	BlueFlower2.MapEntry: Blue Flower2
-	BlueFlower.MapEntry: Blue Flower
-	AbyssalStone.MapEntry: Abyssal Stone
-	JackPost.MapEntry: Jack Post
-	ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
-	ShrineBUAN.MapEntry: Shrine B U A N
-	ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
-	ShrineHalhurishC.MapEntry: Shrine Halhurish C
-	ShrineLights.MapEntry: Shrine Lights
-	ShrineSolMothC.MapEntry: Shrine Sol Moth C
-	RestingGrounds.MapEntry: Resting Grounds
-	TealBulb.MapEntry: Teal Bulb
-	TealBulb2.MapEntry: Teal Bulb2
-	TealBulb3.MapEntry: Teal Bulb3
-	AstrasilkOreTile.MapEntry: Astrasilk Ore
-	AurelusChest.MapEntry: Aurelus Chest
-	AurelusBanner1.MapEntry: Aurelus Banner1
-	AurelusPost.MapEntry: Aurelus Post
-	AurelusBorderS.MapEntry: Aurelus Border S
-	AurelusDoorClosed.MapEntry: Aurelus Door Closed
-	AurelusSummon.MapEntry: Aurelus Summon
-}
-
-Biomes: {
-	CathedralBiome: {
-		DisplayName: Verlia's Tower
-		TownNPCDialogueName: Verlia's Tower
+	Tiles: {
+		AlcaologyTable.MapEntry: Alcaology Table
+		BroochesTable.MapEntry: Brooches Table
+		FrileOreTile.MapEntry: Frile Ore
+		HuntiacTile.MapEntry: Huntiac
+		BarS.MapEntry: Bar S
+		BenchS.MapEntry: Bench S
+		CathedralChest.MapEntry: Cathedral Chest
+		Crystal1.MapEntry: Crystal1
+		Crystal2.MapEntry: Crystal2
+		FlowerMulti.MapEntry: Flower Multi
+		Orb1.MapEntry: Orb1
+		VerliasShrine.MapEntry: Verlias Shrine
+		GrassBigS.MapEntry: Grass Big S
+		GrassMossS.MapEntry: Grass Moss S
+		CurtainLeft.MapEntry: Curtain Left
+		CurtainRight.MapEntry: Curtain Right
+		LogS.MapEntry: Log S
+		MorrowChest.MapEntry: Morrow Chest
+		MorrowDeath2S.MapEntry: Morrow Death2 S
+		MorrowDeathS.MapEntry: Morrow Death S
+		MorrowStoneS.MapEntry: Morrow Stone S
+		MushroomBigS.MapEntry: Mushroom Big S
+		PotmedS.MapEntry: Potmed S
+		SmallShroomS.MapEntry: Small Shroom S
+		SpikeS.MapEntry: Spike S
+		stand.MapEntry: stand
+		wall1.MapEntry: wall1
+		wall2.MapEntry: wall2
+		wall3.MapEntry: wall3
+		wall4.MapEntry: wall4
+		wall5.MapEntry: wall5
+		wall6.MapEntry: wall6
+		wall7.MapEntry: wall7
+		VerianoreTile.MapEntry: Verian Ore
+		GovheilTile.MapEntry: Govheil Block
+		GovheilBore.MapEntry: Govheil Bore
+		GovheilWei.MapEntry: Govheil Wei
+		MasistLeft.MapEntry: Masist Left
+		MasistRight.MapEntry: Masist Right
+		Zebi.MapEntry: Zebi
+		ShrineLifeC.MapEntry: Shrine Life C
+		SunAlter.MapEntry: Sun Alter
+		RunicTableT.MapEntry: Runic Table T
+		LostScrapT.MapEntry: Lost Scrap T
+		DiminishedMetal.MapEntry: Diminished Metal
+		CoreGemT.MapEntry: Core Gem T
+		CellConverter.MapEntry: Cell Converter
+		Arnchar.MapEntry: Arnchar
+		AcidStone.MapEntry: Acid Stone
+		AcidMush3.MapEntry: Acid Mush3
+		AcidMush2.MapEntry: Acid Mush2
+		AcidMush1.MapEntry: Acid Mush1
+		AcidialDirt.MapEntry: Acidial Dirt
+		AcidBush3.MapEntry: Acid Bush3
+		AcidBush2.MapEntry: Acid Bush2
+		AcidBush1.MapEntry: Acid Bush1
+		AcidBrick.MapEntry: Acid Brick
+		SoulOre.MapEntry: Soul Ore
+		BlueFlower2.MapEntry: Blue Flower2
+		BlueFlower.MapEntry: Blue Flower
+		AbyssalStone.MapEntry: Abyssal Stone
+		JackPost.MapEntry: Jack Post
+		ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
+		ShrineBUAN.MapEntry: Shrine B U A N
+		ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
+		ShrineHalhurishC.MapEntry: Shrine Halhurish C
+		ShrineLights.MapEntry: Shrine Lights
+		ShrineSolMothC.MapEntry: Shrine Sol Moth C
+		RestingGrounds.MapEntry: Resting Grounds
+		TealBulb.MapEntry: Teal Bulb
+		TealBulb2.MapEntry: Teal Bulb2
+		TealBulb3.MapEntry: Teal Bulb3
+		AstrasilkOreTile.MapEntry: Astrasilk Ore
+		AurelusChest.MapEntry: Aurelus Chest
+		AurelusBanner1.MapEntry: Aurelus Banner1
+		AurelusPost.MapEntry: Aurelus Post
+		AurelusBorderS.MapEntry: Aurelus Border S
+		AurelusDoorClosed.MapEntry: Aurelus Door Closed
+		AurelusSummon.MapEntry: Aurelus Summon
 	}
 
-	MarrowSurfaceBiome: {
-		DisplayName: Morrow Surface
-		TownNPCDialogueName: the Marrow Surface Biome
-	}
-
-	MorrowUndergroundBiome: {
-		DisplayName: Morrow Underground
-		TownNPCDialogueName: the Morrow Underground Biome
-	}
-
-	FableBiome: {
-		DisplayName: Fablia
-		TownNPCDialogueName: the Fable Biome
-	}
-
-	AcidBiome: {
-		TownNPCDialogueName: the Virulent Biome
-		DisplayName: Virulent Biome
-	}
-
-	AbyssBiome: {
-		TownNPCDialogueName: the Abysm Biome
-		DisplayName: Abysm Biome
-	}
-
-	AurelusBiome: {
-		DisplayName: Aurelus Biome
-		TownNPCDialogueName: the Aurelus Temple
-	}
-}
-
-Projectiles: {
-	AmethystBrooch.DisplayName: Amethyst Brooch
-	AurelusBlightBrooch.DisplayName: Aurelus Blight Brooch
-	BearBrooch.DisplayName: Bear Brooch
-	BurningGBrooch.DisplayName: Burning G Brooch
-	DiariBrooch.DisplayName: Diari Brooch
-	DreadBrooch.DisplayName: Dread Brooch
-	FlyfishBrooch.DisplayName: Flyfish Brooch
-	FrileBrooch.DisplayName: Frile Brooch
-	FrileBroochP.DisplayName: Frile Brooch P
-	GintzlBrooch.DisplayName: Gintzl Brooch
-	GovheilHolsterBrooch.DisplayName: Govheil Holster Brooch
-	MalShieldBrooch.DisplayName: Mal Shield Brooch
-	MorrowedBrooch.DisplayName: Morrowed Brooch
-	SlimeBrooch.DisplayName: Slime Brooch
-	SpragaldBrooch.DisplayName: Spragald Brooch
-	Spragald.DisplayName: Spragald
-	VerliaBrooch.DisplayName: Verlia Brooch
-	VerliaBroochP.DisplayName: Verlia Brooch P
-	VerliaBroochP2.DisplayName: Verlia Brooch P2
-	VerliaBroochP3.DisplayName: Verlia Brooch P3
-	VixedBrooch.DisplayName: Vixed Brooch
-	DetonationBomb.DisplayName: Detonation Bomb
-	WindeffectGintzl.DisplayName: Windeffect Gintzl
-	Windeffect.DisplayName: Windeffect
-	LightBomb.DisplayName: Light Bomb
-	GovheilBows.DisplayName: Govheil Bows
-	GovheilBowsProj.DisplayName: Govheil Bows Proj
-	GovheilSwords.DisplayName: Govheil Swords
-	LovestruckP.DisplayName: Lovestruck P
-	Noti.DisplayName: Noti
-	SingularitySparkProjG.DisplayName: Singularity Spark Proj G
-	SingularitySparkProj.DisplayName: Singularity Spark Proj
-	ArncharMinion.DisplayName: Arnchar Minion
-	Drippler.DisplayName: Drippler
-	FCMinion.DisplayName: F C Minion
-	HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
-	HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
-	IceboundMinion.DisplayName: Icebound Minion
-	IrradiatedCreeper2.DisplayName: Irradiated Creeper2
-	Ivyaken.DisplayName: Ivyaken
-	JellyMinion.DisplayName: Jelly Minion
-	MushroomStaveMinion.DisplayName: Mushroom Stave Minion
-	MushroomStaveMinionProg.DisplayName: Mushroom Stave Minion Prog
-	SolMothMinion.DisplayName: Sol Moth Minion
-	SwarmerMinion.DisplayName: Swarmer Minion
-	TheBurningRodMinion.DisplayName: The Burning Rod Minion
-	VoidMinion.DisplayName: Void Minion
-	ProbeMinion.DisplayName: Probe Minion
-	BouncySword.DisplayName: Bouncy Sword
-	FlameTornado.DisplayName: Flame Tornado
-	LanturnSpear.DisplayName: Lanturn Spear
-	SummonSpawnEffect.DisplayName: Summon Spawn Effect
-	VoidBomb.DisplayName: Void Bomb
-	DaedusBombExplosion.DisplayName: Daedus Bomb Explosion
-	DLantern.DisplayName: D Lantern
-	DreadBone.DisplayName: Dread Bone
-	DreadFire.DisplayName: Dread Fire
-	DreadHand.DisplayName: Dread Hand
-	Dreadlighting.DisplayName: Dreadlighting
-	DreadlightingBig.DisplayName: Dreadlighting Big
-	DreadMireDash.DisplayName: Dread Mire Dash
-	DreadMireMagic.DisplayName: Dread Mire Magic
-	DreadSkull.DisplayName: Dread Skull
-	DreadSpawnEffect.DisplayName: Dread Spawn Effect
-	FinalBeam.DisplayName: Final Beam
-	DreadMiresHeartEye.DisplayName: Dread Mires Heart Eye
-	DreadMiresHeartVomit1.DisplayName: Dread Mires Heart Vomit1
-	RedSkull.DisplayName: Red Skull
-	TerrorBeam.DisplayName: Terror Beam
-	FlameArrow.DisplayName: Flame Arrow
-	FlameBlast.DisplayName: Flame Blast
-	Helios.DisplayName: Helios
-	LaserShooterFirstPhase.DisplayName: Laser Shooter First Phase
-	Music1.DisplayName: Music1
-	Music2.DisplayName: Music2
-	Speechbubble.DisplayName: Speechbubble
-	RekEye2.DisplayName: Rek Eye2
-	RekGreek1.DisplayName: Rek Greek1
-	RekLava3.DisplayName: Rek Lava3
-	AcidicZap.DisplayName: Acidic Zap
-	AEgg.DisplayName: A Egg
-	CommunicationRay.DisplayName: Communication Ray
-	DesperationRay.DisplayName: Desperation Ray
-	AcidBlast.DisplayName: Acid Blast
-	AcidBolt.DisplayName: Acid Bolt
-	AcidFlame.DisplayName: Acid Flame
-	ToxicMissile.DisplayName: Toxic Missile
-	ToxicNuke.DisplayName: Toxic Nuke
-	FallingHay.DisplayName: Falling Hay
-	JackFire.DisplayName: Jack Fire
-	JackFire2.DisplayName: Jack Fire2
-	JackoBall.DisplayName: Jacko Ball
-	JackSpawnEffect.DisplayName: Jack Spawn Effect
-	JackSpawnRay.DisplayName: Jack Spawn Ray
-	JackWarning.DisplayName: Jack Warning
-	JackWarning2.DisplayName: Jack Warning2
-	MossBall.DisplayName: Moss Ball
-	AbyssalChargeProjectile.DisplayName: Abyssal Charge Projectile
-	AbyssalChargeProjectile2.DisplayName: Abyssal Charge Projectile2
-	AbyssWave.DisplayName: Abyss Wave
-	PulsarBeam.DisplayName: Pulsar Beam
-	RuneSpawnEffect.DisplayName: Rune Spawn Effect
-	RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
-	SoulBeam.DisplayName: Soul Beam
-	SoulBlast.DisplayName: Soul Blast
-	VoidBeam.DisplayName: Void Beam
-	VoidBeamIN.DisplayName: Void Beam I N
-	VoidFlame.DisplayName: Void Flame
-	BigRock.DisplayName: Big Rock
-	CosButterfly.DisplayName: Cos Butterfly
-	Flowder.DisplayName: Flowder
-	Flowing.DisplayName: Flowing
-	GroundSpike.DisplayName: Ground Spike
-	Rock.DisplayName: Rock
-	Rock2.DisplayName: Rock2
-	SineButterfly.DisplayName: Sine Butterfly
-	SineButterflyfriendly.DisplayName: Sine Butterflyfriendly
-	SmallRock.DisplayName: Small Rock
-	SmallRock2.DisplayName: Small Rock2
-	SpikeBullet.DisplayName: Spike Bullet
-	StarBullet.DisplayName: Star Bullet
-	StarSpike.DisplayName: Star Spike
-	SunBomb.DisplayName: Sun Bomb
-	SunDeath.DisplayName: Sun Death
-	SunFeather.DisplayName: Sun Feather
-	SunRock.DisplayName: Sun Rock
-	BackgroundOrb.DisplayName: Background Orb
-	FrostShot.DisplayName: Frost Shot
-	FrostShot2.DisplayName: Frost Shot2
-	FrostShotIN.DisplayName: Frost Shot I N
-	MoonBladeTrail.DisplayName: Moon Blade Trail
-	MoonOut.DisplayName: Moon Out
-	Notia.DisplayName: Notia
-	Sigil.DisplayName: Sigil
-	SineSword.DisplayName: Sine Sword
-	SlashHold.DisplayName: Slash Hold
-	SlashLeft.DisplayName: Slash Left
-	SlashRight.DisplayName: Slash Right
-	Strummer.DisplayName: Strummer
-	AltideSword.DisplayName: Altide Sword
-	Sword1F.DisplayName: Sword1 F
-	Sword2F.DisplayName: Sword2 F
-	Sword3F.DisplayName: Sword3 F
-	TheMoon.DisplayName: The Moon
-	VerliaBlade.DisplayName: Verlia Blade
-	VerliaHeadScreen.DisplayName: Verlia Head Screen
-	VerliaText1.DisplayName: Verlia Text1
-	VerliaText2.DisplayName: Verlia Text2
-	Gintzianado.DisplayName: Gintzianado
-	ShadowFlare.DisplayName: Shadow Flare
-	VRay.DisplayName: V Ray
-	AivanKaboom.DisplayName: Aivan Kaboom
-	AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
-	AntacizProj.DisplayName: Antaciz Proj
-	Aurora.DisplayName: Aurora
-	Aurora2.DisplayName: Aurora2
-	Aurora3.DisplayName: Aurora3
-	AuroranBullet.DisplayName: Auroran Bullet
-	AuroranBullet2.DisplayName: Auroran Bullet2
-	AuroranBullet3.DisplayName: Auroran Bullet3
-	Beachthrow.DisplayName: Beachthrow
-	BoomCircle.DisplayName: Boom Circle
-	BoomMorrow.DisplayName: Boom Morrow
-	ArchariliteArrow.DisplayName: Archarilite Arrow
-	ArchariliteArrowSmall.DisplayName: Archarilite Arrow Small
-	CloudBolt.DisplayName: Cloud Bolt
-	CrysalizerArrow1.DisplayName: Crysalizer Arrow1
-	CrysalizerArrow2.DisplayName: Crysalizer Arrow2
-	CrysalizerArrow3.DisplayName: Crysalizer Arrow3
-	CrysalizerExplosion.DisplayName: Crysalizer Explosion
-	DreadSkullBonesProg.DisplayName: Dread Skull Bones Prog
-	DreadSkullProg.DisplayName: Dread Skull Prog
-	GalvinieArrow1.DisplayName: Galvinie Arrow1
-	HarpyFeather1.DisplayName: Harpy Feather1
-	HeatArrow.DisplayName: Heat Arrow
-	HuntrianArrow.DisplayName: Huntrian Arrow
-	VoidSkullProg.DisplayName: Void Skull Prog
-	WinterboundArrow.DisplayName: Winterbound Arrow
-	WinterboundArrowFlake.DisplayName: Winterbound Arrow Flake
-	WinterboundFlare.DisplayName: Winterbound Flare
-	BurningAngelProj.DisplayName: Burning Angel Proj
-	CocoShot.DisplayName: Coco Shot
-	GoldCrossbowHold.DisplayName: Gold Crossbow Hold
-	PlatinumCrossbowBolt.DisplayName: Platinum Crossbow Bolt
-	PlatinumCrossbowHold.DisplayName: Platinum Crossbow Hold
-	SilverCrossbowBolt.DisplayName: Silver Crossbow Bolt
-	SilverCrossbowHold.DisplayName: Silver Crossbow Hold
-	TungstenCrossbowHold.DisplayName: Tungsten Crossbow Hold
-	IronCrossbowHold.DisplayName: Iron Crossbow Hold
-	LeadCrossbowBolt.DisplayName: Lead Crossbow Bolt
-	LeadCrossbowHold.DisplayName: Lead Crossbow Hold
-	DesertCrossbowBolt.DisplayName: Desert Crossbow Bolt
-	DesertCrossbowHold.DisplayName: Desert Crossbow Hold
-	FableCrossbowBolt.DisplayName: Fable Crossbow Bolt
-	FableCrossbowHold.DisplayName: Fable Crossbow Hold
-	IcaCircle.DisplayName: Ica Circle
-	IceCrossbowBolt.DisplayName: Ice Crossbow Bolt
-	IceCrossbowHold.DisplayName: Ice Crossbow Hold
-	MeltaCircle.DisplayName: Melta Circle
-	PiaCircle.DisplayName: Pia Circle
-	TON618CrossbowHold.DisplayName: T O N618 Crossbow Hold
-	TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
-	DunCrossbowBolt.DisplayName: Dun Crossbow Bolt
-	DungeonCrossbowHold.DisplayName: Dungeon Crossbow Hold
-	MerCrossbowBolt.DisplayName: Mer Crossbow Bolt
-	MerCrossbowHold.DisplayName: Mer Crossbow Hold
-	AltaCircle.DisplayName: Alta Circle
-	DelfaCircle.DisplayName: Delfa Circle
-	GeaCircle.DisplayName: Gea Circle
-	JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
-	JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
-	MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
-	MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
-	SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
-	SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
-	CoralBubble.DisplayName: Coral Bubble
-	CoralCircle.DisplayName: Coral Circle
-	CoralCrossbowBolt.DisplayName: Coral Crossbow Bolt
-	CoralCrossbowHold.DisplayName: Coral Crossbow Hold
-	MoltenCircle.DisplayName: Molten Circle
-	MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
-	MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
-	WoodenCrossbowBolt.DisplayName: Wooden Crossbow Bolt
-	WoodenCrossbowHold.DisplayName: Wooden Crossbow Hold
-	CrystalBloom.DisplayName: Crystal Bloom
-	CurlistineProj.DisplayName: Curlistine Proj
-	Deathtrail.DisplayName: Deathtrail
-	Dicein.DisplayName: Dicein
-	EbistarProj.DisplayName: Ebistar Proj
-	FabledColoredSunray.DisplayName: Fabled Colored Sunray
-	FabledSunray.DisplayName: Fabled Sunray
-	Flameball.DisplayName: Flameball
-	Flameball2.DisplayName: Flameball2
-	FrostbiteProj.DisplayName: Frostbite Proj
-	FrostKaboom.DisplayName: Frost Kaboom
-	FrostSwProj.DisplayName: Frost Sw Proj
-	FrostSwProj2.DisplayName: Frost Sw Proj2
-	FrostSwProj3.DisplayName: Frost Sw Proj3
-	GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
-	GardenWreckerHold.DisplayName: Garden Wrecker Hold
-	GovheilKaboom.DisplayName: Govheil Kaboom
-	BrokenMissile.DisplayName: Broken Missile
-	BTech1.DisplayName: B Tech1
-	BTech2.DisplayName: B Tech2
-	BTech3.DisplayName: B Tech3
-	DeathShotBomb.DisplayName: Death Shot Bomb
-	DeathShotBombFX.DisplayName: Death Shot Bomb F X
-	DeathShotProj.DisplayName: Death Shot Proj
-	DragonBolt.DisplayName: Dragon Bolt
-	GraniteMagmumProj.DisplayName: Granite Magmum Proj
-	M38F30Rocks.DisplayName: M38 F30 Rocks
-	M38F30Rocks2.DisplayName: M38 F30 Rocks2
-	RealityBolt.DisplayName: Reality Bolt
-	Shark.DisplayName: Shark
-	SharkAcid.DisplayName: Shark Acid
-	SpacticProj.DisplayName: Spactic Proj
-	SSBolt.DisplayName: S S Bolt
-	StarBolt.DisplayName: Star Bolt
-	TociBolt4.DisplayName: Toci Bolt4
-	Venbullet.DisplayName: Venbullet
-	VenShotIN.DisplayName: Ven Shot I N
-	HornedNailProj.DisplayName: Horned Nail Proj
-	HornedNailProj2.DisplayName: Horned Nail Proj2
-	HornetKaboom.DisplayName: Hornet Kaboom
-	HornetLob.DisplayName: Hornet Lob
-	IgniterStart.DisplayName: Igniter Start
-	KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
-	KaBoom.DisplayName: Ka Boom
-	KaBoomKaev.DisplayName: Ka Boom Kaev
-	KaBoomShade.DisplayName: Ka Boom Shade
-	KaBoomTrick.DisplayName: Ka Boom Trick
-	Logger.DisplayName: Logger
-	AcidFlameG.DisplayName: Acid Flame G
-	AstalaiyaStar1.DisplayName: Astalaiya Star1
-	AstalaiyaStar2.DisplayName: Astalaiya Star2
-	AstalaiyaStar3.DisplayName: Astalaiya Star3
-	BriskflyProg.DisplayName: Briskfly Prog
-	DeafenProj.DisplayName: Deafen Proj
-	DreadVomit.DisplayName: Dread Vomit
-	FungalFlaceBall.DisplayName: Fungal Flace Ball
-	FungalFlaceCloud.DisplayName: Fungal Flace Cloud
-	FungalFlaceCloudGreen.DisplayName: Fungal Flace Cloud Green
-	Gelatin.DisplayName: Gelatin
-	LeadFist.DisplayName: Lead Fist
-	LightSpandProg.DisplayName: Light Spand Prog
-	Nado.DisplayName: Nado
-	OFlame.DisplayName: O Flame
-	PericarditisProj.DisplayName: Pericarditis Proj
-	ShadeHand.DisplayName: Shade Hand
-	ShinobiKnife.DisplayName: Shinobi Knife
-	ShriekerProg.DisplayName: Shrieker Prog
-	SpirtFlareGood.DisplayName: Spirt Flare Good
-	Stardom.DisplayName: Stardom
-	Stardom2.DisplayName: Stardom2
-	StarFlowerproj1.DisplayName: Star Flowerproj1
-	StarFlowerproj2.DisplayName: Star Flowerproj2
-	StarFlowerproj3.DisplayName: Star Flowerproj3
-	SunDeathG.DisplayName: Sun Death G
-	SunDeathGPar.DisplayName: Sun Death G Par
-	TorrentialLanceP.DisplayName: Torrential Lance P
-	VoidCharge.DisplayName: Void Charge
-	VoidCharge2.DisplayName: Void Charge2
-	VoidHand.DisplayName: Void Hand
-	VoidHandSpawn.DisplayName: Void Hand Spawn
-	WinterStormFragProg.DisplayName: Winter Storm Frag Prog
-	WinterStormProg.DisplayName: Winter Storm Prog
-	Zap.DisplayName: Zap
-	Meatball.DisplayName: Meatball
-	Meatball2.DisplayName: Meatball2
-	Meatball3.DisplayName: Meatball3
-	MeatBullet.DisplayName: Meat Bullet
-	MeatBullet2.DisplayName: Meat Bullet2
-	MeatBullet3.DisplayName: Meat Bullet3
-	MetalDaggerProj.DisplayName: Metal Dagger Proj
-	MorrowRapproj.DisplayName: Morrow Rapproj
-	MorrowShot.DisplayName: Morrow Shot
-	MorrowShotArrow.DisplayName: Morrow Shot Arrow
-	MorrowShotArrow2.DisplayName: Morrow Shot Arrow2
-	MorrowValswaProj.DisplayName: Morrow Valswa Proj
-	BoneNailProj.DisplayName: Bone Nail Proj
-	BoneNailProj2.DisplayName: Bone Nail Proj2
-	EnergizedNailProj.DisplayName: Energized Nail Proj
-	EnergizedNailProj2.DisplayName: Energized Nail Proj2
-	SteamedNailProj.DisplayName: Steamed Nail Proj
-	SteamedNailProj2.DisplayName: Steamed Nail Proj2
-	PetalDance.DisplayName: Petal Dance
-	PocketSandProj.DisplayName: Pocket Sand Proj
-	AivanPowderProj.DisplayName: Aivan Powder Proj
-	AlcadPowder.DisplayName: Alcad Powder
-	ArcanePowder.DisplayName: Arcane Powder
-	CoalPowder.DisplayName: Coal Powder
-	CrystalPowderProj.DisplayName: Crystal Powder Proj
-	DirtPowder.DisplayName: Dirt Powder
-	FlamePowderProj.DisplayName: Flame Powder Proj
-	FlowerPowder.DisplayName: Flower Powder
-	FrostPowder.DisplayName: Frost Powder
-	GovheilPowderProj.DisplayName: Govheil Powder Proj
-	KaevPowder.DisplayName: Kaev Powder
-	LenaPowderProj.DisplayName: Lena Powder Proj
-	ShadePowderProj.DisplayName: Shade Powder Proj
-	TrickPowderProj.DisplayName: Trick Powder Proj
-	VoidPowderProj.DisplayName: Void Powder Proj
-	PulseShoter.DisplayName: Pulse Shoter
-	RobedProjectile.DisplayName: Robed Projectile
-	AlcarishProj.DisplayName: Alcarish Proj
-	HalhurishProj.DisplayName: Halhurish Proj
-	ParendineProj.DisplayName: Parendine Proj
-	VingerProj.DisplayName: Vinger Proj
-	SalfaCircle.DisplayName: Salfa Circle
-	SalfaCircle2.DisplayName: Salfa Circle2
-	SalfaCircle3.DisplayName: Salfa Circle3
-	SandSlacerProj.DisplayName: Sand Slacer Proj
-	ScissorianHold.DisplayName: Scissorian Hold
-	ScissorianSlash.DisplayName: Scissorian Slash
-	ScissorianSlash2.DisplayName: Scissorian Slash2
-	ShadeBall.DisplayName: Shade Ball
-	SkullShotKaboom.DisplayName: Skull Shot Kaboom
-	ArchariliteRayswordSlash.DisplayName: Archarilite Raysword Slash
-	AuroranSwordProj.DisplayName: Auroran Sword Proj
-	AuroranSwordProj2.DisplayName: Auroran Sword Proj2
-	GutinierSwordProj.DisplayName: Gutinier Sword Proj
-	GutinierSwordProj2.DisplayName: Gutinier Sword Proj2
-	HearstspireProj.DisplayName: Hearstspire Proj
-	HearstspireProj2.DisplayName: Hearstspire Proj2
-	HeliosP.DisplayName: Helios P
-	HeliosProj.DisplayName: Helios Proj
-	VheilatineProj.DisplayName: Vheilatine Proj
-	SparkedStar.DisplayName: Sparked Star
-	SparrowProj.DisplayName: Sparrow Proj
-	GladiatorSpearMirageProg.DisplayName: Gladiator Spear Mirage Prog
-	GladiatorSpearMirageProgRed.DisplayName: Gladiator Spear Mirage Prog Red
-	GladiatorSpearProg.DisplayName: Gladiator Spear Prog
-	HolmbergScytheMirageProj.DisplayName: Holmberg Scythe Mirage Proj
-	HolmbergScytheMirageProjBlue.DisplayName: Holmberg Scythe Mirage Proj Blue
-	HolmbergScytheProj.DisplayName: Holmberg Scythe Proj
-	InfernisBomb.DisplayName: Infernis Bomb
-	InfernisProj.DisplayName: Infernis Proj
-	ScarecrowSaberProg.DisplayName: Scarecrow Saber Prog
-	StalkersTallonProg.DisplayName: Stalkers Tallon Prog
-	StalkersTallonSpear.DisplayName: Stalkers Tallon Spear
-	StarSheithProg.DisplayName: Star Sheith Prog
-	StarSheithStar.DisplayName: Star Sheith Star
-	TheIrradiaspearP.DisplayName: The Irradiaspear P
-	TheIrradiaspearP2.DisplayName: The Irradiaspear P2
-	TridentOfTheSeasProg.DisplayName: Trident Of The Seas Prog
-	VoidLanceSpear.DisplayName: Void Lance Spear
-	VoidLanceWave.DisplayName: Void Lance Wave
-	splitshot.DisplayName: splitshot
-	CharmSpragald.DisplayName: Charm Spragald
-	Needle.DisplayName: Needle
-	StringNNeedlesAlcadiz.DisplayName: String N Needles Alcadiz
-	CharmVerlia.DisplayName: Charm Verlia
-	CurlistineProj2.DisplayName: Curlistine Proj2
-	StringNNeedleVerlia.DisplayName: String N Needle Verlia
-	SwordsArmy.DisplayName: Swords Army
-	SwordsArmy2.DisplayName: Swords Army2
-	SwordsArmy3.DisplayName: Swords Army3
-	SwordsVin.DisplayName: Swords Vin
-	Sword.DisplayName: Sword
-	Stump.DisplayName: Stump
-	AuroranSeekerProj.DisplayName: Auroran Seeker Proj
-	Coinspa.DisplayName: Coinspa
-	Glyph1.DisplayName: Glyph1
-	Glyph2.DisplayName: Glyph2
-	Glyph3.DisplayName: Glyph3
-	Glyph4.DisplayName: Glyph4
-	Glyph5.DisplayName: Glyph5
-	Glyph6.DisplayName: Glyph6
-	Glyph7.DisplayName: Glyph7
-	LWProj.DisplayName: L W Proj
-	MWProj.DisplayName: M W Proj
-	SeekerProj.DisplayName: Seeker Proj
-	Starbomb.DisplayName: Starbomb
-	Starout.DisplayName: Starout
-	VoltuxPortal.DisplayName: Voltux Portal
-	Supernova.DisplayName: Supernova
-	AcidBlast2.DisplayName: Acid Blast2
-	ArchariliteHeatBlast.DisplayName: Archarilite Heat Blast
-	ArchariliteRaysWave.DisplayName: Archarilite Rays Wave
-	AssassinsSlashProj.DisplayName: Assassins Slash Proj
-	AssassinsSpawnEffect.DisplayName: Assassins Spawn Effect
-	CinderBrakerSword.DisplayName: Cinder Braker Sword
-	DragonWaveFriendly.DisplayName: Dragon Wave Friendly
-	DreadFireG.DisplayName: Dread Fire G
-	FrostWave.DisplayName: Frost Wave
-	FrostWaveBig.DisplayName: Frost Wave Big
-	GhostExcaliburProj.DisplayName: Ghost Excalibur Proj
-	HeatBomb.DisplayName: Heat Bomb
-	HorizonBolt.DisplayName: Horizon Bolt
-	HorizonBomb.DisplayName: Horizon Bomb
-	IrradiatedGreatBladeThrow.DisplayName: Irradiated Great Blade Throw
-	KilvierBONK.DisplayName: Kilvier B O N K
-	StarKeeperStar.DisplayName: Star Keeper Star
-	SwordOfGlactiaProj.DisplayName: Sword Of Glactia Proj
-	WindSythe.DisplayName: Wind Sythe
-	WindSytheBlue.DisplayName: Wind Sythe Blue
-	X3107Skull.DisplayName: X3107 Skull
-	X3107Skull2.DisplayName: X3107 Skull2
-	AcidicLancherProj.DisplayName: Acidic Lancher Proj
-	Acidius2.DisplayName: Acidius2
-	AssassinsKnifeProg.DisplayName: Assassins Knife Prog
-	AssassinsShurikenProg.DisplayName: Assassins Shuriken Prog
-	BlackdotProjectile.DisplayName: Blackdot Projectile
-	Boralius2.DisplayName: Boralius2
-	BricksP.DisplayName: Bricks P
-	Cactius2.DisplayName: Cactius2
-	GintzeSpear.DisplayName: Gintze Spear
-	GintzeSpearMini.DisplayName: Gintze Spear Mini
-	GreyBricksP.DisplayName: Grey Bricks P
-	Plantius2.DisplayName: Plantius2
-	Plateproj.DisplayName: Plateproj
-	ZthoKnife.DisplayName: Ztho Knife
-	TrickbiteProj.DisplayName: Trickbite Proj
-	VerlShot.DisplayName: Verl Shot
-	VerstibloomProjectile.DisplayName: Verstibloom Projectile
-	Violarproj.DisplayName: Violarproj
-	VoidKaboom.DisplayName: Void Kaboom
-	DesertWhipProj.DisplayName: Desert Whip Proj
-	MorrowWhipProj.DisplayName: Morrow Whip Proj
-	wowBullet.DisplayName: wow Bullet
-	SGBolt.DisplayName: S G Bolt
-}
-
-ShadegraveStaff: {
-	DisplayName: Shadegrave Staff
-	Tooltip: Funny that this exists.
-}
-
-BasicGunParts: {
-	DisplayName: Basic Gun Parts
-	Tooltip: Gun parts for all!
-}
-
-NPCs: {
-	Jack.DisplayName: Jack
-	Daedus.DisplayName: Daedus
-	DreadMire.DisplayName: Dread Mire
-	CommanderGintzia.DisplayName: Commander Gintzia
-	SunStalker.DisplayName: Sun Stalker
-	SingularityFragment.DisplayName: Singularity Fragment
-	VerliaB.DisplayName: Verlia B
-	Gothiviab.DisplayName: Gothiviab
-	TericGramNPC.DisplayName: Teric Gram N P C
-	TericGramNPC2.DisplayName: Teric Gram N P C2
-	AbyssalSeeker.DisplayName: Abyssal Seeker
-	AbyssalSkull.DisplayName: Abyssal Skull
-	AbyssalSlime.DisplayName: Abyssal Slime
-	AcidProbe.DisplayName: Acid Probe
-	AcidSlime.DisplayName: Acid Slime
-	AcidSpirit.DisplayName: Acid Spirit
-	ToxicBoulder.DisplayName: Toxic Boulder
-	LanternOfHope.DisplayName: Lantern Of Hope
-	DaedusR.DisplayName: Daedus The Forgotten Puppet
-	DRay.DisplayName: D Ray
-	BloodCyst.DisplayName: Blood Cyst
-	BloodCystDead.DisplayName: Blood Cyst Dead
-	DreadFireBomb.DisplayName: Dread Fire Bomb
-	DreadFireCircle.DisplayName: Dread Fire Circle
-	DreadMirePentagram.DisplayName: Dread Mire Pentagram
-	DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
-	DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
-	DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
-	DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
-	DreadSurvent.DisplayName: Dread Survent
-	DreadMiresHeart.DisplayName: Dread Mires Heart
-	Gothiviabb.DisplayName: Gothiviabb
-	Rek.DisplayName: Rek
-	Train1.DisplayName: Train1
-	Train2.DisplayName: Train2
-	Irradieagle.DisplayName: Irradieagle
-	IrradieagleSurvent.DisplayName: Irradieagle Survent
-	IRNDeathBomb.DisplayName: I R N Death Bomb
-	IrradiatedCreeper.DisplayName: Irradiated Creeper
-	IrradiatedNest.DisplayName: Irradiated Nest
-	IrradiatedNestDeath.DisplayName: Irradiated Nest Death
-	JackDeath.DisplayName: Jack Death
-	Jackoslime.DisplayName: Jackoslime
-	LazerOrb.DisplayName: Lazer Orb
-	SingularityLazer.DisplayName: Singularity Lazer
-	SingularityLazer2.DisplayName: Singularity Lazer2
-	SingularitySpark.DisplayName: Singularity Spark
-	SingularitySparkBig.DisplayName: Singularity Spark Big
-	SingularityOrb.DisplayName: Singularity Orb
-	Voidling.DisplayName: Voidling
-	Flowerball.DisplayName: Flowerball
-	StarrVeriplant.DisplayName: Stone Guardian
-	SunStalkerDeath.DisplayName: Sun Stalker Death
-	SunStalkerLighting.DisplayName: Sun Stalker Lighting
-	SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
-	SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
-	SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
-	CloneV.DisplayName: Clone V
-	GhostCharger.DisplayName: Ghost Charger
-	StarteV.DisplayName: Starte V
-	Sword1.DisplayName: Sword1
-	Sword2.DisplayName: Sword2
-	Sword3.DisplayName: Sword3
-	Viola.DisplayName: Viola
-	DiceinNPC.DisplayName: Dicein N P C
-	GintziaHand.DisplayName: Gintzia Hand
-	GintzeCaptain.DisplayName: Gintze Captain
-	GintzeSolider.DisplayName: Gintze Solider
-	GintzeSpearman.DisplayName: Gintze Spearman
-	GintzeWarrior.DisplayName: Gintze Warrior
-	GintzeWindRider.DisplayName: Gintze Wind Rider
-	Gintzling.DisplayName: Gintzling
-	GovheilProtector.DisplayName: Govheil Protector
-	HarvestIce.DisplayName: Harvest Ice
-	HarvestGovheil.DisplayName: Harvest Govheil
-	HarvestOverworld.DisplayName: Harvest Overworld
-	HarvestUM.DisplayName: Harvest U M
-	HarvestVirulent.DisplayName: Harvest Virulent
-	WinterbornBat.DisplayName: Winterborn Bat
-	WinterBornSlime.DisplayName: Winter Born Slime
-	WinterSoul1.DisplayName: Winter Soul1
-	WinterSoul2.DisplayName: Winter Soul2
-	WinterSoul3.DisplayName: Winter Soul3
-	MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
-	MossyZombie.DisplayName: Mossy Zombie
-	RubyBeetle.DisplayName: Ruby Beetle
-	TopazBeetle.DisplayName: Topaz Beetle
-	TribalPeasant.DisplayName: Tribal Peasant
-	TribalPriest.DisplayName: Tribal Priest
-	IvythornSlime.DisplayName: Ivythorn Slime
-	RoyalSlime.DisplayName: Royal Slime
-	ShadeSlime.DisplayName: Shade Slime
-	ShadowWraith.DisplayName: Shadow Wraith
-
-	Gambit: {
-		DisplayName: Gambit
-
-		TownNPCMood: {
-			Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
-			NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
-			FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
-			LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
-			DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
-			HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
-			LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
-			LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
-			DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
-			LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
-			LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
-			DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
-			HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
-			LikeNPC_Princess: I like {NPCName}.
-			Princess_LovesNPC: I like {NPCName}.
-		}
-	}
-
-	Ginztel: {
-		DisplayName: Ginztel
-
-		TownNPCMood: {
-			Content: I am content.
-			NoHome: I hate not having a home.
-			FarFromHome: I am too far from the place I should be in.
-			LoveSpace: Space is ok.
-			DislikeCrowded: I dislike how crowded I am. I feel like I'm back in the army.
-			HateCrowded: I hate how crowded I am.
-			LoveBiome: I love {BiomeName}.
-			LikeBiome: I like {BiomeName}.
-			DislikeBiome: I dislike {BiomeName}.
-			LoveNPC: I love {NPCName}.
-			LikeNPC: I like {NPCName}.
-			DislikeNPC: I dislike {NPCName}.
-			HateNPC: I hate {NPCName}.
-			LikeNPC_Princess: I like {NPCName}.
-			Princess_LovesNPC: I like {NPCName}.
-		}
-	}
-
-	DreadFireBombG.DisplayName: Dread Fire Bomb G
-	HeatBombLighting.DisplayName: Heat Bomb Lighting
-	HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-	AmethystBeetle.DisplayName: Amethyst Beetle
-	EmeraldBeetle.DisplayName: Emerald Beetle
-	SapphireBeetle.DisplayName: Sapphire Beetle
-	StarSlime.DisplayName: Star Slime
-}
-
-Buffs: {
-	NPCs: {
-		Flowerball.DisplayName: Flowerball
-		StarrVeriplant.DisplayName: Stone Guardian
-		CloneV.DisplayName: Verlia Clone
-		GhostCharger.DisplayName: Ghost Charger
-		Sword1.DisplayName: Sword of Maskillia
-		Sword2.DisplayName: Sword of Vixyl
-		Sword3.DisplayName: Sword of Baina
-		Viola.DisplayName: Viola
-		VerliaB.DisplayName: Verlia of The Moon
-		HarvestIce.DisplayName: ???
-		HarvestOverworld.DisplayName: ???
-		HarvestUM.DisplayName: ???
-		MorrowedJellyFish.DisplayName: Morrowed Jellyfish
-		MossyZombie.DisplayName: Mossy Zombie
-		RubyBeetle.DisplayName: Topaz Beetle
-		TribalPeasant.DisplayName: Tribal Peasant
-		TribalPriest.DisplayName: Tribal Priest
-		GintzeCaptain.DisplayName: Gintze Captain
-		GintzeSolider.DisplayName: Gintze Solider
-
-		Gambit: {
-			DisplayName: Gambit
-
-			TownNPCMood: {
-				Content: I am content.
-				NoHome: I hate not having a home.
-				FarFromHome: I am too far from home.
-				LoveSpace: I love having so much space.
-				DislikeCrowded: I dislike how crowded I am.
-				HateCrowded: I hate how crowded I am.
-				LoveBiome: I love {BiomeName}.
-				LikeBiome: I like {BiomeName}.
-				DislikeBiome: I dislike {BiomeName}.
-				HateBiome: I hate {BiomeName}.
-				LoveNPC: I love {NPCName}.
-				LikeNPC: I like {NPCName}.
-				DislikeNPC: I dislike {NPCName}.
-				HateNPC: I hate {NPCName}.
-				LikeNPC_Princess: I like {NPCName}.
-				Princess_LovesNPC: I like {NPCName}.
-			}
+	Biomes: {
+		CathedralBiome: {
+			DisplayName: Verlia's Tower
+			TownNPCDialogueName: Verlia's Tower
 		}
 
-		VerlSword.DisplayName: Verl Sword
-		StarteV.DisplayName: Verlia?
-		AbyssalSeeker.DisplayName: Abyssal Seeker
-		AbyssalSkull.DisplayName: Abyssal Skull
-		AbyssalSlime.DisplayName: Abyssal Slime
-		AcidProbe.DisplayName: Acid Probe
-		AcidSlime.DisplayName: Acid Slime
-		AcidSpirit.DisplayName: Acid Spirit
-		ToxicBoulder.DisplayName: Toxic Boulder
-		BloodCyst.DisplayName: Blood Cyst
-		BloodCystDead.DisplayName: Blood Cyst Dead
-		DreadFireBomb.DisplayName: Dread Fire Bomb
-		DreadFireCircle.DisplayName: Dread Fire Circle
-		DreadMire.DisplayName: Dread Mire
-		DreadMirePentagram.DisplayName: Dread Mire Pentagram
-		DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
-		DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
-		DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
-		DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
-		DreadSurvent.DisplayName: Dread Survent
-		DreadMiresHeart.DisplayName: Dread Mires Heart
-		Irradieagle.DisplayName: Irradieagle
-		IrradieagleSurvent.DisplayName: Irradieagle Survent
-		IRNDeathBomb.DisplayName: I R N Death Bomb
-		IrradiatedCreeper.DisplayName: Irradiated Creeper
-		IrradiatedNest.DisplayName: Irradiated Nest
-		IrradiatedNestDeath.DisplayName: Irradiated Nest Death
-		Jack.DisplayName: Jack
-		JackDeath.DisplayName: Jack Death
-		Jackoslime.DisplayName: Jackoslime
-		SingularityFragment.DisplayName: Singularity Of The Moon
-		Voidling.DisplayName: Voidling
-		SunStalker.DisplayName: Sun Stalker
-		SunStalkerDeath.DisplayName: Sun Stalker Death
-		SunStalkerLighting.DisplayName: Sun Stalker Lighting
-		SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
-		SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
-		SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
-		WinterbornBat.DisplayName: Winterborn Bat
-		WinterBornSlime.DisplayName: Winter Born Slime
-		IvythornSlime.DisplayName: Ivythorn Slime
-		RoyalSlime.DisplayName: Royal Slime
-		ShadeSlime.DisplayName: Shade Slime
-		ShadowWraith.DisplayName: Shadow Wraith
-		DreadFireBombG.DisplayName: Dread Fire Bomb
-		HeatBombLighting.DisplayName: Heat Bomb Lighting
-		HeatBombRayLight.DisplayName: Heat Bomb Ray Light
-		GintzeWindRider.DisplayName: Gintze Wind Rider
-		Gintzling.DisplayName: Gintzling
-		GintzeSpearman.DisplayName: Gintze Spearman
-		GintzeWarrior.DisplayName: Gintze Warrior
-		CommanderGintzia.DisplayName: Commander Gintzia
-		GintziaHand.DisplayName: Gintzia Hand
-		WinterSoul1.DisplayName: Winter Soul
-		WinterSoul2.DisplayName: Winter Soul
-		WinterSoul3.DisplayName: Winter Soul
-		HarvestVirulent.DisplayName: Harvest Virulent
-		SingularityOrb.DisplayName: Singularity Orb
-		SingularitySpark.DisplayName: Singularity Spark
-		SingularitySparkBig.DisplayName: Singularity's bigger spark
-		LazerOrb.DisplayName: Lazer Orb
-		SingularityLazer.DisplayName: Singularity Lazer
+		MarrowSurfaceBiome: {
+			DisplayName: Morrow Surface
+			TownNPCDialogueName: the Marrow Surface Biome
+		}
+
+		MorrowUndergroundBiome: {
+			DisplayName: Morrow Underground
+			TownNPCDialogueName: the Morrow Underground Biome
+		}
+
+		FableBiome: {
+			DisplayName: Fablia
+			TownNPCDialogueName: the Fable Biome
+		}
+
+		AcidBiome: {
+			TownNPCDialogueName: the Virulent Biome
+			DisplayName: Virulent Biome
+		}
+
+		AbyssBiome: {
+			TownNPCDialogueName: the Abysm Biome
+			DisplayName: Abysm Biome
+		}
+
+		AurelusBiome: {
+			DisplayName: Aurelus Biome
+			TownNPCDialogueName: the Aurelus Temple
+		}
 	}
 
 	Projectiles: {
+		AmethystBrooch.DisplayName: Amethyst Brooch
+		AurelusBlightBrooch.DisplayName: Aurelus Blight Brooch
+		BearBrooch.DisplayName: Bear Brooch
+		BurningGBrooch.DisplayName: Burning G Brooch
 		DiariBrooch.DisplayName: Diari Brooch
+		DreadBrooch.DisplayName: Dread Brooch
 		FlyfishBrooch.DisplayName: Flyfish Brooch
 		FrileBrooch.DisplayName: Frile Brooch
 		FrileBroochP.DisplayName: Frile Brooch P
+		GintzlBrooch.DisplayName: Gintzl Brooch
+		GovheilHolsterBrooch.DisplayName: Govheil Holster Brooch
+		MalShieldBrooch.DisplayName: Mal Shield Brooch
 		MorrowedBrooch.DisplayName: Morrowed Brooch
 		SlimeBrooch.DisplayName: Slime Brooch
 		SpragaldBrooch.DisplayName: Spragald Brooch
 		Spragald.DisplayName: Spragald
-		LovestruckP.DisplayName: Lovestruck P
-		Noti.DisplayName: Noti
-		BigRock.DisplayName: Big Rock
-		CosButterfly.DisplayName: Cos Butterfly
-		Flowder.DisplayName: Flowder
-		Flowing.DisplayName: Flowing
-		GroundSpike.DisplayName: Ground Spike
-		Rock.DisplayName: Rock
-		Rock2.DisplayName: Rock2
-		SineButterfly.DisplayName: Sine Butterfly
-		SineButterflyfriendly.DisplayName: Sine Butterflyfriendly
-		SmallRock.DisplayName: Small Rock
-		SmallRock2.DisplayName: Small Rock2
-		SpikeBullet.DisplayName: Spike Bullet
-		StarBullet.DisplayName: Star Bullet
-		StarSpike.DisplayName: Star Spike
-		BackgroundOrb.DisplayName: Background Orb
-		FrostShot.DisplayName: Frost Shot
-		FrostShot2.DisplayName: Frost Shot2
-		FrostShotIN.DisplayName: Frost Shot I N
-		MoonBladeTrail.DisplayName: Moon Blade Trail
-		MoonOut.DisplayName: Moon Out
-		Notia.DisplayName: Notia
-		Sigil.DisplayName: Sigil
-		SlashHold.DisplayName: Verlias Swords Dance
-		SlashLeft.DisplayName: Slash of the moon
-		SlashRight.DisplayName: Slash of the moon
-		Strummer.DisplayName: Strummer
-		Sword1F.DisplayName: Sword of Maskilla
-		Sword2F.DisplayName: Sword of Vixyl
-		Sword3F.DisplayName: Sword of Daedia
-		Sword.DisplayName: Sword
-		TheMoon.DisplayName: The Moon
-		VerliaBlade.DisplayName: Verlias Moon Blade
-		AntacizProj.DisplayName: Antaciz Proj
-		Aurora.DisplayName: Aurora
-		Aurora2.DisplayName: Aurora2
-		Aurora3.DisplayName: Aurora3
-		AuroranBullet.DisplayName: Auroran Bullet
-		AuroranBullet2.DisplayName: Auroran Bullet2
-		AuroranBullet3.DisplayName: Auroran Bullet3
-		Beachthrow.DisplayName: Beachthrow
-		BoomCircle.DisplayName: Boom Circle
-		BoomMorrow.DisplayName: Boom Morrow
-		CocoShot.DisplayName: Coco Shot
-		WoodenCrossbowBolt.DisplayName: Wooden Crossbow Bolt
-		WoodenCrossbowHold.DisplayName: Wooden Crossbow Hold
-		Deathtrail.DisplayName: Deathtrail
-		Dicein.DisplayName: Dicein
-		FrostbiteProj.DisplayName: Frostbite Proj
-		FrostSwProj.DisplayName: Frost Sw Proj
-		FrostSwProj2.DisplayName: Frost Sw Proj2
-		FrostSwProj3.DisplayName: Frost Sw Proj3
-		HornedNailProj.DisplayName: Horned Nail Proj
-		HornedNailProj2.DisplayName: Horned Nail Proj2
-		HornetKaboom.DisplayName: Hornet Kaboom
-		HornetLob.DisplayName: Hornet Lob
-		IgniterStart.DisplayName: Igniter Start
-		KaBoom.DisplayName: Ka Boom
-		KaBoomKaev.DisplayName: Ka Boom Kaev
-		KaBoomShade.DisplayName: Ka Boom Shade
-		KaBoomTrick.DisplayName: Ka Boom Trick
-		Logger.DisplayName: Logger
-		Meatball.DisplayName: Meatball
-		Meatball2.DisplayName: Meatball2
-		Meatball3.DisplayName: Meatball3
-		MeatBullet.DisplayName: Meat Bullet
-		MeatBullet2.DisplayName: Meat Bullet2
-		MeatBullet3.DisplayName: Meat Bullet3
-		MorrowRapproj.DisplayName: Morrow Rapproj
-		MorrowShot.DisplayName: Morrow Shot
-		MorrowShotArrow.DisplayName: Morrow Shot Arrow
-		MorrowShotArrow2.DisplayName: Morrow Shot Arrow2
-		MorrowValswaProj.DisplayName: Morrow Valswa Proj
-		BoneNailProj.DisplayName: Bone Nail Proj
-		BoneNailProj2.DisplayName: Bone Nail Proj2
-		EnergizedNailProj.DisplayName: Energized Nail Proj
-		EnergizedNailProj2.DisplayName: Energized Nail Proj2
-		SteamedNailProj.DisplayName: Steamed Nail Proj
-		SteamedNailProj2.DisplayName: Steamed Nail Proj2
-		PetalDance.DisplayName: Petal Dance
-		PocketSandProj.DisplayName: Pocket Sand Proj
-		ArcanePowder.DisplayName: Arcane Powder
-		CoalPowder.DisplayName: Coal Powder
-		DirtPowder.DisplayName: Dirt Powder
-		FlamePowderProj.DisplayName: Flame Powder Proj
-		FlowerPowder.DisplayName: Flower Powder
-		FrostPowder.DisplayName: Frost Powder
-		KaevPowder.DisplayName: Kaev Powder
-		LenaPowderProj.DisplayName: Lena Powder Proj
-		ShadePowderProj.DisplayName: Shade Powder Proj
-		TrickPowderProj.DisplayName: Trick Powder Proj
-		RobedProjectile.DisplayName: Robed Projectile
-		HalhurishProj.DisplayName: Halhurish Proj
-		SalfaCircle.DisplayName: Salfa Circle
-		SalfaCircle2.DisplayName: Salfa Circle2
-		SalfaCircle3.DisplayName: Salfa Circle3
-		ShadeBall.DisplayName: Shade Ball
-		AuroranSwordProj.DisplayName: Auroran Sword Proj
-		AuroranSwordProj2.DisplayName: Auroran Sword Proj2
-		GutinierSwordProj.DisplayName: Gutinier Sword Proj
-		GutinierSwordProj2.DisplayName: Gutinier Sword Proj2
-		MalodineSwordProj.DisplayName: Malodine Sword Proj
-		SparrowProj.DisplayName: Sparrow Proj
-		splitshot.DisplayName: splitshot
-		CharmSpragald.DisplayName: Charm Spragald
-		Needle.DisplayName: Needle
-		StringNNeedlesAlcadiz.DisplayName: String N Needles Alcadiz
-		Windeffect.DisplayName: Windeffect
-		Stump.DisplayName: Stump
-		Starbomb.DisplayName: Starbomb
-		Starout.DisplayName: Starout
-		TrickbiteProj.DisplayName: Trickbite Proj
-		VerstibloomProjectile.DisplayName: Verstibloom Projectile
-		Violarproj.DisplayName: Violarproj
-		MorrowWhipProj.DisplayName: Morrow Whip Proj
-		wowBullet.DisplayName: wow Bullet
-		GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
-		GardenWreckerHold.DisplayName: Garden Wrecker Hold
-		SkullShotKaboom.DisplayName: Skull Shot Kaboom
-		AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
-		BurningAngelProj.DisplayName: Burning Angel Proj
-		VRay.DisplayName: V Ray
-		FabledRay.DisplayName: Fabled Ray
-		FabledSunray.DisplayName: Fabled Sunray
-		FabledColoredSunray.DisplayName: Fabled Colored Sunray
-		AltideSword.DisplayName: Altide Sword Shard
-		CurlistineProj.DisplayName: Curlistine Proj
-		FrostKaboom.DisplayName: Frost Kaboom
-		KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
-		AlcadPowder.DisplayName: Alcad Powder
-		SineSword.DisplayName: Sine Sword
 		VerliaBrooch.DisplayName: Verlia Brooch
 		VerliaBroochP.DisplayName: Verlia Brooch P
 		VerliaBroochP2.DisplayName: Verlia Brooch P2
 		VerliaBroochP3.DisplayName: Verlia Brooch P3
-		VerliaHeadScreen.DisplayName: Verlia Head Screen
-		VerliaText1.DisplayName: Verlia Text1
-		VerliaText2.DisplayName: Verlia Text2
-		SwordsVin.DisplayName: Swords Vin
-		StringNNeedleVerlia.DisplayName: String N Needle Verlia
-		CharmVerlia.DisplayName: Charm Verlia
-		SwordsArmy.DisplayName: Swords Army
-		SwordsArmy3.DisplayName: Swords Army3
-		SwordsArmy2.DisplayName: Swords Army2
-		PulseShoter.DisplayName: Pulse Shoter
-		VerlShot.DisplayName: Verl Shot
-		Supernova.DisplayName: Supernova
-		CurlistineProj2.DisplayName: Curlistine Proj2
-		ParendineProj.DisplayName: Parendine Proj
-		SeekerProj.DisplayName: Seeker Proj
-		AuroranSeekerProj.DisplayName: Auroran Seeker Proj
-		Coinspa.DisplayName: Coinspa
-		Glyph1.DisplayName: Glyph1
-		Glyph2.DisplayName: Glyph2
-		Glyph3.DisplayName: Glyph3
-		Glyph4.DisplayName: Glyph4
-		Glyph5.DisplayName: Glyph5
-		Glyph6.DisplayName: Glyph6
-		Glyph7.DisplayName: Glyph7
+		VixedBrooch.DisplayName: Vixed Brooch
+		DetonationBomb.DisplayName: Detonation Bomb
+		WindeffectGintzl.DisplayName: Windeffect Gintzl
+		Windeffect.DisplayName: Windeffect
+		LightBomb.DisplayName: Light Bomb
 		GovheilBows.DisplayName: Govheil Bows
 		GovheilBowsProj.DisplayName: Govheil Bows Proj
 		GovheilSwords.DisplayName: Govheil Swords
-		LightBomb.DisplayName: Light Bomb
-		LWProj.DisplayName: L W Proj
-		MWProj.DisplayName: M W Proj
-		EbistarProj.DisplayName: Ebistar Proj
-		SparkedStar.DisplayName: Sparked Star
-		HearstspireProj.DisplayName: Hearstspire Proj
-		HearstspireProj2.DisplayName: Hearstspire Proj2
-		Flameball.DisplayName: Flameball
-		Flameball2.DisplayName: Flameball2
-		IronCrossbowHold.DisplayName: Iron Crossbow Hold
-		LeadCrossbowBolt.DisplayName: Lead Crossbow Bolt
-		LeadCrossbowHold.DisplayName: Lead Crossbow Hold
-		DunCrossbowBolt.DisplayName: Dun Crossbow Bolt
-		DungeonCrossbowHold.DisplayName: Dungeon Crossbow Hold
-		MerCrossbowBolt.DisplayName: Mer Crossbow Bolt
-		MerCrossbowHold.DisplayName: Mer Crossbow Hold
-		GoldCrossbowHold.DisplayName: Gold Crossbow Hold
-		PlatinumCrossbowBolt.DisplayName: Platinum Crossbow Bolt
-		PlatinumCrossbowHold.DisplayName: Platinum Crossbow Hold
-		SilverCrossbowBolt.DisplayName: Silver Crossbow Bolt
-		SilverCrossbowHold.DisplayName: Silver Crossbow Hold
-		TungstenCrossbowHold.DisplayName: Tungsten Crossbow Hold
-		DelfaCircle.DisplayName: Delfa Circle
-		MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
-		MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
-		AltaCircle.DisplayName: Alta Circle
-		SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
-		SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
-		MeltaCircle.DisplayName: Melta Circle
-		DesertCrossbowHold.DisplayName: Desert Crossbow Hold
-		DesertCrossbowBolt.DisplayName: Desert Crossbow Bolt
-		IcaCircle.DisplayName: Ica Circle
-		IceCrossbowBolt.DisplayName: Ice Crossbow Bolt
-		IceCrossbowHold.DisplayName: Ice Crossbow Hold
-		CoralBubble.DisplayName: Coral Bubble
-		CoralCircle.DisplayName: Coral Circle
-		CoralCrossbowBolt.DisplayName: Coral Crossbow Bolt
-		CoralCrossbowHold.DisplayName: Coral Crossbow Hold
-		MoltenCircle.DisplayName: Molten Circle
-		MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
-		MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
-		FableCrossbowBolt.DisplayName: Fable Crossbow Bolt
-		FableCrossbowHold.DisplayName: Fable Crossbow Hold
-		GeaCircle.DisplayName: Gea Circle
-		JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
-		JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
-		VoltuxPortal.DisplayName: Voltux Portal
-		DesertWhipProj.DisplayName: Desert Whip Proj
-		SandSlacerProj.DisplayName: Sand Slacer Proj
-		MetalDaggerProj.DisplayName: Metal Dagger Proj
-		VingerProj.DisplayName: Vinger Proj
-		VheilatineProj.DisplayName: Vheilatine Proj
-		DetonationBomb.DisplayName: Detonation Bomb
+		LovestruckP.DisplayName: Lovestruck P
+		Noti.DisplayName: Noti
+		SingularitySparkProjG.DisplayName: Singularity Spark Proj G
+		SingularitySparkProj.DisplayName: Singularity Spark Proj
 		ArncharMinion.DisplayName: Arnchar Minion
 		Drippler.DisplayName: Drippler
 		FCMinion.DisplayName: F C Minion
-		HMArncharMinion.DisplayName: H M Arnchar Minion
+		HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
+		HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
+		IceboundMinion.DisplayName: Icebound Minion
 		IrradiatedCreeper2.DisplayName: Irradiated Creeper2
 		Ivyaken.DisplayName: Ivyaken
 		JellyMinion.DisplayName: Jelly Minion
+		MushroomStaveMinion.DisplayName: Mushroom Stave Minion
+		MushroomStaveMinionProg.DisplayName: Mushroom Stave Minion Prog
+		SolMothMinion.DisplayName: Sol Moth Minion
 		SwarmerMinion.DisplayName: Swarmer Minion
+		TheBurningRodMinion.DisplayName: The Burning Rod Minion
 		VoidMinion.DisplayName: Void Minion
 		ProbeMinion.DisplayName: Probe Minion
+		BouncySword.DisplayName: Bouncy Sword
+		FlameTornado.DisplayName: Flame Tornado
+		LanturnSpear.DisplayName: Lanturn Spear
+		SummonSpawnEffect.DisplayName: Summon Spawn Effect
+		VoidBomb.DisplayName: Void Bomb
+		DaedusBombExplosion.DisplayName: Daedus Bomb Explosion
+		DLantern.DisplayName: D Lantern
 		DreadBone.DisplayName: Dread Bone
 		DreadFire.DisplayName: Dread Fire
 		DreadHand.DisplayName: Dread Hand
 		Dreadlighting.DisplayName: Dreadlighting
 		DreadlightingBig.DisplayName: Dreadlighting Big
 		DreadMireDash.DisplayName: Dread Mire Dash
+		DreadMireMagic.DisplayName: Dread Mire Magic
 		DreadSkull.DisplayName: Dread Skull
 		DreadSpawnEffect.DisplayName: Dread Spawn Effect
 		FinalBeam.DisplayName: Final Beam
@@ -7802,6 +6906,16 @@ Buffs: {
 		DreadMiresHeartVomit1.DisplayName: Dread Mires Heart Vomit1
 		RedSkull.DisplayName: Red Skull
 		TerrorBeam.DisplayName: Terror Beam
+		FlameArrow.DisplayName: Flame Arrow
+		FlameBlast.DisplayName: Flame Blast
+		Helios.DisplayName: Helios
+		LaserShooterFirstPhase.DisplayName: Laser Shooter First Phase
+		Music1.DisplayName: Music1
+		Music2.DisplayName: Music2
+		Speechbubble.DisplayName: Speechbubble
+		RekEye2.DisplayName: Rek Eye2
+		RekGreek1.DisplayName: Rek Greek1
+		RekLava3.DisplayName: Rek Lava3
 		AcidicZap.DisplayName: Acidic Zap
 		AEgg.DisplayName: A Egg
 		CommunicationRay.DisplayName: Communication Ray
@@ -7823,16 +6937,69 @@ Buffs: {
 		AbyssalChargeProjectile.DisplayName: Abyssal Charge Projectile
 		AbyssalChargeProjectile2.DisplayName: Abyssal Charge Projectile2
 		AbyssWave.DisplayName: Abyss Wave
+		PulsarBeam.DisplayName: Pulsar Beam
 		RuneSpawnEffect.DisplayName: Rune Spawn Effect
+		RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
 		SoulBeam.DisplayName: Soul Beam
 		SoulBlast.DisplayName: Soul Blast
 		VoidBeam.DisplayName: Void Beam
+		VoidBeamIN.DisplayName: Void Beam I N
 		VoidFlame.DisplayName: Void Flame
+		BigRock.DisplayName: Big Rock
+		CosButterfly.DisplayName: Cos Butterfly
+		Flowder.DisplayName: Flowder
+		Flowing.DisplayName: Flowing
+		GroundSpike.DisplayName: Ground Spike
+		Rock.DisplayName: Rock
+		Rock2.DisplayName: Rock2
+		SineButterfly.DisplayName: Sine Butterfly
+		SineButterflyfriendly.DisplayName: Sine Butterflyfriendly
+		SmallRock.DisplayName: Small Rock
+		SmallRock2.DisplayName: Small Rock2
+		SpikeBullet.DisplayName: Spike Bullet
+		StarBullet.DisplayName: Star Bullet
+		StarSpike.DisplayName: Star Spike
 		SunBomb.DisplayName: Sun Bomb
 		SunDeath.DisplayName: Sun Death
 		SunFeather.DisplayName: Sun Feather
 		SunRock.DisplayName: Sun Rock
+		BackgroundOrb.DisplayName: Background Orb
+		FrostShot.DisplayName: Frost Shot
+		FrostShot2.DisplayName: Frost Shot2
+		FrostShotIN.DisplayName: Frost Shot I N
+		MoonBladeTrail.DisplayName: Moon Blade Trail
+		MoonOut.DisplayName: Moon Out
+		Notia.DisplayName: Notia
+		Sigil.DisplayName: Sigil
+		SineSword.DisplayName: Sine Sword
+		SlashHold.DisplayName: Slash Hold
+		SlashLeft.DisplayName: Slash Left
+		SlashRight.DisplayName: Slash Right
+		Strummer.DisplayName: Strummer
+		AltideSword.DisplayName: Altide Sword
+		Sword1F.DisplayName: Sword1 F
+		Sword2F.DisplayName: Sword2 F
+		Sword3F.DisplayName: Sword3 F
+		TheMoon.DisplayName: The Moon
+		VerliaBlade.DisplayName: Verlia Blade
+		VerliaHeadScreen.DisplayName: Verlia Head Screen
+		VerliaText1.DisplayName: Verlia Text1
+		VerliaText2.DisplayName: Verlia Text2
+		Gintzianado.DisplayName: Gintzianado
 		ShadowFlare.DisplayName: Shadow Flare
+		VRay.DisplayName: V Ray
+		AivanKaboom.DisplayName: Aivan Kaboom
+		AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
+		AntacizProj.DisplayName: Antaciz Proj
+		Aurora.DisplayName: Aurora
+		Aurora2.DisplayName: Aurora2
+		Aurora3.DisplayName: Aurora3
+		AuroranBullet.DisplayName: Auroran Bullet
+		AuroranBullet2.DisplayName: Auroran Bullet2
+		AuroranBullet3.DisplayName: Auroran Bullet3
+		Beachthrow.DisplayName: Beachthrow
+		BoomCircle.DisplayName: Boom Circle
+		BoomMorrow.DisplayName: Boom Morrow
 		ArchariliteArrow.DisplayName: Archarilite Arrow
 		ArchariliteArrowSmall.DisplayName: Archarilite Arrow Small
 		CloudBolt.DisplayName: Cloud Bolt
@@ -7842,12 +7009,75 @@ Buffs: {
 		CrysalizerExplosion.DisplayName: Crysalizer Explosion
 		DreadSkullBonesProg.DisplayName: Dread Skull Bones Prog
 		DreadSkullProg.DisplayName: Dread Skull Prog
+		GalvinieArrow1.DisplayName: Galvinie Arrow1
 		HarpyFeather1.DisplayName: Harpy Feather1
 		HeatArrow.DisplayName: Heat Arrow
+		HuntrianArrow.DisplayName: Huntrian Arrow
 		VoidSkullProg.DisplayName: Void Skull Prog
 		WinterboundArrow.DisplayName: Winterbound Arrow
 		WinterboundArrowFlake.DisplayName: Winterbound Arrow Flake
 		WinterboundFlare.DisplayName: Winterbound Flare
+		BurningAngelProj.DisplayName: Burning Angel Proj
+		CocoShot.DisplayName: Coco Shot
+		GoldCrossbowHold.DisplayName: Gold Crossbow Hold
+		PlatinumCrossbowBolt.DisplayName: Platinum Crossbow Bolt
+		PlatinumCrossbowHold.DisplayName: Platinum Crossbow Hold
+		SilverCrossbowBolt.DisplayName: Silver Crossbow Bolt
+		SilverCrossbowHold.DisplayName: Silver Crossbow Hold
+		TungstenCrossbowHold.DisplayName: Tungsten Crossbow Hold
+		IronCrossbowHold.DisplayName: Iron Crossbow Hold
+		LeadCrossbowBolt.DisplayName: Lead Crossbow Bolt
+		LeadCrossbowHold.DisplayName: Lead Crossbow Hold
+		DesertCrossbowBolt.DisplayName: Desert Crossbow Bolt
+		DesertCrossbowHold.DisplayName: Desert Crossbow Hold
+		FableCrossbowBolt.DisplayName: Fable Crossbow Bolt
+		FableCrossbowHold.DisplayName: Fable Crossbow Hold
+		IcaCircle.DisplayName: Ica Circle
+		IceCrossbowBolt.DisplayName: Ice Crossbow Bolt
+		IceCrossbowHold.DisplayName: Ice Crossbow Hold
+		MeltaCircle.DisplayName: Melta Circle
+		PiaCircle.DisplayName: Pia Circle
+		TON618CrossbowHold.DisplayName: T O N618 Crossbow Hold
+		TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
+		DunCrossbowBolt.DisplayName: Dun Crossbow Bolt
+		DungeonCrossbowHold.DisplayName: Dungeon Crossbow Hold
+		MerCrossbowBolt.DisplayName: Mer Crossbow Bolt
+		MerCrossbowHold.DisplayName: Mer Crossbow Hold
+		AltaCircle.DisplayName: Alta Circle
+		DelfaCircle.DisplayName: Delfa Circle
+		GeaCircle.DisplayName: Gea Circle
+		JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
+		JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
+		MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
+		MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
+		SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
+		SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
+		CoralBubble.DisplayName: Coral Bubble
+		CoralCircle.DisplayName: Coral Circle
+		CoralCrossbowBolt.DisplayName: Coral Crossbow Bolt
+		CoralCrossbowHold.DisplayName: Coral Crossbow Hold
+		MoltenCircle.DisplayName: Molten Circle
+		MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
+		MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
+		WoodenCrossbowBolt.DisplayName: Wooden Crossbow Bolt
+		WoodenCrossbowHold.DisplayName: Wooden Crossbow Hold
+		CrystalBloom.DisplayName: Crystal Bloom
+		CurlistineProj.DisplayName: Curlistine Proj
+		Deathtrail.DisplayName: Deathtrail
+		Dicein.DisplayName: Dicein
+		EbistarProj.DisplayName: Ebistar Proj
+		FabledColoredSunray.DisplayName: Fabled Colored Sunray
+		FabledSunray.DisplayName: Fabled Sunray
+		Flameball.DisplayName: Flameball
+		Flameball2.DisplayName: Flameball2
+		FrostbiteProj.DisplayName: Frostbite Proj
+		FrostKaboom.DisplayName: Frost Kaboom
+		FrostSwProj.DisplayName: Frost Sw Proj
+		FrostSwProj2.DisplayName: Frost Sw Proj2
+		FrostSwProj3.DisplayName: Frost Sw Proj3
+		GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
+		GardenWreckerHold.DisplayName: Garden Wrecker Hold
+		GovheilKaboom.DisplayName: Govheil Kaboom
 		BrokenMissile.DisplayName: Broken Missile
 		BTech1.DisplayName: B Tech1
 		BTech2.DisplayName: B Tech2
@@ -7862,9 +7092,23 @@ Buffs: {
 		RealityBolt.DisplayName: Reality Bolt
 		Shark.DisplayName: Shark
 		SharkAcid.DisplayName: Shark Acid
+		SpacticProj.DisplayName: Spactic Proj
 		SSBolt.DisplayName: S S Bolt
 		StarBolt.DisplayName: Star Bolt
 		TociBolt4.DisplayName: Toci Bolt4
+		Venbullet.DisplayName: Venbullet
+		VenShotIN.DisplayName: Ven Shot I N
+		HornedNailProj.DisplayName: Horned Nail Proj
+		HornedNailProj2.DisplayName: Horned Nail Proj2
+		HornetKaboom.DisplayName: Hornet Kaboom
+		HornetLob.DisplayName: Hornet Lob
+		IgniterStart.DisplayName: Igniter Start
+		KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
+		KaBoom.DisplayName: Ka Boom
+		KaBoomKaev.DisplayName: Ka Boom Kaev
+		KaBoomShade.DisplayName: Ka Boom Shade
+		KaBoomTrick.DisplayName: Ka Boom Trick
+		Logger.DisplayName: Logger
 		AcidFlameG.DisplayName: Acid Flame G
 		AstalaiyaStar1.DisplayName: Astalaiya Star1
 		AstalaiyaStar2.DisplayName: Astalaiya Star2
@@ -7877,12 +7121,16 @@ Buffs: {
 		FungalFlaceCloudGreen.DisplayName: Fungal Flace Cloud Green
 		Gelatin.DisplayName: Gelatin
 		LeadFist.DisplayName: Lead Fist
+		LightSpandProg.DisplayName: Light Spand Prog
 		Nado.DisplayName: Nado
 		OFlame.DisplayName: O Flame
 		PericarditisProj.DisplayName: Pericarditis Proj
 		ShadeHand.DisplayName: Shade Hand
+		ShinobiKnife.DisplayName: Shinobi Knife
 		ShriekerProg.DisplayName: Shrieker Prog
 		SpirtFlareGood.DisplayName: Spirt Flare Good
+		Stardom.DisplayName: Stardom
+		Stardom2.DisplayName: Stardom2
 		StarFlowerproj1.DisplayName: Star Flowerproj1
 		StarFlowerproj2.DisplayName: Star Flowerproj2
 		StarFlowerproj3.DisplayName: Star Flowerproj3
@@ -7896,9 +7144,74 @@ Buffs: {
 		WinterStormFragProg.DisplayName: Winter Storm Frag Prog
 		WinterStormProg.DisplayName: Winter Storm Prog
 		Zap.DisplayName: Zap
+		Meatball.DisplayName: Meatball
+		Meatball2.DisplayName: Meatball2
+		Meatball3.DisplayName: Meatball3
+		MeatBullet.DisplayName: Meat Bullet
+		MeatBullet2.DisplayName: Meat Bullet2
+		MeatBullet3.DisplayName: Meat Bullet3
+		MetalDaggerProj.DisplayName: Metal Dagger Proj
+		MorrowRapproj.DisplayName: Morrow Rapproj
+		MorrowShot.DisplayName: Morrow Shot
+		MorrowShotArrow.DisplayName: Morrow Shot Arrow
+		MorrowShotArrow2.DisplayName: Morrow Shot Arrow2
+		MorrowValswaProj.DisplayName: Morrow Valswa Proj
+		BoneNailProj.DisplayName: Bone Nail Proj
+		BoneNailProj2.DisplayName: Bone Nail Proj2
+		EnergizedNailProj.DisplayName: Energized Nail Proj
+		EnergizedNailProj2.DisplayName: Energized Nail Proj2
+		SteamedNailProj.DisplayName: Steamed Nail Proj
+		SteamedNailProj2.DisplayName: Steamed Nail Proj2
+		PetalDance.DisplayName: Petal Dance
+		PocketSandProj.DisplayName: Pocket Sand Proj
+		AivanPowderProj.DisplayName: Aivan Powder Proj
+		AlcadPowder.DisplayName: Alcad Powder
+		ArcanePowder.DisplayName: Arcane Powder
+		CoalPowder.DisplayName: Coal Powder
+		CrystalPowderProj.DisplayName: Crystal Powder Proj
+		DirtPowder.DisplayName: Dirt Powder
+		FlamePowderProj.DisplayName: Flame Powder Proj
+		FlowerPowder.DisplayName: Flower Powder
+		FrostPowder.DisplayName: Frost Powder
+		GovheilPowderProj.DisplayName: Govheil Powder Proj
+		KaevPowder.DisplayName: Kaev Powder
+		LenaPowderProj.DisplayName: Lena Powder Proj
+		ShadePowderProj.DisplayName: Shade Powder Proj
+		TrickPowderProj.DisplayName: Trick Powder Proj
+		VoidPowderProj.DisplayName: Void Powder Proj
+		PulseShoter.DisplayName: Pulse Shoter
+		RobedProjectile.DisplayName: Robed Projectile
+		AlcarishProj.DisplayName: Alcarish Proj
+		HalhurishProj.DisplayName: Halhurish Proj
+		ParendineProj.DisplayName: Parendine Proj
+		VingerProj.DisplayName: Vinger Proj
+		SalfaCircle.DisplayName: Salfa Circle
+		SalfaCircle2.DisplayName: Salfa Circle2
+		SalfaCircle3.DisplayName: Salfa Circle3
+		SandSlacerProj.DisplayName: Sand Slacer Proj
+		ScissorianHold.DisplayName: Scissorian Hold
+		ScissorianSlash.DisplayName: Scissorian Slash
+		ScissorianSlash2.DisplayName: Scissorian Slash2
+		ShadeBall.DisplayName: Shade Ball
+		SkullShotKaboom.DisplayName: Skull Shot Kaboom
+		ArchariliteRayswordSlash.DisplayName: Archarilite Raysword Slash
+		AuroranSwordProj.DisplayName: Auroran Sword Proj
+		AuroranSwordProj2.DisplayName: Auroran Sword Proj2
+		GutinierSwordProj.DisplayName: Gutinier Sword Proj
+		GutinierSwordProj2.DisplayName: Gutinier Sword Proj2
+		HearstspireProj.DisplayName: Hearstspire Proj
+		HearstspireProj2.DisplayName: Hearstspire Proj2
+		HeliosP.DisplayName: Helios P
+		HeliosProj.DisplayName: Helios Proj
+		VheilatineProj.DisplayName: Vheilatine Proj
+		SparkedStar.DisplayName: Sparked Star
+		SparrowProj.DisplayName: Sparrow Proj
 		GladiatorSpearMirageProg.DisplayName: Gladiator Spear Mirage Prog
 		GladiatorSpearMirageProgRed.DisplayName: Gladiator Spear Mirage Prog Red
 		GladiatorSpearProg.DisplayName: Gladiator Spear Prog
+		HolmbergScytheMirageProj.DisplayName: Holmberg Scythe Mirage Proj
+		HolmbergScytheMirageProjBlue.DisplayName: Holmberg Scythe Mirage Proj Blue
+		HolmbergScytheProj.DisplayName: Holmberg Scythe Proj
 		InfernisBomb.DisplayName: Infernis Bomb
 		InfernisProj.DisplayName: Infernis Proj
 		ScarecrowSaberProg.DisplayName: Scarecrow Saber Prog
@@ -7911,7 +7224,37 @@ Buffs: {
 		TridentOfTheSeasProg.DisplayName: Trident Of The Seas Prog
 		VoidLanceSpear.DisplayName: Void Lance Spear
 		VoidLanceWave.DisplayName: Void Lance Wave
+		splitshot.DisplayName: splitshot
+		CharmSpragald.DisplayName: Charm Spragald
+		Needle.DisplayName: Needle
+		StringNNeedlesAlcadiz.DisplayName: String N Needles Alcadiz
+		CharmVerlia.DisplayName: Charm Verlia
+		CurlistineProj2.DisplayName: Curlistine Proj2
+		StringNNeedleVerlia.DisplayName: String N Needle Verlia
+		SwordsArmy.DisplayName: Swords Army
+		SwordsArmy2.DisplayName: Swords Army2
+		SwordsArmy3.DisplayName: Swords Army3
+		SwordsVin.DisplayName: Swords Vin
+		Sword.DisplayName: Sword
+		Stump.DisplayName: Stump
+		AuroranSeekerProj.DisplayName: Auroran Seeker Proj
+		Coinspa.DisplayName: Coinspa
+		Glyph1.DisplayName: Glyph1
+		Glyph2.DisplayName: Glyph2
+		Glyph3.DisplayName: Glyph3
+		Glyph4.DisplayName: Glyph4
+		Glyph5.DisplayName: Glyph5
+		Glyph6.DisplayName: Glyph6
+		Glyph7.DisplayName: Glyph7
+		LWProj.DisplayName: L W Proj
+		MWProj.DisplayName: M W Proj
+		SeekerProj.DisplayName: Seeker Proj
+		Starbomb.DisplayName: Starbomb
+		Starout.DisplayName: Starout
+		VoltuxPortal.DisplayName: Voltux Portal
+		Supernova.DisplayName: Supernova
 		AcidBlast2.DisplayName: Acid Blast2
+		ArchariliteHeatBlast.DisplayName: Archarilite Heat Blast
 		ArchariliteRaysWave.DisplayName: Archarilite Rays Wave
 		AssassinsSlashProj.DisplayName: Assassins Slash Proj
 		AssassinsSpawnEffect.DisplayName: Assassins Spawn Effect
@@ -7925,6 +7268,7 @@ Buffs: {
 		HorizonBolt.DisplayName: Horizon Bolt
 		HorizonBomb.DisplayName: Horizon Bomb
 		IrradiatedGreatBladeThrow.DisplayName: Irradiated Great Blade Throw
+		KilvierBONK.DisplayName: Kilvier B O N K
 		StarKeeperStar.DisplayName: Star Keeper Star
 		SwordOfGlactiaProj.DisplayName: Sword Of Glactia Proj
 		WindSythe.DisplayName: Wind Sythe
@@ -7935,45 +7279,715 @@ Buffs: {
 		Acidius2.DisplayName: Acidius2
 		AssassinsKnifeProg.DisplayName: Assassins Knife Prog
 		AssassinsShurikenProg.DisplayName: Assassins Shuriken Prog
+		BlackdotProjectile.DisplayName: Blackdot Projectile
 		Boralius2.DisplayName: Boralius2
 		BricksP.DisplayName: Bricks P
 		Cactius2.DisplayName: Cactius2
+		GintzeSpear.DisplayName: Gintze Spear
+		GintzeSpearMini.DisplayName: Gintze Spear Mini
 		GreyBricksP.DisplayName: Grey Bricks P
 		Plantius2.DisplayName: Plantius2
+		Plateproj.DisplayName: Plateproj
 		ZthoKnife.DisplayName: Ztho Knife
-		DreadMireMagic.DisplayName: Dread Mire Magic
-		LightSpandProg.DisplayName: Light Spand Prog
-		MoonMothMinion.DisplayName: Moon Moth Minion
-		SolMothMinion.DisplayName: Sol Moth Minion
-		HuntrianArrow.DisplayName: Huntrian Arrow
-		HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
-		HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
-		GintzeSpear.DisplayName: Gintze Spear
-		ShinobiKnife.DisplayName: Shinobi Knife
-		GintzeSpearMini.DisplayName: Gintze Spear Mini
-		WindeffectGintzl.DisplayName: Windeffect Gintzl
-		Gintzianado.DisplayName: Gintzianado
-		GintzlBrooch.DisplayName: Gintzl Brooch
-		TON618CrossbowHold.DisplayName: T O N618 Crossbow Hold
-		TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
-		PiaCircle.DisplayName: Pia Circle
-		SpacticProj.DisplayName: Spactic Proj
-		Venbullet.DisplayName: Venbullet
-		VenShotIN.DisplayName: Ven Shot I N
-		IceboundMinion.DisplayName: Icebound Minion
-		SingularitySparkProj.DisplayName: Singularity Spark Proj
-		PulsarBeam.DisplayName: Pulsar Beam
-		RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
-		VoidBeamIN.DisplayName: Void Beam I N
+		TrickbiteProj.DisplayName: Trickbite Proj
+		VerlShot.DisplayName: Verl Shot
+		VerstibloomProjectile.DisplayName: Verstibloom Projectile
+		Violarproj.DisplayName: Violarproj
+		VoidKaboom.DisplayName: Void Kaboom
+		DesertWhipProj.DisplayName: Desert Whip Proj
+		MorrowWhipProj.DisplayName: Morrow Whip Proj
+		wowBullet.DisplayName: wow Bullet
+		SGBolt.DisplayName: S G Bolt
 	}
-}
 
-FurihaMKIII: {
-	DisplayName: Furiha M K I I I
-	Tooltip: ""
-}
+	ShadegraveStaff: {
+		DisplayName: Shadegrave Staff
+		Tooltip: Funny that this exists.
+	}
 
-VoidKey: {
-	DisplayName: Void Key
-	Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
+	BasicGunParts: {
+		DisplayName: Basic Gun Parts
+		Tooltip: Gun parts for all!
+	}
+
+	NPCs: {
+		Jack.DisplayName: Jack
+		Daedus.DisplayName: Daedus
+		DreadMire.DisplayName: Dread Mire
+		CommanderGintzia.DisplayName: Commander Gintzia
+		SunStalker.DisplayName: Sun Stalker
+		SingularityFragment.DisplayName: Singularity Fragment
+		VerliaB.DisplayName: Verlia B
+		Gothiviab.DisplayName: Gothiviab
+		TericGramNPC.DisplayName: Teric Gram N P C
+		TericGramNPC2.DisplayName: Teric Gram N P C2
+		AbyssalSeeker.DisplayName: Abyssal Seeker
+		AbyssalSkull.DisplayName: Abyssal Skull
+		AbyssalSlime.DisplayName: Abyssal Slime
+		AcidProbe.DisplayName: Acid Probe
+		AcidSlime.DisplayName: Acid Slime
+		AcidSpirit.DisplayName: Acid Spirit
+		ToxicBoulder.DisplayName: Toxic Boulder
+		LanternOfHope.DisplayName: Lantern Of Hope
+		DaedusR.DisplayName: Daedus The Forgotten Puppet
+		DRay.DisplayName: D Ray
+		BloodCyst.DisplayName: Blood Cyst
+		BloodCystDead.DisplayName: Blood Cyst Dead
+		DreadFireBomb.DisplayName: Dread Fire Bomb
+		DreadFireCircle.DisplayName: Dread Fire Circle
+		DreadMirePentagram.DisplayName: Dread Mire Pentagram
+		DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
+		DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
+		DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
+		DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
+		DreadSurvent.DisplayName: Dread Survent
+		DreadMiresHeart.DisplayName: Dread Mires Heart
+		Gothiviabb.DisplayName: Gothiviabb
+		Rek.DisplayName: Rek
+		Train1.DisplayName: Train1
+		Train2.DisplayName: Train2
+		Irradieagle.DisplayName: Irradieagle
+		IrradieagleSurvent.DisplayName: Irradieagle Survent
+		IRNDeathBomb.DisplayName: I R N Death Bomb
+		IrradiatedCreeper.DisplayName: Irradiated Creeper
+		IrradiatedNest.DisplayName: Irradiated Nest
+		IrradiatedNestDeath.DisplayName: Irradiated Nest Death
+		JackDeath.DisplayName: Jack Death
+		Jackoslime.DisplayName: Jackoslime
+		LazerOrb.DisplayName: Lazer Orb
+		SingularityLazer.DisplayName: Singularity Lazer
+		SingularityLazer2.DisplayName: Singularity Lazer2
+		SingularitySpark.DisplayName: Singularity Spark
+		SingularitySparkBig.DisplayName: Singularity Spark Big
+		SingularityOrb.DisplayName: Singularity Orb
+		Voidling.DisplayName: Voidling
+		Flowerball.DisplayName: Flowerball
+		StarrVeriplant.DisplayName: Stone Guardian
+		SunStalkerDeath.DisplayName: Sun Stalker Death
+		SunStalkerLighting.DisplayName: Sun Stalker Lighting
+		SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
+		SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
+		SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
+		CloneV.DisplayName: Clone V
+		GhostCharger.DisplayName: Ghost Charger
+		StarteV.DisplayName: Starte V
+		Sword1.DisplayName: Sword1
+		Sword2.DisplayName: Sword2
+		Sword3.DisplayName: Sword3
+		Viola.DisplayName: Viola
+		DiceinNPC.DisplayName: Dicein N P C
+		GintziaHand.DisplayName: Gintzia Hand
+		GintzeCaptain.DisplayName: Gintze Captain
+		GintzeSolider.DisplayName: Gintze Solider
+		GintzeSpearman.DisplayName: Gintze Spearman
+		GintzeWarrior.DisplayName: Gintze Warrior
+		GintzeWindRider.DisplayName: Gintze Wind Rider
+		Gintzling.DisplayName: Gintzling
+		GovheilProtector.DisplayName: Govheil Protector
+		HarvestIce.DisplayName: Harvest Ice
+		HarvestGovheil.DisplayName: Harvest Govheil
+		HarvestOverworld.DisplayName: Harvest Overworld
+		HarvestUM.DisplayName: Harvest U M
+		HarvestVirulent.DisplayName: Harvest Virulent
+		WinterbornBat.DisplayName: Winterborn Bat
+		WinterBornSlime.DisplayName: Winter Born Slime
+		WinterSoul1.DisplayName: Winter Soul1
+		WinterSoul2.DisplayName: Winter Soul2
+		WinterSoul3.DisplayName: Winter Soul3
+		MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
+		MossyZombie.DisplayName: Mossy Zombie
+		RubyBeetle.DisplayName: Ruby Beetle
+		TopazBeetle.DisplayName: Topaz Beetle
+		TribalPeasant.DisplayName: Tribal Peasant
+		TribalPriest.DisplayName: Tribal Priest
+		IvythornSlime.DisplayName: Ivythorn Slime
+		RoyalSlime.DisplayName: Royal Slime
+		ShadeSlime.DisplayName: Shade Slime
+		ShadowWraith.DisplayName: Shadow Wraith
+
+		Gambit: {
+			DisplayName: Gambit
+
+			TownNPCMood: {
+				Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
+				NoHome: "{$Mods.Stellamod.TownNPCMood.Gambit.NoHome}"
+				FarFromHome: "{$Mods.Stellamod.TownNPCMood.Gambit.FarFromHome}"
+				LoveSpace: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveSpace}"
+				DislikeCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeCrowded}"
+				HateCrowded: "{$Mods.Stellamod.TownNPCMood.Gambit.HateCrowded}"
+				LoveBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveBiome}"
+				LikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeBiome}"
+				DislikeBiome: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeBiome}"
+				LoveNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LoveNPC}"
+				LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
+				DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
+				HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"
+				LikeNPC_Princess: I like {NPCName}.
+				Princess_LovesNPC: I like {NPCName}.
+			}
+		}
+
+		Ginztel: {
+			DisplayName: Ginztel
+
+			TownNPCMood: {
+				Content: I am content.
+				NoHome: I hate not having a home.
+				FarFromHome: I am too far from the place I should be in.
+				LoveSpace: Space is ok.
+				DislikeCrowded: I dislike how crowded I am. I feel like I'm back in the army.
+				HateCrowded: I hate how crowded I am.
+				LoveBiome: I love {BiomeName}.
+				LikeBiome: I like {BiomeName}.
+				DislikeBiome: I dislike {BiomeName}.
+				LoveNPC: I love {NPCName}.
+				LikeNPC: I like {NPCName}.
+				DislikeNPC: I dislike {NPCName}.
+				HateNPC: I hate {NPCName}.
+				LikeNPC_Princess: I like {NPCName}.
+				Princess_LovesNPC: I like {NPCName}.
+			}
+		}
+
+		DreadFireBombG.DisplayName: Dread Fire Bomb G
+		HeatBombLighting.DisplayName: Heat Bomb Lighting
+		HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+		AmethystBeetle.DisplayName: Amethyst Beetle
+		EmeraldBeetle.DisplayName: Emerald Beetle
+		SapphireBeetle.DisplayName: Sapphire Beetle
+		StarSlime.DisplayName: Star Slime
+	}
+
+	Buffs: {
+		NPCs: {
+			Flowerball.DisplayName: Flowerball
+			StarrVeriplant.DisplayName: Stone Guardian
+			CloneV.DisplayName: Verlia Clone
+			GhostCharger.DisplayName: Ghost Charger
+			Sword1.DisplayName: Sword of Maskillia
+			Sword2.DisplayName: Sword of Vixyl
+			Sword3.DisplayName: Sword of Baina
+			Viola.DisplayName: Viola
+			VerliaB.DisplayName: Verlia of The Moon
+			HarvestIce.DisplayName: ???
+			HarvestOverworld.DisplayName: ???
+			HarvestUM.DisplayName: ???
+			MorrowedJellyFish.DisplayName: Morrowed Jellyfish
+			MossyZombie.DisplayName: Mossy Zombie
+			RubyBeetle.DisplayName: Topaz Beetle
+			TribalPeasant.DisplayName: Tribal Peasant
+			TribalPriest.DisplayName: Tribal Priest
+			GintzeCaptain.DisplayName: Gintze Captain
+			GintzeSolider.DisplayName: Gintze Solider
+
+			Gambit: {
+				DisplayName: Gambit
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LoveBiome: I love {BiomeName}.
+					LikeBiome: I like {BiomeName}.
+					DislikeBiome: I dislike {BiomeName}.
+					HateBiome: I hate {BiomeName}.
+					LoveNPC: I love {NPCName}.
+					LikeNPC: I like {NPCName}.
+					DislikeNPC: I dislike {NPCName}.
+					HateNPC: I hate {NPCName}.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
+			VerlSword.DisplayName: Verl Sword
+			StarteV.DisplayName: Verlia?
+			AbyssalSeeker.DisplayName: Abyssal Seeker
+			AbyssalSkull.DisplayName: Abyssal Skull
+			AbyssalSlime.DisplayName: Abyssal Slime
+			AcidProbe.DisplayName: Acid Probe
+			AcidSlime.DisplayName: Acid Slime
+			AcidSpirit.DisplayName: Acid Spirit
+			ToxicBoulder.DisplayName: Toxic Boulder
+			BloodCyst.DisplayName: Blood Cyst
+			BloodCystDead.DisplayName: Blood Cyst Dead
+			DreadFireBomb.DisplayName: Dread Fire Bomb
+			DreadFireCircle.DisplayName: Dread Fire Circle
+			DreadMire.DisplayName: Dread Mire
+			DreadMirePentagram.DisplayName: Dread Mire Pentagram
+			DreadMirePentagramMid.DisplayName: Dread Mire Pentagram Mid
+			DreadMirePentagramSmall.DisplayName: Dread Mire Pentagram Small
+			DreadMireZapwarn.DisplayName: Dread Mire Zapwarn
+			DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
+			DreadSurvent.DisplayName: Dread Survent
+			DreadMiresHeart.DisplayName: Dread Mires Heart
+			Irradieagle.DisplayName: Irradieagle
+			IrradieagleSurvent.DisplayName: Irradieagle Survent
+			IRNDeathBomb.DisplayName: I R N Death Bomb
+			IrradiatedCreeper.DisplayName: Irradiated Creeper
+			IrradiatedNest.DisplayName: Irradiated Nest
+			IrradiatedNestDeath.DisplayName: Irradiated Nest Death
+			Jack.DisplayName: Jack
+			JackDeath.DisplayName: Jack Death
+			Jackoslime.DisplayName: Jackoslime
+			SingularityFragment.DisplayName: Singularity Of The Moon
+			Voidling.DisplayName: Voidling
+			SunStalker.DisplayName: Sun Stalker
+			SunStalkerDeath.DisplayName: Sun Stalker Death
+			SunStalkerLighting.DisplayName: Sun Stalker Lighting
+			SunStalkerPreSpawn.DisplayName: Sun Stalker Pre Spawn
+			SunStalkerRayLight.DisplayName: Sun Stalker Ray Light
+			SunStalkerRayLightBig.DisplayName: Sun Stalker Ray Light Big
+			WinterbornBat.DisplayName: Winterborn Bat
+			WinterBornSlime.DisplayName: Winter Born Slime
+			IvythornSlime.DisplayName: Ivythorn Slime
+			RoyalSlime.DisplayName: Royal Slime
+			ShadeSlime.DisplayName: Shade Slime
+			ShadowWraith.DisplayName: Shadow Wraith
+			DreadFireBombG.DisplayName: Dread Fire Bomb
+			HeatBombLighting.DisplayName: Heat Bomb Lighting
+			HeatBombRayLight.DisplayName: Heat Bomb Ray Light
+			GintzeWindRider.DisplayName: Gintze Wind Rider
+			Gintzling.DisplayName: Gintzling
+			GintzeSpearman.DisplayName: Gintze Spearman
+			GintzeWarrior.DisplayName: Gintze Warrior
+			CommanderGintzia.DisplayName: Commander Gintzia
+			GintziaHand.DisplayName: Gintzia Hand
+			WinterSoul1.DisplayName: Winter Soul
+			WinterSoul2.DisplayName: Winter Soul
+			WinterSoul3.DisplayName: Winter Soul
+			HarvestVirulent.DisplayName: Harvest Virulent
+			SingularityOrb.DisplayName: Singularity Orb
+			SingularitySpark.DisplayName: Singularity Spark
+			SingularitySparkBig.DisplayName: Singularity's bigger spark
+			LazerOrb.DisplayName: Lazer Orb
+			SingularityLazer.DisplayName: Singularity Lazer
+		}
+
+		Projectiles: {
+			DiariBrooch.DisplayName: Diari Brooch
+			FlyfishBrooch.DisplayName: Flyfish Brooch
+			FrileBrooch.DisplayName: Frile Brooch
+			FrileBroochP.DisplayName: Frile Brooch P
+			MorrowedBrooch.DisplayName: Morrowed Brooch
+			SlimeBrooch.DisplayName: Slime Brooch
+			SpragaldBrooch.DisplayName: Spragald Brooch
+			Spragald.DisplayName: Spragald
+			LovestruckP.DisplayName: Lovestruck P
+			Noti.DisplayName: Noti
+			BigRock.DisplayName: Big Rock
+			CosButterfly.DisplayName: Cos Butterfly
+			Flowder.DisplayName: Flowder
+			Flowing.DisplayName: Flowing
+			GroundSpike.DisplayName: Ground Spike
+			Rock.DisplayName: Rock
+			Rock2.DisplayName: Rock2
+			SineButterfly.DisplayName: Sine Butterfly
+			SineButterflyfriendly.DisplayName: Sine Butterflyfriendly
+			SmallRock.DisplayName: Small Rock
+			SmallRock2.DisplayName: Small Rock2
+			SpikeBullet.DisplayName: Spike Bullet
+			StarBullet.DisplayName: Star Bullet
+			StarSpike.DisplayName: Star Spike
+			BackgroundOrb.DisplayName: Background Orb
+			FrostShot.DisplayName: Frost Shot
+			FrostShot2.DisplayName: Frost Shot2
+			FrostShotIN.DisplayName: Frost Shot I N
+			MoonBladeTrail.DisplayName: Moon Blade Trail
+			MoonOut.DisplayName: Moon Out
+			Notia.DisplayName: Notia
+			Sigil.DisplayName: Sigil
+			SlashHold.DisplayName: Verlias Swords Dance
+			SlashLeft.DisplayName: Slash of the moon
+			SlashRight.DisplayName: Slash of the moon
+			Strummer.DisplayName: Strummer
+			Sword1F.DisplayName: Sword of Maskilla
+			Sword2F.DisplayName: Sword of Vixyl
+			Sword3F.DisplayName: Sword of Daedia
+			Sword.DisplayName: Sword
+			TheMoon.DisplayName: The Moon
+			VerliaBlade.DisplayName: Verlias Moon Blade
+			AntacizProj.DisplayName: Antaciz Proj
+			Aurora.DisplayName: Aurora
+			Aurora2.DisplayName: Aurora2
+			Aurora3.DisplayName: Aurora3
+			AuroranBullet.DisplayName: Auroran Bullet
+			AuroranBullet2.DisplayName: Auroran Bullet2
+			AuroranBullet3.DisplayName: Auroran Bullet3
+			Beachthrow.DisplayName: Beachthrow
+			BoomCircle.DisplayName: Boom Circle
+			BoomMorrow.DisplayName: Boom Morrow
+			CocoShot.DisplayName: Coco Shot
+			WoodenCrossbowBolt.DisplayName: Wooden Crossbow Bolt
+			WoodenCrossbowHold.DisplayName: Wooden Crossbow Hold
+			Deathtrail.DisplayName: Deathtrail
+			Dicein.DisplayName: Dicein
+			FrostbiteProj.DisplayName: Frostbite Proj
+			FrostSwProj.DisplayName: Frost Sw Proj
+			FrostSwProj2.DisplayName: Frost Sw Proj2
+			FrostSwProj3.DisplayName: Frost Sw Proj3
+			HornedNailProj.DisplayName: Horned Nail Proj
+			HornedNailProj2.DisplayName: Horned Nail Proj2
+			HornetKaboom.DisplayName: Hornet Kaboom
+			HornetLob.DisplayName: Hornet Lob
+			IgniterStart.DisplayName: Igniter Start
+			KaBoom.DisplayName: Ka Boom
+			KaBoomKaev.DisplayName: Ka Boom Kaev
+			KaBoomShade.DisplayName: Ka Boom Shade
+			KaBoomTrick.DisplayName: Ka Boom Trick
+			Logger.DisplayName: Logger
+			Meatball.DisplayName: Meatball
+			Meatball2.DisplayName: Meatball2
+			Meatball3.DisplayName: Meatball3
+			MeatBullet.DisplayName: Meat Bullet
+			MeatBullet2.DisplayName: Meat Bullet2
+			MeatBullet3.DisplayName: Meat Bullet3
+			MorrowRapproj.DisplayName: Morrow Rapproj
+			MorrowShot.DisplayName: Morrow Shot
+			MorrowShotArrow.DisplayName: Morrow Shot Arrow
+			MorrowShotArrow2.DisplayName: Morrow Shot Arrow2
+			MorrowValswaProj.DisplayName: Morrow Valswa Proj
+			BoneNailProj.DisplayName: Bone Nail Proj
+			BoneNailProj2.DisplayName: Bone Nail Proj2
+			EnergizedNailProj.DisplayName: Energized Nail Proj
+			EnergizedNailProj2.DisplayName: Energized Nail Proj2
+			SteamedNailProj.DisplayName: Steamed Nail Proj
+			SteamedNailProj2.DisplayName: Steamed Nail Proj2
+			PetalDance.DisplayName: Petal Dance
+			PocketSandProj.DisplayName: Pocket Sand Proj
+			ArcanePowder.DisplayName: Arcane Powder
+			CoalPowder.DisplayName: Coal Powder
+			DirtPowder.DisplayName: Dirt Powder
+			FlamePowderProj.DisplayName: Flame Powder Proj
+			FlowerPowder.DisplayName: Flower Powder
+			FrostPowder.DisplayName: Frost Powder
+			KaevPowder.DisplayName: Kaev Powder
+			LenaPowderProj.DisplayName: Lena Powder Proj
+			ShadePowderProj.DisplayName: Shade Powder Proj
+			TrickPowderProj.DisplayName: Trick Powder Proj
+			RobedProjectile.DisplayName: Robed Projectile
+			HalhurishProj.DisplayName: Halhurish Proj
+			SalfaCircle.DisplayName: Salfa Circle
+			SalfaCircle2.DisplayName: Salfa Circle2
+			SalfaCircle3.DisplayName: Salfa Circle3
+			ShadeBall.DisplayName: Shade Ball
+			AuroranSwordProj.DisplayName: Auroran Sword Proj
+			AuroranSwordProj2.DisplayName: Auroran Sword Proj2
+			GutinierSwordProj.DisplayName: Gutinier Sword Proj
+			GutinierSwordProj2.DisplayName: Gutinier Sword Proj2
+			MalodineSwordProj.DisplayName: Malodine Sword Proj
+			SparrowProj.DisplayName: Sparrow Proj
+			splitshot.DisplayName: splitshot
+			CharmSpragald.DisplayName: Charm Spragald
+			Needle.DisplayName: Needle
+			StringNNeedlesAlcadiz.DisplayName: String N Needles Alcadiz
+			Windeffect.DisplayName: Windeffect
+			Stump.DisplayName: Stump
+			Starbomb.DisplayName: Starbomb
+			Starout.DisplayName: Starout
+			TrickbiteProj.DisplayName: Trickbite Proj
+			VerstibloomProjectile.DisplayName: Verstibloom Projectile
+			Violarproj.DisplayName: Violarproj
+			MorrowWhipProj.DisplayName: Morrow Whip Proj
+			wowBullet.DisplayName: wow Bullet
+			GardenWreckerBullet.DisplayName: Garden Wrecker Bullet
+			GardenWreckerHold.DisplayName: Garden Wrecker Hold
+			SkullShotKaboom.DisplayName: Skull Shot Kaboom
+			AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
+			BurningAngelProj.DisplayName: Burning Angel Proj
+			VRay.DisplayName: V Ray
+			FabledRay.DisplayName: Fabled Ray
+			FabledSunray.DisplayName: Fabled Sunray
+			FabledColoredSunray.DisplayName: Fabled Colored Sunray
+			AltideSword.DisplayName: Altide Sword Shard
+			CurlistineProj.DisplayName: Curlistine Proj
+			FrostKaboom.DisplayName: Frost Kaboom
+			KaBoomAlcadizz.DisplayName: Ka Boom Alcadizz
+			AlcadPowder.DisplayName: Alcad Powder
+			SineSword.DisplayName: Sine Sword
+			VerliaBrooch.DisplayName: Verlia Brooch
+			VerliaBroochP.DisplayName: Verlia Brooch P
+			VerliaBroochP2.DisplayName: Verlia Brooch P2
+			VerliaBroochP3.DisplayName: Verlia Brooch P3
+			VerliaHeadScreen.DisplayName: Verlia Head Screen
+			VerliaText1.DisplayName: Verlia Text1
+			VerliaText2.DisplayName: Verlia Text2
+			SwordsVin.DisplayName: Swords Vin
+			StringNNeedleVerlia.DisplayName: String N Needle Verlia
+			CharmVerlia.DisplayName: Charm Verlia
+			SwordsArmy.DisplayName: Swords Army
+			SwordsArmy3.DisplayName: Swords Army3
+			SwordsArmy2.DisplayName: Swords Army2
+			PulseShoter.DisplayName: Pulse Shoter
+			VerlShot.DisplayName: Verl Shot
+			Supernova.DisplayName: Supernova
+			CurlistineProj2.DisplayName: Curlistine Proj2
+			ParendineProj.DisplayName: Parendine Proj
+			SeekerProj.DisplayName: Seeker Proj
+			AuroranSeekerProj.DisplayName: Auroran Seeker Proj
+			Coinspa.DisplayName: Coinspa
+			Glyph1.DisplayName: Glyph1
+			Glyph2.DisplayName: Glyph2
+			Glyph3.DisplayName: Glyph3
+			Glyph4.DisplayName: Glyph4
+			Glyph5.DisplayName: Glyph5
+			Glyph6.DisplayName: Glyph6
+			Glyph7.DisplayName: Glyph7
+			GovheilBows.DisplayName: Govheil Bows
+			GovheilBowsProj.DisplayName: Govheil Bows Proj
+			GovheilSwords.DisplayName: Govheil Swords
+			LightBomb.DisplayName: Light Bomb
+			LWProj.DisplayName: L W Proj
+			MWProj.DisplayName: M W Proj
+			EbistarProj.DisplayName: Ebistar Proj
+			SparkedStar.DisplayName: Sparked Star
+			HearstspireProj.DisplayName: Hearstspire Proj
+			HearstspireProj2.DisplayName: Hearstspire Proj2
+			Flameball.DisplayName: Flameball
+			Flameball2.DisplayName: Flameball2
+			IronCrossbowHold.DisplayName: Iron Crossbow Hold
+			LeadCrossbowBolt.DisplayName: Lead Crossbow Bolt
+			LeadCrossbowHold.DisplayName: Lead Crossbow Hold
+			DunCrossbowBolt.DisplayName: Dun Crossbow Bolt
+			DungeonCrossbowHold.DisplayName: Dungeon Crossbow Hold
+			MerCrossbowBolt.DisplayName: Mer Crossbow Bolt
+			MerCrossbowHold.DisplayName: Mer Crossbow Hold
+			GoldCrossbowHold.DisplayName: Gold Crossbow Hold
+			PlatinumCrossbowBolt.DisplayName: Platinum Crossbow Bolt
+			PlatinumCrossbowHold.DisplayName: Platinum Crossbow Hold
+			SilverCrossbowBolt.DisplayName: Silver Crossbow Bolt
+			SilverCrossbowHold.DisplayName: Silver Crossbow Hold
+			TungstenCrossbowHold.DisplayName: Tungsten Crossbow Hold
+			DelfaCircle.DisplayName: Delfa Circle
+			MorrowedCrossbowBolt.DisplayName: Morrowed Crossbow Bolt
+			MorrowedCrossbowHold.DisplayName: Morrowed Crossbow Hold
+			AltaCircle.DisplayName: Alta Circle
+			SpiderillaCrossbowBolt.DisplayName: Spiderilla Crossbow Bolt
+			SpiderillaCrossbowHold.DisplayName: Spiderilla Crossbow Hold
+			MeltaCircle.DisplayName: Melta Circle
+			DesertCrossbowHold.DisplayName: Desert Crossbow Hold
+			DesertCrossbowBolt.DisplayName: Desert Crossbow Bolt
+			IcaCircle.DisplayName: Ica Circle
+			IceCrossbowBolt.DisplayName: Ice Crossbow Bolt
+			IceCrossbowHold.DisplayName: Ice Crossbow Hold
+			CoralBubble.DisplayName: Coral Bubble
+			CoralCircle.DisplayName: Coral Circle
+			CoralCrossbowBolt.DisplayName: Coral Crossbow Bolt
+			CoralCrossbowHold.DisplayName: Coral Crossbow Hold
+			MoltenCircle.DisplayName: Molten Circle
+			MoltenCrossbowBolt.DisplayName: Molten Crossbow Bolt
+			MoltenCrossbowHold.DisplayName: Molten Crossbow Hold
+			FableCrossbowBolt.DisplayName: Fable Crossbow Bolt
+			FableCrossbowHold.DisplayName: Fable Crossbow Hold
+			GeaCircle.DisplayName: Gea Circle
+			JadeJungleCrossbowBolt.DisplayName: Jade Jungle Crossbow Bolt
+			JadeJungleCrossbowHold.DisplayName: Jade Jungle Crossbow Hold
+			VoltuxPortal.DisplayName: Voltux Portal
+			DesertWhipProj.DisplayName: Desert Whip Proj
+			SandSlacerProj.DisplayName: Sand Slacer Proj
+			MetalDaggerProj.DisplayName: Metal Dagger Proj
+			VingerProj.DisplayName: Vinger Proj
+			VheilatineProj.DisplayName: Vheilatine Proj
+			DetonationBomb.DisplayName: Detonation Bomb
+			ArncharMinion.DisplayName: Arnchar Minion
+			Drippler.DisplayName: Drippler
+			FCMinion.DisplayName: F C Minion
+			HMArncharMinion.DisplayName: H M Arnchar Minion
+			IrradiatedCreeper2.DisplayName: Irradiated Creeper2
+			Ivyaken.DisplayName: Ivyaken
+			JellyMinion.DisplayName: Jelly Minion
+			SwarmerMinion.DisplayName: Swarmer Minion
+			VoidMinion.DisplayName: Void Minion
+			ProbeMinion.DisplayName: Probe Minion
+			DreadBone.DisplayName: Dread Bone
+			DreadFire.DisplayName: Dread Fire
+			DreadHand.DisplayName: Dread Hand
+			Dreadlighting.DisplayName: Dreadlighting
+			DreadlightingBig.DisplayName: Dreadlighting Big
+			DreadMireDash.DisplayName: Dread Mire Dash
+			DreadSkull.DisplayName: Dread Skull
+			DreadSpawnEffect.DisplayName: Dread Spawn Effect
+			FinalBeam.DisplayName: Final Beam
+			DreadMiresHeartEye.DisplayName: Dread Mires Heart Eye
+			DreadMiresHeartVomit1.DisplayName: Dread Mires Heart Vomit1
+			RedSkull.DisplayName: Red Skull
+			TerrorBeam.DisplayName: Terror Beam
+			AcidicZap.DisplayName: Acidic Zap
+			AEgg.DisplayName: A Egg
+			CommunicationRay.DisplayName: Communication Ray
+			DesperationRay.DisplayName: Desperation Ray
+			AcidBlast.DisplayName: Acid Blast
+			AcidBolt.DisplayName: Acid Bolt
+			AcidFlame.DisplayName: Acid Flame
+			ToxicMissile.DisplayName: Toxic Missile
+			ToxicNuke.DisplayName: Toxic Nuke
+			FallingHay.DisplayName: Falling Hay
+			JackFire.DisplayName: Jack Fire
+			JackFire2.DisplayName: Jack Fire2
+			JackoBall.DisplayName: Jacko Ball
+			JackSpawnEffect.DisplayName: Jack Spawn Effect
+			JackSpawnRay.DisplayName: Jack Spawn Ray
+			JackWarning.DisplayName: Jack Warning
+			JackWarning2.DisplayName: Jack Warning2
+			MossBall.DisplayName: Moss Ball
+			AbyssalChargeProjectile.DisplayName: Abyssal Charge Projectile
+			AbyssalChargeProjectile2.DisplayName: Abyssal Charge Projectile2
+			AbyssWave.DisplayName: Abyss Wave
+			RuneSpawnEffect.DisplayName: Rune Spawn Effect
+			SoulBeam.DisplayName: Soul Beam
+			SoulBlast.DisplayName: Soul Blast
+			VoidBeam.DisplayName: Void Beam
+			VoidFlame.DisplayName: Void Flame
+			SunBomb.DisplayName: Sun Bomb
+			SunDeath.DisplayName: Sun Death
+			SunFeather.DisplayName: Sun Feather
+			SunRock.DisplayName: Sun Rock
+			ShadowFlare.DisplayName: Shadow Flare
+			ArchariliteArrow.DisplayName: Archarilite Arrow
+			ArchariliteArrowSmall.DisplayName: Archarilite Arrow Small
+			CloudBolt.DisplayName: Cloud Bolt
+			CrysalizerArrow1.DisplayName: Crysalizer Arrow1
+			CrysalizerArrow2.DisplayName: Crysalizer Arrow2
+			CrysalizerArrow3.DisplayName: Crysalizer Arrow3
+			CrysalizerExplosion.DisplayName: Crysalizer Explosion
+			DreadSkullBonesProg.DisplayName: Dread Skull Bones Prog
+			DreadSkullProg.DisplayName: Dread Skull Prog
+			HarpyFeather1.DisplayName: Harpy Feather1
+			HeatArrow.DisplayName: Heat Arrow
+			VoidSkullProg.DisplayName: Void Skull Prog
+			WinterboundArrow.DisplayName: Winterbound Arrow
+			WinterboundArrowFlake.DisplayName: Winterbound Arrow Flake
+			WinterboundFlare.DisplayName: Winterbound Flare
+			BrokenMissile.DisplayName: Broken Missile
+			BTech1.DisplayName: B Tech1
+			BTech2.DisplayName: B Tech2
+			BTech3.DisplayName: B Tech3
+			DeathShotBomb.DisplayName: Death Shot Bomb
+			DeathShotBombFX.DisplayName: Death Shot Bomb F X
+			DeathShotProj.DisplayName: Death Shot Proj
+			DragonBolt.DisplayName: Dragon Bolt
+			GraniteMagmumProj.DisplayName: Granite Magmum Proj
+			M38F30Rocks.DisplayName: M38 F30 Rocks
+			M38F30Rocks2.DisplayName: M38 F30 Rocks2
+			RealityBolt.DisplayName: Reality Bolt
+			Shark.DisplayName: Shark
+			SharkAcid.DisplayName: Shark Acid
+			SSBolt.DisplayName: S S Bolt
+			StarBolt.DisplayName: Star Bolt
+			TociBolt4.DisplayName: Toci Bolt4
+			AcidFlameG.DisplayName: Acid Flame G
+			AstalaiyaStar1.DisplayName: Astalaiya Star1
+			AstalaiyaStar2.DisplayName: Astalaiya Star2
+			AstalaiyaStar3.DisplayName: Astalaiya Star3
+			BriskflyProg.DisplayName: Briskfly Prog
+			DeafenProj.DisplayName: Deafen Proj
+			DreadVomit.DisplayName: Dread Vomit
+			FungalFlaceBall.DisplayName: Fungal Flace Ball
+			FungalFlaceCloud.DisplayName: Fungal Flace Cloud
+			FungalFlaceCloudGreen.DisplayName: Fungal Flace Cloud Green
+			Gelatin.DisplayName: Gelatin
+			LeadFist.DisplayName: Lead Fist
+			Nado.DisplayName: Nado
+			OFlame.DisplayName: O Flame
+			PericarditisProj.DisplayName: Pericarditis Proj
+			ShadeHand.DisplayName: Shade Hand
+			ShriekerProg.DisplayName: Shrieker Prog
+			SpirtFlareGood.DisplayName: Spirt Flare Good
+			StarFlowerproj1.DisplayName: Star Flowerproj1
+			StarFlowerproj2.DisplayName: Star Flowerproj2
+			StarFlowerproj3.DisplayName: Star Flowerproj3
+			SunDeathG.DisplayName: Sun Death G
+			SunDeathGPar.DisplayName: Sun Death G Par
+			TorrentialLanceP.DisplayName: Torrential Lance P
+			VoidCharge.DisplayName: Void Charge
+			VoidCharge2.DisplayName: Void Charge2
+			VoidHand.DisplayName: Void Hand
+			VoidHandSpawn.DisplayName: Void Hand Spawn
+			WinterStormFragProg.DisplayName: Winter Storm Frag Prog
+			WinterStormProg.DisplayName: Winter Storm Prog
+			Zap.DisplayName: Zap
+			GladiatorSpearMirageProg.DisplayName: Gladiator Spear Mirage Prog
+			GladiatorSpearMirageProgRed.DisplayName: Gladiator Spear Mirage Prog Red
+			GladiatorSpearProg.DisplayName: Gladiator Spear Prog
+			InfernisBomb.DisplayName: Infernis Bomb
+			InfernisProj.DisplayName: Infernis Proj
+			ScarecrowSaberProg.DisplayName: Scarecrow Saber Prog
+			StalkersTallonProg.DisplayName: Stalkers Tallon Prog
+			StalkersTallonSpear.DisplayName: Stalkers Tallon Spear
+			StarSheithProg.DisplayName: Star Sheith Prog
+			StarSheithStar.DisplayName: Star Sheith Star
+			TheIrradiaspearP.DisplayName: The Irradiaspear P
+			TheIrradiaspearP2.DisplayName: The Irradiaspear P2
+			TridentOfTheSeasProg.DisplayName: Trident Of The Seas Prog
+			VoidLanceSpear.DisplayName: Void Lance Spear
+			VoidLanceWave.DisplayName: Void Lance Wave
+			AcidBlast2.DisplayName: Acid Blast2
+			ArchariliteRaysWave.DisplayName: Archarilite Rays Wave
+			AssassinsSlashProj.DisplayName: Assassins Slash Proj
+			AssassinsSpawnEffect.DisplayName: Assassins Spawn Effect
+			CinderBrakerSword.DisplayName: Cinder Braker Sword
+			DragonWaveFriendly.DisplayName: Dragon Wave Friendly
+			DreadFireG.DisplayName: Dread Fire G
+			FrostWave.DisplayName: Frost Wave
+			FrostWaveBig.DisplayName: Frost Wave Big
+			GhostExcaliburProj.DisplayName: Ghost Excalibur Proj
+			HeatBomb.DisplayName: Heat Bomb
+			HorizonBolt.DisplayName: Horizon Bolt
+			HorizonBomb.DisplayName: Horizon Bomb
+			IrradiatedGreatBladeThrow.DisplayName: Irradiated Great Blade Throw
+			StarKeeperStar.DisplayName: Star Keeper Star
+			SwordOfGlactiaProj.DisplayName: Sword Of Glactia Proj
+			WindSythe.DisplayName: Wind Sythe
+			WindSytheBlue.DisplayName: Wind Sythe Blue
+			X3107Skull.DisplayName: X3107 Skull
+			X3107Skull2.DisplayName: X3107 Skull2
+			AcidicLancherProj.DisplayName: Acidic Lancher Proj
+			Acidius2.DisplayName: Acidius2
+			AssassinsKnifeProg.DisplayName: Assassins Knife Prog
+			AssassinsShurikenProg.DisplayName: Assassins Shuriken Prog
+			Boralius2.DisplayName: Boralius2
+			BricksP.DisplayName: Bricks P
+			Cactius2.DisplayName: Cactius2
+			GreyBricksP.DisplayName: Grey Bricks P
+			Plantius2.DisplayName: Plantius2
+			ZthoKnife.DisplayName: Ztho Knife
+			DreadMireMagic.DisplayName: Dread Mire Magic
+			LightSpandProg.DisplayName: Light Spand Prog
+			MoonMothMinion.DisplayName: Moon Moth Minion
+			SolMothMinion.DisplayName: Sol Moth Minion
+			HuntrianArrow.DisplayName: Huntrian Arrow
+			HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
+			HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
+			GintzeSpear.DisplayName: Gintze Spear
+			ShinobiKnife.DisplayName: Shinobi Knife
+			GintzeSpearMini.DisplayName: Gintze Spear Mini
+			WindeffectGintzl.DisplayName: Windeffect Gintzl
+			Gintzianado.DisplayName: Gintzianado
+			GintzlBrooch.DisplayName: Gintzl Brooch
+			TON618CrossbowHold.DisplayName: T O N618 Crossbow Hold
+			TONCrossbowBolt.DisplayName: T O N Crossbow Bolt
+			PiaCircle.DisplayName: Pia Circle
+			SpacticProj.DisplayName: Spactic Proj
+			Venbullet.DisplayName: Venbullet
+			VenShotIN.DisplayName: Ven Shot I N
+			IceboundMinion.DisplayName: Icebound Minion
+			SingularitySparkProj.DisplayName: Singularity Spark Proj
+			PulsarBeam.DisplayName: Pulsar Beam
+			RuneSpawnEffect2.DisplayName: Rune Spawn Effect2
+			VoidBeamIN.DisplayName: Void Beam I N
+		}
+	}
+
+	FurihaMKIII: {
+		DisplayName: Furiha M K I I I
+		Tooltip: ""
+	}
+
+	VoidKey: {
+		DisplayName: Void Key
+		Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
+	}
 }
