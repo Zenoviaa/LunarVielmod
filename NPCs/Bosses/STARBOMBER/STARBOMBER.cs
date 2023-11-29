@@ -1342,7 +1342,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if (timer == 90)
             {
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGUN"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARWAVE"));
 			}
 			if (timer > 120)
 			{
@@ -1495,7 +1495,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 5)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
-
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARWAVE"));
 			}
 
 			if (timer < 201)
