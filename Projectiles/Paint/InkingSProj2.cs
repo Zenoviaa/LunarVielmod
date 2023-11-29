@@ -72,21 +72,25 @@ namespace Stellamod.Projectiles.Paint
 			Timer++;
 			if (Timer < 60)
 			{
-
+				int minImmuneTime = 5;
 				player.immune = true;
+
+				//Using Math.Max returns the highest value, so you won't override any existing immune times.
+				//Just prevent it from going low
+				player.immuneTime = Math.Max(player.immuneTime, minImmuneTime);
+
+				//No clue why you need to set this, but if you don't you'll still sometimes take damage
+				player.hurtCooldowns[0] = Math.Max(player.hurtCooldowns[0], minImmuneTime);
+				player.hurtCooldowns[1] = Math.Max(player.hurtCooldowns[1], minImmuneTime);
 				player.noKnockback = true;
-				player.immuneTime = 6;
 			}
 
 			if (Timer > 60)
 			{
-				player.immune = false;
 				player.noKnockback = false;
-				
-
 			}
-
 		}
+
 		public override bool ShouldUpdatePosition() => false;
 		public void AttachToPlayer()
 		{
