@@ -183,7 +183,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
-			NPC.scale = 0f;
+			NPC.scale = 2f;
 			NPC.alpha = 255;
 		
 
@@ -1021,6 +1021,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			timer++;
 			Player player = Main.player[NPC.target];
+			if (timer == 0)
+			{
+				NPC.scale = 0f;
+				NPC.alpha = 255;
+			}
 			if (timer == 1)
             {
 				NPC.scale = 0f;
