@@ -7,9 +7,10 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.Verlia;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,22 +21,24 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Veriplant Bag");
-			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			//Research Counts
+			Item.ResearchUnlockCount = 3;
 
-			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			//Behave like a boss bag, this will make it also show up on the minimap
+			ItemID.Sets.BossBag[Type] = true;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			// ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; 
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.width = 62; // The item texture's width
+			Item.height = 54; // The item texture's height
+			Item.rare = ItemRarityID.Expert;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
-			Item.width = 24;
-			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
-			
+			Item.expert = true;
 		}
 
 		public override bool CanRightClick()
@@ -43,70 +46,22 @@ namespace Stellamod.Items.Consumables
 			return true;
 		}
 
-		public override void RightClick(Player player)
-		{
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-
-			var entitySource = player.GetSource_OpenItem(Type);
-
-			if (Main.rand.NextBool(1))
-			{
-				switch (Main.rand.Next(5))
-				{
-
-
-					case 0:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerliaHat>());
-
-						break;
-					case 1:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SwordsOfRevengence>());
-
-						break;
-					case 2:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<SupernovaSitar>());
-
-						break;
-					case 3:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<HarmonicBlasphemy>());
-
-						break;
-					case 4:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Curlistine>());
-
-						break;
-				}
-			}
-			
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(10, 33));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Starrdew>(), Main.rand.Next(3, 25));
-			}
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<PearlescentScrap>(), Main.rand.Next(3, 25));
-			}
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<VerliaBroochA>(), Main.rand.Next(1, 1));
-			}
-
+        public override void ModifyItemLoot(ItemLoot itemLoot)
+        {
+            base.ModifyItemLoot(itemLoot);
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Starrdew>(), minimumDropped: 5, maximumDropped: 25));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 9, maximumDropped: 25));
+			itemLoot.Add(ItemDropRule.OneFromOptions(1,
+				 ModContent.ItemType<VerliaHat>(),
+				 ModContent.ItemType<SwordsOfRevengence>(),
+				 ModContent.ItemType<SupernovaSitar>(),
+				 ModContent.ItemType<HarmonicBlasphemy>(),
+				 ModContent.ItemType<Curlistine>()));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<VerliaB>()));
 		}
 
 		// Below is code for the visuals
-
 		public override Color? GetAlpha(Color lightColor)
 		{
 			// Makes sure the dropped bag is always visible
@@ -117,7 +72,6 @@ namespace Stellamod.Items.Consumables
 		{
 			// Spawn some light and dust when dropped in the world
 			Lighting.AddLight(Item.Center, Color.White.ToVector3() * 0.4f);
-
 			if (Item.timeSinceItemSpawned % 12 == 0)
 			{
 				Vector2 center = Item.Center + new Vector2(0f, Item.height * -0.1f);

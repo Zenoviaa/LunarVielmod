@@ -64,7 +64,7 @@ namespace Stellamod.Items.Accessories
                 NPC npc = Main.npc[i];
                 float between = Vector2.Distance(npc.Center, player.Center);
                 bool inRange = between < distanceFromTarget;
-                if (npc.chaseable && inRange)
+                if (npc.chaseable && inRange && !npc.townNPC)
                 {
                     npc.AddBuff(BuffID.Confused, 2);
                     npc.AddBuff(BuffID.CursedInferno, 2);

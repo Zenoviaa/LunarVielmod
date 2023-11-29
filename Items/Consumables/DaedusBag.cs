@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.DropRules;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Daeden;
@@ -7,9 +8,11 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,22 +23,24 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Veriplant Bag");
-			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			//Research Counts
+			Item.ResearchUnlockCount = 3;
 
-			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			//Behave like a boss bag, this will make it also show up on the minimap
+			ItemID.Sets.BossBag[Type] = true;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			// ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
-			Item.width = 24;
-			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
-			
+			Item.width = 42;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Expert;
+			Item.expert = true;
 		}
 
 		public override bool CanRightClick()
@@ -43,69 +48,26 @@ namespace Stellamod.Items.Consumables
 			return true;
 		}
 
-		public override void RightClick(Player player)
-		{
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+        public override void ModifyItemLoot(ItemLoot itemLoot)
+        {
+			int numResults = 5;
 
-			var entitySource = player.GetSource_OpenItem(Type);
+			var armorRule = ItemDropRule.Common(ModContent.ItemType<DaedenLegs>(), chanceDenominator: numResults);
+			armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenChestplate>()));
+			armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenMask>()));
 
-			if (Main.rand.NextBool(1))
-			{
-				switch (Main.rand.Next(6))
-				{
-
-
-					case 0:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<BearBroochA>());
-
-						break;
-					case 1:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<VixedBroochA>());
-
-						break;
-					case 2:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<HeatGlider>());
-
-						break;
-					case 3:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DaedussSunSheid>());
-
-						break;
-					case 4:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DaedCard>());
-
-						break;
-					case 5:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DaedenLegs>());
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DaedenMask>());
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DaedenChestplate>());
-
-						break;
-				}
-			}
-			
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Plate>(), Main.rand.Next(200, 1300));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(4, 55));
-			}
-			
+			itemLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
+				ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults),
+				armorRule
+				));
 
 
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<DaedusR>()));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 		}
 
 		// Below is code for the visuals

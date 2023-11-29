@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Swords
 
 		public override bool PreDraw(ref Color lightColor)
         {
-			DrawHelper.PreDrawAdditiveAfterImage(Projectile, new Color(152, 208, 113), new Color(53, 107, 112), ref lightColor);
+			DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(152, 208, 113), new Color(53, 107, 112), ref lightColor);
             return false;
 		}
 

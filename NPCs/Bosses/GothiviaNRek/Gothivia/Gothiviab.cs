@@ -1,7 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using System.Collections.Generic;
@@ -1364,7 +1370,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
 		
 		// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-		LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
+				ModContent.ItemType<BurningGBroochA>(),
+				ModContent.ItemType<Items.Weapons.Melee.Helios>(),
+				ModContent.ItemType<GothiviasCard>(),
+				ModContent.ItemType<Twirlers>(),
+				ModContent.ItemType<WeddingDay>()));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ItemID.TitaniumBar, minimumDropped: 4, maximumDropped: 25));
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			// Boss masks are spawned with 1/7 chance

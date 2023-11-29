@@ -31,6 +31,7 @@
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Dusts\PaintBlob2.png" />
@@ -250,7 +251,18 @@
     <None Remove="NPCs\Bosses\singularityFragment\Shockwave.png" />
     <None Remove="NPCs\Bosses\singularityFragment\SoulBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SINESTAR.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARNBIG.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARDREAM.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARLINGBIG.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARRAY.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET2.png" />
     <None Remove="NPCs\Bosses\SunStalker\SunStalkerRayLightBig - Copy.png" />
+    <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
@@ -258,6 +270,7 @@
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
+    <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />
     <None Remove="Particles\FabledParticle2.png" />
     <None Remove="Particles\FabledParticle3.png" />
@@ -306,6 +319,7 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
+    <None Remove="Projectiles\Summons\VoidMonsters\VoidEater.png" />
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
     <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />

@@ -1479,7 +1479,7 @@ Mods: {
 			}
 
 			VerliaBossBag: {
-				DisplayName: Verlia Boss Bag
+				DisplayName: Treasure Bag (Verlia)
 				Tooltip: ""
 			}
 
@@ -2206,8 +2206,8 @@ Mods: {
 			}
 
 			DreadmireBag: {
-				DisplayName: Dreadmire Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Dreadmire)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			EDR: {
@@ -2216,18 +2216,18 @@ Mods: {
 			}
 
 			JackoBag: {
-				DisplayName: Jacko Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Jack)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			NestBag: {
-				DisplayName: Nest Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Nest)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			SingularityBag: {
-				DisplayName: Singularity Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Singularity)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			SunClaw: {
@@ -2236,8 +2236,8 @@ Mods: {
 			}
 
 			SunStalkerBag: {
-				DisplayName: Sun Stalker Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Sun Stalker)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			VoidLantern: {
@@ -3064,8 +3064,12 @@ Mods: {
 			}
 
 			GintziaBossBag: {
-				DisplayName: Gintzia Treasure Bag
-				Tooltip: Special little secret inside
+				DisplayName: Treasure Bag (Gintzia)
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Special little secret inside
+					'''
 			}
 
 			GintzeCard: {
@@ -3281,8 +3285,8 @@ Mods: {
 			}
 
 			DaedusBag: {
-				DisplayName: Daedus Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Daedus)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			Plate: {
@@ -3392,8 +3396,8 @@ Mods: {
 			}
 
 			GothiviaBag: {
-				DisplayName: Gothivia Bag
-				Tooltip: ""
+				DisplayName: Treasure Bag (Gothivia)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			WeddingDay: {
@@ -3655,7 +3659,11 @@ Mods: {
 
 			BagOfCards: {
 				DisplayName: Bag Of Cards
-				Tooltip: Open for some cards! Gives more cards in Hardmode!
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Open for some cards! Gives more cards in Hardmode!
+					'''
 			}
 
 			FireflyCannon: {
@@ -4139,7 +4147,12 @@ Mods: {
 
 			MiracleWings: {
 				DisplayName: Miracle Wings
-				Tooltip: ""
+				Tooltip:
+					'''
+					Allows flight and slow fall
+					Hold down to hover
+					Yeah... it's a miracle these things let you fly at all
+					'''
 			}
 
 			Lacerator: {
@@ -4170,7 +4183,22 @@ Mods: {
 
 			XScissor: {
 				DisplayName: X-Scissor
-				Tooltip: TODO
+				Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
+			}
+
+			LittleScissor: {
+				DisplayName: Little Scissor
+				Tooltip:
+					'''
+					Double tap a direction to dash- but very quickly and on a short cooldown!
+					Leave behind damaging rifts in your path
+					(WIP)
+					'''
+			}
+
+			SyliaBag: {
+				DisplayName: Treasure Bag (Sylia)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			LarveinGreatbow: {
@@ -4745,9 +4773,21 @@ Mods: {
 			RipperMinion.DisplayName: Ripper Minion
 			XScissorMinion.DisplayName: X Scissor Minion
 			MiracleSoulCollectibleProj.DisplayName: Miracle Soul Collectible Proj
-			BBBubble.DisplayName: B B Bubble
-			LarveinGreatbowR.DisplayName: Larvein Greatbow R
-			LarveinGreatbowL.DisplayName: Larvein Greatbow L
+			BULLET.DisplayName: B U L L E T
+			SINESTAR.DisplayName: S I N E S T A R
+			STARBEAM.DisplayName: S T A R B E A M
+			STARSHOTT.DisplayName: S T A R S H O T T
+			STARSPAWNEFFECT.DisplayName: S T A R S P A W N E F F E C T
+			STRIKEBULLET.DisplayName: S T R I K E B U L L E T
+			STARBOMBERGUN2.DisplayName: S T A R B O M B E R G U N2
+			SMALLBOMB.DisplayName: S M A L L B O M B
+			STARRAY.DisplayName: S T A R R A Y
+			VoidEater.DisplayName: Void Eater
+			VoidEaterMini.DisplayName: Void Eater Mini
+			VoidRift.DisplayName: Void Rift
+			STARDREAM.DisplayName: S T A R D R E A M
+			STRIKEBULLET2.DisplayName: S T R I K E B U L L E T2
+			AuroreanStarbomber.DisplayName: Aurorean Starbomber
 		}
 
 		NPCs: {
@@ -4839,7 +4879,7 @@ Mods: {
 			CommanderGintzia.DisplayName: Commander Gintzia
 			StarSlime.DisplayName: Star Slime
 			DiceinNPC.DisplayName: Dicein N P C
-			VerliaB.DisplayName: Verlia B
+			VerliaB.DisplayName: Verlia
 			Viola.DisplayName: Viola
 			Sword3.DisplayName: Sword3
 			Sword2.DisplayName: Sword2
@@ -6105,6 +6145,13 @@ Mods: {
 			GoliathCryogenicJelly.DisplayName: Goliath Cryogenic Jelly
 			GoliathCryogenicJellyfish.DisplayName: Goliath Cryogenic Jellyfish
 			GoliathJellyfish.DisplayName: Goliath Jellyfish
+			STARBOMBER.DisplayName: S T A R B O M B E R
+			STARBOMBERGUN.DisplayName: S T A R B O M B E R G U N
+			STARBOMBERLASERWARN.DisplayName: S T A R B O M B E R L A S E R W A R N
+			STARLING.DisplayName: S T A R L I N G
+			STARBOMBERLASERWARNBIG.DisplayName: S T A R B O M B E R L A S E R W A R N B I G
+			Sylia.DisplayName: Sylia
+			STARLINGBIG.DisplayName: S T A R L I N G B I G
 		}
 
 		Biomes: {
@@ -6713,6 +6760,11 @@ Mods: {
 			MiracleBoost: {
 				DisplayName: Miracle Boost
 				Description: Your summons and whips are empowered by souls!
+			}
+
+			Starbombin: {
+				DisplayName: Starbombin
+				Description: Mods.Stellamod.Buffs.Starbombin.Description
 			}
 		}
 	}

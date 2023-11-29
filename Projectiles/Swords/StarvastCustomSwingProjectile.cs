@@ -141,7 +141,7 @@ namespace Stellamod.Projectiles.Swords
 			}
 
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			DrawHelper.PreDrawAdditiveAfterImage(Projectile, new Color(152, 208, 113), new Color(53, 107, 112), ref lightColor);
+			DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(152, 208, 113), new Color(53, 107, 112), ref lightColor);
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
 			//Add trail/dusts here maybe

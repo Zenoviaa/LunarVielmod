@@ -12,6 +12,7 @@ namespace Stellamod.Items.Accessories
 			// DisplayName.SetDefault("Sun Glyph");
 			// Tooltip.SetDefault("Greatly increases all damage in the daylight.");
 		}
+
 		public override void SetDefaults()
 		{
 			Item.value = Item.sellPrice(gold: 1);
@@ -20,15 +21,15 @@ namespace Stellamod.Items.Accessories
             Item.rare = ItemRarityID.Expert;
             Item.value = 1200;
             Item.accessory = true;
+            Item.expert = true;
 		}
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (Main.dayTime)
             {
                 player.GetDamage(DamageClass.Generic) += 0.25f;
-         
             }
         }
-
 	}
 }

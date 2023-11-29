@@ -6,9 +6,11 @@ using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs.Event.Gintzearmy.BossGintze;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,22 +21,23 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Veriplant Bag");
-			// Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
+			//Research Counts
+			Item.ResearchUnlockCount = 3;
 
-			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			//Behave like a boss bag, this will make it also show up on the minimap
+			ItemID.Sets.BossBag[Type] = true;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+			// ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
+			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true;
 		}
-
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
-			Item.width = 24;
-			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
-			
+			Item.width = 32;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Expert;
+			Item.expert = true;
 		}
 
 		public override bool CanRightClick()
@@ -42,57 +45,16 @@ namespace Stellamod.Items.Consumables
 			return true;
 		}
 
-		public override void RightClick(Player player)
-		{
-			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
-
-			var entitySource = player.GetSource_OpenItem(Type);
-
-			if (Main.rand.NextBool(1))
-			{
-				switch (Main.rand.Next(4))
-				{
-
-
-					case 0:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<GintzlSpear>(), Main.rand.Next(900, 3000));
-
-						break;
-					case 1:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<GintzlShield>());
-
-						break;
-					case 2:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<GintzlsSteed>());
-
-						break;
-					case 3:
-
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<ShinobiTome>());
-
-						break;
-
-				}
-			}
-			
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(1, 35));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<GintzlMetal>(), Main.rand.Next(3, 25));
-			}
-
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<GintzlBroochA>(), Main.rand.Next(1, 1));
-			}
-
+        public override void ModifyItemLoot(ItemLoot itemLoot)
+        {
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlBroochA>()));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlSpear>(), 4, minimumDropped: 900, maximumDropped: 3000));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), minimumDropped: 3, maximumDropped: 25));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<CommanderGintzia>()));
+			itemLoot.Add(ItemDropRule.OneFromOptions(1,
+				ModContent.ItemType<GintzlShield>(),
+				ModContent.ItemType<GintzlsSteed>(),
+				ModContent.ItemType<ShinobiTome>()));
 		}
 
 		// Below is code for the visuals

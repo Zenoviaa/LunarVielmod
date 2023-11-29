@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Event.AuroreanStarfall
@@ -110,7 +111,9 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Aurorean) ? (3000.0f) : 0f;
+            if (!EventWorld.Aurorean)
+                return 0f;
+            return SpawnCondition.Overworld.Chance * 3000f;
         }
 
         public override void AI()
