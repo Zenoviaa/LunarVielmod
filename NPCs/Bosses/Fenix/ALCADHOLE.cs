@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		{
 			NPC.width = 300;
 			NPC.height = 300;
-			NPC.damage = 210;
+			NPC.damage = 180;
 			NPC.defense = 30;
 			NPC.lifeMax = 500000;
 			NPC.value = 0f;
