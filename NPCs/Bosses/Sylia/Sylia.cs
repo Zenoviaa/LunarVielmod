@@ -39,6 +39,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		private enum P2AttackState
         {
+			Transition,
 			Idle,
 			X_Slash,
 			Quick_Slash,
@@ -71,6 +72,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         {
             base.SetStaticDefaults();
         }
+
         public override void SetDefaults()
 		{
 			NPC.Size = new Vector2(24, 42);
@@ -97,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.aiStyle = -1;
 
 			// Custom boss bar
-			NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();
+			NPC.BossBar = ModContent.GetInstance<SyliaBossBar>();
 
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
@@ -109,6 +111,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
         public override void AI()
 		{
 
+			//Determine Attack Phase
+			float lifeMax = NPC.lifeMax;
+			if (NPC.life < lifeMax / 2)
+            {
+				_attackPhase = Phase.Phase_2;
+            }
 
 			//No Contact Damage SmH
 			NPC.damage = 0;
@@ -200,11 +208,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			PreDrawAfterImage(spriteBatch, screenPos, drawColor);
 
 			//Draw the Wings
+			Vector2 drawPosition = NPC.Bottom - screenPos;
 			Vector2 origin = new Vector2(48, 48);
 			Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/SyliaWings").Value;
 			int wingFrameSpeed = 2;
 			int wingFrameCount = 10;
-			spriteBatch.Draw(syliaWingsTexture, NPC.Bottom - screenPos,
+			spriteBatch.Draw(syliaWingsTexture, drawPosition,
 				syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
 				drawColor, 0f, origin, 1f, effects, 0f);
 
@@ -212,7 +221,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			Texture2D syliaIdleTexture = ModContent.Request<Texture2D>(Texture).Value;
 			int syliaIdleSpeed = 2;
 			int syliaIdleFrameCount = 30;
-			spriteBatch.Draw(syliaIdleTexture, NPC.Bottom - screenPos, 
+			spriteBatch.Draw(syliaIdleTexture, drawPosition, 
 				syliaIdleTexture.AnimationFrame(ref _frameCounter, ref _frameTick, syliaIdleSpeed, syliaIdleFrameCount, true), 
 				drawColor, 0f, origin, 1f, effects, 0f);
 
@@ -477,7 +486,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						xSlashPart1.rotation = _quickSlashRotation + MathHelper.ToRadians(45);
 						proj.rotation = _quickSlashRotation;
 	
-							ai_Counter++;
+						ai_Counter++;
 						if (ai_Counter > 9)
 						{
 							ai_Counter = 0;
@@ -688,15 +697,40 @@ namespace Stellamod.NPCs.Bosses.Sylia
         }
 
 		private void AI_Phase2()
-        {
-            //Aight so what does Sylia do here?
-            //Sylia continues using her phase 1 attacks, but they're faster and have slightly adjusted patterns making them harder to dodge.
-            //She'll do more quick slashes, and the monster slashes will release more threatening monsters.
-            //The edges of the arena are crawling with void monsters and cannot be touched, occassionally, Sylia will call forth monsters from the edge to assault you
-            //This includes void eaters, big void eaters, void worms, and void tentacles (if I can figure out how to do these lol
-            switch (_attackPhase2State)
+		{
+			NPC npc = NPC;
+			npc.TargetClosest();
+			if (!NPC.HasValidTarget)
+			{
+				//Despawn in 2 seconds
+				npc.velocity = Vector2.Lerp(npc.velocity, new Vector2(0, -8), 0.025f);
+				npc.EncourageDespawn(120);
+				return;
+			}
+
+			ref float ai_Telegraph_Counter = ref npc.ai[0];
+			ref float ai_Counter = ref npc.ai[1];
+			ref float ai_Cycle = ref npc.ai[2];
+
+			Player target = Main.player[npc.target];
+			Vector2 targetCenter = target.Center;
+			Vector2 targetPosition = target.position;
+
+			//Aight so what does Sylia do here?
+			//Sylia continues using her phase 1 attacks, but they're faster and have slightly adjusted patterns making them harder to dodge.
+			//She'll do more quick slashes, and the monster slashes will release more threatening monsters.
+			//The edges of the arena are crawling with void monsters and cannot be touched, occassionally, Sylia will call forth monsters from the edge to assault you
+			//This includes void eaters, big void eaters, void worms, and void tentacles (if I can figure out how to do these lol
+			switch (_attackPhase2State)
             {
-				case P2AttackState.Idle:
+                case P2AttackState.Transition:
+					if(ai_Counter == 0)
+                    {
+
+                    }
+					break;
+
+                case P2AttackState.Idle:
 					break;
 
 				case P2AttackState.X_Slash:
