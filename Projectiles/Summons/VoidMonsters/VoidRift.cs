@@ -114,8 +114,25 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
                 _particleCounter = 0;
             }
 
+            float scaleOut = 20;
+            if(Projectile.timeLeft < scaleOut && Projectile.DamageType != DamageClass.Summon)
+            {
+                Projectile.scale = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / scaleOut);
+            }
+
             DrawHelper.AnimateTopToBottom(Projectile, 3);
             Lighting.AddLight(Projectile.Center, Color.Pink.ToVector3() * 0.28f);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
+                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
+                    default(Color), 1 / 3f);
+                p.layer = Particle.Layer.BeforeProjectiles;
+            }
         }
     }
 }

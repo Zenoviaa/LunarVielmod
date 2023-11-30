@@ -206,9 +206,10 @@ namespace Stellamod.Items.Weapons.Summon
 					_counter++;
 					if(_counter > RipperSlashTelegraphParticle.Animation_Length)
 					{
-						var xSlashPart1 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
+						Vector2 ripperSlashOffset = new Vector2(16, 16);
+						var xSlashPart1 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + ripperSlashOffset, Vector2.Zero,
 							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
-						var xSlashPart2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
+						var xSlashPart2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + ripperSlashOffset, Vector2.Zero,
 							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
 						(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
 						(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;
