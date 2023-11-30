@@ -1,6 +1,7 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
+using Stellamod.NPCs.Bosses.Jack;
 using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader;

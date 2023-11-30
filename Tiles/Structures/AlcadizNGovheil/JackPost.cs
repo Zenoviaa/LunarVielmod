@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
+using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.Jack;
 using System;
 using Terraria;

@@ -18,6 +18,7 @@ using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
@@ -594,9 +595,11 @@ namespace Stellamod
 
 			
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
-		
 
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
+
+
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);

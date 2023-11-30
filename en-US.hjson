@@ -4788,6 +4788,9 @@ Mods: {
 			STARDREAM.DisplayName: S T A R D R E A M
 			STRIKEBULLET2.DisplayName: S T R I K E B U L L E T2
 			AuroreanStarbomber.DisplayName: Aurorean Starbomber
+			LarveinGreatbowL.DisplayName: Larvein Greatbow L
+			LarveinGreatbowR.DisplayName: Larvein Greatbow R
+			BBBubble.DisplayName: B B Bubble
 		}
 
 		NPCs: {
@@ -6152,6 +6155,7 @@ Mods: {
 			STARBOMBERLASERWARNBIG.DisplayName: S T A R B O M B E R L A S E R W A R N B I G
 			Sylia.DisplayName: Sylia
 			STARLINGBIG.DisplayName: S T A R L I N G B I G
+			Caeva.DisplayName: Caeva
 		}
 
 		Biomes: {
