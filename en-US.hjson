@@ -4785,6 +4785,8 @@ Mods: {
 			AuroreanStarbomber.DisplayName: Aurorean Starbomber
 			VoidBolt.DisplayName: Void Bolt
 			VoidSlash.DisplayName: Void Slash
+			BLACKHOLE.DisplayName: B L A C K H O L E
+			Starbombing.DisplayName: Starbombing
 		}
 
 		NPCs: {
@@ -6152,6 +6154,8 @@ Mods: {
 			VoidWormBody.DisplayName: Void Worm Body
 			VoidWormHead.DisplayName: Void Worm Head
 			VoidWormTail.DisplayName: Void Worm Tail
+			ALCADHOLE.DisplayName: A L C A D H O L E
+			ALCADSWIRL.DisplayName: A L C A D S W I R L
 		}
 
 		Biomes: {
