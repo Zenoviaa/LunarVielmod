@@ -156,12 +156,24 @@ namespace Stellamod.Helpers
 			Lighting.AddLight(projectile.Center, worldLightingColor.ToVector3() * 1.0f * Main.essScale);
 		}
 
+		public static void DrawDimLight(NPC npc, float dimLightX, float dimLightY, float dimLightZ, Color worldLightingColor, Color lightColor, int glowCount = 4)
+		{
+			Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+			for (int i = 0; i < glowCount; i++)
+			{
+				Main.spriteBatch.Draw(texture, npc.Center - Main.screenPosition, null, new Color((int)(dimLightX * 1), (int)(dimLightY * 1), (int)(dimLightZ * 1), 0), npc.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+			}
+
+			Main.spriteBatch.Draw(texture, npc.Center - Main.screenPosition, null, new Color((int)(dimLightX * 1), (int)(dimLightY * 1), (int)(dimLightZ * 1), 0), npc.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
+			Lighting.AddLight(npc.Center, worldLightingColor.ToVector3() * 1.0f * Main.essScale);
+		}
+
 		/// <summary>
 		/// Animates the projectile from top to bottom
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <param name="frameSpeed"></param>
-        public static void AnimateTopToBottom(Projectile projectile, int frameSpeed)
+		public static void AnimateTopToBottom(Projectile projectile, int frameSpeed)
 		{           
 			// This is a simple "loop through all frames from top to bottom" animation
 			projectile.frameCounter++;

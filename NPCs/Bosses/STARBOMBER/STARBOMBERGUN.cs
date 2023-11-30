@@ -51,6 +51,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         public float Shooter = 0;
         public float Shooting = 0;
+        public float shootbreak = 0;
         public override void AI()
         {
             Shooter++;
@@ -86,7 +87,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             {
 
                 Shooting++;
-
+                shootbreak++;
 
             
 
@@ -94,19 +95,43 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
             }
-
-            if (Shooting == 6)
+            if (shootbreak < 60)
             {
-                float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-                float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                if (Shooting == 6)
+                {
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARSHOOT"));
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BULLET>(), 47, 0f, 0, 0f, 0f);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARSHOOT"));
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BULLET>(), 47, 0f, 0, 0f, 0f);
 
-                Shooting = 0;
+                    Shooting = 0;
+                }
+
             }
+
+
+            if (shootbreak > 120)
+            {
+                if (Shooting == 6)
+                {
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARSHOOT"));
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BULLET>(), 47, 0f, 0, 0f, 0f);
+
+                    Shooting = 0;
+                }
+
+            }
+
+           
+
             
+
             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
 
 

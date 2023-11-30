@@ -173,7 +173,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
 			NPC.defense = 40;
-			NPC.lifeMax = 20500;
+			NPC.lifeMax = 10500;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -1159,7 +1159,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 			}
-				if (timer > 360)
+				if (timer > 560)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -1342,7 +1342,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if (timer == 90)
             {
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGUN"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARWAVE"));
 			}
 			if (timer > 120)
 			{
@@ -1495,7 +1495,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 5)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
-
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARWAVE"));
 			}
 
 			if (timer < 201)
@@ -1871,7 +1871,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 
-			if (constshoot == 40)
+			if (constshoot == 70)
             {
 				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
 				float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
@@ -1915,7 +1915,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 					case 1:
-						State = ActionState.SpinStar;
+						State = ActionState.TeleportStar;
 						ResetTimers();
 						break;
 
