@@ -23,7 +23,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
         }
         public override void UpdateEquip(Player player)
         {
-            player.GetCritChance(DamageClass.Magic) += 0.25f;
+            player.GetCritChance(DamageClass.Throwing) += 10f;
         }
         public override void AddRecipes()
         {
