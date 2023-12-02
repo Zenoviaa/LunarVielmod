@@ -277,7 +277,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.worldSurface - 200));
+				int smy = ((int)(Main.worldSurface - 250));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
@@ -381,7 +381,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.worldSurface - 200));
+				int smy = ((int)(Main.worldSurface - 250));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
