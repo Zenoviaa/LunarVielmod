@@ -23,6 +23,7 @@ using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
@@ -792,7 +793,7 @@ namespace Stellamod
             {
                 IrradiatedKilled = 0;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()))
             {
                 SingularityFragment = true;
             }

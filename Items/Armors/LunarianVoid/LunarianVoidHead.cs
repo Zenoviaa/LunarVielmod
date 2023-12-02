@@ -35,7 +35,9 @@ namespace Stellamod.Items.Armors.LunarianVoid
         public override void UpdateEquip(Player player)
         {
 
-            player.manaRegen += 4;
+            player.GetCritChance(DamageClass.Throwing) += 10f;
+            player.GetDamage(DamageClass.Throwing) *= 1.25f;
+            player.statLifeMax2 += 20;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)

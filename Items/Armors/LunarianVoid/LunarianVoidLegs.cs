@@ -33,6 +33,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
         public override void UpdateEquip(Player player)
         {
             player.moveSpeed += 0.2f;
+            player.GetDamage(DamageClass.Throwing) *= 1.05f;
         }
         public override void AddRecipes()
         {
