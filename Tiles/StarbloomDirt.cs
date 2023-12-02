@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Tiles.RoyalCapital;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -23,7 +24,7 @@ namespace Stellamod.Tiles
             AddMapEntry(new Color(100, 120, 150), name);
         }
 
-     /*   public override void RandomUpdate(int i, int j)
+      public override void RandomUpdate(int i, int j)
         {
             Tile tile = Framing.GetTileSafely(i, j);
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
@@ -31,56 +32,13 @@ namespace Stellamod.Tiles
 
 
 
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(12) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 1, TileType<AcidMush1>(), true);
-                }
-            }
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(12) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 1, TileType<AcidMush2>(), true);
-                }
-            }
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j <= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(12) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 1, TileType<AcidMush3>(), true);
-                }
-            }
-
-
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(3) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 2, TileType<AcidBush1>(), true);
-                }
-            }
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(3) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 2, TileType<AcidBush2>(), true);
-                }
-            }
-            if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0 && j >= Main.worldSurface - 150)//grass
-            {
-                if (Main.rand.Next(3) == 0)
-                {
-                    WorldGen.PlaceTile(i, j - 2, TileType<AcidBush3>(), true);
-                }
-            }
+          
 
             if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
             {
                 if (!tile.BottomSlope)
                 {
-                    tileBelow.TileType = (ushort)ModContent.TileType<AcidVines>();
+                    tileBelow.TileType = (ushort)ModContent.TileType<CarianVines>();
                     tileBelow.HasTile = true;
                     WorldGen.SquareTileFrame(i, j + 1, true);
                     if (Main.netMode == NetmodeID.Server)
@@ -91,23 +49,11 @@ namespace Stellamod.Tiles
             }
 
             //try place foliage
-            if (WorldGen.genRand.NextBool(6) && !tileAbove.HasTile && !(tileBelow.LiquidType == LiquidID.Lava))
-            {
-                if (!tile.BottomSlope && !tile.TopSlope && !tile.IsHalfBlock && !tile.TopSlope)
-                {
-                    tileAbove.TileType = (ushort)ModContent.TileType<AcidFoliage>();
-                    tileAbove.HasTile = true;
-                    tileAbove.TileFrameY = 0;
-                    tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(8) * 18);
-                    WorldGen.SquareTileFrame(i, j + 1, true);
-                    if (Main.netMode == NetmodeID.Server)
-                        NetMessage.SendTileSquare(-1, i, j - 1, 3, TileChangeType.None);
-                }
-            }
+     
 
 
         }
-     */
+   
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             Tile tile = Framing.GetTileSafely(i, j);

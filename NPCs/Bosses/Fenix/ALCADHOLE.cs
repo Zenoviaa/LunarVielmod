@@ -157,7 +157,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				invisibilityTimer = 0;
 			}
-			NPC.rotation -= 0.3f;
+			NPC.rotation -= 0.2f;
 
 			UpdateFrame(0.8f, 1, 90);
 			bee2--;

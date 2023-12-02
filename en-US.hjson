@@ -4205,6 +4205,11 @@ Mods: {
 				DisplayName: Sylia Boss Rel
 				Tooltip: ""
 			}
+
+			SeavathanBlock: {
+				DisplayName: Seavathan Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6217,6 +6222,11 @@ Mods: {
 			VeriplantUndergroundBiome: {
 				DisplayName: Veriplant Underground Biome
 				TownNPCDialogueName: the Veriplant Underground Biome
+			}
+
+			SeaTemple: {
+				DisplayName: Sea Temple
+				TownNPCDialogueName: the Sea Temple
 			}
 		}
 
