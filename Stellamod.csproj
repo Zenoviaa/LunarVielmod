@@ -292,6 +292,7 @@
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
+    <None Remove="Projectiles\Gun\BBBubble - Copy.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />

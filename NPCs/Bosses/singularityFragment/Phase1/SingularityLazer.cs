@@ -47,9 +47,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment.Phase1
             NPC.alpha = 255;
             NPC.width = 0;
             NPC.height = 0;
-            NPC.damage = 8;
+            NPC.damage = 0;
             NPC.defense = 8;
-            NPC.lifeMax = 156;
+            NPC.lifeMax = 0;
             NPC.value = 30f;
             NPC.buffImmune[BuffID.Poisoned] = true;
             NPC.buffImmune[BuffID.Venom] = true;

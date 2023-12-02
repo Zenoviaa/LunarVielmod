@@ -50,15 +50,16 @@ namespace Stellamod.NPCs.Bosses.Caeva
         {
             NPC.alpha = 255;
             NPC.width = 70;
-            NPC.height = 130;
-            NPC.damage = 10;
-            NPC.defense = 6;
-            NPC.lifeMax = 1100;
+            NPC.height = 120;
+            NPC.damage = 90;
+            NPC.defense = 42;
+            NPC.lifeMax = 80000;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
             NPC.boss = true;
+            NPC.noTileCollide = true;
             NPC.alpha = 255;
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Caeva");
@@ -173,8 +174,10 @@ namespace Stellamod.NPCs.Bosses.Caeva
             Vector2 target = player.Center + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
+        Vector2 targetPos;
         public override void AI()
         {
+
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
@@ -187,6 +190,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                     return;
                 }
             }
+            targetPos = player.Center;
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -203,6 +207,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
             {
                 NPC.ai[2] = 10;
             }
+            NPC.rotation = NPC.velocity.X * 0.07f;
             p2 = NPC.life < NPC.lifeMax * 0.5f;
 
             if (NPC.ai[2] == 10)
@@ -232,7 +237,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                         if (NPC.ai[0] > 20)
                         {
                             NPC.ai[0] = 0;
-                            NPC.ai[1] = 3;
+                            NPC.ai[1] = 1;
                         }
                         break;
                     case 1:
@@ -254,7 +259,33 @@ namespace Stellamod.NPCs.Bosses.Caeva
                         }
 
                         break;
-                    case 2:                
+                    case 2:
+
+                        NPC.ai[0]++;
+                        if (NPC.position.X >= player.position.X)
+                        {
+                            Movement(targetPos, 400f, -200f, 0.05f);
+                        }
+                        else
+                        {
+                            Movement(targetPos, -400f, -200f, 0.05f);
+                        }
+
+
+                        if (NPC.ai[0] == 100)
+                        {
+                            NPC.alpha = 40;
+                            NPC.ai[0] = 0;
+                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+                            SoundEngine.PlaySound(SoundID.Item8, NPC.position);
+                            SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
+                            float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                            float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+                            int damage = Main.expertMode ? 4 : 7;
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<CaevaBubble>(), damage, 1, Main.myPlayer, 0, 0);
+                        }
                         break;
                 }
 
