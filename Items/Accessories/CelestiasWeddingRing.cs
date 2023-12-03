@@ -3,6 +3,7 @@ using Stellamod.Brooches;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Town;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace Stellamod.Items.Accessories
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<OldCarianTome>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
 			recipe.AddIngredient(ItemID.SoulofNight, 5);
 			recipe.AddIngredient(ItemID.ObsidianShield, 1);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
