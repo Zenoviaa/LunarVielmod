@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
-	public class CelestiasWeddingRing : ModItem
+	public class BottleOfGrail : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Accessories
 			var line = new TooltipLine(Mod, "", "");
 
 
-			line = new TooltipLine(Mod, "ADBPa", "She'll just love you forever I guess.")
+			line = new TooltipLine(Mod, "ADBPau", "This'll drive you insane for one minion")
 			{
 				OverrideColor = new Color(220, 87, 24)
 
@@ -56,33 +56,19 @@ namespace Stellamod.Items.Accessories
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<OldCarianTome>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
-			recipe.AddIngredient(ItemID.SoulofNight, 5);
-			recipe.AddIngredient(ItemID.ObsidianShield, 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 15);
-			recipe.AddTile(ModContent.TileType<BroochesTable>());
+
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 3);
+			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.hasCelestia = true;
-			player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
-			player.noKnockback = true;
-			player.lavaImmune = true;
-			player.GetDamage(DamageClass.Generic) *= 1.12f; // Increase ALL player damage by 100%
-			player.GetArmorPenetration(DamageClass.Generic) *= 1.12f; // Increase ALL player damage by 100%
 
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<Celestia>()] == 0)
-			{
+			player.vortexMonolithShader = true;
+			player.maxMinions += 1;
 
-				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
-					ModContent.ProjectileType<Celestia>(), 0, 1f, player.whoAmI);
-			}
 		}
 	}
 }
