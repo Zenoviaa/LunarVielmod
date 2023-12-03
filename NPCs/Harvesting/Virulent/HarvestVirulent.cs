@@ -66,14 +66,7 @@ namespace Stellamod.NPCs.Harvesting.Virulent
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<AcidBiome>())
-            {
-					return SpawnCondition.Cavern.Chance  * 0.2f;
-			}
-			if (spawnInfo.Player.InModBiome<AcidBiome>())
-			{
-				return SpawnCondition.Overworld.Chance * 0.2f;
-			}
+		
 			return SpawnCondition.Cavern.Chance * 0f;
 		}
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame

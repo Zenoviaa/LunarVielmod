@@ -2033,7 +2033,7 @@ namespace Stellamod.WorldG
 			}
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 
 				int xa = WorldGen.genRand.Next(0, Main.maxTilesX );
@@ -2043,7 +2043,7 @@ namespace Stellamod.WorldG
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
 
-				if (!(tile.TileType == ModContent.TileType<VeriplantDirt>()))
+				if (!(tile.TileType == TileID.Stone))
 				{
 					continue;
 				}

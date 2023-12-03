@@ -15,7 +15,7 @@ namespace Stellamod.Assets.Biomes
 	//	public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrowunderground");
 
 		// Sets how the Scene Effect associated with this biome will be displayed with respect to vanilla Scene Effects. For more information see SceneEffectPriority & its values.
-		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;
@@ -29,7 +29,7 @@ namespace Stellamod.Assets.Biomes
 		}
 
 		// Calculate when the biome is active.
-		public override bool IsBiomeActive(Player player) => (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InSeaTemple;
+		public override bool IsBiomeActive(Player player) => BiomeTileCounts.InSeaTemple;
 
 		// In the event that both our biome AND one or more modded SceneEffect layers are active with the same SceneEffect Priority, this can decide which one.
 		// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher SceneEffectPriority, but do need to be the active SceneEffect within the priority you designated

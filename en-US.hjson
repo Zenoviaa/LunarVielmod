@@ -4210,6 +4210,26 @@ Mods: {
 				DisplayName: Seavathan Block
 				Tooltip: ""
 			}
+
+			OldWeddingRing: {
+				DisplayName: Old Wedding Ring
+				Tooltip: ""
+			}
+
+			GrailBar: {
+				DisplayName: Grail Bar
+				Tooltip: ""
+			}
+
+			CelestiasWeddingRing: {
+				DisplayName: Celestias Wedding Ring
+				Tooltip: ""
+			}
+
+			STARCORE: {
+				DisplayName: S T A R C O R E
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4792,6 +4812,7 @@ Mods: {
 			VoidSlash.DisplayName: Void Slash
 			BLACKHOLE.DisplayName: B L A C K H O L E
 			Starbombing.DisplayName: Starbombing
+			Celestia.DisplayName: Celestia
 		}
 
 		NPCs: {
@@ -6161,6 +6182,8 @@ Mods: {
 			VoidWormTail.DisplayName: Void Worm Tail
 			ALCADHOLE.DisplayName: A L C A D H O L E
 			ALCADSWIRL.DisplayName: A L C A D S W I R L
+			GoldLightBig.DisplayName: Gold Light Big
+			PearledGold.DisplayName: Pearled Gold
 		}
 
 		Biomes: {

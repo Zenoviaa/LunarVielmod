@@ -1,4 +1,4 @@
-
+﻿
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Materials
 {
 
-    public class Ivythorn : ModItem
+    public class OldWeddingRing : ModItem
     {
 
         public override void SetStaticDefaults()
@@ -19,9 +19,9 @@ namespace Stellamod.Items.Materials
         {
             Item.width = 20; // The item texture's width
             Item.height = 20; // The item texture's height
-         
-            Item.maxStack = 9999; // The item's max stack value
-            Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
-		}
-	}
+
+            Item.maxStack = 1; // The item's max stack value
+            Item.value = Item.buyPrice(gold: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+        }
+    }
 }

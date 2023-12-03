@@ -268,6 +268,7 @@
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidSlash.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
+    <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
