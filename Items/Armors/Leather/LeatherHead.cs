@@ -46,14 +46,12 @@ namespace Stellamod.Items.Armors.Leather
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<TerrorFragments>(), 4);
             recipe.AddIngredient(ItemID.Leather, 8);
             recipe.AddIngredient(ItemID.IronBar, 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
 
             Recipe recipe2 = CreateRecipe();
-            recipe.AddIngredient(ItemType<TerrorFragments>(), 4);
             recipe2.AddIngredient(ItemID.Leather, 8);
             recipe2.AddIngredient(ItemID.LeadBar, 3);
             recipe2.AddTile(TileID.Anvils);
