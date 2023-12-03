@@ -37,8 +37,8 @@ namespace Stellamod.NPCs.Town
 		public sealed override void SetDefaults()
 		{
 			Projectile.originalDamage = (int)0f;
-			Projectile.width = 125;
-			Projectile.height = 125;
+			Projectile.width = 1;
+			Projectile.height = 1;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 											// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
