@@ -34,9 +34,10 @@ namespace Stellamod.Brooches
         public bool hasVerliaBrooch;
         public int verliaBroochCooldown;
         public bool hasVixedBrooch;
-        public bool hasWinBrooch;
+        public bool hasLuckyWBrooch;
         public bool hasEyeBrooch;
-        public bool hasBoneThrowBrooch;
+        public bool hasBonedBrooch;
+        public bool hasSandyBrooch;
         public bool hasCelestia;
         public bool hasAdvancedBrooches;
         public override void ResetEffects()
@@ -60,9 +61,10 @@ namespace Stellamod.Brooches
             hasVixedBrooch = false;
             hasCelestia = false;
             hasSlimeBrooch = false;
-            hasWinBrooch = false;
+            hasLuckyWBrooch = false;
             hasEyeBrooch = false;
-            hasBoneThrowBrooch = false;
+            hasBonedBrooch = false;
+            hasSandyBrooch = false;
             hasAdvancedBrooches = false;
         }
 
