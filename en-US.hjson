@@ -4250,6 +4250,21 @@ Mods: {
 				DisplayName: Midfortune Extender Powder
 				Tooltip: ""
 			}
+
+			BonedThrowBroochA: {
+				DisplayName: Boned Throw Brooch A
+				Tooltip: ""
+			}
+
+			LuckyWinnerBroochA: {
+				DisplayName: Lucky Winner Brooch A
+				Tooltip: ""
+			}
+
+			SandyBroochA: {
+				DisplayName: Sandy Brooch A
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4833,6 +4848,9 @@ Mods: {
 			BLACKHOLE.DisplayName: B L A C K H O L E
 			Starbombing.DisplayName: Starbombing
 			Celestia.DisplayName: Celestia
+			BonedBrooch.DisplayName: Boned Brooch
+			LuckyWinnerBrooch.DisplayName: Lucky Winner Brooch
+			SandyBrooch.DisplayName: Sandy Brooch
 		}
 
 		NPCs: {
@@ -6822,6 +6840,21 @@ Mods: {
 			Starbombin: {
 				DisplayName: Starbombin
 				Description: Mods.Stellamod.Buffs.Starbombin.Description
+			}
+
+			BonedB: {
+				DisplayName: Boned B
+				Description: Mods.Stellamod.Buffs.BonedB.Description
+			}
+
+			LuckyB: {
+				DisplayName: Lucky B
+				Description: Mods.Stellamod.Buffs.LuckyB.Description
+			}
+
+			SandyB: {
+				DisplayName: Sandy B
+				Description: Mods.Stellamod.Buffs.SandyB.Description
 			}
 		}
 	}
