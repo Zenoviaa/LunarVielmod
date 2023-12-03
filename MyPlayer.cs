@@ -122,7 +122,7 @@ namespace Stellamod
 		public float IgniterVelocity = 1f;
 		public int IgniterDamage = 0;
 		public int IgniterStrike = 0;
-
+		public bool LuckyW= false;
 
 		//---------------------------------------------------------------------------------------------------------------
 		// Brooches
@@ -582,7 +582,8 @@ namespace Stellamod
 			IgniterVelocity = 1f;
 			IgniterDamage = 0;
 			IgniterStrike = 0;
-	}
+			LuckyW = false;
+		}
 
 
 

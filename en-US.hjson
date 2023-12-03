@@ -4240,6 +4240,16 @@ Mods: {
 				DisplayName: Reverie Extender Powder
 				Tooltip: ""
 			}
+
+			GrailedExtenderPowder: {
+				DisplayName: Grailed Extender Powder
+				Tooltip: ""
+			}
+
+			MidfortuneExtenderPowder: {
+				DisplayName: Midfortune Extender Powder
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
