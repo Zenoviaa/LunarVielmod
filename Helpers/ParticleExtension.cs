@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 
 namespace Stellamod.Helpers
 {
@@ -20,6 +21,11 @@ namespace Stellamod.Helpers
             if (frameTickIncrease)
                 frameTick++;
             return new Rectangle(0, overrideHeight != 0 ? overrideHeight * frame : (texture.Height / frameCount) * frame, texture.Width, texture.Height / frameCount);
+        }
+
+        public static Vector2 OriginCenter(this Particle particle)
+        {
+            return new Vector2(particle.width / 2, particle.height / 2);
         }
     }
 }

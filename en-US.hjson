@@ -4833,6 +4833,11 @@ Mods: {
 			BLACKHOLE.DisplayName: B L A C K H O L E
 			Starbombing.DisplayName: Starbombing
 			Celestia.DisplayName: Celestia
+			SyliaScissor.DisplayName: Sylia Scissor
+			VoidBall.DisplayName: Void Ball
+			VoidWall.DisplayName: Void Wall
+			SyliaScissorSmall.DisplayName: Sylia Scissor Small
+			SyliaScissorSmall2.DisplayName: Sylia Scissor Small2
 		}
 
 		NPCs: {

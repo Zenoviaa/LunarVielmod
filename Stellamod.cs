@@ -112,8 +112,9 @@ namespace Stellamod
 
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();
-         
 
+            SkyManager.Instance["Stellamod:SyliaSky"] = new SyliaSky();
+            SkyManager.Instance["Stellamod:SyliaSky"].Load();
 
             // ...other Load stuff goes here
             MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));

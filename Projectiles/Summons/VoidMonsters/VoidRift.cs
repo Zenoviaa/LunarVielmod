@@ -99,14 +99,10 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
-                Rectangle rectangle = Projectile.getRect();
+                float radius = 64;
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-
-                    float x = Main.rand.Next(0, rectangle.Width);
-                    float y = Main.rand.Next(0, rectangle.Height);
-                    Vector2 position = Projectile.position + new Vector2(x, y);
-                    position += new Vector2(-8, -16);
+                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(radius / 2, radius / 2);
                     Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), Main.rand.NextFloat(0.1f, 0.2f));
                     p.layer = Particle.Layer.BeforeProjectiles;
