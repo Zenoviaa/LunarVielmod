@@ -4230,6 +4230,16 @@ Mods: {
 				DisplayName: S T A R C O R E
 				Tooltip: ""
 			}
+
+			BottleOfGrail: {
+				DisplayName: Bottle Of Grail
+				Tooltip: ""
+			}
+
+			ReverieExtenderPowder: {
+				DisplayName: Reverie Extender Powder
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {

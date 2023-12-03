@@ -1,7 +1,16 @@
 ﻿using Stellamod.Projectiles.Powders;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Thrown;
+using Stellamod.Projectiles.Nails;
+using Stellamod.Projectiles.Paint;
+
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
@@ -13,6 +22,8 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			/* Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nA sparkly star dust that does double damage as the igniter!"); */
 		}
+
+		//+ player.GetModPlayer<MyPlayer>().PPPaintDMG2;
 		public override void SetDefaults()
 		{
 			Item.damage = 12;
@@ -34,6 +45,14 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = SoundID.Grass;
 		}
 
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+
+			int dir = player.direction;
+
+			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback);
+			return false;
+		}
 
 	}
 }

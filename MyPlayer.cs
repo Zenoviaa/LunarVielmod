@@ -117,6 +117,13 @@ namespace Stellamod
 
 
 
+		//---------------------------------------------------- Igniter effects and uh accessory stuff
+
+		public float IgniterVelocity = 1f;
+		public int IgniterDamage = 0;
+		public int IgniterStrike = 0;
+
+
 		//---------------------------------------------------------------------------------------------------------------
 		// Brooches
 		public bool BroochSpragald;
@@ -566,6 +573,15 @@ namespace Stellamod
 			PPFrameTime = 0;
 			Cameraaa = false;
 
+
+
+
+
+
+
+			IgniterVelocity = 1f;
+			IgniterDamage = 0;
+			IgniterStrike = 0;
 	}
 
 
