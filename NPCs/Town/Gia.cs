@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -455,7 +456,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(10))
+					switch (Main.rand.Next(12))
 					{
 
 
@@ -524,6 +525,13 @@ namespace Stellamod.NPCs.Town
 						case 10:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BlackInk, 3);
+
+							break;
+
+						case 11:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceanicExtenderPowder>(), 1);
 
 							break;
 					}
