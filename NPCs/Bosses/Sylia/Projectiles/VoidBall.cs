@@ -9,17 +9,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    public class VoidBolt : ModProjectile
+    public class VoidBall : ModProjectile
     {
         private int _particleCounter;
         private int _dustCounter;
-        private float _projSpeed = 0;
-        private float _maxProjSpeed;
 
         //AI Values
         //Visuals
-        private const float Max_Proj_Speed_Min = 4f;
-        private const float Max_Proj_Speed_Max = 5f;
         private const int Body_Radius = 4;
         private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;
@@ -39,45 +35,16 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 52;
-            Projectile.height = 38;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 40;
         }
 
         public override void AI()
         {
-            if (_maxProjSpeed == 0)
-            {
-                _maxProjSpeed = Main.rand.NextFloat(Max_Proj_Speed_Min, Max_Proj_Speed_Max);
-            }
-
-            //Movement Code
-            //Wanna just home into enemies and then explode or something
-            //On second thought, maybe have ai similar to charging type minions like optic staff
-            //hmmm
-            Player playerToHomeTo = Main.player[Main.myPlayer];
-            float closestDistance = Vector2.Distance(Projectile.position, playerToHomeTo.position);
-            for (int i = 0; i < Main.maxPlayers; i++)
-            {
-                Player player = Main.player[i];
-                float distanceToPlayer = Vector2.Distance(Projectile.position, player.position);
-                if(distanceToPlayer < closestDistance)
-                {
-                    closestDistance = distanceToPlayer;
-                    playerToHomeTo = player;
-                }
-            }
-
-            _projSpeed += 0.25f;
-            if (_projSpeed > _maxProjSpeed)
-            {
-                _projSpeed = _maxProjSpeed;
-            }
-
-            Projectile.velocity = (playerToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
         }
@@ -137,6 +104,20 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            //Spawn Void Bolts
+            for(int i =0; i < 4; i++)
+            {
+                Vector2 edge = Main.rand.NextVector2CircularEdge(48, 48);
+                Vector2 voidBoltPosition = new Vector2(
+                    Projectile.Center.X + edge.X,
+                    Projectile.Center.Y + edge.Y);
+
+                Vector2 velocity = VectorHelper.VelocityDirectTo(Projectile.Center, voidBoltPosition, 2);
+                int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), voidBoltPosition, velocity,
+                    ModContent.ProjectileType<VoidBolt>(), 30, 1);
+                Main.projectile[p].timeLeft = Main.rand.Next(200, 300);
+            }
+
             //REPLACE SOUND AT SOME POINT
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact);
             for (int i = 0; i < Explosion_Particle_Count; i++)

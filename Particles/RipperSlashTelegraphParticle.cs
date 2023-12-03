@@ -28,10 +28,11 @@ namespace Stellamod.Particles
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D tex3 = Request<Texture2D>("Stellamod/Particles/RipperSlashTelegraphParticle").Value;
-            spriteBatch.Draw(tex3, Bottom - Main.screenPosition, 
+            Vector2 origin = this.OriginCenter();
+            spriteBatch.Draw(tex3, screenPos, 
                 tex3.AnimationFrame(ref frameCount, ref frameTick, Frame_Duration, Frame_Count, true), Color.White, 
                 rotation,
-                new Vector2(64, 16), 
+                origin, 
                 1.35f * scale, SpriteEffects.None, 0f);
 
             return false;

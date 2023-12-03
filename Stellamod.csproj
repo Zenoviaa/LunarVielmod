@@ -34,6 +34,7 @@
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
+    <None Remove="Dusts\BubbleDust.png" />
     <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
@@ -267,6 +268,7 @@
     <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormTail.png" />
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidSlash.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
+    <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
