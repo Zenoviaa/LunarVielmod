@@ -456,7 +456,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(12))
+					switch (Main.rand.Next(14))
 					{
 
 
@@ -532,6 +532,20 @@ namespace Stellamod.NPCs.Town
 
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceanicExtenderPowder>(), 1);
+
+							break;
+
+						case 12:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaticHealingNecklace>(), 1);
+
+							break;
+
+						case 13:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaCrystal>(), 1);
 
 							break;
 					}
