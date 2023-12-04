@@ -555,6 +555,13 @@ namespace Stellamod.NPCs.Town
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CoralBand>(), 1);
 
 							break;
+
+						case 15:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ShellSheid>(), 1);
+
+							break;
 					}
 
 
