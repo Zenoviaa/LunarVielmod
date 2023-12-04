@@ -4315,6 +4315,16 @@ Mods: {
 				DisplayName: Jackson Pollock
 				Tooltip: Summons a floating paint bucket sentry that spills paint everywhere
 			}
+
+			Rhamenthal: {
+				DisplayName: Rhamenthal
+				Tooltip: ""
+			}
+
+			Angelenthal: {
+				DisplayName: Angelenthal
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4912,6 +4922,10 @@ Mods: {
 			KaBoomMagic.DisplayName: Ka Boom Magic
 			JacksonPollockMinion.DisplayName: Jackson Pollock Minion
 			JacksonPollockProj.DisplayName: Jackson Pollock Proj
+			KaBoomFenix.DisplayName: Ka Boom Fenix
+			RhamenthalProj.DisplayName: Rhamenthal Proj
+			RhamenthalProjHold.DisplayName: Rhamenthal Proj Hold
+			RhamenthalShot.DisplayName: Rhamenthal Shot
 		}
 
 		NPCs: {
