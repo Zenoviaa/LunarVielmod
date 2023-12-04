@@ -3444,37 +3444,37 @@ Mods: {
 			}
 
 			DaedusBossRel: {
-				DisplayName: Daedus Boss Relic
+				DisplayName: Daedus Relic
 				Tooltip: ""
 			}
 
 			DreadBossRel: {
-				DisplayName: Dreadmire Boss Relic
+				DisplayName: Dreadmire Relic
 				Tooltip: ""
 			}
 
 			GintzeBossRel: {
-				DisplayName: Gintzia Boss Relic
+				DisplayName: Commander Ginztia Relic
 				Tooltip: ""
 			}
 
 			JackBossRel: {
-				DisplayName: Jack Boss Relic
+				DisplayName: Jack Relic
 				Tooltip: ""
 			}
 
 			SOMBossRel: {
-				DisplayName: Singularity of the Moon Boss Relic
+				DisplayName: Singularity of the Moon Relic
 				Tooltip: ""
 			}
 
 			SunsBossRel: {
-				DisplayName: Sunstalker Boss Relic
+				DisplayName: Sunstalker Relic
 				Tooltip: ""
 			}
 
 			VerliBossRel: {
-				DisplayName: Verlia of the Moon Boss Relic
+				DisplayName: Verlia of the Moon Relic
 				Tooltip: ""
 			}
 
@@ -4202,7 +4202,7 @@ Mods: {
 			}
 
 			SyliaBossRel: {
-				DisplayName: Sylia Boss Rel
+				DisplayName: Sylia Relic
 				Tooltip: ""
 			}
 
