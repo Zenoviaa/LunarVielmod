@@ -4310,6 +4310,11 @@ Mods: {
 				DisplayName: Tomed Dusting Magic
 				Tooltip: ""
 			}
+
+			JacksonPollock: {
+				DisplayName: Jackson Pollock
+				Tooltip: Summons a floating paint bucket sentry that spills paint everywhere
+			}
 		}
 
 		JungleRuneI: {
@@ -4905,6 +4910,8 @@ Mods: {
 			StarringGraftHead.DisplayName: Starring Graft Head
 			JellyBrooch.DisplayName: Jelly Brooch
 			KaBoomMagic.DisplayName: Ka Boom Magic
+			JacksonPollockMinion.DisplayName: Jackson Pollock Minion
+			JacksonPollockProj.DisplayName: Jackson Pollock Proj
 		}
 
 		NPCs: {
