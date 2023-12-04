@@ -1,5 +1,6 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.Sylia;
 using System;
 using System.Collections.Generic;
 using Terraria.Localization;
@@ -393,6 +394,38 @@ namespace Stellamod
 			);
 		}
 
+		private void DoSyliaIntegration()
+		{
+
+			string internalName = nameof(Sylia);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<Sylia>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 11.8f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedSyliaBoss;
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
 		private void DoBossChecklistIntegration()
 		{
 			// The mods homepage links to its own wiki where the calls are explained: https://github.com/JavidPack/BossChecklist/wiki/%5B1.4.4%5D-Boss-Log-Entry-Mod-Call
@@ -419,6 +452,7 @@ namespace Stellamod
 			DoSingularityFragmentIntegration();
 			DoVerliaIntegration();
 			DoGothiviaIntegration();
+			DoSyliaIntegration();
 		}
 	}
 }

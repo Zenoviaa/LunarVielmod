@@ -9,6 +9,7 @@ namespace Stellamod.Projectiles.Swords
     public class RipperSlashProjSmall : ModProjectile
     {
         public float VEL = 1;
+        public bool randomRotation = true;
         public override void SetStaticDefaults()
         {
 
@@ -36,7 +37,8 @@ namespace Stellamod.Projectiles.Swords
             if (Projectile.ai[0] <= 1)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2"), Projectile.position);
-                Projectile.rotation = Main.rand.Next(0, 360);
+                if (randomRotation)
+                    Projectile.rotation = Main.rand.Next(0, 360);
             }
 
             Projectile.spriteDirection = Projectile.direction;
