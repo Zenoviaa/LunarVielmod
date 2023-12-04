@@ -4310,6 +4310,16 @@ Mods: {
 				DisplayName: Tomed Dusting Magic
 				Tooltip: ""
 			}
+
+			Rhamenthal: {
+				DisplayName: Rhamenthal
+				Tooltip: ""
+			}
+
+			Angelenthal: {
+				DisplayName: Angelenthal
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4905,6 +4915,10 @@ Mods: {
 			StarringGraftHead.DisplayName: Starring Graft Head
 			JellyBrooch.DisplayName: Jelly Brooch
 			KaBoomMagic.DisplayName: Ka Boom Magic
+			KaBoomFenix.DisplayName: Ka Boom Fenix
+			RhamenthalProj.DisplayName: Rhamenthal Proj
+			RhamenthalProjHold.DisplayName: Rhamenthal Proj Hold
+			RhamenthalShot.DisplayName: Rhamenthal Shot
 		}
 
 		NPCs: {
