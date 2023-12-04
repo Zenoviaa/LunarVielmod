@@ -68,6 +68,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 90);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 
 			recipe.Register();
 		}
