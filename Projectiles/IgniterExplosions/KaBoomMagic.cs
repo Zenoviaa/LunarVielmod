@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Projectile.width = 93;
 			Projectile.height = 75;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 12;
+			Projectile.timeLeft = 18;
 			Projectile.scale = 1f;
 
 		}
@@ -40,7 +40,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 2)
+			if (++Projectile.frameCounter >= 3)
 			{
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= 6)
@@ -55,15 +55,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
+			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
 		}
 
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-		{
-			behindNPCs.Add(index);
-			behindProjectiles.Add(index);
-
-		}
+		
 	}
 
 }

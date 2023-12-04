@@ -4305,6 +4305,11 @@ Mods: {
 				DisplayName: Tomed Dusting Flames
 				Tooltip: ""
 			}
+
+			TomedDustingMagic: {
+				DisplayName: Tomed Dusting Magic
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -4899,6 +4904,7 @@ Mods: {
 			RingerHead.DisplayName: Ringer Head
 			StarringGraftHead.DisplayName: Starring Graft Head
 			JellyBrooch.DisplayName: Jelly Brooch
+			KaBoomMagic.DisplayName: Ka Boom Magic
 		}
 
 		NPCs: {
