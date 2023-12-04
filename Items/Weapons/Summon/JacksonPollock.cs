@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Summon
     {
 		public override void SetDefaults()
 		{
-			Item.damage = 30;
+			Item.damage = 50;
 			Item.knockBack = 3f;
 			Item.mana = 20;
 			Item.width = 76;
