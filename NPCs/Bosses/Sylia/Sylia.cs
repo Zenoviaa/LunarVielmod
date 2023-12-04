@@ -1183,6 +1183,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         public override void OnKill()
         {   
 			DeActivateSyliaSky();
-        }
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedSyliaBoss, -1);
+		}
     }
 }

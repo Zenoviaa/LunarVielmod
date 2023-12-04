@@ -20,6 +20,7 @@ namespace Stellamod.Helpers
 		public static bool downedGothBoss = false;
 		public static bool downedSunsBoss = false;
 		public static bool downedGintzlBoss = false;
+		public static bool downedSyliaBoss = false;
 		// public static bool downedOtherBoss = false;
 
 		public override void OnWorldLoad()
@@ -32,8 +33,8 @@ namespace Stellamod.Helpers
 		 downedGothBoss = false;
 		 downedSunsBoss = false;
 		 downedGintzlBoss = false;
-		
 
+			downedSyliaBoss = false;
 			// downedOtherBoss = false;
 		}
 
@@ -47,6 +48,7 @@ namespace Stellamod.Helpers
 			downedGothBoss = false;
 			downedSunsBoss = false;
 			downedGintzlBoss = false;
+			downedSyliaBoss = false;
 			// downedOtherBoss = false;
 		}
 
@@ -91,6 +93,10 @@ namespace Stellamod.Helpers
 			{
 				tag["downedDreadBoss"] = true;
 			}
+			if (downedSyliaBoss)
+			{
+				tag["downedSyliaBoss"] = true;
+			}
 
 			// if (downedOtherBoss) {
 			//	tag["downedOtherBoss"] = true;
@@ -107,6 +113,7 @@ namespace Stellamod.Helpers
 			downedGothBoss = tag.ContainsKey("downedGothBoss");
 			downedSunsBoss = tag.ContainsKey("downedSunsBoss");
 			downedGintzlBoss = tag.ContainsKey("downedGintzlBoss");
+			downedSyliaBoss = tag.ContainsKey("downedSyliaBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
@@ -122,6 +129,7 @@ namespace Stellamod.Helpers
 			flags[5] = downedGothBoss;
 			flags[6] = downedSunsBoss;
 			flags[7] = downedJackBoss;
+			flags[8] = downedSyliaBoss;
 			// flags[1] = downedOtherBoss;
 			writer.Write(flags);
 
@@ -140,6 +148,7 @@ namespace Stellamod.Helpers
 			flags[5] = downedGothBoss;
 			flags[6] = downedSunsBoss;
 			flags[7] = downedJackBoss;
+			flags[8] = downedSyliaBoss;
 			// downedOtherBoss = flags[1];
 
 			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:
