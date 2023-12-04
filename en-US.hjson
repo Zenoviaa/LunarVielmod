@@ -4325,6 +4325,11 @@ Mods: {
 				DisplayName: Angelenthal
 				Tooltip: ""
 			}
+
+			RoseBroochA: {
+				DisplayName: Rose Brooch
+				Tooltip: Summons a rose shield that rotates around you and blocks projectiles
+			}
 		}
 
 		JungleRuneI: {
@@ -4926,6 +4931,8 @@ Mods: {
 			RhamenthalProj.DisplayName: Rhamenthal Proj
 			RhamenthalProjHold.DisplayName: Rhamenthal Proj Hold
 			RhamenthalShot.DisplayName: Rhamenthal Shot
+			RoseBrooch.DisplayName: Rose Brooch
+			RoseShield.DisplayName: Rose Shield
 		}
 
 		NPCs: {
@@ -6935,6 +6942,11 @@ Mods: {
 			JellyB: {
 				DisplayName: Jelly B
 				Description: Mods.Stellamod.Buffs.JellyB.Description
+			}
+
+			RoseB: {
+				DisplayName: Rose B
+				Description: Mods.Stellamod.Buffs.RoseB.Description
 			}
 		}
 	}
