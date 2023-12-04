@@ -37,6 +37,7 @@ namespace Stellamod.Brooches
         public bool hasLuckyWBrooch;
         public bool hasEyeBrooch;
         public bool hasBonedBrooch;
+        public bool hasJellyBrooch;
         public bool hasSandyBrooch;
         public bool hasCelestia;
         public bool hasAdvancedBrooches;
@@ -64,6 +65,7 @@ namespace Stellamod.Brooches
             hasLuckyWBrooch = false;
             hasEyeBrooch = false;
             hasBonedBrooch = false;
+            hasJellyBrooch = false;
             hasSandyBrooch = false;
             hasAdvancedBrooches = false;
         }

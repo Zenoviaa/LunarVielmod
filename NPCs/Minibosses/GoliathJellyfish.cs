@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -201,7 +202,7 @@ namespace Stellamod.NPCs.Minibosses
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 1, 1, 2000));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 2, 1, 20));
-
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), 3, 1, 1));
 		}
 
 
