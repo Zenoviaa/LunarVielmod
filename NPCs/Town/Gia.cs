@@ -456,7 +456,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(14))
+					switch (Main.rand.Next(15))
 					{
 
 
@@ -546,6 +546,13 @@ namespace Stellamod.NPCs.Town
 
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaCrystal>(), 1);
+
+							break;
+
+						case 14:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CoralBand>(), 1);
 
 							break;
 					}
