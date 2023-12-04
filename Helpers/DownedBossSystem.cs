@@ -21,21 +21,21 @@ namespace Stellamod.Helpers
 		public static bool downedSunsBoss = false;
 		public static bool downedGintzlBoss = false;
 		public static bool downedSyliaBoss = false;
+		public static bool downedStoneGolemBoss = false;
 		// public static bool downedOtherBoss = false;
 
 		public override void OnWorldLoad()
 		{
-		downedVeriBoss = false;
-		 downedJackBoss = false;
-		 downedDaedusBoss = false;
-		 downedDreadBoss = false;
-		 downedSOMBoss = false;
-		 downedGothBoss = false;
-		 downedSunsBoss = false;
-		 downedGintzlBoss = false;
-
+			downedVeriBoss = false;
+			downedJackBoss = false;
+			downedDaedusBoss = false;
+			downedDreadBoss = false;
+			downedSOMBoss = false;
+			downedGothBoss = false;
+			downedSunsBoss = false;
+			downedGintzlBoss = false;
 			downedSyliaBoss = false;
-			// downedOtherBoss = false;
+			downedStoneGolemBoss = false;
 		}
 
 		public override void OnWorldUnload()
@@ -49,7 +49,7 @@ namespace Stellamod.Helpers
 			downedSunsBoss = false;
 			downedGintzlBoss = false;
 			downedSyliaBoss = false;
-			// downedOtherBoss = false;
+			downedStoneGolemBoss = false;
 		}
 
 		// We save our data sets using TagCompounds.
@@ -97,6 +97,10 @@ namespace Stellamod.Helpers
 			{
 				tag["downedSyliaBoss"] = true;
 			}
+            if (downedStoneGolemBoss)
+            {
+				tag["downedStoneGolemBoss"] = true;
+			}
 
 			// if (downedOtherBoss) {
 			//	tag["downedOtherBoss"] = true;
@@ -114,6 +118,7 @@ namespace Stellamod.Helpers
 			downedSunsBoss = tag.ContainsKey("downedSunsBoss");
 			downedGintzlBoss = tag.ContainsKey("downedGintzlBoss");
 			downedSyliaBoss = tag.ContainsKey("downedSyliaBoss");
+			downedStoneGolemBoss = tag.ContainsKey("downedStoneGolemBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
@@ -130,6 +135,7 @@ namespace Stellamod.Helpers
 			flags[6] = downedSunsBoss;
 			flags[7] = downedJackBoss;
 			flags[8] = downedSyliaBoss;
+			flags[9] = downedStoneGolemBoss;
 			// flags[1] = downedOtherBoss;
 			writer.Write(flags);
 
@@ -149,6 +155,7 @@ namespace Stellamod.Helpers
 			flags[6] = downedSunsBoss;
 			flags[7] = downedJackBoss;
 			flags[8] = downedSyliaBoss;
+			flags[9] = downedStoneGolemBoss;
 			// downedOtherBoss = flags[1];
 
 			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:

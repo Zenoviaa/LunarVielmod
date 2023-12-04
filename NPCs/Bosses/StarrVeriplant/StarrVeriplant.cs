@@ -1439,8 +1439,12 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		}
 
 
+        public override void OnKill()
+        {
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedStoneGolemBoss, -1);
+		}
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
