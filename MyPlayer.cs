@@ -613,12 +613,8 @@ namespace Stellamod
         public static float AuroreanB = 0.5f;
         public override void PostUpdateMiscEffects()
 		{
-
-			
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
-		
-
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
+			Player player = Player;
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);		
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
@@ -627,7 +623,6 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
-
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
@@ -1578,32 +1573,15 @@ namespace Stellamod
 						GoldenSparkleCooldown = 0;
 					}
 				}
-
-
-
-
-
-
-
-
 			}
 
-
-
-
-
-            if (EventWorld.Aurorean)
+			bool spawnAuroreanParticles = EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+			if (spawnAuroreanParticles)
             {
-
                 Main.windPhysicsStrength = 50;
-
-
                 GoldenRingCooldown++;
-
                 GoldenSparkleCooldown++;
                 RayCooldown++;
-
-
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1614,12 +1592,7 @@ namespace Stellamod
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
                     ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-
-
                 }
-
-
-
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1630,22 +1603,7 @@ namespace Stellamod
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
                     ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 				for (int j = 0; j < 5; j++)
 				{
@@ -1656,10 +1614,7 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 
 				for (int j = 0; j < 1; j++)
 				{
@@ -1670,10 +1625,7 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 
 				for (int j = 0; j < 1; j++)
 				{
@@ -1684,8 +1636,6 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
 
 				for (int j = 0; j < 1; j++)
@@ -1697,9 +1647,8 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
+
 				if (GoldenRingCooldown > 2)
 				{
 					for (int j = 0; j < 2; j++)
@@ -1727,16 +1676,12 @@ namespace Stellamod
 						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 						ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
 						GoldenSparkleCooldown = 0;
 					}
 				}
 
 
-
-
 				GoldenRingCooldown++;
-
 				GoldenSparkleCooldown++;
 				for (int j = 0; j < 5; j++)
 				{
@@ -1747,30 +1692,8 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

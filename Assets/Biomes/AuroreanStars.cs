@@ -9,7 +9,8 @@ namespace Stellamod.Assets.Biomes
     {
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
         public override SceneEffectPriority Priority => SceneEffectPriority.Event;
-        public override bool IsSceneEffectActive(Player player) => EventWorld.Aurorean && player.ZoneForest && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+        public override bool IsSceneEffectActive(Player player) => 
+            EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/StarbloomBackgroundStyle");
 
         public override void SpecialVisuals(Player player, bool isActive)
