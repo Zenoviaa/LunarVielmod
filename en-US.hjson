@@ -4288,17 +4288,17 @@ Mods: {
 
 			BonedExtenderPowder: {
 				DisplayName: Boned Extender Powder
-				Tooltip: ""
+				Tooltip: Sets powder range to an increase of 160%
 			}
 
 			GremoryExtenderPowder: {
 				DisplayName: Gremory Extender Powder
-				Tooltip: ""
+				Tooltip: Sets powder range to an increase of 150%
 			}
 
 			MushyExtenderPowder: {
 				DisplayName: Mushy Extender Powder
-				Tooltip: ""
+				Tooltip: Sets powder range to an increase of 180%
 			}
 
 			TomedDustingFlames: {
@@ -4317,8 +4317,8 @@ Mods: {
 			}
 
 			Rhamenthal: {
-				DisplayName: Rhamenthal
-				Tooltip: ""
+				DisplayName: Rhamenthal the Grafted
+				Tooltip: A devastating magical bow that will wipe out every enemy!
 			}
 
 			Angelenthal: {
