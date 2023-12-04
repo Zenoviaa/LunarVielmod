@@ -6,7 +6,10 @@ using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Stellamod.Projectiles.Swords.Altride;
+using Stellamod.Projectiles.Swords.Fenix;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -30,27 +33,87 @@ namespace Stellamod.Items.Weapons.Melee
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Alcarishxx", "The sorrowing souls within are crying")
+			{
+				OverrideColor = new Color(244, 119, 255)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Alcarishxx", "This weapon is bound by Fenix")
+			{
+				OverrideColor = new Color(244, 200, 255)
+
+			};
+			tooltips.Add(line);
+
+
+
+		}
 		public override void SetDefaults()
 		{
 			Item.damage = 200;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.height = 32;
-			Item.useTime = 10;
-			Item.useAnimation = 100;
+			Item.useTime = 80;
+			Item.useAnimation = 80;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.value = 100000;
-			Item.shoot = ModContent.ProjectileType<EverneanProj>();
-			Item.shootSpeed = 10f;
-			Item.noUseGraphic = true;
+			Item.shoot = ModContent.ProjectileType<YumikoShot>();
+			Item.shootSpeed = 80f;
 			Item.noMelee = true;
+			Item.noUseGraphic = true;
 
 
 		}
 
+
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			float numberProjectiles = 4;
+			float numberProjectiles2 = 3;
+			float rotation = MathHelper.ToRadians(20);
+			float rotation2 = MathHelper.ToRadians(30);
+			position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
+			for (int i = 0; i < numberProjectiles; i++)
+			{
+				Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+				Vector2 perturbedSpeed2 = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation2, rotation2, i / (numberProjectiles2 - 1))) * 1f;// This defines the projectile roatation and speed. .4f == projectile speed
+				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed2.X, perturbedSpeed2.Y, ModContent.ProjectileType<YumikoShot2>(), damage, Item.knockBack, player.whoAmI);
+			}
+
+			int Sound = Main.rand.Next(1, 4);
+			if (Sound == 1)
+			{
+				 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Yumiko"), position);
+			}
+			if (Sound == 2)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Yumiko2"), position);
+			}
+			if (Sound == 3)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Yumiko3"), position);
+
+			}
+			if (Sound == 4)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Yumiko4"), position);
+
+			}
+			return false;
+		}
 
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

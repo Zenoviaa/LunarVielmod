@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Slashers.Voyager;
@@ -53,6 +55,21 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.channel = true;
 
 
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.MythrilAnvil);
+
+			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 100);
+			recipe.AddIngredient(ModContent.ItemType<Nekomara>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<CoralCrossbow>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 90);
+			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
+
+			recipe.Register();
 		}
 
 
