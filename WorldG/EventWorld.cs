@@ -107,7 +107,7 @@ namespace Stellamod.WorldG
                     }
                 }
       
-                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
+                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
             }
 
             if (!Main.dayTime)
