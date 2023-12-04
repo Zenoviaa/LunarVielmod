@@ -4,6 +4,8 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
@@ -11,10 +13,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
     internal class VoidWall : ModProjectile
     {
         private int _particleCounter = 0;
-        private float _projSpeed = 2;
-
+        private int _tooFarCounter = 0;
+        private float _projSpeed = 5.5f;
+        private bool _tooFar;
         private const int Body_Radius = 64;
-        private const int Body_Particle_Count = 8;
+        private const int Body_Particle_Count = 10;
         private const int Body_Particle_Rate = 2;
         public override void SetDefaults()
         {
@@ -73,10 +76,39 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
 
             Vector2 homingVelocity = (playerToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
-            Projectile.velocity = new Vector2(_projSpeed, homingVelocity.Y);
+            float tooFarDistance = 16 * 64;
+            float distanceToTarget = Vector2.Distance(Projectile.Center, playerToHomeTo.Center);
+            if (!_tooFar)
+            {
+                if(distanceToTarget > tooFarDistance)
+                {
+                    _tooFarCounter++;
+                    if(_tooFarCounter > 30)
+                    {
+                        SoundEngine.PlaySound(SoundID.Roar);
+                        _tooFar = true;
+                    }
+                }
+
+                Projectile.velocity = new Vector2(_projSpeed, homingVelocity.Y);
+            }
+            else
+            {
+                if (distanceToTarget < tooFarDistance)
+                {
+                    _tooFarCounter--;
+                    if(_tooFarCounter <= 0)
+                    {
+                        _tooFar = false;
+                    }        
+                }
+
+                Projectile.velocity = new Vector2(_projSpeed * 2f, homingVelocity.Y);
+            }
+
+ 
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
-
             if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()) && Projectile.active)
             {
                 Projectile.Kill();

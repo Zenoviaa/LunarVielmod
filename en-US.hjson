@@ -4311,14 +4311,9 @@ Mods: {
 				Tooltip: ""
 			}
 
-			Rhamenthal: {
-				DisplayName: Rhamenthal
-				Tooltip: ""
-			}
-
-			Angelenthal: {
-				DisplayName: Angelenthal
-				Tooltip: ""
+			JacksonPollock: {
+				DisplayName: Jackson Pollock
+				Tooltip: Summons a floating paint bucket sentry that spills paint everywhere
 			}
 		}
 
@@ -4915,10 +4910,8 @@ Mods: {
 			StarringGraftHead.DisplayName: Starring Graft Head
 			JellyBrooch.DisplayName: Jelly Brooch
 			KaBoomMagic.DisplayName: Ka Boom Magic
-			KaBoomFenix.DisplayName: Ka Boom Fenix
-			RhamenthalProj.DisplayName: Rhamenthal Proj
-			RhamenthalProjHold.DisplayName: Rhamenthal Proj Hold
-			RhamenthalShot.DisplayName: Rhamenthal Shot
+			JacksonPollockMinion.DisplayName: Jackson Pollock Minion
+			JacksonPollockProj.DisplayName: Jackson Pollock Proj
 		}
 
 		NPCs: {

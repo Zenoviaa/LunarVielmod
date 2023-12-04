@@ -99,7 +99,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VerliaOfTheMoon");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
 			}
 		}
 
@@ -1034,7 +1034,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						npc.velocity = Vector2.Lerp(npc.velocity, dashVelocity, 0.5f);
 						if(ai_Telegraph_Counter == 30)
                         {
-							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<VoidWall>(), 30, 2);
+							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, 
+								ModContent.ProjectileType<VoidWall>(), 100, 2);
                         }
 
 						ai_Telegraph_Counter++;
