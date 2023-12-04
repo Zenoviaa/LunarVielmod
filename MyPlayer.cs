@@ -123,6 +123,8 @@ namespace Stellamod
 		public int IgniterDamage = 0;
 		public int IgniterStrike = 0;
 		public bool LuckyW= false;
+		public bool FlamedTomeDusts = false;
+		public bool MagicTomeDusts = false;
 
 		//---------------------------------------------------------------------------------------------------------------
 		// Brooches
@@ -583,6 +585,8 @@ namespace Stellamod
 			IgniterDamage = 0;
 			IgniterStrike = 0;
 			LuckyW = false;
+			FlamedTomeDusts = false;
+			MagicTomeDusts = false;
 		}
 
 

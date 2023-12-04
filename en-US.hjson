@@ -4268,16 +4268,41 @@ Mods: {
 
 			GrailHairpinYoyo: {
 				DisplayName: Grail Hairpin Yoyo
-				Tooltip: ""
+				Tooltip: Wow, this is shit!
 			}
 
 			StarringGraft: {
 				DisplayName: Starring Graft
-				Tooltip: ""
+				Tooltip: Get those stars off the ground :p
 			}
 
 			OceanicExtenderPowder: {
 				DisplayName: Oceanic Extender Powder
+				Tooltip: Sets powder range to an increase of 150%
+			}
+
+			MorrowedJelliesBroochA: {
+				DisplayName: Morrowed Jellies Brooch
+				Tooltip: Its really good if you're running a defensive build.
+			}
+
+			BonedExtenderPowder: {
+				DisplayName: Boned Extender Powder
+				Tooltip: ""
+			}
+
+			GremoryExtenderPowder: {
+				DisplayName: Gremory Extender Powder
+				Tooltip: ""
+			}
+
+			MushyExtenderPowder: {
+				DisplayName: Mushy Extender Powder
+				Tooltip: ""
+			}
+
+			TomedDustingFlames: {
+				DisplayName: Tomed Dusting Flames
 				Tooltip: ""
 			}
 		}
@@ -4873,6 +4898,7 @@ Mods: {
 			VoidWall.DisplayName: Void Wall
 			RingerHead.DisplayName: Ringer Head
 			StarringGraftHead.DisplayName: Starring Graft Head
+			JellyBrooch.DisplayName: Jelly Brooch
 		}
 
 		NPCs: {
@@ -6877,6 +6903,11 @@ Mods: {
 			SandyB: {
 				DisplayName: Sandy Bitch
 				Description: Woa woa there
+			}
+
+			JellyB: {
+				DisplayName: Jelly B
+				Description: Mods.Stellamod.Buffs.JellyB.Description
 			}
 		}
 	}

@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Igniter
 {
-	public class GrailedExtenderPowder : ModItem
+	public class GremoryExtenderPowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -29,7 +29,7 @@ namespace Stellamod.Items.Accessories.Igniter
 			var line = new TooltipLine(Mod, "", "");
 
 
-			line = new TooltipLine(Mod, "ADBPau", "These do not stack!")
+			line = new TooltipLine(Mod, "ADBPaaau", "These do not stack!")
 			{
 				OverrideColor = new Color(110, 187, 24)
 
@@ -46,13 +46,20 @@ namespace Stellamod.Items.Accessories.Igniter
 		{
 			Recipe recipe = CreateRecipe();
 
-			recipe.AddIngredient(ModContent.ItemType<MidfortuneExtenderPowder>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
-			recipe.AddIngredient(ItemID.Ectoplasm, 20);
-			recipe.AddIngredient(ItemID.SoulofFright, 5);
+			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
+			recipe.AddIngredient(ItemID.ShadowScale, 10);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
+
+
+			Recipe recipe2 = CreateRecipe();
+
+			recipe2.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
+			recipe2.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
+			recipe2.AddIngredient(ItemID.TissueSample, 10);
+			recipe2.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe2.Register();
 		}
 		public override void SetDefaults()
 		{
@@ -70,7 +77,7 @@ namespace Stellamod.Items.Accessories.Igniter
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-			player.GetModPlayer<MyPlayer>().IgniterVelocity = 2.5f;
+			player.GetModPlayer<MyPlayer>().IgniterVelocity = 1.5f;
 			
 		}
 

@@ -9,9 +9,10 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace Stellamod.Items.Accessories.Igniter
 {
-	public class GrailedExtenderPowder : ModItem
+	public class TomedDustingFlames : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -22,16 +23,15 @@ namespace Stellamod.Items.Accessories.Igniter
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
 
 
-			line = new TooltipLine(Mod, "ADBPau", "These do not stack!")
+			line = new TooltipLine(Mod, "ADBPau", "Creates flamed explosions for some explosion dusts!")
 			{
-				OverrideColor = new Color(110, 187, 24)
+				OverrideColor = new Color(80, 187, 124)
 
 			};
 			tooltips.Add(line);
@@ -39,20 +39,6 @@ namespace Stellamod.Items.Accessories.Igniter
 
 
 
-		}
-
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-
-			recipe.AddIngredient(ModContent.ItemType<MidfortuneExtenderPowder>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
-			recipe.AddIngredient(ItemID.Ectoplasm, 20);
-			recipe.AddIngredient(ItemID.SoulofFright, 5);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe.Register();
 		}
 		public override void SetDefaults()
 		{
@@ -67,11 +53,12 @@ namespace Stellamod.Items.Accessories.Igniter
 
 		
 
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-			player.GetModPlayer<MyPlayer>().IgniterVelocity = 2.5f;
-			
+			player.GetModPlayer<MyPlayer>().FlamedTomeDusts = true;
+
 		}
 
 
