@@ -40,6 +40,7 @@ namespace Stellamod.Brooches
         public bool hasJellyBrooch;
         public bool hasSandyBrooch;
         public bool hasCelestia;
+        public bool hasRoseBrooch;
         public bool hasAdvancedBrooches;
         public override void ResetEffects()
         {
@@ -67,6 +68,7 @@ namespace Stellamod.Brooches
             hasBonedBrooch = false;
             hasJellyBrooch = false;
             hasSandyBrooch = false;
+            hasRoseBrooch = false;
             hasAdvancedBrooches = false;
         }
 

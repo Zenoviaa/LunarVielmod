@@ -56,6 +56,7 @@ namespace Stellamod.Brooches
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
+			Projectile.timeLeft = 2;
 			SummonHelper.CalculateIdleValues(owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
 			Visuals();
