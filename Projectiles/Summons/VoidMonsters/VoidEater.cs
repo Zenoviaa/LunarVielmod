@@ -92,9 +92,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             {
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-                    Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
-                    position += new Vector2(Projectile.width / 2, 0);
-
+                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                     float size = Main.rand.NextFloat(1.5f, 2f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);
@@ -112,7 +110,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             _dustCounter++;
             if(_dustCounter > Body_Dust_Rate)
             {
-                Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
+                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));
                 dust.noGravity = true;
                 _dustCounter = 0;

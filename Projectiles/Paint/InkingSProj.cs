@@ -258,7 +258,7 @@ namespace Stellamod.Projectiles.Paint
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Player player = Main.player[Projectile.owner];
+		//	Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
 			for (int i = 0; i < 25; i++)
 			{

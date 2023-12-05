@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -435,6 +437,144 @@ namespace Stellamod.NPCs.Town
 
 
 				}
+
+
+
+
+
+
+
+
+
+				if (Main.LocalPlayer.HasItem(ModContent.ItemType<OceanRuneI>()))
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+
+					Main.npcChatText = $"I give you my thanks for this Ocean artifact, I'll research it greatly, heres something in return..";
+
+					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OceanRuneI>());
+					var entitySource = NPC.GetSource_GiftOrReward();
+
+					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					switch (Main.rand.Next(15))
+					{
+
+
+						case 0:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Coral, 100);
+							break;
+						case 1:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SharkFin, 5);
+							break;
+						case 2:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceansTrinket>());
+
+							break;
+
+						case 3:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Seashell, 25);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
+
+							break;
+
+						case 4:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceanScroll>(), 1);
+
+							break;
+
+						case 5:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
+
+							break;
+
+						case 6:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.TsunamiInABottle, 1);
+
+							break;
+
+
+						case 7:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.MasterBait, 10);
+
+							break;
+
+						case 8:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Sextant, 1);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SharkFin, 5);
+
+							break;
+
+						case 9:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.WeatherRadio, 1);
+
+							break;
+
+						case 10:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BlackInk, 3);
+
+							break;
+
+						case 11:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceanicExtenderPowder>(), 1);
+
+							break;
+
+						case 12:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaticHealingNecklace>(), 1);
+
+							break;
+
+						case 13:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaCrystal>(), 1);
+
+							break;
+
+						case 14:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CoralBand>(), 1);
+
+							break;
+
+						case 15:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ShellSheid>(), 1);
+
+							break;
+					}
+
+
+
+					return;
+
+
+
+				}
+
+
+
+
 
 
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<JungleRuneI>()))

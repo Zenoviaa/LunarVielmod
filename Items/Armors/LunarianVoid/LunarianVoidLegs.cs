@@ -39,7 +39,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 6);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 2);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

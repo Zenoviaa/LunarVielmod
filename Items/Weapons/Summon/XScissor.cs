@@ -193,10 +193,9 @@ namespace Stellamod.Items.Weapons.Summon
             switch (_summonState)
             {
 				case SummonState.X_Slash_Telegraph:
-					Vector2 offset = new Vector2(-64, -32);
-					Particle telegraphPart1 = ParticleManager.NewParticle(Projectile.Center + offset, Vector2.Zero, 
+					Particle telegraphPart1 = ParticleManager.NewParticle(Projectile.Center, Vector2.Zero, 
 						ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
-					Particle telegraphPart2 = ParticleManager.NewParticle(Projectile.Center + offset, Vector2.Zero, 
+					Particle telegraphPart2 = ParticleManager.NewParticle(Projectile.Center, Vector2.Zero, 
 						ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
 					telegraphPart1.rotation = MathHelper.ToRadians(-45);
 					telegraphPart2.rotation = MathHelper.ToRadians(45);
@@ -206,10 +205,10 @@ namespace Stellamod.Items.Weapons.Summon
 					_counter++;
 					if(_counter > RipperSlashTelegraphParticle.Animation_Length)
 					{
-						Vector2 ripperSlashOffset = new Vector2(16, 16);
-						var xSlashPart1 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + ripperSlashOffset, Vector2.Zero,
+					//	Vector2 ripperSlashOffset = new Vector2(16, 16);
+						var xSlashPart1 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
 							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
-						var xSlashPart2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position + ripperSlashOffset, Vector2.Zero,
+						var xSlashPart2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
 							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
 						(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
 						(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;

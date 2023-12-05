@@ -1,5 +1,7 @@
 ﻿using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
+using Stellamod.NPCs.Bosses.Sylia;
 using System;
 using Stellamod.NPCs.Bosses.Jack;
 using System.Collections.Generic;
@@ -187,7 +189,7 @@ namespace Stellamod
 			int summonItem4 = ModContent.ItemType<Items.Consumables.WanderingEssence>();
 
 			// Information for the player so he knows how to encounter the boss
-			LocalizedText spawnConditionText = Language.GetText($"Randomly each day, if you have 3 npcs, an army will raid you!");
+			LocalizedText spawnConditionText = Language.GetText($"Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -394,6 +396,69 @@ namespace Stellamod
 			);
 		}
 
+		private void DoSyliaIntegration()
+		{
+
+			string internalName = nameof(Sylia);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<Sylia>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 11.8f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedSyliaBoss;
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
+		private void DoStoneGolemIntegration()
+        {
+			string internalName = nameof(StarrVeriplant);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<StarrVeriplant>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 0.1f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedStoneGolemBoss;
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"Interact with the Old Guard's Shrine.");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
 		private void DoBossChecklistIntegration()
 		{
 			// The mods homepage links to its own wiki where the calls are explained: https://github.com/JavidPack/BossChecklist/wiki/%5B1.4.4%5D-Boss-Log-Entry-Mod-Call
@@ -420,6 +485,8 @@ namespace Stellamod
 			DoSingularityFragmentIntegration();
 			DoVerliaIntegration();
 			DoGothiviaIntegration();
+			DoSyliaIntegration();
+			DoStoneGolemIntegration();
 		}
 	}
 }

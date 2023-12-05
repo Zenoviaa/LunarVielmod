@@ -81,6 +81,7 @@ namespace Stellamod.Items.Armors.Daedia
 			recipe.AddIngredient(ItemID.LifeCrystal, 7);
 			recipe.AddIngredient(ItemID.SoulofNight, 10);
 			recipe.AddIngredient(ItemID.PinkThread, 3);
+			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 20);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

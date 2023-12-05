@@ -162,12 +162,21 @@ namespace Stellamod.NPCs.Global
 			}
 
 
+			if (npc.type == NPCID.SkeletronHead)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BonedThrowBroochA>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
+
 			if (npc.type == NPCID.GoblinSorcerer)
 			{
 
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Vinger>(), 300, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+			
 			if (npc.type == NPCID.BlackRecluse)
 			{
 

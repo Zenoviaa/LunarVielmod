@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Town;
 using Stellamod.Projectiles;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,13 @@ namespace Stellamod.Brooches
         public bool hasVerliaBrooch;
         public int verliaBroochCooldown;
         public bool hasVixedBrooch;
+        public bool hasLuckyWBrooch;
+        public bool hasEyeBrooch;
+        public bool hasBonedBrooch;
+        public bool hasJellyBrooch;
+        public bool hasSandyBrooch;
+        public bool hasCelestia;
+        public bool hasRoseBrooch;
         public bool hasAdvancedBrooches;
         public override void ResetEffects()
         {
@@ -53,7 +61,14 @@ namespace Stellamod.Brooches
             hasStoneBrooch = false;
             hasVerliaBrooch = false;
             hasVixedBrooch = false;
+            hasCelestia = false;
             hasSlimeBrooch = false;
+            hasLuckyWBrooch = false;
+            hasEyeBrooch = false;
+            hasBonedBrooch = false;
+            hasJellyBrooch = false;
+            hasSandyBrooch = false;
+            hasRoseBrooch = false;
             hasAdvancedBrooches = false;
         }
 
@@ -126,6 +141,11 @@ namespace Stellamod.Brooches
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
                     ModContent.ProjectileType<BroochProjectile>(), 0, 1f, player.whoAmI);
             }
+
+           
+
+               
+            
         }
     }
 }

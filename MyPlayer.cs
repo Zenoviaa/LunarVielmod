@@ -118,6 +118,15 @@ namespace Stellamod
 
 
 
+		//---------------------------------------------------- Igniter effects and uh accessory stuff
+
+		public float IgniterVelocity = 1f;
+		public int IgniterDamage = 0;
+		public int IgniterStrike = 0;
+		public bool LuckyW= false;
+		public bool FlamedTomeDusts = false;
+		public bool MagicTomeDusts = false;
+
 		//---------------------------------------------------------------------------------------------------------------
 		// Brooches
 		public bool BroochSpragald;
@@ -567,7 +576,19 @@ namespace Stellamod
 			PPFrameTime = 0;
 			Cameraaa = false;
 
-	}
+
+
+
+
+
+
+			IgniterVelocity = 1f;
+			IgniterDamage = 0;
+			IgniterStrike = 0;
+			LuckyW = false;
+			FlamedTomeDusts = false;
+			MagicTomeDusts = false;
+		}
 
 
 
@@ -609,7 +630,6 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
-
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
@@ -993,36 +1013,7 @@ namespace Stellamod
 				player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
 			}
 
-			if (StealthRune)
-            {
-                if (StealthTime <= 500)
-                {
-                    StealthTime++;
-                }
-                else
-                {
-                    if (Main.rand.NextBool(5))
-                    {
-                        int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
-                        Main.dust[dustnumber].velocity *= 0.3f;
-                        Main.dust[dustnumber].noGravity = true;
-                    }
-                }
-                Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
-                Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
-                Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
-                Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
-                Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
-
-            }
-            if (SpiritPendent && ZoneAbyss)
-            {
-                Player.GetDamage(DamageClass.Magic) += 250 / 150f;
-                Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
-                Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
-            }
+			
             if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
@@ -1261,10 +1252,7 @@ namespace Stellamod
 				}
 			}
 
-			if (Player.InModBiome<MarrowSurfaceBiome>() && !Main.dayTime)
-			{
-				MusicLoader.GetMusicSlot(Mod, "Assets/Music/morrownight");
-			}
+			
 			if (EventWorld.GintzingBoss)
 			{
 				player.AddBuff(ModContent.BuffType<Gintzingwinds>(), 100);
@@ -1592,32 +1580,15 @@ namespace Stellamod
 						GoldenSparkleCooldown = 0;
 					}
 				}
-
-
-
-
-
-
-
-
 			}
 
-
-
-
-
-            if (EventWorld.Aurorean)
+			bool spawnAuroreanParticles = EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+			if (spawnAuroreanParticles)
             {
-
                 Main.windPhysicsStrength = 50;
-
-
                 GoldenRingCooldown++;
-
                 GoldenSparkleCooldown++;
                 RayCooldown++;
-
-
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1628,12 +1599,7 @@ namespace Stellamod
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
                     ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
-
-
                 }
-
-
-
 
                 for (int j = 0; j < 2; j++)
                 {
@@ -1644,22 +1610,7 @@ namespace Stellamod
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
                     Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
                     ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
-
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 				for (int j = 0; j < 5; j++)
 				{
@@ -1670,10 +1621,7 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 
 				for (int j = 0; j < 1; j++)
 				{
@@ -1684,10 +1632,7 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 
 				for (int j = 0; j < 1; j++)
 				{
@@ -1698,8 +1643,6 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<GoldRingParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
 
 				for (int j = 0; j < 1; j++)
@@ -1711,9 +1654,8 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
+
 				if (GoldenRingCooldown > 2)
 				{
 					for (int j = 0; j < 2; j++)
@@ -1741,16 +1683,12 @@ namespace Stellamod
 						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 						ParticleManager.NewParticle(Player.Center - RandomOrig2, speed2 * 3, ParticleManager.NewInstance<GoldRingParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
 						GoldenSparkleCooldown = 0;
 					}
 				}
 
 
-
-
 				GoldenRingCooldown++;
-
 				GoldenSparkleCooldown++;
 				for (int j = 0; j < 5; j++)
 				{
@@ -1761,30 +1699,8 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<morrowstar>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
-
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2346,6 +2262,40 @@ namespace Stellamod
 
         public override void PostUpdateEquips()
         {
+
+			if (StealthRune)
+			{
+				if (StealthTime <= 500)
+				{
+					StealthTime++;
+				}
+				else
+				{
+					if (Main.rand.NextBool(5))
+					{
+						int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
+						Main.dust[dustnumber].velocity *= 0.3f;
+						Main.dust[dustnumber].noGravity = true;
+					}
+				}
+				Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
+				Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
+				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
+
+			}
+			if (SpiritPendent && ZoneAbyss)
+			{
+				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
+				Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
+			}
+
+
+
 			if (ArcaneM && ArcaneMCooldown > 600)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;

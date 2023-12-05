@@ -4,7 +4,9 @@ using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
@@ -166,6 +168,37 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
 			drawModifiers.PortraitPositionYOverride = 0f;
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+		}
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
+
+			switch (Main.rand.Next(4))
+			{
+				case 0:
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 1, 1));
+					break;
+
+				case 1:
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
+					break;
+
+
+				case 2:
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 1, 1, 20));
+					break;
+
+				case 3:
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1));
+					break;
+			}
+
+			
+			
 		}
 
 		public override void SetDefaults()
@@ -1259,7 +1292,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 2)
 			{
 
-				float speedXa = 0;
 
 
 				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
@@ -4105,50 +4137,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			//	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-
-
-
-			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-
-			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-			// Boss masks are spawned with 1/7 chance
-			//notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-			// This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-			// We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-			// which requires these parameters to be defined
-			//int itemType = ModContent.ItemType<Gambit>();
-			//var parameters = new DropOneByOne.Parameters()
-			//{
-			//	ChanceNumerator = 1,
-			//	ChanceDenominator = 1,
-			//	MinimumStackPerChunkBase = 1,
-			//	MaximumStackPerChunkBase = 1,
-			//	MinimumItemDropsCount = 1,
-			//	MaximumItemDropsCount = 3,
-			//};
-
-			//notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-			// Finally add the leading rule
-			npcLoot.Add(notExpertRule);
-		}
+		
 		public void ResetTimers()
 		{
 			timer = 0;

@@ -42,9 +42,9 @@ namespace Stellamod.NPCs.Abyssal
         {
             NPC.width = 30;
             NPC.height = 90;
-            NPC.damage = 60;
-            NPC.defense = 8;
-            NPC.lifeMax = 200;
+            NPC.damage = 8;
+            NPC.defense = 2;
+            NPC.lifeMax = 400;
             NPC.HitSound = SoundID.DD2_SkeletonHurt;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 30f;
@@ -89,7 +89,13 @@ namespace Stellamod.NPCs.Abyssal
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 0, maximumDropped: 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 50));
+          
+            if (Main.hardMode)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 1, maximumDropped: 5));
+            }
+            
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 30));
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -187,7 +193,7 @@ namespace Stellamod.NPCs.Abyssal
             {
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, 206);
+                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple);
                     dust.velocity *= -1f;
                     dust.scale *= .8f;
                     dust.noGravity = true;
@@ -210,15 +216,15 @@ namespace Stellamod.NPCs.Abyssal
             if (NPC.life <= 0)
             {
                 //var EntitySource = NPC.GetSource_Death();
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 206, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, 206, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
             }
             else
             {
                 for (int k = 0; k < 7; k++)
                 {
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 206, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, 206, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.UnusedWhiteBluePurple, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
                 }
             }
         }

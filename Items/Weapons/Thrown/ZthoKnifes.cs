@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
@@ -42,10 +43,8 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 2);
-            recipe.AddIngredient(ItemID.ThrowingKnife, 50);
-            recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<MeleeDrive>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<FableKnives>(), 50);
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

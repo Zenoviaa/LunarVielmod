@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -704,6 +705,8 @@ namespace Stellamod.NPCs.Bosses.Jack
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ScarecrowSaber>(), chanceDenominator: 2));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), minimumDropped: 7, maximumDropped: 50));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 7, maximumDropped: 50));
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingFlames>(), chanceDenominator: 1));
+
 
             //Dunno if she should drop verlia brooch in classic mode or not
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.JackBossRel>()));

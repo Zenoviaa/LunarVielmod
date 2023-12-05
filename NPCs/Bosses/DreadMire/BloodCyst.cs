@@ -1,8 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 using ReLogic.Content;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -18,7 +20,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     public class BloodCyst : ModNPC
     {
+        private int _radiusCounter;
         private Vector2 BloodCystPos;
+
+        private const float Immune_Distance = 16 * 9;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Blood Cyst");
@@ -27,8 +32,41 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
+        private void OnlyTakeDamageWhenClose()
+        {
+            NPC.dontTakeDamage = true;
+            for (int i = 0; i < Main.maxPlayers; i++)
+            {
+                Player player = Main.player[i];
+                if (Vector2.Distance(NPC.Center, player.Center) < Immune_Distance)
+                {
+                    NPC.dontTakeDamage = false;
+                    break;
+                }
+            }
+        }
+
+        private void Visuals()
+        {
+            float radius = Immune_Distance;
+            int count = 8;
+            _radiusCounter++;
+            if(_radiusCounter > 3)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    Vector2 position = NPC.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count)) * 4);
+                    ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
+                }
+                _radiusCounter = 0;
+            }
+        }
+
         public override void AI()
         {
+            OnlyTakeDamageWhenClose();
+            Visuals();
+
             NPC.damage = 0;
             NPC.ai[0]++;
             if (Main.dayTime)
@@ -96,7 +134,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return Main.bloodMoon && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<BloodCyst>()) && !NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) && !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;
+            return Main.bloodMoon && !Main.dayTime && 
+                !NPC.AnyNPCs(ModContent.NPCType<BloodCyst>()) && 
+                !NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) && 
+                !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;
         }
 
         public override void SetDefaults()

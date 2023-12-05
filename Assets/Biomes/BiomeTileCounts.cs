@@ -40,6 +40,9 @@ namespace Stellamod
         public int FableCount;
         public static bool InFable => ModContent.GetInstance<BiomeTileCounts>().FableCount > 20;
 
+        public int SeaCount;
+        public static bool InSeaTemple => ModContent.GetInstance<BiomeTileCounts>().SeaCount > 20;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -51,6 +54,7 @@ namespace Stellamod
             RoyalCapitalCount = tileCounts[ModContent.TileType<AlcazBlock>()];
             VeriCount = tileCounts[ModContent.TileType<VeriplantDirt>()];
             FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
+            SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
         }
     }
 }

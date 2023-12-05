@@ -100,7 +100,8 @@ namespace Stellamod.Items.Weapons.Melee
 				combowombo++;
 				int dir = AttackCounter;
 				AttackCounter = -AttackCounter;
-				Projectile.NewProjectile(source, position, velocity, type, (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), knockback, player.whoAmI, 1, dir);
+				Projectile.NewProjectile(source, position, velocity, type, (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), 
+					knockback, player.whoAmI, 1, dir);
 
 				if (combowombo == 3 || combowombo == 4)
 				{

@@ -18,8 +18,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         //AI Values
         //Visuals
-        private const float Max_Proj_Speed_Min = 5.1f;
-        private const float Max_Proj_Speed_Max = 6.1f;
+        private const float Max_Proj_Speed_Min = 4f;
+        private const float Max_Proj_Speed_Max = 5f;
         private const int Body_Radius = 4;
         private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;
@@ -107,7 +107,6 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 {
                     Vector2 position = Projectile.Center + 
                         new Vector2(Main.rand.Next(0, Body_Radius), Main.rand.Next(0, Body_Radius));
-                    position -= new Vector2(16, 28);
                     float size = Main.rand.NextFloat(0.75f, 1f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);
@@ -125,7 +124,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             _dustCounter++;
             if(_dustCounter > Body_Dust_Rate)
             {
-                Vector2 position = Projectile.position + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
+                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));
                 dust.noGravity = true;
                 _dustCounter = 0;

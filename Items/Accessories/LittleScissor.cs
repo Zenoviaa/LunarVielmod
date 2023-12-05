@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Summons.VoidMonsters;
+using Stellamod.Projectiles.Swords;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +13,8 @@ namespace Stellamod.Items.Accessories
 {
 	public class LittleScissorDashPlayer : ModPlayer
 	{
+		private int _riftDurationCounter;
+		private int _riftCounter;
 		// These indicate what direction is what in the timer arrays used
 		public const int DashDown = 0;
 		public const int DashUp = 1;
@@ -18,7 +23,7 @@ namespace Stellamod.Items.Accessories
 
 		public const int DashCooldown = 5; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
 		public const int DashDuration = 5; // Duration of the dash afterimage effect in frames
-
+		public const int RiftDuration = 30;
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
 		public const float DashVelocity = 15f;
 
@@ -94,9 +99,35 @@ namespace Stellamod.Items.Accessories
 				}
 
 				// start our dash
+				_riftDurationCounter = RiftDuration;
 				DashDelay = DashCooldown;
 				DashTimer = DashDuration;
 				Player.velocity = newVelocity;
+
+				//X Slash Visuals
+				var xSlashPart1 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f);
+				var xSlashPart2 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f);
+
+				xSlashPart1.timeLeft = 1500;
+				xSlashPart2.timeLeft = 1500;
+				(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
+				(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;
+				xSlashPart2.rotation = MathHelper.ToRadians(90);
+
+				//Actual Attack Here
+				var voidRiftProjectile1 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+					ModContent.ProjectileType<VoidRift>(), 200, 1);
+
+				voidRiftProjectile1.timeLeft = 180;
+				voidRiftProjectile1.rotation = MathHelper.ToRadians(-45);
+
+				var voidRiftProjectile2 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+					ModContent.ProjectileType<VoidRift>(), 200, 1);
+
+				voidRiftProjectile2.timeLeft = 180;
+				voidRiftProjectile2.rotation = MathHelper.ToRadians(45);
 
 				// Here you'd be able to set an effect that happens when the dash first activates
 				// Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
@@ -115,6 +146,18 @@ namespace Stellamod.Items.Accessories
 
 				// count down frames remaining
 				DashTimer--;
+
+			}
+
+			_riftCounter--;
+			_riftDurationCounter--;
+			if (_riftDurationCounter > 0 && _riftCounter <= 0)
+			{
+				Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, 4f));
+				var proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity,
+					ModContent.ProjectileType<LittleScissorVoidBolt>(), 120, 1);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
+				_riftCounter = 5;
 			}
 		}
 

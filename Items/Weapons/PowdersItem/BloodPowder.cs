@@ -2,6 +2,8 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
@@ -34,6 +36,13 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.UseSound = SoundID.Grass;
 		}
 
-	
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+
+			int dir = player.direction;
+
+			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback);
+			return false;
+		}
 	}
 }

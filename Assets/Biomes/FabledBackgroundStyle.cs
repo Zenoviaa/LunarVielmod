@@ -28,25 +28,19 @@ namespace Stellamod.Backgrounds
 			}
 		}
 
-		public override int ChooseFarTexture()
+        public override int ChooseFarTexture()
 		{
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");
-			
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");		
 		}
-
 
 		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
 		{
-			
-			scale = 0.66f;
+			scale *= 0.66f;
 			parallax = 0.3;
-			b = 1300;
+			//B seems to be the y position
+			b -= 50*scale;
 
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/FableBiomeBackground");
-
-			
-		}
-
-        
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/FableBiomeBackground");	
+		}  
 	}
 }

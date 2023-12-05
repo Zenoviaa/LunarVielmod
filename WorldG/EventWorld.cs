@@ -107,7 +107,7 @@ namespace Stellamod.WorldG
                     }
                 }
       
-                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 100);
+                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
             }
 
             if (!Main.dayTime)
@@ -116,7 +116,7 @@ namespace Stellamod.WorldG
                 GintzeDayReset = false;
             }
 
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 2 && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
+            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && DownedBossSystem.downedStoneGolemBoss && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
                 if (Main.rand.NextBool(1))
                 {

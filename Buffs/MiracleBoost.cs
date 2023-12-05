@@ -2,6 +2,7 @@
 using ParticleLibrary;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.MiracleSoul;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -52,10 +53,7 @@ namespace Stellamod.Buffs
 
             for (int m = 0; m < Particle_Count; m++)
             {
-                Vector2 position = Player.position - new Vector2(
-                    Main.rand.NextFloat(0, Player.width),
-                    Main.rand.NextFloat(0, Player.height));
-
+                Vector2 position = Player.RandomPositionWithinEntity();
                 Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
                     default(Color), Main.rand.NextFloat(minScale, maxScale));
                 p.layer = Particle.Layer.BeforePlayersBehindNPCs;
@@ -70,7 +68,7 @@ namespace Stellamod.Buffs
                 _miracleSoulCooldown = Miracle_Soul_Cooldown;
                 Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, -8f));
                 Projectile.NewProjectile(Player.GetSource_FromThis(),
-                    target.Center, velocity, ModContent.ProjectileType<MiracleSoulCollectibleProj>(), 0, 0, Player.whoAmI);
+                    target.Center, velocity, ModContent.ProjectileType<MiracleSoulCollectibleProj>(), 0, 0);
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcaneExplode"), target.position);
             }

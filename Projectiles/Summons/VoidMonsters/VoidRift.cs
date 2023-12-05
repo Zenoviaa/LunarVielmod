@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
@@ -99,14 +100,10 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
             _particleCounter++;
             if (_particleCounter > Body_Particle_Rate)
             {
-                Rectangle rectangle = Projectile.getRect();
+                float radius = 64;
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-
-                    float x = Main.rand.Next(0, rectangle.Width);
-                    float y = Main.rand.Next(0, rectangle.Height);
-                    Vector2 position = Projectile.position + new Vector2(x, y);
-                    position += new Vector2(-8, -16);
+                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(radius / 2, radius / 2);
                     Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), Main.rand.NextFloat(0.1f, 0.2f));
                     p.layer = Particle.Layer.BeforeProjectiles;
@@ -133,6 +130,8 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
                     default(Color), 1 / 3f);
                 p.layer = Particle.Layer.BeforeProjectiles;
             }
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
         }
     }
 }
