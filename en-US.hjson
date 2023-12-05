@@ -4963,6 +4963,8 @@ Mods: {
 			VoidWallEaterMini.DisplayName: Void Wall Eater Mini
 			NekomaraProj.DisplayName: Nekomara Proj
 			KaBoomSigil2.DisplayName: Ka Boom Sigil2
+			VoidDrip.DisplayName: Void Drip
+			VoidHorizontalRift.DisplayName: Void Horizontal Rift
 		}
 
 		NPCs: {

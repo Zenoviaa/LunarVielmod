@@ -749,7 +749,7 @@ namespace Stellamod
                 }
             }
 
-			if (EventWorld.Aurorean)
+			if (EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight))
 			{
 
                 if (Main.rand.NextBool(90)&& Main.netMode != NetmodeID.MultiplayerClient)
@@ -758,9 +758,7 @@ namespace Stellamod
                     int offsetY = Main.rand.Next(-1000, 1000) - 1700;
                     int damage = Main.expertMode ? 0 : 0;
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
-                }
-				
-				
+                }	
 				
 				bool npcAlreadyExists = false;
 				for (int i = 0; i < Main.maxNPCs; i++)
@@ -784,9 +782,6 @@ namespace Stellamod
 						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
 					}
 				}
-
-
-			
 			}
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
@@ -1481,8 +1476,6 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
 
 			}

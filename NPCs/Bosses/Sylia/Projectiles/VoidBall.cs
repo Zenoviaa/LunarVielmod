@@ -2,6 +2,7 @@
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,8 +17,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         //AI Values
         //Visuals
-        private const int Body_Radius = 4;
-        private const int Body_Particle_Count = 1;
+        private const int Body_Radius = 7;
+        private const int Body_Particle_Count = 2;
         private const int Kill_Particle_Count = 16;
         private const int Explosion_Particle_Count = 8;
 
@@ -49,6 +50,18 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Visuals();
         }
 
+        //Trails
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 1.5f;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(new Color(60, 0, 118, 50), Color.Transparent, completionRatio);
+        }
+
 
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
@@ -59,6 +72,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 new Vector3(117, 1, 187),
                 new Vector3(3, 3, 3), 0);
 
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
@@ -119,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             }
 
             //REPLACE SOUND AT SOME POINT
-            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact);
+            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact);
             for (int i = 0; i < Explosion_Particle_Count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);
