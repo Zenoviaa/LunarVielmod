@@ -242,6 +242,12 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.MushroomGrass);
                 TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
+
+                Main.instance.LoadTiles(TileID.CorruptGrass);
+                TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpGrassRE");
+
+                Main.instance.LoadTiles(TileID.Ebonstone);
+                TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
             }
             Instance = this;
 

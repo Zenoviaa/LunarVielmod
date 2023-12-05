@@ -959,7 +959,7 @@ namespace Stellamod.WorldG
 
 							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<SunClaw>(), 0.1)
+									Tuple.Create((int)ModContent.ItemType<CinderBraker>(), 0.1)
 
 
 							);
@@ -975,6 +975,7 @@ namespace Stellamod.WorldG
 									itemsToAdd.Add((ModContent.ItemType<OceanScroll>(), Main.rand.Next(1, 1)));
 									itemsToAdd.Add((ModContent.ItemType<OceanRuneI>(), Main.rand.Next(1, 1)));
 									itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+									itemsToAdd.Add((ItemID.AntlionMandible, Main.rand.Next(5, 10)));
 									itemsToAdd.Add((ItemID.Coral, Main.rand.Next(1, 25)));
 									itemsToAdd.Add((ItemID.SharkFin, Main.rand.Next(1, 25)));
 									itemsToAdd.Add((ItemID.MasterBait, Main.rand.Next(1, 25)));
