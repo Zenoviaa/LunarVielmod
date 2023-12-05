@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class Angelenthal : ModItem
+	public class FrostMonger : ModItem
 	{
 
 		public int AttackCounter = 1;
@@ -29,9 +29,8 @@ namespace Stellamod.Items.Weapons.Melee
 		{
 
 
-			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 60));
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
-			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
+			 // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+			 // Makes the item have no gravity
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			// DisplayName.SetDefault("Frost Swing");
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
@@ -50,7 +49,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.value = 100000;
-			Item.shoot = ModContent.ProjectileType<AngelenthalProj1>();
+			Item.shoot = ModContent.ProjectileType<AngelenthalProj3>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
@@ -58,7 +57,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 		}
 
-		
+
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
@@ -112,7 +111,17 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 
 
-
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.BorealWood, 100);
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 20);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
+		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{

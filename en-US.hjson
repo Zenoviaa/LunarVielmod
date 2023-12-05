@@ -4340,294 +4340,11 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BubbleBlasher: {
-				DisplayName: Bubble Blasher
-				Tooltip: ""
-			}
-
-			LarveinGreatbow: {
-				DisplayName: Larvein Greatbow
+			FrostMonger: {
+				DisplayName: Frost Monger
 				Tooltip: ""
 			}
 		}
-
-		BubbleBlasher: {
-			Tooltip: ""
-			DisplayName: Bubble Blasher
-		}
-
-		Biomes: {
-			AbyssBiome: {
-				DisplayName: Abyss Biome
-				TownNPCDialogueName: the Abyss Biome
-			}
-
-			AcidBiome: {
-				DisplayName: Acid Biome
-				TownNPCDialogueName: the Acid Biome
-			}
-
-			AlcadziaBiome: {
-				DisplayName: Alcadzia Biome
-				TownNPCDialogueName: the Alcadzia Biome
-			}
-
-			AurelusBiome: {
-				DisplayName: Aurelus Biome
-				TownNPCDialogueName: the Aurelus Biome
-			}
-
-			CathedralBiome: {
-				DisplayName: Cathedral Biome
-				TownNPCDialogueName: the Cathedral Biome
-			}
-
-			FableBiome: {
-				DisplayName: Fable Biome
-				TownNPCDialogueName: the Fable Biome
-			}
-
-			GovheilCastle: {
-				DisplayName: Govheil Castle
-				TownNPCDialogueName: the Govheil Castle
-			}
-
-			MarrowSurfaceBiome: {
-				DisplayName: Marrow Surface Biome
-				TownNPCDialogueName: the Marrow Surface Biome
-			}
-
-			MorrowUndergroundBiome: {
-				DisplayName: Morrow Underground Biome
-				TownNPCDialogueName: the Morrow Underground Biome
-			}
-
-			NaxtrinTemple: {
-				DisplayName: Naxtrin Temple
-				TownNPCDialogueName: the Naxtrin Temple
-			}
-
-			StarbloomBiome: {
-				DisplayName: Starbloom Biome
-				TownNPCDialogueName: the Starbloom Biome
-			}
-
-			VeriplantUndergroundBiome: {
-				DisplayName: Veriplant Underground Biome
-				TownNPCDialogueName: the Veriplant Underground Biome
-			}
-		}
-
-		Tiles: {
-			AbyssalStone.MapEntry: Abyssal Stone
-			AurelusBorderS.MapEntry: Aurelus Border S
-			AurelusChest.MapEntry: Aurelus Chest
-			AurelusDoorClosed.MapEntry: Aurelus Door Closed
-			AurelusPost.MapEntry: Aurelus Post
-			AurelusSummon.MapEntry: Aurelus Summon
-			BlueFlower.MapEntry: Blue Flower
-			BlueFlower2.MapEntry: Blue Flower2
-			SoulOre.MapEntry: Soul Ore
-			TealBulb.MapEntry: Teal Bulb
-			TealBulb2.MapEntry: Teal Bulb2
-			TealBulb3.MapEntry: Teal Bulb3
-			AcidBrick.MapEntry: Acid Brick
-			AcidBush1.MapEntry: Acid Bush1
-			AcidBush2.MapEntry: Acid Bush2
-			AcidBush3.MapEntry: Acid Bush3
-			AcidialDirt.MapEntry: Acidial Dirt
-			AcidMush1.MapEntry: Acid Mush1
-			AcidMush2.MapEntry: Acid Mush2
-			AcidMush3.MapEntry: Acid Mush3
-			AcidStone.MapEntry: Acid Stone
-			AlcaologyTable.MapEntry: Alcaology Table
-			BigRock1.MapEntry: Big Rock1
-			BigRock2.MapEntry: Big Rock2
-			BigRock3.MapEntry: Big Rock3
-			BigRock4.MapEntry: Big Rock4
-			OwlTrunck1.MapEntry: Owl Trunck1
-			OwlTrunck2.MapEntry: Owl Trunck2
-			OwlTrunck3.MapEntry: Owl Trunck3
-			Stalagmite1.MapEntry: Stalagmite1
-			Stalagmite2.MapEntry: Stalagmite2
-			Stalagmite3.MapEntry: Stalagmite3
-			Stalagmite4.MapEntry: Stalagmite4
-			TreeOver1.MapEntry: Tree Over1
-			TreeOver2.MapEntry: Tree Over2
-			Arnchar.MapEntry: Arnchar
-			AstrasilkOreTile.MapEntry: Astrasilk Ore Tile
-			BroochesTable.MapEntry: Brooches Table
-			CellConverter.MapEntry: Cell Converter
-			ChiseledStone.MapEntry: Chiseled Stone
-			CoreGemT.MapEntry: Core Gem T
-			DiminishedMetal.MapEntry: Diminished Metal
-			FrileOreTile.MapEntry: Frile Ore Tile
-			GovheilTile.MapEntry: Govheil Tile
-			HuntiacTile.MapEntry: Huntiac Tile
-			LostScrapT.MapEntry: Lost Scrap T
-			MossyStone.MapEntry: Mossy Stone
-			Alcite.MapEntry: Alcite
-			AowerBottom.MapEntry: Aower Bottom
-			AowerTop.MapEntry: Aower Top
-			CurtainLeftRC.MapEntry: Curtain Left R C
-			CurtainLeft.MapEntry: Curtain Left
-			CurtainRightRC.MapEntry: Curtain Right R C
-			CurtainRight.MapEntry: Curtain Right
-			CurtainTop.MapEntry: Curtain Top
-			Rectite.MapEntry: Rectite
-			Skullpile.MapEntry: Skullpile
-			RunicTableT.MapEntry: Runic Table T
-			ShrineAlcaPowderC.MapEntry: Shrine Alca Powder C
-			ShrineBUAN.MapEntry: Shrine B U A N
-			ShrineGardenWreckerC.MapEntry: Shrine Garden Wrecker C
-			ShrineHalhurishC.MapEntry: Shrine Halhurish C
-			ShrineLifeC.MapEntry: Shrine Life C
-			ShrineLights.MapEntry: Shrine Lights
-			ShrineSolMothC.MapEntry: Shrine Sol Moth C
-			ShrineBridgetC.MapEntry: Shrine Bridget C
-			StarbloomDirt.MapEntry: Starbloom Dirt
-			Gothiv.MapEntry: Gothiv
-			GothivDoorClosed.MapEntry: Gothiv Door Closed
-			GovheilBore.MapEntry: Govheil Bore
-			GovheilHall.MapEntry: Govheil Hall
-			GovheilWall.MapEntry: Govheil Wall
-			GovheilWei.MapEntry: Govheil Wei
-			JackPost.MapEntry: Jack Post
-			MasistLeft.MapEntry: Masist Left
-			MasistRight.MapEntry: Masist Right
-			RestingGrounds.MapEntry: Resting Grounds
-			VheilCurtainLeft.MapEntry: Vheil Curtain Left
-			VheilCurtainRight.MapEntry: Vheil Curtain Right
-			Zebi.MapEntry: Zebi
-			BarS.MapEntry: Bar S
-			BenchS.MapEntry: Bench S
-			CathedralChest.MapEntry: Cathedral Chest
-			Crystal1.MapEntry: Crystal1
-			Crystal2.MapEntry: Crystal2
-			FlowerMulti.MapEntry: Flower Multi
-			Orb1.MapEntry: Orb1
-			VerliasShrine.MapEntry: Verlias Shrine
-			GrassBigS.MapEntry: Grass Big S
-			GrassMossS.MapEntry: Grass Moss S
-			LogS.MapEntry: Log S
-			MorrowChest.MapEntry: Morrow Chest
-			MorrowDeath2S.MapEntry: Morrow Death2 S
-			MorrowDeathS.MapEntry: Morrow Death S
-			MorrowStoneS.MapEntry: Morrow Stone S
-			MushroomBigS.MapEntry: Mushroom Big S
-			PotmedS.MapEntry: Potmed S
-			SmallShroomS.MapEntry: Small Shroom S
-			SpikeS.MapEntry: Spike S
-			stand.MapEntry: stand
-			StoneChest.MapEntry: Stone Chest
-			wall1.MapEntry: wall1
-			wall2.MapEntry: wall2
-			wall3.MapEntry: wall3
-			wall4.MapEntry: wall4
-			wall5.MapEntry: wall5
-			wall6.MapEntry: wall6
-			wall7.MapEntry: wall7
-			SunAlter.MapEntry: Sun Alter
-			VerianoreTile.MapEntry: Verianore Tile
-			VeriplantDirt.MapEntry: Veriplant Dirt
-			VeriplantGrass.MapEntry: Veriplant Grass
-		}
-
-		Buffs: {
-			AbyssalFlame: {
-				DisplayName: Abyssal Flame
-				Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
-			}
-
-			AcidFlame: {
-				DisplayName: Acid Flame
-				Description: Mods.Stellamod.Buffs.AcidFlame.Description
-			}
-
-			Alcadded: {
-				DisplayName: Alcadded
-				Description: Mods.Stellamod.Buffs.Alcadded.Description
-			}
-
-			ArcaneDust: {
-				DisplayName: Arcane Dust
-				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
-			}
-
-			AssassinsSlashBuff: {
-				DisplayName: Assassins Slash Buff
-				Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
-			}
-
-			AmethystBroo: {
-				DisplayName: Amethyst Broo
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-			}
-
-			AurelusB: {
-				DisplayName: Aurelus B
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
-			}
-
-			BearB: {
-				DisplayName: Bear B
-				Description: Mods.Stellamod.Buffs.BearB.Description
-			}
-
-			BurningGB: {
-				DisplayName: Burning G B
-				Description: Mods.Stellamod.Buffs.BurningGB.Description
-			}
-
-			Diarii: {
-				DisplayName: Diarii
-				Description: Mods.Stellamod.Buffs.Diarii.Description
-			}
-
-			DreadB: {
-				DisplayName: Dread B
-				Description: Mods.Stellamod.Buffs.DreadB.Description
-			}
-
-			Flyfish: {
-				DisplayName: Flyfish
-				Description: Mods.Stellamod.Buffs.Flyfish.Description
-			}
-
-			GintBroo: {
-				DisplayName: Gint Broo
-				Description: Mods.Stellamod.Buffs.GintBroo.Description
-			}
-
-			Goldren: {
-				DisplayName: Goldren
-				Description: Mods.Stellamod.Buffs.Goldren.Description
-			}
-
-			GovheilB: {
-				DisplayName: Govheil B
-				Description: Mods.Stellamod.Buffs.GovheilB.Description
-			}
-
-			IceBrooch: {
-				DisplayName: Ice Brooch
-				Description: Mods.Stellamod.Buffs.IceBrooch.Description
-			}
-
-			MalB: {
-				DisplayName: Mal B
-				Description: Mods.Stellamod.Buffs.MalB.Description
-			}
-
-			Morrow: {
-				DisplayName: Morrow
-				Description: Mods.Stellamod.Buffs.Morrow.Description
-			}
-
-			Slimee: {
-				DisplayName: Slimee
-				Description: Mods.Stellamod.Buffs.Slimee.Description
-			}
 
 			Spragald: {
 				DisplayName: Spragald
@@ -6344,6 +6061,33 @@ Mods: {
 			VoidSlash.DisplayName: Void Slash
 			BLACKHOLE.DisplayName: B L A C K H O L E
 			Starbombing.DisplayName: Starbombing
+			Celestia.DisplayName: Celestia
+			BonedBrooch.DisplayName: Boned Brooch
+			LuckyWinnerBrooch.DisplayName: Lucky Winner Brooch
+			SandyBrooch.DisplayName: Sandy Brooch
+			SyliaScissor.DisplayName: Sylia Scissor
+			SyliaScissorSmall.DisplayName: Sylia Scissor Small
+			SyliaScissorSmall2.DisplayName: Sylia Scissor Small2
+			VoidBall.DisplayName: Void Ball
+			VoidWall.DisplayName: Void Wall
+			RingerHead.DisplayName: Ringer Head
+			StarringGraftHead.DisplayName: Starring Graft Head
+			JellyBrooch.DisplayName: Jelly Brooch
+			KaBoomMagic.DisplayName: Ka Boom Magic
+			JacksonPollockMinion.DisplayName: Jackson Pollock Minion
+			JacksonPollockProj.DisplayName: Jackson Pollock Proj
+			KaBoomFenix.DisplayName: Ka Boom Fenix
+			RhamenthalProj.DisplayName: Rhamenthal Proj
+			RhamenthalProjHold.DisplayName: Rhamenthal Proj Hold
+			RhamenthalShot.DisplayName: Rhamenthal Shot
+			RoseBrooch.DisplayName: Rose Brooch
+			RoseShield.DisplayName: Rose Shield
+			YumikoShot.DisplayName: Yumiko Shot
+			YumikoShot2.DisplayName: Yumiko Shot2
+			AngelenthalProj1.DisplayName: Angelenthal Proj1
+			AngelenthalProj2.DisplayName: Angelenthal Proj2
+			AngelenthalProj3.DisplayName: Angelenthal Proj3
+			AngelenthalP.DisplayName: Angelenthal P
 		}
 
 	NPCs: {
