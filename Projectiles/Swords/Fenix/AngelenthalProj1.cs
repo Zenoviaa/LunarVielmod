@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -77,9 +78,8 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
             }
 
@@ -87,18 +87,16 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora2>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
             }
 
             if (death == 25)
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
             }
 
@@ -106,9 +104,8 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora2>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
             }
 
@@ -116,9 +113,8 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
 
             }
@@ -127,19 +123,17 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora2>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
             }
 
             if (death == 65)
             {
-                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP2>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
                 p.rotation = direction.ToRotation();
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia2"), Projectile.position);
 
-                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-                pa.rotation = direction.ToRotation();
 
 
             }

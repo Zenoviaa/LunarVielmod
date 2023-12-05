@@ -4955,6 +4955,9 @@ Mods: {
 			AngelenthalP.DisplayName: Angelenthal P
 			LittleScissorVoidBolt.DisplayName: Little Scissor Void Bolt
 			AngelenthalP3.DisplayName: Angelenthal P3
+			AngelenthalP2.DisplayName: Angelenthal P2
+			KaBoomSigil.DisplayName: Ka Boom Sigil
+			AngelenthalThrow.DisplayName: Angelenthal Throw
 		}
 
 		NPCs: {

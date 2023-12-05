@@ -244,7 +244,7 @@ namespace Stellamod
                 TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
 
                 Main.instance.LoadTiles(TileID.Ebonstone);
-                TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
+                TextureAssets.Tile[TileID.Ebonstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
             }
             Instance = this;
 
