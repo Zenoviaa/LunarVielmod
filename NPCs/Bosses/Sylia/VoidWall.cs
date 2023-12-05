@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Sylia.Projectiles;
 using Stellamod.Particles;
+using Stellamod.Projectiles.Summons.VoidMonsters;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,40 +12,75 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-    internal class VoidWall : ModProjectile
+    internal class VoidWall : ModNPC
     {
         private int _particleCounter = 0;
         private int _tooFarCounter = 0;
         private float _projSpeed = 5.5f;
         private bool _tooFar;
+        private bool _spawned;
+        private Projectile _voidVortexProj;
+
+        private enum AttackState
+        {
+            Idle,
+            Void_Vomit_Telegraph,
+            Void_Vomit,
+            Void_Blast_Telegraph,
+            Void_Blast,
+            Void_Laser_Telegraph,
+            Void_Laser,
+            Void_Suck_Telegraph,
+            Void_Suck
+        }
+
         private const int Body_Radius = 64;
         private const int Body_Particle_Count = 10;
         private const int Body_Particle_Rate = 2;
+        private const int Check_For_Pull_Radius = 2048;
+
+        //AI
+        private const int Idle_Time = 240;
+
         public override void SetDefaults()
         {
-            Projectile.width = Body_Radius;
-            Projectile.height = Body_Radius * 16;
-            Projectile.tileCollide = false;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
-            Projectile.timeLeft = 30000;
-		}
+            NPC.Size = new Vector2(Body_Radius, Body_Radius * 16);
+            NPC.damage = 100;
+            NPC.defense = 66;
+            NPC.lifeMax = 6666;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+  
+            NPC.scale = 1f;
+  
+            // Take up open spawn slots, preventing random NPCs from spawning during the fight
+            NPC.npcSlots = 10f;
+
+            // Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
+            NPC.aiStyle = -1;
+            NPC.boss = true;
+            NPC.friendly = false;
+            NPC.dontTakeDamage = true;
+            NPC.SpawnWithHigherTime(30);
+        }
 
         private int _frameCounter;
         private int _frameTick;
 
-        //Visual Stuffs
-        public override bool PreDraw(ref Color lightColor)
-        {
-            //Draw The Body
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {        
+            //Visual Stuffs
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                new Vector3(60, 0, 118),
-                new Vector3(117, 1, 187),
-                new Vector3(3, 3, 3), 0);
+               new Vector3(60, 0, 118),
+               new Vector3(117, 1, 187),
+               new Vector3(3, 3, 3), 0);
 
-            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
+            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), drawColor, 1);
             SpriteEffects effects = SpriteEffects.None;
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Vector2 drawPosition = NPC.Center - Main.screenPosition;
             Vector2 origin = new Vector2(58 / 2, 88 / 2);
 
             Texture2D voidMouthTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/Projectiles/VoidMouth").Value;
@@ -53,66 +90,260 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 voidMouthTexture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, true),
                 Color.White, 0, origin, 1f, effects, 0f);
 
-            return base.PreDraw(ref lightColor);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
-        public override void AI()
+        private void PullPlayer()
         {
-            //Movement Code
-            //Wanna just home into enemies and then explode or something
-            //On second thought, maybe have ai similar to charging type minions like optic staff
-            //hmmm
-            Player playerToHomeTo = Main.player[Main.myPlayer];
-            float closestDistance = Vector2.Distance(Projectile.position, playerToHomeTo.position);
             for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
-                float distanceToPlayer = Vector2.Distance(Projectile.position, player.position);
-                if (distanceToPlayer < closestDistance)
+                bool isBehindWall = NPC.Center.X + Body_Radius > player.Center.X;
+                if (isBehindWall && Vector2.Distance(NPC.Center, player.Center) <= Check_For_Pull_Radius)
                 {
-                    closestDistance = distanceToPlayer;
-                    playerToHomeTo = player;
+                    player.velocity.X += 1;
                 }
             }
+        }
 
-            Vector2 homingVelocity = (playerToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
+        private void Movement()
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+                return;
+
+            Player target = Main.player[NPC.target];
+
+            ref float ai_State = ref NPC.ai[1];
+            ref float ai_Cycle = ref NPC.ai[2];
+
+            Vector2 targetCenter = target.Center;
+            AttackState attackState = (AttackState)ai_State;
+            Vector2 homingVelocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
+            if(attackState == AttackState.Void_Suck)
+            {
+                homingVelocity = new Vector2(homingVelocity.X * 0.4f, homingVelocity.Y);
+            }
+
             float tooFarDistance = 16 * 64;
-            float distanceToTarget = Vector2.Distance(Projectile.Center, playerToHomeTo.Center);
+            float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
             if (!_tooFar)
             {
-                if(distanceToTarget > tooFarDistance)
+                if (distanceToTarget > tooFarDistance)
                 {
                     _tooFarCounter++;
-                    if(_tooFarCounter > 30)
+                    if (_tooFarCounter > 30)
                     {
                         SoundEngine.PlaySound(SoundID.Roar);
                         _tooFar = true;
                     }
                 }
 
-                Projectile.velocity = new Vector2(_projSpeed, homingVelocity.Y);
+                NPC.velocity = homingVelocity;
             }
             else
             {
                 if (distanceToTarget < tooFarDistance)
                 {
                     _tooFarCounter--;
-                    if(_tooFarCounter <= 0)
+                    if (_tooFarCounter <= 0)
                     {
                         _tooFar = false;
-                    }        
+                    }
                 }
 
-                Projectile.velocity = new Vector2(_projSpeed * 2f, homingVelocity.Y);
+                NPC.velocity = new Vector2(homingVelocity.X * 2f, homingVelocity.Y);
             }
 
- 
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            Visuals();
-            if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()) && Projectile.active)
+            if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()) && NPC.active)
             {
-                Projectile.Kill();
+                NPC.Kill();
             }
+        }
+
+        private void SuckVisuals()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Vector2 voidAbsorbPosition = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
+                Vector2 speed = (NPC.Center - voidAbsorbPosition).SafeNormalize(Vector2.Zero) * 8;
+                Particle p = ParticleManager.NewParticle(voidAbsorbPosition, speed, ParticleManager.NewInstance<VoidParticle>(),
+                    default(Color), 0.25f);
+                p.layer = Particle.Layer.BeforeProjectiles;
+            }
+        }
+
+        private void SwitchState(AttackState attackState)
+        {
+            ref float ai_Counter = ref NPC.ai[0];
+            ref float ai_State = ref NPC.ai[1];
+            ai_Counter = 0;
+            ai_State = (float)attackState;
+        }
+
+        public override void AI()
+        {
+            ref float ai_Counter = ref NPC.ai[0];
+            ref float ai_State = ref NPC.ai[1];
+            ref float ai_Cycle = ref NPC.ai[2];
+
+            if (!_spawned)
+            {
+                ai_Counter += Idle_Time;
+                _spawned = true;
+            }
+
+            Movement();
+            PullPlayer();
+            Visuals();
+
+
+            if (!NPC.HasValidTarget)
+            {
+                return;
+            }
+
+            Player target = Main.player[NPC.target];
+            Vector2 targetCenter = target.Center;
+            AttackState attackState = (AttackState)ai_State;
+            switch (attackState)
+            {
+                case AttackState.Idle:
+                    ai_Counter++;
+                    if (ai_Counter >= Idle_Time)
+                    {
+                        //Do thingy
+                        SoundEngine.PlaySound(SoundID.Roar);
+                        if(ai_Cycle == 0)
+                        {
+                            SwitchState(AttackState.Void_Vomit_Telegraph);
+                        } else if (ai_Cycle == 1)
+                        {
+                            SwitchState(AttackState.Void_Blast_Telegraph);
+                        }
+                        else if (ai_Cycle == 2)
+                        {
+                            SwitchState(AttackState.Void_Laser_Telegraph);
+                        } else if (ai_Cycle == 3)
+                        {
+                            SwitchState(AttackState.Void_Suck_Telegraph);
+                        }
+
+                        ai_Cycle++;
+                        if(ai_Cycle > 3)
+                        {
+                            ai_Cycle = 0;
+                        }
+                    }
+
+                    break;
+
+                case AttackState.Void_Vomit_Telegraph:
+                    //SUCK IN VOID
+                    SuckVisuals();
+
+                    ai_Counter++;
+                    if(ai_Counter >= 60)
+                    {
+                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SwitchState(AttackState.Void_Vomit);
+                    }
+
+                    break;
+
+                case AttackState.Void_Vomit:
+                    Vector2 velocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 20;
+                    int p = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                        ModContent.ProjectileType<VoidBall>(), 20, 1);
+                    Main.projectile[p].timeLeft *= 2;
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 512f, 32f);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1"), NPC.Center);
+                    SwitchState(AttackState.Idle);
+                    break;
+
+                case AttackState.Void_Blast_Telegraph:
+                    SuckVisuals();
+
+                    ai_Counter++;
+                    if (ai_Counter >= 60)
+                    {
+                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SwitchState(AttackState.Void_Blast);
+                    }
+                    break;
+
+                case AttackState.Void_Blast:
+                    ai_Counter++;
+                    if(ai_Counter % 30 == 0)
+                    {
+                        Vector2 voidBlastVelocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 9.5f;
+                        if (Main.rand.NextBool(2))
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, voidBlastVelocity,
+                                ModContent.ProjectileType<VoidWallEater>(), 60, 1);
+                        }
+                        else
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, voidBlastVelocity,
+                                ModContent.ProjectileType<VoidWallEaterMini>(), 60, 1);
+                        }
+            
+                        SoundEngine.PlaySound(SoundID.NPCDeath12);
+                    }
+                    if(ai_Counter >= 150)
+                    {
+                        SwitchState(AttackState.Idle);
+                    }
+              
+                    break;
+
+                case AttackState.Void_Laser_Telegraph:
+                    SuckVisuals();
+
+                    ai_Counter++;
+                    if (ai_Counter >= 60)
+                    {
+                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SwitchState(AttackState.Void_Laser);
+                    }
+                    break;
+
+                case AttackState.Void_Laser:
+                    SwitchState(AttackState.Idle);
+                    break;
+                case AttackState.Void_Suck_Telegraph:
+                    SuckVisuals();
+
+                    ai_Counter++;
+                    if (ai_Counter >= 60)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item117);
+                        SwitchState(AttackState.Void_Suck);
+                    }
+                    break;
+
+                case AttackState.Void_Suck:
+                    if(_voidVortexProj == null || !_voidVortexProj.active)
+                    {
+                        _voidVortexProj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
+                            ModContent.ProjectileType<VoidVortex>(), 0, 0);
+                    }
+
+                    _voidVortexProj.timeLeft = 2;
+                    _voidVortexProj.Center = NPC.Center;
+                    ai_Counter++;
+                    if(ai_Counter >= 240)
+                    {
+                        _voidVortexProj.Kill();
+                        _voidVortexProj = null;
+                        SwitchState(AttackState.Idle);
+                    }
+                    break;
+
+            }
+
+
+ 
         }
 
 
@@ -123,7 +354,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
+                    Vector2 position = NPC.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                     float size = Main.rand.NextFloat(0.75f, 1f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);
@@ -135,13 +366,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
                 }
 
-                float halfWidth = Projectile.Size.X / 2;
-                float halfHeight = Projectile.Size.Y / 2;
+                float halfWidth = NPC.Size.X / 2;
+                float halfHeight = NPC.Size.Y / 2;
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
                     float x = Main.rand.NextFloat(-halfWidth, halfWidth);
                     float y = Main.rand.NextFloat(-halfHeight, halfHeight);
-                    Vector2 position = Projectile.Center + new Vector2(x, y);
+                    Vector2 position = NPC.Center + new Vector2(x, y);
                     float size = Main.rand.NextFloat(0.75f, 1f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);

@@ -755,10 +755,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						{
 							for (int i = 0; i < 1; i++)
 							{
-								Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
-								Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * 8;
-								Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
-									default(Color), 0.5f);
+								float distance = 128;
+								float particleSpeed = 8;
+								Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(distance, distance);
+								Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
+								Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(), default(Color), 0.5f);
 								p.layer = Particle.Layer.BeforeProjectiles;
 								Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
 								default(Color), 0.5f + 0.025f);
@@ -911,7 +912,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private float _p2TransitionAlpha=1f;
 
-		private const int Phase2_Idle_Time = 300;
+		private const int Phase2_Idle_Time = 240;
 		private const int Phase2_X_Scissor_Telegraph_Time = RipperSlashTelegraphParticle.Animation_Length;
 		private const int Phase2_Transition_Duration = 180;
 		private const int Phase2_Quick_Slash_Telegraph_Time = RipperSlashTelegraphParticle.Animation_Length / 4;
@@ -1035,9 +1036,11 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						npc.velocity = Vector2.Lerp(npc.velocity, dashVelocity, 0.5f);
 						if(ai_Telegraph_Counter == 30)
                         {
-							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, 
-								ModContent.ProjectileType<VoidWall>(), 100, 2);
-                        }
+							var entitySource = NPC.GetSource_FromThis();
+							NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VoidWall>());
+							SoundEngine.PlaySound(SoundID.NPCDeath62);
+							Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 512f, 64f);
+						}
 
 						ai_Telegraph_Counter++;
 						if(ai_Telegraph_Counter > 60)
@@ -1075,7 +1078,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					if (ai_Telegraph_Counter == 0)
 					{
 						float yOffset = Main.rand.NextFloat(-256, 256);
-						Vector2 xSlashOffset = new Vector2(0, yOffset);
+
+						//Gonna  try to cut you off
+						Vector2 xSlashOffset = new Vector2(384, yOffset);
 						_slashCenter = targetCenter + xSlashOffset;
 
 						//Spawn Scissor 1

@@ -267,6 +267,9 @@
     <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormBody.png" />
     <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormTail.png" />
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidSlash.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidVortex.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEater.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
