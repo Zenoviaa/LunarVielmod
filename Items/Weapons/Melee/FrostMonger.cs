@@ -44,6 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.height = 32;
 			Item.useTime = 5;
 			Item.useAnimation = 30;
+			Item.UseSound = SoundID.Item71;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
 			Item.rare = ItemRarityID.Blue;

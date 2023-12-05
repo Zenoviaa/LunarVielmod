@@ -7,6 +7,7 @@ using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Projectiles.Swords.Fenix;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -31,13 +32,36 @@ namespace Stellamod.Items.Weapons.Melee
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Alcarishxxaa", "Multiplication and cloning is the essense of power nyaaa!")
+			{
+				OverrideColor = new Color(244, 119, 255)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Alcarishxxaa", "This weapon is bound by Fenix")
+			{
+				OverrideColor = new Color(244, 200, 255)
+
+			};
+			tooltips.Add(line);
+
+
+
+		}
 		public override void SetDefaults()
 		{
-			Item.damage = 102;
+			Item.damage = 70;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.height = 32;
-			Item.useTime = 10;
+			Item.useTime = 5;
 			Item.useAnimation = 100;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
@@ -107,7 +131,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Projectile.NewProjectile(source, Main.MouseWorld + new Vector2(0, -200), Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);
+			Projectile.NewProjectile(source, Main.MouseWorld + new Vector2(0, -300), Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);
 			return false;
 
 		}

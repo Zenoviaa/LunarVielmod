@@ -5,22 +5,22 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class KaBoomSigil : ModProjectile
+	public class KaBoomSigil2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
-			Main.projFrames[Projectile.type] = 7;
+			Main.projFrames[Projectile.type] = 24;
 		}
 
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
 			Projectile.hostile = false;
-			Projectile.width = 93;
-			Projectile.height = 75;
+			Projectile.width = 127;
+			Projectile.height = 145;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 21;
+			Projectile.timeLeft = 48;
 			Projectile.scale = 1f;
 
 		}
@@ -41,10 +41,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 3)
+			if (++Projectile.frameCounter >= 2)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 7)
+				if (++Projectile.frame >= 24)
 				{
 					Projectile.frame = 0;
 				}
