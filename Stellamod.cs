@@ -251,6 +251,9 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.ObsidianBrick);
                 TextureAssets.Tile[TileID.ObsidianBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/AshedRE");
+
+                Main.instance.LoadTiles(TileID.Cloud);
+                TextureAssets.Tile[TileID.Cloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CloudRE");
             }
             Instance = this;
 

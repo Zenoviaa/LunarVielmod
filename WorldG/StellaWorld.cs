@@ -12,6 +12,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -96,6 +97,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Bridget", WorldGenBridget));			
 				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenSeaTemple));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Cathedral", WorldGenUnderworldSpice));
 			}
 
 
@@ -1398,7 +1400,7 @@ namespace Stellamod.WorldG
 
 
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == ModContent.TileType<AcidialDirt>()))
+				if (!(tile.TileType == ModContent.TileType<AcidialDirt>() || tile.TileType == TileID.Sand))
 				{
 					continue;
 				}
@@ -2081,6 +2083,470 @@ namespace Stellamod.WorldG
 
 			}
 		}
+
+
+
+
+
+
+		private void WorldGenUnderworldSpice(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Sylia using magic in the Underworld";
+
+
+
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			{
+
+				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int ya = WorldGen.genRand.Next(Main.maxTilesY - 300, Main.maxTilesY - 50);
+				Point Loc = new Point(xa, ya);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				Tile tile = Main.tile[Loc.X, Loc.Y];
+
+				if (!(tile.TileType == TileID.Ash))
+				{
+					continue;
+				}
+
+				if (tile.HasTile)
+				{
+					int Sounda = Main.rand.Next(1, 5);
+					if (Sounda == 1)
+					{
+
+
+						for (int da = 0; da < 1; da++)
+						{
+
+
+							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underworld/Underworld1");
+							foreach (int chestIndex in ChestIndexs)
+							{
+								var chest = Main.chest[chestIndex];
+								// etc
+
+								// itemsToAdd will hold type and stack data for each item we want to add to the chest
+								var itemsToAdd = new List<(int type, int stack)>();
+
+								// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+								int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+									Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
+									Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+								// Choose no item with a high weight of 7.
+								);
+								if (specialItem != ItemID.None)
+								{
+									itemsToAdd.Add((specialItem, 1));
+								}
+								// Using a switch statement and a random choice to add sets of items.
+								switch (Main.rand.Next(9))
+								{
+									case 0:
+										itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+										break;
+									case 1:
+										itemsToAdd.Add((ItemID.FlameDye, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+										break;
+									case 2:
+										itemsToAdd.Add((ItemID.LavaproofTackleBag, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+										break;
+									case 3:
+										itemsToAdd.Add((ItemID.ObsidianRose, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+										itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+										break;
+									case 4:
+										itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 5:
+										itemsToAdd.Add((ItemID.LavaCharm, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 6:
+										itemsToAdd.Add((ItemID.Obsidian, Main.rand.Next(1, 20)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+										break;
+
+
+									case 7:
+										itemsToAdd.Add((ItemID.WaterWalkingBoots, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Fireblossom, Main.rand.Next(2, 15)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 9:
+										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+										break;
+								}
+
+								// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+								int chestItemIndex = 0;
+								foreach (var itemToAdd in itemsToAdd)
+								{
+									Item item = new Item();
+									item.SetDefaults(itemToAdd.type);
+									item.stack = itemToAdd.stack;
+									chest.item[chestItemIndex] = item;
+									chestItemIndex++;
+									if (chestItemIndex >= 40)
+										break; // Make sure not to exceed the capacity of the chest
+								}
+							}
+
+
+
+
+
+						}
+					}
+
+
+
+
+
+
+
+
+
+
+					if (Sounda == 2)
+					{
+
+
+						for (int da = 0; da < 1; da++)
+						{
+
+
+							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underworld/Underworld2");
+							foreach (int chestIndex in ChestIndexs)
+							{
+								var chest = Main.chest[chestIndex];
+								// etc
+
+								// itemsToAdd will hold type and stack data for each item we want to add to the chest
+								var itemsToAdd = new List<(int type, int stack)>();
+
+								// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+								int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+									Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
+									Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+								// Choose no item with a high weight of 7.
+								);
+								if (specialItem != ItemID.None)
+								{
+									itemsToAdd.Add((specialItem, 1));
+								}
+								// Using a switch statement and a random choice to add sets of items.
+								switch (Main.rand.Next(9))
+								{
+									case 0:
+										itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+										break;
+									case 1:
+										itemsToAdd.Add((ItemID.FlameDye, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+										break;
+									case 2:
+										itemsToAdd.Add((ItemID.LavaproofTackleBag, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+										break;
+									case 3:
+										itemsToAdd.Add((ItemID.ObsidianRose, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+										itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+										break;
+									case 4:
+										itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 5:
+										itemsToAdd.Add((ItemID.LavaCharm, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 6:
+										itemsToAdd.Add((ItemID.Obsidian, Main.rand.Next(1, 20)));
+										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+										break;
+
+
+									case 7:
+										itemsToAdd.Add((ItemID.WaterWalkingBoots, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ItemID.Fireblossom, Main.rand.Next(2, 15)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+										break;
+
+									case 9:
+										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
+										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+										break;
+								}
+
+								// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+								int chestItemIndex = 0;
+								foreach (var itemToAdd in itemsToAdd)
+								{
+									Item item = new Item();
+									item.SetDefaults(itemToAdd.type);
+									item.stack = itemToAdd.stack;
+									chest.item[chestItemIndex] = item;
+									chestItemIndex++;
+									if (chestItemIndex >= 40)
+										break; // Make sure not to exceed the capacity of the chest
+								}
+							}
+
+
+
+
+
+						}
+
+
+
+
+
+
+						if (Sounda == 3 || Sounda == 4)
+						{
+
+
+							for (int da = 0; da < 1; da++)
+							{
+
+
+								int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underworld/Underworld4");
+								foreach (int chestIndex in ChestIndexs)
+								{
+									var chest = Main.chest[chestIndex];
+									// etc
+
+									// itemsToAdd will hold type and stack data for each item we want to add to the chest
+									var itemsToAdd = new List<(int type, int stack)>();
+
+									// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+									int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+										Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
+										Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+									// Choose no item with a high weight of 7.
+									);
+									if (specialItem != ItemID.None)
+									{
+										itemsToAdd.Add((specialItem, 1));
+									}
+									// Using a switch statement and a random choice to add sets of items.
+									switch (Main.rand.Next(9))
+									{
+										case 0:
+											itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+											itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+											itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+											itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+											break;
+										case 1:
+											itemsToAdd.Add((ItemID.FlameDye, Main.rand.Next(1, 3)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+											break;
+										case 2:
+											itemsToAdd.Add((ItemID.LavaproofTackleBag, Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10)));
+											itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+											break;
+										case 3:
+											itemsToAdd.Add((ItemID.ObsidianRose, Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+											itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+											itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+											break;
+										case 4:
+											itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+											break;
+
+										case 5:
+											itemsToAdd.Add((ItemID.LavaCharm, Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+											break;
+
+										case 6:
+											itemsToAdd.Add((ItemID.Obsidian, Main.rand.Next(1, 20)));
+											itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+											itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+											itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+											break;
+
+
+										case 7:
+											itemsToAdd.Add((ItemID.WaterWalkingBoots, Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ItemID.Fireblossom, Main.rand.Next(2, 15)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+											itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+											itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+											break;
+
+										case 9:
+											itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
+											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+											itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
+											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+											break;
+									}
+
+									// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+									int chestItemIndex = 0;
+									foreach (var itemToAdd in itemsToAdd)
+									{
+										Item item = new Item();
+										item.SetDefaults(itemToAdd.type);
+										item.stack = itemToAdd.stack;
+										chest.item[chestItemIndex] = item;
+										chestItemIndex++;
+										if (chestItemIndex >= 40)
+											break; // Make sure not to exceed the capacity of the chest
+									}
+								}
+
+
+
+
+
+							}
+						}
+
+
+
+
+						if (Sounda == 5)
+						{
+							StructureLoader.ReadStruct(Loc, "Struct/Underworld/Underworld3");
+
+
+						}
+
+
+					
+					}
+
+
+
+				}
+			}
+		}
+		
+
+
 		private void WorldGenVirulentStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      

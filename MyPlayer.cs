@@ -1695,9 +1695,74 @@ namespace Stellamod
 				}
 			}
 
+
+
+
+
+
+
+
+
+			if (Player.ZoneUnderworldHeight)
+			{
+				Main.windPhysicsStrength = 50;
+				GoldenRingCooldown++;
+				GoldenSparkleCooldown++;
+				RayCooldown++;
+
+				for (int j = 0; j < 3; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<UnderworldParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				
+
+				for (int j = 0; j < 2; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FlameParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 1; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 1; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+
+
+			}
+
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            if (ArcaneM && ArcaneMCooldown == 601)
+			if (ArcaneM && ArcaneMCooldown == 601)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
 				for (int j = 0; j < 7; j++)
