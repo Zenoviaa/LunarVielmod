@@ -4191,8 +4191,7 @@ Mods: {
 				Tooltip:
 					'''
 					Double tap a direction to dash- but very quickly and on a short cooldown!
-					Leave behind damaging rifts in your path
-					(WIP)
+					Leave behind homing void bolts as you dash
 					'''
 			}
 
@@ -4945,6 +4944,8 @@ Mods: {
 			RoseShield.DisplayName: Rose Shield
 			YumikoShot.DisplayName: Yumiko Shot
 			YumikoShot2.DisplayName: Yumiko Shot2
+			VoidRiftMini.DisplayName: Void Rift Mini
+			LittleScissorVoidBolt.DisplayName: Little Scissor Void Bolt
 		}
 
 		NPCs: {

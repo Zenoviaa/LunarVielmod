@@ -599,6 +599,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						int p = Projectile.NewProjectile(npc.GetSource_FromThis(), _slashCenter, Vector2.Zero,
 							ModContent.ProjectileType<VoidBolt>(), 30, 1);
 						Main.projectile[p].timeLeft = 300;
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftOpen"));
 
 						//Return to idle state after x slashing 3 times.
 						//We could randomize the number of x slashes actually.
@@ -1139,6 +1140,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						voidRiftProjectile2.hostile = true;
 						voidRiftProjectile2.friendly = false;
 						voidRiftProjectile2.rotation = MathHelper.ToRadians(45);
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftOpen"));
 
 						//Return to idle state after x slashing 3 times.
 						//We could randomize the number of x slashes actually.
