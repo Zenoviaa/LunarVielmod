@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords.Fenix
 {
-	public class AngelenthalP : ModProjectile
+	public class AngelenthalP3 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
