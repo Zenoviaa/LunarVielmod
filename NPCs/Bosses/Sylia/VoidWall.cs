@@ -108,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private void Movement()
         {
-            NPC.TargetClosest();
+
             if (!NPC.HasValidTarget)
                 return;
 
@@ -170,6 +170,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 Particle p = ParticleManager.NewParticle(voidAbsorbPosition, speed, ParticleManager.NewInstance<VoidParticle>(),
                     default(Color), 0.25f);
                 p.layer = Particle.Layer.BeforeProjectiles;
+
+                float distance = 128;
+                float particleSpeed = 4;
+                Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(distance, distance);
+                Vector2 dustSpeed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
+                Dust.NewDustPerfect(position, DustID.GemAmethyst, dustSpeed, Scale: 0.5f);
             }
         }
 
@@ -183,6 +189,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         public override void AI()
         {
+            NPC.TargetClosest();
             ref float ai_Counter = ref NPC.ai[0];
             ref float ai_State = ref NPC.ai[1];
             ref float ai_Cycle = ref NPC.ai[2];
@@ -213,7 +220,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     if (ai_Counter >= Idle_Time)
                     {
                         //Do thingy
-                        SoundEngine.PlaySound(SoundID.Roar);
                         if(ai_Cycle == 0)
                         {
                             SwitchState(AttackState.Void_Vomit_Telegraph);
@@ -223,7 +229,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         }
                         else if (ai_Cycle == 2)
                         {
-                            SwitchState(AttackState.Void_Laser_Telegraph);
+                            SwitchState(AttackState.Void_Vomit_Telegraph);
                         } else if (ai_Cycle == 3)
                         {
                             SwitchState(AttackState.Void_Suck_Telegraph);
@@ -290,6 +296,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             
                         SoundEngine.PlaySound(SoundID.NPCDeath12);
                     }
+
                     if(ai_Counter >= 150)
                     {
                         SwitchState(AttackState.Idle);
@@ -339,11 +346,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         SwitchState(AttackState.Idle);
                     }
                     break;
-
             }
-
-
- 
         }
 
 
@@ -366,13 +369,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
                 }
 
-                float halfWidth = NPC.Size.X / 2;
-                float halfHeight = NPC.Size.Y / 2;
                 for (int i = 0; i < Body_Particle_Count; i++)
                 {
-                    float x = Main.rand.NextFloat(-halfWidth, halfWidth);
-                    float y = Main.rand.NextFloat(-halfHeight, halfHeight);
-                    Vector2 position = NPC.Center + new Vector2(x, y);
+                    Vector2 position = NPC.RandomPositionWithinEntity();
                     float size = Main.rand.NextFloat(0.75f, 1f);
                     Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), size);

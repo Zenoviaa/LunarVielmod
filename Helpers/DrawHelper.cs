@@ -4,6 +4,9 @@ using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.Graphics.Shaders;
+using Stellamod.Trails;
+using ReLogic.Content;
 
 namespace Stellamod.Helpers
 {
@@ -42,6 +45,29 @@ namespace Stellamod.Helpers
 		}
 
 
+		public static PrimDrawer TrailDrawer { get; private set; } = null;
+
+		/// <summary>
+		/// Draws a simple trail using "VampKnives:BasicTrail"
+		/// <br></br>Don't forget to set the trailing cache and trailing modes on your projectile!
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="widthFunction"></param>
+		/// <param name="colorFunction"></param>
+		/// <param name="trailTexture"></param>
+		public static void DrawSimpleTrail(Projectile projectile, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
+		{
+            if (TrailDrawer == null)
+            {
+				TrailDrawer = new PrimDrawer(widthFunction, colorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
+
+			TrailDrawer.WidthFunc = widthFunction;
+			TrailDrawer.ColorFunc = colorFunction;
+			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(trailTexture);
+			TrailDrawer.DrawPrims(projectile.oldPos, projectile.Size * 0.5f - Main.screenPosition, 155);
+		}
+
 		/// <summary>
 		/// Draws an after image for the projectile, this should be called in PreDraw
 		/// <br>Don't forget to set defaults for ProjectileID.Sets.TrailCacheLength and ProjectileID.Sets.TrailingMode on your projectile otherwise this will not work</br>
@@ -68,7 +94,7 @@ namespace Stellamod.Helpers
 			{
 				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, projectile.gfxOffY);
 				Color color = projectile.GetAlpha(Color.Lerp(startColor, endColor, 1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k));
-				Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+				Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
 			}
 
 			Main.spriteBatch.End();

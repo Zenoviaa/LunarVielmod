@@ -1,17 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Dusts;
-using Stellamod.Particles;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Trails;
-using Stellamod.Utilis;
-using Terraria.Audio;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.Paint

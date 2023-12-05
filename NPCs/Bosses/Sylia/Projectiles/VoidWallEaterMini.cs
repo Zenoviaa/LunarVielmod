@@ -2,8 +2,10 @@
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -50,6 +52,17 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Visuals();
         }
 
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio);
+        }
+
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
@@ -59,6 +72,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 new Vector3(117, 1, 187),
                 new Vector3(3, 3, 3), 0);
 
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);

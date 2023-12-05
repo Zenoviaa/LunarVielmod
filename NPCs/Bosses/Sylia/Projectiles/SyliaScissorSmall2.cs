@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public bool setRotation;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -28,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Projectile.tileCollide = false;
             Projectile.friendly = false;
             Projectile.hostile = false;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 100;
         }
 
         public override void AI()
@@ -59,9 +60,21 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Visuals();
         }
 
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(new Color(60, 0, 118, 175), Color.Transparent, completionRatio);
+        }
+
         //Visual Stuffs
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
