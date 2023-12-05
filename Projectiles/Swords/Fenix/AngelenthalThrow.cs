@@ -160,7 +160,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
             float particleSpeed = 8;
             Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(distance2, distance2);
             Vector2 speed = (Projectile.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-            Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<SingulareParticle>(), default(Color), 0.5f);
+            Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<ShadeParticle>(), default(Color), 0.5f);
 
 
 
