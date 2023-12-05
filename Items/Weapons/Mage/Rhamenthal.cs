@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<RhamenthalProjHold>();
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Pink;
 			Item.autoReuse = false;
 			Item.shootSpeed = 30f;
 			Item.scale = 0.8f;
@@ -69,7 +69,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 90);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
-
+			recipe.AddIngredient(ItemID.SniperRifle, 1);
 			recipe.Register();
 		}
 

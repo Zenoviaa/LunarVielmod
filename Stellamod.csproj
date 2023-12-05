@@ -335,6 +335,7 @@
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
     <None Remove="Projectiles\Swords\Fenix\AngelenthalProj2.png" />
     <None Remove="Projectiles\Swords\Fenix\AngelenthalProj3.png" />
+    <None Remove="Projectiles\Swords\Fenix\NekomaraProj.png" />
     <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
     <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />

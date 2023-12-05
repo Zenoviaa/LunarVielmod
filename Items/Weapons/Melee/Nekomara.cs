@@ -6,6 +6,7 @@ using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Stellamod.Projectiles.Swords.Altride;
+using Stellamod.Projectiles.Swords.Fenix;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -40,10 +41,10 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useAnimation = 100;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Pink;
 			Item.autoReuse = true;
 			Item.value = 100000;
-			Item.shoot = ModContent.ProjectileType<EverneanProj>();
+			Item.shoot = ModContent.ProjectileType<NekomaraProj>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
@@ -102,6 +103,13 @@ namespace Stellamod.Items.Weapons.Melee
 			}
 
 			return true;
+		}
+
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			Projectile.NewProjectile(source, Main.MouseWorld + new Vector2(0, -200), Vector2.Zero, type, damage, knockback, player.whoAmI, 0f, 0f);
+			return false;
+
 		}
 	}
 }
