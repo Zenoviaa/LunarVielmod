@@ -4191,8 +4191,7 @@ Mods: {
 				Tooltip:
 					'''
 					Double tap a direction to dash- but very quickly and on a short cooldown!
-					Leave behind damaging rifts in your path
-					(WIP)
+					Leave behind homing void bolts as you dash
 					'''
 			}
 

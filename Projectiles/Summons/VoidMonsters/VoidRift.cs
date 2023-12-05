@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
@@ -129,6 +130,8 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
                     default(Color), 1 / 3f);
                 p.layer = Particle.Layer.BeforeProjectiles;
             }
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
         }
     }
 }
