@@ -4958,6 +4958,9 @@ Mods: {
 			AngelenthalP2.DisplayName: Angelenthal P2
 			KaBoomSigil.DisplayName: Ka Boom Sigil
 			AngelenthalThrow.DisplayName: Angelenthal Throw
+			VoidVortex.DisplayName: Void Vortex
+			VoidWallEater.DisplayName: Void Wall Eater
+			VoidWallEaterMini.DisplayName: Void Wall Eater Mini
 		}
 
 		NPCs: {
@@ -6329,6 +6332,7 @@ Mods: {
 			ALCADSWIRL.DisplayName: Vanilla twisting swirl with a cherry on top.
 			GoldLightBig.DisplayName: Gold Light Big
 			PearledGold.DisplayName: Pearled Gold
+			VoidWall.DisplayName: Void Wall
 		}
 
 		Biomes: {

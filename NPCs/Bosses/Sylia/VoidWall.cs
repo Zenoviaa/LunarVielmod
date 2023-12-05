@@ -122,7 +122,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             Vector2 homingVelocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
             if(attackState == AttackState.Void_Suck)
             {
-                homingVelocity = -homingVelocity * 0.5f;
+                homingVelocity = new Vector2(homingVelocity.X * 0.4f, homingVelocity.Y);
             }
 
             float tooFarDistance = 16 * 64;
@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     }
                 }
 
-                NPC.velocity = new Vector2(_projSpeed, homingVelocity.Y);
+                NPC.velocity = homingVelocity;
             }
             else
             {
@@ -152,7 +152,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     }
                 }
 
-                NPC.velocity = new Vector2(_projSpeed * 2f, homingVelocity.Y);
+                NPC.velocity = new Vector2(homingVelocity.X * 2f, homingVelocity.Y);
             }
 
             if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()) && NPC.active)
@@ -329,11 +329,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
                             ModContent.ProjectileType<VoidVortex>(), 0, 0);
                     }
 
+                    _voidVortexProj.timeLeft = 2;
                     _voidVortexProj.Center = NPC.Center;
                     ai_Counter++;
                     if(ai_Counter >= 240)
                     {
                         _voidVortexProj.Kill();
+                        _voidVortexProj = null;
                         SwitchState(AttackState.Idle);
                     }
                     break;

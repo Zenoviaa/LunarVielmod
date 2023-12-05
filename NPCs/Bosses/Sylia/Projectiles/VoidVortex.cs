@@ -4,6 +4,7 @@ using ParticleLibrary;
 using ReLogic.Content;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -38,8 +39,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			Projectile.velocity.X *= 0.0f;
 			Projectile.velocity.Y *= 0.01f;
 
-			float suckingStrength = 0.95f;
-			float suckingDistance = 128;
+			float suckingStrength = 0.21f;
+			float suckingDistance = 2048;
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
 				Player npc = Main.player[i];
@@ -55,17 +56,31 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 				}
 			}
 
+			VoidDustVisuals();
+			VoidSuckVisuals();
 			Visuals();
+		}
+
+		private void VoidSuckVisuals()
+        {
+			float distance = 128;
+			float particleSpeed = 4;
+			Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(distance, distance);
+			Vector2 speed = (Projectile.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
+			ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(), default(Color), 1f);
+		}
+
+		private void VoidDustVisuals()
+        {
+			float distance = 128;
+			float particleSpeed = 4;
+			Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(distance, distance);
+			Vector2 speed = (Projectile.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
+			Dust.NewDustPerfect(position, DustID.GemAmethyst, speed);
 		}
 
 		private void Visuals()
 		{
-
-			float distance = 128;
-			float particleSpeed = 8;
-			Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(distance, distance);
-			Vector2 speed = (Projectile.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;	
-			ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(), default(Color), 0.5f);
 			Lighting.AddLight(Projectile.position, 1.5f, 0.7f, 2.5f);
 			Lighting.Brightness(2, 2);
 		}
@@ -99,10 +114,26 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Color drawColor = new Color(60, 0, 118, 0);
-			Main.EntitySpriteDraw(VorTexture.Value, Projectile.Center - Main.screenPosition,
+			Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+			Color drawColor = new(60, 0, 255, 0);
+			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
 						  VorTexture.Value.Bounds, drawColor, Projectile.rotation,
 						  VorTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
+
+			Color drawColor2 = new(60, 0, 255, 0);
+			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
+						  VorTexture.Value.Bounds, drawColor2, -Projectile.rotation,
+						  VorTexture.Size() * 0.5f, 2f, SpriteEffects.None, 0);
+
+			Color drawColor3 = new(60, 0, 255, 0);
+			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
+						  VorTexture.Value.Bounds, drawColor3, Projectile.rotation,
+						  VorTexture.Size() * 0.5f, 3f, SpriteEffects.None, 0);
+
+			Color drawColor4 = new(60, 0, 255, 0);
+			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
+						  VorTexture.Value.Bounds, drawColor4, -Projectile.rotation,
+						  VorTexture.Size() * 0.5f, 4f, SpriteEffects.None, 0);
 			return true;
 		}
 	}
