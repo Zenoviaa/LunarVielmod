@@ -123,6 +123,27 @@ namespace Stellamod.Projectiles.Swords.Fenix
 
             }
 
+            if (death == 55)
+            {
+                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP3>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                p.rotation = direction.ToRotation();
+
+                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora2>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+                pa.rotation = direction.ToRotation();
+
+            }
+
+            if (death == 65)
+            {
+                Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<AngelenthalP>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                p.rotation = direction.ToRotation();
+
+                Projectile pa = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity * 0, ModContent.ProjectileType<Aurora>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+                pa.rotation = direction.ToRotation();
+
+
+            }
+
 
 
             Player player = Main.player[Projectile.owner];
