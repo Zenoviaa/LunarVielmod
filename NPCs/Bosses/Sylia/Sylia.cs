@@ -447,6 +447,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 									break;
 							}
 							break;
+						case AttackState.Void_Bomb:
 						case AttackState.Quick_Slash:
                             switch (Main.rand.Next(2))
 							{
