@@ -10,7 +10,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.Caeva
 {
-    internal class CaevaDeathRow : ModNPC
+    internal class CaevaDeathRowR : ModNPC
     {
         public bool Down;
         public override void SetStaticDefaults()
@@ -79,7 +79,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                 float speedXa = -NPC.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                 float speedYa = -NPC.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + -2000, NPC.position.Y + -30, 100, speedYa * 0, ModContent.ProjectileType<TidalWave>(), (int)(27 * 1.5f), 0f);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 2000, NPC.position.Y + -30, -100, speedYa * 0, ModContent.ProjectileType<TidalWave>(), (int)(27 * 1.5f), 0f);
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
             }
 

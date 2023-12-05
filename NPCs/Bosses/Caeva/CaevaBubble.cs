@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
             for (int i = 0; i < 8; i++)
             {
                 Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.Blue with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
+                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.SeaGreen with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
             }
             for (int i = 0; i < 7; i++)
             {
@@ -105,7 +105,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.75f * Main.essScale);
+            Lighting.AddLight(Projectile.Center, Color.SeaGreen.ToVector3() * 1.75f * Main.essScale);
 
         }
     }

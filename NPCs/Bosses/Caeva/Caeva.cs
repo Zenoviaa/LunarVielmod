@@ -9,11 +9,13 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.Utilis;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -245,7 +247,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                         if (NPC.ai[0] >= 2)
                         {
 
-                            int Atack = Main.rand.Next(2, 2 + 1);
+                            int Atack = Main.rand.Next(2, 4);
                             if (Atack == PrevAtack)
                             {
                                 NPC.ai[0] = 1;
@@ -285,6 +287,48 @@ namespace Stellamod.NPCs.Bosses.Caeva
                             int damage = Main.expertMode ? 4 : 7;
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<CaevaBubble>(), damage, 1, Main.myPlayer, 0, 0);
+                        }
+
+
+                        if (NPC.ai[0] == 130)
+                        {
+                            NPC.ai[1] = 1;
+                            NPC.ai[0] = 0;
+                        }
+                        break;
+                    case 3:
+
+                        NPC.ai[0]++;
+                        if (NPC.position.X >= player.position.X)
+                        {
+                            Movement(targetPos, 400f, -000f, 0.05f);
+                        }
+                        else
+                        {
+                            Movement(targetPos, -400f, -000f, 0.05f);
+                        }
+
+                        if (NPC.ai[0] == 100)
+                        {
+                            NPC.alpha = 40;
+                            NPC.ai[0] = 0;
+                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+
+                            float offsetX = Main.rand.Next(-50, 50) * 0.01f;
+                            float offsetY = Main.rand.Next(-50, 50) * 0.01f;
+
+                            var entitySource = NPC.GetSource_FromThis();
+                            NPC.NewNPC(entitySource, (int)NPC.Center.X - 60, (int)NPC.Center.Y, ModContent.NPCType<CaevaDeathRow>());
+;
+                            NPC.NewNPC(entitySource, (int)NPC.Center.X - 60, (int)NPC.Center.Y + 300, ModContent.NPCType<CaevaDeathRowR>());
+
+                            NPC.NewNPC(entitySource, (int)NPC.Center.X - 60, (int)NPC.Center.Y - 300, ModContent.NPCType<CaevaDeathRow>());
+                        }
+                        if (NPC.ai[0] == 330)
+                        {
+                            NPC.ai[1] = 1;
+                            NPC.ai[0] = 0;
                         }
                         break;
                 }
