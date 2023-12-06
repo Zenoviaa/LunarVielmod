@@ -325,6 +325,7 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
     <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
+    <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
     <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />

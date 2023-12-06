@@ -4347,7 +4347,8 @@ Mods: {
 
 			AlcadzianCard: {
 				DisplayName: Alcadzian Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4355,7 +4356,8 @@ Mods: {
 
 			BOMBERCard: {
 				DisplayName: BOMBER Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4363,7 +4365,8 @@ Mods: {
 
 			BurningCard: {
 				DisplayName: Burning Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4371,7 +4374,8 @@ Mods: {
 
 			FenixxCard: {
 				DisplayName: Fenixx Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4379,7 +4383,8 @@ Mods: {
 
 			GrailedCard: {
 				DisplayName: Grailed Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4387,7 +4392,8 @@ Mods: {
 
 			LarvaedCard: {
 				DisplayName: Larvaed Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4395,10 +4401,16 @@ Mods: {
 
 			StyngerCard: {
 				DisplayName: Stynger Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
+			}
+
+			GrailAxe: {
+				DisplayName: Grail Axe
+				Tooltip: ""
 			}
 		}
 
@@ -5021,6 +5033,9 @@ Mods: {
 			KaBoomSigil2.DisplayName: Ka Boom Sigil2
 			VoidDrip.DisplayName: Void Drip
 			VoidHorizontalRift.DisplayName: Void Horizontal Rift
+			KaBoomMagic2.DisplayName: Ka Boom Magic2
+			GrailAxeProj.DisplayName: Grail Axe Proj
+			GrailShot.DisplayName: Grail Shot
 		}
 
 		NPCs: {
