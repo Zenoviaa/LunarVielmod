@@ -2115,7 +2115,7 @@ namespace Stellamod.WorldG
 
 				if (tile.HasTile)
 				{
-					int Sounda = Main.rand.Next(1, 5);
+					int Sounda = Main.rand.Next(1, 6);
 					if (Sounda == 1)
 					{
 
@@ -2212,16 +2212,14 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.Fireblossom, Main.rand.Next(2, 15)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
 										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
 										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 										break;
 
-									case 9:
+									case 8:
 										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -2277,7 +2275,7 @@ namespace Stellamod.WorldG
 								// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 								int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-									Tuple.Create(ModContent.ItemType<AlcaricMush>(), 0.5),
+									Tuple.Create(ModContent.ItemType<Gambit>(), 0.5),
 									Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
 
 								// Choose no item with a high weight of 7.
@@ -2343,7 +2341,6 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
 										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
 										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 										break;
 
@@ -2357,12 +2354,11 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 										break;
 
-									case 9:
+									case 8:
 										itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-										itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 										itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 										itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 										break;
@@ -2489,16 +2485,14 @@ namespace Stellamod.WorldG
 											itemsToAdd.Add((ItemID.Fireblossom, Main.rand.Next(2, 15)));
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
 											itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-											itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
 											itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 											break;
 
-										case 9:
+										case 8:
 											itemsToAdd.Add((ItemID.ObsidianSkull, Main.rand.Next(1, 1)));
 											itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 											itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 											itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-											itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 30)));
 											itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 											itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 											break;
