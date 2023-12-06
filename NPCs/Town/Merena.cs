@@ -10,6 +10,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Safunais;
@@ -455,7 +456,8 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
 			.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
 
-			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
+			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
+			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<AlcadzianCard>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 			.Add<PearlescentScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))// { shopCustomPrice = Item.buyPrice(silver: 50) })
 			.Add<Hyua>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
 			.Add<BlossomingScissor>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
