@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class StingerCard : ModItem
+	internal class StyngerCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
