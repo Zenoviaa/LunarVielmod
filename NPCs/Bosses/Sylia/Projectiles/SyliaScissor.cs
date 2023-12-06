@@ -33,9 +33,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void AI()
         {
-            //THIS PROJECTILE IS MOVED BY SYLIA
             delay--;
-            Vector2 direction = (targetCenter - startCenter).SafeNormalize(Vector2.Zero);
+            Vector2 direction = startCenter.DirectionTo(targetCenter);//(targetCenter - startCenter).SafeNormalize(Vector2.Zero);
             if (delay <= 0)
             {
                 Projectile.velocity = direction * 24;

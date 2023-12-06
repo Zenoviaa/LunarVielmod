@@ -130,6 +130,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			ref float ai_Telegraph_Counter = ref npc.ai[0];
 			ref float ai_Counter = ref npc.ai[1];
 			ref float ai_Cycle = ref npc.ai[2];
+
 			if (ai_Counter == 0)
             {
 				ActivateSyliaSky();
@@ -178,7 +179,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 		public override void AI()
 		{
 			//Spawning Animation
-            if (!_spawned)
+			NPC.damage = 0;
+			if (!_spawned)
 			{
 				AI_Spawn();
 				return;
@@ -196,7 +198,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
 
 			//No Contact Damage SmH
-			NPC.damage = 0;
             switch (_attackPhase)
             {
 				case Phase.Phase_1:
