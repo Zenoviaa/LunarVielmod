@@ -4392,8 +4392,7 @@ Mods: {
 
 			LarvaedCard: {
 				DisplayName: Larvaed Card
-				Tooltip:
-					'''
+				Tooltip: '''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4401,16 +4400,10 @@ Mods: {
 
 			StyngerCard: {
 				DisplayName: Stynger Card
-				Tooltip:
-					'''
+				Tooltip: '''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
-			}
-
-			GrailAxe: {
-				DisplayName: Grail Axe
-				Tooltip: ""
 			}
 		}
 
@@ -6590,6 +6583,7 @@ Mods: {
 			TreeOver1.MapEntry: Tree Over1
 			TreeOver2.MapEntry: Tree Over2
 			VeriplantDirt.MapEntry: Veriplant Dirt
+			UnstableRift.MapEntry: Unstable Rift
 		}
 
 		Buffs: {
