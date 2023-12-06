@@ -4344,6 +4344,62 @@ Mods: {
 				DisplayName: Frost Monger
 				Tooltip: ""
 			}
+
+			AlcadzianCard: {
+				DisplayName: Alcadzian Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			BOMBERCard: {
+				DisplayName: BOMBER Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			BurningCard: {
+				DisplayName: Burning Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			FenixxCard: {
+				DisplayName: Fenixx Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			GrailedCard: {
+				DisplayName: Grailed Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			LarvaedCard: {
+				DisplayName: Larvaed Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			StyngerCard: {
+				DisplayName: Stynger Card
+				Tooltip: '''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
 		}
 
 		JungleRuneI: {
