@@ -295,14 +295,12 @@ namespace Stellamod.Items.Weapons.Summon
 
                     if (Projectile.ai[1] >= 20)
                     {
-  
-        
-  
                         var EntitySource = Projectile.GetSource_Death();
 						if (Main.netMode != NetmodeID.MultiplayerClient)
 							Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<MushroomStaveMinionProg>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
 						Projectile.ai[1] = 0;
 					}
+
 					// Minion has a target: attack (here, fly towards the enemy)
                     if (distanceFromTarget > 100f)
 					{

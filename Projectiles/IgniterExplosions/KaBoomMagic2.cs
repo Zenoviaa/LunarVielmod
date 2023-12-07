@@ -21,8 +21,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 18;
 			Projectile.scale = 1f;
-
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
