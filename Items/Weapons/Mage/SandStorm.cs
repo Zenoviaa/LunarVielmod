@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.height = 40;
 			Item.useTime = 23;
 			Item.useAnimation = 23;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;

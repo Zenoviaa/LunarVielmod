@@ -27,7 +27,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = 6;
+            Item.rare = ItemRarityID.LightPurple;
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }

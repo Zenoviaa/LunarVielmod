@@ -3772,14 +3772,13 @@ Mods: {
 
 			LunarianVoidBody: {
 				DisplayName: Lunarian Void Chestplate
-				Tooltip:  '''
-					+10% Throwing Damage
-					'''
+				Tooltip: +10% Throwing Damage
 			}
 
 			LunarianVoidHead: {
 				DisplayName: Lunarian Void Helmet
-				Tooltip:  '''
+				Tooltip:
+					'''
 					+10 Throwing Critical Strike Chance!
 					+20 Health
 					+25% Throwing Damage
@@ -3788,7 +3787,8 @@ Mods: {
 
 			LunarianVoidLegs: {
 				DisplayName: Lunarian Void Legs
-				Tooltip:  '''
+				Tooltip:
+					'''
 					Increased movement speed 2%
 					+5% Throwing Damage
 					'''
@@ -4429,9 +4429,7 @@ Mods: {
 
 			Rinavine: {
 				DisplayName: Rinavine
-				Tooltip: '''
-					Lord of all things golden!
-					'''
+				Tooltip: Lord of all things golden!
 			}
 
 			Jerry: {
@@ -4441,21 +4439,18 @@ Mods: {
 
 			LarvaedSpear: {
 				DisplayName: Larvaed Spear
-				Tooltip: '''
-					Kind of good ngl
-					'''
+				Tooltip: Kind of good ngl
 			}
 
 			DevilsPeak: {
 				DisplayName: Devils Peak
-				Tooltip: '''
-					This is peak fiction
-					'''
+				Tooltip: This is peak fiction
 			}
 
 			ClockworkCity: {
 				DisplayName: Clockwork City
-				Tooltip: '''
+				Tooltip:
+					'''
 					Totally not one of the best areas in a game, cough cough
 					Sown in Chains
 					'''
@@ -4463,14 +4458,13 @@ Mods: {
 
 			PotionOfAlcadWand: {
 				DisplayName: Potion Of Alcad Wand
-				Tooltip: '''
-					Get Jolly with it,
-					'''
+				Tooltip: Get Jolly with it,
 			}
 
 			ScissorianChestplate: {
 				DisplayName: Scissorian Chestplate
-				Tooltip: '''
+				Tooltip:
+					'''
 					+20 Throwing Critical Strike Chance!
 					+15 Health
 					+10% Throwing Damage
@@ -4479,7 +4473,8 @@ Mods: {
 
 			ScissorianGreaves: {
 				DisplayName: Scissorian Greaves
-				Tooltip: '''
+				Tooltip:
+					'''
 					Increased movement speed
 					+20 Health
 					+15% Throwing Damage
@@ -4488,9 +4483,17 @@ Mods: {
 
 			ScissorianMask: {
 				DisplayName: Scissorian Mask
-				Tooltip:  '''
-					+20% Throwing Damage
-					'''
+				Tooltip: +20% Throwing Damage
+			}
+
+			DarkButcher: {
+				DisplayName: The Dark Butcher
+				Tooltip: The Butcher but darker.
+			}
+
+			TheButcher: {
+				DisplayName: The Butcher
+				Tooltip: ""
 			}
 		}
 
@@ -5127,6 +5130,8 @@ Mods: {
 			ClockworkBomb.DisplayName: Clockwork Bomb
 			EPWProj.DisplayName: E P W Proj
 			VoidRain.DisplayName: Void Rain
+			ButcherP.DisplayName: Butcher P
+			DarkButcherP.DisplayName: Dark Butcher P
 		}
 
 		NPCs: {
