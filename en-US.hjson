@@ -3816,7 +3816,7 @@ Mods: {
 
 			Give100DustBagsC: {
 				DisplayName: Give 100 Dust Bags Completed
-				Tooltip:  Turn this in to Merena for a reward!
+				Tooltip: Turn this in to Merena for a reward!
 			}
 
 			KillVerlia: {
@@ -3826,7 +3826,7 @@ Mods: {
 
 			KillVerliaC: {
 				DisplayName: Kill Verlia Completed
-				Tooltip:  Turn this in to Merena for a reward!
+				Tooltip: Turn this in to Merena for a reward!
 			}
 
 			MakeMagicPaper: {
@@ -3836,7 +3836,7 @@ Mods: {
 
 			MakeMagicPaperC: {
 				DisplayName: Make Magic Paper Completed
-				Tooltip:  Turn this in to Merena for a reward!
+				Tooltip: Turn this in to Merena for a reward!
 			}
 
 			MakeUltimateScroll: {
@@ -4520,6 +4520,16 @@ Mods: {
 				DisplayName: Larvein Greatbow
 				Tooltip: ""
 			}
+
+			AlcarianYoyo: {
+				DisplayName: Alcarian Yoyo
+				Tooltip: ""
+			}
+
+			Alcadius: {
+				DisplayName: Alcadius
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5166,6 +5176,8 @@ Mods: {
 			BookOfSkullsIIProg.DisplayName: Book Of Skulls I I Prog
 			DreadFist.DisplayName: Dread Fist
 			ScytheOfSoulsProj.DisplayName: Scythe Of Souls Proj
+			Alcadius2.DisplayName: Alcadius2
+			AlcadzianHead.DisplayName: Alcadzian Head
 		}
 
 		NPCs: {
