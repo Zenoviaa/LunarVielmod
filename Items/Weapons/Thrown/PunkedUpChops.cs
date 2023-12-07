@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class LarvaedSpear : ModItem
+	internal class PunkedUpChops : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 50;
+			Item.damage = 70;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<LarvaeSpearP>();
+			Item.shoot = ModContent.ProjectileType<PunkedUpChopsP>();
 			Item.shootSpeed = 20f;
 			Item.autoReuse = true;
 			Item.crit = 12;
@@ -42,11 +42,11 @@ namespace Stellamod.Items.Weapons.Thrown
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(250);
-			recipe.AddIngredient(ItemID.BorealWood, 10);
+			recipe.AddIngredient(ItemID.Cog, 5);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 2);
+			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
 		}
 	}
 }

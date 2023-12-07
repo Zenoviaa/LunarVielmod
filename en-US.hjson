@@ -3912,23 +3912,23 @@ Mods: {
 			}
 
 			BlossomingScissor: {
-				Tooltip: ""
+				Tooltip: Sadly a good traversal weapon
 				DisplayName: Blossoming Scissor
 			}
 
 			AltrideSlicer: {
-				Tooltip: ""
+				Tooltip: Slice N Dice
 				DisplayName: Altride Slicer
 			}
 
 			MooningSlicer: {
-				Tooltip: ""
+				Tooltip: Celestia would be proud
 				DisplayName: Mooning Slicer
 			}
 
 			EverneanSlicer: {
 				DisplayName: Evernean Slicer
-				Tooltip: ""
+				Tooltip: Celestia would be even more proud.
 			}
 
 			ShrineBridgetI: {
@@ -3938,22 +3938,22 @@ Mods: {
 
 			Bridget: {
 				DisplayName: Bridget
-				Tooltip: ""
+				Tooltip: Bridget? Who is this really?
 			}
 
 			Reavestor: {
 				DisplayName: Reavestor
-				Tooltip: ""
+				Tooltip: Soul eater numba 1
 			}
 
 			FableKnives: {
 				DisplayName: Fable Knives
-				Tooltip: ""
+				Tooltip: Throw them fast
 			}
 
 			ZthoKnives: {
 				DisplayName: Ztho Knives
-				Tooltip: ""
+				Tooltip: Throw them faster!
 			}
 
 			Climabaton: {
@@ -4096,13 +4096,13 @@ Mods: {
 			}
 
 			BridgetII: {
-				DisplayName: Bridget I I
-				Tooltip: ""
+				DisplayName: Bridget II
+				Tooltip: Why didn't you revive her :(
 			}
 
 			BlackWallBlock: {
-				DisplayName: Black Wall Block
-				Tooltip: ""
+				DisplayName: Black Men
+				Tooltip: Racist
 			}
 
 			MossyStones: {
@@ -4221,17 +4221,17 @@ Mods: {
 
 			OldWeddingRing: {
 				DisplayName: Old Wedding Ring
-				Tooltip: ""
+				Tooltip: Someone would love this
 			}
 
 			GrailBar: {
 				DisplayName: Grail Bar
-				Tooltip: ""
+				Tooltip: Built with all things golden
 			}
 
 			CelestiasWeddingRing: {
 				DisplayName: Celestias Wedding Ring
-				Tooltip: ""
+				Tooltip: She loves me! She loves me not!
 			}
 
 			STARCORE: {
@@ -4513,12 +4513,12 @@ Mods: {
 
 			BubbleBlasher: {
 				DisplayName: Bubble Blasher
-				Tooltip: ""
+				Tooltip: Send your enemies afar with this!
 			}
 
 			LarveinGreatbow: {
 				DisplayName: Larvein Greatbow
-				Tooltip: ""
+				Tooltip: Pretty great huh?
 			}
 
 			AlcarianYoyo: {
@@ -4529,6 +4529,21 @@ Mods: {
 			Alcadius: {
 				DisplayName: Alcadius
 				Tooltip: ""
+			}
+
+			DungeonedRockCard: {
+				DisplayName: Dungeoned Rock Card
+				Tooltip: Get Rocked
+			}
+
+			PunkedUpChops: {
+				DisplayName: Punked Up Chops
+				Tooltip: Pumped up kicks fr fr
+			}
+
+			Photobomb: {
+				DisplayName: Photobomb
+				Tooltip: I'll ruin your frames for you! I'll splatter paint all over you ;)
 			}
 		}
 
@@ -5178,6 +5193,9 @@ Mods: {
 			ScytheOfSoulsProj.DisplayName: Scythe Of Souls Proj
 			Alcadius2.DisplayName: Alcadius2
 			AlcadzianHead.DisplayName: Alcadzian Head
+			PunkedUpChopsP.DisplayName: Punked Up Chops P
+			PhotobombProj.DisplayName: Photobomb Proj
+			PhotobombShot.DisplayName: Photobomb Shot
 		}
 
 		NPCs: {
