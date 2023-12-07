@@ -152,7 +152,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     }
                 }
 
-                NPC.velocity = new Vector2(homingVelocity.X * 2f, homingVelocity.Y);
+                NPC.velocity = new Vector2(homingVelocity.X * 4f, homingVelocity.Y);
             }
 
             if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()) && NPC.active)
