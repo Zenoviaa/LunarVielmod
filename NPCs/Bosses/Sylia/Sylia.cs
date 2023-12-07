@@ -1359,14 +1359,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					ai_Telegraph_Counter++;
 					if (ai_Counter == 0)
 					{
-						Vector2 targetVelocity = target.velocity;
-						Vector2 targetOffset = targetVelocity.SafeNormalize(Vector2.Zero) * 16 * 24;
-						_slashCenter = targetCenter + targetOffset;
-						float verticalHoverSpeed = 2;
-						float verticalHoverYVelocity = VectorHelper.Osc(1, -1, verticalHoverSpeed);
-						float verticalSlashStartOffsetDistance = 512;
+						_slashCenter = targetCenter;
 
-						Vector2 verticalHoverTarget = _slashCenter + new Vector2(0, -verticalSlashStartOffsetDistance + verticalHoverYVelocity);
+						float xOffset = 768;
+						float yOffset = -512;
+
+						Vector2 verticalHoverTarget = _slashCenter + new Vector2(xOffset, yOffset);
 						npc.Center = Vector2.Lerp(npc.Center, verticalHoverTarget, 0.023f);
 
 						//Delay before she slashes
@@ -1398,7 +1396,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 							xSlashPart1.rotation = longRift.rotation + MathHelper.ToRadians(45);
 						}
 
-						if (ai_Telegraph_Counter > 60)
+						if (ai_Telegraph_Counter > 75)
 						{
 							ai_Counter = 0;
 							ai_Telegraph_Counter = 0;

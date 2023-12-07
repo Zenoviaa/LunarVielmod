@@ -163,7 +163,7 @@ namespace Stellamod.Projectiles
                 ModContent.ProjectileType<KaBoomAlcadizz>(), (int)damage, 3);
             p.friendly = true;
             p.usesLocalNPCImmunity = true;
-            p.localNPCHitCooldown = 0;
+            p.localNPCHitCooldown = -1;
 
             int count = 32;
             float degreesPer = 360 / (float)count;
