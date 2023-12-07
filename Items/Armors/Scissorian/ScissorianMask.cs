@@ -53,12 +53,10 @@ namespace Stellamod.Items.Armors.Scissorian
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "Increases life regen by a great amount!" +
-				"\nMove faster and have less aggro and less enemies spawn around you!" +
-				"\nRequires less time to take a potion as well! "; // This is the setbonus tooltip
+				"\nMove faster and have less aggro and less enemies spawn around you!"; // This is the setbonus tooltip
 			player.moveSpeed += 0.5f;
 			player.maxRunSpeed += 0.5f;
 			player.ZoneWaterCandle = true;
-			player.pStone = true;
 			player.lifeRegen += 1;
 		}
 
