@@ -504,7 +504,10 @@ namespace Stellamod.NPCs.Town
 
 
 						case 7:
-
+							if (Main.hardMode)
+							{
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<BubbleBlasher>(), 1);
+							}
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.MasterBait, 10);
 
 							break;
@@ -551,7 +554,7 @@ namespace Stellamod.NPCs.Town
 
 						case 14:
 
-
+							
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CoralBand>(), 1);
 
 							break;

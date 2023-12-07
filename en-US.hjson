@@ -3805,73 +3805,73 @@ Mods: {
 			}
 
 			ExploreMorrowedVillageC: {
-				DisplayName: Explore Morrowed Village C
-				Tooltip: ""
+				DisplayName: Explore Morrowed Village Completed
+				Tooltip: Turn this in to Merena for a reward!
 			}
 
 			Give100DustBags: {
-				DisplayName: Give100 Dust Bags
+				DisplayName: Give 100 Dust Bags
 				Tooltip: ""
 			}
 
 			Give100DustBagsC: {
-				DisplayName: Give100 Dust Bags C
-				Tooltip: ""
+				DisplayName: Give 100 Dust Bags Completed
+				Tooltip:  Turn this in to Merena for a reward!
 			}
 
 			KillVerlia: {
 				DisplayName: Kill Verlia
-				Tooltip: ""
+				Tooltip: Find her atop a cathedral!
 			}
 
 			KillVerliaC: {
-				DisplayName: Kill Verlia C
-				Tooltip: ""
+				DisplayName: Kill Verlia Completed
+				Tooltip:  Turn this in to Merena for a reward!
 			}
 
 			MakeMagicPaper: {
 				DisplayName: Make Magic Paper
-				Tooltip: ""
+				Tooltip: Many resources to gather, very difficult..
 			}
 
 			MakeMagicPaperC: {
-				DisplayName: Make Magic Paper C
-				Tooltip: ""
+				DisplayName: Make Magic Paper Completed
+				Tooltip:  Turn this in to Merena for a reward!
 			}
 
 			MakeUltimateScroll: {
 				DisplayName: Make Ultimate Scroll
-				Tooltip: ""
+				Tooltip: The final test!
 			}
 
 			OldCarianTome: {
 				DisplayName: Old Carian Tome
-				Tooltip: ""
+				Tooltip: Everlasting knowledge flows from within
 			}
 
 			OrbOfTheMorrow: {
 				DisplayName: Orb Of The Morrow
-				Tooltip: ""
+				Tooltip: The voices of Gothivia reek with this one.
 			}
 
 			StolenMagicTome: {
 				DisplayName: Stolen Magic Tome
-				Tooltip: ""
+				Tooltip: Stolen from the Royal Capital
 			}
 
 			TomeOfInfiniteSorcery: {
 				DisplayName: Tome Of Infinite Sorcery
-				Tooltip: ""
+				Tooltip: A complete mastery of knowledge!
 			}
 
 			AlcadThrowingCards: {
-				DisplayName: Alcad Throwing Cards
+				DisplayName: Alcadzian Throwing Cards
 				Tooltip: ""
 			}
 
 			OceanRuneI: {
 				DisplayName: Ancient Artifact
-				Tooltip: ""
+				Tooltip: A scientist may want to look at this..
 			}
 
 			Starvast: {
