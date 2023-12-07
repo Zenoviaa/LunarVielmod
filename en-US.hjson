@@ -4497,8 +4497,8 @@ Mods: {
 			}
 
 			BookOfSkullsII: {
-				DisplayName: Book Of Skulls I I
-				Tooltip: ""
+				DisplayName: Book Of Skulls II
+				Tooltip: Woa mom its the second version!
 			}
 
 			DreadGauntlets: {
@@ -4508,7 +4508,7 @@ Mods: {
 
 			ScytheOfSouls: {
 				DisplayName: Scythe Of Souls
-				Tooltip: ""
+				Tooltip: Use these vengeful souls at will, they are quite quirky!
 			}
 
 			BubbleBlasher: {
