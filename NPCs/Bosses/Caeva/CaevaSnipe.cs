@@ -140,7 +140,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                         Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                 }
                 var entitySource = NPC.GetSource_FromThis();
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<CaevaSpawnEffect>(), 60, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<CaevaSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                 SoundEngine.PlaySound(SoundID.Item27, NPC.position);
                 SoundEngine.PlaySound(SoundID.Item50, NPC.position);
@@ -151,7 +151,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                 NPC.alpha -= 2;
             }
             base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.045f * Die), NPC.Center.Distance(player.Center) * 0.55f * Die), 0.018f * Die);
-            NPC.rotation = NPC.velocity.X * 5;
+            NPC.rotation = NPC.velocity.X * 2;
             if (NPC.position.Y <= player.position.Y)
             {
                 NPC.velocity.Y += 0.25f;

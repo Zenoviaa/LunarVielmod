@@ -53,9 +53,12 @@ namespace Stellamod.NPCs.Bosses.Caeva
             NPC.alpha = 255;
             NPC.width = 70;
             NPC.height = 120;
-            NPC.damage = 90;
-            NPC.defense = 42;
-            NPC.lifeMax = 80000;
+            //NPC.damage = 90;
+            //NPC.defense = 42;
+            //NPC.lifeMax = 80000;
+            NPC.damage = 0;
+            NPC.defense = 0;
+            NPC.lifeMax = 0;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
@@ -292,6 +295,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
 
                         if (NPC.ai[0] == 130)
                         {
+                            PrevAtack = 2;
                             NPC.ai[1] = 1;
                             NPC.ai[0] = 0;
                         }
@@ -327,6 +331,7 @@ namespace Stellamod.NPCs.Bosses.Caeva
                         }
                         if (NPC.ai[0] == 330)
                         {
+                            PrevAtack = 3;
                             NPC.ai[1] = 1;
                             NPC.ai[0] = 0;
                         }
