@@ -4400,7 +4400,7 @@ Mods: {
 			}
 
 			LarvaedCard: {
-				DisplayName: Larvaed Card
+				DisplayName: Larveid Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -4438,7 +4438,7 @@ Mods: {
 			}
 
 			LarvaedSpear: {
-				DisplayName: Larvaed Spear
+				DisplayName: Larvein Spear
 				Tooltip: Kind of good ngl
 			}
 
@@ -4493,6 +4493,31 @@ Mods: {
 
 			TheButcher: {
 				DisplayName: The Butcher
+				Tooltip: ""
+			}
+
+			BookOfSkullsII: {
+				DisplayName: Book Of Skulls I I
+				Tooltip: ""
+			}
+
+			DreadGauntlets: {
+				DisplayName: Dread Gauntlets
+				Tooltip: ""
+			}
+
+			ScytheOfSouls: {
+				DisplayName: Scythe Of Souls
+				Tooltip: ""
+			}
+
+			BubbleBlasher: {
+				DisplayName: Bubble Blasher
+				Tooltip: ""
+			}
+
+			LarveinGreatbow: {
+				DisplayName: Larvein Greatbow
 				Tooltip: ""
 			}
 		}
@@ -5132,6 +5157,15 @@ Mods: {
 			VoidRain.DisplayName: Void Rain
 			ButcherP.DisplayName: Butcher P
 			DarkButcherP.DisplayName: Dark Butcher P
+			CaevaBubble.DisplayName: Caeva Bubble
+			CaevaSpawnEffect.DisplayName: Caeva Spawn Effect
+			TidalWave.DisplayName: Tidal Wave
+			LarveinGreatbowL.DisplayName: Larvein Greatbow L
+			LarveinGreatbowR.DisplayName: Larvein Greatbow R
+			BBBubble.DisplayName: B B Bubble
+			BookOfSkullsIIProg.DisplayName: Book Of Skulls I I Prog
+			DreadFist.DisplayName: Dread Fist
+			ScytheOfSoulsProj.DisplayName: Scythe Of Souls Proj
 		}
 
 		NPCs: {
@@ -6504,6 +6538,10 @@ Mods: {
 			GoldLightBig.DisplayName: Gold Light Big
 			PearledGold.DisplayName: Pearled Gold
 			VoidWall.DisplayName: Void Wall
+			Caeva.DisplayName: Caeva
+			CaevaDeathRow.DisplayName: Caeva Death Row
+			CaevaDeathRowR.DisplayName: Caeva Death Row R
+			CaevaSnipe.DisplayName: Caeva Snipe
 		}
 
 		Biomes: {

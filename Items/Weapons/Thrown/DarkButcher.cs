@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.CursedFlames, 5);
+			recipe.AddIngredient(ItemID.CursedFlame, 5);
 			recipe.AddIngredient(ItemID.ShadowScale, 5);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 25);

@@ -1879,7 +1879,7 @@ namespace Stellamod.WorldG
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					//new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt))
 					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
-					WorldUtils.Gen(Loc5, new Shapes.Rectangle(550, 70), new Actions.SetTile(TileID.Dirt));
+					WorldUtils.Gen(Loc5, new Shapes.Rectangle(590, 70), new Actions.SetTile(TileID.Dirt));
 					Point Loc3 = new Point(smx + 555, smyy + 60);
 					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
