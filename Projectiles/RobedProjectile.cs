@@ -14,11 +14,12 @@ namespace Stellamod.Projectiles
 			base.SetDefaults();
 			Projectile.height = 11;
 			Projectile.width = 10;
-			Projectile.friendly = false;
+			Projectile.friendly = true;
 			Projectile.penetrate = 20;
 			Projectile.stepSpeed = 2;
 			Projectile.damage = 20;
-			Projectile.hostile = true;
+			Projectile.hostile = false;
+			Projectile.scale = 0.5f;
 		}
 		public override void AI()
 		{

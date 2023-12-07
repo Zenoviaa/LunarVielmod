@@ -254,6 +254,13 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.Cloud);
                 TextureAssets.Tile[TileID.Cloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CloudRE");
+
+                Main.instance.LoadTiles(TileID.Pearlsand);
+                TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
+
+               
+           
+
             }
             Instance = this;
 
@@ -332,7 +339,6 @@ namespace Stellamod
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
        
         public override string DisplayName => "The Lunar Veil ModMenu";
-
         public override void OnSelected()
         {
             SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected

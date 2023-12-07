@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -39,6 +40,10 @@ namespace Stellamod.Projectiles.Magic
             return true;
         }
         float alphaCounter;
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 255f);
+        }
         public override void AI()
         {
             alphaCounter += 0.04f;

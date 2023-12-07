@@ -235,6 +235,7 @@
     <None Remove="Items\Weapons\Summon\X3144.png" />
     <None Remove="Items\Weapons\Summon\XScissor.png" />
     <None Remove="Items\Weapons\Summon\XScissorMinion.png" />
+    <None Remove="Items\Weapons\Thrown\LarvaedSpear.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Daedus\Daedus.png" />
     <None Remove="NPCs\Bosses\Daedus\SummonSpawnEffect.png" />
@@ -324,6 +325,8 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
     <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
+    <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_Glow.png" />
+    <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />

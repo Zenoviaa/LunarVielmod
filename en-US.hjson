@@ -4392,7 +4392,8 @@ Mods: {
 
 			LarvaedCard: {
 				DisplayName: Larvaed Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
@@ -4400,10 +4401,36 @@ Mods: {
 
 			StyngerCard: {
 				DisplayName: Stynger Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Use with a combination of dusts to make spells :)
 					Use a powder or dust and then use this type of weapon!
 					'''
+			}
+
+			URift: {
+				DisplayName: U Rift
+				Tooltip: ""
+			}
+
+			GrailAxe: {
+				DisplayName: Grail Axe
+				Tooltip: ""
+			}
+
+			Rinavine: {
+				DisplayName: Rinavine
+				Tooltip: ""
+			}
+
+			Jerry: {
+				DisplayName: Jerry
+				Tooltip: ""
+			}
+
+			LarvaedSpear: {
+				DisplayName: Larvaed Spear
+				Tooltip: ""
 			}
 		}
 
@@ -5029,6 +5056,12 @@ Mods: {
 			KaBoomMagic2.DisplayName: Ka Boom Magic2
 			GrailAxeProj.DisplayName: Grail Axe Proj
 			GrailShot.DisplayName: Grail Shot
+			RinavineProj.DisplayName: Rinavine Proj
+			LarvaeSpearP.DisplayName: Larvae Spear P
+			CrystalRay.DisplayName: Crystal Ray
+			CrystalRay2.DisplayName: Crystal Ray2
+			CrystalRay3.DisplayName: Crystal Ray3
+			CrystalRay4.DisplayName: Crystal Ray4
 		}
 
 		NPCs: {

@@ -98,6 +98,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenSeaTemple));
 				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Cathedral", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Cathedral", WorldGenSylia));
 			}
 
 
@@ -1872,9 +1873,13 @@ namespace Stellamod.WorldG
 
 					Point Loc2 = new Point(smx - 10, smyy);
 					Point Loc4 = new Point(smx - 30, smyy + 40);
+
+					Point Loc5 = new Point(smx - 30, smyy + 60);
 					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
+					//new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt))
 					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					WorldUtils.Gen(Loc5, new Shapes.Rectangle(550, 70), new Actions.SetTile(TileID.Dirt));
 					Point Loc3 = new Point(smx + 555, smyy + 60);
 					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
@@ -1895,9 +1900,92 @@ namespace Stellamod.WorldG
 			}
 		}
 
-        #endregion
-        // 6. This is the actual world generation code.
-        private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
+
+		public void WorldGenSylia(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Leaving the Royal Capital";
+
+
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 10000000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int smx = WorldGen.genRand.Next(220, (Main.maxTilesX) / 15); // from 50 since there's a unaccessible area at the world's borders
+																			 // 50% of choosing the last 6th of the world
+																			 // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int smy = ((int)(Main.UnderworldLayer - 200));
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.maxTilesY)
+				{
+					smy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (smy > Main.maxTilesY - 30)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[smx, smy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if ((tile.TileType == TileID.Ash))
+				{
+					continue;
+				}
+
+				int smxx = smx;
+				int smyy = smy + Main.maxTilesY / 18;
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(smx - 10, smyy + 180);
+					StructureLoader.ReadStruct(Loc, "Struct/Underworld/UnderworldRuins");
+
+
+					Point Loc2 = new Point(smx - 10, smyy);
+					Point Loc4 = new Point(smx - 30, smyy + 40);
+					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
+			
+					//	Point resultPoint;
+					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
+					//	{
+					//new Conditions.IsSolid().AreaAnd(10, 10),
+					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
+					//	}), out resultPoint);
+					//		if (searchSuccessful)
+					//		{
+					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
+					//		}
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smyy, 433, 100));
+					//WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
+					//	WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					placed = true;
+				}
+			}
+		}
+
+		#endregion
+		// 6. This is the actual world generation code.
+		private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Scorching Gild and Arnchar burning into the world";

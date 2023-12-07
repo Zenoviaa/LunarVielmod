@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Items.Harvesting;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -35,11 +36,10 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useStyle = 5;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = 2;
-
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
-			Item.shoot = ProjectileType<Gelatin>();
-			Item.shootSpeed = 6f;
+			Item.shoot = ProjectileType<Nado>();
+			Item.shootSpeed = 10f;
 			Item.mana = 15;
 
 
@@ -48,6 +48,16 @@ namespace Stellamod.Items.Weapons.Mage
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ItemID.SandBlock, 10);
+			recipe.AddIngredient(ItemID.AntlionMandible, 3);
+			recipe.AddIngredient(ItemID.Silk, 3);
+			recipe.Register();
 		}
 	}
 }
