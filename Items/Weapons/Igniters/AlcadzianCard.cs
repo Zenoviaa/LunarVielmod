@@ -60,6 +60,16 @@ namespace Stellamod.Items.Weapons.Igniters
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
+			recipe.AddIngredient(ItemID.HallowedBar, 5);
+			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
+		}
+
 	}
 }
