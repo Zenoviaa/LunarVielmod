@@ -3771,18 +3771,27 @@ Mods: {
 			}
 
 			LunarianVoidBody: {
-				DisplayName: Lunarian Void Body
-				Tooltip: ""
+				DisplayName: Lunarian Void Chestplate
+				Tooltip:  '''
+					+10% Throwing Damage
+					'''
 			}
 
 			LunarianVoidHead: {
-				DisplayName: Lunarian Void Head
-				Tooltip: ""
+				DisplayName: Lunarian Void Helmet
+				Tooltip:  '''
+					+10 Throwing Critical Strike Chance!
+					+20 Health
+					+25% Throwing Damage
+					'''
 			}
 
 			LunarianVoidLegs: {
 				DisplayName: Lunarian Void Legs
-				Tooltip: ""
+				Tooltip:  '''
+					Increased movement speed 2%
+					+5% Throwing Damage
+					'''
 			}
 
 			SandStorm: {
@@ -4420,7 +4429,9 @@ Mods: {
 
 			Rinavine: {
 				DisplayName: Rinavine
-				Tooltip: ""
+				Tooltip: '''
+					Lord of all things golden!
+					'''
 			}
 
 			Jerry: {
@@ -4430,7 +4441,56 @@ Mods: {
 
 			LarvaedSpear: {
 				DisplayName: Larvaed Spear
-				Tooltip: ""
+				Tooltip: '''
+					Kind of good ngl
+					'''
+			}
+
+			DevilsPeak: {
+				DisplayName: Devils Peak
+				Tooltip: '''
+					This is peak fiction
+					'''
+			}
+
+			ClockworkCity: {
+				DisplayName: Clockwork City
+				Tooltip: '''
+					Totally not one of the best areas in a game, cough cough
+					Sown in Chains
+					'''
+			}
+
+			PotionOfAlcadWand: {
+				DisplayName: Potion Of Alcad Wand
+				Tooltip: '''
+					Get Jolly with it,
+					'''
+			}
+
+			ScissorianChestplate: {
+				DisplayName: Scissorian Chestplate
+				Tooltip: '''
+					+20 Throwing Critical Strike Chance!
+					+15 Health
+					+10% Throwing Damage
+					'''
+			}
+
+			ScissorianGreaves: {
+				DisplayName: Scissorian Greaves
+				Tooltip: '''
+					Increased movement speed
+					+20 Health
+					+15% Throwing Damage
+					'''
+			}
+
+			ScissorianMask: {
+				DisplayName: Scissorian Mask
+				Tooltip:  '''
+					+20% Throwing Damage
+					'''
 			}
 		}
 
@@ -5062,6 +5122,11 @@ Mods: {
 			CrystalRay2.DisplayName: Crystal Ray2
 			CrystalRay3.DisplayName: Crystal Ray3
 			CrystalRay4.DisplayName: Crystal Ray4
+			DevilsPeakSwordProj.DisplayName: Devils Peak Sword Proj
+			DevilsPeakSwordProj2.DisplayName: Devils Peak Sword Proj2
+			ClockworkBomb.DisplayName: Clockwork Bomb
+			EPWProj.DisplayName: E P W Proj
+			VoidRain.DisplayName: Void Rain
 		}
 
 		NPCs: {
@@ -7078,6 +7143,11 @@ Mods: {
 			RoseB: {
 				DisplayName: Rose B
 				Description: Mods.Stellamod.Buffs.RoseB.Description
+			}
+
+			AlcadWandMinionBuff: {
+				DisplayName: Alcad Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.AlcadWandMinionBuff.Description
 			}
 		}
 	}

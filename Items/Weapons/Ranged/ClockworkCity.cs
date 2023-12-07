@@ -73,6 +73,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddIngredient(ItemID.Shotgun, 1);
+			recipe.AddIngredient(ItemID.Cog, 5);
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 35);
