@@ -4150,6 +4150,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedVeriBoss, -1);
 
+			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+			{
+				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+			}
 		}
 
 	}

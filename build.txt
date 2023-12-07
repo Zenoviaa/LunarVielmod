@@ -1,4 +1,4 @@
 displayName = Lunar Veil
-author = Zenovia and Azalea
+author = Zenovia
 version = 1.4
 modReferences = ParticleLibrary

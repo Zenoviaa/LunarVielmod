@@ -756,7 +756,7 @@ namespace Stellamod
                 }
             }
 
-			if (EventWorld.Aurorean)
+			if (EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight))
 			{
 
                 if (Main.rand.NextBool(90)&& Main.netMode != NetmodeID.MultiplayerClient)
@@ -765,9 +765,7 @@ namespace Stellamod
                     int offsetY = Main.rand.Next(-1000, 1000) - 1700;
                     int damage = Main.expertMode ? 0 : 0;
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
-                }
-				
-				
+                }	
 				
 				bool npcAlreadyExists = false;
 				for (int i = 0; i < Main.maxNPCs; i++)
@@ -791,9 +789,6 @@ namespace Stellamod
 						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
 					}
 				}
-
-
-			
 			}
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
@@ -1436,12 +1431,197 @@ namespace Stellamod
 			}
 
 
+			if (Player.ZoneHallow)
+			{
+				Main.GraveyardVisualIntensity = 0.4f;
+				Main.windPhysicsStrength = 50;
 
-			
+
+				GoldenRingCooldown++;
+
+				GoldenSparkleCooldown++;
+				RayCooldown++;
+
+				if (RayCooldown > 1000)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+
+
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1000f, 1000f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+
+
+				if (RayCooldown > 900)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+
+
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1000f, 1000f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+				if (RayCooldown == 500)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+
+
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay2>(), 1, 1f, Player.whoAmI);
+
+						RayCooldown = 0;
+					}
+				}
+
+
+				if (RayCooldown == 250)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 800f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+
+
+					}
+
+
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-800f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+
+
+					}
+				}
+
+				if (RayCooldown == 750)
+				{
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-500f, 500f), (Main.rand.NextFloat(-700f, 800f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay3>(), 1, 1f, Player.whoAmI);
+
+
+					}
+
+
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1000f, 2000f), (Main.rand.NextFloat(-800f, 700f)));
+
+
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - RandomOrig3, speed2 * 1, ModContent.ProjectileType<CrystalRay4>(), 1, 1f, Player.whoAmI);
+
+
+					}
+				}
+
+
+				for (int j = 0; j < 3; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 2; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+			}
 
 
 
-		
+
+
 
 
 			if (Player.InModBiome<AlcadziaBiome>())
@@ -1488,8 +1668,6 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<MoonTrailParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 				}
 
 			}
@@ -1702,9 +1880,74 @@ namespace Stellamod
 				}
 			}
 
+
+
+
+
+
+
+
+
+			if (Player.ZoneUnderworldHeight)
+			{
+				Main.windPhysicsStrength = 50;
+				GoldenRingCooldown++;
+				GoldenSparkleCooldown++;
+				RayCooldown++;
+
+				for (int j = 0; j < 3; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<UnderworldParticle1>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				
+
+				for (int j = 0; j < 2; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FlameParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 1; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+				for (int j = 0; j < 1; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+
+
+
+			}
+
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            if (ArcaneM && ArcaneMCooldown == 601)
+			if (ArcaneM && ArcaneMCooldown == 601)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
 				for (int j = 0; j < 7; j++)

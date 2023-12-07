@@ -8,6 +8,7 @@ using Stellamod.Projectiles;
 using Stellamod.Projectiles.Slashers.Voyager;
 using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Projectiles.Swords.Fenix;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -37,6 +38,31 @@ namespace Stellamod.Items.Weapons.Melee
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
 			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Alcarishxxa", "A weapon so powerful, it holds a gravitation pull and can change forms!")
+			{
+				OverrideColor = new Color(244, 119, 255)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Alcarishxxa", "This weapon is bound by Fenix")
+			{
+				OverrideColor = new Color(244, 200, 255)
+
+			};
+			tooltips.Add(line);
+
+
+
+		}
+
+
 		public override void SetDefaults()
 		{
 			Item.damage = 120;
@@ -44,10 +70,10 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.width = 32;
 			Item.height = 32;
 			Item.useTime = 5;
-			Item.useAnimation = 30;
+			Item.useAnimation = 5;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Pink;
 			Item.autoReuse = true;
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<AngelenthalProj1>();
@@ -111,25 +137,73 @@ namespace Stellamod.Items.Weapons.Melee
 			return true;
 		}
 
-
-
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		public override bool AltFunctionUse(Player player)
 		{
+			return true;
+		}
 
-			int dir = AttackCounter;
-			if (player.direction == 1)
+		public override bool CanUseItem(Player player)
+		{
+			if (player.altFunctionUse == 2)
 			{
-				player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
+				Item.shoot = ModContent.ProjectileType<AngelenthalThrow>();
+				Item.noUseGraphic = true;
+				Item.useStyle = ItemUseStyleID.Shoot;
+				Item.noMelee = true; //so the Item's animation doesn't do damage
+				Item.knockBack = 11;
+				Item.autoReuse = true;
+				Item.useTurn = true;
+				Item.DamageType = DamageClass.Melee;
+				Item.shootSpeed = 20f;
+				Item.useAnimation = 20;
+				Item.useTime = 45;
+				Item.consumeAmmoOnLastShotOnly = true;
+
 			}
 			else
 			{
-				player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
 
 			}
-			AttackCounter = -AttackCounter;
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+
+			return base.CanUseItem(player);
+		}
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			if (player.altFunctionUse == 2)
+			{
+
+				return true;
+			}
+
+
+
+			if (player.altFunctionUse != 2)
+			{
+
+
+				int dir = AttackCounter;
+				if (player.direction == 1)
+				{
+					player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
+				}
+				else
+				{
+					player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
+
+				}
+				AttackCounter = -AttackCounter;
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AngelenthalProj1>(), damage, knockback, player.whoAmI, 1, dir);
+				
+
+			}
+
+
 			return false;
 		}
+
+
+
+
+	
 	}
 }

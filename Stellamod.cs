@@ -243,6 +243,25 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.MushroomGrass);
                 TextureAssets.Tile[TileID.MushroomGrass] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/MushGrassRE");
+
+                Main.instance.LoadTiles(TileID.Ebonstone);
+                TextureAssets.Tile[TileID.Ebonstone] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CrorpStoneRE");
+
+                Main.instance.LoadTiles(TileID.Ash);
+                TextureAssets.Tile[TileID.Ash] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/AshingRE");
+
+                Main.instance.LoadTiles(TileID.ObsidianBrick);
+                TextureAssets.Tile[TileID.ObsidianBrick] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/AshedRE");
+
+                Main.instance.LoadTiles(TileID.Cloud);
+                TextureAssets.Tile[TileID.Cloud] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/CloudRE");
+
+                Main.instance.LoadTiles(TileID.Pearlsand);
+                TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
+
+               
+           
+
             }
             Instance = this;
 
@@ -309,7 +328,7 @@ namespace Stellamod
 
         private const string menuAssetPath = "Stellamod/Assets/Textures/Menu"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
 
-        public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo2");
+        public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
 
         //  public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheSun");
 
@@ -321,7 +340,6 @@ namespace Stellamod
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
        
         public override string DisplayName => "The Lunar Veil ModMenu";
-
         public override void OnSelected()
         {
             SoundEngine.PlaySound(SoundID.Tink); // Plays a thunder sound when this ModMenu is selected

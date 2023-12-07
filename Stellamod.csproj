@@ -17,6 +17,7 @@
     <None Remove="Assets\Biomes\StarbloomWaterStyle.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Block.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
+    <None Remove="Assets\Textures\AshedRE.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\Alcadded.png" />
@@ -190,6 +191,7 @@
     <None Remove="Items\Weapons\Ranged\VoidSkull.png" />
     <None Remove="Items\Weapons\Ranged\WingedFury.png" />
     <None Remove="Items\Weapons\Ranged\Wingspand.png" />
+    <None Remove="Items\Weapons\Summon\AlcadWandMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\ArncharMinion.png" />
     <None Remove="Items\Weapons\Summon\ArncharMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\ArncharMinion_Glow.png" />
@@ -234,7 +236,7 @@
     <None Remove="Items\Weapons\Summon\X3144.png" />
     <None Remove="Items\Weapons\Summon\XScissor.png" />
     <None Remove="Items\Weapons\Summon\XScissorMinion.png" />
-    <None Remove="NPCs\Bosses\Caeva\CaevaDeathRowR.png" />
+    <None Remove="Items\Weapons\Thrown\LarvaedSpear.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
     <None Remove="NPCs\Bosses\Daedus\Daedus.png" />
@@ -270,6 +272,9 @@
     <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormBody.png" />
     <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormTail.png" />
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidSlash.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidVortex.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEater.png" />
+    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
@@ -300,7 +305,9 @@
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
-    <None Remove="Projectiles\Gun\BBBubble - Copy.png" />
+    <None Remove="Projectiles\DevilsPeakSwordProj.png" />
+    <None Remove="Projectiles\DevilsPeakSwordProj2.png" />
+    <None Remove="Projectiles\Gun\ClockworkBomb.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
@@ -324,7 +331,10 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
     <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
+    <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_Glow.png" />
+    <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
+    <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
     <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
@@ -339,9 +349,11 @@
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />
     <None Remove="Projectiles\Swords\Fenix\AngelenthalProj2.png" />
     <None Remove="Projectiles\Swords\Fenix\AngelenthalProj3.png" />
+    <None Remove="Projectiles\Swords\Fenix\NekomaraProj.png" />
     <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
     <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
+    <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

@@ -3771,18 +3771,27 @@ Mods: {
 			}
 
 			LunarianVoidBody: {
-				DisplayName: Lunarian Void Body
-				Tooltip: ""
+				DisplayName: Lunarian Void Chestplate
+				Tooltip: +10% Throwing Damage
 			}
 
 			LunarianVoidHead: {
-				DisplayName: Lunarian Void Head
-				Tooltip: ""
+				DisplayName: Lunarian Void Helmet
+				Tooltip:
+					'''
+					+10 Throwing Critical Strike Chance!
+					+20 Health
+					+25% Throwing Damage
+					'''
 			}
 
 			LunarianVoidLegs: {
 				DisplayName: Lunarian Void Legs
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increased movement speed 2%
+					+5% Throwing Damage
+					'''
 			}
 
 			SandStorm: {
@@ -4345,28 +4354,145 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BubbleBlasher: {
-				DisplayName: Bubble Blasher
+			AlcadzianCard: {
+				DisplayName: Alcadzian Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			BOMBERCard: {
+				DisplayName: BOMBER Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			BurningCard: {
+				DisplayName: Burning Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			FenixxCard: {
+				DisplayName: Fenixx Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			GrailedCard: {
+				DisplayName: Grailed Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			LarvaedCard: {
+				DisplayName: Larvaed Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			StyngerCard: {
+				DisplayName: Stynger Card
+				Tooltip:
+					'''
+					Use with a combination of dusts to make spells :)
+					Use a powder or dust and then use this type of weapon!
+					'''
+			}
+
+			URift: {
+				DisplayName: U Rift
 				Tooltip: ""
 			}
 
-			LarveinGreatbow: {
-				DisplayName: Larvein Greatbow
+			GrailAxe: {
+				DisplayName: Grail Axe
 				Tooltip: ""
 			}
 
-			BookOfSkullsII: {
-				DisplayName: Book Of Skulls I I
+			Rinavine: {
+				DisplayName: Rinavine
+				Tooltip: Lord of all things golden!
+			}
+
+			Jerry: {
+				DisplayName: Jerry
 				Tooltip: ""
 			}
 
-			ScytheOfSouls: {
-				DisplayName: Scythe Of Souls
-				Tooltip: ""
+			LarvaedSpear: {
+				DisplayName: Larvaed Spear
+				Tooltip: Kind of good ngl
 			}
 
-			DreadGauntlets: {
-				DisplayName: Dread Gauntlets
+			DevilsPeak: {
+				DisplayName: Devils Peak
+				Tooltip: This is peak fiction
+			}
+
+			ClockworkCity: {
+				DisplayName: Clockwork City
+				Tooltip:
+					'''
+					Totally not one of the best areas in a game, cough cough
+					Sown in Chains
+					'''
+			}
+
+			PotionOfAlcadWand: {
+				DisplayName: Potion Of Alcad Wand
+				Tooltip: Get Jolly with it,
+			}
+
+			ScissorianChestplate: {
+				DisplayName: Scissorian Chestplate
+				Tooltip:
+					'''
+					+20 Throwing Critical Strike Chance!
+					+15 Health
+					+10% Throwing Damage
+					'''
+			}
+
+			ScissorianGreaves: {
+				DisplayName: Scissorian Greaves
+				Tooltip:
+					'''
+					Increased movement speed
+					+20 Health
+					+15% Throwing Damage
+					'''
+			}
+
+			ScissorianMask: {
+				DisplayName: Scissorian Mask
+				Tooltip: +20% Throwing Damage
+			}
+
+			DarkButcher: {
+				DisplayName: The Dark Butcher
+				Tooltip: The Butcher but darker.
+			}
+
+			TheButcher: {
+				DisplayName: The Butcher
 				Tooltip: ""
 			}
 		}
@@ -4988,15 +5114,24 @@ Mods: {
 			VoidWallEaterMini.DisplayName: Void Wall Eater Mini
 			NekomaraProj.DisplayName: Nekomara Proj
 			KaBoomSigil2.DisplayName: Ka Boom Sigil2
-			CaevaBubble.DisplayName: Caeva Bubble
-			CaevaSpawnEffect.DisplayName: Caeva Spawn Effect
-			TidalWave.DisplayName: Tidal Wave
-			LarveinGreatbowL.DisplayName: Larvein Greatbow L
-			LarveinGreatbowR.DisplayName: Larvein Greatbow R
-			BBBubble.DisplayName: B B Bubble
-			BookOfSkullsIIProg.DisplayName: Book Of Skulls I I Prog
-			ScytheOfSoulsProj.DisplayName: Scythe Of Souls Proj
-			DreadFist.DisplayName: Dread Fist
+			VoidDrip.DisplayName: Void Drip
+			VoidHorizontalRift.DisplayName: Void Horizontal Rift
+			KaBoomMagic2.DisplayName: Ka Boom Magic2
+			GrailAxeProj.DisplayName: Grail Axe Proj
+			GrailShot.DisplayName: Grail Shot
+			RinavineProj.DisplayName: Rinavine Proj
+			LarvaeSpearP.DisplayName: Larvae Spear P
+			CrystalRay.DisplayName: Crystal Ray
+			CrystalRay2.DisplayName: Crystal Ray2
+			CrystalRay3.DisplayName: Crystal Ray3
+			CrystalRay4.DisplayName: Crystal Ray4
+			DevilsPeakSwordProj.DisplayName: Devils Peak Sword Proj
+			DevilsPeakSwordProj2.DisplayName: Devils Peak Sword Proj2
+			ClockworkBomb.DisplayName: Clockwork Bomb
+			EPWProj.DisplayName: E P W Proj
+			VoidRain.DisplayName: Void Rain
+			ButcherP.DisplayName: Butcher P
+			DarkButcherP.DisplayName: Dark Butcher P
 		}
 
 		NPCs: {
@@ -6369,10 +6504,6 @@ Mods: {
 			GoldLightBig.DisplayName: Gold Light Big
 			PearledGold.DisplayName: Pearled Gold
 			VoidWall.DisplayName: Void Wall
-			Caeva.DisplayName: Caeva
-			CaevaDeathRow.DisplayName: Caeva Death Row
-			CaevaDeathRowR.DisplayName: Caeva Death Row R
-			CaevaSnipe.DisplayName: Caeva Snipe
 		}
 
 		Biomes: {
@@ -6555,6 +6686,7 @@ Mods: {
 			TreeOver1.MapEntry: Tree Over1
 			TreeOver2.MapEntry: Tree Over2
 			VeriplantDirt.MapEntry: Veriplant Dirt
+			UnstableRift.MapEntry: Unstable Rift
 		}
 
 		Buffs: {
@@ -7016,6 +7148,11 @@ Mods: {
 			RoseB: {
 				DisplayName: Rose B
 				Description: Mods.Stellamod.Buffs.RoseB.Description
+			}
+
+			AlcadWandMinionBuff: {
+				DisplayName: Alcad Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.AlcadWandMinionBuff.Description
 			}
 		}
 	}

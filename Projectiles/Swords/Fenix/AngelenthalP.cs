@@ -15,11 +15,12 @@ namespace Stellamod.Projectiles.Swords.Fenix
 
 		public override void SetDefaults()
 		{
-			Projectile.friendly = false;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
 			Projectile.width = 245;
 			Projectile.height = 190;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 24;
+			Projectile.timeLeft = 16;
 			Projectile.scale = 1f;
 
 		}
@@ -40,7 +41,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 3)
+			if (++Projectile.frameCounter >= 2)
 			{
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= 8)

@@ -68,7 +68,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 			Projectile.friendly = false; // Only controls if it deals damage to enemies on contact (more on that later)
 			Projectile.minion = true; // Declares this as a minion (has many effects)
 			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 		}
 

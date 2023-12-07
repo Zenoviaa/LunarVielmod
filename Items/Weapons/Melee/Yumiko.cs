@@ -66,7 +66,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useAnimation = 80;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Pink;
 			Item.autoReuse = true;
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<YumikoShot>();
