@@ -223,7 +223,6 @@
     <None Remove="Items\Weapons\Summon\ProbeBuff.png" />
     <None Remove="Items\Weapons\Summon\ProbeMinion.png" />
     <None Remove="Items\Weapons\Summon\Ripper.png" />
-    <None Remove="Items\Weapons\Summon\RipperMinion.png" />
     <None Remove="Items\Weapons\Summon\SwarmerMinion.png" />
     <None Remove="Items\Weapons\Summon\SwarmerMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\SwarmerStaff.png" />
@@ -352,6 +351,7 @@
     <None Remove="Projectiles\Swords\Fenix\NekomaraProj.png" />
     <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
     <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
+    <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />

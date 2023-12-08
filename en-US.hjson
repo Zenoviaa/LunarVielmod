@@ -4187,7 +4187,11 @@ Mods: {
 
 			Ripper: {
 				DisplayName: Ripper
-				Tooltip: TODO
+				Tooltip:
+					'''
+					Summons a storm of swords around your cursor
+					Right click to perform a special attack
+					'''
 			}
 
 			XScissor: {
@@ -5211,6 +5215,7 @@ Mods: {
 			PunkedUpChopsP.DisplayName: Punked Up Chops P
 			PhotobombProj.DisplayName: Photobomb Proj
 			PhotobombShot.DisplayName: Photobomb Shot
+			RipperSwordProj.DisplayName: Ripper Sword Proj
 		}
 
 		NPCs: {
