@@ -64,8 +64,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			AIType = NPCID.StardustCellBig;
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
+			NPC.dontTakeDamage = true;
 		}
-
 
 		int invisibilityTimer;
 		public override void HitEffect(NPC.HitInfo hit)
@@ -74,14 +74,13 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f);
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			// Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
@@ -106,8 +105,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		float trueFrame = 0;
 		public override void FindFrame(int frameHeight)
 		{
-
-
 			NPC.frame.Width = 300;
 			NPC.frame.X = ((int)trueFrame % 5) * NPC.frame.Width;
 			NPC.frame.Y = (((int)trueFrame - ((int)trueFrame % 5)) / 5) * NPC.frame.Height;
