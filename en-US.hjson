@@ -4545,6 +4545,21 @@ Mods: {
 				DisplayName: Photobomb
 				Tooltip: I'll ruin your frames for you! I'll splatter paint all over you ;)
 			}
+
+			CatacombAquaStoneBlock: {
+				DisplayName: Catacomb Aqua Stone Block
+				Tooltip: ""
+			}
+
+			CatacombHeatStoneBlock: {
+				DisplayName: Catacomb Heat Stone Block
+				Tooltip: ""
+			}
+
+			CatacombTrapStoneBlock: {
+				DisplayName: Catacomb Trap Stone Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6638,6 +6653,21 @@ Mods: {
 			SeaTemple: {
 				DisplayName: Sea Temple
 				TownNPCDialogueName: the Sea Temple
+			}
+
+			CatacombFlames: {
+				DisplayName: Catacomb Flames
+				TownNPCDialogueName: the Catacomb Flames
+			}
+
+			CatacombTrap: {
+				DisplayName: Catacomb Trap
+				TownNPCDialogueName: the Catacomb Trap
+			}
+
+			CatacombWater: {
+				DisplayName: Catacomb Water
+				TownNPCDialogueName: the Catacomb Water
 			}
 		}
 

@@ -3,6 +3,7 @@ using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles.Acid;
+using Stellamod.Tiles.Catacombs;
 using Stellamod.Tiles.Naxtrin;
 using Stellamod.Tiles.RoyalCapital;
 using System;
@@ -43,6 +44,15 @@ namespace Stellamod
         public int SeaCount;
         public static bool InSeaTemple => ModContent.GetInstance<BiomeTileCounts>().SeaCount > 20;
 
+        public int FireCount;
+        public static bool InCatafire => ModContent.GetInstance<BiomeTileCounts>().FireCount > 20;
+
+        public int TrapCount;
+        public static bool InCatatrap => ModContent.GetInstance<BiomeTileCounts>().TrapCount > 20;
+
+            public int WaterCount;
+        public static bool InCatawater => ModContent.GetInstance<BiomeTileCounts>().WaterCount > 20;
+
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -55,6 +65,9 @@ namespace Stellamod
             VeriCount = tileCounts[ModContent.TileType<VeriplantDirt>()];
             FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
             SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
+            TrapCount = tileCounts[ModContent.TileType<CatacombStoneTrap>()];
+            FireCount = tileCounts[ModContent.TileType<CatacombStoneFire>()];
+            WaterCount = tileCounts[ModContent.TileType<CatacombStoneWater>()];
         }
     }
 }
