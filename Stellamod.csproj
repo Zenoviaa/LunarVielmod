@@ -375,6 +375,7 @@
     <Folder Include="Items\Blocks\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
+    <Folder Include="Struct\Catacombs\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ParticleLibrary">
