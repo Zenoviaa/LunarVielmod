@@ -18,6 +18,8 @@ namespace Stellamod.Assets.Biomes
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
+
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Catacombs");
 		public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
