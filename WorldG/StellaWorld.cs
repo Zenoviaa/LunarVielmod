@@ -99,7 +99,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
 				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
 				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Sylia", WorldGenSylia));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
+				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Sylia", WorldGenSylia));
 			}
 
 
@@ -1554,6 +1555,496 @@ namespace Stellamod.WorldG
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		private void WorldGenCatacombsTrap(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Trapping the world with catacombs";
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 1000000)
+			{
+
+
+				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmy = (((Main.maxTilesY / 2)));
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+				{
+					abysmy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmy > Main.UnderworldLayer - 50)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.JungleGrass))
+				{
+					continue;
+				}
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx - 50, abysmy + 200);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx - 50, abysmy + 50);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx - 50, abysmy + 350);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx + 50, abysmy + 200);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx + 50, abysmy + 350);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx - 150, abysmy + 200);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(abysmx - 150, abysmy + 50);
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+				}
+
+					placed = true;
+			}
+
+
+		}
 
 
 
