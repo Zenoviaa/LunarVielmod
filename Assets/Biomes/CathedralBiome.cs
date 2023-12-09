@@ -10,8 +10,8 @@ namespace Stellamod.Assets.Biomes
     public class CathedralBiome : ModBiome
 	{
 		public bool IsPrimaryBiome = true; // Allows this biome to impact NPC prices
-		
 
+		public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/CathedralWaterStyle"); // Sets a water style for when inside this biome
 		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/CathedralBackgroundStyle");

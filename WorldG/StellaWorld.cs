@@ -1638,7 +1638,7 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.JungleGrass))
+				if (!(tile.TileType == TileID.Stone))
 				{
 					continue;
 				}
