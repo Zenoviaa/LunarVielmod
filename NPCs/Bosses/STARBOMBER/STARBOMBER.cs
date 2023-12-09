@@ -174,10 +174,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5));
+		
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
 
-			switch (Main.rand.Next(4))
+			switch (Main.rand.Next(3))
 			{
 				case 0:
 					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 1, 1));
@@ -189,12 +190,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
 				case 2:
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 1, 1, 20));
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 1, 1, 40));
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5));
 					break;
 
-				case 3:
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1));
-					break;
+
 			}
 
 			
