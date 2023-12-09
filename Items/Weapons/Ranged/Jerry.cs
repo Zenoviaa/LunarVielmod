@@ -80,7 +80,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
 
 			recipe.Register();

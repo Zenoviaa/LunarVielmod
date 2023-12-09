@@ -311,6 +311,7 @@
     <None Remove="Projectiles\Gun\ClockworkBomb.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
+    <None Remove="Projectiles\Magic\GoldenHBalls.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />
     <None Remove="Projectiles\Magic\Poyashot.png" />

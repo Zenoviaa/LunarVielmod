@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
@@ -68,6 +70,16 @@ namespace Stellamod.Items.Weapons.Melee
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 4);
+            recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 40);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
         }
     }
 }

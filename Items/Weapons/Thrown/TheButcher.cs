@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			recipe.AddIngredient(ItemID.Ichor, 5);
 			recipe.AddIngredient(ItemID.TissueSample, 5);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 25);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 25);
 			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
 			recipe.AddTile(TileID.MythrilAnvil);

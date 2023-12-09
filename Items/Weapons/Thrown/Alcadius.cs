@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
@@ -43,6 +44,7 @@ namespace Stellamod.Items.Weapons.Thrown
             recipe.AddIngredient(ModContent.ItemType<Plantius>(), 1);
             recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 2);
             recipe.AddIngredient(ModContent.ItemType<CarianWood>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 2);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

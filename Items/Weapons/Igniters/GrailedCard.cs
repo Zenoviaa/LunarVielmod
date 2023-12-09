@@ -66,6 +66,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 9);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

@@ -46,7 +46,6 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddTile(TileID.MythrilAnvil);
 
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<MooningSlicer>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 15);

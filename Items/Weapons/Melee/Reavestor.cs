@@ -105,7 +105,7 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 100);
-            recipe.AddIngredient(ItemID.Bone, 75);
+            recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
             recipe.AddIngredient(ItemID.SoulofLight, 5);
             recipe.Register();
         }

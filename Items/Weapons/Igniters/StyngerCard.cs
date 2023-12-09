@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 5);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
 			recipe.AddIngredient(ItemID.Stinger, 5);
 			recipe.AddIngredient(ItemID.Stynger, 1);
