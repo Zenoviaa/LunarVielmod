@@ -4574,6 +4574,11 @@ Mods: {
 				DisplayName: Catacombs Door
 				Tooltip: ""
 			}
+
+			CatacombsSummoni: {
+				DisplayName: Catacombs Summoni
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
