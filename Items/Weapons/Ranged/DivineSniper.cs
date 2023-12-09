@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Tech;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -41,8 +42,9 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.IllegalGunParts, 1);
-
-			recipe.AddIngredient(ItemID.Feather, 10);
+			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+			recipe.AddIngredient(ItemID.MarbleBlock, 100);
+			recipe.AddIngredient(ItemID.Feather, 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

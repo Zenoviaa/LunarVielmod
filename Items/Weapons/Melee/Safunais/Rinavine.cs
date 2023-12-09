@@ -60,7 +60,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 56;
+			Item.damage = 76;
 			Item.rare = ItemRarityID.LightPurple;
 		}
 

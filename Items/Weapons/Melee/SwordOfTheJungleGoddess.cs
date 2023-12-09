@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void SetDefaults()
         {
             Item.shootSpeed *= 0.75f;
-            Item.damage = 42;
+            Item.damage = 82;
             Item.useTime = 13;
             Item.useAnimation = 13;
             Item.useStyle = ItemUseStyleID.Swing;
