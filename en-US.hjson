@@ -4564,6 +4564,16 @@ Mods: {
 				DisplayName: Catacomb Trap Stone Block
 				Tooltip: ""
 			}
+
+			CatacombsKey: {
+				DisplayName: Catacombs Key
+				Tooltip: ""
+			}
+
+			CatacombsDoor: {
+				DisplayName: Catacombs Door
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6790,6 +6800,8 @@ Mods: {
 			TreeOver2.MapEntry: Tree Over2
 			VeriplantDirt.MapEntry: Veriplant Dirt
 			UnstableRift.MapEntry: Unstable Rift
+			CatacombsDoorClosed.MapEntry: Catacombs Door Closed
+			CatacombsSummon.MapEntry: Catacombs Summon
 		}
 
 		Buffs: {

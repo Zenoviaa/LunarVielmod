@@ -86,7 +86,9 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.WallofFlesh)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 5));
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>(), 1, 1, 1));// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.QueenBee)
