@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Accessories;
+﻿using Stellamod.DropRules;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
@@ -9,6 +10,7 @@ using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Acidic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -337,7 +339,20 @@ namespace Stellamod.NPCs.Global
 			
 
 			}
-			
+
+
+
+
+
+
+
+			if (npc.type == ModContent.NPCType<AcidSlime>() || npc.type == ModContent.NPCType<AcidProbe>() || npc.type == ModContent.NPCType<AcidSpirit>() || npc.type == ModContent.NPCType<ToxicBoulder>())
+			{
+				LeadingConditionRule HardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
+				HardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 1, 0, 5));
+				npcLoot.Add(HardmodeDropRule);
+			}
+
 		}
 	}
 }

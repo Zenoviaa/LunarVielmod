@@ -18,12 +18,12 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 43;
+			Item.damage = 23;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 25;
-			Item.useAnimation = 25;
+			Item.useTime = 12;
+			Item.useAnimation = 12;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noUseGraphic = true;
 			Item.knockBack = 6;
@@ -41,8 +41,9 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 60);
-			recipe.AddIngredient(ItemType<GraftedSoul>(), 15);
-			recipe.AddIngredient(ItemType<OrbOfTheMorrow>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<OrbOfTheMorrow>(), 1);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

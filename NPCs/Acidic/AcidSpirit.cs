@@ -132,7 +132,7 @@ namespace Stellamod.NPCs.Acidic
             base.ModifyNPCLoot(npcLoot);
             if (Main.hardMode)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), minimumDropped: 1, maximumDropped: 4));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
             }
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AcidStaketers>(), chanceDenominator: 30));

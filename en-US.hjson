@@ -4579,6 +4579,16 @@ Mods: {
 				DisplayName: Catacombs Summoni
 				Tooltip: ""
 			}
+
+			GraftedSoul: {
+				DisplayName: Grafted Soul
+				Tooltip: ""
+			}
+
+			GoldenHeartBalls: {
+				DisplayName: Golden Heart Balls
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5231,6 +5241,7 @@ Mods: {
 			PhotobombProj.DisplayName: Photobomb Proj
 			PhotobombShot.DisplayName: Photobomb Shot
 			RipperSwordProj.DisplayName: Ripper Sword Proj
+			GoldenHBalls.DisplayName: Golden H Balls
 		}
 
 		NPCs: {

@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Acidic
             base.ModifyNPCLoot(npcLoot);
             if (Main.hardMode)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), minimumDropped: 1, maximumDropped: 2));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
             }
             npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
         }

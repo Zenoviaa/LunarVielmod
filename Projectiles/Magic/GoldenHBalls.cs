@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Magic
 		{
 			// DisplayName.SetDefault("MeatBall");
 			Main.projFrames[Projectile.type] = 1;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
 			//The recording mode
 		}
@@ -105,15 +105,15 @@ namespace Stellamod.Projectiles.Magic
 
 			Timer++;
 
-			if (alphaCounter <= 1)
+			if (alphaCounter <= 2)
 			{
 				alphaCounter += 0.08f;
 			}
 
 
 
-			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 15f; // The speed at which the projectile moves towards the target
+			float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
+			float projSpeed = 18f; // The speed at which the projectile moves towards the target
 
 			
 
@@ -132,24 +132,6 @@ namespace Stellamod.Projectiles.Magic
 
 			
 
-			if (Timer2 < 100)
-			{
-
-				for (int j = 0; j < 10; j++)
-				{
-					Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
-					vector2 += -Utils.RotatedBy(Vector2.UnitY, (j * 3.141591734f / 6f), default(Vector2)) * new Vector2(8f, 16f);
-					vector2 = Utils.RotatedBy(vector2, (Projectile.rotation - 1.57079637f), default(Vector2));
-					int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.GoldCoin, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
-					Main.dust[num8].scale = 1.3f;
-					Main.dust[num8].noGravity = true;
-					Main.dust[num8].position = Projectile.Center + vector2;
-					Main.dust[num8].velocity = Projectile.velocity * 0.1f;
-					Main.dust[num8].noLight = true;
-					Main.dust[num8].velocity = Vector2.Normalize(Projectile.Center - Projectile.velocity * 3f - Main.dust[num8].position) * 1.25f;
-				}
-
-			}
 
 		
 
