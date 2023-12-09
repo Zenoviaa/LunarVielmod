@@ -1,5 +1,6 @@
 ﻿
 using Stellamod.Tiles.Abyss.Aurelus;
+using Stellamod.Tiles.Catacombs;
 using Terraria;
 using Terraria.ModLoader;
 
