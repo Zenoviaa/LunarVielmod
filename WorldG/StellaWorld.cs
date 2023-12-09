@@ -2336,7 +2336,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx - 10, smyy + 180);
+					Point Loc = new Point(smx - 10, smyy + 170);
 					StructureLoader.ReadStruct(Loc, "Struct/Underworld/UnderworldRuins");
 
 
