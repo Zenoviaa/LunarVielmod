@@ -96,10 +96,10 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
 				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Bridget", WorldGenBridget));			
 				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenSeaTemple));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Cathedral", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Cathedral", WorldGenCatacombsFlames));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Cathedral", WorldGenSylia));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Sylia", WorldGenSylia));
 			}
 
 
@@ -1236,7 +1236,7 @@ namespace Stellamod.WorldG
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmy = (((Main.maxTilesY / 2) + (Main.maxTilesY / 4)));
+				int abysmy = (((Main.maxTilesY / 2)));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
@@ -2254,7 +2254,7 @@ namespace Stellamod.WorldG
 					Point Loc2 = new Point(smx - 10, smyy);
 					Point Loc4 = new Point(smx - 30, smyy + 40);
 
-					Point Loc5 = new Point(smx - 30, smyy + 60);
+					Point Loc5 = new Point(smx, smyy + 60);
 					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					//new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt))
