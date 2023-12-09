@@ -195,14 +195,18 @@ namespace Stellamod.NPCs.Town
 				chat.Add(Language.GetTextValue("Funny enough the clothier used to come through here all the time for some of our amazing fabrics", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("A long time ago, I used to experiment with Biotech. It went wrong, and teleported pieces of itself all over the world. You might have found some by now."));
-			chat.Add(Language.GetTextValue("Maybe if you find some of my lost tech, you could craft my original biotech and retry my experiments!"));
-			chat.Add(Language.GetTextValue("The guide seems to know too much for a human being. I feel like he has something else connected to him…"));
-			chat.Add(Language.GetTextValue("The merchant keeps telling me about this dangerous eye thing. I could just zap it with my Bio laser."), 5.0);
-			chat.Add(Language.GetTextValue("Aimacra seems pretty neat, too bad she's taken"), 0.4);
-			chat.Add(Language.GetTextValue("I wouldn't mind hooking up with the Steampunker :)"), 0.1);
-			chat.Add(Language.GetTextValue("So many spare parts and materials, bring them all to me!"), 0.1);
-			chat.Add(Language.GetTextValue("I can't believe I let it get loose, I've complicated too many things."), 0.1);
+			chat.Add(Language.GetTextValue("I wonder what my sister Sylia is up to nowadays, do you know her?"));
+			chat.Add(Language.GetTextValue("I'm gonna be the very best, like no one ever was... "));
+			chat.Add(Language.GetTextValue("Fenix is the best queen there will ever be! She gives us all what we want :P"));
+			chat.Add(Language.GetTextValue("This place is so calming, I can't stand it but I would give everything to be near Fenix"), 5.0);
+			chat.Add(Language.GetTextValue("Aimacra seems pretty cool, she came here recently looking for some brooches"), 0.4);
+			chat.Add(Language.GetTextValue("Hey uh could you do something for me? I have a little favor, just ask what it is!"), 0.1);
+			chat.Add(Language.GetTextValue("I've always wanted to be the best witch there is! I've always been outshined by exiles though, including my sisters sadly."), 0.1);
+			chat.Add(Language.GetTextValue("I really need to beat my sister in a battle someday."), 0.1);
+			chat.Add(Language.GetTextValue("It's strange, the economic system here is almost like communism"), 0.1);
+			chat.Add(Language.GetTextValue("Damn we have some cool shit here"), 0.1);
+			chat.Add(Language.GetTextValue("No doubt about it but Fenix is truly the strongest witch in all of the lands, maybe even more powerful than the witch of light in the hallow, I don't like her."), 0.1);
+			chat.Add(Language.GetTextValue("Hahh, I remember that goon Verlia, she's kind of dumb but shes at least powerful, I remember she got exiled for stealing tomes, I might need that from her."), 0.1);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
