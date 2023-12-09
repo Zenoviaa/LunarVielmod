@@ -6607,6 +6607,7 @@ Mods: {
 			CaevaDeathRow.DisplayName: Caeva Death Row
 			CaevaDeathRowR.DisplayName: Caeva Death Row R
 			CaevaSnipe.DisplayName: Caeva Snipe
+			WaterCogwork.DisplayName: Water Cogwork
 		}
 
 		Biomes: {
