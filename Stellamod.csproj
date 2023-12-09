@@ -115,6 +115,7 @@
     <None Remove="Items\Placeable\Alcadzia\CurtainTopI.png" />
     <None Remove="Items\Placeable\Alcadzia\RectiteI.png" />
     <None Remove="Items\Placeable\Alcadzia\SkullpileI.png" />
+    <None Remove="Items\Placeable\CatacombsDoor.png" />
     <None Remove="Items\Placeable\Cathedral\GovheilCastleBlock.png" />
     <None Remove="Items\Placeable\Govheil\GothivA.png" />
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
