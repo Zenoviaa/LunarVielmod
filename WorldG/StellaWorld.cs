@@ -1268,7 +1268,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx - 50, abysmy + 100);
+					Point Loc = new Point(abysmx - 50, abysmy + 200);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
@@ -1324,7 +1324,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx - 350, abysmy + 100);
+					Point Loc = new Point(abysmx - 250, abysmy - 250);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
@@ -1379,7 +1379,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx + 250, abysmy + 100);
+					Point Loc = new Point(abysmx + 150, abysmy - 250);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
@@ -1434,7 +1434,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx + 550, abysmy + 100);
+					Point Loc = new Point(abysmx + 350, abysmy - 100);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
@@ -1489,7 +1489,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(abysmx - 650, abysmy + 100);
+					Point Loc = new Point(abysmx - 450, abysmy - 100);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
