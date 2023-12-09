@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 		
 			NPC.damage = 1;
 			NPC.defense = 26;
-			NPC.lifeMax = 28000;  
+			NPC.lifeMax = 20000;  
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
