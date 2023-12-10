@@ -4589,6 +4589,11 @@ Mods: {
 				DisplayName: Golden Heart Balls
 				Tooltip: ""
 			}
+
+			Test: {
+				DisplayName: Test
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5242,6 +5247,7 @@ Mods: {
 			PhotobombShot.DisplayName: Photobomb Shot
 			RipperSwordProj.DisplayName: Ripper Sword Proj
 			GoldenHBalls.DisplayName: Golden H Balls
+			WaterBolt.DisplayName: Water Bolt
 		}
 
 		NPCs: {
