@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
 			Item.scale = 0.5f;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageSummonSkeleton;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.ChlorophyteBullet;
@@ -57,12 +57,13 @@ namespace Stellamod.Items.Weapons.Mage
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<GreekLantern>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
+
 		}
 	}
 }

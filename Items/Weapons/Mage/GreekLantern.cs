@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shootSpeed = 8f;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			
+			Item.rare = ItemRarityID.Green;
 		}
 		
 

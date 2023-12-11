@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useAnimation = 23;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 10;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.UseSound = SoundID.DD2_SonicBoomBladeSlash;
 			Item.autoReuse = false;
 			Item.value = 100000;

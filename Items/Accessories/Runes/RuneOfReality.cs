@@ -19,7 +19,7 @@ namespace Stellamod.Items.Accessories.Runes
             Item.width = 20;
             Item.height = 20;
             Item.value = 2500;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
         public override void AddRecipes()

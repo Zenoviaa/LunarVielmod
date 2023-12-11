@@ -12,22 +12,20 @@ namespace Stellamod.Items.Ores
 		{
 			// Tooltip.SetDefault("Frozen to the core, an essense of the moon and ice.");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
-
 			
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
-		
-			
+			Item.rare = ItemRarityID.LightPurple;
 		}
 
 		public override void AddRecipes()
@@ -39,6 +37,5 @@ namespace Stellamod.Items.Ores
 			recipe.AddTile(TileID.AdamantiteForge);
 			recipe.Register();
 		}
-
 	}
 }

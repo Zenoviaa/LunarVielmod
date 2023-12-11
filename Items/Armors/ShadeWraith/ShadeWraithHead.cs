@@ -21,8 +21,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-
+            Item.rare = ItemRarityID.Green;
             Item.defense = 5;
         }
 
@@ -41,8 +40,8 @@ namespace Stellamod.Items.Armors.ShadeWraith
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
-
         }
+
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Increases max life if you are under 200 health!" +
@@ -55,19 +54,14 @@ namespace Stellamod.Items.Armors.ShadeWraith
                 player.moveSpeed += 0.04f;
             }
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<DarkEssence>(), 8);
-            recipe.AddIngredient(ItemID.DemoniteBar, 4);
+            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 4);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemType<DarkEssence>(), 8);
-            recipe2.AddIngredient(ItemID.CrimtaneBar, 4);
-            recipe2.AddTile(TileID.WorkBenches);
-            recipe2.Register();
         }
     }
 }

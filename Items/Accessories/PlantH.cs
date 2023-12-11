@@ -25,9 +25,8 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(silver: 12);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -42,18 +41,10 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-			player.GetModPlayer<MyPlayer>().PlantH = true;
-		
+			player.GetModPlayer<MyPlayer>().PlantH = true;	
 			player.statDefense += 15;
 			player.statLifeMax2 += 40;
 			player.maxRunSpeed *= 0.40f;
-
-
-
 		}
-
-
-
-
 	}
 }

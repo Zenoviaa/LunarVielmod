@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Throwing;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<LarvaeSpearP>();
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.useAnimation = 25;
 			Item.useTime = 25;
 			Item.consumable = true;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 		}
 
 
@@ -43,10 +43,11 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe(250);
 			recipe.AddIngredient(ItemID.BorealWood, 10);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 2);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
+
 		}
 	}
 }

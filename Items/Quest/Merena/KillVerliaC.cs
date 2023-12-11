@@ -1,8 +1,5 @@
-﻿
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Materials;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,13 +7,6 @@ namespace Stellamod.Items.Quest.Merena
 {
     internal class KillVerliaC : ModItem
     {
-
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("This doesn’t look like it will do anything by itself"); // The (English) text shown below your item's name
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
-        }
-
         public override void SetDefaults()
         {
             Item.width = 20; // The item texture's width
@@ -24,16 +14,16 @@ namespace Stellamod.Items.Quest.Merena
 
             Item.maxStack = 1; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.rare = ItemRarityID.Quest;
+            Item.questItem = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-
             recipe.AddIngredient(ModContent.ItemType<StolenMagicTome>(), 1);
             recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 15);
             recipe.AddIngredient(ModContent.ItemType<KillVerlia>(), 1);
-
-
             recipe.Register();
         }
     }

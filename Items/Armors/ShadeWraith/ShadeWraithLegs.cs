@@ -14,13 +14,13 @@ namespace Stellamod.Items.Armors.ShadeWraith
 			// DisplayName.SetDefault("Shade Wraith Legs");
 			// Tooltip.SetDefault("Increases melee critical strike chance by 8% and movement speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-
+            Item.rare = ItemRarityID.Green;
             Item.defense = 4;
         }
 
@@ -33,15 +33,9 @@ namespace Stellamod.Items.Armors.ShadeWraith
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<DarkEssence>(), 5);
-            recipe.AddIngredient(ItemID.DemoniteBar, 6);
+            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 6);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemType<DarkEssence>(), 5);
-            recipe2.AddIngredient(ItemID.CrimtaneBar, 6);
-            recipe2.AddTile(TileID.WorkBenches);
-            recipe2.Register();
         }
     }
 }

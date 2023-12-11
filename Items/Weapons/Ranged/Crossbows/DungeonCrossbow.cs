@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.useAnimation = 48;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Orange;
             Item.autoReuse = false;
             Item.shootSpeed = 40f;
             Item.shoot = ModContent.ProjectileType<DungeonCrossbowHold>();

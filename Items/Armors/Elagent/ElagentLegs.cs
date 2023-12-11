@@ -14,13 +14,13 @@ namespace Stellamod.Items.Armors.Elagent
 			// DisplayName.SetDefault("Shade Wraith Legs");
 			// Tooltip.SetDefault("Increases melee critical strike chance by 8% and movement speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-
+            Item.rare = ItemRarityID.Orange;
             Item.defense = 7;
         }
 

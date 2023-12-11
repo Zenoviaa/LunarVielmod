@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.width = 74;
 			Item.height = 38;
 			Item.scale = 0.9f;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.LightRed;
 			Item.useTime = 12;
 			Item.useAnimation = 12;
 			Item.useStyle = ItemUseStyleID.Shoot;

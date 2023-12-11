@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.useAnimation = 9999;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Pink;
             Item.autoReuse = true;
             Item.shootSpeed = 30f;
             Item.shoot = ModContent.ProjectileType<ScissorianHold>();
@@ -43,21 +43,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.value = Item.buyPrice(silver: 3);
             Item.noUseGraphic = true;
             Item.channel = true;
-       
-
         }
 
-
-
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
-
-            recipe.Register();
-        }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)

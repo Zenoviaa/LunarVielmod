@@ -12,6 +12,7 @@ namespace Stellamod.Items.Harvesting
 			/* Tooltip.SetDefault("Hmph, what is this used for?" +
 			"\nBest use for weapons and musical items!"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.damage = 90;
@@ -21,7 +22,7 @@ namespace Stellamod.Items.Harvesting
 			Item.useAnimation = 20;
 			Item.knockBack = 5;
 			Item.autoReuse = true;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.DamageType = DamageClass.Melee;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.sellPrice(silver: 20);

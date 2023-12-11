@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 0, 80, 0);
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ItemRarityID.Yellow;
             Item.UseSound = SoundID.Item92;
             Item.autoReuse = true;
             Item.shoot = ProjectileType<DragonBolt>();

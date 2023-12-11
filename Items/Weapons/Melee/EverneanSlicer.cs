@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useAnimation = 15;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Lime;
 			Item.autoReuse = true;
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<EverneanProj>();

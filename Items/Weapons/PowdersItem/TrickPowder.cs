@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<TrickPowderProj>();
 			Item.autoReuse = true;

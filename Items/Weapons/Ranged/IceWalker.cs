@@ -41,10 +41,12 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();
         }
+        
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             WinterboundArrow += 1;

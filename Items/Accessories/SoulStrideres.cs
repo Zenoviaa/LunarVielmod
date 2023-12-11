@@ -19,8 +19,9 @@ namespace Stellamod.Items.Accessories
             Item.Size = new Vector2(20);
             Item.accessory = true;
             Item.value = Item.sellPrice(silver: 12);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.LightRed;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -31,6 +32,7 @@ namespace Stellamod.Items.Accessories
             recipe.AddTile(TileID.TinkerersWorkbench);
             recipe.Register();
         }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (!player.ZoneSkyHeight || player.wet)
@@ -43,5 +45,5 @@ namespace Stellamod.Items.Accessories
             player.moveSpeed += 0.5f;
         }
     }
-    }
+}
 

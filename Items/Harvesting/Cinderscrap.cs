@@ -13,14 +13,14 @@ namespace Stellamod.Items.Harvesting
 			"\nBurned to infinity" +
 			"\nUsed in plants"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.sellPrice(silver: 5);
 		}
-
 
 
 		public override void AddRecipes()
@@ -32,9 +32,5 @@ namespace Stellamod.Items.Harvesting
 			recipe.AddIngredient(ItemID.Wood, 1);
 			recipe.AddIngredient(ItemID.Torch, 3);
 		}
-
-
 	}
-
-
 }

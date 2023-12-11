@@ -73,7 +73,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useAnimation = 5;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 15;
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.Lime;
 			Item.autoReuse = true;
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<AngelenthalProj1>();

@@ -39,10 +39,11 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.BorealWood, 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 20);
+			recipe.AddTile(TileID.WorkBenches);
+			recipe.Register();
+		
 		}
 	}
 }

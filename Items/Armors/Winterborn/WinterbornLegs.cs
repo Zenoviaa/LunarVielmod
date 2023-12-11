@@ -13,13 +13,13 @@ namespace Stellamod.Items.Armors.Winterborn
 			// DisplayName.SetDefault("Winterborn Legs");
 			// Tooltip.SetDefault("Increases movement speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 2;
         }
 
@@ -27,6 +27,7 @@ namespace Stellamod.Items.Armors.Winterborn
         {
             player.moveSpeed += 0.1f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -36,7 +37,5 @@ namespace Stellamod.Items.Armors.Winterborn
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
-
-
     }
 }

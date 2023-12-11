@@ -23,7 +23,6 @@ namespace Stellamod.Items.Tools
 			Item.useStyle = ItemUseStyleID.Thrust;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.axe = 2;	

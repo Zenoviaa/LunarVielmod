@@ -8,9 +8,17 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Items\Banners\**" />
+    <AdditionalFiles Remove="Items\Blocks\**" />
     <Compile Remove="FX\**" />
+    <Compile Remove="Items\Banners\**" />
+    <Compile Remove="Items\Blocks\**" />
     <EmbeddedResource Remove="FX\**" />
+    <EmbeddedResource Remove="Items\Banners\**" />
+    <EmbeddedResource Remove="Items\Blocks\**" />
     <None Remove="FX\**" />
+    <None Remove="Items\Banners\**" />
+    <None Remove="Items\Blocks\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Biomes\StarbloomWaterfallStyle.png" />
@@ -376,8 +384,6 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
-    <Folder Include="Items\Banners\" />
-    <Folder Include="Items\Blocks\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />

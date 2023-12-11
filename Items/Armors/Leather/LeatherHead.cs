@@ -21,8 +21,7 @@ namespace Stellamod.Items.Armors.Leather
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Orange;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }
 
@@ -35,27 +34,24 @@ namespace Stellamod.Items.Armors.Leather
         {
             return body.type == ModContent.ItemType<LeatherBody>() && legs.type == ModContent.ItemType<LeatherLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Leather, 8);
-            recipe.AddIngredient(ItemID.IronBar, 3);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.Leather, 8);
-            recipe2.AddIngredient(ItemID.LeadBar, 3);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
     }
 }

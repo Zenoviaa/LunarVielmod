@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item1;
 			Item.shoot = ProjectileType<AcidicLancherProj>();
 			Item.shootSpeed = 25f;

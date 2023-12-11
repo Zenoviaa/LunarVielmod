@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.buyPrice(0, 30, 0, 0);
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.LightRed;
 
 			// These below are needed for a minion weapon
 			Item.noMelee = true;

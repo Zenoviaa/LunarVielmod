@@ -41,7 +41,7 @@ namespace Stellamod.Backgrounds
 
 			scale = 0.66f;
 			parallax = 0.3;
-			b = 1400;
+			//b = 1400;
 
 			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/StarbloomBiomeBackground");
 

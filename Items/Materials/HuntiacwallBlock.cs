@@ -16,7 +16,7 @@ namespace Stellamod.Items.Materials
 		{
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;
@@ -25,6 +25,7 @@ namespace Stellamod.Items.Materials
 			Item.consumable = true;
 			Item.createWall = ModContent.WallType<Tiles.HuntiacWall>();
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(4);

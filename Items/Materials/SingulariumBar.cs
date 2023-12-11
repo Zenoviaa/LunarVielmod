@@ -8,7 +8,6 @@ namespace Stellamod.Items.Materials
 {
     internal class SingulariumBar : ModItem
     {
-
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
@@ -24,10 +23,9 @@ namespace Stellamod.Items.Materials
             Item.consumable = true;
             Item.width = 20; // The item texture's width
             Item.height = 20; // The item texture's heighta
-            Item.maxStack = 999; // The item's max stack value
+            Item.maxStack = Item.CommonMaxStack; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1);
+            Item.rare = ItemRarityID.Orange;
         }
-     
-
     }
 }

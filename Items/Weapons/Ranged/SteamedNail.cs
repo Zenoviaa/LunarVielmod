@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.knockBack = 2;
 			Item.value = 10000;
 			Item.noMelee = true;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Pink;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<SteamedNailProj>();

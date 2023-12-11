@@ -20,14 +20,12 @@ namespace Stellamod.Items.Armors.Astrasilk
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }
 
         public override void UpdateEquip(Player player)
         {
-
             player.manaRegen += 4;
         }
 

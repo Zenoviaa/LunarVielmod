@@ -23,21 +23,7 @@ namespace Stellamod.Items.Consumables
             Item.useAnimation = 45;
             Item.useTime = 45;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ItemRarityID.Blue;
         }
-
-      /*  public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 30);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
-            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 15);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
-
-*/
-        
-
     }
 }

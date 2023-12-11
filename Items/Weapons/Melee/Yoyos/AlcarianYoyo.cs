@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Melee.Yoyos
 			Item.knockBack = 3f; // The amount of knockback the item inflicts.
 			Item.crit = 26; // The percent chance for the weapon to deal a critical strike. Defaults to 4.
 			Item.channel = true; // Set to true for items that require the attack button to be held out (e.g. yoyos and magic missile weapons)
-			Item.rare = ItemRarityID.Orange; // The item's rarity. This changes the color of the item's name.
+			Item.rare = ItemRarityID.Blue; // The item's rarity. This changes the color of the item's name.
 			Item.value = Item.buyPrice(gold: 1); // The amount of money that the item is can be bought for.
 
 			Item.shoot = ModContent.ProjectileType<AlcadzianHead>(); // Which projectile this item will shoot. We set this to our corresponding projectile.

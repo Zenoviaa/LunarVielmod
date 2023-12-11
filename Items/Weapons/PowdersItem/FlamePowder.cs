@@ -15,6 +15,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			/* Tooltip.SetDefault("Throw magical dust on them!" +
 				"\nA flamey dust that explodes with your igniter!"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.damage = 3;
@@ -27,7 +28,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = Item.buyPrice(0, 50, 0, 0);
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType <FlamePowderProj>();
 			Item.autoReuse = true;
@@ -35,10 +36,9 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.crit = 7;
 			Item.UseSound = SoundID.AbigailAttack;
 		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
-			int dir = player.direction;
 
 			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback);
 			return false;

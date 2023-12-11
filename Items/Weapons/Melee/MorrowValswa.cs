@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.knockBack = 8;
 			Item.useTurn = false;
 			Item.value = Terraria.Item.sellPrice(0, 0, 1, 0);
-			Item.rare = ItemRarityID.White;
+			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shootSpeed = 6f;
 			Item.noUseGraphic = false;

@@ -21,8 +21,7 @@ namespace Stellamod.Items.Armors.Elagent
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-
+            Item.rare = ItemRarityID.Orange;
             Item.defense = 8;
         }
 

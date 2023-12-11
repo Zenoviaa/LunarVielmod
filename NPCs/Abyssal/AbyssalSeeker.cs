@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.DropRules;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
@@ -50,6 +51,10 @@ namespace Stellamod.NPCs.Abyssal
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 1, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConvulgingMater>(), minimumDropped: 1, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunarBand>(), 50));
+
+            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
+            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EldritchSoul>(), minimumDropped: 1, maximumDropped: 5));
+            npcLoot.Add(hardmodeDropRule);
         }
 
         public override void SetDefaults()

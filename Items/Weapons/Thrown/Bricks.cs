@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ItemRarityID.Blue;
             Item.consumable = true;
             Item.maxStack = 9999;
             Item.crit = 30;

@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Throwing;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<PunkedUpChopsP>();
@@ -43,10 +43,10 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe(250);
 			recipe.AddIngredient(ItemID.Cog, 5);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 2);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.Register();
 		}
 	}
 }

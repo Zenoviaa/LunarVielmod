@@ -46,7 +46,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
-            Item.rare = ItemRarityID.LightPurple;
+            Item.rare = ItemRarityID.Blue;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ItemRarityID.Blue;
             Item.crit = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 15f;
             Item.rare = ItemRarityID.Blue;
             Item.consumable = true;
-            Item.maxStack = 9999;
+            Item.maxStack = Item.CommonMaxStack;
         }
 
         public override void AddRecipes()

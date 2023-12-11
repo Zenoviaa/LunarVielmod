@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
-            Item.rare = ItemRarityID.LightPurple;
+            Item.rare = ItemRarityID.LightRed;
         }
 
 

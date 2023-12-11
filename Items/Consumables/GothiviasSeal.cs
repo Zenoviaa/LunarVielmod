@@ -26,13 +26,11 @@ namespace Stellamod.Items.Consumables
             Item.value = Item.buyPrice(gold: 10);
             Item.useStyle = ItemUseStyleID.HoldUp;
 
-
+            Item.rare = ItemRarityID.Green;
             Item.noMelee = true;
             Item.consumable = false;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
         }
-
-
     }
 }

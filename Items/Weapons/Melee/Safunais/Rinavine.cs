@@ -61,7 +61,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
 			Item.damage = 76;
-			Item.rare = ItemRarityID.LightPurple;
+			Item.rare = ItemRarityID.LightRed;
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

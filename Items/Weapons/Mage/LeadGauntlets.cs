@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noUseGraphic = true;
             Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
 
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<LeadFist>();

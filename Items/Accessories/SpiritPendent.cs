@@ -17,7 +17,6 @@ namespace Stellamod.Items.Accessories
             Item.value = Item.sellPrice(gold: 2);
             Item.Size = new Vector2(20);
             Item.accessory = true;
-            Item.value = Item.sellPrice(silver: 12);
             Item.rare = ItemRarityID.Blue;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)

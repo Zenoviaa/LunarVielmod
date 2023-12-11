@@ -15,27 +15,23 @@ namespace Stellamod.Items.Harvesting
 			"\nWhere does this ore come from?" +
 			"\nBest use for metalic weapons and magical items!"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.sellPrice(silver: 20);
+			Item.rare = ItemRarityID.Blue;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
-			recipe.AddIngredient(ItemID.DemoniteBar, 1);
+			recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-
-			Recipe recipe3 = CreateRecipe();
-			recipe3.AddIngredient(ModContent.ItemType<FrileOre>(), 1);
-			recipe3.AddIngredient(ItemID.CrimtaneBar, 1);
-			recipe3.AddTile(TileID.Anvils);
-			recipe3.Register();
-
 
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
@@ -43,6 +39,4 @@ namespace Stellamod.Items.Harvesting
 			recipe2.Register();
 		}
 	}
-
-
 }

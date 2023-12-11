@@ -19,8 +19,7 @@ namespace Stellamod.Items.Armors.Leather
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Orange;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 2;
         }
 
@@ -28,21 +27,14 @@ namespace Stellamod.Items.Armors.Leather
         {
             player.moveSpeed += 0.1f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Leather, 6);
-            recipe.AddIngredient(ItemID.IronBar, 2);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 2);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.Leather, 6);
-            recipe2.AddIngredient(ItemID.LeadBar, 2);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
-
-
     }
 }

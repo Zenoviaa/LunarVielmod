@@ -24,13 +24,12 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 10;
             Item.value = 1000;
-            Item.rare = ItemRarityID.Green;
             Item.crit = 15;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<Card5>();
             Item.shootSpeed = 18f;
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ItemRarityID.LightPurple;
             Item.consumable = true;
             Item.maxStack = 9999;
             Item.buyPrice(0, 0, 10, 0);

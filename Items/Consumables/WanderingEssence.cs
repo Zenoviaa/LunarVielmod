@@ -27,12 +27,13 @@ namespace Stellamod.Items.Consumables
             Item.value = Item.buyPrice(silver: 1);
             Item.useStyle = ItemUseStyleID.HoldUp;
 
-
+            Item.rare = ItemRarityID.Blue;
             Item.noMelee = true;
             Item.consumable = false;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -40,6 +41,5 @@ namespace Stellamod.Items.Consumables
             recipe.AddIngredient(ItemID.Wood, 20);
             recipe.Register();
         }
-
     }
 }

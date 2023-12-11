@@ -25,8 +25,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 3;
         }
 
@@ -35,6 +34,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
             player.moveSpeed += 0.2f;
             player.GetDamage(DamageClass.Throwing) *= 1.05f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -43,7 +43,5 @@ namespace Stellamod.Items.Armors.LunarianVoid
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
-
-
     }
 }

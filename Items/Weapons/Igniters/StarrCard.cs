@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/clickk");
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<IgniterStart>();

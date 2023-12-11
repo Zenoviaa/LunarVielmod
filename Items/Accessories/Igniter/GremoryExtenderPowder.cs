@@ -48,18 +48,9 @@ namespace Stellamod.Items.Accessories.Igniter
 
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
-			recipe.AddIngredient(ItemID.ShadowScale, 10);
+			recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 10);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
-
-
-			Recipe recipe2 = CreateRecipe();
-
-			recipe2.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
-			recipe2.AddIngredient(ModContent.ItemType<TerrorFragments>(), 5);
-			recipe2.AddIngredient(ItemID.TissueSample, 10);
-			recipe2.AddTile(ModContent.TileType<AlcaologyTable>());
-			recipe2.Register();
 		}
 		public override void SetDefaults()
 		{

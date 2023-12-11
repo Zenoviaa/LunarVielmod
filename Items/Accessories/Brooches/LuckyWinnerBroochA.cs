@@ -48,14 +48,13 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.buyPrice(0, 0, 90);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Orange;
 			Item.accessory = true;
 		}
 
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-
 			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 20);
@@ -70,11 +69,8 @@ namespace Stellamod.Items.Accessories.Brooches
 			if (broochPlayer.hasAdvancedBrooches)
 			{
 				broochPlayer.KeepBroochAlive<LuckyWinnerBrooch, LuckyB>(ref broochPlayer.hasLuckyWBrooch);
-
+				player.GetModPlayer<MyPlayer>().LuckyW = true;
 			}
-
-			player.GetModPlayer<MyPlayer>().LuckyW = true;
-
 		}
 	}
 }

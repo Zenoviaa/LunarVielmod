@@ -239,7 +239,6 @@ namespace Stellamod
 
         public bool DetonationRune;
 
-        public bool ShadowCharm = false;
 
 		public bool ClamsPearl;
 
@@ -549,7 +548,6 @@ namespace Stellamod
             CorsageRune = false;
             StealthRune = false;
             Leather = false;
-            ShadowCharm = false;
 			MasteryMagic = false;
 			WindRune = false;
 

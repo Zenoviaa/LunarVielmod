@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Pink;
+            Item.rare = ItemRarityID.LightRed;
             Item.UseSound = SoundID.Item1;
 
             Item.DamageType = DamageClass.Melee; // Deals melee damage

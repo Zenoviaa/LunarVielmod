@@ -28,12 +28,11 @@ namespace Stellamod.Items.Consumables
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
-			
+			Item.rare = ItemRarityID.Green;
 		}
 
 		public override bool CanRightClick()

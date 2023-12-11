@@ -12,6 +12,7 @@ namespace Stellamod.Items.Harvesting
 			"\nWhere does this ore come from?" +
 			"\nBest use for metalic weapons and magical items!"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 20;
@@ -20,6 +21,4 @@ namespace Stellamod.Items.Harvesting
 			Item.value = Item.sellPrice(silver: 20);
 		}
 	}
-
-
 }

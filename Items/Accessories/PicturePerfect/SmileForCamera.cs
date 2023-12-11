@@ -1,19 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Particles;
 using Stellamod.Projectiles;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Accessories.PicturePerfect
 {
-	public class CameraMinBuff : ModBuff
+    public class CameraMinBuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{

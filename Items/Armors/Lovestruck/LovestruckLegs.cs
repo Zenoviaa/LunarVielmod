@@ -26,7 +26,7 @@ namespace Stellamod.Items.Armors.Lovestruck
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ItemRarityID.Pink; // The rarity of the item
+			Item.rare = ItemRarityID.Blue; // The rarity of the item
 			Item.defense = 2; // The amount of defense the item will give when equipped
 		}
 
@@ -34,7 +34,6 @@ namespace Stellamod.Items.Armors.Lovestruck
 		{
 			player.moveSpeed += 0.1f; // Increase the movement speed of the player
 			player.statLifeMax2 += 60;
-		
 		}
 
 		public override void AddRecipes()
@@ -48,6 +47,5 @@ namespace Stellamod.Items.Armors.Lovestruck
 			recipe.Register();
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
 }

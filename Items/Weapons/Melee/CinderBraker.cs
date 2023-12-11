@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = Item.sellPrice(0, 3, 20, 14);
-            Item.rare = ItemRarityID.LightRed;
+            Item.rare = ItemRarityID.Blue;
 
             Item.autoReuse = true;
             Item.shoot = ProjectileType<CinderBrakerSword>();

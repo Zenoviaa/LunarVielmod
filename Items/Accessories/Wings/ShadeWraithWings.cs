@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories.Wings
 			Item.width = 22;
 			Item.height = 20;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.LightRed;
 			Item.accessory = true;
 		}
 

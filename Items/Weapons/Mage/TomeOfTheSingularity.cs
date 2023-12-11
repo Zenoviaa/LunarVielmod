@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noMelee = true;
             Item.knockBack = 9;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Orange;
             Item.shootSpeed = 25;
             Item.autoReuse = true;
 

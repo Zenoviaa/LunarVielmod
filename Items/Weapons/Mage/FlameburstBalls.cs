@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.DD2_BetsyFireballShot;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.Flamelash;
@@ -41,12 +41,11 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.HellstoneBar, 10);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
-
-
+			recipe.AddTile(TileID.Anvils);
+			recipe.Register();
+	
 			Recipe recipe2 = CreateRecipe();
 			recipe2.AddIngredient(ItemID.Flamelash, 1);
 			recipe2.AddTile(TileID.Anvils);

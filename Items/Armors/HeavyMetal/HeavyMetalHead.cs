@@ -21,8 +21,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Orange;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }
 

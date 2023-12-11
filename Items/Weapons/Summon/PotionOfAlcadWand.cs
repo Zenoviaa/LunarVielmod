@@ -38,7 +38,7 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.value = Terraria.Item.sellPrice(0, 10, 80, 0);
 			Item.DamageType = DamageClass.Summon;
 			Item.damage = 50;

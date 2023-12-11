@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.noUseGraphic = true;
             Item.knockBack = 8;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Orange;
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.DamageType = DamageClass.Melee;

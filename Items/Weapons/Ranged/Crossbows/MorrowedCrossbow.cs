@@ -54,21 +54,8 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
             recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-            recipe.AddIngredient(ItemID.CrimtaneBar, 12);
-
+            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 12);
             recipe.Register();
-
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddTile(TileID.Anvils);
-
-            recipe2.AddIngredient(ModContent.ItemType<Stick>(), 10);
-            recipe2.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-            recipe2.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
-            recipe2.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-            recipe2.AddIngredient(ItemID.DemoniteBar, 12);
-
-            recipe2.Register();
         }
 
 

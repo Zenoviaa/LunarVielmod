@@ -11,29 +11,19 @@ namespace Stellamod.Items.Accessories.Foods
     {
         public override void SetStaticDefaults()
         {
-
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
-
-           
-        
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
 
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "BowledC", "Put one on as an accessory, eat for temporary effects!")
+            var line = new TooltipLine(Mod, "BowledC", "Put one on as an accessory, eat for temporary effects!")
             {
                 OverrideColor = new Color(308, 71, 99)
 
             };
             tooltips.Add(line);
-
-
-
-
         }
 
         public override void SetDefaults()
@@ -48,10 +38,8 @@ namespace Stellamod.Items.Accessories.Foods
             Item.consumable = true;
             Item.UseSound = SoundID.Item2;
             Item.accessory = true;
-          
-         
-
         }
+
         public override bool CanUseItem(Player player)
         {
             player.AddBuff(BuffID.Honey, 8000);
@@ -63,8 +51,5 @@ namespace Stellamod.Items.Accessories.Foods
             //  player.statDefense += 2;
             player.moveSpeed += 0.4f;
         }
-
-
-
     }
 }

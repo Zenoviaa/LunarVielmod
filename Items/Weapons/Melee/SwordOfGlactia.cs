@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 0, 16, 0);
-            Item.rare = ItemRarityID.Gray;
+            Item.rare = ItemRarityID.LightRed;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
@@ -45,6 +45,7 @@ namespace Stellamod.Items.Weapons.Melee
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.CopperCoin);
             }
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -58,12 +59,8 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
 
 
-            return true;
-        }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             var entitySource = player.GetSource_FromThis();

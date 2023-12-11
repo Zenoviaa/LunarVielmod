@@ -15,17 +15,20 @@ namespace Stellamod.Items.Armors.Terric
             // DisplayName.SetDefault("Terric Boots");
             // Tooltip.SetDefault("Increases movement Speed 8%");
         }
+        
         public override void SetDefaults()
         {
             Item.Size = new Vector2(18);
             Item.value = Item.sellPrice(silver: 22);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 5;
         }
+        
         public override void UpdateEquip(Player player)
         {
             player.moveSpeed += 0.4f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

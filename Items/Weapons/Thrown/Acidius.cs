@@ -27,14 +27,14 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ItemRarityID.Blue;
             Item.crit = 30;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<Acidius2>();
             Item.shootSpeed = 15f;
-            Item.rare = ItemRarityID.Blue;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

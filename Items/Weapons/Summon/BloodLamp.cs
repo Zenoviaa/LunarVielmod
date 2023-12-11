@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Summon;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bloodlamp");
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.RainbowCrystalExplosion;

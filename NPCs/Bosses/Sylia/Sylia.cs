@@ -22,15 +22,51 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-    [AutoloadBossHead]
+	public class SyliaSkyPlayer : ModPlayer
+    {
+        public override void PostUpdateMiscEffects()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
+            {
+				ActivateSyliaSky();
+
+			}
+            else
+            {
+				DeActivateSyliaSky();
+            }
+        }
+
+		private void ActivateSyliaSky()
+		{
+			if (!SkyManager.Instance["Stellamod:SyliaSky"].IsActive())
+			{
+				Vector2 targetCenter = Player.Center;
+				SkyManager.Instance.Activate("Stellamod:SyliaSky", targetCenter);
+			}
+		}
+
+		private void DeActivateSyliaSky()
+		{
+			if (SkyManager.Instance["Stellamod:SyliaSky"].IsActive())
+			{
+				Vector2 targetCenter = Player.Center;
+				SkyManager.Instance.Deactivate("Stellamod:SyliaSky", targetCenter);
+			}
+		}
+	}
+
+	[AutoloadBossHead]
     public class Sylia : ModNPC
 	{
 		private bool _spawned;
 		private bool _doAuraVisuals;
 		private float _quickSlashRotation;
+
 		private AttackState _lastAttack;
 		private AttackState _attack=AttackState.Idle;
 		private Phase _attackPhase;
+
 		private enum AttackState
         {
 			Idle,
@@ -133,7 +169,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 			if (ai_Counter == 0)
             {
-				ActivateSyliaSky();
 				SoundEngine.PlaySound(SoundID.Item119);
 			} 
 			if (ai_Counter > 30 && npc.HasValidTarget)
@@ -351,33 +386,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
         }
         #endregion
 
-        #region Sky
-		private void ActivateSyliaSky()
-		{
-			NPC npc = NPC;
-			npc.TargetClosest();
-			if (NPC.HasValidTarget && !SkyManager.Instance["Stellamod:SyliaSky"].IsActive())
-			{
-				Player target = Main.player[NPC.target];
-				Vector2 targetCenter = target.Center;
-				SkyManager.Instance.Activate("Stellamod:SyliaSky", targetCenter);
-			}
-		}
-
-		private void DeActivateSyliaSky()
-		{
-			NPC npc = NPC;
-			npc.TargetClosest();
-			if (SkyManager.Instance["Stellamod:SyliaSky"].IsActive())
-			{
-				Player target = Main.player[NPC.target];
-				Vector2 targetCenter = target.Center;
-				SkyManager.Instance.Deactivate("Stellamod:SyliaSky", targetCenter);
-			}
-		}
-
-		#endregion
-
 		#region Attack Cycle
 
 		private void AI_DetermineAttack()
@@ -485,7 +493,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				//Despawn in 2 seconds
 				npc.velocity = Vector2.Lerp(npc.velocity, new Vector2(0, -8), 0.025f);
 				npc.EncourageDespawn(120);
-				DeActivateSyliaSky();
 				return;
 			}
 
@@ -1010,7 +1017,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				//Despawn in 2 seconds
 				npc.velocity = Vector2.Lerp(npc.velocity, new Vector2(0, -8), 0.025f);
 				npc.EncourageDespawn(120);
-				DeActivateSyliaSky();
 				return;
 			}
 
@@ -1431,7 +1437,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         public override void OnKill()
         {   
-			DeActivateSyliaSky();
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedSyliaBoss, -1);
 		}
     }

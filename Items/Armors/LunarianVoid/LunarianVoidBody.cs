@@ -12,19 +12,21 @@ namespace Stellamod.Items.Armors.LunarianVoid
         {
             // DisplayName.SetDefault("Astrasilk Jacket");
         }
+
         public override void SetDefaults()
         {
             Item.width = 30;
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 4;
-            Item.vanity = true;
         }
+
         public override void UpdateEquip(Player player)
         {
             player.GetCritChance(DamageClass.Throwing) += 10f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -33,6 +35,5 @@ namespace Stellamod.Items.Armors.LunarianVoid
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
-
     }
 }

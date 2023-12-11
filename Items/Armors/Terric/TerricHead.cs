@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Terric
         {
             Item.Size = new Vector2(18);
             Item.value = Item.sellPrice(silver: 26);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 6;
 
         }

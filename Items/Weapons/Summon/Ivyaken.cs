@@ -71,7 +71,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.useAnimation = 36;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.value = Item.buyPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Cyan;
+            Item.rare = ItemRarityID.Blue;
             Item.UseSound = SoundID.Item44;
 
             // These below are needed for a minion weapon

@@ -27,17 +27,15 @@ namespace Stellamod.Items.Armors.Stone
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(silver: 1); // How many coins the item is worth
-			Item.rare = ItemRarityID.Green; // The rarity of the item
+			Item.rare = ItemRarityID.Blue; // The rarity of the item
 			Item.defense = 2; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
-
 			player.GetArmorPenetration(DamageClass.Generic) += 5f; ;
 			player.GetDamage(DamageClass.Generic) *= 1.03f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
-
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -60,10 +58,6 @@ namespace Stellamod.Items.Armors.Stone
 			recipe.AddIngredient(ItemID.StoneBlock, 50);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
-
-
-
-
 		}
 	}
 }

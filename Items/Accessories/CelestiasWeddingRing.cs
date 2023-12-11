@@ -29,19 +29,12 @@ namespace Stellamod.Items.Accessories
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-			var line = new TooltipLine(Mod, "", "");
-
-
-			line = new TooltipLine(Mod, "ADBPa", "She'll just love you forever I guess.")
+			var line = new TooltipLine(Mod, "ADBPa", "She'll just love you forever I guess.")
 			{
 				OverrideColor = new Color(220, 87, 24)
 
 			};
 			tooltips.Add(line);
-
-
-
-
 		}
 
 		public override void SetDefaults()
@@ -49,7 +42,7 @@ namespace Stellamod.Items.Accessories
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.buyPrice(0, 0, 90);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Pink;
 			Item.accessory = true;
 		}
 

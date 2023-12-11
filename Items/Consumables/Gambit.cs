@@ -30,10 +30,10 @@ namespace Stellamod.Items.Consumables
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
-			Item.rare = ItemRarityID.Purple;
+			Item.rare = ItemRarityID.Expert;
 			Item.value = 200;
-			
 		}
+
 		public float Timer;
 		public override bool CanRightClick()
 		{

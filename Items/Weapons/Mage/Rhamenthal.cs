@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.value = 100000;
 			Item.shoot = ModContent.ProjectileType<RhamenthalProjHold>();
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ItemRarityID.Lime;
 			Item.autoReuse = false;
 			Item.shootSpeed = 30f;
 			Item.scale = 0.8f;

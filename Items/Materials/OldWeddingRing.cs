@@ -1,6 +1,7 @@
 ﻿
 using Terraria;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
@@ -22,6 +23,7 @@ namespace Stellamod.Items.Materials
 
             Item.maxStack = 1; // The item's max stack value
             Item.value = Item.buyPrice(gold: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.rare = ItemRarityID.Green;
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Stellamod.Items.Armors.HeavyMetal
 			// DisplayName.SetDefault("HeavyMetal Legs");
 			// Tooltip.SetDefault("Increases movement speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Orange;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }
 

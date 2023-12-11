@@ -7,11 +7,22 @@ namespace Stellamod
 {
     public class RecipeGroupSystem : ModSystem
     {
+        private void RegisterRecipeGroup(string recipeGroupName, params int[] items)
+        {
+            const string Any_Text = "LegacyMisc.37";
+            RecipeGroup recipeGroup = new RecipeGroup(() =>
+             $"{Language.GetTextValue(Any_Text)} {Lang.GetItemNameValue(items[0])}", items);
+            RecipeGroup.RegisterGroup(recipeGroupName, recipeGroup);
+        }
+
         public override void AddRecipeGroups()
         {
             base.AddRecipeGroups();
-            RecipeGroup candleGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.Candle)}", ItemID.Candle, ItemID.PlatinumCandle);
-            RecipeGroup.RegisterGroup(nameof(ItemID.Candle), candleGroup);
+            RegisterRecipeGroup(nameof(ItemID.Candle), ItemID.Candle, ItemID.PlatinumCandle);
+            RegisterRecipeGroup(nameof(ItemID.DemoniteBar), ItemID.DemoniteBar, ItemID.CrimtaneBar);
+            RegisterRecipeGroup(nameof(ItemID.IronBar), ItemID.IronBar, ItemID.LeadBar);
+            RegisterRecipeGroup(nameof(ItemID.GoldBar), ItemID.GoldBar, ItemID.PlatinumBar);
+            RegisterRecipeGroup(nameof(ItemID.ShadowScale), ItemID.ShadowScale, ItemID.TissueSample);
         }
     }
 }

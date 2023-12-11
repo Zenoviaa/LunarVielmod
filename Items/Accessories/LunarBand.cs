@@ -17,7 +17,7 @@ namespace Stellamod.Items.Accessories
             Item.width = 20;
             Item.height = 20;
             Item.value = 2500;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
 
@@ -26,14 +26,8 @@ namespace Stellamod.Items.Accessories
             if (!Main.dayTime)
             {
                 player.GetDamage(DamageClass.Generic) += 0.13f;
+                player.GetCritChance(DamageClass.Generic) += 15;
             }
-            else
-            {
-
-                player.GetModPlayer<MyPlayer>().ShadowCharm = false;
-            }
-            player.GetCritChance(DamageClass.Generic) += 15;
-
         }
     }
 }

@@ -27,8 +27,7 @@ namespace Stellamod.Items.Armors.LunarianVoid
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.defense = 3;
         }
 
@@ -44,14 +43,17 @@ namespace Stellamod.Items.Armors.LunarianVoid
         {
             return body.type == ModContent.ItemType<LunarianVoidBody>() && legs.type == ModContent.ItemType<LunarianVoidLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
+
         public override void AddRecipes() 
         {
             Recipe recipe = CreateRecipe();

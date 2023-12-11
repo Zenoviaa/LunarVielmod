@@ -19,25 +19,18 @@ namespace Stellamod.Items.Accessories.Runes
             Item.width = 20;
             Item.height = 20;
             Item.value = 2500;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
 
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.CrimtaneBar, 15);
+            recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 15);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 20);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
             recipe.AddTile(ModContent.TileType<RunicTableT>());
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.DemoniteBar, 15);
-            recipe2.AddIngredient(ModContent.ItemType<DarkEssence>(), 20);
-            recipe2.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
-            recipe2.AddTile(ModContent.TileType<RunicTableT>());
-            recipe2.Register();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

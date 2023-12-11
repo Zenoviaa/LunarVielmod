@@ -33,16 +33,16 @@ namespace Stellamod.Items.Armors.Lovestruck
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ItemRarityID.Pink; // The rarity of the item
+			Item.rare = ItemRarityID.Blue; // The rarity of the item
 			Item.defense = 1; // The amount of defense the item will give when equipped
 		}
+
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 40;
 			player.GetDamage(DamageClass.Generic) *= 1.07f;
-		
-			
 		}
+
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{

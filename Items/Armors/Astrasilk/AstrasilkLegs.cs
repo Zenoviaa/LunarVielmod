@@ -19,7 +19,6 @@ namespace Stellamod.Items.Armors.Astrasilk
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
         }

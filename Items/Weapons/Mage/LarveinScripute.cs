@@ -27,13 +27,11 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noUseGraphic = true;
             Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
-
+			Item.rare = ItemRarityID.LightRed;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<LarveinScriputeProg>();
 			Item.shootSpeed = 8f;
 			Item.mana = 5;
-
 
 		}
 		public override void AddRecipes()
@@ -45,6 +43,7 @@ namespace Stellamod.Items.Weapons.Mage
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);

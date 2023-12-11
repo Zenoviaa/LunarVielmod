@@ -17,29 +17,23 @@ namespace Stellamod.Items.Armors.Leather
             // DisplayName.SetDefault("Leather Vest");
             // Tooltip.SetDefault("Increases throwing damage by 25%");
         }
+
         public override void SetDefaults()
         {
             Item.width = 30;
             Item.height = 30;
             Item.value = Item.sellPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 4;
-            Item.vanity = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Leather, 10);
-            recipe.AddIngredient(ItemID.IronBar, 5);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.Leather, 10);
-            recipe2.AddIngredient(ItemID.LeadBar, 5);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
-
     }
 }

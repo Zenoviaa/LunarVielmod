@@ -12,15 +12,13 @@ namespace Stellamod.Items.Ores
 		{
 			// Tooltip.SetDefault("An ore too cold to place, used for many items with ice!");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
-
-			
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 10;
@@ -28,6 +26,5 @@ namespace Stellamod.Items.Ores
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
 		}
-		
 	}
 }

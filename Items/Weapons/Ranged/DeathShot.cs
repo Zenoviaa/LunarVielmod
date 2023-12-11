@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 100000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item11;
 			Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<DeathShotProj>();
@@ -55,17 +55,9 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Bone, 25);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-			recipe.AddIngredient(ItemID.PlatinumBar, 14);
+			recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 14);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-
-
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.Bone, 25);
-            recipe2.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-            recipe2.AddIngredient(ItemID.GoldBar, 14);
-            recipe2.AddTile(TileID.Anvils);
-            recipe2.Register();
         }
 	}
 }

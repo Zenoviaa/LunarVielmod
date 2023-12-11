@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
 			Item.shoot = ProjectileID.WoodenArrowFriendly;
 			Item.shootSpeed = 35f;
 			Item.UseSound = SoundID.Item5;
@@ -33,10 +33,12 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useAmmo = AmmoID.Arrow;
 			Item.scale = 0.5f;
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
 		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			float numberProjectiles = 3;

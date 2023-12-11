@@ -31,19 +31,17 @@ namespace Stellamod.Items.Armors.Govheil
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
-			Item.rare = ItemRarityID.Green; // The rarity of the item
+			Item.rare = ItemRarityID.LightRed; // The rarity of the item
 			Item.defense = 5; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
-
 			player.GetDamage(DamageClass.Magic) *= 1.12f;
 			player.GetDamage(DamageClass.Summon) *= 1.12f;
 			player.GetCritChance(DamageClass.Generic) += 10f;
 			player.manaRegen += 30;
 			player.statManaMax2 += 50;
-
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -62,8 +60,6 @@ namespace Stellamod.Items.Armors.Govheil
 			player.GetModPlayer<MyPlayer>().GovheilBCooldown++;
 			player.aggro /= 2;
 			player.maxMinions += 2;
-
-
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

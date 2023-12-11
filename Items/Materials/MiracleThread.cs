@@ -34,7 +34,7 @@ namespace Stellamod.Items.Materials
             Item.height = 24; // The item texture's height
 
             Item.rare = ItemRarityID.LightPurple;
-            Item.maxStack = 9999; // The item's max stack value
+            Item.maxStack = Item.CommonMaxStack; // The item's max stack value
             Item.value = Item.buyPrice(gold: 10); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
 		}
 

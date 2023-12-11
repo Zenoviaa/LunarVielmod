@@ -22,10 +22,8 @@ namespace Stellamod.Items.Accessories
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.sellPrice(silver: 12);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
-
-
 		}
 
 		public override void AddRecipes()
@@ -42,12 +40,6 @@ namespace Stellamod.Items.Accessories
 			player.GetDamage(DamageClass.Generic) *= 1.03f; // Increase ALL player damage by 100%
 			player.lifeRegen += 1;
 			player.GetCritChance(DamageClass.Generic) *= 1.05f;
-
-
 		}
-
-
-
-
 	}
 }

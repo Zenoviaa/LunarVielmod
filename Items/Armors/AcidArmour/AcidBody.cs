@@ -20,7 +20,7 @@ namespace Stellamod.Items.Armors.AcidArmour
             Item.width = 28;
             Item.height = 22;
             Item.value = 80000;
-            Item.rare = ItemRarityID.Yellow;
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 5;
         }
 

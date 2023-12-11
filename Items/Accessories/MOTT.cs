@@ -23,8 +23,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = Item.sellPrice(silver: 12);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
 		
 		public override void UpdateAccessory(Player player, bool hideVisual)
@@ -32,13 +30,6 @@ namespace Stellamod.Items.Accessories
 			player.GetModPlayer<MyPlayer>().TAuraSpawn = true;
 			player.GetDamage(DamageClass.Ranged) *= 1.05f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().TAuraCooldown--;
-	
-
-
 		}
-
-
-
-
 	}
 }

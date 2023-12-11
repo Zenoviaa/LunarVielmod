@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -10,49 +12,30 @@ namespace Stellamod.Items.Materials
 	public class GraftedSoul : ModItem
 	{
 		public override void SetStaticDefaults()
-		{
-			// Tooltip.SetDefault("Super silk!");
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
-
-			// Some please convert this to lang files, I'm too lazy to do it
-			// Sorry Itorius, I feel you
-
-			// DisplayName.AddTranslation(GameCulture.German, "Beispielblock");
-			// Tooltip.AddTranslation(GameCulture.German, "Dies ist ein modded Block");
-			// DisplayName.AddTranslation(GameCulture.Italian, "Blocco di esempio");
-			// Tooltip.AddTranslation(GameCulture.Italian, "Questo è un blocco moddato");
-			// DisplayName.AddTranslation(GameCulture.French, "Bloc d'exemple");
-			// Tooltip.AddTranslation(GameCulture.French, "C'est un bloc modgé");
-			// DisplayName.AddTranslation(GameCulture.Spanish, "Bloque de ejemplo");
-			// Tooltip.AddTranslation(GameCulture.Spanish, "Este es un bloque modded");
-			// DisplayName.AddTranslation(GameCulture.Russian, "Блок примера");
-			// Tooltip.AddTranslation(GameCulture.Russian, "Это модифицированный блок");
-			// DisplayName.AddTranslation(GameCulture.Chinese, "例子块");
-			// Tooltip.AddTranslation(GameCulture.Chinese, "这是一个修改块");
-			// DisplayName.AddTranslation(GameCulture.Portuguese, "Bloco de exemplo");
-			// Tooltip.AddTranslation(GameCulture.Portuguese, "Este é um bloco modded");
-			// DisplayName.AddTranslation(GameCulture.Polish, "Przykładowy blok");
+		{ 
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 60));
-			// Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.buyPrice(0, 0, 95, 0);
 			Item.value = 950;
-
+			Item.rare = ItemRarityID.LightRed;
 		}
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 
+		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		{
+			Lighting.AddLight(Item.Center, Color.LightSeaGreen.ToVector3() * 0.78f * Main.essScale);
+			return true;
+		}
 	}
 }

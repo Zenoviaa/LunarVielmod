@@ -26,5 +26,5 @@ namespace Stellamod.Items.Accessories
             player.GetDamage(DamageClass.Summon) += 0.1f;
         }
     }
-    }
+}
 

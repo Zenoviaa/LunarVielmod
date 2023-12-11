@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 2;
 			Item.value = 10000;
 			Item.noMelee = true;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<POAProj>();

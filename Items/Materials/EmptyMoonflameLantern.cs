@@ -13,7 +13,7 @@ namespace Stellamod.Items.Materials
 				"\n Freeze the flame" +
 				"\n The dance at the Cathedral awaits at the top of the moonlight"); */
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
+			
 
 			
 		}
@@ -24,11 +24,7 @@ namespace Stellamod.Items.Materials
 			Item.maxStack = 3;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
-		
-			
+			Item.rare = ItemRarityID.Green;	
 		}
-
-		
-
 	}
 }

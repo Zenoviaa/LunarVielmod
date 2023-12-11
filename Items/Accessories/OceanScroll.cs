@@ -25,5 +25,5 @@ namespace Stellamod.Items.Accessories
             player.GetCritChance(DamageClass.Magic) += 0.2f;
         }
     }
-    }
+}
 

@@ -12,7 +12,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 		{
 			// Tooltip.SetDefault("Cathedite Block");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
+			
 
 			// Some please convert this to lang files, I'm too lazy to do it
 			// Sorry Itorius, I feel you
@@ -38,7 +38,7 @@ namespace Stellamod.Items.Placeable.Cathedral
 		{
 			Item.width = 12;
 			Item.height = 12;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 10;

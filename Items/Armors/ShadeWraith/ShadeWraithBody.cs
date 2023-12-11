@@ -43,15 +43,9 @@ namespace Stellamod.Items.Armors.ShadeWraith
             {
                 Recipe recipe = CreateRecipe();
                 recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-                recipe.AddIngredient(ItemID.DemoniteBar, 6);
+                recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 6);
                 recipe.AddTile(TileID.WorkBenches);
                 recipe.Register();
-
-                Recipe recipe2 = CreateRecipe();
-                recipe2.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
-                recipe2.AddIngredient(ItemID.CrimtaneBar, 6);
-                recipe2.AddTile(TileID.WorkBenches);
-                recipe2.Register();
             }
         }
     }

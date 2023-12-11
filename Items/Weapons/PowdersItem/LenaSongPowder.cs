@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.noMelee = true;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<LenaPowderProj>();
 			Item.autoReuse = true;

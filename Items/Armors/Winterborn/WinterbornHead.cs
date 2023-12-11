@@ -20,7 +20,7 @@ namespace Stellamod.Items.Armors.Winterborn
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.LightPurple;
+            Item.rare = ItemRarityID.Blue;
 
             Item.defense = 2;
         }

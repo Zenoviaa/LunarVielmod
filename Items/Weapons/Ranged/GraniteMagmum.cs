@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 0, 20, 0);
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item5;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<GraniteMagmumProj>();

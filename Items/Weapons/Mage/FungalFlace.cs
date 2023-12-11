@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/SwordThrow");
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<FungalFlaceBall>();

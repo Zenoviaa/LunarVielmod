@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 20, 0);
-            Item.rare = ItemRarityID.LightRed;
+            Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
             Item.shoot = ProjectileType<StarBolt>();
             Item.shootSpeed = 15f;

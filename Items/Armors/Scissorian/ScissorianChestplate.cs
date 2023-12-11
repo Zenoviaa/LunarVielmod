@@ -30,19 +30,15 @@ namespace Stellamod.Items.Armors.Scissorian
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
-			Item.rare = ItemRarityID.Green; // The rarity of the item
+			Item.rare = ItemRarityID.Pink; // The rarity of the item
 			Item.defense = 12; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
-
 			player.GetCritChance(DamageClass.Throwing) += 20f;
 			player.GetDamage(DamageClass.Throwing) *= 1.1f;
 			player.statLifeMax2 += 15;
-
-
-
 		}
 
 		public override void AddRecipes()
@@ -57,6 +53,5 @@ namespace Stellamod.Items.Armors.Scissorian
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-
 	}
 }

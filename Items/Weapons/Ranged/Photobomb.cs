@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 98;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 10;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.LightPurple;
             Item.autoReuse = false;
             Item.shootSpeed = 30f;
             Item.shoot = ModContent.ProjectileType<PhotobombProj>();

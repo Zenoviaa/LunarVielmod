@@ -13,11 +13,12 @@ namespace Stellamod.Items.Harvesting
 			/* Tooltip.SetDefault("Welp, its a stick" +
 			"\nBest use for weapons and planting items!"); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.damage = 6;
 			Item.width = 20;
 			Item.height = 20;
@@ -25,19 +26,18 @@ namespace Stellamod.Items.Harvesting
 			Item.useAnimation = 20;
 			Item.knockBack = 5;
 			Item.autoReuse = true;
-			Item.rare = ItemRarityID.Blue;
 			Item.DamageType = DamageClass.Melee;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.sellPrice(silver: 2);
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe(2);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.AddIngredient(ItemID.Wood, 1);
 			recipe.Register();
-
 		}
 	}
 }

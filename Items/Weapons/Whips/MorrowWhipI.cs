@@ -31,8 +31,8 @@ namespace Stellamod.Items.Weapons.Whips
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
 			Item.damage = 32;
 			Item.knockBack = 5;
-			Item.rare = ItemRarityID.Green;
-
+			Item.rare = ItemRarityID.Blue;
+			
 			Item.shoot = ModContent.ProjectileType<MorrowWhipProj>();
 			Item.shootSpeed = 4;
 

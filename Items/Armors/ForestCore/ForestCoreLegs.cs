@@ -13,13 +13,13 @@ namespace Stellamod.Items.Armors.ForestCore
 			// DisplayName.SetDefault("Forest Core Boots");
 			// Tooltip.SetDefault("Increases movement speed by 10%");
 		}
+
         public override void SetDefaults()
         {
             Item.width = 28;
             Item.height = 22;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 2;
         }
 

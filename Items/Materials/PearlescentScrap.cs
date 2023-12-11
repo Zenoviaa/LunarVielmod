@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
@@ -11,16 +12,14 @@ namespace Stellamod.Items.Materials
 			/* Tooltip.SetDefault("True fragments of the moon" +
 			"\nA strong resonance with sound and the stars..."); */
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
-			Item.maxStack = 999;
-			Item.value = Item.sellPrice(silver: 50);
-			Item.buyPrice(0, 0, 50, 0);
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 5000;
+			Item.rare = ItemRarityID.Orange;
 		}
-
-		
 	}
 }

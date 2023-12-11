@@ -20,8 +20,7 @@ namespace Stellamod.Items.Armors.ForestCore
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
-
+            Item.rare = ItemRarityID.Blue;
             Item.defense = 2;
         }
 

@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Throwing;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<DarkButcherP>();
@@ -37,6 +37,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();

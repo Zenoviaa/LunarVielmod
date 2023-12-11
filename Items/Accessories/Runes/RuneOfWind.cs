@@ -20,9 +20,10 @@ namespace Stellamod.Items.Accessories.Runes
             Item.width = 20;
             Item.height = 20;
             Item.value = 2500;
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -31,9 +32,8 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
             recipe.AddTile(ModContent.TileType<RunicTableT>());
             recipe.Register();
-
-
         }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             Item.defense = 2;

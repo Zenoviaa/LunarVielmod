@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noUseGraphic = false;
             Item.knockBack = 0;
             Item.value = Item.sellPrice(0, 1, 1, 29);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.LightPurple;
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.DamageType = DamageClass.Magic;

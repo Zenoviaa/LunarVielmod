@@ -12,7 +12,7 @@ namespace Stellamod.Items.Accessories
             Item.width = 42;
             Item.height = 48;
             Item.value = 2500;
-            Item.rare = ItemRarityID.Pink;
+            Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
         }
 

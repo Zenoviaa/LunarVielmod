@@ -23,8 +23,6 @@ namespace Stellamod.Items.Accessories
 			Item.value = 200;
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)

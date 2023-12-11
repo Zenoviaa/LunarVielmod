@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 4f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.DD2_BookStaffCast;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<splitshot>();

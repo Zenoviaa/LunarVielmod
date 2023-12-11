@@ -18,7 +18,7 @@ namespace Stellamod.Items.Consumables
 			/* Tooltip.SetDefault("I thank you for your contribution, return to me, I await your arrival " +
 				"\n at the top of my palace, we will dance soon <3"); */
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-			ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;
+			
 		}
 
 		public override void SetDefaults()
@@ -31,6 +31,7 @@ namespace Stellamod.Items.Consumables
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
+			Item.rare = ItemRarityID.Orange;
 		}
 
         public override void AddRecipes()

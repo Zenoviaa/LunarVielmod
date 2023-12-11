@@ -12,6 +12,7 @@ namespace Stellamod.Items.Accessories
 			// DisplayName.SetDefault("Leather Glove");
 			// Tooltip.SetDefault("Increases throwing damage and throwing velocity.");
 		}
+
 		public override void SetDefaults()
 		{
 			Item.value = Item.sellPrice(gold: 1);
@@ -21,11 +22,13 @@ namespace Stellamod.Items.Accessories
             Item.value = 1200;
             Item.accessory = true;
 		}
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(DamageClass.Throwing) += 0.10f;
             player.ThrownVelocity += 2;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

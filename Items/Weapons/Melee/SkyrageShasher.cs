@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 1, 20, 0);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileType<WindSythe>();
 			Item.shootSpeed = 15f;

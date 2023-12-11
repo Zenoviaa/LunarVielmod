@@ -43,10 +43,8 @@ namespace Stellamod.Items.Accessories.Brooches
 			Item.width = 24;
 			Item.height = 28;
 			Item.value = Item.buyPrice(0, 0, 90);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
-
-
 		}
 
 		public override void AddRecipes()

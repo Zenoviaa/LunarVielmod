@@ -30,7 +30,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useAnimation = 500;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.knockBack = 5;
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = false;
 			Item.value = Item.sellPrice(0, 0, 0, 20);

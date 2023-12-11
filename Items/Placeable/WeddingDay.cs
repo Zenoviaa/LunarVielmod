@@ -18,7 +18,7 @@ namespace Stellamod.Items.Placeable
 		{
 			Item.DefaultToPlaceableTile(ModContent.TileType<GothivPainting>());
 			Item.value = 150;
-			Item.maxStack = 999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 38;
 			Item.height = 24;
 		}

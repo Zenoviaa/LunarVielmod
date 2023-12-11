@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 6;
 			Item.value = Item.sellPrice(0, 0, 20, 0);
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2");
 			Item.autoReuse = true;
 			Item.shootSpeed = 50f;

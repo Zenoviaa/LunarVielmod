@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 0, 16, 0);
-            Item.rare = ItemRarityID.Gray;
+            Item.rare = ItemRarityID.Blue;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
@@ -36,6 +36,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shootSpeed = 20f;
             Item.DamageType = DamageClass.Melee;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

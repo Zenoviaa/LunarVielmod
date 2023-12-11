@@ -56,7 +56,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 12;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Orange;
             Item.autoReuse = true;
             Item.shootSpeed = 13f;
             Item.shoot = ModContent.ProjectileType<VerlShot>();
