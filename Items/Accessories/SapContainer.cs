@@ -48,27 +48,7 @@ namespace Stellamod.Items.Accessories
 
 			Timer2++;
 
-			if (Timer2 == 601)
-            {
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 7; j++)
-				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-					
-				}
-			}
-			if (Timer2 > 600)
-            {
-				player.GetDamage(DamageClass.Magic) *= 4f;
-				
-			}
-
-			if (Timer2 < 720)
-			{
-				Timer2 = 0;
-			}
+			
 			player.GetDamage(DamageClass.Magic) *= 1.07f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().ArcaneM = true;
 			player.GetModPlayer<MyPlayer>().ArcaneMCooldown++;

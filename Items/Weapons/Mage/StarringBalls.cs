@@ -9,7 +9,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class GoldenHeartBalls : ModItem
+	public class StarringBalls : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -18,32 +18,32 @@ namespace Stellamod.Items.Weapons.Mage
 
 		public override void SetDefaults()
 		{
-			Item.damage = 18;
+			Item.damage = 33;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 12;
-			Item.useAnimation = 12;
+			Item.useTime = 25;
+			Item.useAnimation = 25;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noUseGraphic = true;
-			Item.knockBack = 6;
+			Item.knockBack = 2;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightPurple;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;
-			Item.shoot = ProjectileType<GoldenHBalls>();
+			Item.shoot = ProjectileType<SparkBallsP>();
 			Item.shootSpeed = 8f;
-			Item.mana = 5;
+			Item.mana = 6;
 
 
 		}
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 60);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<OrbOfTheMorrow>(), 1);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
+			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 160);
+			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 16);
+			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

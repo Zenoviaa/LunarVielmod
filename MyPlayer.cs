@@ -508,6 +508,7 @@ namespace Stellamod
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
 			ArcaneM = false;
+			ArcaneMCooldown = 0;
 			PlantH = false;
 			ThornedBook = false;
 			Dice = false;
@@ -2502,9 +2503,36 @@ namespace Stellamod
 
 
 
-
+		float Timer2 = 0;
         public override void PostUpdateEquips()
         {
+
+			if (ArcaneM)
+            {
+				if (ArcaneMCooldown == 601)
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+					for (int j = 0; j < 7; j++)
+					{
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
+						ParticleManager.NewParticle(Player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+
+					}
+				}
+				if (ArcaneMCooldown > 600)
+				{
+					Player.GetDamage(DamageClass.Magic) *= 4f;
+
+				}
+
+				if (ArcaneMCooldown < 720)
+				{
+					ArcaneMCooldown = 0;
+				}
+			}
+			
+
 
 			if (StealthRune)
 			{

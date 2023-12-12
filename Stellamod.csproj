@@ -327,6 +327,7 @@
     <None Remove="Projectiles\Magic\Poyashot.png" />
     <None Remove="Projectiles\Magic\Poyashot2.png" />
     <None Remove="Projectiles\Magic\RhamenthalProjHold.png" />
+    <None Remove="Projectiles\Magic\SparkBallsP.png" />
     <None Remove="Projectiles\Meatball4.png" />
     <None Remove="Projectiles\Paint\InkingSProj2.png" />
     <None Remove="Projectiles\Paint\InkingSThrow.png" />

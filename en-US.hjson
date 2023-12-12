@@ -4581,17 +4581,22 @@ Mods: {
 			}
 
 			GraftedSoul: {
-				DisplayName: Grafted Soul
-				Tooltip: ""
+				DisplayName: Contaminated Soul
+				Tooltip: An essense grafted of contamination..
 			}
 
 			GoldenHeartBalls: {
 				DisplayName: Golden Heart Balls
-				Tooltip: ""
+				Tooltip: Would match the golden shower :)
 			}
 
 			Test: {
-				DisplayName: Test
+				DisplayName: Test bitch
+				Tooltip: ""
+			}
+
+			StarringBalls: {
+				DisplayName: Starring Balls
 				Tooltip: ""
 			}
 		}
@@ -5248,6 +5253,7 @@ Mods: {
 			RipperSwordProj.DisplayName: Ripper Sword Proj
 			GoldenHBalls.DisplayName: Golden H Balls
 			WaterBolt.DisplayName: Water Bolt
+			SparkBallsP.DisplayName: Spark Balls P
 		}
 
 		NPCs: {
