@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Mage
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.CrystalShard, 10);
+			recipe.AddIngredient(ItemID.Ectoplasm, 10);
 			recipe.AddIngredient(ItemID.CrystalSerpent, 1);
 			recipe.AddIngredient(ItemID.CrystalBall, 1);
 			recipe.AddTile(TileID.MythrilAnvil);
