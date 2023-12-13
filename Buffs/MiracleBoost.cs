@@ -35,7 +35,7 @@ namespace Stellamod.Buffs
             _miracleSoulCooldown--;
             float miracleLevelFloat = miracleLevel;
             float miracleWhipBoost = miracleLevelFloat * 0.1f;
-            float miracleDamageBoost = miracleLevelFloat * 0.05f;
+            float miracleDamageBoost = miracleLevelFloat * 0.1f;
             Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += miracleWhipBoost;
             Player.GetDamage(DamageClass.Summon) += miracleDamageBoost;
             MiracleVisuals();

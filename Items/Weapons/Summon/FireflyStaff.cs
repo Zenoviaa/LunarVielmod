@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Summon
 		private FireflyMinion.AttackState _attackState;
 		public override void SetDefaults()
 		{
-			Item.damage = 34;
+			Item.damage = 30;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 48;

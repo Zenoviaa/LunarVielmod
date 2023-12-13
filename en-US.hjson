@@ -1956,7 +1956,11 @@ Mods: {
 
 			LunarBand: {
 				DisplayName: Lunar Band
-				Tooltip: "always increased critical strike chance & increased damage in the night "
+				Tooltip:
+					'''
+					Increased critical strike chance by 15%
+					Increased damage by 13% at night
+					'''
 			}
 
 			OceanScroll: {

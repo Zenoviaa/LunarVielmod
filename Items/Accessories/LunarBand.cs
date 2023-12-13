@@ -26,8 +26,9 @@ namespace Stellamod.Items.Accessories
             if (!Main.dayTime)
             {
                 player.GetDamage(DamageClass.Generic) += 0.13f;
-                player.GetCritChance(DamageClass.Generic) += 15;
             }
+
+            player.GetCritChance(DamageClass.Generic) += 15;
         }
     }
 }

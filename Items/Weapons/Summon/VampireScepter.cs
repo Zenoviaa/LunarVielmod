@@ -121,7 +121,7 @@ namespace Stellamod.Items.Weapons.Summon
 					}
 				}
 
-				player.GetDamage(DamageClass.Summon) += 0.25f;
+				player.GetDamage(DamageClass.Summon) += 0.33f;
 				player.GetModPlayer<VampirePlayer>().lifesteal = true;
 			}
 			else
