@@ -6,6 +6,18 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Items.Accessories;
+using Stellamod.NPCs.Bosses.INest;
+using Stellamod.Utilis;
+using System;
+using Terraria.Audio;
+using Terraria.GameContent;
+
+using static Terraria.ModLoader.ModContent;
+
 
 namespace Stellamod.NPCs.RoyalCapital
 {
@@ -15,7 +27,11 @@ namespace Stellamod.NPCs.RoyalCapital
 		{
 			// DisplayName.SetDefault("Morrowed Swampster");
 			Main.npcFrameCount[NPC.type] = 60;
+			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
+			NPCID.Sets.TrailingMode[NPC.type] = 0;
+
 		}
+
 
 		public enum ActionState
 		{
@@ -39,12 +55,14 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.damage = 40;
 			NPC.defense = 30;
 			NPC.lifeMax = 800;
-			NPC.HitSound = SoundID.NPCHit32;
+			NPC.HitSound = SoundID.NPCHit56;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 560f;
 			NPC.knockBackResist = .45f;
 			NPC.aiStyle = 85;
 			AIType = NPCID.StardustCellBig;
+			NPC.noTileCollide = true;
+			NPC.noGravity = true;
 
 		}
 
@@ -74,7 +92,7 @@ namespace Stellamod.NPCs.RoyalCapital
 
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.45f;
+			NPC.frameCounter += 1f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
@@ -89,31 +107,72 @@ namespace Stellamod.NPCs.RoyalCapital
 			invisibilityTimer++;
 			if (invisibilityTimer >= 100)
 			{
-				Speed();
+				
 
 
 				invisibilityTimer = 0;
 			}
+			NPC.noTileCollide = true;
 
-			switch (State)
+		}
+
+		public virtual string GlowTexturePath => Texture + "_Glow";
+		private Asset<Texture2D> _glowTexture;
+		public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+		{
+			Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
+			SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
+
+			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
+			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
+			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
+			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+
+			Vector2 frameOrigin = NPC.frame.Size();
+			Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 5, NPC.height - NPC.frame.Height + 3);
+			Vector2 DrawPos = NPC.position - screenPos + frameOrigin + offset;
+
+			float time = Main.GlobalTimeWrappedHourly;
+			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+
+			time %= 4f;
+			time /= 2f;
+
+			if (time >= 1f)
 			{
-
-				case ActionState.Wait:
-					counter++;
-					Wait();
-					break;
-
-				case ActionState.Speed:
-					counter++;
-					Speed();
-					NPC.velocity *= 0.98f;
-					break;
-
-
-				default:
-					counter++;
-					break;
+				time = 2f - time;
 			}
+
+			time = time * 0.5f + 0.5f;
+			for (float i = 0f; i < 1f; i += 0.25f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 2).RotatedBy(radians) * time, NPC.frame, new Color(53, 10, 112, 0), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+			}
+
+			for (float i = 0f; i < 1f; i += 0.34f)
+			{
+				float radians = (i + timer) * MathHelper.TwoPi;
+
+				spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 4).RotatedBy(radians) * time, NPC.frame, new Color(152, 2, 255, 0), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+			}
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
+			for (int k = 0; k < NPC.oldPos.Length; k++)
+			{
+				Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+				Color color = NPC.GetAlpha(Color.Lerp(new Color(190, 50, 250), new Color(72, 13, 255), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+				spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
+			}
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			return true;
 		}
 
 
@@ -127,24 +186,7 @@ namespace Stellamod.NPCs.RoyalCapital
 		}
 
 
-		public void Wait()
-		{
-			timer++;
-
-			if (timer > 50)
-			{
-
-				NPC.oldVelocity *= 0.99f;
-
-
-
-			}
-			else if (timer == 60)
-			{
-				State = ActionState.Speed;
-				timer = 0;
-			}
-		}
+		
 
 		public void Speed()
 		{
