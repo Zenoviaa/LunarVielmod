@@ -33,14 +33,17 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             return body.type == ModContent.ItemType<AstrasilkBody>() && legs.type == ModContent.ItemType<AstrasilkLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
         }
+
         public override void AddRecipes() 
         {
             Recipe recipe = CreateRecipe();

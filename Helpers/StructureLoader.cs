@@ -16,6 +16,21 @@ namespace Stellamod.Helpers
     {
         static Point? BottomLeft = null;
         static Mod Mod = ModContent.GetInstance<Stellamod>();
+
+        public static Rectangle ReadRectangle(string Path)
+        {
+            using (var stream = Mod.GetFileStream(Path + ".str"))
+            {
+                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
+                {
+                    int width = reader.ReadInt32();
+                    int height = reader.ReadInt32();
+                    Rectangle rectangle = new Rectangle(0, 0, width, height);
+                    return rectangle;
+                }
+            }
+        }
+
         /// <summary>
         /// reads a .str file and places its structure
         /// </summary>

@@ -18,8 +18,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         //AI Values
         //Visuals
-        private const float Max_Proj_Speed_Min = 4f;
-        private const float Max_Proj_Speed_Max = 5f;
+        private const float Max_Proj_Speed_Min = 3;
+        private const float Max_Proj_Speed_Max = 4;
         private const int Body_Radius = 4;
         private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;

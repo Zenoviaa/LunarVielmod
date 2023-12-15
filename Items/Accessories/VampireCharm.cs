@@ -13,10 +13,17 @@ namespace Stellamod.Items.Accessories
     public class VampireCritPlayer : ModPlayer
     {
         public bool hasVampireCharm;
+        public int lifestealCooldown;
         public override void ResetEffects()
         {
             base.ResetEffects();
             hasVampireCharm = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if(lifestealCooldown > 0)
+                lifestealCooldown--;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -24,8 +31,11 @@ namespace Stellamod.Items.Accessories
             base.OnHitNPC(target, hit, damageDone);
             if (hit.Crit && hasVampireCharm)
             {
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(4) && lifestealCooldown <= 0)
                 {
+                    //Can't lifesteal again for a few ticks
+                    lifestealCooldown = 20;
+
                     //Life steal for 5% of the damage
                     float healFactor = damageDone * 0.08f;
                     int healthToHeal = (int)healFactor;
@@ -61,7 +71,7 @@ namespace Stellamod.Items.Accessories
                     float speedY = Main.rand.Next(-15, 15);
                     Vector2 speed = new Vector2(speedX, speedY);
                     Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y, 
-                        ModContent.ProjectileType<BloodWaterProj>(), 30, 1f, Player.whoAmI);
+                        ModContent.ProjectileType<BloodWaterProj>(), 20, 1f, Player.whoAmI);
                 }
             }
         }

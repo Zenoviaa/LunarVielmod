@@ -55,12 +55,9 @@ namespace Stellamod.Items.Accessories.Brooches
 			if (broochPlayer.hasAdvancedBrooches)
 			{
 				broochPlayer.KeepBroochAlive<BonedBrooch, BonedB>(ref broochPlayer.hasBonedBrooch);
-				
+				player.GetDamage(DamageClass.Throwing) *= 1.2f;
+				player.ThrownVelocity += 5;
 			}
-
-			player.GetDamage(DamageClass.Throwing) *= 1.2f;
-			player.ThrownVelocity += 5;
-
 		}
 	}
 }

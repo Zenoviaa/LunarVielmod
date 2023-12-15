@@ -34,14 +34,17 @@ namespace Stellamod.Items.Armors.ForestCore
         {
             return body.type == ModContent.ItemType<ForestCoreBody>() && legs.type == ModContent.ItemType<ForestCoreLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().FCArmor = true;
         }
+
         public override void AddRecipes() 
         {
             Recipe recipe = CreateRecipe();

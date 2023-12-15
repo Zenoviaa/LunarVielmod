@@ -6636,6 +6636,7 @@ Mods: {
 			CaevaSnipe.DisplayName: Caeva Snipe
 			WaterCogwork.DisplayName: Water Cogwork
 			AlcaricVoidSmall.DisplayName: Alcaric Void Blob
+			WaterGun.DisplayName: Water Gun
 		}
 
 		Biomes: {

@@ -25,6 +25,8 @@ namespace Stellamod.Projectiles.Summons
 			Projectile.penetrate = 1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 50;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 20;
 		}
 	
 		public override void AI()

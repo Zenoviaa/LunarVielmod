@@ -13,6 +13,7 @@ namespace Stellamod.Items.Armors.ForestCore
             // DisplayName.SetDefault("Forest Core Body");
             // Tooltip.SetDefault("Increases ranged crit chance by 2%");
         }
+
         public override void SetDefaults()
         {
             Item.width = 30;
@@ -20,13 +21,13 @@ namespace Stellamod.Items.Armors.ForestCore
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
             Item.defense = 2;
-            Item.vanity = true;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.GetCritChance(DamageClass.Ranged) += 0.25f;
+            player.GetCritChance(DamageClass.Ranged) += 2f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

@@ -118,13 +118,13 @@ namespace Stellamod.Items.Accessories
 
 				//Actual Attack Here
 				var voidRiftProjectile1 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<VoidRift>(), 200, 1);
+					ModContent.ProjectileType<VoidRift>(), 120, 1);
 
 				voidRiftProjectile1.timeLeft = 180;
 				voidRiftProjectile1.rotation = MathHelper.ToRadians(-45);
 
 				var voidRiftProjectile2 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<VoidRift>(), 200, 1);
+					ModContent.ProjectileType<VoidRift>(), 120, 1);
 
 				voidRiftProjectile2.timeLeft = 180;
 				voidRiftProjectile2.rotation = MathHelper.ToRadians(45);
@@ -155,7 +155,9 @@ namespace Stellamod.Items.Accessories
 			{
 				Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, 4f));
 				var proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity,
-					ModContent.ProjectileType<LittleScissorVoidBolt>(), 120, 1);
+					ModContent.ProjectileType<LittleScissorVoidBolt>(), 70, 1);
+
+				//Scale with all damage classe
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
 				_riftCounter = 5;
 			}
@@ -187,6 +189,7 @@ namespace Stellamod.Items.Accessories
 			Item.accessory = true;
 			Item.expert = true;
 		}
+
 		public override void PostUpdate()
 		{
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.

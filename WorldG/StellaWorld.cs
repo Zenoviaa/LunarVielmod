@@ -119,7 +119,7 @@ namespace Stellamod.WorldG
 			progress.Message = "Golden Ambience ruining the world";
 
 
-            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
@@ -3745,12 +3745,13 @@ namespace Stellamod.WorldG
 
 
 
-			private void WorldGenMorrowedStructures(GenerationProgress progress, GameConfiguration configuration)
+		private void WorldGenMorrowedStructures(GenerationProgress progress, GameConfiguration configuration)
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Hunters settling down";
+			StructureMap structures = GenVars.structures;
 
-
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowStructHouse1");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
@@ -3758,9 +3759,12 @@ namespace Stellamod.WorldG
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 200, (int)GenVars.rockLayerHigh + 200);
 				Point Loc = new Point(xa, ya);
 
+				//Set the location to place
+				rectangle.Location = Loc;
+			
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && Main.tile[xa, ya].TileType != TileID.LihzahrdBrick)
+				if (tile.HasTile && structures.CanPlace(rectangle))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
 					foreach (int chestIndex in ChestIndexs)
@@ -3782,6 +3786,7 @@ namespace Stellamod.WorldG
 								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
 							Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
 						);
+
 						if (specialItem != ItemID.None)
 						{
 							itemsToAdd.Add((specialItem, 1));
@@ -3873,17 +3878,17 @@ namespace Stellamod.WorldG
 
 
 
-
+			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowedSmallStruct");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 150, (int)GenVars.rockLayerHigh + 150);
 				Point Loc = new Point(xa, ya);
-
+				rectangle.Location = Loc;
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && tile.TileType == TileID.Dirt && Main.tile[xa, ya].TileType != TileID.LihzahrdBrick)
+				if (tile.HasTile && tile.TileType == TileID.Dirt && structures.CanPlace(rectangle))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowedSmallStruct");
 					Chest c = Main.chest[ChestIndexs[0]];
@@ -3969,51 +3974,33 @@ namespace Stellamod.WorldG
 			}
 
 
-
-
-
-
-
-
-
+			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowUnder1");
 			for (int g = 0; g < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 40); g++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
-
-
+				rectangle.Location = Loc;
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
 				{
-
 					continue;
 				}
 
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && Main.tile[xab, yab].TileType != TileID.LihzahrdBrick)
+				if (tile.HasTile && structures.CanPlace(rectangle))
 				{
 					StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowUnder1");
 				}
-
-
-
-
-
-
-
-
 			}
 
 
-
-
-
-
+			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowStructHouseM");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 30); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh + 100, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
+				rectangle.Location = Loc;
 
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
 				{
@@ -4022,7 +4009,7 @@ namespace Stellamod.WorldG
 				}
 
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile)
+				if (tile.HasTile && structures.CanPlace(rectangle))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouseM");
 					Chest c = Main.chest[ChestIndexs[0]];
@@ -4104,27 +4091,13 @@ namespace Stellamod.WorldG
 							break; // Make sure not to exceed the capacity of the chest
 					}
 				}
-
-
-
-
-
-
-
-
 			}
 		}
 	
 		private void WorldGenCathedral(GenerationProgress progress, GameConfiguration configuration)
 		{
-
-
-			
-		// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-		progress.Message = "Verlia Ark";
-
-
-
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Verlia Ark";
 
 			bool placed = false;
 			int attempts = 0;
