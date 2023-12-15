@@ -2266,7 +2266,7 @@ Mods: {
 
 			BlankRune: {
 				DisplayName: Blank Rune
-				Tooltip: This doesn�t look like it will do anything by itself
+				Tooltip: This doesn't look like it will do anything by itself
 			}
 
 			ConvulgingMater: {
