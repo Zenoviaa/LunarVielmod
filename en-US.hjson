@@ -4603,6 +4603,11 @@ Mods: {
 				DisplayName: Starring Balls
 				Tooltip: ""
 			}
+
+			MagicalBroochA: {
+				DisplayName: Magical Brooch A
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5258,6 +5263,7 @@ Mods: {
 			GoldenHBalls.DisplayName: Golden H Balls
 			WaterBolt.DisplayName: Water Bolt
 			SparkBallsP.DisplayName: Spark Balls P
+			MagicalBrooch.DisplayName: Magical Brooch
 		}
 
 		NPCs: {
@@ -7302,6 +7308,11 @@ Mods: {
 			AlcadWandMinionBuff: {
 				DisplayName: Alcad Wand Minion Buff
 				Description: Mods.Stellamod.Buffs.AlcadWandMinionBuff.Description
+			}
+
+			MagicalBroo: {
+				DisplayName: Magical Broo
+				Description: Mods.Stellamod.Buffs.MagicalBroo.Description
 			}
 		}
 	}
