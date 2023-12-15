@@ -215,6 +215,7 @@
     <None Remove="Items\Weapons\Summon\FireflyMinion.png" />
     <None Remove="Items\Weapons\Summon\FireflyMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\FireflyStaff.png" />
+    <None Remove="Items\Weapons\Summon\HallowWandMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionLeft.png" />
     <None Remove="Items\Weapons\Summon\HMArncharMinionRight.png" />
     <None Remove="Items\Weapons\Summon\HMMinionBuff.png" />
@@ -321,6 +322,7 @@
     <None Remove="Projectiles\Gun\ClockworkBomb.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
+    <None Remove="Projectiles\HallowRain.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />
