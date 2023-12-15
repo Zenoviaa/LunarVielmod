@@ -52,6 +52,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
         }
 
         //AI Stuffs
+        private NPC _gun;
         private ref float ai_State => ref NPC.ai[0];
         private ref float ai_Counter => ref NPC.ai[1];
         private ref float ai_last_State => ref NPC.ai[2];
@@ -133,6 +134,16 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             }
         }
 
+        private void GunMovement()
+        {
+            if (_gun == null)
+                return;
+            if (!_gun.active)
+                return;
+
+
+        }
+
         public override void AI()
         {
             //OK so 
@@ -145,9 +156,11 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             //Also has a ram attack where he revs up and goes around fast, you have to jump over em
             //So 4 attacks
 
+            NPC.TargetClosest();
             AttackState attackState = (AttackState)ai_State;
             AttackState attackLastState = (AttackState)ai_last_State;
- 
+
+            GunMovement();
             switch (attackState)
             {
                 case AttackState.Idle:
@@ -175,13 +188,13 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                         }
                         else
                         {
-                            if (Main.rand.NextBool(2))
+                            if (Main.rand.NextBool(5))
                             {
-                                SwitchState(AttackState.Spin_Slow);
+                                SwitchState(AttackState.Spin_Fast);   
                             }
                             else
                             {
-                                SwitchState(AttackState.Spin_Fast);
+                                SwitchState(AttackState.Spin_Slow);
                             }                      
                         }      
                     }
@@ -203,7 +216,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 
                 case AttackState.Spin_Fast:
                     //Fastly
-                    WheelMovement(20);
+                    WheelMovement(13);
                     ai_Counter++;
                     if (ai_Counter > 120)
                     {
@@ -214,15 +227,34 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     break;
                 
                 case AttackState.Bolt:
-
+                    if (ai_Counter == 0)
+                    {
+                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<WaterGun>());
+                    }
+                    ai_Counter++;
+                    SwitchState(AttackState.Idle);
                     break;
                 
                 case AttackState.Rifle:
-
+                    if (ai_Counter == 0)
+                    {
+                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<WaterGun>());
+                    }
+                    ai_Counter++;
+                    SwitchState(AttackState.Idle);
                     break;
                 
                 case AttackState.Launcher:
+                    if (ai_Counter == 0)
+                    {
+                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<WaterGun>());
+                    }
+                    ai_Counter++;
+                    SwitchState(AttackState.Idle);
+                    break;
 
+                case AttackState.Ram:
+                    SwitchState(AttackState.Idle);
                     break;
             }
         }

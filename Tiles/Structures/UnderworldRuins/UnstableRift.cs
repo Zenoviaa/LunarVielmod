@@ -90,7 +90,10 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 			if (NPC.AnyNPCs(ModContent.NPCType<Sylia>())) //Do nothing if the boss is alive
 				return false;
 
-			if (Main.hardMode && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
+            if (!Main.hardMode)
+            {
+				Main.NewText("A disturbing entity prevents the rift from opening...", Color.Red);
+			} else if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{

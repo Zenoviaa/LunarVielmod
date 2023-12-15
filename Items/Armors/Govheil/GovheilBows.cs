@@ -61,6 +61,8 @@ namespace Stellamod.Items.Armors.Govheil
 		; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.scale = 0.7f;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 20;
 		}
 
 		// Here you can decide if your minion breaks things like grass or pots
@@ -74,6 +76,12 @@ namespace Stellamod.Items.Armors.Govheil
 		public override void AI()
 		{
 			Player owner = Main.player[Projectile.owner];
+            if (!owner.GetModPlayer<MyPlayer>().GovheilB)
+            {
+				Projectile.Kill();
+				return;
+            }
+
 			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);

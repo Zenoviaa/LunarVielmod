@@ -27,6 +27,7 @@ namespace Stellamod.Items.Armors.ForestCore
         {
             player.moveSpeed += 0.1f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -36,7 +37,5 @@ namespace Stellamod.Items.Armors.ForestCore
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }
-
-
     }
 }

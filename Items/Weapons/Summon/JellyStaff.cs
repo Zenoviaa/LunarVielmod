@@ -128,12 +128,14 @@ namespace Stellamod.Items.Weapons.Summon
 				Projectile.minion = true;
 				// Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 				Projectile.minionSlots = 1f;
-				// Needed so the minion doesn't despawn on collision with enemies or tiles
-				Projectile.penetrate = -1;
-			}
+                // Needed so the minion doesn't despawn on collision with enemies or tiles
+                Projectile.penetrate = -1;
+				Projectile.usesLocalNPCImmunity = true;
+				Projectile.localNPCHitCooldown = 20;
+            }
 
-			// Here you can decide if your minion breaks things like grass or pots
-			public override bool? CanCutTiles()
+            // Here you can decide if your minion breaks things like grass or pots
+            public override bool? CanCutTiles()
 			{
 				return false;
 			}

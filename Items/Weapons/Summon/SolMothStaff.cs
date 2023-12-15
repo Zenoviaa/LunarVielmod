@@ -130,7 +130,10 @@ namespace Stellamod.Items.Weapons.Summon
 				Projectile.minionSlots = 1f;
 				// Needed so the minion doesn't despawn on collision with enemies or tiles
 				Projectile.penetrate = -1;
+				Projectile.usesLocalNPCImmunity = true;
+				Projectile.localNPCHitCooldown = 20;
 			}
+
 			public float HuntrianColorX;
 			public float HuntrianColorZ;
 			public float HuntrianColorY;

@@ -1097,9 +1097,8 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<GovheilBows>(), 20, 1f, Player.whoAmI);
 				}
-
-
 			}
+
 			/*if (GovheilB && GovheilBCooldown > 300)
 			{
 				Player.GetDamage(DamageClass.Magic) *= 2f;

@@ -12,6 +12,7 @@ namespace Stellamod.Items.Armors.Astrasilk
         {
             // DisplayName.SetDefault("Astrasilk Jacket");
         }
+
         public override void SetDefaults()
         {
             Item.width = 30;
@@ -19,12 +20,13 @@ namespace Stellamod.Items.Armors.Astrasilk
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
             Item.defense = 4;
-            Item.vanity = true;
         }
+
         public override void UpdateEquip(Player player)
         {
-            player.GetCritChance(DamageClass.Magic) += 0.25f;
+            player.GetCritChance(DamageClass.Magic) += 25f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -33,6 +35,5 @@ namespace Stellamod.Items.Armors.Astrasilk
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
-
     }
 }
