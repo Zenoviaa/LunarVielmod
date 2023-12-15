@@ -4608,6 +4608,11 @@ Mods: {
 				DisplayName: Magical Brooch A
 				Tooltip: ""
 			}
+
+			PotionOfHallowWand: {
+				DisplayName: Potion Of Hallow Wand
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5264,6 +5269,8 @@ Mods: {
 			WaterBolt.DisplayName: Water Bolt
 			SparkBallsP.DisplayName: Spark Balls P
 			MagicalBrooch.DisplayName: Magical Brooch
+			HallowRain.DisplayName: Hallow Rain
+			BPWProj.DisplayName: B P W Proj
 		}
 
 		NPCs: {
@@ -7314,6 +7321,11 @@ Mods: {
 			MagicalBroo: {
 				DisplayName: Magical Broo
 				Description: Mods.Stellamod.Buffs.MagicalBroo.Description
+			}
+
+			HallowWandMinionBuff: {
+				DisplayName: Hallow Wand Minion Buff
+				Description: Mods.Stellamod.Buffs.HallowWandMinionBuff.Description
 			}
 		}
 	}
