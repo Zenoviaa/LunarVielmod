@@ -10,6 +10,7 @@ using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -22,7 +23,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-	public class SyliaSkyPlayer : ModPlayer
+    public class SyliaSkyPlayer : ModPlayer
     {
         public override void PostUpdateMiscEffects()
         {
@@ -227,6 +228,15 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			if (NPC.life < lifeMax - partOfLifeMax && _attackPhase < Phase.Phase_2)
             {
 				ResetAI();
+				for(int i = 0; i < Main.maxProjectiles; i++)
+                {
+					var proj = Main.projectile[i];
+					if(proj.hostile && proj.type == ModContent.ProjectileType<VoidRift>())
+                    {
+						proj.timeLeft = 20;
+					}
+                }
+
 				SoundEngine.PlaySound(SoundID.Item161);
 				_attackPhase = Phase.Phase_2;
 				_attack = AttackState.Transition;
@@ -882,11 +892,23 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 						if(ai_Telegraph_Counter > 60)
                         {
+							ai_Counter++;
+							ai_Telegraph_Counter = 0;
+						}
+                    } 
+					else if (ai_Counter == 2)
+					{
+						float xVelocity = npc.DirectionTo(targetCenter).X;
+						float lerpAmount = 0.5f * Math.Clamp(ai_Telegraph_Counter / 30, 0, 1);
+						Vector2 dashVelocity = new Vector2(xVelocity, -0.75f) * 16;
+						npc.velocity = Vector2.Lerp(npc.velocity, dashVelocity, lerpAmount);
+						if (ai_Telegraph_Counter > 60)
+						{
 							ai_Counter = 0;
 							ai_Telegraph_Counter = 0;
 							_attack = AttackState.Idle;
 						}
-                    }
+					}
 
 					break;
 
