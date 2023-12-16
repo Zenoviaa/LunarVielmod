@@ -19,6 +19,7 @@ namespace Stellamod.Buffs.Charms
 			Lighting.AddLight(player.Center, Color.PaleVioletRed.ToVector3() * 2.75f * Main.essScale);
 			player.statDefense += 5;
 			player.statManaMax2 += 100;
+			player.statLifeMax2 += 50;
 			player.magicCuffs = true;
 			player.manaFlower = true;
 			player.manaCost /= 20;

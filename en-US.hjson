@@ -4536,7 +4536,7 @@ Mods: {
 
 			Alcadius: {
 				DisplayName: Alcadius
-				Tooltip: ""
+				Tooltip: Jinkies!
 			}
 
 			DungeonedRockCard: {
@@ -4571,7 +4571,7 @@ Mods: {
 
 			CatacombsKey: {
 				DisplayName: Catacombs Key
-				Tooltip: ""
+				Tooltip: Use these to enter catacombs under the ocean, desert and underground!
 			}
 
 			CatacombsDoor: {
@@ -4601,12 +4601,17 @@ Mods: {
 
 			StarringBalls: {
 				DisplayName: Starring Balls
-				Tooltip: ""
+				Tooltip: Get starry
 			}
 
 			MagicalBroochA: {
-				DisplayName: Magical Brooch A
-				Tooltip: ""
+				DisplayName: The Royal Capital's Magical Brooch
+				Tooltip:'''
+				You really wanna be a mage huh.
+					+100 Max Mana and +50 Health
+					Auto gain the Mana Cuffs and Magic flower
+					Cost of magic is reduced by 95%..
+					'''
 			}
 
 			PotionOfHallowWand: {
