@@ -4616,37 +4616,37 @@ Mods: {
 
 			AppretienceBreastplate: {
 				DisplayName: Appretience Breastplate
-				Tooltip: ""
+				Tooltip: +20% Crit strike chance and +5 Health!
 			}
 
 			AppretienceHat: {
-				DisplayName: Appretience Hat
-				Tooltip: ""
+				DisplayName: Appretience Hood
+				Tooltip: +20% Crit strike chance and Health!
 			}
 
 			AppretiencePants: {
 				DisplayName: Appretience Pants
-				Tooltip: ""
+				Tooltip: +20% Crit strike chance and Health!
 			}
 
 			UlvenChestplate: {
 				DisplayName: Ulven Chestplate
-				Tooltip: ""
+				Tooltip: +15 Armor Penetration!
 			}
 
 			UlvenGreaves: {
 				DisplayName: Ulven Greaves
-				Tooltip: ""
+				Tooltip: +25 Armor Penetration!
 			}
 
 			UlvenHelmet: {
 				DisplayName: Ulven Helmet
-				Tooltip: ""
+				Tooltip: +20 Armor Penetration
 			}
 
 			RottenHeart: {
 				DisplayName: Rotten Heart
-				Tooltip: ""
+				Tooltip: Destroyed and rotten to it's core, a task for someone to fulfill providing another barrier to Gothivia...
 			}
 		}
 

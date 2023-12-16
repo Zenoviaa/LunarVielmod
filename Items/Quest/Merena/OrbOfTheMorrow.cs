@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
@@ -26,6 +27,7 @@ namespace Stellamod.Items.Quest.Merena
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<RottenHeart>(), 1);
             recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 100);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 100);
             recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 100);
