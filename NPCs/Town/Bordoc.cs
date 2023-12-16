@@ -383,9 +383,9 @@ namespace Stellamod.NPCs.Town
 					})
 
 
-					.Add(new Item(ModContent.ItemType<PaperPaws>())
+					.Add(new Item(ModContent.ItemType<MorrowChestKey>())
 					{
-						shopCustomPrice = 10,
+						shopCustomPrice = 1,
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 

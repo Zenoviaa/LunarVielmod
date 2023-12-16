@@ -4613,6 +4613,41 @@ Mods: {
 				DisplayName: Potion Of Hallow Wand
 				Tooltip: ""
 			}
+
+			AppretienceBreastplate: {
+				DisplayName: Appretience Breastplate
+				Tooltip: ""
+			}
+
+			AppretienceHat: {
+				DisplayName: Appretience Hat
+				Tooltip: ""
+			}
+
+			AppretiencePants: {
+				DisplayName: Appretience Pants
+				Tooltip: ""
+			}
+
+			UlvenChestplate: {
+				DisplayName: Ulven Chestplate
+				Tooltip: ""
+			}
+
+			UlvenGreaves: {
+				DisplayName: Ulven Greaves
+				Tooltip: ""
+			}
+
+			UlvenHelmet: {
+				DisplayName: Ulven Helmet
+				Tooltip: ""
+			}
+
+			RottenHeart: {
+				DisplayName: Rotten Heart
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6650,6 +6685,7 @@ Mods: {
 			WaterCogwork.DisplayName: Water Cogwork
 			AlcaricVoidSmall.DisplayName: Alcaric Void Blob
 			WaterGun.DisplayName: Water Gun
+			Bordoc.DisplayName: Bordoc
 		}
 
 		Biomes: {
