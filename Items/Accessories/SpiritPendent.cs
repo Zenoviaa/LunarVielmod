@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,6 +24,15 @@ namespace Stellamod.Items.Accessories
         {
             player.GetModPlayer<MyPlayer>().SpiritPendent = true;
             Lighting.AddLight(player.position, 1.0f, 1.0f, 2.75f);
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SingulariumBar>(), 1);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }
