@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Consumables;
+﻿using Stellamod.Items.Accessories;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -64,7 +65,8 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.EyeofCthulhu)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Steali>(), 1, 1, 1));// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkEssence>(), 1, 1, 30)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			
