@@ -4606,8 +4606,9 @@ Mods: {
 
 			MagicalBroochA: {
 				DisplayName: The Royal Capital's Magical Brooch
-				Tooltip:'''
-				You really wanna be a mage huh.
+				Tooltip:
+					'''
+					You really wanna be a mage huh.
 					+100 Max Mana and +50 Health
 					Auto gain the Mana Cuffs and Magic flower
 					Cost of magic is reduced by 95%..
