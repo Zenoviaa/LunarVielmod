@@ -11,13 +11,35 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Safunai.Parendine
+namespace Stellamod.Projectiles.Safunai.Kaevine
 {
-    public class ParendineProj : ModProjectile
+    public class KaevineProj : ModProjectile
 	{
+		public const float THROW_RANGE = 320; //Peak distance from player when thrown out, in pixels
+		public const float HOOK_MAXRANGE = 800; //Maximum distance between owner and hooked enemies before it automatically rips out
+		public const int HOOK_HITTIME = 20; //Time between damage ticks while hooked in
+		public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
+
+		public bool Flip = false;
+		public bool Slam = false;
+		public bool PreSlam = false;
+		public int SwingTime;
+		public float SwingDistance;
+		public float Curvature;
+		public Vector2 CurrentBase = Vector2.Zero;
+
+		private Player Owner => Main.player[Projectile.owner];
+		private Vector2 _chainMidA;
+		private Vector2 _chainMidB;
+		private Vector2 returnPosOffset; //The position of the projectile when it starts returning to the player from being hooked
+		private Vector2 npcHookOffset = Vector2.Zero; //Used to determine the offset from the hooked npc's center
+		private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
+		private NPC hookNPC; //The npc the projectile is hooked into
+		private int _flashTime;
+		private int slamTimer = 0;
+		private List<Vector2> oldBase = new List<Vector2>();
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Halhurish");
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
@@ -31,76 +53,25 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			Projectile.ignoreWater = true;
 			Projectile.penetrate = -1;
 			Projectile.usesLocalNPCImmunity = true;
-
 		}
 
-		private Player Owner => Main.player[Projectile.owner];
-
-		public int SwingTime;
-		public float SwingDistance;
-		public float Curvature;
+		int afterImgCancelDrawCount = 0;
+		float t = 0;
 
 		public ref float Timer => ref Projectile.ai[0];
 		public ref float AiState => ref Projectile.ai[1];
-		int afterImgCancelDrawCount = 0;
-
-		/*
-		
-		Vector2 endPoint;
-		Vector2 controlPoint1;
-		Vector2 controlPoint2;
-		Vector2 initialPos;
-		Vector2 wantedEndPoint;
-		bool initialization = false;
-		float AoERadiusSquared = 36000;//it's squared for less expensive calculations
-
-		*/
-
-		//Ok, I really wanna know the context behind these arrays
-		//public bool[] hitByThisStardustExplosion = new bool[200] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, };
-		float t = 0;
-
-
-		private Vector2 returnPosOffset; //The position of the projectile when it starts returning to the player from being hooked
-		private Vector2 npcHookOffset = Vector2.Zero; //Used to determine the offset from the hooked npc's center
-		private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
-		private NPC hookNPC; //The npc the projectile is hooked into
-
-		public const float THROW_RANGE = 320; //Peak distance from player when thrown out, in pixels
-		public const float HOOK_MAXRANGE = 800; //Maximum distance between owner and hooked enemies before it automatically rips out
-		public const int HOOK_HITTIME = 20; //Time between damage ticks while hooked in
-		public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
-
-		private int _flashTime;
-
-		public bool Flip = false;
-		public bool Slam = false;
-		public bool PreSlam = false;
-
-		private List<float> oldRotation = new List<float>();
-		private List<Vector2> oldBase = new List<Vector2>();
-
-		public Vector2 CurrentBase = Vector2.Zero;
-
-		private int slamTimer = 0;
-
 		public override void AI()
 		{
-
 			if (t > 1)
 			{
-
 				afterImgCancelDrawCount++;
 			}
 
 			t += 0.01f;
-
 			if (Projectile.timeLeft > 2) //Initialize chain control points on first tick, in case of projectile hooking in on first tick
 			{
 				_chainMidA = Projectile.Center;
 				_chainMidB = Projectile.Center;
-
-
 			}
 
 			Lighting.AddLight(CurrentBase, new Color(254, 204, 72).ToVector3());
@@ -115,32 +86,47 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 
 			if (!Slam)
 				Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Projectile.Center) - (Owner.direction < 0 ? MathHelper.Pi : 0));
-            else
-            {
+			else
+			{
 				Owner.itemRotation = MathHelper.WrapAngle(Owner.AngleTo(Main.MouseWorld) - (Owner.direction < 0 ? MathHelper.Pi : 0));
 				_flashTime = Math.Max(_flashTime - 1, 0);
 			}
-				
-
-
-
-
-			
-
-
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
+			target.AddBuff(BuffID.Poisoned, 120);
+			int count = 24;
+			float degreesPer = 360 / (float)count;
+			for (int k = 0; k < count; k++)
+			{
+				float degrees = k * degreesPer;
+				Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
+				Vector2 vel = direction * 4;
+				Dust.NewDust(target.Center, 0, 0, DustID.Venom, vel.X, vel.Y);
+			}
 
 			ShakeModSystem.Shake = 4;
 			SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
-			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-			float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
+			SoundEngine.PlaySound(SoundID.Item17);
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<FrostKaboom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+			for (int i = 0; i < Main.rand.Next(1, 4); i++)
+            {
+				Vector2 stingerVelocity = Vector2.One.RotatedBy(MathHelper.ToRadians(Main.rand.Next(0, 360))) * Main.rand.NextFloat(4, 6);
+				int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(),
+					target.Center.X, target.Center.Y,
+					stingerVelocity.X, stingerVelocity.Y,
+					ProjectileID.QueenBeeStinger, Projectile.damage * 2, 0f, Projectile.owner);
 
-
+				Projectile stingerProj = Main.projectile[p];
+				stingerProj.hostile = false;
+				stingerProj.friendly = true;
+				stingerProj.usesLocalNPCImmunity = true;
+				stingerProj.penetrate = -1;
+				stingerProj.localNPCHitCooldown = -1;
+			}
 		}
+
 		private Vector2 GetSwingPosition(float progress)
 		{
 			//Starts at owner center, goes to peak range, then returns to owner center
@@ -157,7 +143,6 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			Projectile.rotation = Projectile.AngleFrom(Owner.Center);
 			Vector2 position = Owner.MountedCenter;
 			float progress = ++Timer / SwingTime; //How far the projectile is through its swing
-
 
 			if (slamTimer == 5)
 				SoundEngine.PlaySound(SoundID.NPCDeath7, Projectile.Center);
@@ -214,11 +199,11 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			}
 
 			Color afterImgColor = Main.hslToRgb(Projectile.ai[1], 1, 0.5f);
-			float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
 			afterImgColor.A = 70;
 			afterImgColor.B = 255;
 			afterImgColor.G = 215;
 			afterImgColor.R = 96;
+
 			Main.instance.LoadProjectile(ProjectileID.RainbowRodBullet);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 			for (int i = afterImgCancelDrawCount + 1; i < Projectile.oldPos.Length; i++)
@@ -238,6 +223,7 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
+
 					rotationToDraw += MathHelper.PiOver2;
 					interpolatedPos -= new Vector2(0, projTexture.Height / 2).RotatedBy(rotationToDraw) * 0.75f;
 					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
@@ -248,12 +234,9 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 		}
 
 		//Control points for drawing chain bezier, update slowly when hooked in
-		private Vector2 _chainMidA;
-		private Vector2 _chainMidB;
 		private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, out Vector2[] chainPositions)
 		{
 			Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
-
 			float progress = Timer / SwingTime;
 
 			if (Slam)
@@ -303,8 +286,6 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 			}
 			return base.Colliding(projHitbox, targetHitbox);
 		}
-
-
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{

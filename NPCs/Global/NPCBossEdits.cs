@@ -39,7 +39,6 @@ namespace Stellamod.NPCs.Global
 			}
         }
 
-
         // ModifyNPCLoot uses a unique system called the ItemDropDatabase, which has many different rules for many different drop use cases.
         // Here we go through all of them, and how they can be used.
         // There are tons of other examples in vanilla! In a decompiled vanilla build, GameContent/ItemDropRules/ItemDropDatabase adds item drops to every single vanilla NPC, which can be a good resource.
@@ -63,6 +62,7 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			//Gambits
 			if (npc.type == NPCID.EyeofCthulhu)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
@@ -89,7 +89,6 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.WallofFlesh)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 5));
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>(), 1, 1, 1));// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
@@ -98,7 +97,11 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			
+			if (npc.type == NPCID.Deerclops)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
+
 			// Editing an existing drop rule
 			if (npc.type == NPCID.BloodNautilus)
 			{

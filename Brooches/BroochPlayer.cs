@@ -74,9 +74,9 @@ namespace Stellamod.Brooches
             hasAdvancedBrooches = false;
         }
 
-        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPCWithItem(item, target, hit, damageDone);
+            base.OnHitNPC(target, hit, damageDone);
             //FRILE BROOCH HIT EFFECT
             if (hasFrileBrooch && frileBroochCooldown <= 0)
             {
@@ -129,6 +129,7 @@ namespace Stellamod.Brooches
                 burningGBCooldown = 220;
             }
         }
+
 
         public void KeepBroochAlive<BroochProjectile, BroochBuff>(ref bool hasBrooch) 
             where BroochProjectile : ModProjectile 

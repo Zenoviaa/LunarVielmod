@@ -28,13 +28,12 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
-			Projectile.Size = new Vector2(85, 85);
+			Projectile.Size = new Vector2(16, 48);
 			Projectile.tileCollide = false;
 			Projectile.ownerHitCheck = true;
 			Projectile.ignoreWater = true;
 			Projectile.penetrate = -1;
 			Projectile.usesLocalNPCImmunity = true;
-
 		}
 
 		private Player Owner => Main.player[Projectile.owner];
@@ -250,6 +249,8 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 						interpolatedPos = Vector2.Lerp(Projectile.oldPos[i - 1] + Projectile.Size / 2, Projectile.oldPos[i] + Projectile.Size / 2, j);
 						rotationToDraw = Utils.AngleLerp(Projectile.oldRot[i - 1], Projectile.oldRot[i], j);
 					}
+					rotationToDraw += MathHelper.PiOver2;
+					interpolatedPos -= new Vector2(0, projTexture.Height / 2).RotatedBy(rotationToDraw) * 0.75f;
 					Main.EntitySpriteDraw(texture, interpolatedPos - Main.screenPosition + Projectile.Size / 2, null, afterImgColor * (1 - i / (float)Projectile.oldPos.Length), rotationToDraw, texture.Size() / 2, 1, SpriteEffects.None, 0);
 				}
 			}

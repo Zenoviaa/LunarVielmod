@@ -18,11 +18,14 @@ namespace Stellamod.Projectiles
 			Projectile.friendly = true;
 			Projectile.width = 45;
 			Projectile.height = 45;
-			Projectile.penetrate = -1;
+			
 			Projectile.timeLeft = 40;
 			Projectile.scale = 1.2f;
-			
+			Projectile.penetrate = -1;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
