@@ -346,6 +346,10 @@
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_White.png" />
     <None Remove="Projectiles\Safunai\Blackwhip\DarkwhipProj_White.png" />
+    <None Remove="Projectiles\Safunai\Kaevine\KaevineProj.png" />
+    <None Remove="Projectiles\Safunai\Kaevine\KaevineProj_Chain.png" />
+    <None Remove="Projectiles\Safunai\Kaevine\KaevineProj_Glow.png" />
+    <None Remove="Projectiles\Safunai\Kaevine\KaevineProj_White.png" />
     <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
