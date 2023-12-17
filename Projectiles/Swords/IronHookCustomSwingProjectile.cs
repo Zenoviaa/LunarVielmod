@@ -33,10 +33,9 @@ namespace Stellamod.Projectiles.Swords
 		private float execTime => 16f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
 		public override string Texture => "Stellamod/Items/Weapons/Melee/IronHook"; // Use texture of item as projectile texture
 		private Player Owner => Main.player[Projectile.owner];
+
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
