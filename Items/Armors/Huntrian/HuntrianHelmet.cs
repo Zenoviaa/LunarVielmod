@@ -50,7 +50,22 @@ namespace Stellamod.Items.Armors.Huntrian
 			player.setBonus = "Increases life regen by a big amount!" +
 				"\nReduced Healing Flask cooldown" +
 				"\nDOES NOT STACK with philosophers stone"; // This is the setbonus tooltip
-			player.pStone = true;
+
+            if (player.HasBuff(BuffID.PotionSickness))
+            {
+				int buffIndex = player.FindBuffIndex(BuffID.PotionSickness);
+
+				//idk how to math so I just do 45 * 60 to convert 45 seconds to ticks
+				//It's easier to read I think anyways
+				int secondsToSetTo = 45;
+				int ticks = secondsToSetTo * 60;
+				if(player.buffTime[buffIndex] > ticks)
+                {
+					player.buffTime[buffIndex] = ticks;
+				}
+			}
+
+			//player.pStone = true;
 			player.lifeRegen += 2;
 		}
 
