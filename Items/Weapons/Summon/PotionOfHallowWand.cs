@@ -39,17 +39,18 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.height = 44;
 			Item.rare = ItemRarityID.Pink;
 			Item.value = Terraria.Item.sellPrice(0, 10, 80, 0);
-			Item.CloneDefaults(ItemID.Arkhalis);
+
 			Item.damage = 36; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Summon;
-			Item.mana = 20;
+			Item.mana = 8;
 			Item.useTime = 30; // The Item's use time in ticks (60 ticks == 1 second.)
 			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Swing;
+
 			 //so the Item's animation doesn't do damage
 			Item.knockBack = 4; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
 			Item.value = 10000; // how much the Item sells for (measured in copper)
-			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
+			Item.UseSound = SoundID.Item83; // The sound that this Item plays when used.
 			Item.autoReuse = false; // if you can hold click to automatically use it again
 			Item.shoot = ModContent.ProjectileType<BPWProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
