@@ -501,14 +501,11 @@ namespace Stellamod
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
 			Teric = false;
-
-
             TAuraSpawn = false;
 			HikersBSpawn = false;
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
 			ArcaneM = false;
-			ArcaneMCooldown = 0;
 			PlantH = false;
 			ThornedBook = false;
 			Dice = false;
@@ -518,8 +515,7 @@ namespace Stellamod
 			GovheilB = false;
 			GovheilC = false;
 			Daedstruck = false;
-
-		BroochSpragald = false;
+			BroochSpragald = false;
 			BroochFrile = false;
 			BroochFlyfish = false;
 			BroochMorrow = false;
@@ -1940,37 +1936,6 @@ namespace Stellamod
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig2, speed * 2, ParticleManager.NewInstance<UnderworldParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 				}
-
-
-
-			}
-
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-			if (ArcaneM && ArcaneMCooldown == 601)
-			{
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
-				for (int j = 0; j < 7; j++)
-				{
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(Player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-				}
-
-
-			}
-			if (ArcaneM && ArcaneMCooldown > 600)
-			{
-				Player.GetDamage(DamageClass.Magic) *= 2f;
-
-
-			}
-			if (ArcaneM && ArcaneMCooldown == 720)
-			{
-				ArcaneMCooldown = 0;
-
-
 			}
 
 			if (Dice)
@@ -2497,41 +2462,33 @@ namespace Stellamod
 			}
 		}
 
-
-
-
-
-
-		float Timer2 = 0;
         public override void PostUpdateEquips()
         {
-
+			//Sap Container's Effect
 			if (ArcaneM)
             {
 				if (ArcaneMCooldown == 601)
 				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/ArcaneExplode"));
 					for (int j = 0; j < 7; j++)
 					{
 						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-						Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-						ParticleManager.NewParticle(Player.Center, speed * 3, ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
+						ParticleManager.NewParticle(Player.Center, speed * 3, 
+							ParticleManager.NewInstance<ArcanalParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 					}
 				}
+
 				if (ArcaneMCooldown > 600)
 				{
 					Player.GetDamage(DamageClass.Magic) *= 4f;
-
 				}
 
-				if (ArcaneMCooldown < 720)
+				if (ArcaneMCooldown > 720)
 				{
 					ArcaneMCooldown = 0;
 				}
 			}
 			
-
 
 			if (StealthRune)
 			{
@@ -2553,8 +2510,8 @@ namespace Stellamod
 				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
 				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
 				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
-
 			}
+
 			if (SpiritPendent && ZoneAbyss)
 			{
 				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
@@ -2562,15 +2519,6 @@ namespace Stellamod
 				Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
 				Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
 				Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
-			}
-
-
-
-			if (ArcaneM && ArcaneMCooldown > 600)
-			{
-				Player.GetDamage(DamageClass.Magic) *= 2f;
-
-
 			}
 
 
