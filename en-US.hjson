@@ -4654,6 +4654,11 @@ Mods: {
 				DisplayName: Rotten Heart
 				Tooltip: Destroyed and rotten to it's core, a task for someone to fulfill providing another barrier to Gothivia...
 			}
+
+			IronHook: {
+				DisplayName: Iron Hook
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5312,6 +5317,7 @@ Mods: {
 			MagicalBrooch.DisplayName: Magical Brooch
 			HallowRain.DisplayName: Hallow Rain
 			BPWProj.DisplayName: B P W Proj
+			IronHookCustomSwingProjectile.DisplayName: Iron Hook Custom Swing Projectile
 		}
 
 		NPCs: {
