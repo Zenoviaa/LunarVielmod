@@ -117,36 +117,33 @@ namespace Stellamod.WorldG
 		private void WorldGenAmbience(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Golden Ambience ruining the world";
-
-
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck1>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.OwlTrunck1>());               
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck2>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.OwlTrunck2>());                 
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Dirt)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.OwlTrunck3>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.OwlTrunck3>());   
                 }
             }
 
@@ -157,78 +154,77 @@ namespace Stellamod.WorldG
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock1>());
-             
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock1>());
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock2>());
-                
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock2>());   
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock3>());
-                
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock3>());   
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.BigRock4>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock4>());
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite1>());
-               
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite1>());            
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite2>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite2>());       
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite3>());
-                  
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite3>());
                 }
             }
+
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
-                    WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.Stalagmite4>());
-                   
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite4>());
                 }
             }
 
@@ -239,11 +235,8 @@ namespace Stellamod.WorldG
 				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY / 2);
 				if (Main.tile[X, Y].TileType == TileID.Dirt)
 				{
-					WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.TreeOver1>());
-
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.TreeOver1>());
 				}
-
-
 			}
 
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
@@ -252,15 +245,10 @@ namespace Stellamod.WorldG
 				int Y = WorldGen.genRand.Next(0, Main.maxTilesY);
 				if (Main.tile[X, Y].TileType == TileID.Dirt)
 				{
-					WorldGen.PlaceObject(X, Y, (ushort)ModContent.TileType<Tiles.Ambient.TreeOver2>());
-
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.TreeOver2>());
 				}
 			}
-
-
 		}
-
-
 
 		private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
 		{
