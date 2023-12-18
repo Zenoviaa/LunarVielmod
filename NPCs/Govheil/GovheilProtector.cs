@@ -182,13 +182,15 @@ namespace Stellamod.NPCs.Govheil
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-           
+
 
             if (spawnInfo.Player.InModBiome<GovheilCastle>())
             {
-                return SpawnCondition.Cavern.Chance * 0.3f;
+                return 0.5f;
             }
-            return SpawnCondition.OverworldNight.Chance * 0f;
+
+
+            return 0f;
         }
     }
 }

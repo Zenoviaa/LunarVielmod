@@ -6710,6 +6710,7 @@ Mods: {
 			AlcaricVoidSmall.DisplayName: Alcaric Void Blob
 			WaterGun.DisplayName: Water Gun
 			Bordoc.DisplayName: Bordoc
+			GovheilGuardian.DisplayName: Govheil Guardian
 		}
 
 		Biomes: {

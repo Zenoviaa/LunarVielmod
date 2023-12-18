@@ -50,7 +50,7 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<OldCarianTome>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<StolenMagicTome>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
 			recipe.AddIngredient(ItemID.SoulofNight, 5);
 			recipe.AddIngredient(ItemID.ObsidianShield, 1);

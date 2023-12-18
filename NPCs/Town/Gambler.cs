@@ -399,7 +399,12 @@ namespace Stellamod.NPCs.Town
 					})
 
 
+					.Add(new Item(ItemID.ObsidianRose)
+					{
+						shopCustomPrice = 15,
 
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
 
 
 

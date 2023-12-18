@@ -462,7 +462,8 @@ namespace Stellamod.NPCs.Town
 
 			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
 			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<AlcadzianCard>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<PearlescentScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))// { shopCustomPrice = Item.buyPrice(silver: 50) })
+			.Add<PearlescentScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
+			.Add<LostScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))// { shopCustomPrice = Item.buyPrice(silver: 50) })
 			.Add<Hyua>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
 			.Add<BlossomingScissor>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 			.Add<AlcadThrowingCards>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))//{ shopCustomPrice = Item.buyPrice(silver: 10) })
