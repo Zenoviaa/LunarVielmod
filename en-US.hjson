@@ -951,7 +951,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -960,7 +960,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -969,7 +969,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -978,7 +978,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -987,7 +987,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -996,7 +996,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -1005,7 +1005,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -1014,7 +1014,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -1023,7 +1023,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -1032,7 +1032,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -1178,7 +1178,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A sparkly star dust that does double damage as the igniter!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1188,7 +1188,7 @@ Mods: {
 					'''
 					Throw magical dust on them and ignite
 					A blood dust that does high damage with igniters.
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1197,7 +1197,7 @@ Mods: {
 				Tooltip:
 					'''
 					Throw magical dust on them!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					Forged from the gems you collect!
 					'''
 			}
@@ -1208,7 +1208,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A flamey dust that explodes with your igniter!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1218,7 +1218,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					Dusty ice dust that does continuous damage with the igniter!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1228,7 +1228,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A dirty dust... that does damage???!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1238,7 +1238,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A musical dust! that explodes with your igniter!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1248,7 +1248,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A shadow dust that explodes with your igniter!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1258,7 +1258,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A sparkly tricky dust that does a lot damage!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -1268,7 +1268,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A musical dust that has calming flowers
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -3082,6 +3082,7 @@ Mods: {
 					'''
 					Use a powder or dust and then use this!
 					Sometimes it takes a card to be a warrior.
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -3156,7 +3157,7 @@ Mods: {
 					'''
 					An igniter for dusts and powders!
 					Reaching from the depths of the galaxy!
-					Use a powder or dust, then use this!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -3186,7 +3187,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					A void crystal-like dust!
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -3196,7 +3197,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					Stolen from gothivia's castle
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -3206,7 +3207,7 @@ Mods: {
 					'''
 					Throw magical dust on them!
 					Pure sensation. :)
-					Use an Igniter / Card with this!
+					After hitting an enemy with this, use an igniter card weapon!
 					'''
 			}
 
@@ -3414,7 +3415,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Causes minor burns," thats at least the note she left.
-					Use a powder/ dust, then use this!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -3543,8 +3544,8 @@ Mods: {
 			}
 
 			IgniterCards: {
-				DisplayName: Igniter Cards
-				Tooltip: ""
+				DisplayName: Throwing Igniter Cards
+				Tooltip: Hitting enemies with this will act like an igniter card weapon!
 			}
 
 			ThrowingCards: {
@@ -3567,7 +3568,7 @@ Mods: {
 			}
 
 			IgniterCardsMKII: {
-				DisplayName: Igniter Cards MKII
+				DisplayName: Throwing Igniter Cards MKII
 				Tooltip: ""
 			}
 
@@ -4367,7 +4368,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4376,7 +4377,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4385,7 +4386,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4394,7 +4395,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4403,7 +4404,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4412,7 +4413,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
@@ -4421,7 +4422,7 @@ Mods: {
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
-					Use a powder or dust and then use this type of weapon!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
 			}
 
