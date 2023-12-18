@@ -10,7 +10,7 @@ using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-	internal class PosionedPowder : ModItem
+	internal class PoisonedPowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
