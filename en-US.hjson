@@ -4690,6 +4690,33 @@ Mods: {
 				DisplayName: Spirit Powder
 				Tooltip: ""
 			}
+
+			TreasureBoxFire: {
+				DisplayName: Smoldering Treasure Box
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					I bet ya burned yourself half to death to get this one!
+					'''
+			}
+
+			TreasureBoxTrap: {
+				DisplayName: Trapped Treasure Box
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					Ummm- it's totally not trapped ;)
+					'''
+			}
+
+			TreasureBoxWater: {
+				DisplayName: Drowned Treasure Box
+				Tooltip:
+					'''
+					{$CommonItemTooltip.RightClickToOpen}
+					There's... just too much water...
+					'''
+			}
 		}
 
 		JungleRuneI: {

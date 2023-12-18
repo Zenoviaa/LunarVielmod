@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -368,6 +370,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     SwitchState(AttackState.Idle);
                     break;
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxWater>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
         }
     }
 }
