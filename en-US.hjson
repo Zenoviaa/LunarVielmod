@@ -4670,6 +4670,26 @@ Mods: {
 				DisplayName: Rallad I
 				Tooltip: ""
 			}
+
+			AgreviPowder: {
+				DisplayName: Agrevi Powder
+				Tooltip: ""
+			}
+
+			IllusionistPowder: {
+				DisplayName: Illusionist Powder
+				Tooltip: ""
+			}
+
+			PoisonedPowder: {
+				DisplayName: Poisoned Powder
+				Tooltip: ""
+			}
+
+			SpiritPowder: {
+				DisplayName: Spirit Powder
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5330,6 +5350,14 @@ Mods: {
 			BPWProj.DisplayName: B P W Proj
 			IronHookCustomSwingProjectile.DisplayName: Iron Hook Custom Swing Projectile
 			KaevineProj.DisplayName: Kaevine Proj
+			AgreviBoom.DisplayName: Agrevi Boom
+			EldritchBoom.DisplayName: Eldritch Boom
+			JungleBoom.DisplayName: Jungle Boom
+			KaBoomSpirit.DisplayName: Ka Boom Spirit
+			AgreviPowderProj.DisplayName: Agrevi Powder Proj
+			IllusionistPowderProj.DisplayName: Illusionist Powder Proj
+			PoisonPowderProj.DisplayName: Poison Powder Proj
+			SpiritPowderProj.DisplayName: Spirit Powder Proj
 		}
 
 		NPCs: {
@@ -7388,6 +7416,26 @@ Mods: {
 			HallowWandMinionBuff: {
 				DisplayName: Hallow Wand Minion Buff
 				Description: Mods.Stellamod.Buffs.HallowWandMinionBuff.Description
+			}
+
+			AgreviDust: {
+				DisplayName: Agrevi Dust
+				Description: Mods.Stellamod.Buffs.AgreviDust.Description
+			}
+
+			EldritchDust: {
+				DisplayName: Eldritch Dust
+				Description: Mods.Stellamod.Buffs.EldritchDust.Description
+			}
+
+			JungleDust: {
+				DisplayName: Jungle Dust
+				Description: Mods.Stellamod.Buffs.JungleDust.Description
+			}
+
+			SpiritDust: {
+				DisplayName: Spirit Dust
+				Description: Mods.Stellamod.Buffs.SpiritDust.Description
 			}
 		}
 	}

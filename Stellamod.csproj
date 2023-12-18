@@ -348,6 +348,7 @@
     <None Remove="Projectiles\Powders\CrystalPowderProj.png" />
     <None Remove="Projectiles\Powders\GovheilPowderProj.png" />
     <None Remove="Projectiles\Powders\IllusionistPowderProj.png" />
+    <None Remove="Projectiles\Powders\PoisonPowderProj.png" />
     <None Remove="Projectiles\Powders\SpiritPowderProj.png" />
     <None Remove="Projectiles\Powders\VoidPowderProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />

@@ -412,13 +412,13 @@ namespace Stellamod.Projectiles.IgniterEx
 
 					Projectile.timeLeft = 250;
 					Timer++;
-					if (Timer == 150)
+					if (Timer == 140)
 					{
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Briskfly"));
 
 					}
 
-					if (Timer == 150)
+					if (Timer == 140)
                     {
 						float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 						float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
@@ -845,8 +845,8 @@ namespace Stellamod.Projectiles.IgniterEx
 
 			if (npc.active && npc.HasBuff<EldritchDust>())
 			{
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SpidrSummon"));
+				
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
@@ -875,7 +875,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							npc.SimpleStrikeNPC(Projectile.damage * 32, 1, crit: false, Projectile.knockBack);
 							float speedXab = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYab = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXab, Projectile.position.Y + speedYab, speedXab * 0, speedYab * 0, ModContent.ProjectileType<KaBoomShade>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXab, Projectile.position.Y + speedYab, speedXab * 0, speedYab * 0, ModContent.ProjectileType<EldritchBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 							if (player.GetModPlayer<MyPlayer>().FlamedTomeDusts)
 							{
@@ -934,7 +934,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<UnderworldParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
 					target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
 
 					Projectile.timeLeft = 200;
@@ -959,7 +959,7 @@ namespace Stellamod.Projectiles.IgniterEx
 							npc.SimpleStrikeNPC(Projectile.damage * 29, 1, crit: false, Projectile.knockBack);
 							float speedXab = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYab = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXab, Projectile.position.Y + speedYab, speedXab * 0, speedYab * 0, ModContent.ProjectileType<KaBoomShade>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+							Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXab, Projectile.position.Y + speedYab, speedXab * 0, speedYab * 0, ModContent.ProjectileType<AgreviBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 							if (player.GetModPlayer<MyPlayer>().FlamedTomeDusts)
 							{

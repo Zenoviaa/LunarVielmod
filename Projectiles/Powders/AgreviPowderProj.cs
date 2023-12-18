@@ -31,7 +31,7 @@ namespace Stellamod.Projectiles.Powders
 		{
 
 			Projectile.velocity *= 0.96f;
-			for (int j = 0; j < 10; j++)
+			for (int j = 0; j < 1; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
 				ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<UnderworldParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
