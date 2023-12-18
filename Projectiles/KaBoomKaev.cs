@@ -11,17 +11,17 @@ namespace Stellamod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Boom");
-			Main.projFrames[Projectile.type] = 30;
+			Main.projFrames[Projectile.type] = 8;
 		}
 		
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
-			Projectile.width = 129;
-			Projectile.height = 129;
+			Projectile.width = 192;
+			Projectile.height = 192;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 30;
+			Projectile.timeLeft = 24;
 			Projectile.scale = 1f;
 			
 		}
@@ -51,10 +51,10 @@ namespace Stellamod.Projectiles
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 1)
+			if (++Projectile.frameCounter >= 3)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 30)
+				if (++Projectile.frame >= 8)
 				{
 					Projectile.frame = 0;
 				}
