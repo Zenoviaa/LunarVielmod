@@ -433,8 +433,8 @@ namespace Stellamod.Projectiles.IgniterEx
 							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.NebulaArcanumExplosionShot, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 10;
-							npc.SimpleStrikeNPC(Projectile.damage * 34, 1, crit: false, Projectile.knockBack);
-							npc.SimpleStrikeNPC(Projectile.damage * 34, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 50, 1, crit: false, Projectile.knockBack);
+							npc.SimpleStrikeNPC(Projectile.damage * 50, 1, crit: false, Projectile.knockBack);
 							float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 							float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 							
