@@ -3214,7 +3214,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-06 + 10); k++)
 			{
 
 				int xa = WorldGen.genRand.Next(0, Main.maxTilesX);
