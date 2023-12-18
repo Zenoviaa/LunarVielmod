@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
@@ -56,7 +57,7 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
 			}
 
-			if (Main.rand.NextBool(7))
+			if (Main.rand.NextBool(12))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
 			}
@@ -93,6 +94,19 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(50, 175));
 			}
 
+
+			if (Main.hardMode)
+            {
+				if (Main.rand.NextBool(5))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(1, 3));
+				}
+
+				if (Main.rand.NextBool(50))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(10, 30));
+				}
+			}
 		}
 
 		// Below is code for the visuals
