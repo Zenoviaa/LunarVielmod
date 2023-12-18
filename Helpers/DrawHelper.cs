@@ -68,6 +68,19 @@ namespace Stellamod.Helpers
 			TrailDrawer.DrawPrims(projectile.oldPos, projectile.Size * 0.5f - Main.screenPosition, 155);
 		}
 
+		public static void DrawSimpleTrail(NPC npc, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
+		{
+			if (TrailDrawer == null)
+			{
+				TrailDrawer = new PrimDrawer(widthFunction, colorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+			}
+
+			TrailDrawer.WidthFunc = widthFunction;
+			TrailDrawer.ColorFunc = colorFunction;
+			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(trailTexture);
+			TrailDrawer.DrawPrims(npc.oldPos, npc.Size * 0.5f - Main.screenPosition, 155);
+		}
+
 		/// <summary>
 		/// Draws an after image for the projectile, this should be called in PreDraw
 		/// <br>Don't forget to set defaults for ProjectileID.Sets.TrailCacheLength and ProjectileID.Sets.TrailingMode on your projectile otherwise this will not work</br>

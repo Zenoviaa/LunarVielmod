@@ -5358,6 +5358,9 @@ Mods: {
 			IllusionistPowderProj.DisplayName: Illusionist Powder Proj
 			PoisonPowderProj.DisplayName: Poison Powder Proj
 			SpiritPowderProj.DisplayName: Spirit Powder Proj
+			WaterBomb.DisplayName: Water Bomb
+			WaterSplitBomb.DisplayName: Water Split Bomb
+			WataBoom.DisplayName: Wata Boom
 		}
 
 		NPCs: {
@@ -6739,6 +6742,8 @@ Mods: {
 			WaterGun.DisplayName: Water Gun
 			Bordoc.DisplayName: Bordoc
 			GovheilGuardian.DisplayName: Govheil Guardian
+			WaterLauncher.DisplayName: Water Launcher
+			WaterRifle.DisplayName: Water Rifle
 		}
 
 		Biomes: {

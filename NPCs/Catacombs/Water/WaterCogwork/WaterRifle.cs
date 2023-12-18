@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 {
-    internal class WaterGun : ModNPC
+    internal class WaterRifle : ModNPC
     {
         public Vector3 HuntrianColorXyz;
         public float HuntrianColorOffset;
@@ -52,7 +52,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             // A second approach is to use that rotation to turn the npc while obeying a max rotational speed. Experiment until you get a good value.
             npc.rotation = npc.rotation.AngleTowards(desiredRotation, 0.1f);
         }
-
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -98,26 +97,34 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             LookAtTarget();
 
             ai_Counter++;
-            if (ai_Counter > 30)
-            {
-                Vector2 velocity = NPC.Center.DirectionTo(player.Center) * 7;
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARSHOOT"));
-            
+            if(ai_Counter > 60)
+            {      
+                Vector2 velocity = NPC.Center.DirectionTo(player.Center) * 15;
+                if (Main.rand.NextBool(2))
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/DeathShot"));
+                }
+                else
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/DeathShot2"));
+                }
+    
                 int count = 48;
                 for (int k = 0; k < count; k++)
                 {
                     Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                     newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                    Dust.NewDust(NPC.Center, 0, 0, DustID.Water, newVelocity.X, newVelocity.Y);
+                    Dust.NewDust(npc.Center, 0, 0, DustID.Water, newVelocity.X, newVelocity.Y );
                 }
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                    ModContent.ProjectileType<WaterBolt>(), 47, 0f);
+                Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity, 
+                    ModContent.ProjectileType<WaterSplitBomb>(), 47, 0f);
+                
                 ai_Counter = 0;
                 attack_Count++;
             }
 
-            if (attack_Count > 6)
+            if(attack_Count > 2)
             {
                 NPC.Kill();
             }
