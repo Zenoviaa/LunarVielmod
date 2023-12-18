@@ -31,6 +31,7 @@
     <None Remove="Buffs\Alcadded.png" />
     <None Remove="Buffs\AssassinsSlashBuff.png" />
     <None Remove="Buffs\DarkHold.png" />
+    <None Remove="Buffs\Dusteffects\AgreviDust.png" />
     <None Remove="Buffs\Dusteffects\AivanDust.png" />
     <None Remove="Buffs\Dusteffects\CrystalDust.png" />
     <None Remove="Buffs\Dusteffects\EldritchDust.png" />
@@ -342,9 +343,11 @@
     <None Remove="Projectiles\Paint\POAProj3.png" />
     <None Remove="Projectiles\Paint\POAProj4.png" />
     <None Remove="Projectiles\Paint\POAProj5.png" />
+    <None Remove="Projectiles\Powders\AgreviPowderProj.png" />
     <None Remove="Projectiles\Powders\AivanPowderProj.png" />
     <None Remove="Projectiles\Powders\CrystalPowderProj.png" />
     <None Remove="Projectiles\Powders\GovheilPowderProj.png" />
+    <None Remove="Projectiles\Powders\SpiritPowderProj.png" />
     <None Remove="Projectiles\Powders\VoidPowderProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj.png" />
     <None Remove="Projectiles\Safunai\Alcarish\AlcarishProj_Glow.png" />

@@ -1,26 +1,26 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Powders;
-using Stellamod.Tiles;
+﻿using Stellamod.Projectiles.Powders;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Tiles;
 
 namespace Stellamod.Items.Weapons.PowdersItem
 {
-    internal class CrystalPowder : ModItem
+	internal class SpiritPowder : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Sepsis Powder");
-			/* Tooltip.SetDefault("Throw magical dust on them!" +
-				"\nA sparkly star dust that does double damage as the igniter!"); */
+			// DisplayName.SetDefault("Kaev Powder");
+			/* Tooltip.SetDefault("Throw magical dust on them and ignite" +
+				"\nA blood dust that does high damage with igniters."); */
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 15;
+			Item.damage = 40;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useTime = 30;
@@ -30,34 +30,34 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 200;
-			Item.rare = ItemRarityID.LightRed;
+			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<CrystalPowderProj>();
+			Item.shoot = ModContent.ProjectileType<SpiritPowderProj>();
 			Item.autoReuse = true;
 			Item.shootSpeed = 12f;
-			Item.crit = 2;
+			Item.crit = 0;
 			Item.UseSound = SoundID.Grass;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.CrystalShard, 15);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
+			recipe.AddIngredient(ItemID.Ectoplasm, 20);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 
 			recipe.Register();
 		}
+
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-
-			int dir = player.direction;
-
 			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback);
 			return false;
 		}
-
 	}
 }
