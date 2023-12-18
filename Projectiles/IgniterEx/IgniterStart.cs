@@ -934,7 +934,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				for (int d = 0; d < 20; d++)
 				{
 					Vector2 speedea = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<UnderworldParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Projectile.Center, speedea * 4, ParticleManager.NewInstance<UnderworldParticle1>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
 					target.AddBuff(ModContent.BuffType<EXPtime2>(), 1000);
 
 					Projectile.timeLeft = 200;
