@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -80,23 +81,75 @@ namespace Stellamod.Tiles
         }
         public override bool RightClick(int i, int j)
         {
+            if (NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) || NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>())) //Do nothing if the boss is alive
+                return false;
+
+            Player player = Main.LocalPlayer;
 
 
 
-            Player player = Main.player[Main.myPlayer];
-            if (player.HasItem(ModContent.ItemType<SunClaw>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
+
+
+
+
+
+
+
+            if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
+            {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+
+                    if (player.HasItem(ModContent.ItemType<SunClaw>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
+                    {
+                        Main.NewText("Sun Stalker has awoken!", Color.Gold);
+                        var entitySource = player.GetSource_FromThis();
+                        int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
+                        Main.npc[SSSpawn].netUpdate = true;
+                    }
+                    if (!player.HasItem(ModContent.ItemType<SunClaw>()))
+                    {
+                        Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
+
+                    }
+
+                 
+                }
+                else
+                {
+                    if (Main.netMode == NetmodeID.SinglePlayer)
+                        return false;
+
+                    if (player.HasItem(ModContent.ItemType<SunClaw>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
+                    {
+                        Main.NewText("Sun Stalker has awoken!", Color.Gold);
+                        var entitySource = player.GetSource_FromThis();
+                        int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
+                        Main.npc[SSSpawn].netUpdate = true;
+                    }
+                    if (!player.HasItem(ModContent.ItemType<SunClaw>()))
+                    {
+                        Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
+
+                    }
+                }
+
+                return true;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
             {
 
-                var entitySource = player.GetSource_FromThis();
-               int SSSpawn = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
-               Main.npc[SSSpawn].netUpdate = true;
-            }
-            if (!player.HasItem(ModContent.ItemType<SunClaw>()))
-            {
-                Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
+                Main.NewText("...", Color.Gold);
+
+
 
             }
-            return false;
+
+
+
+
+
+            return true;
         }
     }
 }

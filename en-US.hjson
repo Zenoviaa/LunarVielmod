@@ -4664,6 +4664,11 @@ Mods: {
 				DisplayName: Kaevine
 				Tooltip: ""
 			}
+
+			RalladI: {
+				DisplayName: Rallad I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6904,6 +6909,7 @@ Mods: {
 			UnstableRift.MapEntry: Unstable Rift
 			CatacombsDoorClosed.MapEntry: Catacombs Door Closed
 			CatacombsSummon.MapEntry: Catacombs Summon
+			Rallad.MapEntry: Rallad
 		}
 
 		Buffs: {

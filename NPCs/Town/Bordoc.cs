@@ -397,28 +397,28 @@ namespace Stellamod.NPCs.Town
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Appretience.AppretienceHat>())
 					{
-						shopCustomPrice = 10,
+						shopCustomPrice = 40,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Appretience.AppretienceBreastplate>())
 					{
-						shopCustomPrice = 10,
+						shopCustomPrice = 40,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Appretience.AppretiencePants>())
 					{
-						shopCustomPrice = 10,
+						shopCustomPrice = 40,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Ulven.UlvenHelmet>())
 					{
-						shopCustomPrice = 15,
+						shopCustomPrice = 45,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
@@ -426,21 +426,21 @@ namespace Stellamod.NPCs.Town
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Ulven.UlvenChestplate>())
 					{
-						shopCustomPrice = 25,
+						shopCustomPrice = 55,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Ulven.UlvenGreaves>())
 					{
-						shopCustomPrice = 15,
+						shopCustomPrice = 35,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
 
 				.Add(new Item(ModContent.ItemType<Items.Armors.Govheil.GovheilHelmet>())
 				{
-					shopCustomPrice = 35,
+					shopCustomPrice = 45,
 
 					shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 				})
@@ -448,7 +448,7 @@ namespace Stellamod.NPCs.Town
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Govheil.GovheilMask>())
 					{
-						shopCustomPrice = 35,
+						shopCustomPrice = 45,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
@@ -469,7 +469,7 @@ namespace Stellamod.NPCs.Town
 
 					.Add(new Item(ModContent.ItemType<Items.Armors.Govheil.GovheilThighs>())
 					{
-						shopCustomPrice = 35,
+						shopCustomPrice = 25,
 
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					});

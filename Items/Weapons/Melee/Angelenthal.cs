@@ -51,6 +51,13 @@ namespace Stellamod.Items.Weapons.Melee
 			};
 			tooltips.Add(line);
 
+			line = new TooltipLine(Mod, "Alcarishxxa", "Right click for a powerful gravitation slam!")
+			{
+				OverrideColor = new Color(244, 119, 255)
+
+			};
+			tooltips.Add(line);
+
 			line = new TooltipLine(Mod, "Alcarishxxa", "This weapon is bound by Fenix")
 			{
 				OverrideColor = new Color(244, 200, 255)

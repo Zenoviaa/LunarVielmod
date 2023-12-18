@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 14;
+			Item.damage = 74;
 			Item.rare = ItemRarityID.Blue;
 		}
 
@@ -93,6 +93,8 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ItemID.Vine, 3);
 			recipe.AddIngredient(ItemID.Stinger, 8);
+			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 12);
 			recipe.Register();
 		}
 
