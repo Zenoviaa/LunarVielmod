@@ -8219,17 +8219,17 @@ Projectiles: {
 	SlashRight.DisplayName: Slash Right
 	Strummer.DisplayName: Strummer
 	AltideSword.DisplayName: Altide Sword
-	Sword1F.DisplayName: Sword1 F
-	Sword2F.DisplayName: Sword2 F
-	Sword3F.DisplayName: Sword3 F
+	Sword1F.DisplayName: Sword 1
+	Sword2F.DisplayName: Sword 2
+	Sword3F.DisplayName: Sword 3
 	TheMoon.DisplayName: The Moon
 	VerliaBlade.DisplayName: Verlia Blade
 	VerliaHeadScreen.DisplayName: Verlia Head Screen
-	VerliaText1.DisplayName: Verlia Text1
-	VerliaText2.DisplayName: Verlia Text2
+	VerliaText1.DisplayName: Verlia Text
+	VerliaText2.DisplayName: Verlia Text
 	Gintzianado.DisplayName: Gintzianado
 	ShadowFlare.DisplayName: Shadow Flare
-	VRay.DisplayName: V Ray
+	VRay.DisplayName: Vexed Ray
 	AivanKaboom.DisplayName: Aivan Kaboom
 	AlcadizBombExplosion.DisplayName: Alcadiz Bomb Explosion
 	AntacizProj.DisplayName: Antaciz Proj
