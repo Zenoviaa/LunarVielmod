@@ -76,7 +76,7 @@ namespace Stellamod.Items.Consumables
 
             if (Main.rand.NextBool(1))
                 {
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(1, 5));
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(1, 9));
                 }
 
                   if (Main.rand.NextBool(4))
