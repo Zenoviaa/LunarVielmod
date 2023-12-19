@@ -153,7 +153,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock1>());
@@ -163,7 +163,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock2>());   
@@ -173,7 +173,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock3>());   
@@ -183,7 +183,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.BigRock4>());
@@ -193,7 +193,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite1>());            
@@ -203,7 +203,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite2>());       
@@ -213,7 +213,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite3>());
@@ -223,7 +223,7 @@ namespace Stellamod.WorldG
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
                 {
                     WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Stalagmite4>());
@@ -523,7 +523,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(0, Main.maxTilesX); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(750, Main.maxTilesX); // from 50 since there's a unaccessible area at the world's borders
 																			// 50% of choosing the last 6th of the world
 																			// Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -708,7 +708,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(500, (Main.maxTilesX) - 500); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(1000, (Main.maxTilesX) - 500); // from 50 since there's a unaccessible area at the world's borders
 																		// 50% of choosing the last 6th of the world
 																			// Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
