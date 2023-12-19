@@ -4783,7 +4783,12 @@ Mods: {
 
 			FlamecrestShield: {
 				DisplayName: Flamecrest Shield
-				Tooltip: ""
+				Tooltip:
+					'''
+					Immune to all fire-based debuffs!
+					You take 50% less damage from fire-based attacks!
+					Can't burn me now :P
+					'''
 			}
 
 			IcarusFeather: {
