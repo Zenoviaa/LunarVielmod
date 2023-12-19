@@ -3440,7 +3440,8 @@ Mods: {
 
 			CrystalPowder: {
 				DisplayName: Crystal Powder
-				Tooltip:'''
+				Tooltip:
+					'''
 					Throw magical dust on them and ignite
 					It's what we've been working for Jesse
 					After hitting an enemy with this, use an igniter card weapon!
@@ -4546,7 +4547,8 @@ Mods: {
 
 			DungeonedRockCard: {
 				DisplayName: Dungeoned Rock Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					Get rocked, or Dwayne Johnsoned, whatever is funnier.
 					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
@@ -4680,7 +4682,8 @@ Mods: {
 
 			AgreviPowder: {
 				DisplayName: Agrevi Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them and ignite
 					An exploding dust that works after a little while
 					After hitting an enemy with this, use an igniter card weapon!
@@ -4689,7 +4692,8 @@ Mods: {
 
 			IllusionistPowder: {
 				DisplayName: Illusionist Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them and ignite
 					A dust that tells you to keep yourself safe.
 					After hitting an enemy with this, use an igniter card weapon!
@@ -4698,7 +4702,8 @@ Mods: {
 
 			PoisonedPowder: {
 				DisplayName: Poisoned Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them and ignite
 					A constant dust that has posionous tendrils
 					After hitting an enemy with this, use an igniter card weapon!
@@ -4707,7 +4712,8 @@ Mods: {
 
 			SpiritPowder: {
 				DisplayName: Spirit Powder
-				Tooltip: '''
+				Tooltip:
+					'''
 					Throw magical dust on them and ignite
 					Fenix would love you for this.
 					After hitting an enemy with this, use an igniter card weapon!
@@ -4739,6 +4745,66 @@ Mods: {
 					{$CommonItemTooltip.RightClickToOpen}
 					There's... just too much water...
 					'''
+			}
+
+			AquaticEmblem: {
+				DisplayName: Aquatic Emblem
+				Tooltip: ""
+			}
+
+			Barry: {
+				DisplayName: Barry
+				Tooltip: ""
+			}
+
+			Bonfire: {
+				DisplayName: Bonfire
+				Tooltip: ""
+			}
+
+			Cleats: {
+				DisplayName: Cleats
+				Tooltip: Movement speed increase and acceleration, emits a small light too!
+			}
+
+			FireEmblem: {
+				DisplayName: Fire Emblem
+				Tooltip: ""
+			}
+
+			FlamecrestShield: {
+				DisplayName: Flamecrest Shield
+				Tooltip: ""
+			}
+
+			IcarusFeather: {
+				DisplayName: Icarus Feather
+				Tooltip: ""
+			}
+
+			OceancrestShield: {
+				DisplayName: Oceancrest Shield
+				Tooltip: Every little while a bubble shield will follow you and absord the next hit of damage!
+			}
+
+			Panacea: {
+				DisplayName: Panacea
+				Tooltip: Immune to poison, venom and bleeding!
+			}
+
+			SpikedEmblem: {
+				DisplayName: Spiked Emblem
+				Tooltip: ""
+			}
+
+			TyphoonInABottle: {
+				DisplayName: Typhoon In A Bottle
+				Tooltip: ""
+			}
+
+			WaterproofHeadphones: {
+				DisplayName: Waterproof Headphones
+				Tooltip: Increases life by 40 and gain 4% more resistance to attacks!
 			}
 		}
 
@@ -5411,6 +5477,7 @@ Mods: {
 			WaterBomb.DisplayName: Water Bomb
 			WaterSplitBomb.DisplayName: Water Split Bomb
 			WataBoom.DisplayName: Wata Boom
+			WaterShield.DisplayName: Water Shield
 		}
 
 		NPCs: {
