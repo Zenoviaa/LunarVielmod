@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -40,6 +41,46 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<Barry>(),
                 ModContent.ItemType<SpikedEmblem>(),
                 ModContent.ItemType<Panacea>()));
+
+        }
+
+
+        public override void RightClick(Player player)
+        {
+            // We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+
+            var entitySource = player.GetSource_OpenItem(Type);
+
+
+
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ItemID.SoulofNight, Main.rand.Next(1, 7));
+            }
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ItemID.OrichalcumBar, Main.rand.Next(1, 10));
+            }
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ItemID.AdamantiteBar, Main.rand.Next(1, 5));
+            }
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ItemID.PalladiumBar, Main.rand.Next(1, 12));
+            }
+
+            if (Main.rand.NextBool(1))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<KaleidoscopicInk>(), Main.rand.Next(1, 5));
+            }
+
+            if (Main.rand.NextBool(4))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtisanBar>(), Main.rand.Next(1, 3));
+            }
+
+
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

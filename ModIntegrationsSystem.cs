@@ -520,6 +520,7 @@ namespace Stellamod
 			DoGothiviaIntegration();
 			DoSyliaIntegration();
 			DoStoneGolemIntegration();
+			DoSTARIntegration();
 		}
 	}
 }

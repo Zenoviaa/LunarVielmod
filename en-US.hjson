@@ -4784,10 +4784,11 @@ Mods: {
 
 			OceancrestShield: {
 				DisplayName: Oceancrest Shield
-				Tooltip: '''
-				Every little while a bubble shield will follow you and absord the next hit of damage!
-				Also you have infinite breathing underwater!
-				'''
+				Tooltip:
+					'''
+					Every little while a bubble shield will follow you and absord the next hit of damage!
+					Also you have infinite breathing underwater!
+					'''
 			}
 
 			Panacea: {
