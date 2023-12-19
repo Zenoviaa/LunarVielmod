@@ -4784,7 +4784,10 @@ Mods: {
 
 			OceancrestShield: {
 				DisplayName: Oceancrest Shield
-				Tooltip: Every little while a bubble shield will follow you and absord the next hit of damage!
+				Tooltip: '''
+				Every little while a bubble shield will follow you and absord the next hit of damage!
+				Also you have infinite breathing underwater!
+				'''
 			}
 
 			Panacea: {
@@ -5604,9 +5607,9 @@ Mods: {
 			Irradieagle.DisplayName: Irradieagle
 			Train2.DisplayName: Train2
 			Train1.DisplayName: Train1
-			Rek.DisplayName: Rek
-			Gothiviabb.DisplayName: Gothiviabb
-			Gothiviab.DisplayName: Gothiviab
+			Rek.DisplayName: Havoc
+			Gothiviabb.DisplayName: Irradia
+			Gothiviab.DisplayName: Irradia
 			DreadMiresHeart.DisplayName: Dread Mires Heart
 			DreadSurvent.DisplayName: Dread Survent
 			DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big

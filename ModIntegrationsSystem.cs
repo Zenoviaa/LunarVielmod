@@ -7,6 +7,7 @@ using Stellamod.NPCs.Bosses.Jack;
 using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Stellamod.NPCs.Bosses.STARBOMBER;
 
 namespace Stellamod
 {
@@ -329,7 +330,7 @@ namespace Stellamod
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem7}] at a shrine in the Cathedral on the right ocean!");
+			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem7}] at a shrine in the Cathedral over the ice biome!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -415,6 +416,38 @@ namespace Stellamod
 			LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
 			bossChecklistMod.Call(
 				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
+		private void DoSTARIntegration()
+		{
+
+			string internalName = nameof(STARBOMBER);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<STARBOMBER>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 8.6f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedSTARBoss;
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"Randomly during a hardmode Aurorean Starfall, they may fall from the sky.");
+			bossChecklistMod.Call(
+				"LogMiniBoss",
 				Mod,
 				internalName,
 				weight,
