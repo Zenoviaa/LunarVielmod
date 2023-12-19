@@ -347,7 +347,7 @@ namespace Stellamod
         }
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
-            drawColor = Main.DiscoColor * 2f ; // Changes the draw color of the logo
+           // drawColor = Main.DiscoColor * 2f ; // Changes the draw color of the logo
             return true;
 
 
