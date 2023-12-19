@@ -4779,7 +4779,11 @@ Mods: {
 
 			IcarusFeather: {
 				DisplayName: Icarus Feather
-				Tooltip: ""
+				Tooltip:
+					'''
+					You can continue flying even after your flight time runs out!
+					...but your wings will burn, reducing your flight mobility
+					'''
 			}
 
 			OceancrestShield: {
@@ -4803,11 +4807,11 @@ Mods: {
 
 			TyphoonInABottle: {
 				DisplayName: Typhoon In A Bottle
-				Tooltip: 
-				'''
-				Allows the holder to perform a greatly improved double jump!
-				Slightly increased movement and jump speed
-				'''
+				Tooltip:
+					'''
+					Allows the holder to perform a greatly improved double jump!
+					Slightly increased movement and jump speed
+					'''
 			}
 
 			WaterproofHeadphones: {
