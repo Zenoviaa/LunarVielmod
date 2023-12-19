@@ -38,6 +38,7 @@
     <None Remove="Buffs\Dusteffects\GovheilDust.png" />
     <None Remove="Buffs\Dusteffects\JungleDust.png" />
     <None Remove="Buffs\Dusteffects\SpiritDust.png" />
+    <None Remove="Buffs\Dusteffects\UseIgniter.png" />
     <None Remove="Buffs\Dusteffects\VoiddDust.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />

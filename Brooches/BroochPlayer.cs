@@ -43,6 +43,7 @@ namespace Stellamod.Brooches
         public bool hasRoseBrooch;
         public bool hasMagicalBrooch;
         public bool hasAdvancedBrooches;
+        public bool hasIgniteron;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -72,6 +73,7 @@ namespace Stellamod.Brooches
             hasRoseBrooch = false;
             hasMagicalBrooch = false;
             hasAdvancedBrooches = false;
+            hasIgniteron = false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

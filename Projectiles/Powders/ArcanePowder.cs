@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Buffs;
+using Stellamod.Buffs.Dusteffects;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -49,7 +50,8 @@ namespace Stellamod.Projectiles.Powders
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-
+			Player player = Main.player[Projectile.owner];
+			player.AddBuff(ModContent.BuffType<UseIgniter>(), 720);
 			target.AddBuff(ModContent.BuffType<Dusted>(), 720);
 			target.AddBuff(ModContent.BuffType<ArcaneDust>(), 720);
 			base.OnHitNPC(target, hit, damageDone);

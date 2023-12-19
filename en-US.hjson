@@ -3440,7 +3440,11 @@ Mods: {
 
 			CrystalPowder: {
 				DisplayName: Crystal Powder
-				Tooltip: It's what we've been working for Jesse
+				Tooltip:'''
+					Throw magical dust on them and ignite
+					It's what we've been working for Jesse
+					After hitting an enemy with this, use an igniter card weapon!
+					'''
 			}
 
 			SunSall: {
@@ -4542,7 +4546,10 @@ Mods: {
 
 			DungeonedRockCard: {
 				DisplayName: Dungeoned Rock Card
-				Tooltip: Get Rocked
+				Tooltip: '''
+					Get rocked, or Dwayne Johnsoned, whatever is funnier.
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
 			}
 
 			PunkedUpChops: {
@@ -4673,22 +4680,38 @@ Mods: {
 
 			AgreviPowder: {
 				DisplayName: Agrevi Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them and ignite
+					An exploding dust that works after a little while
+					After hitting an enemy with this, use an igniter card weapon!
+					'''
 			}
 
 			IllusionistPowder: {
 				DisplayName: Illusionist Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them and ignite
+					A dust that tells you to keep yourself safe.
+					After hitting an enemy with this, use an igniter card weapon!
+					'''
 			}
 
 			PoisonedPowder: {
 				DisplayName: Poisoned Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them and ignite
+					A constant dust that has posionous tendrils
+					After hitting an enemy with this, use an igniter card weapon!
+					'''
 			}
 
 			SpiritPowder: {
 				DisplayName: Spirit Powder
-				Tooltip: ""
+				Tooltip: '''
+					Throw magical dust on them and ignite
+					Fenix would love you for this.
+					After hitting an enemy with this, use an igniter card weapon!
+					'''
 			}
 
 			TreasureBoxFire: {
@@ -7468,6 +7491,11 @@ Mods: {
 			SpiritDust: {
 				DisplayName: Spirit Dust
 				Description: Mods.Stellamod.Buffs.SpiritDust.Description
+			}
+
+			UseIgniter: {
+				DisplayName: Use Igniter
+				Description: Mods.Stellamod.Buffs.UseIgniter.Description
 			}
 		}
 	}

@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Brooches;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -69,6 +72,33 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
+		}
+
+
+
+		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		{
+			Player player = Main.player[Main.myPlayer];
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+
+			//Check that this item is equipped
+
+			//Check that you have advanced brooches since these don't work without
+			if (broochPlayer.hasIgniteron)
+			{
+				//Give backglow to show that the effect is active
+				DrawHelper.DrawAdvancedBroochGlow(Item, spriteBatch, position, new Color(198, 124, 225));
+			}
+			else
+			{
+				float sizeLimit = 28;
+				//Draw the item icon but gray and transparent to show that the effect is not active
+				Main.DrawItemIcon(spriteBatch, Item, position, Color.Gray * 0.8f, sizeLimit);
+				return false;
+			}
+
+
+			return true;
 		}
 
 	}

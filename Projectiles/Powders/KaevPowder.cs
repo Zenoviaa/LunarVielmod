@@ -50,7 +50,8 @@ namespace Stellamod.Projectiles.Powders
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-
+			Player player = Main.player[Projectile.owner];
+			player.AddBuff(ModContent.BuffType<UseIgniter>(), 720);
 			target.AddBuff(ModContent.BuffType<Dusted>(), 1120);
 			target.AddBuff(ModContent.BuffType<KaevDust>(), 1120);
 			base.OnHitNPC(target, hit, damageDone);
