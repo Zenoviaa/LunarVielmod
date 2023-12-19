@@ -13,7 +13,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public bool hasBonfire;
         public override void ResetEffects()
         {
-            hasBonfire = true;
+            hasBonfire = false;
         }
 
         public override void PostUpdateEquips()
