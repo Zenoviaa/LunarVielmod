@@ -20,19 +20,23 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         public override void UpdateEquips()
         {
-            if(_cooldown != 0)
+            if (hasOceanShield)
             {
-                _cooldown--;
-            } else if (_waterShieldProj == null || !_waterShieldProj.active)
-            {
-                _waterShieldProj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<WaterShield>(), 0, 0, Player.whoAmI);
+                if (_cooldown != 0)
+                {
+                    _cooldown--;
+                }
+                else if (_waterShieldProj == null || !_waterShieldProj.active)
+                {
+                    _waterShieldProj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                        ModContent.ProjectileType<WaterShield>(), 0, 0, Player.whoAmI);
+                }
+                else
+                {
+                    _waterShieldProj.timeLeft = 60;
+                    _waterShieldProj.Center = Player.Center;
+                }
             }
-            else
-            {
-                _waterShieldProj.timeLeft = 60;
-                _waterShieldProj.Center = Player.Center;
-            }    
         }
 
         public override void PostUpdateEquips()
