@@ -12,6 +12,7 @@ namespace Stellamod.Projectiles
         {
             Projectile.width = 50;
             Projectile.height = 50;
+            Projectile.scale = 1.2f;
             Projectile.timeLeft = 60;
             Projectile.friendly = false;
             Projectile.hostile = false;

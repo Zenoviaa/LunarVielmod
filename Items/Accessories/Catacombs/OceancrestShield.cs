@@ -33,9 +33,15 @@ namespace Stellamod.Items.Accessories.Catacombs
                 }
                 else
                 {
+
                     _waterShieldProj.timeLeft = 60;
                     _waterShieldProj.Center = Player.Center;
                 }
+            }
+            else if (_waterShieldProj != null && _waterShieldProj.active)
+            {
+                _waterShieldProj.Kill();
+                _waterShieldProj = null;
             }
         }
 
@@ -49,7 +55,7 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
-            if (modifiers.Dodgeable && _cooldown <= 0)
+            if (hasOceanShield && modifiers.Dodgeable && _cooldown <= 0)
             {
                 int cooldownInSeconds = 30;
                 int cooldownInTicks = cooldownInSeconds * 60;
@@ -69,6 +75,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                 }
 
                 _waterShieldProj.Kill();
+                _waterShieldProj = null;
             }
         }
     }
