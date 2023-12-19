@@ -33,7 +33,7 @@ namespace Stellamod.Items.Armors.Xexterian
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetDamage(DamageClass.Generic) *= 1.12f;
+			player.GetDamage(DamageClass.Generic) *= 1.05f;
 		
 			
 		}

@@ -230,7 +230,7 @@ Mods: {
 				Tooltip:
 					'''
 					Magical essence of an Emperor
-					+7% increased ranged and melee damage
+					+2% increased ranged and melee damage
 					+35 Health
 					'''
 			}
@@ -240,7 +240,7 @@ Mods: {
 				Tooltip:
 					'''
 					Magical essence of an empress!
-					5% increased movement speed
+					3% increased movement speed
 					+20 Health
 					'''
 			}
@@ -1608,7 +1608,7 @@ Mods: {
 			}
 
 			XexterianLeggings: {
-				Tooltip: +12% Damage
+				Tooltip: +5% Damage
 				DisplayName: Xexterian Leggings
 			}
 
@@ -1616,7 +1616,7 @@ Mods: {
 				DisplayName: Xexterian Hat
 				Tooltip:
 					'''
-					+20% Damage
+					+5% Damage
 					+20 Life
 					You really want this knock off Forbidden armor?
 					'''
@@ -1626,7 +1626,7 @@ Mods: {
 				DisplayName: Xexterian Heatplate
 				Tooltip:
 					'''
-					+20 Armor Penetration
+					+10 Armor Penetration
 					+20 Life!
 					+6% Damage
 					+5 Critical Strike Chance

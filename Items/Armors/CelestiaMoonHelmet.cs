@@ -40,8 +40,8 @@ namespace Stellamod.Items.Armors
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 35;
-			player.GetDamage(DamageClass.Melee) *= 1.07f;
-			player.GetDamage(DamageClass.Ranged) *= 1.07f;
+			player.GetDamage(DamageClass.Melee) *= 1.02f;
+			player.GetDamage(DamageClass.Ranged) *= 1.02f;
 			
 		}
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -55,8 +55,8 @@ namespace Stellamod.Items.Armors
 		{
 			player.setBonus = "Increases life regen by a great amount!" +
 				"\nMove faster and enemies that hit you take damage back! "; // This is the setbonus tooltip
-			player.moveSpeed += 0.5f;
-			player.maxRunSpeed += 0.5f;
+			player.moveSpeed += 0.3f;
+			player.maxRunSpeed += 0.3f;
 			player.lifeRegen += 1;
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
 		

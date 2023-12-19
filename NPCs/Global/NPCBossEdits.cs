@@ -96,6 +96,71 @@ namespace Stellamod.NPCs.Global
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+			if (npc.type == NPCID.Plantera)
+            {
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
+
+			}
+
+			if (npc.type == NPCID.SkeletronPrime)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 5));
+
+			}
+
+			if (npc.type == NPCID.Retinazer)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
+
+			}
+
+			if (npc.type == NPCID.Spazmatism)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
+
+			}
+
+			if (npc.type == NPCID.TheDestroyer)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 4));
+
+			}
+
+			if (npc.type == NPCID.QueenSlimeBoss)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 2, 3));
+
+			}
+
+			if (npc.type == NPCID.Golem)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
+
+			}
+
+			if (npc.type == NPCID.HallowBoss)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 9));
+
+			}
+
+			if (npc.type == NPCID.MoonLordCore)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 9));
+
+			}
+
+			if (npc.type == NPCID.DukeFishron)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 9));
+
+			}
+
+			if (npc.type == NPCID.CultistBoss)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 9));
+
+			}
 
 			if (npc.type == NPCID.Deerclops)
 			{

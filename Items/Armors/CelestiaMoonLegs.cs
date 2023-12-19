@@ -33,7 +33,7 @@ namespace Stellamod.Items.Armors
 
 		public override void UpdateEquip(Player player)
 		{
-			player.moveSpeed += 0.05f; // Increase the movement speed of the player
+			player.moveSpeed += 0.03f; // Increase the movement speed of the player
 			player.statLifeMax2 += 20;
 		
 		}

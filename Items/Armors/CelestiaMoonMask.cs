@@ -53,8 +53,8 @@ namespace Stellamod.Items.Armors
 		{
 			player.setBonus = "Increases life regen by a great amount!" +
 				"\nMove faster and gain the effects of magic cuffs! "; // This is the setbonus tooltip
-			player.moveSpeed += 0.5f;
-			player.maxRunSpeed += 0.5f;
+			player.moveSpeed += 0.3f;
+			player.maxRunSpeed += 0.3f;
 			player.magicCuffs = true;
 			player.lifeRegen += 1;
 		}
