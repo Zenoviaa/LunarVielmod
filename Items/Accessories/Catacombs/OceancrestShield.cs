@@ -77,6 +77,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             Item.width = 30;
             Item.height = 42;
             Item.accessory = true;
+            Item.defense = 4;
             Item.rare = ItemRarityID.LightRed;
         }
 

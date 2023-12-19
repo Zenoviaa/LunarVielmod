@@ -4754,7 +4754,11 @@ Mods: {
 
 			Barry: {
 				DisplayName: Barry
-				Tooltip: ""
+				Tooltip:
+					'''
+					Summons an orbiting shield of infected spikes to protect you!
+					Everyone loves Barry :)
+					'''
 			}
 
 			Bonfire: {
@@ -5496,6 +5500,7 @@ Mods: {
 			WataBoom.DisplayName: Wata Boom
 			WaterShield.DisplayName: Water Shield
 			FireBoom.DisplayName: Fire Boom
+			BarrySpike.DisplayName: Barry Spike
 		}
 
 		NPCs: {
