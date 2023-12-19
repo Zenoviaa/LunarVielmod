@@ -4749,7 +4749,11 @@ Mods: {
 
 			AquaticEmblem: {
 				DisplayName: Aquatic Emblem
-				Tooltip: ""
+				Tooltip:
+					'''
+					Adds a chance for hit enemies to become surrounded by bubbles!
+					These bubbles will slowly close in and linger for a long time
+					'''
 			}
 
 			Barry: {
