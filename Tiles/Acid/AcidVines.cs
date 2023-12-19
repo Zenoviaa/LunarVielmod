@@ -27,7 +27,7 @@ namespace Stellamod.Tiles.Acid
             HitSound = SoundID.Grass;
             DustType = DustID.Plantera_Green;
 
-            AddMapEntry(new Color(93, 203, 243));
+            AddMapEntry(new Color(67, 196, 167));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;

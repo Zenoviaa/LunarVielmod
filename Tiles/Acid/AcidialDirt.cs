@@ -21,7 +21,7 @@ namespace Stellamod.Tiles.Acid
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
             LocalizedText name = CreateMapEntryName();
-            AddMapEntry(new Color(0, 120, 100), name);
+            AddMapEntry(new Color(10, 40, 34), name);
         }
 
         public override void RandomUpdate(int i, int j)
