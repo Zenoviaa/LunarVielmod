@@ -4769,7 +4769,12 @@ Mods: {
 
 			FireEmblem: {
 				DisplayName: Fire Emblem
-				Tooltip: ""
+				Tooltip:
+					'''
+					Your attacks inflict random fire debuffs
+					Adds a chance for critical hits to explode and burn nearby enemies!
+					...were you expecting something else?
+					'''
 			}
 
 			FlamecrestShield: {
@@ -5490,6 +5495,7 @@ Mods: {
 			WaterSplitBomb.DisplayName: Water Split Bomb
 			WataBoom.DisplayName: Wata Boom
 			WaterShield.DisplayName: Water Shield
+			FireBoom.DisplayName: Fire Boom
 		}
 
 		NPCs: {
