@@ -167,7 +167,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ)
 			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/GothiviaNRek");
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/IrradiaNHavoc");
 			}
 		}
 
@@ -176,7 +176,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("The lovely sun goddess who gives the world warmth with her creations and light.")
+				new FlavorTextBestiaryInfoElement("This person isn't the real gothivia, where is she?")
 			});
 		}
 
