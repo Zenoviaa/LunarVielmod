@@ -4820,7 +4820,11 @@ Mods: {
 
 			SpikedEmblem: {
 				DisplayName: Spiked Emblem
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increased damage by 8%
+					Hit enemies are inflicted with chained, which tethers them to you and deals damage over time!
+					'''
 			}
 
 			TyphoonInABottle: {
@@ -5511,6 +5515,7 @@ Mods: {
 			FireBoom.DisplayName: Fire Boom
 			BarrySpike.DisplayName: Barry Spike
 			BonfireProj.DisplayName: Bonfire Proj
+			ChainProj.DisplayName: Chain Proj
 		}
 
 		NPCs: {
@@ -7596,6 +7601,11 @@ Mods: {
 			UseIgniter: {
 				DisplayName: Use Igniter
 				Description: Mods.Stellamod.Buffs.UseIgniter.Description
+			}
+
+			Chained: {
+				DisplayName: Chained
+				Description: Mods.Stellamod.Buffs.Chained.Description
 			}
 		}
 	}
