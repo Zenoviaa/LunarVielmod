@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
@@ -34,6 +35,11 @@ namespace Stellamod.Items.Consumables
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
             base.ModifyItemLoot(itemLoot);
+            itemLoot.Add(ItemDropRule.OneFromOptions(1,
+                ModContent.ItemType<AquaticEmblem>(),
+                ModContent.ItemType<WaterproofHeadphones>(),
+                ModContent.ItemType<OceancrestShield>(),
+                ModContent.ItemType<TyphoonInABottle>()));
             //itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), chanceDenominator: 1, minimumDropped: 30, maximumDropped: 40));
         }
 

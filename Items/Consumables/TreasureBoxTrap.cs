@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
@@ -34,7 +35,11 @@ namespace Stellamod.Items.Consumables
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
             base.ModifyItemLoot(itemLoot);
-            //itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), chanceDenominator: 1, minimumDropped: 30, maximumDropped: 40));
+            itemLoot.Add(ItemDropRule.OneFromOptions(1, 
+                ModContent.ItemType<Cleats>(),
+                ModContent.ItemType<Barry>(),
+                ModContent.ItemType<SpikedEmblem>(),
+                ModContent.ItemType<Panacea>()));
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
