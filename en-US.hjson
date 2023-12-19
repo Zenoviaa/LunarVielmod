@@ -4763,7 +4763,11 @@ Mods: {
 
 			Bonfire: {
 				DisplayName: Bonfire
-				Tooltip: ""
+				Tooltip:
+					'''
+					Summons a bonfire over your head, it increases your life regen and provides light
+					It grows stronger when you are not moving!
+					'''
 			}
 
 			Cleats: {
@@ -5506,6 +5510,7 @@ Mods: {
 			WaterShield.DisplayName: Water Shield
 			FireBoom.DisplayName: Fire Boom
 			BarrySpike.DisplayName: Barry Spike
+			BonfireProj.DisplayName: Bonfire Proj
 		}
 
 		NPCs: {

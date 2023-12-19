@@ -42,7 +42,7 @@ namespace Stellamod.Particles
 				alpha = 0f;
 
 			Color color = Color.Multiply(new(3f, 3f, 3f, 0), alpha);
-			spriteBatch.Draw(tex, position - Main.screenPosition, new Rectangle(0, 0, tex.Width, tex.Height), color, MathHelper.ToRadians(ai[0]).AngleLerp(MathHelper.ToRadians((ai[0] * 180f)), (120f - timeLeft) / 120f), new Vector2(tex.Width / 2f, tex.Height / 2f), 0.1f * scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(tex, screenPos, new Rectangle(0, 0, tex.Width, tex.Height), color, MathHelper.ToRadians(ai[0]).AngleLerp(MathHelper.ToRadians((ai[0] * 180f)), (120f - timeLeft) / 120f), new Vector2(tex.Width / 2f, tex.Height / 2f), 0.1f * scale, SpriteEffects.None, 0f);
 			return false;
 		}
 		public void Spawn()
