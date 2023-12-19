@@ -19,6 +19,11 @@ namespace Stellamod.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            Projectile.Center = player.Center;
+        }
 
         public override void OnKill(int timeLeft)
         {

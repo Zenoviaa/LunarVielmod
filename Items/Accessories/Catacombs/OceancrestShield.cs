@@ -33,23 +33,13 @@ namespace Stellamod.Items.Accessories.Catacombs
                 }
                 else
                 {
-
                     _waterShieldProj.timeLeft = 60;
-                    _waterShieldProj.Center = Player.Center;
                 }
             }
             else if (_waterShieldProj != null && _waterShieldProj.active)
             {
                 _waterShieldProj.Kill();
                 _waterShieldProj = null;
-            }
-        }
-
-        public override void PostUpdateEquips()
-        {
-            if (hasOceanShield)
-            {
-                Player.breath = Player.breathMax;
             }
         }
 
@@ -93,6 +83,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<OceanShieldPlayer>().hasOceanShield = true;
+            player.AddBuff(BuffID.Gills, 2);
         }
     }
 }

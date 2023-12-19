@@ -4786,8 +4786,8 @@ Mods: {
 				DisplayName: Oceancrest Shield
 				Tooltip:
 					'''
-					Every little while a bubble shield will follow you and absord the next hit of damage!
-					Also you have infinite breathing underwater!
+					Every little while, a bubble shield will follow you and absorb the next hit of damage!
+					Also, you have infinite breathing underwater!
 					'''
 			}
 
@@ -4803,7 +4803,11 @@ Mods: {
 
 			TyphoonInABottle: {
 				DisplayName: Typhoon In A Bottle
-				Tooltip: ""
+				Tooltip: 
+				'''
+				Allows the holder to perform a greatly improved double jump!
+				Slightly increased movement and jump speed
+				'''
 			}
 
 			WaterproofHeadphones: {
