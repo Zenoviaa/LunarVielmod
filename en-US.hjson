@@ -5520,6 +5520,11 @@ Mods: {
 			BarrySpike.DisplayName: Barry Spike
 			BonfireProj.DisplayName: Bonfire Proj
 			ChainProj.DisplayName: Chain Proj
+			IronNail.DisplayName: Iron Nail
+			IronNailLodged.DisplayName: Iron Nail Lodged
+			IronNeedle.DisplayName: Iron Needle
+			SpikeBall.DisplayName: Spike Ball
+			NailKaboom.DisplayName: Nail Kaboom
 		}
 
 		NPCs: {
@@ -6904,6 +6909,10 @@ Mods: {
 			WaterLauncher.DisplayName: Water Launcher
 			WaterRifle.DisplayName: Water Rifle
 			Fenix.DisplayName: Fenix
+			Cogwork.DisplayName: Cogwork
+			IronNailGun.DisplayName: Iron Nail Gun
+			NeedleGun.DisplayName: Needle Gun
+			SpikeBallGun.DisplayName: Spike Ball Gun
 		}
 
 		Biomes: {

@@ -87,7 +87,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             NPC npc = NPC;
             npc.TargetClosest();
             if (!npc.HasValidTarget)
+            {
+                //WheelMovement(2);
+                npc.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
+                npc.EncourageDespawn(120);
                 return;
+            }
 
             HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                 new Vector3(85, 45, 115),

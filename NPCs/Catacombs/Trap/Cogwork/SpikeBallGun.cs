@@ -7,12 +7,10 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
+namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 {
-    internal class WaterLauncher : ModNPC
+    internal class SpikeBallGun : ModNPC
     {
-        public Vector3 HuntrianColorXyz;
-        public float HuntrianColorOffset;
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 1;
@@ -23,7 +21,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
         public override void SetDefaults()
         {
             NPC.lifeMax = 100;
-            NPC.width = 58;
+            NPC.width = 62;
             NPC.height = 34;
             NPC.damage = 1;
             NPC.defense = 10;
@@ -53,6 +51,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             npc.rotation = npc.rotation.AngleTowards(desiredRotation, 0.1f);
         }
 
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Main.spriteBatch.End();
@@ -67,15 +66,21 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + drawOrigin;
-                Color color = NPC.GetAlpha(Color.Lerp(Color.LightBlue, Color.Transparent, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                Color color = NPC.GetAlpha(Color.Lerp(Color.DarkGray, Color.Transparent, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
                 Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, NPC.oldRot[k], drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            DrawHelper.DrawDimLight(NPC, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, Color.White, 2);
+
+            Vector3 huntrianXyz = DrawHelper.HuntrianColorOscillate(
+                new Vector3(151, 101, 75),
+                new Vector3(15, 60, 160),
+                new Vector3(3, 3, 3), 0);
+            DrawHelper.DrawDimLight(NPC, huntrianXyz.X, huntrianXyz.Y, huntrianXyz.Z, Color.DarkGray, Color.White, 2);
             return true;
         }
+
 
         private ref float ai_Counter => ref NPC.ai[0];
         private ref float attack_Count => ref NPC.ai[1];
@@ -92,35 +97,30 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 return;
             }
 
-            HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                new Vector3(85, 45, 115),
-                new Vector3(15, 60, 160),
-                new Vector3(3, 3, 3), HuntrianColorOffset);
-
             Player player = Main.player[NPC.target];
             LookAtTarget();
 
             ai_Counter++;
-            if(ai_Counter > 72)
-            {      
-                Vector2 velocity = NPC.Center.DirectionTo(player.Center) * 10;
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2"));
-                int count = 64;
+            if (ai_Counter > 45)
+            {
+                Vector2 velocity = NPC.Center.DirectionTo(player.Center) * 7;
+                SoundEngine.PlaySound(SoundID.Item61);
+
+                int count = 48;
                 for (int k = 0; k < count; k++)
                 {
                     Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                     newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                    Dust.NewDust(npc.Center, 0, 0, DustID.Water, newVelocity.X, newVelocity.Y );
+                    Dust.NewDust(NPC.Center, 0, 0, DustID.Iron, newVelocity.X, newVelocity.Y);
                 }
 
-                Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity, 
-                    ModContent.ProjectileType<WaterBomb>(), 60, 0f);
-                
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                    ModContent.ProjectileType<SpikeBall>(), 47, 0f);
                 ai_Counter = 0;
                 attack_Count++;
             }
 
-            if(attack_Count > 5)
+            if (attack_Count > 3)
             {
                 NPC.Kill();
             }

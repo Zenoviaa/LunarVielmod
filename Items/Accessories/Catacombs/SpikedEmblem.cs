@@ -17,7 +17,7 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (hasSpikedEmblem)
+            if (hasSpikedEmblem && !target.boss)
             {
                 if (!target.HasBuff<Chained>())
                 {

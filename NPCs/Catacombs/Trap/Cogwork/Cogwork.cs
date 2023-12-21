@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -10,9 +9,9 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
+namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 {
-    internal class WaterCogwork : ModNPC
+    internal class Cogwork : ModNPC
     {
         private enum AttackState
         {
@@ -59,7 +58,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
         //AI Stuffs
         private NPC _gun;
- 
+
         private ref float ai_State => ref NPC.ai[0];
         private ref float ai_Counter => ref NPC.ai[1];
         private ref float ai_last_State => ref NPC.ai[2];
@@ -86,7 +85,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 float degrees = k * degreesPer;
                 Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
                 Vector2 vel = direction * 4;
-                Dust.NewDust(NPC.Center + sparksOffset, 0, 0, DustID.Water, vel.X, vel.Y);
+                Dust.NewDust(NPC.Center + sparksOffset, 0, 0, DustID.Iron, vel.X, vel.Y);
             }
         }
 
@@ -111,8 +110,8 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             }
 
             Vector2 sparksOffset = Vector2.Zero;
-            float sparksWidth = 132/2;
-            float sparksHeight = 134/2;
+            float sparksWidth = 132 / 2;
+            float sparksHeight = 134 / 2;
             switch (moveDirection)
             {
                 case MoveDirection.Left:
@@ -149,10 +148,10 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     break;
             }
 
-            if(ai_Counter % 8 == 0)
+            if (ai_Counter % 8 == 0)
             {
                 WheelSparks(sparksOffset);
-            } 
+            }
         }
 
         private void GunMovement()
@@ -169,7 +168,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             switch (moveDirection)
             {
                 case MoveDirection.Left:
-   
+
                     sparksOffset = new Vector2(0, sparksHeight);
                     break;
                 case MoveDirection.Down:
@@ -194,8 +193,8 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             int height = 138;
             int width = 166;
             SpriteEffects effects = SpriteEffects.None;
-            Vector2 drawPosition = NPC.Center - screenPos;  
-            Vector2 origin = new Vector2(width/2, height/2);
+            Vector2 drawPosition = NPC.Center - screenPos;
+            Vector2 origin = new Vector2(width / 2, height / 2);
 
             //Trail
             Main.spriteBatch.End();
@@ -210,7 +209,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + drawOrigin;
-                Color color = NPC.GetAlpha(Color.Lerp(Color.Aqua, Color.Transparent, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                Color color = NPC.GetAlpha(Color.Lerp(Color.DarkGray, Color.Transparent, 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
                 Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, NPC.oldRot[k], drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
 
@@ -221,7 +220,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             Texture2D cogworkTexture = ModContent.Request<Texture2D>(Texture).Value;
             AttackState attackState = (AttackState)ai_State;
             int speed = 1;
-       
+
             if (attackState == AttackState.Spin_Slow || attackState == AttackState.Spin_Fast)
             {
                 int frameCount = 26;
@@ -281,12 +280,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 case AttackState.Idle:
                     WheelMovement(6);
                     ai_Counter++;
-                    if(ai_Counter > 100 && _frameCounter == 0)
+                    if (ai_Counter > 100 && _frameCounter == 0)
                     {
                         //Determine the Attack
-                        if(attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
+                        if (attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
                         {
-                            switch(Main.rand.Next(0, 3))
+                            switch (Main.rand.Next(0, 3))
                             {
                                 case 0:
                                     SwitchState(AttackState.Bolt);
@@ -303,13 +302,13 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                         {
                             if (Main.rand.NextBool(5))
                             {
-                                SwitchState(AttackState.Spin_Fast);   
+                                SwitchState(AttackState.Spin_Fast);
                             }
                             else
                             {
                                 SwitchState(AttackState.Spin_Slow);
-                            }                      
-                        }      
+                            }
+                        }
                     }
 
                     break;
@@ -320,13 +319,13 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     //Bouncing movements
                     WheelMovement(15);
                     ai_Counter++;
-                    if(ai_Counter > 120 && _frameCounter == 0)
+                    if (ai_Counter > 120 && _frameCounter == 0)
                     {
                         SwitchState(AttackState.Idle);
                     }
 
                     break;
-                
+
                 case AttackState.Spin_Fast:
 
                     //Fastly
@@ -338,32 +337,32 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     }
 
                     break;
-                
+
                 case AttackState.Bolt:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
-                            ModContent.NPCType<WaterGun>());
+                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                            ModContent.NPCType<IronNailGun>());
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
                     break;
-                
+
                 case AttackState.Rifle:
                     if (ai_Counter == 0)
                     {
                         _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-                            ModContent.NPCType<WaterRifle>());
+                            ModContent.NPCType<NeedleGun>());
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
                     break;
-                
+
                 case AttackState.Launcher:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
-                            ModContent.NPCType<WaterLauncher>());
+                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                            ModContent.NPCType<SpikeBallGun>());
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
@@ -378,7 +377,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxWater>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxTrap>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
         }
     }
 }
