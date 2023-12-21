@@ -122,23 +122,26 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 
-			StartFen,
-			IdleFen,
-			IdleFloating,
-			LaughingCircle,
-			LaughFen,
-			SwordsDanceFen,
-			SwordSlash1st,
-			SwordSlash2nd,
-			SwordSlashPhase2,
+			StartFen,//
+			Startset,//
+			IdleFen,//
+			IdleFloating,//
+			LaughingCircle,//
+			LaughFen,//
+			SwordsDanceFen,//
+			SwordSlash1st,//
+			SwordSlashHalf,//
+			SwordSlashHalf2,// goes to 1st
+			SwordSlashPhase2,//
 			SwirlSwordNeko,
 			SwirlSwordYumi,
 			SwirlSwordArku,
 			Backdown,
 			ReadySwordsDance,
-			Pause1,
-			Pause2,
-			SummonThreePhase2,
+			Pause1,//
+			Pause2,//
+			SwordsSwirlPhase2,//
+			ReappearFen,//
 			
 
 
@@ -212,10 +215,10 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 		public override void SetDefaults()
 		{
-			NPC.Size = new Vector2(125, 96);
+			NPC.Size = new Vector2(63, 50);
 			NPC.damage = 1;
 			NPC.defense = 50;
-			NPC.lifeMax = 250500;
+			NPC.lifeMax = 83900;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -258,7 +261,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Searching for a lover, this particular Queen lacks any people she can socialize with, so much power yet so lonely.")
+				new FlavorTextBestiaryInfoElement("Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void, so much power yet so lonely.")
 			});
 		}
 
@@ -296,12 +299,16 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			SpriteEffects effects = SpriteEffects.None;
 
+			if (player.Center.X > NPC.Center.X)
+			{
+				effects = SpriteEffects.FlipHorizontally;
+			}
 
 			Vector2 spritesquish = new(1 - squish, 1 + squish);
 
 
 			Rectangle rect;
-			originalHitbox = new Vector2(0, 60);
+			originalHitbox = new Vector2(10, 20);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -566,6 +573,131 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					break;
 
 
+
+
+
+				//------------------------------------- Fenix duh
+
+				case ActionState.StartFen:
+					rect = new(0, 1 * 96, 125, 1 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordsDanceFen:
+					rect = new(0, 1 * 96, 125, 1 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.Startset:
+					rect = new(0, 1 * 96, 125, 1 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.ReappearFen:
+					rect = new(0, 2 * 96, 125, 1 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.IdleFen:
+					rect = new(0, 3 * 96, 125, 6 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.IdleFloating:
+					rect = new(0, 3 * 96, 125, 6 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.Pause1:
+					rect = new(0, 3 * 96, 125, 6 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.Pause2:
+					rect = new(0, 3 * 96, 125, 6 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.LaughFen:
+					rect = new(0, 10 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.LaughingCircle:
+					rect = new(0, 10 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordSlash1st:
+					rect = new(0, 18 * 96, 125, 21 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordSlashPhase2:
+					rect = new(0, 18 * 96, 125, 21 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordsSwirlPhase2:
+					rect = new(0, 34 * 96, 125, 13 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+
+				case ActionState.SwordSlashHalf:
+					rect = new(0, 18 * 96, 125, 16 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordSlashHalf2:
+					rect = new(0, 18 * 96, 125, 16 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwirlSwordArku:
+					rect = new(0, 40 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwirlSwordNeko:
+					rect = new(0, 40 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwirlSwordYumi:
+					rect = new(0, 40 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.Backdown:
+					rect = new(0, 48 * 96, 125, 8 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.ReadySwordsDance:
+					rect = new(0, 57 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
 			}
 
 
@@ -577,37 +709,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 		int bee = 220;
 		private Vector2 originalHitbox;
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			bool npcAlreadyExists = false;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if (npc.type == ModContent.NPCType<Fenix>())
-				{
-					npcAlreadyExists = true;
-					break;
-				}
-			}
-
-			//Don't spawn the npc if it already exists
-			if (npcAlreadyExists)
-			{
-				return 0f;
-			}
-
-			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-
-			if (EventWorld.Aurorean && Main.hardMode)
-			{
-
-				return 0f;
-
-			}
-
-			//Else, the example bone merchant will not spawn if the above conditions are not met.
-			return 0f;
-		}
+		
 
 
 		public override void AI()
@@ -647,164 +749,17 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				NPC.noGravity = false;
 				NPC.alpha++;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(2);
+				NPC.EncourageDespawn(1);
 
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
+
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
 			}
 			switch (State)
 			{
 
-
-
-
-				case ActionState.StartVerlia:
-					NPC.damage = 0;
-					counter++;
-					StartVerlia();
-					break;
-
-				case ActionState.BeggingingMoonStart:
-					NPC.damage = 0;
-					counter++;
-					MoonStartVerlia();
-					break;
-
-				case ActionState.SummonStartup:
-					NPC.damage = 0;
-					counter++;
-					StartSummonVerlia();
-					break;
-
-				case ActionState.MoonSummonStartup:
-					NPC.damage = 0;
-					counter++;
-
-					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-					}
-
-					if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-					{
-						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-					}
-					MoonStartSummonVerlia();
-					break;
-
-				case ActionState.CloneSummonStartup:
-					NPC.damage = 0;
-					counter++;
-					CloneStartSummonVerlia();
-					break;
-
-				case ActionState.BigSwordSummonStartup:
-					NPC.damage = 0;
-					counter++;
-					BigSwordStartSummonVerlia();
-					break;
-
-				case ActionState.SummonIdle:
-					NPC.damage = 0;
-					counter++;
-					IdleSummonVerlia();
-					break;
-
-				case ActionState.Unsummon:
-					NPC.damage = 0;
-					counter++;
-					UnSummonVerlia();
-					break;
-
-				case ActionState.HoldUP:
-					NPC.damage = 0;
-					counter++;
-					HoldUPVerlia();
-					break;
-
-				case ActionState.TriShot:
-					NPC.damage = 0;
-					counter++;
-
-					BarrageVerlia();
-					break;
-
-				case ActionState.Explode:
-					NPC.damage = 0;
-					counter++;
-					ExplodeVerlia();
-					break;
-
-				case ActionState.CutExplode:
-					NPC.damage = 0;
-					counter++;
-					CutExplodeVerlia();
-					break;
-
-				case ActionState.In:
-					NPC.damage = 0;
-					counter++;
-					Verliasinsideme();
-					break;
-
-				case ActionState.SwordUP:
-					NPC.damage = 0;
-					counter++;
-
-					SwordUPVerlia();
-					break;
-
-				case ActionState.SwordSimple:
-					NPC.damage = 0;
-					counter++;
-					SwordSimpleVerlia();
-					break;
-
-				case ActionState.SwordHold:
-					NPC.damage = 0;
-					counter++;
-					SwordHoldVerlia();
-					break;
-
-				case ActionState.IdleInvis:
-					NPC.damage = 0;
-					counter++;
-					InvisVerlia();
-					break;
-
-				case ActionState.InvisCut:
-					NPC.damage = 0;
-					counter++;
-					InvisCut();
-					break;
-
-				case ActionState.Dienow:
-					NPC.damage = 0;
-					counter++;
-					Dienow();
-					break;
-
-				case ActionState.SummonBeamer:
-					NPC.damage = 0;
-					counter++;
-					SummonBeamer();
-					break;
-
-				case ActionState.idleSummonBeamer:
-					NPC.damage = 0;
-					counter++;
-					idleSummonBeamer();
-					break;
-
-				case ActionState.HoldUPdie:
-					NPC.damage = 0;
-					counter++;
-					HoldUPVerliadie();
-					break;
 				//////////////////////////////////////////////////////////////////////////////////////////////
 				///
 
@@ -1197,7 +1152,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				//	int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 2, (int)NPC.Center.Y - 100, ModContent.NPCType<STARBOMBERGUN>());
 
 				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y + speedYa + 110, 0, speedYa - 1 * 3, ModContent.ProjectileType<STARBOMBERGUN2>(), 5, 0f, 0, 0f, 0f);
+				//Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y + speedYa + 110, 0, speedYa - 1 * 3, ModContent.ProjectileType<STARBOMBERGUN2>(), 5, 0f, 0, 0f, 0f);
 
 
 			}
