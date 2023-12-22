@@ -294,6 +294,7 @@
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
+    <None Remove="NPCs\Catacombs\Trap\Cogwork\IronNailLodged.png" />
     <None Remove="NPCs\Catacombs\Water\WaterCogwork\WaterBolt.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
