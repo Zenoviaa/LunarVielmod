@@ -263,6 +263,7 @@
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
     <None Remove="NPCs\Bosses\Fenix\BLACKHOLE.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\AlcShot.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />

@@ -5525,6 +5525,7 @@ Mods: {
 			IronNeedle.DisplayName: Iron Needle
 			SpikeBall.DisplayName: Spike Ball
 			NailKaboom.DisplayName: Nail Kaboom
+			AlcShot.DisplayName: Alc Shot
 		}
 
 		NPCs: {
@@ -6913,6 +6914,8 @@ Mods: {
 			IronNailGun.DisplayName: Iron Nail Gun
 			NeedleGun.DisplayName: Needle Gun
 			SpikeBallGun.DisplayName: Spike Ball Gun
+			ExpoiyosOrb.DisplayName: Expoiyos Orb
+			AlcSpark.DisplayName: Alc Spark
 		}
 
 		Biomes: {

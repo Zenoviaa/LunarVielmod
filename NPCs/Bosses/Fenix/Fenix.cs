@@ -306,6 +306,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			Vector2 spritesquish = new(1 - squish, 1 + squish);
 
+			Color drawColors = new Color(255, 255, 255, NPC.alpha);
 
 			Rectangle rect;
 			originalHitbox = new Vector2(10, 20);
@@ -347,137 +348,137 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			{
 				case ActionState.StartVerlia:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BeggingingMoonStart:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BigSwordSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.MoonSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.CloneSummonStartup:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SummonIdle:
 					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.Unsummon:
 					rect = new Rectangle(0, 8 * 92, 133, 4 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.HoldUP:
 					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordUP:
 					rect = new Rectangle(0, 20 * 92, 133, 11 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordSimple:
 					rect = new(0, 31 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 5, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.SwordHold:
 					rect = new(0, 36 * 92, 133, 10 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 10, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.TriShot:
 					rect = new(0, 46 * 92, 133, 22 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 22, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Explode:
 					rect = new(0, 68 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.CutExplode:
 					rect = new(0, 70 * 92, 133, 6 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 6, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.In:
 					rect = new(0, 76 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 5, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.IdleInvis:
 					rect = new(0, 74 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.InvisCut:
 					rect = new(0, 74 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Dienow:
 					rect = new(0, 1 * 92, 133, 1 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SummonBeamer:
 					rect = new Rectangle(0, 1 * 92, 133, 7 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.idleSummonBeamer:
 					rect = new Rectangle(0, 3 * 92, 133, 5 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.HoldUPdie:
 					rect = new Rectangle(0, 12 * 92, 133, 8 * 92);
-					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, Vector2.Zero, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColors, 0f, Vector2.Zero, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
@@ -489,86 +490,86 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.StartStar:
 					rect = new(0, 1 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.IdleStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.GunStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BomberStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.BreakdownStar:
 					rect = new(0, 29 * 129, 206, 26 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 26, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.DropdownSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinGroundStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.RageSpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.PullInStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.LaserdrillStar:
 					rect = new(0, 1 * 129, 206, 28 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 28, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SpinVerticleStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.WaitStar:
 					rect = new(0, 55 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.FallStar:
 					rect = new(0, 1 * 129, 206, 1 * 129);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
@@ -580,122 +581,122 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.StartFen:
 					rect = new(0, 1 * 96, 125, 1 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordsDanceFen:
 					rect = new(0, 1 * 96, 125, 1 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Startset:
 					rect = new(0, 1 * 96, 125, 1 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.ReappearFen:
 					rect = new(0, 2 * 96, 125, 1 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.IdleFen:
 					rect = new(0, 3 * 96, 125, 6 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.IdleFloating:
 					rect = new(0, 3 * 96, 125, 6 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Pause1:
 					rect = new(0, 3 * 96, 125, 6 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Pause2:
 					rect = new(0, 3 * 96, 125, 6 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.LaughFen:
 					rect = new(0, 10 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.LaughingCircle:
 					rect = new(0, 10 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordSlash1st:
 					rect = new(0, 18 * 96, 125, 21 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordSlashPhase2:
 					rect = new(0, 18 * 96, 125, 21 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordsSwirlPhase2:
 					rect = new(0, 34 * 96, 125, 13 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 
 				case ActionState.SwordSlashHalf:
 					rect = new(0, 18 * 96, 125, 16 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwordSlashHalf2:
 					rect = new(0, 18 * 96, 125, 16 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 16, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwirlSwordArku:
 					rect = new(0, 40 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwirlSwordNeko:
 					rect = new(0, 40 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.SwirlSwordYumi:
 					rect = new(0, 40 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.Backdown:
 					rect = new(0, 48 * 96, 125, 8 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
 				case ActionState.ReadySwordsDance:
 					rect = new(0, 57 * 96, 125, 7 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 			}
