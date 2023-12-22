@@ -24,14 +24,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             Ram = 6
         }
 
-        private enum MoveDirection
-        {
-            Left = 0,
-            Right = 1,
-            Up = 2,
-            Down = 3
-        }
-
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 46;
@@ -53,16 +45,16 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             NPC.boss = true;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 10f;
+            NPC.aiStyle = NPCAIStyleID.BlazingWheel;
             NPC.value = Item.buyPrice(gold: 10);
         }
 
         //AI Stuffs
         private NPC _gun;
 
-        private ref float ai_State => ref NPC.ai[0];
-        private ref float ai_Counter => ref NPC.ai[1];
-        private ref float ai_last_State => ref NPC.ai[2];
-        private ref float ai_move_Direction => ref NPC.ai[3];
+        private float ai_State;
+        private float ai_Counter;
+        private float ai_last_State;
 
         private void SwitchState(AttackState attackState)
         {
@@ -70,12 +62,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             ai_last_State = ai_State;
             ai_State = (float)attackState;
         }
-
-        private void SwitchMoveDirection(MoveDirection moveDirection)
-        {
-            ai_move_Direction = (float)moveDirection;
-        }
-
         private void WheelSparks(Vector2 sparksOffset)
         {
             float count = 8;
@@ -88,72 +74,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 Dust.NewDust(NPC.Center + sparksOffset, 0, 0, DustID.Iron, vel.X, vel.Y);
             }
         }
-
-        private void WheelMovement(float speed = 8)
-        {
-            MoveDirection moveDirection = (MoveDirection)ai_move_Direction;
-            AttackState attackState = (AttackState)ai_State;
-            switch (attackState)
-            {
-                case AttackState.Spin_Slow:
-                case AttackState.Spin_Fast:
-                    if (_frameCounter < 11 || _frameCounter > 19)
-                    {
-                        speed = 0;
-                    }
-                    else if (_frameCounter == 11)
-                    {
-                        WheelSparks(Vector2.Zero);
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
-                    }
-                    break;
-            }
-
-            Vector2 sparksOffset = Vector2.Zero;
-            float sparksWidth = 132 / 2;
-            float sparksHeight = 134 / 2;
-            switch (moveDirection)
-            {
-                case MoveDirection.Left:
-                    NPC.velocity = new Vector2(-speed, 0);
-                    if (NPC.collideX)
-                    {
-                        SwitchMoveDirection(MoveDirection.Down);
-                    }
-                    sparksOffset = new Vector2(0, -sparksHeight);
-                    break;
-                case MoveDirection.Down:
-                    NPC.velocity = new Vector2(0, speed);
-                    if (NPC.collideY)
-                    {
-                        SwitchMoveDirection(MoveDirection.Right);
-                    }
-                    sparksOffset = new Vector2(-sparksWidth, 0);
-                    break;
-                case MoveDirection.Right:
-                    NPC.velocity = new Vector2(speed, 0);
-                    if (NPC.collideX)
-                    {
-                        SwitchMoveDirection(MoveDirection.Up);
-                    }
-                    sparksOffset = new Vector2(0, sparksHeight);
-                    break;
-                case MoveDirection.Up:
-                    NPC.velocity = new Vector2(0, -speed);
-                    if (NPC.collideY)
-                    {
-                        SwitchMoveDirection(MoveDirection.Left);
-                    }
-                    sparksOffset = new Vector2(sparksWidth, 0);
-                    break;
-            }
-
-            if (ai_Counter % 8 == 0)
-            {
-                WheelSparks(sparksOffset);
-            }
-        }
-
         private void GunMovement()
         {
             if (_gun == null)
@@ -161,28 +81,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             if (!_gun.active)
                 return;
 
-            MoveDirection moveDirection = (MoveDirection)ai_move_Direction;
-            Vector2 sparksOffset = Vector2.Zero;
-            float sparksWidth = 132 / 2;
-            float sparksHeight = 134 / 2;
-            switch (moveDirection)
-            {
-                case MoveDirection.Left:
-
-                    sparksOffset = new Vector2(0, sparksHeight);
-                    break;
-                case MoveDirection.Down:
-                    sparksOffset = new Vector2(sparksWidth, 0);
-                    break;
-                case MoveDirection.Right:
-                    sparksOffset = new Vector2(0, -sparksHeight);
-                    break;
-                case MoveDirection.Up:
-                    sparksOffset = new Vector2(-sparksWidth, 0);
-                    break;
-            }
-
-            _gun.Center = Vector2.Lerp(_gun.Center, NPC.Center + sparksOffset, 0.2f);
+            _gun.Center = Vector2.Lerp(_gun.Center, NPC.Center, 0.2f);
         }
 
         private int _frameCounter;
@@ -244,7 +143,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             return false;
         }
 
-
         public override void AI()
         {
             //OK so 
@@ -256,8 +154,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             //He sticks to walls like blazing wheels
             //Also has a ram attack where he revs up and goes around fast, you have to jump over em
             //So 4 attacks
-
-            NPC.TargetClosest();
+            base.AI();
             if (!NPC.HasValidTarget)
             {
                 //WheelMovement(2);
@@ -278,7 +175,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             switch (attackState)
             {
                 case AttackState.Idle:
-                    WheelMovement(6);
                     ai_Counter++;
                     if (ai_Counter > 100 && _frameCounter == 0)
                     {
@@ -314,28 +210,53 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                     break;
 
                 case AttackState.Spin_Slow:
-
                     //Slowly moving around with movement similar to blazing wheels
                     //Bouncing movements
-                    WheelMovement(15);
+      
                     ai_Counter++;
                     if (ai_Counter > 120 && _frameCounter == 0)
                     {
                         SwitchState(AttackState.Idle);
                     }
 
+                    if (_frameCounter < 11 || _frameCounter > 19)
+                    {
+                        NPC.velocity *= 0.5f;
+                    }
+                    else if (_frameCounter == 11)
+                    {
+                        WheelSparks(Vector2.Zero);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
+                    }
+                    else
+                    {
+                        NPC.velocity *= 2f;
+                    }
                     break;
 
                 case AttackState.Spin_Fast:
 
                     //Fastly
-                    WheelMovement(15);
+                  //  WheelMovement(15);
                     ai_Counter++;
                     if (ai_Counter > 120 && _frameCounter == 0)
                     {
                         SwitchState(AttackState.Idle);
                     }
 
+                    if (_frameCounter < 11 || _frameCounter > 19)
+                    {
+                        NPC.velocity *= 0.5f;
+                    }
+                    else if (_frameCounter == 11)
+                    {
+                        WheelSparks(Vector2.Zero);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
+                    }
+                    else
+                    {
+                        NPC.velocity *= 2f;
+                    }
                     break;
 
                 case AttackState.Bolt:
