@@ -1920,7 +1920,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 
 
 			}
@@ -1940,7 +1940,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 
 				}
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
 			}
 
 
@@ -1992,7 +1992,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				}
 
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
 
 
 
@@ -2014,7 +2014,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				}
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 			}
 
 
@@ -2062,7 +2062,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 				}
 
 
@@ -2101,7 +2101,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"));
 				}
 
 				if (NPC.life < NPC.lifeMax / 2)
@@ -2137,7 +2137,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
 
 					}
-					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2"), NPC.position);
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2"));
 				}
 
 				if (NPC.life < NPC.lifeMax / 2)
@@ -2199,6 +2199,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
 
 						Wingies = true;
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
 					}
 
 					switch (Main.rand.Next(1))
@@ -2489,6 +2490,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
 
 					Wingies = true;
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
 				}
 
 
@@ -3563,6 +3565,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
 
 						Wingies = true;
+						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
 					}
 					switch (Main.rand.Next(1))
 					{
