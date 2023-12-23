@@ -4894,7 +4894,8 @@ Mods: {
 
 			Dulahaun: {
 				DisplayName: Dulahaun
-				Tooltip:'''
+				Tooltip:
+					'''
 					A weapon so magical and devious it may have killed it's previous owners.
 					Forged from the the haunting and bright, this sword is sentient and alive.
 					'''
