@@ -244,6 +244,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			Vector2 nodeSpawnPosition3 = target.Center + new Vector2(distance, distance);
 			Vector2 nodeSpawnPosition4 = target.Center + new Vector2(-distance, distance);
 
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"));
+			DustBurst(nodeSpawnPosition1);
+			DustBurst(nodeSpawnPosition2);
+			DustBurst(nodeSpawnPosition3);
+			DustBurst(nodeSpawnPosition4);
+
 			var source = NPC.GetSource_FromThis();
 			SparnCageNode sparnCageNode1 = Projectile.NewProjectileDirect(source, nodeSpawnPosition1, Vector2.Zero,
 				ModContent.ProjectileType<SparnCageNode>(), 40, 1).ModProjectile as SparnCageNode;
@@ -293,6 +299,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			}
 		}
 
+
+		private void DustBurst(Vector2 targetCenter)
+        {
+			for (int i = 0; i < 16; i++)
+			{
+				Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+				var d = Dust.NewDustPerfect(targetCenter, DustID.GemEmerald, speed, Scale: 1.5f);
+				d.noGravity = true;
+			}
+		}
+
 		private void AttackDeathSkulls()
 		{
 			Player target = Main.player[NPC.target];
@@ -308,13 +325,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPosition, velocity,
 						ModContent.ProjectileType<SparnSkull>(), 34, 2);
 
-					for (int i = 0; i < 16; i++)
-					{
-						Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-						var d = Dust.NewDustPerfect(spawnPosition, DustID.GemEmerald, speed, Scale: 2f);
-						d.noGravity = true;
-					}
-
+					DustBurst(spawnPosition);
 					SoundEngine.PlaySound(SoundID.Item43);
 				}
 			} 
