@@ -53,6 +53,17 @@ namespace Stellamod
             return velocity;
         }
 
+        public static Vector2 VelocitySlowdownTo(Vector2 startPosition, Vector2 endPosition, float speed)
+        {
+            float distanceToEndPosition = Vector2.Distance(startPosition, endPosition);
+            if (distanceToEndPosition < speed)
+                speed = distanceToEndPosition;
+            Vector2 direction = endPosition - startPosition;
+            direction = direction.SafeNormalize(Vector2.Zero);
+            Vector2 velocity = direction * speed;
+            return velocity;
+        }
+
         /// <summary>
         /// Moves the current velocity up to the target velocity, or does nothing if you are already moving faster than it
         /// <br>Good for recoil effects</br>
