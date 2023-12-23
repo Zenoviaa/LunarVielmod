@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 		int bee = 220;
-		int bee2 = 525;
+		int bee2 = 535;
 		public int rippleCount = 20;
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
