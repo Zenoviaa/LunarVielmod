@@ -10,6 +10,8 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
     internal class SparnCageNode : ModProjectile
     {
         public Projectile targetProjectile;
+        public Vector2 targetCenter;
+        public float distanceFromTargetCenter;
 
         public override void SetStaticDefaults()
         {
@@ -28,9 +30,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             Projectile.light = 0.25f;
         }
 
+        private ref float ai_Rotation => ref Projectile.ai[0];
         public override void AI()
         {
-            Projectile.velocity *= 0.98f;
+            ai_Rotation++;
+            distanceFromTargetCenter -= 0.25f;
+            Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 0.7f);
         }
 
         private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, out Vector2[] chainPositions)
