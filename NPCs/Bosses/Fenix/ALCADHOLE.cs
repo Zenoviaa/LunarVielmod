@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 		int bee = 220;
-		int bee2 = 550;
+		int bee2 = 525;
 		public int rippleCount = 20;
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
@@ -170,7 +170,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					{
 						Vector2 direction = npc.Center - NPC.Center;
 						direction.Normalize();
-						npc.velocity -= direction * 0.3f;
+						npc.velocity -= direction * 0.25f;
 					}
 				}
 			}
