@@ -4844,6 +4844,36 @@ Mods: {
 				DisplayName: Waterproof Headphones
 				Tooltip: Increases life by 40 and gain 4% more resistance to attacks!
 			}
+
+			BurningFlask: {
+				DisplayName: Burning Flask
+				Tooltip: ""
+			}
+
+			ComicalTrident: {
+				DisplayName: Comical Trident
+				Tooltip: ""
+			}
+
+			MetalAlloy: {
+				DisplayName: Metal Alloy
+				Tooltip: ""
+			}
+
+			Ragsaw: {
+				DisplayName: Ragsaw
+				Tooltip: ""
+			}
+
+			SpiritCapsule: {
+				DisplayName: Spirit Capsule
+				Tooltip: ""
+			}
+
+			Stonen: {
+				DisplayName: Stonen
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5542,6 +5572,14 @@ Mods: {
 			Angelu.DisplayName: Angelu
 			NiceBuster.DisplayName: Nice Buster
 			SparnCageNode.DisplayName: Sparn Cage Node
+			SparnSkull.DisplayName: Sparn Skull
+			FunBoom.DisplayName: Fun Boom
+			SpiritualBoom.DisplayName: Spiritual Boom
+			ComicalTridentP.DisplayName: Comical Trident P
+			MetalAlloyP.DisplayName: Metal Alloy P
+			RagsawP.DisplayName: Ragsaw P
+			RockerP.DisplayName: Rocker P
+			SpiritCapsuleP.DisplayName: Spirit Capsule P
 		}
 
 		NPCs: {
@@ -6936,6 +6974,7 @@ Mods: {
 			FenixWarn.DisplayName: Fenix Warn
 			DrownOut.DisplayName: Drown Out
 			FenixSnipe.DisplayName: Fenix Snipe
+			Sparn.DisplayName: Sparn
 		}
 
 		Biomes: {
