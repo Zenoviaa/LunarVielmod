@@ -328,6 +328,7 @@
     <None Remove="Projectiles\BloodWaterProj.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
+    <None Remove="Projectiles\Bow\Warrow.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
     <None Remove="Projectiles\DevilsPeakSwordProj.png" />
@@ -392,6 +393,7 @@
     <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\VoidRain.png" />
+    <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />

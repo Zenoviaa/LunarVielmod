@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Thrown;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -40,6 +43,9 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<FireEmblem>(),
                 ModContent.ItemType<IcarusFeather>(),
                 ModContent.ItemType<Bonfire>(),
+                ModContent.ItemType<BurningFlask>(),
+                ModContent.ItemType<DevilsPeak>(),
+                ModContent.ItemType<AgreviPowder>(),
                 ModContent.ItemType<FlamecrestShield>()));
           
             

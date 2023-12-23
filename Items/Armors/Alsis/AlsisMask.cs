@@ -56,6 +56,7 @@ namespace Stellamod.Items.Armors.Alsis
 		{
 			player.setBonus = "You are a true mage..." +
 			"\nGain the effects of a mana flower, magic cuffs, and retrieve magic stars from afar " +
+			"\n25% More magic damage!" +
 			"\nMana costs are reduced by 70% and super increased magic regeneration";  // This is the setbonus tooltip
 			player.GetDamage(DamageClass.Magic) *= 1.25f;
 			player.manaCost *= 0.3f;

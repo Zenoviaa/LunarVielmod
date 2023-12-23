@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Ranged;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -40,6 +42,9 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<AquaticEmblem>(),
                 ModContent.ItemType<WaterproofHeadphones>(),
                 ModContent.ItemType<OceancrestShield>(),
+                ModContent.ItemType<Aquamare>(),
+                ModContent.ItemType<MagicalAxe>(),
+                ModContent.ItemType<WaterSong>(),
                 ModContent.ItemType<TyphoonInABottle>()));
             //itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), chanceDenominator: 1, minimumDropped: 30, maximumDropped: 40));
         }

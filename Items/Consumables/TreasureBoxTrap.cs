@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Thrown;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -40,7 +42,9 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<Cleats>(),
                 ModContent.ItemType<Barry>(),
                 ModContent.ItemType<SpikedEmblem>(),
-                ModContent.ItemType<Panacea>()));
+                ModContent.ItemType<Panacea>(),
+                ModContent.ItemType<DungeonedRockCard>(),
+                ModContent.ItemType<Ragsaw>()));
 
         }
 

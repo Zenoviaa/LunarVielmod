@@ -50,6 +50,7 @@ Mods: {
 					+10% damage
 					Allows you to equip advanced brooches! Very useful 
 					Allows the effects of the Hiker's Backpack!
+					Put advanced brooches under this in accessories for them to work!
 					'''
 			}
 
@@ -4622,6 +4623,7 @@ Mods: {
 					+100 Max Mana and +50 Health
 					Auto gain the Mana Cuffs and Magic flower
 					Cost of magic is reduced by 95%..
+					+20% Magic Damage
 					'''
 			}
 
@@ -4847,32 +4849,55 @@ Mods: {
 
 			BurningFlask: {
 				DisplayName: Burning Flask
-				Tooltip: ""
+				Tooltip: Please just don't set the house on fire..
 			}
 
 			ComicalTrident: {
 				DisplayName: Comical Trident
-				Tooltip: ""
+				Tooltip: Truly the most comical weapon of all time.
 			}
 
 			MetalAlloy: {
 				DisplayName: Metal Alloy
-				Tooltip: ""
+				Tooltip: I mean it isn't a material, but Germany says otherwise.
 			}
 
 			Ragsaw: {
 				DisplayName: Ragsaw
-				Tooltip: ""
+				Tooltip: They bounce around, it even looks like they are dancing!
 			}
 
 			SpiritCapsule: {
 				DisplayName: Spirit Capsule
-				Tooltip: ""
+				Tooltip: Somehow you've trapped every soul inside this..
 			}
 
 			Stonen: {
 				DisplayName: Stonen
-				Tooltip: ""
+				Tooltip: Don't get stoned just yet.
+			}
+
+			Aquamare: {
+				DisplayName: Aquamare
+				Tooltip: May be inconsistent!
+			}
+
+			MagicalAxe: {
+				DisplayName: Magical Axe
+				Tooltip: It's so magical it turned itself into a "chad" axe :)
+			}
+
+			WaterSong: {
+				DisplayName: Flowing Song
+				Tooltip: Turn wooden arrows into icey bolts!
+			}
+
+			Dulahaun: {
+				DisplayName: Dulahaun
+				Tooltip:'''
+					A weapon so magical and devious it may have killed it's previous owners.
+					Forged from the the haunting and bright, this sword is sentient and alive.
+					'''
 			}
 		}
 
@@ -5580,6 +5605,11 @@ Mods: {
 			RagsawP.DisplayName: Ragsaw P
 			RockerP.DisplayName: Rocker P
 			SpiritCapsuleP.DisplayName: Spirit Capsule P
+			Warrow.DisplayName: Warrow
+			BlossomBoom.DisplayName: Blossom Boom
+			AquamareProj.DisplayName: Aquamare Proj
+			Dulahan.DisplayName: Dulahan
+			WataBoom2.DisplayName: Wata Boom2
 		}
 
 		NPCs: {
