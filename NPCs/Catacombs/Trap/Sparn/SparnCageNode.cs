@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Catacombs.Trap.Sparn
@@ -9,6 +10,13 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
     internal class SparnCageNode : ModProjectile
     {
         public Projectile targetProjectile;
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 26;
@@ -51,6 +59,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             if(targetProjectile != null && targetProjectile.active)
                 DrawChainCurve(Main.spriteBatch, Projectile.Center, out Vector2[] chainPositions);
 
+            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.Gray, Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 
