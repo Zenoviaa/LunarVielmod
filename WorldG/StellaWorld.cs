@@ -1285,6 +1285,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1341,6 +1342,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1396,6 +1398,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1451,6 +1454,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1506,6 +1510,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1671,6 +1676,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1727,6 +1733,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1782,6 +1789,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1837,6 +1845,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1893,6 +1902,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -1948,6 +1958,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
@@ -2003,6 +2014,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(1))
 						{
 							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), 1));
 								itemsToAdd.Add((ModContent.ItemType<MagnusMagnum>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));

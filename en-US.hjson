@@ -4900,6 +4900,14 @@ Mods: {
 					Forged from the the haunting and bright, this sword is sentient and alive.
 					'''
 			}
+
+			CursedShard: {
+				DisplayName: Cursed Shard
+				Tooltip:
+					'''
+					Use at an altar in any of the Catacombs to summon a dangerous foe!
+					'''
+			}
 		}
 
 		JungleRuneI: {
