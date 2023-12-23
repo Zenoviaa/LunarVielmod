@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Stellamod.NPCs.Bosses.STARBOMBER;
+using Stellamod.NPCs.Bosses.Fenix;
 
 namespace Stellamod
 {
@@ -461,6 +462,37 @@ namespace Stellamod
 			);
 		}
 
+		private void DoFenixIntegration()
+		{
+
+			string internalName = nameof(Fenix);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<Fenix>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 15.6f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedFenixBoss;
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
 		private void DoStoneGolemIntegration()
         {
 			string internalName = nameof(StarrVeriplant);
@@ -521,6 +553,7 @@ namespace Stellamod
 			DoSyliaIntegration();
 			DoStoneGolemIntegration();
 			DoSTARIntegration();
+			DoFenixIntegration();
 		}
 	}
 }

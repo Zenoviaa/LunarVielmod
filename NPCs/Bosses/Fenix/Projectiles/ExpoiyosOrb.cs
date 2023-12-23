@@ -131,7 +131,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
 		//the boss has 120 hp
 		int bee = 220;
-		int bee2 = 1500;
+		int bee2 = 1000;
 		public int rippleCount = 20;
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
@@ -157,21 +157,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 			UpdateFrame(0.6f, 1, 75);
 			bee2--;
 
-			for (int i = 0; i < Main.maxPlayers; i++)
-			{
-				Player npc = Main.player[i];
-
-				if (npc.active)
-				{
-					float distance = Vector2.Distance(NPC.Center, npc.Center);
-					if (distance <= 200)
-					{
-						Vector2 direction = npc.Center - NPC.Center;
-						direction.Normalize();
-						npc.velocity -= direction * 0.4f;
-					}
-				}
-			}
+			
 
 
 

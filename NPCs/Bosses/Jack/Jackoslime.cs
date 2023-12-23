@@ -1,10 +1,13 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets.Biomes;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.Jack
 {
@@ -24,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.height = 24;
             NPC.damage = 8;
             NPC.defense = 0;
-            NPC.lifeMax = 8;
+            NPC.lifeMax = 40;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 30f;
@@ -35,6 +38,21 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.aiStyle = 1;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
+        }
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            Player player = spawnInfo.Player;
+            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+            {
+                return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
+            }
+
+            if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+            {
+                return SpawnCondition.Underground.Chance * 0.5f;
+            }
+
+            return 0f;
         }
 
         public override void AI()

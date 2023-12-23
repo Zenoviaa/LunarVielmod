@@ -7,6 +7,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.NPCs.Bosses.Fenix.Projectiles;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
@@ -53,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			get => NPC.localAI[0] == 1f;
 			set => NPC.localAI[0] = value ? 1f : 0f;
 		}
-
+		public static Vector2 FenixPos;
 		public enum ActionState
 		{
 			StartVerlia,
@@ -129,6 +130,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			LaughingCircle,//
 			LaughFen,//
 			SwordsDanceFen,//
+			SwordsDanceFen2,//
+			SwordsDanceFen3,//
 			SwordSlash1st,//
 			SwordSlashHalf,//
 			SwordSlashHalf2,// goes to 1st
@@ -142,7 +145,10 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			Pause2,//
 			SwordsSwirlPhase2,//
 			ReappearFen,//
-			
+			OutSD,
+			PreOrderingChildren,
+			OutSD2,
+			OutSD3,
 
 
 		}
@@ -172,7 +178,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			Main.npcFrameCount[Type] = 64;
 
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-			NPCID.Sets.TrailingMode[NPC.type] = 0;
+			NPCID.Sets.TrailingMode[NPC.type] = 2;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
@@ -194,7 +200,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-			drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/STARBOMBER/FenixPreview";
+			drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Fenix/FenixPreview";
 			drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
 			drawModifiers.PortraitPositionYOverride = 0f;
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -218,7 +224,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.Size = new Vector2(63, 50);
 			NPC.damage = 1;
 			NPC.defense = 50;
-			NPC.lifeMax = 83900;
+			NPC.lifeMax = 78900;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -289,6 +295,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		float dashDistance = 0f;
 		Vector2 TeleportPos = Vector2.Zero;
 		public float squish = 0f;
+		private int _frameCounter;
+		private int _frameTick;
+		private int _wingFrameCounter;
+		private int _wingFrameTick;
+		public bool Wingies = false;
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Player player = Main.player[NPC.target];
@@ -306,10 +317,30 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			Vector2 spritesquish = new(1 - squish, 1 + squish);
 
-			Color drawColors = new Color(255, 255, 255, NPC.alpha);
+
+
+			Color drawColors = NPC.GetAlpha(Color.White);
+
+
 
 			Rectangle rect;
 			originalHitbox = new Vector2(10, 20);
+
+
+			if (Wingies)
+            {
+				Vector2 drawPosition = NPC.Center - screenPos;
+				Vector2 origin = new Vector2(144, 82);
+				Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Fenix/FenixGravWings").Value;
+				int wingFrameSpeed = 1;
+				int wingFrameCount = 30;
+				spriteBatch.Draw(syliaWingsTexture, drawPosition,
+					syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
+					drawColor, 0f, origin, 1f, effects, 0f);
+
+				
+			}
+			
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -591,9 +622,21 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					NPC.netUpdate = true;
 					break;
 
-				case ActionState.Startset:
+				case ActionState.SwordsDanceFen2:
 					rect = new(0, 1 * 96, 125, 1 * 96);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.SwordsDanceFen3:
+					rect = new(0, 1 * 96, 125, 1 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 800, 1, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+				case ActionState.Startset:
+					rect = new(0, 3 * 96, 125, 6 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
@@ -633,6 +676,12 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					NPC.netUpdate = true;
 					break;
 
+				case ActionState.PreOrderingChildren:
+					rect = new(0, 10 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
 				case ActionState.LaughingCircle:
 					rect = new(0, 10 * 96, 125, 7 * 96);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
@@ -646,8 +695,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					break;
 
 				case ActionState.SwordSlashPhase2:
-					rect = new(0, 18 * 96, 125, 21 * 96);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 21, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 10 * 96, 125, 7 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
 					NPC.netUpdate = true;
 					break;
 
@@ -694,6 +743,26 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					NPC.netUpdate = true;
 					break;
 
+				case ActionState.OutSD:
+					rect = new(0, 48 * 96, 125, 8 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+
+				case ActionState.OutSD2:
+					rect = new(0, 48 * 96, 125, 8 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
+
+				case ActionState.OutSD3:
+					rect = new(0, 48 * 96, 125, 8 * 96);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 8, rect).Size() / 2, NPC.scale, effects, 0f);
+					NPC.netUpdate = true;
+					break;
+
 				case ActionState.ReadySwordsDance:
 					rect = new(0, 57 * 96, 125, 7 * 96);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColors, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect).Size() / 2, NPC.scale, effects, 0f);
@@ -720,7 +789,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
 			NPC.HasBuff<Starbombin>();
-
+			FenixPos = NPC.Center;
 
 			if (bee == 0)
 			{
@@ -758,13 +827,234 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
 			}
+
+
+			
 			switch (State)
 			{
 
 				//////////////////////////////////////////////////////////////////////////////////////////////
 				///
 
+				case ActionState.StartFen:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					StartFen();
+					break;
+				
+				case ActionState.Startset:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					StartSet();
+					break;
 
+
+				case ActionState.ReadySwordsDance:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					Readyswords();
+					break;
+
+
+				case ActionState.SwordsDanceFen:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordsDance();
+					NPC.velocity *= 0.99f;
+					break;
+
+				case ActionState.SwordsDanceFen2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordsDance2();
+					NPC.velocity *= 0.99f;
+					break;
+
+				case ActionState.SwordsDanceFen3:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordsDance3();
+					NPC.velocity *= 0.99f;
+					break;
+
+				case ActionState.Pause1:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					Pause1();
+					break;
+
+				case ActionState.Pause2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					Pause2();
+					break;
+
+				case ActionState.OutSD:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					OutSD();
+					NPC.velocity *= 0.98f;
+					break;
+
+				case ActionState.OutSD2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					OutSD2();
+					NPC.velocity *= 0.96f;
+					break;
+
+				case ActionState.OutSD3:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					OutSD3();
+					NPC.velocity *= 0.96f;
+					break;
+
+				case ActionState.PreOrderingChildren:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					PreSwords();
+					break;
+
+				case ActionState.LaughFen:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					LaughingIdle();
+					NPC.velocity *= 0.98f;
+					break;
+
+				case ActionState.SwordsSwirlPhase2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordSwirlThree();
+					NPC.velocity *= 0.98f;
+					break;
+
+				case ActionState.IdleFloating:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					IdleFloating();
+					break;
+
+				case ActionState.SwordSlashHalf:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordHalf();
+					break;
+
+				case ActionState.SwordSlashHalf2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordHalf2();
+					break;
+
+				case ActionState.SwordSlash1st:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordSlashFull();
+					break;
+
+				case ActionState.Backdown:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					DownSwirl();
+					break;
+
+
+				case ActionState.IdleFen:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					PostSummon();
+					break;
+
+				case ActionState.SwirlSwordArku:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordSwirlGrav();
+					NPC.velocity *= 0.98f;
+					break;
+
+
+				case ActionState.SwirlSwordYumi:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordSwirlYumi();
+					NPC.velocity *= 0.98f;
+					break;
+
+				case ActionState.SwirlSwordNeko:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordSwirlNeko();
+					NPC.velocity *= 0.98f;
+					break;
+
+				case ActionState.LaughingCircle:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					NPC.velocity *= 0.98f;
+					LaughingCircle();
+					break;
+
+				case ActionState.SwordSlashPhase2:
+					NPC.damage = 0;
+					counter++;
+					NPC.noTileCollide = true;
+					NPC.noGravity = true;
+					SwordsFull2();
+					NPC.velocity *= 0.98f;
+					break;
+
+
+				//////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1014,6 +1304,2341 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					break;
 			}
 		}
+
+
+
+
+
+
+
+
+		private void StartFen()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer == 0)
+			{
+			
+				NPC.alpha = 255;
+			}
+			if (timer == 1)
+			{
+				NPC.alpha = 255;
+				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+
+			}
+			if (timer == 2)
+			{
+				int distanceY = Main.rand.Next(-150, -150);
+				NPC.position.X = player.Center.X;
+				NPC.position.Y = player.Center.Y + distanceY;
+
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+			}
+
+			if (timer > 3)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.Startset;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.Startset;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.Startset;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.Startset;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void StartSet()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer == 0)
+			{
+
+				NPC.alpha = 255;
+			}
+			if (timer == 1)
+			{
+				NPC.alpha = 255;
+
+			}
+			if (timer < 52)
+			{
+
+				NPC.alpha =- 5;
+
+
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+			}
+
+			if (timer > 90)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.ReadySwordsDance;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.ReadySwordsDance;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.ReadySwordsDance;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.ReadySwordsDance;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void Pause1()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer == 0)
+			{
+
+				NPC.alpha = 255;
+			}
+			if (timer == 1)
+			{
+				NPC.alpha = 255;
+
+
+			}
+
+			if (timer == 35)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<AlcShot>(), 50, 0f, Main.myPlayer, 0f, 0);
+			
+
+			}
+
+
+				if (timer < 52)
+			{
+
+				NPC.alpha = -5;
+
+
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+			}
+
+			if (timer > 53)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.SwordsDanceFen2;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordsDanceFen2;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.SwordsDanceFen2;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.SwordsDanceFen2;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void Pause2()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer == 0)
+			{
+
+				NPC.alpha = 255;
+			}
+			if (timer == 1)
+			{
+				NPC.alpha = 255;
+
+
+			}
+
+			if (timer == 35)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<AlcShot>(), 50, 0f, Main.myPlayer, 0f, 0);
+
+
+			}
+
+
+			if (timer < 52)
+			{
+
+				NPC.alpha = -5;
+
+
+
+				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+				{
+					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
+				}
+			}
+
+			if (timer > 53)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.SwordsDanceFen3;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordsDanceFen3;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.SwordsDanceFen3;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.SwordsDanceFen3;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+
+		private void Readyswords()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer > 1)
+			{
+				NPC.alpha = 0;
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixReady"), NPC.position);
+			}
+
+			if (timer > 70)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.SwordsDanceFen;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordsDanceFen;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.SwordsDanceFen;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.SwordsDanceFen;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void OutSD()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer > 1)
+			{
+				NPC.alpha = 0;
+
+
+			}
+
+			if (timer > 24)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.IdleFloating;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.IdleFloating;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.IdleFloating;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.IdleFloating;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		private void OutSD2()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer > 1)
+			{
+				NPC.alpha = 0;
+
+
+			}
+
+			if (timer > 24)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.SwordSlashPhase2;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordSlashPhase2;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.SwordSlashPhase2;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.SwordSlashPhase2;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		private void OutSD3()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer > 1)
+			{
+				NPC.alpha = 0;
+
+
+			}
+
+			if (timer > 24)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.LaughingCircle;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.LaughingCircle;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.LaughingCircle;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.LaughingCircle;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		private void DownSwirl()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			if (timer > 1)
+			{
+				NPC.alpha = 0;
+
+
+			}
+
+			if (timer > 24)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.IdleFen;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.IdleFen;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.IdleFen;
+						ResetTimers();
+						break;
+					case 3:
+						State = ActionState.IdleFen;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		int moveSpeed = 0;
+		float DashSpeed = 9;
+        int moveSpeedY = 0;
+		float HomeY = 230f;
+		
+
+		private void PreSwords()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+	
+			if (timer == 1)
+			{
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+
+
+			}
+
+
+			if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.SwordSlash1st;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordSlashHalf;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SwordsFull2()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer == 1)
+			{
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+
+
+			}
+
+
+			if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.SwordSlash1st;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordSlash1st;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SwordHalf()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+			
+			if (timer == 12)
+			{
+				float numberProjectiles = 1;
+				float rotation = MathHelper.ToRadians(30);
+			
+
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+					
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+					
+				}
+
+
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+
+
+			}
+
+			if (timer == 36)
+			{
+
+
+				float numberProjectiles = 1;
+				float rotation = MathHelper.ToRadians(30);
+
+
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+				}
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+			}
+
+
+
+			if (timer > 64)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						State = ActionState.SwordSlash1st;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.SwordSlashHalf2;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SwordHalf2()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+			if (timer == 12)
+			{
+				float numberProjectiles = 2;
+				float rotation = MathHelper.ToRadians(30);
+
+
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+				}
+
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+
+
+
+			}
+
+			if (timer == 36)
+			{
+
+
+				float numberProjectiles = 2;
+				float rotation = MathHelper.ToRadians(30);
+
+
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+				}
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+			}
+
+
+
+			if (timer > 64)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.SwordSlash1st;
+						ResetTimers();
+						break;
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void SwordSlashFull()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+			if (timer == 12)
+			{
+			
+				if (NPC.life > NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 2;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"), NPC.position);
+				}
+
+
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 1;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+				}
+
+
+
+			}
+
+			if (timer == 36)
+			{
+				if (NPC.life > NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 3;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash3"), NPC.position);
+				}
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 1;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+				}
+			}
+
+			if (timer == 72)
+			{
+
+
+				if (NPC.life > NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 4;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash2"), NPC.position);
+				}
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					float numberProjectiles = 1;
+					float rotation = MathHelper.ToRadians(30);
+
+
+					for (int i = 0; i < numberProjectiles; i++)
+					{
+
+						Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CrileShot>(), 40, 1, Main.myPlayer, 0, 0);
+
+					}
+				}
+			}
+
+			if (timer > 84)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				if (NPC.life > NPC.lifeMax / 2)
+				{
+
+					switch (Main.rand.Next(5))
+					{
+						case 0:
+							State = ActionState.SwirlSwordArku;
+							ResetTimers();
+							break;
+						case 1:
+							State = ActionState.SwirlSwordYumi;
+							ResetTimers();
+							break;
+
+						case 2:
+							State = ActionState.SwirlSwordYumi;
+							ResetTimers();
+							break;
+						case 3:
+							State = ActionState.SwirlSwordNeko;
+							ResetTimers();
+							break;
+
+						case 4:
+							State = ActionState.SwirlSwordNeko;
+							ResetTimers();
+							break;
+
+					}
+				}
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					if (Wingies == false)
+					{
+
+						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+
+						Wingies = true;
+					}
+
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.SwordsSwirlPhase2;
+							ResetTimers();
+							break;
+
+					}
+				}
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void IdleFloating()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer < 120)
+            {
+				NPC.rotation = NPC.velocity.X * 0.07f;
+
+
+
+				if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
+					moveSpeed--;
+				else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
+					moveSpeed++;
+
+				NPC.velocity.X = moveSpeed * 0.10f;
+
+				if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
+				{
+					moveSpeedY--;
+					HomeY = 150f;
+				}
+				else if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= 20)
+				{
+
+					moveSpeedY++;
+				}
+
+				NPC.velocity.Y = moveSpeedY * 0.12f;
+			}
+
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 150)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						State = ActionState.LaughFen;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.PreOrderingChildren;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.PreOrderingChildren;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		public float Goth = 0;
+		private void PostSummon()
+		{
+			timer++;
+			Goth++;
+			Player player = Main.player[NPC.target];
+			HomeY = -230f;
+			if (timer == 1)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixNeNe"), NPC.position);
+			}
+
+			if (Goth == 30)
+            {
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+
+
+			}
+
+			if (Goth == 130)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+
+			}
+
+			if (Goth == 330)
+			{
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb * 2, speedYb * 2, ModContent.ProjectileType<FoxRusher>(), 0, 0f, Main.myPlayer, 0f, 0);
+
+
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FrostBringer"), NPC.position);
+			}
+
+			if (timer < 320)
+			{
+				if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
+					moveSpeed--;
+				else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
+					moveSpeed++;
+
+				NPC.velocity.X = moveSpeed * 0.10f;
+
+				if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
+				{
+					moveSpeedY--;
+					HomeY = 200f;
+				}
+				else if (NPC.Center.Y <= player.Center.Y - HomeY && moveSpeedY <= 20)
+				{
+					moveSpeedY++;
+				}
+
+				NPC.velocity.Y = moveSpeedY * 0.12f;
+			}
+
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 360)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(4))
+				{
+					case 0:
+						State = ActionState.LaughFen;
+						ResetTimers();
+						break;
+
+
+					case 1:
+						State = ActionState.IdleFloating;
+						ResetTimers();
+						break;
+
+					case 2:
+						State = ActionState.PreOrderingChildren;
+						ResetTimers();
+						break;
+
+					case 3:
+						State = ActionState.ReadySwordsDance;
+						ResetTimers();
+						break;
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void LaughingIdle()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+			if (timer == 1)
+            {
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixFun"), NPC.position);
+			}
+
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.PreOrderingChildren;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SwordSwirlGrav()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+
+			float ai1 = NPC.whoAmI;
+
+			if (timer == 1)
+			{
+				
+				
+
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DrownOut>());
+
+
+
+
+			}
+
+			if (timer == 30)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSummonGrav"), NPC.position);
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADHOLE>());
+
+			}
+
+				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+				if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Backdown;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+		private void SwordSwirlThree()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+
+			float ai1 = NPC.whoAmI;
+
+			if (timer == 1)
+			{
+
+				if (Wingies == false)
+				{
+
+					float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+
+					Wingies = true;
+				}
+
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixNeNe"), NPC.position);
+
+
+
+			}
+
+			if (timer == 60)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), NPC.position);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, 1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 400, speedXb * 2, speedYb * 2, ModContent.ProjectileType<Angelu>(), 0, 0f, Main.myPlayer, 0f, 0);
+
+			}
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 65)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.OutSD3;
+						ResetTimers();
+						break;
+						
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		public bool canhitplayer = false;
+		Vector2 BaseVel = Vector2.UnitX;
+		public float Grimber = 0;
+
+		private void LaughingCircle()
+		{
+			timer++;
+			Grimber++;
+			Player player = Main.player[NPC.target];
+			Player target = Main.player[NPC.target];
+
+			if (timer == 140)
+            {
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
+
+			}
+			if (timer < 30 && NPC.HasValidTarget)
+			{
+				
+					float hoverSpeed = 5;
+					float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
+					NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
+
+
+					Vector2 targetCenter = target.Center;
+					Vector2 targetHoverCenter = targetCenter + new Vector2(0, -256);
+					NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+
+				
+			}
+
+			if (Grimber == 60)
+			{
+				Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+				float numberProjectiles = 1;
+				float rotation = MathHelper.ToRadians(30);
+
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<NiceBuster>(), 50, 1, Main.myPlayer, 0, 0);
+
+				}
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"));
+				Grimber = 0;
+			}
+
+
+			NPC.noTileCollide = true;
+				NPC.noGravity = true;
+				float targetrotation;
+			if (timer > 30)
+			{
+
+
+
+
+				if (timer < 120 && timer > 30)
+				{ //fly away from player until attack starts
+					NPC.spriteDirection = NPC.direction;
+					targetrotation = NPC.AngleTo(player.Center);
+					if (Math.Abs(targetrotation) > MathHelper.PiOver2)
+						targetrotation -= MathHelper.Pi;
+					NPC.rotation = Utils.AngleLerp(NPC.rotation, targetrotation, 0.1f);
+					NPC.velocity = (NPC.Distance(player.Center) < 100) ? Vector2.Lerp(NPC.velocity, NPC.DirectionFrom(player.Center) * 4, 0.06f) :
+						(NPC.Distance(player.Center) > 200) ? Vector2.Lerp(NPC.velocity, NPC.DirectionTo(player.Center) * 3, 0.05f) : Vector2.Lerp(NPC.velocity, Vector2.Zero, 0.05f);
+				}
+				else
+				{
+
+					canhitplayer = true;
+					targetrotation = NPC.velocity.ToRotation();
+					if (NPC.spriteDirection < 0)
+						targetrotation -= MathHelper.Pi;
+
+					int numwaves = (Main.expertMode) ? 2 : 1;
+					if (timer == 600)
+					{ //when the spin starts, save the initial velocity of the spin to rotate each tick, and store the player's center and a random spot far away from them
+						BaseVel = Vector2.UnitX.RotatedBy(NPC.rotation) * NPC.spriteDirection * 2;
+
+
+						NPC.netUpdate = true;
+
+					}
+					if (BaseVel.Length() < 40)
+						BaseVel *= 1.005f;
+
+					NPC.rotation = targetrotation;
+					NPC.velocity = BaseVel.RotatedBy(MathHelper.ToRadians((timer - 600) * 4));
+				}
+
+
+				if (timer > 620)
+				{
+					// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.ReadySwordsDance;
+							ResetTimers();
+							break;
+
+
+					}
+
+					// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+				}
+			}
+		}
+
+		private void SwordSwirlYumi()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+
+			float ai1 = NPC.whoAmI;
+
+			if (timer == 1)
+			{
+
+
+
+				
+
+
+
+
+			}
+
+			if (timer == 30)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), NPC.position);
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X + 150, (int)NPC.Center.Y - 100, ModContent.NPCType<ExpoiyosOrb>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X - 150, (int)NPC.Center.Y - 100, ModContent.NPCType<ExpoiyosOrb>());
+			}
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Backdown;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+		private void SwordSwirlNeko()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+
+
+			float ai1 = NPC.whoAmI;
+
+			if (timer < 30)
+			{
+
+
+				for (int i = 0; i < 4; i++)
+				{
+					Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(256, 256);
+					Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * 16;
+					Particle p = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<VoidParticle>(),
+						default(Color), 1 / 3f);
+					p.layer = Particle.Layer.BeforeProjectiles;
+				}
+
+				//AssassinsSlashCharge
+
+
+
+			}
+
+			if (timer == 30)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), NPC.position);
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Aldox>(), 20, 0f, Main.myPlayer, 0f, 0);
+
+
+			}
+
+			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
+			if (timer > 35)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Backdown;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+		private void SwordsDance2()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			float ai1 = NPC.whoAmI;
+			float speed = 12f;
+			if (timer == 1)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance2"), NPC.position);
+				NPC.alpha = 255;
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Slashers>(), 200, 0f, Main.myPlayer, 0f, ai1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixHold>(), 200, 0f, Main.myPlayer, 0f, ai1);
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+
+					//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+					//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+				}
+
+
+				if (timer == 11)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			
+			}
+
+
+
+			if (timer == 21)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+			if (timer == 31)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+
+			if (timer == 41)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+			if (timer == 51)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+			if (timer == 61)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+
+			if (timer < 80)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer == 90)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Pause2;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		private void SwordsDance()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			float ai1 = NPC.whoAmI;
+			float speed = 9f;
+			if (timer == 1)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance1"), NPC.position);
+				NPC.alpha = 255;
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Slashers>(), 200, 0f, Main.myPlayer, 0f, ai1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixHold>(), 200, 0f, Main.myPlayer, 0f, ai1);
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+
+
+
+
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+			}
+
+
+			if (timer == 11)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+
+			}
+
+
+
+			if (timer == 21)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+			if (timer == 31)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+
+			if (timer == 41)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+			if (timer == 51)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+			if (timer == 61)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+
+
+
+			if (timer < 70)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer == 75)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.Pause1;
+						ResetTimers();
+						break;
+
+
+				}
+
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+		private void SwordsDance3()
+		{
+			timer++;
+			Player player = Main.player[NPC.target];
+			float ai1 = NPC.whoAmI;
+			float speed = 18f;
+			if (timer == 1)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordHoldVerlia"), NPC.position);
+				NPC.alpha = 255;
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Slashers>(), 200, 0f, Main.myPlayer, 0f, ai1);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixHold>(), 200, 0f, Main.myPlayer, 0f, ai1);
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+
+
+
+
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+				//	SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+			}
+
+
+			if (timer == 11)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+
+			}
+
+
+
+			if (timer == 21)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+
+			}
+
+			if (timer == 31)
+			{
+
+				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+				switch (Main.rand.Next(5))
+				{
+					case 0:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade1>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 1:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade2>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 2:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade4>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 3:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade5>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+
+					case 4:
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixBlade6>(), 0, 0f, Main.myPlayer, 0f, ai1);
+						break;
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+					var entitySource = NPC.GetSource_FromThis();
+					NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixSnipe>());
+				}
+
+			}
+
+
+
+
+
+
+
+			if (timer < 35)
+			{
+
+				int distance = Main.rand.Next(2, 2);
+				NPC.ai[3] = Main.rand.Next(1);
+				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
+				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
+				Vector2 angle = new Vector2((float)anglex, (float)angley);
+				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
+				dashDistance = dashDirection.Length();
+				dashDirection.Normalize();
+				dashDirection *= speed;
+				NPC.velocity = dashDirection;
+				ShakeModSystem.Shake = 3;
+			}
+
+			if (timer == 45)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+
+				switch (Main.rand.Next(1))
+				{
+					case 0:
+						State = ActionState.OutSD;
+						ResetTimers();
+						break;
+
+
+				}
+				if (NPC.life < NPC.lifeMax / 2)
+				{
+
+					if (Wingies == false)
+					{
+
+						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+
+						Wingies = true;
+					}
+					switch (Main.rand.Next(1))
+					{
+						case 0:
+							State = ActionState.OutSD2;
+							ResetTimers();
+							break;
+
+
+					}
+				}
+				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+
+
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		private void StartStar()
 		{
@@ -4113,7 +6738,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 		public override void OnKill()
 		{
-			NPC.SetEventFlagCleared(ref DownedBossSystem.downedSTARBoss, -1);
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedFenixBoss, -1);
 
 			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 			{

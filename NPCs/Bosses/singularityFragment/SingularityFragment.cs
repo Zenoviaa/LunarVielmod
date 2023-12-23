@@ -356,6 +356,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                             }
                             if (NPC.ai[0] == 70 || NPC.ai[0] == 75 || NPC.ai[0] == 80 || NPC.ai[0] == 85 || NPC.ai[0] == 90)
                             {
+                                //
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                                 Vector2 Backlash = Vector2.Normalize(NPC.Center - Main.player[NPC.target].Center ) * 8.5f;
                                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);

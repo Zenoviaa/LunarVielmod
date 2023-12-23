@@ -264,6 +264,11 @@
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
     <None Remove="NPCs\Bosses\Fenix\BLACKHOLE.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\AlcShot.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\CrileShot.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\FenixWarn.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\NekoNeko.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
+    <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />

@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 		int bee = 220;
-		int bee2 = 600;
+		int bee2 = 550;
 		public int rippleCount = 20;
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
@@ -198,7 +198,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					;
 					dab.noGravity = false;
 				}
-
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
 
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{

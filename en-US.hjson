@@ -5526,6 +5526,21 @@ Mods: {
 			SpikeBall.DisplayName: Spike Ball
 			NailKaboom.DisplayName: Nail Kaboom
 			AlcShot.DisplayName: Alc Shot
+			SpawnFen.DisplayName: Spawn Fen
+			FenixBlade1.DisplayName: Fenix Blade1
+			FenixBlade2.DisplayName: Fenix Blade2
+			FenixBlade4.DisplayName: Fenix Blade4
+			FenixBlade5.DisplayName: Fenix Blade5
+			FenixBlade6.DisplayName: Fenix Blade6
+			FenixHold.DisplayName: Fenix Hold
+			Slashers.DisplayName: Slashers
+			CrileShot.DisplayName: Crile Shot
+			FoxRusher.DisplayName: Fox Rusher
+			Aldox.DisplayName: Aldox
+			NekoNeko.DisplayName: Neko Neko
+			Yumikoo.DisplayName: Yumikoo
+			Angelu.DisplayName: Angelu
+			NiceBuster.DisplayName: Nice Buster
 		}
 
 		NPCs: {
@@ -6916,6 +6931,10 @@ Mods: {
 			SpikeBallGun.DisplayName: Spike Ball Gun
 			ExpoiyosOrb.DisplayName: Expoiyos Orb
 			AlcSpark.DisplayName: Alc Spark
+			FenixSlash.DisplayName: Fenix Slash
+			FenixWarn.DisplayName: Fenix Warn
+			DrownOut.DisplayName: Drown Out
+			FenixSnipe.DisplayName: Fenix Snipe
 		}
 
 		Biomes: {

@@ -502,7 +502,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			{
 				//Despawn in 2 seconds
 				npc.velocity = Vector2.Lerp(npc.velocity, new Vector2(0, -8), 0.025f);
-				npc.EncourageDespawn(120);
+				npc.EncourageDespawn(60);
 				return;
 			}
 
