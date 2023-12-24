@@ -47,6 +47,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             NPC.npcSlots = 10f;
             NPC.aiStyle = NPCAIStyleID.BlazingWheel;
             NPC.value = Item.buyPrice(gold: 10);
+
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
+            }
         }
 
         //AI Stuffs
