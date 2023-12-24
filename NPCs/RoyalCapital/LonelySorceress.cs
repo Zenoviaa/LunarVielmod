@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.RoyalCapital
 		}
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.6f;
+			NPC.frameCounter += 1f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
@@ -239,7 +239,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			
 				Player target = Main.player[NPC.target];
 				Vector2 targetCenter = target.Center;
-				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -48);
+				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -60);
 				NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.15f);
 
 				if (!target.InModBiome<AlcadziaBiome>())
