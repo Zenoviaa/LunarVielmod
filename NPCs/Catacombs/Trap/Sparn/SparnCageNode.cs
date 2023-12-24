@@ -37,12 +37,19 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 0.7f);
         }
 
-        private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, out Vector2[] chainPositions)
+        private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, Color lightColor, out Vector2[] chainPositions)
         {
             Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+
             Curvature curve = new Curvature(new Vector2[] { targetProjectile.Center, projBottom });
             int numPoints = 30;
             chainPositions = curve.GetPoints(numPoints).ToArray();
+
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                 new Vector3(150, 0, 218),
+                 new Vector3(150, 1, 218),
+                 new Vector3(3, 3, 3), 0);
 
             //Draw each chain segment, skipping the very first one, as it draws partially behind the player
             for (int i = 1; i < numPoints; i++)
@@ -54,6 +61,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
                 Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
                 Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
                 Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
+
+          
+                for (int j = 0; j < 1; j++)
+                {
+                    Main.spriteBatch.Draw(texture, position - Main.screenPosition, null, 
+                        new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * 0.5f, SpriteEffects.None, 0f);
+                }
+
+                Main.spriteBatch.Draw(texture, position - Main.screenPosition, null, 
+                    new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f) * 0.5f, SpriteEffects.None, 0f);
+                Lighting.AddLight(position - Main.screenPosition, lightColor.ToVector3() * 1.0f * Main.essScale);
                 spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
             }
         }
@@ -61,7 +79,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
         public override bool PreDraw(ref Color lightColor)
         {
             if(targetProjectile != null && targetProjectile.active)
-                DrawChainCurve(Main.spriteBatch, Projectile.Center, out Vector2[] chainPositions);
+                DrawChainCurve(Main.spriteBatch, Projectile.Center, lightColor, out Vector2[] chainPositions);
 
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.Gray, Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
