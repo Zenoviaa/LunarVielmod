@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
 using System.IO;
@@ -145,6 +146,12 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 					NPC.netUpdate = true;
 				}
 			}
+		}
+
+
+		public override void OnKill()
+		{
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedBlazingSerpent, -1);
 		}
 	}
 

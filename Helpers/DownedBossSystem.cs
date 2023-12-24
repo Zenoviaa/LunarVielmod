@@ -24,6 +24,11 @@ namespace Stellamod.Helpers
 		public static bool downedStoneGolemBoss = false;
 		public static bool downedSTARBoss = false;
 		public static bool downedFenixBoss = false;
+		public static bool downedPandorasBox = false;
+		public static bool downedBlazingSerpent = false;
+		public static bool downedWaterJellyfish = false;
+		public static bool downedSparn=false;
+		public static bool downedCogwork = false;
 		// public static bool downedOtherBoss = false;
 
 		public override void OnWorldLoad()
@@ -40,6 +45,11 @@ namespace Stellamod.Helpers
 			downedStoneGolemBoss = false;
 			downedSTARBoss = false;
 			downedFenixBoss = false;
+			downedPandorasBox = false;
+			downedBlazingSerpent = false;
+			downedWaterJellyfish = false;
+			downedSparn = false;
+			downedCogwork = false;
 		}
 
 		public override void OnWorldUnload()
@@ -56,6 +66,11 @@ namespace Stellamod.Helpers
 			downedStoneGolemBoss = false;
 			downedSTARBoss = false;
 			downedFenixBoss = false;
+			downedPandorasBox = false;
+			downedBlazingSerpent = false;
+			downedWaterJellyfish = false;
+			downedSparn = false;
+			downedCogwork = false;
 		}
 
 		// We save our data sets using TagCompounds.
@@ -117,6 +132,32 @@ namespace Stellamod.Helpers
 			{
 				tag["downedFenixBoss"] = true;
 			}
+
+			if (downedBlazingSerpent)
+			{
+				tag["downedBlazingSerpent"] = true;
+			}
+
+			if (downedCogwork)
+			{
+				tag["downedCogwork"] = true;
+			}
+
+			if (downedPandorasBox)
+			{
+				tag["downedPandorasBox"] = true;
+			}
+
+			if (downedSparn)
+			{
+				tag["downedSparn"] = true;
+			}
+
+			if (downedWaterJellyfish)
+			{
+				tag["dowendWaterJellyfish"] = true;
+			}
+
 			// if (downedOtherBoss) {
 			//	tag["downedOtherBoss"] = true;
 			// }
@@ -136,6 +177,11 @@ namespace Stellamod.Helpers
 			downedStoneGolemBoss = tag.ContainsKey("downedStoneGolemBoss");
 			downedSTARBoss = tag.ContainsKey("downedSTARBoss");
 			downedFenixBoss = tag.ContainsKey("downedFenixBoss");
+			downedCogwork = tag.ContainsKey("downedCogwork");
+			downedWaterJellyfish = tag.ContainsKey("downedWaterJellyfish");
+			downedSparn = tag.ContainsKey("downedSparn");
+			downedPandorasBox = tag.ContainsKey("downedPandorasBox");
+			downedBlazingSerpent = tag.ContainsKey("downedBlazingSerpent");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
 		}
 
@@ -155,6 +201,14 @@ namespace Stellamod.Helpers
 			flags[9] = downedStoneGolemBoss;
 			flags[10] = downedSTARBoss;
 			flags[11] = downedFenixBoss;
+			flags[12] = downedBlazingSerpent;
+			flags[13] = downedCogwork;
+			flags[14] = downedSparn;
+			flags[15] = downedWaterJellyfish;
+			flags[16] = downedPandorasBox;
+			//blazing
+			//water cogwork
+
 			// flags[1] = downedOtherBoss;
 			writer.Write(flags);
 
@@ -177,20 +231,11 @@ namespace Stellamod.Helpers
 			flags[9] = downedStoneGolemBoss;
 			flags[10] = downedSTARBoss;
 			flags[11] = downedFenixBoss;
-			// downedOtherBoss = flags[1];
-
-			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:
-			// BitsByte flags2 = reader.ReadByte();
-			// downed9thBoss = flags2[0];
-
-			// System.Collections.BitArray approach:
-			/*
-			int length = reader.ReadInt32();
-			byte[] bytes = reader.ReadBytes(length);
-			BitArray bitArray = new BitArray(bytes);
-			downedMinionBoss = bitArray[0];
-			downedOtherBoss = bitArray[1];
-			*/
+			flags[12] = downedBlazingSerpent;
+			flags[13] = downedCogwork;
+			flags[14] = downedSparn;
+			flags[15] = downedWaterJellyfish;
+			flags[16] = downedPandorasBox;
 		}
 	}
 }

@@ -167,6 +167,10 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxFire>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
 		}
 
+		public override void OnKill()
+		{
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedPandorasBox, -1);
+		}
 
 		public void Wait()
 		{

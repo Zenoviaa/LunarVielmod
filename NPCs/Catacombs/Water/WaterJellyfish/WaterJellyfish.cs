@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Terraria;
@@ -261,6 +262,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxWater>(), 1, 1, 1));
+		}
+
+
+		public override void OnKill()
+		{
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedWaterJellyfish, -1);
 		}
 	}
 }
