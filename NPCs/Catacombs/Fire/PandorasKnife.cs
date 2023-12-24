@@ -46,7 +46,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			NPC.lifeMax = 500;
 			NPC.noGravity = true;
 			NPC.knockBackResist = 0f;
-			NPC.damage = 20; // The amount of damage that this NPC deals
+			NPC.damage = 60; // The amount of damage that this NPC deals
 			NPC.defense = 2; // The amount of defense that this NPC has
 
 
