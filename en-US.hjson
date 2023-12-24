@@ -7016,6 +7016,9 @@ Mods: {
 			PandorasGuard.DisplayName: Pandoras Guard
 			PandorasKnife.DisplayName: Pandoras Knife
 			PandorasSeeker.DisplayName: Pandoras Seeker
+			BlazingSerpentBody.DisplayName: Blazing Serpent Body
+			BlazingSerpentHead.DisplayName: Blazing Serpent Head
+			BlazingSerpentTail.DisplayName: Blazing Serpent Tail
 		}
 
 		Biomes: {

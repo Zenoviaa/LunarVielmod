@@ -5,6 +5,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Catacombs;
 using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
@@ -89,6 +90,7 @@ namespace Stellamod.Tiles.Catacombs
 			int key = ModContent.ItemType<CursedShard>();
 			int[] fireBosses = new int[] 
 			{
+				ModContent.NPCType<BlazingSerpentHead>(),
 				ModContent.NPCType<PandorasFlamebox>()
 			};
 
