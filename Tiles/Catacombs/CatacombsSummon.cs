@@ -1,7 +1,9 @@
-﻿using Stellamod.Dusts;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Catacombs;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
@@ -126,7 +128,23 @@ namespace Stellamod.Tiles.Catacombs
 
 				player.RemoveItem(key);
 				int npcType = bosses[Main.rand.Next(0, bosses.Length)];
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, npcType);
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, (j * 16)-64, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
+
+				/*if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, npcType);
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
+
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Jack>(), i * 16, (j * 16) - 5);
+				}*/
+
+
+
 				return true;
 			}
 

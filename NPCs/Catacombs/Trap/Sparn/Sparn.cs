@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,6 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 {
+	[AutoloadBossHead]
     internal class Sparn : ModNPC
 	{
 		private enum AttackState
@@ -46,7 +48,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.scale = 1f;
-
+			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
 			if (!Main.dedServ)
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");

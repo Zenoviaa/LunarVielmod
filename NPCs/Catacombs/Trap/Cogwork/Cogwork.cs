@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,6 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 {
+    [AutoloadBossHead]
     internal class Cogwork : ModNPC
     {
         private enum AttackState
@@ -47,7 +49,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             NPC.npcSlots = 10f;
             NPC.aiStyle = NPCAIStyleID.BlazingWheel;
             NPC.value = Item.buyPrice(gold: 10);
-
+            NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
             if (!Main.dedServ)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");

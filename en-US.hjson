@@ -7011,6 +7011,7 @@ Mods: {
 			DrownOut.DisplayName: Drown Out
 			FenixSnipe.DisplayName: Fenix Snipe
 			Sparn.DisplayName: Sparn
+			CatacombsBossSpawn.DisplayName: Catacombs Boss Spawn
 		}
 
 		Biomes: {
