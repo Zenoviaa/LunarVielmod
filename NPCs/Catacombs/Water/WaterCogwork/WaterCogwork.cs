@@ -49,6 +49,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             NPC.npcSlots = 10f;
             NPC.value = Item.buyPrice(gold: 10);
             NPC.aiStyle = NPCAIStyleID.BlazingWheel;
+
+
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
+            }
         }
 
         //AI Stuffs
