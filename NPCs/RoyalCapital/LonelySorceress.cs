@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.RoyalCapital
 		}
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.16f;
+			NPC.frameCounter += 0.6f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
