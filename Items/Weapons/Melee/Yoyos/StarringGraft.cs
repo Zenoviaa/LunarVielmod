@@ -78,6 +78,7 @@ namespace Stellamod.Items.Weapons.Melee.Yoyos
 			recipe.AddTile(TileID.Anvils);
 
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
 			recipe.AddIngredient(ItemID.WoodYoyo, 1);
 			recipe.Register();

@@ -33,11 +33,11 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 			NPC.height = 86;
 			NPC.damage = 70;
 			NPC.defense = 10;
-			NPC.lifeMax = 4500;
+			NPC.lifeMax = 5500;
 			NPC.HitSound = SoundID.NPCHit4;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 5000f;
-			NPC.knockBackResist = .45f;
+			NPC.knockBackResist = 0f;
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.aiStyle = -1;
