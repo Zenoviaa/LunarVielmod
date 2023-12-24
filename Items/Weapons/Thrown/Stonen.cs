@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Rapier;
 			Item.knockBack = 0f;
-			Item.DamageType = DamageClass.Melee;
+			Item.DamageType = DamageClass.Throwing;
 			Item.value = 200;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
