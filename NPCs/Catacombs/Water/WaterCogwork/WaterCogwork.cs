@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.Trails;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 {
+    [AutoloadBossHead]
     internal class WaterCogwork : ModNPC
     {
         private enum AttackState
@@ -49,8 +50,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             NPC.npcSlots = 10f;
             NPC.value = Item.buyPrice(gold: 10);
             NPC.aiStyle = NPCAIStyleID.BlazingWheel;
-
-
+            NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
             if (!Main.dedServ)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
