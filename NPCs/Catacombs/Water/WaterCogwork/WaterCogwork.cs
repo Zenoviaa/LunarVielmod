@@ -312,5 +312,10 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxWater>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
         }
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedCogwork, -1);
+        }
     }
 }

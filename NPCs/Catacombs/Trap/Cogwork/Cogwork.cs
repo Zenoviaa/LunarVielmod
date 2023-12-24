@@ -307,5 +307,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TreasureBoxTrap>(), chanceDenominator: 1, minimumDropped: 1, maximumDropped: 1));
         }
+
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedCogwork, -1);
+        }
     }
 }
