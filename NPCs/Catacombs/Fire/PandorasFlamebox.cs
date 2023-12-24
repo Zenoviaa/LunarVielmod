@@ -116,12 +116,15 @@ namespace Stellamod.NPCs.Catacombs.Fire
 
 		public override void AI()
 		{
+
+			NPC.TargetClosest();
 			if (!NPC.HasValidTarget)
 			{
 				//WheelMovement(2);
 				
 				NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
 				NPC.EncourageDespawn(1);
+				NPC.noTileCollide = true;
 				return;
 			}
 			else
