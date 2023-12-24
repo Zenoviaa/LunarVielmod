@@ -5616,6 +5616,7 @@ Mods: {
 			AquamareProj.DisplayName: Aquamare Proj
 			Dulahan.DisplayName: Dulahan
 			WataBoom2.DisplayName: Wata Boom2
+			HeatBeam.DisplayName: Heat Beam
 		}
 
 		NPCs: {
@@ -7019,6 +7020,8 @@ Mods: {
 			BlazingSerpentBody.DisplayName: Blazing Serpent Body
 			BlazingSerpentHead.DisplayName: Blazing Serpent Head
 			BlazingSerpentTail.DisplayName: Blazing Serpent Tail
+			BlazeBeamWarn.DisplayName: Blaze Beam Warn
+			WaterJellyfish.DisplayName: Water Jellyfish
 		}
 
 		Biomes: {
