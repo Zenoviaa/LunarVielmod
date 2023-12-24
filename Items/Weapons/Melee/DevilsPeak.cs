@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
         public int combowombo = 0;
         public override void SetDefaults()
         {
-            Item.damage = 80;
+            Item.damage = 20;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;
@@ -72,14 +72,6 @@ namespace Stellamod.Items.Weapons.Melee
             return false;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 4);
-            recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 40);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.Register();
-        }
+     
     }
 }

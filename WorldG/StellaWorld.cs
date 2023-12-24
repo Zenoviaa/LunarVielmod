@@ -570,7 +570,7 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy - Main.rand.Next(150, 200));
+						Point Loc = new Point(smx, smy - Main.rand.Next(125, 150));
 
 						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld2");
 						foreach (int chestIndex in ChestIndexs)
@@ -754,7 +754,7 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy - Main.rand.Next(150, 200));
+						Point Loc = new Point(smx, smy - Main.rand.Next(125, 150));
 
 						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld3");
 						foreach (int chestIndex in ChestIndexs)
@@ -900,7 +900,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(300, (Main.maxTilesX) - 130); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(300, (Main.maxTilesX) - 300); // from 50 since there's a unaccessible area at the world's borders
 																						  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -1773,7 +1773,7 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
-				int abysmy = abysmyy - 200;
+				int abysmy = abysmyy + 50;
 				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Sandstone))

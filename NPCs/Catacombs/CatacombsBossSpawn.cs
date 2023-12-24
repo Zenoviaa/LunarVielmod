@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Catacombs
             {
                 for(int i = 0; i  < 6; i++)
                 {
-                    Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero, ParticleManager.NewInstance<SparkleTrailParticle>(), default(Color), _centerSparkleSize);
+                    Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero, ParticleManager.NewInstance<BurnParticle>(), default(Color), _centerSparkleSize);
                     p.timeLeft = 8;
                 }
             }
@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Catacombs
                         float particleSpeed = 8;
                         Vector2 position = NPC.Center + Main.rand.NextVector2CircularEdge(distance, distance);
                         Vector2 speed = (NPC.Center - position).SafeNormalize(Vector2.Zero) * particleSpeed;
-                        Particle sparkle = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<SparkleTrailParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
+                        Particle sparkle = ParticleManager.NewParticle(position, speed, ParticleManager.NewInstance<BurnParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
                         sparkle.timeLeft = 21;
                     }
 
@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Catacombs
                     Vector2 edge = Main.rand.NextVector2CircularEdge(8, 8);
                     Vector2 spawnPosition = NPC.Center + edge;
                     Vector2 velocity = NPC.DirectionFrom(spawnPosition);
-                    Particle p = ParticleManager.NewParticle(spawnPosition, velocity, ParticleManager.NewInstance<SparkleTrailParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
+                    Particle p = ParticleManager.NewParticle(spawnPosition, velocity, ParticleManager.NewInstance<BurnParticle>(), default(Color), Main.rand.NextFloat(0.6f, 0.8f));
                     p.timeLeft = 16;
                 }
 

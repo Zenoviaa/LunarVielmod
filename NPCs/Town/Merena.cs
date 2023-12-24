@@ -335,7 +335,7 @@ namespace Stellamod.NPCs.Town
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-					Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+					Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<MakeMagicPaperC>());
 					var entitySource = NPC.GetSource_GiftOrReward();

@@ -160,7 +160,7 @@ namespace Stellamod.Projectiles
             float damage = Projectile.damage;
             damage *= 3f;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
-                ModContent.ProjectileType<KaBoomAlcadizz>(), (int)damage, 3);
+                ModContent.ProjectileType<AgreviBoom>(), (int)damage, 3);
             p.friendly = true;
             p.usesLocalNPCImmunity = true;
             p.localNPCHitCooldown = -1;

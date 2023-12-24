@@ -51,11 +51,11 @@ namespace Stellamod.NPCs.Catacombs.Fire
 		public override void SetDefaults()
 		{
 			NPC.width = 44;
-			NPC.height = 25;
+			NPC.height = 50;
 			NPC.damage = 40;
 			NPC.defense = 8;
 			NPC.lifeMax = 5000;
-			NPC.HitSound = SoundID.NPCHit34;
+			NPC.HitSound = SoundID.NPCHit4;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 5000f;
 			NPC.knockBackResist = .45f;
@@ -87,8 +87,8 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			switch (State)
 			{
 				case ActionState.Wait:
-					rect = new(0, 0, 44, 30 * 50);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 30, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					rect = new(0, 0, 44, 29 * 50);
+					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 2, 29, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 				case ActionState.Speed:
 					rect = new Rectangle(0, 30 * 50, 44, 29 * 50);
@@ -129,14 +129,14 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				case ActionState.Wait:
 					counter++;
 					Wait();
-					NPC.velocity *= 0.98f;
+					NPC.velocity *= 0.9f;
 					break;
 
 				case ActionState.Speed:
 					counter++;
 					Speed();
-					NPC.aiStyle = 7;
-					AIType = NPCID.PartyGirl;
+					NPC.aiStyle = 3;
+					AIType = NPCID.ArmoredSkeleton;
 					break;
 
 
@@ -161,7 +161,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			if (timer == 50)
 			{
 
-				var entitySource = NPC.GetSource_FromAI();
+				var entitySource = NPC.GetSource_FromThis();
 				timer++;
 
 
@@ -169,21 +169,16 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				{
 					case 0:
                         {
+						
+							
+							
 							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
 							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
 							// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
 							// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 							// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-							if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
-							{
-								NetMessage.SendData(MessageID.SyncNPC, number: index);
-							}
-
-							if (Main.netMode == NetmodeID.Server && index2 < Main.maxNPCs)
-							{
-								NetMessage.SendData(MessageID.SyncNPC, number: index2);
-							}
-
+							NPC minionNPC = Main.npc[index];
+							NPC minionNPC2 = Main.npc[index2];
 						}
 						
 
@@ -196,29 +191,38 @@ namespace Stellamod.NPCs.Catacombs.Fire
 							// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
 							// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 							// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-							if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
-							{
-								NetMessage.SendData(MessageID.SyncNPC, number: index);
-							}
-
-							if (Main.netMode == NetmodeID.Server && index2 < Main.maxNPCs)
-							{
-								NetMessage.SendData(MessageID.SyncNPC, number: index2);
-							}
-
-							if (Main.netMode == NetmodeID.Server && index3 < Main.maxNPCs)
-							{
-								NetMessage.SendData(MessageID.SyncNPC, number: index3);
-							}
-
+							NPC minionNPC = Main.npc[index];
+							NPC minionNPC2 = Main.npc[index2];
+							NPC minionNPC3 = Main.npc[index3];
 						}
 						break;
 					case 2:
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
+                        {
+							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
+							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
+							NPC minionNPC = Main.npc[index];
+							NPC minionNPC2 = Main.npc[index2];
+					
+						}
+						
 						break;
 					case 3:
 
-						NPC.velocity = new Vector2(NPC.direction * 0, -10f);
+						{
+							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
+							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
+
+							int index3 = NPC.NewNPC(entitySource, (int)NPC.Center.X - 40, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasKnife>());
+							int index4 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 40, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasKnife>());
+							int index5 = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasGuard>());
+
+							NPC minionNPC = Main.npc[index];
+							NPC minionNPC2 = Main.npc[index2];
+							NPC minionNPC3 = Main.npc[index3];
+							NPC minionNPC4 = Main.npc[index4];
+							NPC minionNPC5 = Main.npc[index5];
+							
+						}
 						break;
 				}
 

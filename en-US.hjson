@@ -7012,6 +7012,10 @@ Mods: {
 			FenixSnipe.DisplayName: Fenix Snipe
 			Sparn.DisplayName: Sparn
 			CatacombsBossSpawn.DisplayName: Catacombs Boss Spawn
+			PandorasFlamebox.DisplayName: Pandoras Flamebox
+			PandorasGuard.DisplayName: Pandoras Guard
+			PandorasKnife.DisplayName: Pandoras Knife
+			PandorasSeeker.DisplayName: Pandoras Seeker
 		}
 
 		Biomes: {
