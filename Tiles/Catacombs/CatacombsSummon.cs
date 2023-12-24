@@ -1,9 +1,10 @@
-﻿
-
-using Microsoft.Xna.Framework;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Catacombs.Trap.Cogwork;
+using Stellamod.NPCs.Catacombs.Trap.Sparn;
+using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
@@ -82,30 +83,52 @@ namespace Stellamod.Tiles.Catacombs
         public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
+			int key = ModContent.ItemType<CursedShard>();
+			int[] fireBosses = new int[] 
+			{ 
 
-			int key = ModContent.ItemType<VoidKey>();
-			if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
+			};
+
+			int[] waterBosses = new int[] 
+			{ 
+				ModContent.NPCType<WaterCogwork>()
+			};
+
+			int[] trapBosses = new int[]
 			{
+				ModContent.NPCType<Cogwork>(),
+				ModContent.NPCType<Sparn>()
+			};
 
+			if (player.HasItem(key))
+			{
+				MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SingularityFragment>());
-				// SoundEngine.PlaySound(SoundID.Roar);
+				//Now we need to get the biome type...
+				//uhh
+				int[] bosses;
+				if (myPlayer.ZoneCatacombsTrap)
+                {
+					bosses = trapBosses;
+				} 
+				else if (myPlayer.ZoneCatacombsFire)
+                {
+					bosses = fireBosses;
+				} 
+				else if (myPlayer.ZoneCatacombsWater)
+                {
+					bosses = waterBosses;
+                }
+                else
+                {
+					return true;
+                }
+
+				player.RemoveItem(key);
+				int npcType = bosses[Main.rand.Next(0, bosses.Length)];
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, npcType);
 				return true;
 			}
-			if (player.HasItem(key) && NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
-			{
-
-				Main.NewText("What are you doing?? Trying to summon another?", Color.LightSkyBlue);
-
-
-
-			}
-			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
-			{
-				Main.NewText("Come at with the key of void and moon, Verlia's Singularity awaits.", Color.LightSkyBlue);
-			}
-
-
 
 
 			return true;
@@ -123,7 +146,7 @@ namespace Stellamod.Tiles.Catacombs
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ModContent.ItemType<VoidKey>();
+			player.cursorItemIconID = ModContent.ItemType<CursedShard>();
 		}
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{

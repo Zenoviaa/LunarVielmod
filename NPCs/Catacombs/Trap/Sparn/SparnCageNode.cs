@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,6 +11,8 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
     internal class SparnCageNode : ModProjectile
     {
         public Projectile targetProjectile;
+        public Vector2 targetCenter;
+        public float distanceFromTargetCenter;
 
         public override void SetStaticDefaults()
         {
@@ -30,7 +33,8 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 
         public override void AI()
         {
-            Projectile.velocity *= 0.98f;
+            distanceFromTargetCenter -= 0.25f;
+            Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 0.7f);
         }
 
         private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, out Vector2[] chainPositions)
@@ -78,6 +82,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             }
 
             return base.Colliding(projHitbox, targetHitbox);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSheethe"));
+            for (int i = 0; i < 16; i++)
+            {
+                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                var d = Dust.NewDustPerfect(targetCenter, DustID.Iron, speed, Scale: 1.5f);
+                d.noGravity = true;
+            }
         }
     }
 }
