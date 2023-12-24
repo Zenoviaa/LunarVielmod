@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, ProjectileID.ImpFireball, 50, 0, Main.myPlayer);
+					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, ProjectileID.BallofFire, 50, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					Projectile ichor = Main.projectile[projectile];
 					ichor.hostile = true;
