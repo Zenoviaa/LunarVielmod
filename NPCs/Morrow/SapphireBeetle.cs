@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Morrow
         {
             if (spawnInfo.Player.InModBiome<CathedralBiome>())
             {
-                return SpawnCondition.Cavern.Chance * 0.1f;
+                return 0.1f;
             }
 
 

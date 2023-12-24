@@ -1760,19 +1760,20 @@ namespace Stellamod.WorldG
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmy = (((Main.maxTilesY / 2)));
+				int abysmyy = (((Main.maxTilesY / 2)));
 
 				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+				while (!WorldGen.SolidTile(abysmx, abysmyy) && abysmyy <= Main.UnderworldLayer)
 				{
-					abysmy++;
+					abysmyy++;
 				}
 
 				// If we went under the world's surface, try again
-				if (abysmy > Main.UnderworldLayer - 50)
+				if (abysmyy > Main.UnderworldLayer - 50)
 				{
 					continue;
 				}
+				int abysmy = abysmyy - 200;
 				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Sandstone))
@@ -2111,7 +2112,7 @@ namespace Stellamod.WorldG
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmy = (((Main.maxTilesY / 2)));
+				int abysmy = (((Main.maxTilesY / 3)));
 
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
@@ -2124,6 +2125,7 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
+				
 				Tile tile = Main.tile[abysmx, abysmy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Stone))

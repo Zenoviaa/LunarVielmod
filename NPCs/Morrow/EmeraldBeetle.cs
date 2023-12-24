@@ -87,7 +87,7 @@ namespace Stellamod.NPCs.Morrow
 				moveSpeedY++;
 			}
 
-			NPC.velocity.Y = moveSpeedY * 0.23f;
+			NPC.velocity.Y = moveSpeedY * 0.18f;
 			if (counter >= 110 && counter < 140)
 			{
 				dash = true;
@@ -100,8 +100,8 @@ namespace Stellamod.NPCs.Morrow
 				{
 					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
-					direction.X *= 9f;
-					direction.Y *= 9f;
+					direction.X *= 6f;
+					direction.Y *= 6f;
 					NPC.velocity = direction;
 				}
 			}

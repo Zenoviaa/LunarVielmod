@@ -98,8 +98,8 @@ namespace Stellamod.NPCs.Morrow
 				{
 					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
-					direction.X *= 9f;
-					direction.Y *= 9f;
+					direction.X *= 5f;
+					direction.Y *= 5f;
 					NPC.velocity = direction;
 				}
 			}
