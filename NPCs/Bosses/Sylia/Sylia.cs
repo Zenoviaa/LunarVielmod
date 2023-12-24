@@ -237,7 +237,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					}
                 }
 
-				SoundEngine.PlaySound(SoundID.Item161);
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaTransition"));
 				_attackPhase = Phase.Phase_2;
 				_attack = AttackState.Transition;
             }
