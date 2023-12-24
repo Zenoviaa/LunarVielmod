@@ -7016,6 +7016,7 @@ Mods: {
 			PandorasGuard.DisplayName: Pandoras Guard
 			PandorasKnife.DisplayName: Pandoras Knife
 			PandorasSeeker.DisplayName: Pandoras Seeker
+			WaterJellyfish.DisplayName: Water Jellyfish
 		}
 
 		Biomes: {

@@ -8,6 +8,8 @@ using Stellamod.NPCs.Catacombs.Fire;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
+using Stellamod.NPCs.Minibosses;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
@@ -31,18 +33,10 @@ namespace Stellamod.Tiles.Catacombs
 		public override void SetStaticDefaults()
 		{
 			// Properties
-
-
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
-
-			// Names
-
-
 			LocalizedText name = CreateMapEntryName();
-            // name.SetDefault("Shrine of The Moon");
-
-
+ 
             Main.tileLighted[Type] = true;
             Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = false;
@@ -59,9 +53,7 @@ namespace Stellamod.Tiles.Catacombs
 			MineResist = 8f;
 			MinPick = 200;
 			TileObjectData.newTile.DrawYOffset = 6; // So the tile sinks into the ground
-													//TileObjectData.newTile.DrawXOffset = -4; // So the tile sinks into the ground
 			Main.tileBlockLight[Type] = true;
-
 
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
 			TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
@@ -70,12 +62,10 @@ namespace Stellamod.Tiles.Catacombs
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.addTile(Type);
 
-
-
 			Main.tileOreFinderPriority[Type] = 800;
-		
 			TileID.Sets.DisableSmartCursor[Type] = true;
 		}
+		
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
@@ -83,6 +73,7 @@ namespace Stellamod.Tiles.Catacombs
             g = .010f * 3;
             b = .355f * 3;
         }
+
         public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -94,7 +85,8 @@ namespace Stellamod.Tiles.Catacombs
 
 			int[] waterBosses = new int[] 
 			{ 
-				ModContent.NPCType<WaterCogwork>()
+				ModContent.NPCType<WaterCogwork>(),
+				ModContent.NPCType<WaterJellyfish>()
 			};
 
 			int[] trapBosses = new int[]
