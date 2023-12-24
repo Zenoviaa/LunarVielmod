@@ -116,8 +116,19 @@ namespace Stellamod.NPCs.Catacombs.Fire
 
 		public override void AI()
 		{
+			if (!NPC.HasValidTarget)
+			{
+				//WheelMovement(2);
+				NPC.noTileCollide = true;
+				NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
+				NPC.EncourageDespawn(1);
+				return;
+			}
+			else
+			{
+				NPC.noTileCollide = false;
+			}
 
-			
 			NPC.spriteDirection = NPC.direction;
 
 			invisibilityTimer++;

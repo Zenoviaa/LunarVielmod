@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			NPC.height = 88;
 			NPC.damage = 40;
 			NPC.defense = 30;
-			NPC.lifeMax = 900;
+			NPC.lifeMax = 700;
 			NPC.HitSound = SoundID.NPCHit56;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 560f;
