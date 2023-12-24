@@ -119,7 +119,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			if (!NPC.HasValidTarget)
 			{
 				//WheelMovement(2);
-				NPC.noTileCollide = true;
+				
 				NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
 				NPC.EncourageDespawn(1);
 				return;

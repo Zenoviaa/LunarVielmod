@@ -1203,7 +1203,7 @@ namespace Stellamod.Projectiles.IgniterEx
 				ShakeModSystem.Shake = 6;
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/LenaSongEx"));
-				for (int j = 0; j < 7; j++)
+				for (int j = 0; j < 5; j++)
 				{
 
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
