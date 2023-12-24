@@ -1927,7 +1927,7 @@ Mods: {
 
 			CoralBand: {
 				DisplayName: Coral Band
-				Tooltip: Heavily increased Melee damage and Critical Strike Chance!
+				Tooltip: 20% increased Melee damage and Critical Strike Chance!
 			}
 
 			GintzlMetal: {
