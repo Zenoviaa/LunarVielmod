@@ -92,7 +92,22 @@ namespace Stellamod.NPCs.Catacombs
 
                 ShakeModSystem.Shake = 0;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, (int)ai_Boss_Spawn);
+
+                //oh wait i need net code
+                // NPC.NewNPC(, (int)ai_Boss_Spawn);
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    //Main.NewText("Jack has awoken!", Color.Gold);
+                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, (int)ai_Boss_Spawn);
+                    Main.npc[npcID].netUpdate2 = true;
+                }
+                else
+                {
+                    if (Main.netMode == NetmodeID.SinglePlayer)
+                        return;
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, (int)ai_Boss_Spawn, (int)NPC.Center.X, (int)NPC.Center.Y);
+                }
+
                 NPC.Kill();
                 ai_Timer = 0;
             }
