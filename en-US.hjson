@@ -4903,10 +4903,7 @@ Mods: {
 
 			CursedShard: {
 				DisplayName: Cursed Shard
-				Tooltip:
-					'''
-					Use at an altar in any of the Catacombs to summon a dangerous foe!
-					'''
+				Tooltip: Use at an altar in any of the Catacombs to summon a dangerous foe!
 			}
 		}
 
