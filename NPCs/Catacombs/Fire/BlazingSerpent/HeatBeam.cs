@@ -95,8 +95,8 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
             Color middleColor2 = Color.Lerp(Color.Firebrick, Color.OrangeRed, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
-            TrailRegistry.GenericLaserVertexShader.UseColor(Color.Violet);
-            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.STARTRAIL2);
+            TrailRegistry.GenericLaserVertexShader.UseColor(Color.OrangeRed);
+            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.TerraTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

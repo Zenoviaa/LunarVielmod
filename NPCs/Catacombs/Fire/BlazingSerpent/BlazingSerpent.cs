@@ -107,9 +107,11 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 		{
 			attackCounter = reader.ReadInt32();
 		}
-
+		public float ty = 0;
 		public override void AI()
 		{
+			ty++;
+
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
 				if (attackCounter > 0)
@@ -118,6 +120,13 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 				}
 
 				Player target = Main.player[NPC.target];
+
+				if (ty == 100)
+                {
+					var entitySource = NPC.GetSource_FromThis();
+					int index = NPC.NewNPC(entitySource, (int)target.Center.X + Main.rand.Next(-40, 40), (int)target.Center.Y, ModContent.NPCType<BlazeBeamWarn>());
+					ty = 0;
+				}
 				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
 				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1))
 				{
@@ -130,8 +139,7 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 					ichor.hostile = true;
 					ichor.friendly = false;
 
-					var entitySource = NPC.GetSource_FromThis();
-					int index = NPC.NewNPC(entitySource, (int)target.Center.X + Main.rand.Next(-40,40), (int)target.Center.Y, ModContent.NPCType<BlazeBeamWarn>());
+					
 					attackCounter = 500;
 					NPC.netUpdate = true;
 				}
