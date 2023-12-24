@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -23,11 +24,24 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 120;
-            Projectile.light = 0.25f;
+            Projectile.light = 0.75f;
+        }
+
+        //Trails
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.DarkGray, Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.DarkGray, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }

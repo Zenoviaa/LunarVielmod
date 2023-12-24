@@ -155,6 +155,9 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 
 			//Movement
 			//Should hover around/above you :P 
+
+			//No contact damage
+			NPC.damage = 0;
 			NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
@@ -321,7 +324,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 		{
 			Player target = Main.player[NPC.target];
 			ai_Counter++;
-			if(ai_Counter % 8 == 0)
+			if(ai_Counter % 9 == 0)
             {
 				int numProjectiles = Main.rand.Next(1, 2);
 				for (int p = 0; p < numProjectiles; p++)

@@ -95,7 +95,9 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
         }
 
 		public override void AI()
-		{
+		{           
+			//No contact damage
+			NPC.damage = 0;
 			NPC.spriteDirection = NPC.direction;
 			if (!NPC.HasValidTarget)
             {
@@ -164,7 +166,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 						Vector2 velocity = target.DirectionFrom(_nextLightningPosition) * 3;
 
 						Projectile projectile = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
-							ProjectileID.DD2LightningBugZap, 40, 1);
+							ProjectileID.DD2LightningBugZap, 29, 1);
 						projectile.tileCollide = false;
 						projectile.timeLeft = 60;
 						for (int i = 0; i < 16; i++)

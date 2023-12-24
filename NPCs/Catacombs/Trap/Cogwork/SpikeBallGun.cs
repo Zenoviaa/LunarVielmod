@@ -115,7 +115,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 }
 
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                    ModContent.ProjectileType<SpikeBall>(), 47, 0f);
+                    ModContent.ProjectileType<SpikeBall>(), 25, 0f);
                 ai_Counter = 0;
                 attack_Count++;
             }

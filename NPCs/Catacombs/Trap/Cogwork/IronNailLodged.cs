@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,48 +25,23 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
         public override bool PreDraw(ref Color lightColor)
         {
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			Vector2 drawPos = Projectile.Center - Main.screenPosition;
-			Vector2 drawOrigin = new Vector2(58 / 2, 16 / 2);
 
-			float time = Main.GlobalTimeWrappedHourly;
-			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-			float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
-			time %= 4f;
-			time /= 2f;
-
-			if (time >= 1f)
-			{
-				time = 2f - time;
-			}
-
-			time = time * 0.5f + 0.5f;
-			SpriteEffects effects = SpriteEffects.None;
-			Color rotatedColor = new Color(60, 0, 118, 75);
-
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			for (float i = 0f; i < 2f; i += 0.25f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-				Vector2 rotatedPos = drawPos + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
-				Main.spriteBatch.Draw(texture, rotatedPos,
-					null,
-				rotatedColor, 0f, drawOrigin, 1f, effects, 0f);
-			}
-
-			for (float i = 0f; i < 2f; i += 0.34f)
-			{
-				float radians = (i + timer) * MathHelper.TwoPi;
-				Vector2 rotatedPos = drawPos + new Vector2(0f, 16f * rotationOffset).RotatedBy(radians) * time;
-				Main.spriteBatch.Draw(texture, rotatedPos,
-					null,
-					rotatedColor, 0f, drawOrigin, 1f, effects, 0f);
-			}
-
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-			return base.PreDraw(ref lightColor);
+            for (int i = 0; i < 1; i++)
+            {
+                int num7 = 16;
+                float num8 = (float)(Math.Cos(Main.GlobalTimeWrappedHourly % 2.4 / 2.4 * MathHelper.TwoPi) / 5 + 0.5);
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                var vector2_3 = new Vector2((TextureAssets.Projectile[Projectile.type].Value.Width / 2), (TextureAssets.Projectile[Projectile.type].Value.Height / 1 / 2));
+                var color2 = new Color(255, 8, 55, 150);
+                Rectangle r = TextureAssets.Item[Projectile.type].Value.Frame(1, 1, 0, 0);
+                for (int index2 = 0; index2 < num7; ++index2)
+                {
+                    Color color3 = Projectile.GetAlpha(color2) * (0.85f - num8);
+                    Vector2 position2 = Projectile.Center + ((index2 / num7 * MathHelper.TwoPi) + 0f).ToRotationVector2() * (4.0f * num8 + 2.0f) - Main.screenPosition - new Vector2(texture.Width + 8, texture.Height) * Projectile.scale / 2f + vector2_3 * Projectile.scale;
+                    Main.spriteBatch.Draw(TextureAssets.Item[Projectile.type].Value, position2, new Microsoft.Xna.Framework.Rectangle?(r), color3, 0f, vector2_3, Projectile.scale * 1.1f, spriteEffects, 0.0f);
+                }
+            }
+            return base.PreDraw(ref lightColor);
         }
 
 		public override void AI()

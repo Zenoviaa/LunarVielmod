@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -23,7 +24,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 			Projectile.hostile = true;
 			Projectile.penetrate = 32;
 			Projectile.timeLeft = 180;
-			Projectile.light = 0.25f;
+			Projectile.light = 0.75f;
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
@@ -51,8 +52,21 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 			return false;
 		}
 
+
+		public float WidthFunction(float completionRatio)
+		{
+			float baseWidth = Projectile.scale * Projectile.width * 0.7f;
+			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+		}
+
+		public Color ColorFunction(float completionRatio)
+		{
+			return Color.Lerp(Color.DarkGray, Color.Transparent, completionRatio);
+		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
+			DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
 			DrawHelper.DrawAdditiveAfterImage(Projectile, Color.DarkGray, Color.Transparent, ref lightColor);
 			return base.PreDraw(ref lightColor);
 		}
@@ -63,9 +77,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 			Projectile.rotation += 0.25f;
 			Projectile.velocity.Y += 0.3f;
 			Vector2 speed = new Vector2(0, -1);
-			for (int i = 0; i < 1; i++)
-			{
-				Dust.NewDust(Projectile.Center, 2, 2, DustID.Iron, speed.X, speed.Y);
+            if (Main.rand.NextBool(3))
+            {
+				for (int i = 0; i < 1; i++)
+				{
+					Dust.NewDust(Projectile.Center, 2, 2, DustID.Iron, speed.X, speed.Y);
+				}
 			}
 		}
 

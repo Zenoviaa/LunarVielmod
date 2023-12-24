@@ -19,6 +19,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Alcadiz
 			Projectile.DamageType = DamageClass.Summon;
 			Projectile.tileCollide = false;
 		}
+
 		public override bool PreAI()
 		{
 			Vector2 position = Projectile.Center + Vector2.Normalize(Projectile.velocity) * 10;
