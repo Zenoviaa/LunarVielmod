@@ -71,51 +71,36 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
-
-
-
 			int key = ModContent.ItemType<Steali>();
-
 			int key2 = ModContent.ItemType<ShadeScarf>();
+			bool hasKey = player.HasItemInAnyInventory(key) || player.HasItemInAnyInventory(key2);
 
-
-
-
-
-
-
-
-
-
-
-
-
-			if (player.HasItemInAnyInventory(key) || player.HasItemInAnyInventory(key2) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) && !NPC.AnyNPCs(ModContent.NPCType<Rek>()) && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
-			{
-
-
-				NPC.NewNPC(new EntitySource_TileBreak(i, j / 2), i * 16, j * 16, ModContent.NPCType<Gothiviabb>());
-				// SoundEngine.PlaySound(SoundID.Roar);
-				return true;
-			}
-			if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) || NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
-			{
-
-				Main.NewText("...", Color.Gold);
-
-
-
-			}
-			if (!player.HasItemInAnyInventory(key) || player.HasItemInAnyInventory(key2))
+            if (!hasKey)
             {
-
-				Main.NewText("A Steali or higher is required for this fight, otherwise you can't dodge a few attacks.", Color.Gold);
+				Main.NewText("A Steali or higher is required for this fight, otherwise you will struggle to dodge a few attacks.", Color.Gold);
 			}
-		
+			else if (hasKey 
+				&& !NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) 
+				&& !NPC.AnyNPCs(ModContent.NPCType<Rek>()) 
+				&& !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
+			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Gothiviabb>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
 
-
-
-
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Gothiviabb>(), i * 16, (j * 16));
+				}
+			}
+			else if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) || NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
+			{
+				Main.NewText("...", Color.Gold);
+			}
 
 			return true;
 		}

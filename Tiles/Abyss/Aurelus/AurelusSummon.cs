@@ -79,39 +79,42 @@ namespace Stellamod.Tiles.Abyss.Aurelus
             g = .010f * 3;
             b = .355f * 3;
         }
+
         public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
-
 			int key = ModContent.ItemType<VoidKey>();
 			if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
 			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Main.NewText("Singularity has awoken!", Color.Blue);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SingularityFragment>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
 
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<SingularityFragment>(), i * 16, (j * 16) - 5);
+				}
 
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<SingularityFragment>());
-				// SoundEngine.PlaySound(SoundID.Roar);
 				return true;
 			}
+
 			if (player.HasItem(key) && NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
 			{
-
 				Main.NewText("What are you doing?? Trying to summon another?", Color.LightSkyBlue);
-
-
-
 			}
+
 			if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()))
 			{
 				Main.NewText("Come at with the key of void and moon, Verlia's Singularity awaits.", Color.LightSkyBlue);
 			}
 
-
-
-
 			return true;
 		}
-
-
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{

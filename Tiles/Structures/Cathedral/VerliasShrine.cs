@@ -93,38 +93,36 @@ namespace Stellamod.Tiles.Structures.Cathedral
 		public override bool RightClick(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
-
 			int key = ModContent.ItemType<MoonflameLantern>();
-			if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()) && !NPC.AnyNPCs(ModContent.NPCType<StarteV>()))
-            {
-		
-		
-			NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarteV>());
-			// SoundEngine.PlaySound(SoundID.Roar);
-				return true;
-			}
-			if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+			bool isNightime = !Main.dayTime;
+			if (player.HasItem(key) && isNightime && !NPC.AnyNPCs(ModContent.NPCType<StarteV>()) && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
 			{
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					Main.NewText("Verlia has awoken!", Color.LightSkyBlue);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarteV>());
+					Main.npc[npcID].netUpdate2 = true;
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return false;
 
-				Main.NewText("See me in the moonlight!", Color.LightSkyBlue);
-				
-
-
-			}
-
-			else
-            {
-				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
-				
-
-			}
-			if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
-            {
-				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
-			}
-
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<StarteV>(), i * 16, (j * 16));
+				}
 
 				return true;
+			} 
+			else if (player.HasItem(key) && !isNightime && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+            {
+				Main.NewText("See me in the moonlight!", Color.LightSkyBlue);
+			}
+			else if (!player.HasItem(key))
+			{
+				Main.NewText("Come at night with our kindred in hand, see you soon for our dance will commend :)", Color.LightSkyBlue);
+			}
+
+			return true;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
