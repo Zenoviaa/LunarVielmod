@@ -36,14 +36,16 @@ namespace Stellamod.Items.Weapons.Mage
 
 
 		}
+
 		public override void AddRecipes()
 		{
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.LeadBar, 6);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 6);
             recipe.AddIngredient(ItemType<ConvulgingMater>(), 15);
 			recipe.AddTile(TileID.Furnaces);
 			recipe.Register();
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
