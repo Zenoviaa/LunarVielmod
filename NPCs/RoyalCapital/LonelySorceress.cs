@@ -238,10 +238,13 @@ namespace Stellamod.NPCs.RoyalCapital
 
 			
 				Player target = Main.player[NPC.target];
+
+			if (target.InModBiome<AlcadziaBiome>())
+			{
 				Vector2 targetCenter = target.Center;
 				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -60);
 				NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.15f);
-
+			}
 				if (!target.InModBiome<AlcadziaBiome>())
                 {
 
