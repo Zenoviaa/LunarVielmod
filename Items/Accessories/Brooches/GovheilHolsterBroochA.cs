@@ -58,10 +58,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-            if (broochPlayer.hasAdvancedBrooches)
-            {
-				broochPlayer.KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref broochPlayer.hasGovheilHolsterBrooch);
-			}
+			broochPlayer.hasGovheilHolsterBrooch = true;
 		}
 
 

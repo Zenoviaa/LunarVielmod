@@ -1959,8 +1959,8 @@ Mods: {
 				DisplayName: Lunar Band
 				Tooltip:
 					'''
-					Increased critical strike chance by 15%
-					Increased damage by 13% at night
+					Increases critical strike chance by 8%
+					During night, you have 12% more damage and give off some light
 					'''
 			}
 

@@ -16,11 +16,14 @@ namespace Stellamod.Items.Armors.Eldritchian
     {
 		private float _attackSpeedBoostCounter;
 		private float _attackSpeedBoost;
+
 		public bool hasEldritchian;
-		public const float Max_Damage = 400;
-		public const float Max_Duration = 300;
+		
+		public const float Max_Damage = 200;
+		public const float Max_Duration = 600;
 		public const float Max_Speed = 3f;
-        public override void ResetEffects()
+        
+		public override void ResetEffects()
         {
 			hasEldritchian = false;
         }
@@ -32,7 +35,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 				_attackSpeedBoostCounter--;
 				float durationMultiplier = _attackSpeedBoostCounter / Max_Duration;
 				float boost = durationMultiplier * _attackSpeedBoost;
-				Player.GetAttackSpeed(DamageClass.Ranged) += _attackSpeedBoost;
+				Player.GetAttackSpeed(DamageClass.Throwing) += _attackSpeedBoost;
 
 				if (Main.rand.NextBool(2))
 				{

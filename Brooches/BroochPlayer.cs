@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs.Charms;
 using Stellamod.NPCs.Town;
 using Stellamod.Projectiles;
 using System;
@@ -76,9 +77,55 @@ namespace Stellamod.Brooches
             hasIgniteron = false;
         }
 
+
+        private void AdvancedBroochEffects()
+        {
+            //Advanced Brooch Effects
+            if (hasAdvancedBrooches)
+            {
+                MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();//.LuckyW = true;
+                //Lucky Winner Brooch
+                if (hasLuckyWBrooch)
+                {
+                    KeepBroochAlive<LuckyWinnerBrooch, LuckyB>(ref hasLuckyWBrooch);
+                    myPlayer.LuckyW = true;
+                }
+
+                //Boned Throw Brooch
+                if (hasBonedBrooch)
+                {
+                    KeepBroochAlive<BonedBrooch, BonedB>(ref hasBonedBrooch);
+                    Player.GetDamage(DamageClass.Throwing) *= 1.2f;
+                    Player.ThrownVelocity += 5;
+                }
+
+                //Burning GB Brooch
+                if (hasBurningGBrooch)
+                {
+                    KeepBroochAlive<BurningGBrooch, BurningGB>(ref hasBurningGBrooch);
+                    burningGBCooldown--;
+                }
+
+                if (hasGovheilHolsterBrooch)
+                {
+                    KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref hasGovheilHolsterBrooch);
+                }
+
+                if (hasMagicalBrooch)
+                {
+                    KeepBroochAlive<MagicalBrooch, MagicalBroo>(ref hasMagicalBrooch);
+                    Player.GetDamage(DamageClass.Magic) *= 1.2f;
+                }
+            }
+        }
+
+        public override void PostUpdateEquips()
+        {
+            AdvancedBroochEffects();
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, hit, damageDone);
             //FRILE BROOCH HIT EFFECT
             if (hasFrileBrooch && frileBroochCooldown <= 0)
             {
