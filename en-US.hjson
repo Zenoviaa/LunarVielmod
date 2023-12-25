@@ -50,7 +50,6 @@ Mods: {
 					+10% damage
 					Allows you to equip advanced brooches! Very useful 
 					Allows the effects of the Hiker's Backpack!
-					Put advanced brooches under this in accessories for them to work!
 					'''
 			}
 
@@ -4244,7 +4243,8 @@ Mods: {
 
 			CelestiasWeddingRing: {
 				DisplayName: Celestias Wedding Ring
-				Tooltip: '''
+				Tooltip:
+					'''
 					She loves me! She loves me not!
 					Effects of Hikers Backpack
 					No knockback and Immunity to lava!
