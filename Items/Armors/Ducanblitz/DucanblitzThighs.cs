@@ -39,7 +39,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 			player.maxRunSpeed += 0.4f; // Increase the movement speed of the player
 			player.statLifeMax2 += 50;
 			player.GetArmorPenetration(DamageClass.Melee) += 15f;
-			player.GetDamage(DamageClass.Melee) *= 1.2f;
+			player.GetDamage(DamageClass.Melee) *= 1.12f;
 		}
 
 		public override void AddRecipes()

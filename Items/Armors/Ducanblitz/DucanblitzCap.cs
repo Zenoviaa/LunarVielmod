@@ -38,8 +38,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetDamage(DamageClass.Melee) *= 1.12f;
-			player.GetDamage(DamageClass.Ranged) *= 1.12f;
+			player.GetDamage(DamageClass.Melee) *= 1.22f;
 			player.GetCritChance(DamageClass.Generic) += 10f;
 			player.autoReuseGlove = true;
 

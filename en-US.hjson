@@ -4906,17 +4906,28 @@ Mods: {
 
 			DucanblitzBreastplate: {
 				DisplayName: Ducanblitz Breastplate
-				Tooltip: ""
+				Tooltip: '''
+					+40 Max Health
+					+20% Melee Damage!
+					'''
 			}
 
 			DucanblitzCap: {
 				DisplayName: Ducanblitz Cap
-				Tooltip: ""
+				Tooltip: '''
+					+10 Critical Strike Chance
+					+22% Melee Damage!
+					'''
 			}
 
 			DucanblitzThighs: {
 				DisplayName: Ducanblitz Thighs
-				Tooltip: ""
+				Tooltip: '''
+					A hell of a lot of movement speed!
+					+50 Max Health
+					+15 Armor penetration
+					+12% Melee Damage!
+					'''
 			}
 		}
 
