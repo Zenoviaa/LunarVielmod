@@ -5617,6 +5617,7 @@ Mods: {
 			Dulahan.DisplayName: Dulahan
 			WataBoom2.DisplayName: Wata Boom2
 			HeatBeam.DisplayName: Heat Beam
+			CarianKnightProj.DisplayName: Carian Knight Proj
 		}
 
 		NPCs: {
@@ -7024,6 +7025,7 @@ Mods: {
 			WaterJellyfish.DisplayName: Water Jellyfish
 			LonelySorceress.DisplayName: Lonely Sorceress
 			RoyalHorsemage.DisplayName: Royal Horsemage
+			CarianKnight.DisplayName: Carian Knight
 		}
 
 		Biomes: {
