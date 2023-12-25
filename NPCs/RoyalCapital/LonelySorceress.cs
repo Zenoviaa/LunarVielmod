@@ -101,7 +101,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.lifeMax = 2000;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
-
+			NPC.dontTakeDamage = true;
 
 		}
 		public override void FindFrame(int frameHeight)
