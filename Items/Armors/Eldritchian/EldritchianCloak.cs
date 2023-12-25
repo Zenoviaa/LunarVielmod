@@ -25,7 +25,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			Item.height = 24; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Pink; // The rarity of the item
-			Item.defense = 12; // The amount of defense the item will give when equipped
+			Item.defense = 19; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
