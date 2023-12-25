@@ -9,13 +9,6 @@ namespace Stellamod.Items.Armors.Elagent
     [AutoloadEquip(EquipType.Head)]
     public class ElagentHead : ModItem
     {
-        public bool Spetalite = false;
-        public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Shade Wraith Head");
-			// Tooltip.SetDefault("Increases all damage by 10%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -34,19 +27,20 @@ namespace Stellamod.Items.Armors.Elagent
         {
             return body.type == Mod.Find<ModItem>("ElagentBody").Type && legs.type == Mod.Find<ModItem>("ElagentLegs").Type;
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
-
         }
+
         public override void UpdateArmorSet(Player player)
         {
+            player.setBonus = "+1 Max Minions\n" +
+                "+45 Max Life";
             player.maxMinions += 1;
-            if (player.statLife <= player.statLifeMax2 / 2)
-            {
-                player.statLifeMax2 += 20;
-            }
+            player.statLifeMax2 += 45;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
