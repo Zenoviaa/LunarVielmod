@@ -4937,6 +4937,36 @@ Mods: {
 				DisplayName: Fenix Bag
 				Tooltip: ""
 			}
+
+			EldritchianCloak: {
+				DisplayName: Eldritchian Cloak
+				Tooltip:
+					'''
+					+12% Ranged Attack Speed
+					+8% Ranged Damage
+					Slightly increased life regen
+					'''
+			}
+
+			EldritchianHood: {
+				DisplayName: Eldritchian Hood
+				Tooltip:
+					'''
+					+10% Ranged Attack Speed
+					+8% Ranged Damage
+					Slightly increased vision
+					'''
+			}
+
+			EldritchianLegs: {
+				DisplayName: Eldritchian Legs
+				Tooltip:
+					'''
+					+8% Ranged Attack Speed
+					+8% Ranged Damage
+					Slightly increased movement speed
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -7766,6 +7796,11 @@ Mods: {
 			Chained: {
 				DisplayName: Chained
 				Description: Mods.Stellamod.Buffs.Chained.Description
+			}
+
+			ShadowBoost: {
+				DisplayName: Shadow Boost
+				Description: Mods.Stellamod.Buffs.ShadowBoost.Description
 			}
 		}
 	}
