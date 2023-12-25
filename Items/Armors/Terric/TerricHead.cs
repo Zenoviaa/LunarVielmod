@@ -47,6 +47,8 @@ namespace Stellamod.Items.Armors.Terric
         public override void UpdateArmorSet(Player player)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().Teric = true;
+            player.setBonus = "You build up magical crit chance over time!\n"+
+                "+20 Max Life";
             player.statLifeMax2 += 20;
         }
     }
