@@ -3266,10 +3266,9 @@ Mods: {
 				Tooltip:
 					'''
 					Absolutely Hideous.
-					+10% Summon and Melee Damage
+					+10% Ranged damage
 					+20 Armor penetration
 					+5 Crit
-					-15 Health
 					'''
 			}
 
@@ -3283,10 +3282,9 @@ Mods: {
 				Tooltip:
 					'''
 					This is for all those masochists.
-					+30% Summon and Melee Damage
+					+20% Ranged damage
 					Heavy Increased mana regeneration!
 					+5 Crit
-					-40 Health
 					'''
 			}
 
@@ -4905,6 +4903,21 @@ Mods: {
 				DisplayName: Cursed Shard
 				Tooltip: Use at an altar in any of the Catacombs to summon a dangerous foe!
 			}
+
+			DucanblitzBreastplate: {
+				DisplayName: Ducanblitz Breastplate
+				Tooltip: ""
+			}
+
+			DucanblitzCap: {
+				DisplayName: Ducanblitz Cap
+				Tooltip: ""
+			}
+
+			DucanblitzThighs: {
+				DisplayName: Ducanblitz Thighs
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5617,6 +5630,7 @@ Mods: {
 			Dulahan.DisplayName: Dulahan
 			WataBoom2.DisplayName: Wata Boom2
 			HeatBeam.DisplayName: Heat Beam
+			Dulcans.DisplayName: Dulcans
 		}
 
 		NPCs: {

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,17 +30,14 @@ namespace Stellamod.Items.Armors.Daeden
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 1; // The amount of defense the item will give when equipped
+			Item.defense = 14; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetDamage(DamageClass.Melee) *= 1.3f;
-			player.GetDamage(DamageClass.Summon) *= 1.3f;
+			player.GetDamage(DamageClass.Ranged) *= 1.2f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.manaRegen += 20;
-			player.statLifeMax2 -= 40;
 
 		}
 
@@ -52,14 +50,27 @@ namespace Stellamod.Items.Armors.Daeden
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "This armor is really scuffed..." +
-				"\n-Stuck at 100 HP, but 25% increased damage for Melee and Summoners";  // This is the setbonus tooltip
-			player.GetDamage(DamageClass.Melee) *= 1.25f;
-			player.GetDamage(DamageClass.Summon) *= 1.25f;
-			player.statLifeMax2 = 100;
+				"\nGives the ability of a molten quiver!" +
+				"\n-Stuck at 400 max HP, but 20% increased damage for Rangers";  // This is the setbonus tooltip
+			player.GetDamage(DamageClass.Ranged) *= 1.20f;
+			player.statLifeMax2 = 400;
+			player.hasMoltenQuiver = true;
 
 		}
 
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
+			recipe.Register();
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	
+
 	}
 }

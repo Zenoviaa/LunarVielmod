@@ -6,9 +6,11 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.Fenix;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -18,7 +20,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    public class DaedusBag : ModItem
+	public class FenixBag : ModItem
 	{
 
 		public override void SetStaticDefaults()
@@ -48,23 +50,22 @@ namespace Stellamod.Items.Consumables
 			return true;
 		}
 
-        public override void ModifyItemLoot(ItemLoot itemLoot)
-        {
+		public override void ModifyItemLoot(ItemLoot itemLoot)
+		{
 			int numResults = 5;
 
 
 
 			itemLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
-				ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults)
+				ItemDropRule.Common(ModContent.ItemType<Yumiko>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<Nekomara>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<FenixxCard>(), chanceDenominator: numResults),
+				ItemDropRule.Common(ModContent.ItemType<Angelenthal>(), chanceDenominator: 15)
 				));
 
 
-			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<DaedusR>()));
-			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
-			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Fenix>()));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 4, maximumDropped: 55));
 		}
 
 		// Below is code for the visuals

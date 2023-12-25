@@ -428,16 +428,12 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             int numResults = 5;
 
-            var armorRule = ItemDropRule.Common(ModContent.ItemType<DaedenLegs>(), chanceDenominator: numResults);
-            armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenChestplate>()));
-            armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DaedenMask>()));
 
             notExpertRule.OnSuccess(ItemDropRule.AlwaysAtleastOneSuccess(
                 ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
-                ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults),
-                armorRule));
+                ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults)));
 
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));

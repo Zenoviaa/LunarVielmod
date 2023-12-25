@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,7 +29,7 @@ namespace Stellamod.Items.Armors.Daeden
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 10); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 1; // The amount of defense the item will give when equipped
+			Item.defense = 22; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player)
@@ -38,6 +39,18 @@ namespace Stellamod.Items.Armors.Daeden
 			player.maxRunSpeed += 0.5f;
 
 
+		}
+
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 15);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
+			recipe.Register();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

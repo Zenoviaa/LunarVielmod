@@ -11,6 +11,7 @@ using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daedia;
+using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Terric;
@@ -90,6 +91,8 @@ namespace Stellamod
 		public bool GovheilB;
 		public bool GovheilC;
 		public int GovheilBCooldown = 0;
+		public bool DucanB;
+		public int DucanBCooldown = 0;
 		public bool Daedstruck;
 		public int DaedstruckBCooldown = 1;
 		public bool MasteryMagic;
@@ -513,6 +516,7 @@ namespace Stellamod
 			Lovestruck = false;
 			ADisease = false;
 			GovheilB = false;
+			DucanB = false;
 			GovheilC = false;
 			Daedstruck = false;
 			BroochSpragald = false;
@@ -1121,12 +1125,34 @@ namespace Stellamod
 
 
 			}
-	/*		if (GovheilC && GovheilBCooldown > 300)
-			{
-				Player.GetDamage(DamageClass.Ranged) *= 2f;
-				Player.GetDamage(DamageClass.Melee) *= 2f;
 
-			}*/
+			if (DucanB && DucanBCooldown == 520)
+			{
+				DucanBCooldown = 0;
+
+
+			}
+
+
+
+			if (DucanB && DucanBCooldown == 301)
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Arcaneup"));
+				for (int j = 0; j < 1; j++)
+				{
+					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Dulcans>(), 200, 1f, Player.whoAmI);
+				}
+
+
+			}
+
+			/*		if (GovheilC && GovheilBCooldown > 300)
+					{
+						Player.GetDamage(DamageClass.Ranged) *= 2f;
+						Player.GetDamage(DamageClass.Melee) *= 2f;
+
+					}*/
 			if (GovheilC && GovheilBCooldown == 520)
 			{
 				GovheilBCooldown = 0;
@@ -2556,6 +2582,13 @@ namespace Stellamod
 			{
 				Player.GetDamage(DamageClass.Magic) *= 1.2f;
 				Player.GetDamage(DamageClass.Summon) *= 1.2f;
+
+			}
+
+			if (DucanB && DucanBCooldown > 350)
+			{
+				Player.GetDamage(DamageClass.Melee) *= 1.3f;
+				
 
 			}
 
