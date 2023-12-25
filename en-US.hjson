@@ -7023,6 +7023,7 @@ Mods: {
 			BlazeBeamWarn.DisplayName: Blaze Beam Warn
 			WaterJellyfish.DisplayName: Water Jellyfish
 			LonelySorceress.DisplayName: Lonely Sorceress
+			RoyalHorsemage.DisplayName: Royal Horsemage
 		}
 
 		Biomes: {

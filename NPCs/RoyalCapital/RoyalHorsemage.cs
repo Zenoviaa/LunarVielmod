@@ -61,9 +61,9 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.value = 560f;
 			NPC.knockBackResist = .45f;
 			NPC.aiStyle = 26;
-			AIType = NPCID.HeadlessHorseman;
-			NPC.noTileCollide = true;
-			NPC.noGravity = true;
+			AIType = NPCID.Unicorn;
+			NPC.noTileCollide = false;
+			NPC.noGravity = false;
 
 		}
 
