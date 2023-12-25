@@ -6839,10 +6839,10 @@ Mods: {
 				DisplayName: Aimacra
 
 				TownNPCMood: {
-					Content: I am content.
+					Content: Someone who enjoys the simplicities of life after the events of Diari
 					NoHome: I hate not having a home.
 					FarFromHome: I am too far from home.
-					LoveSpace: I love having so much space.
+					LoveSpace: I love having so much space, I can breathe.
 					DislikeCrowded: I dislike how crowded I am.
 					HateCrowded: I hate how crowded I am.
 					LoveBiome: I love {BiomeName}.
