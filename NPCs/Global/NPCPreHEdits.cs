@@ -312,10 +312,8 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlyingFishBroochA>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-			if (npc.type == NPCID.GreenSlime)
+			if (npc.type == NPCID.BlueSlime)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SlimeBroochA>(), 300, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 

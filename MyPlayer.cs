@@ -385,18 +385,8 @@ namespace Stellamod
 
 				}
 			}
-			if (Teric)
-            {
-                TericGramTime = 0;
-       
-				if(TericGramLevel > 0)
-				{
-                    TericGramLevel -= 1;
-                }
-			}
 
-
-            if (StealthRune && StealthTime >= 500)
+			if (StealthRune && StealthTime >= 500)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StealthRune"), Player.position);
                 for (int m = 0; m < 20; m++)
@@ -646,12 +636,9 @@ namespace Stellamod
 		}
 		public override void PostUpdate()
         {
-			
-
 			if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
-
             }
             if (Aurorean <= 0f)
             {
@@ -686,48 +673,7 @@ namespace Stellamod
             }
 
 
-            if (Teric)
-            {
-                if (TericGramLevel == 2)
-                {
-                    Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.5f * Main.essScale);
-                    player.GetCritChance(DamageClass.Magic) += 21;
-                }
-                if (TericGramLevel == 1)
-                {
-                    Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.25f * Main.essScale);
-                    player.GetCritChance(DamageClass.Magic) += 10;
-                }
-                TericGramTime++;
-				if(TericGramTime >= 340)
-				{
-					TericGramTime = 0;
-					if (TericGramLevel < 2)
-					{
-						if(TericGramLevel == 1)
-                        {
-                            var EntitySource = Player.GetSource_FromThis();
-                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
-                            TericGramLevel += 1;
-                        }
-						else
-                        {
-                            Lighting.AddLight(player.Center, Color.DarkRed.ToVector3() * 0.75f * Main.essScale);
-                            var EntitySource = Player.GetSource_FromThis();
-                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
-                            TericGramLevel += 1;
-                        }
-			
 
-                    }
-                }
-
-            }
-            else
-            {
-                TericGramTime = 0;
-                TericGramLevel = 0;
-            }
             //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
             if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>() ))
             {
@@ -2490,6 +2436,49 @@ namespace Stellamod
 
         public override void PostUpdateEquips()
         {
+			//Terric Setbonus
+
+			if (Teric)
+			{
+				TericGramTime++;
+				if (TericGramLevel == 2)
+				{
+					Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.5f * Main.essScale);
+					Player.GetCritChance(DamageClass.Magic) += 21;
+				}
+				if (TericGramLevel == 1)
+				{
+					Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.25f * Main.essScale);
+					Player.GetCritChance(DamageClass.Magic) += 10;
+				}
+
+				if (TericGramTime >= 340)
+				{
+					TericGramTime = 0;
+					if (TericGramLevel < 2)
+					{
+						if (TericGramLevel == 1)
+						{
+							var EntitySource = Player.GetSource_FromThis();
+							NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
+							TericGramLevel += 1;
+						}
+						else
+						{
+							Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.75f * Main.essScale);
+							var EntitySource = Player.GetSource_FromThis();
+							NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
+							TericGramLevel += 1;
+						}
+					}
+				}
+			}
+			else
+			{
+				TericGramTime = 0;
+				TericGramLevel = 0;
+			}
+
 			//Sap Container's Effect
 			if (ArcaneM)
             {
