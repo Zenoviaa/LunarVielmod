@@ -32,7 +32,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 				_attackSpeedBoostCounter--;
 				float durationMultiplier = _attackSpeedBoostCounter / Max_Duration;
 				float boost = durationMultiplier * _attackSpeedBoost;
-				Player.GetAttackSpeed(DamageClass.Ranged) += _attackSpeedBoost;
+				Player.GetAttackSpeed(DamageClass.Throwing) += _attackSpeedBoost;
 
 				if (Main.rand.NextBool(2))
 				{
