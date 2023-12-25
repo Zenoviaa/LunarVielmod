@@ -9,7 +9,7 @@ namespace Stellamod.Brooches
         {
             Player owner = Main.player[Projectile.owner];
             BroochPlayer broochPlayer = owner.GetModPlayer<BroochPlayer>();
-            if (!broochPlayer.hasBonedBrooch)
+            if (!broochPlayer.hasBonedBrooch || !broochPlayer.hasAdvancedBrooches)
             {
                 Projectile.Kill();
                 return;

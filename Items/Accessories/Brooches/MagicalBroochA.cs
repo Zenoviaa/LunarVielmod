@@ -56,11 +56,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			if (broochPlayer.hasAdvancedBrooches)
-			{
-				broochPlayer.KeepBroochAlive<MagicalBrooch, MagicalBroo>(ref broochPlayer.hasMagicalBrooch);
-				player.GetDamage(DamageClass.Magic) *= 1.2f;
-			}
+			broochPlayer.hasMagicalBrooch = true;
 		}
 
 		public override void AddRecipes()

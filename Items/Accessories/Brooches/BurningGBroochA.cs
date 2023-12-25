@@ -54,11 +54,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-            if (broochPlayer.hasAdvancedBrooches)
-            {
-				broochPlayer.KeepBroochAlive<BurningGBrooch, BurningGB>(ref broochPlayer.hasBurningGBrooch);
-				broochPlayer.burningGBCooldown--;
-			}	
+			broochPlayer.hasBurningGBrooch = true;
 		}
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
