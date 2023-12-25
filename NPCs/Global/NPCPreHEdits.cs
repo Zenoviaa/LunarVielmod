@@ -202,13 +202,13 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 75, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 			if (npc.type == NPCID.AngryBones)
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 75, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 
@@ -229,7 +229,7 @@ namespace Stellamod.NPCs.Global
 			{
 
 
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Heatspot>(), 20, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Stick>(), 3, 1, 5)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 
 			}
