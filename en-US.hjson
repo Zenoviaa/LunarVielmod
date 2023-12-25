@@ -4906,7 +4906,8 @@ Mods: {
 
 			DucanblitzBreastplate: {
 				DisplayName: Ducanblitz Breastplate
-				Tooltip: '''
+				Tooltip:
+					'''
 					+40 Max Health
 					+20% Melee Damage!
 					'''
@@ -4914,7 +4915,8 @@ Mods: {
 
 			DucanblitzCap: {
 				DisplayName: Ducanblitz Cap
-				Tooltip: '''
+				Tooltip:
+					'''
 					+10 Critical Strike Chance
 					+22% Melee Damage!
 					'''
@@ -4922,12 +4924,18 @@ Mods: {
 
 			DucanblitzThighs: {
 				DisplayName: Ducanblitz Thighs
-				Tooltip: '''
+				Tooltip:
+					'''
 					A hell of a lot of movement speed!
 					+50 Max Health
 					+15 Armor penetration
 					+12% Melee Damage!
 					'''
+			}
+
+			FenixBag: {
+				DisplayName: Fenix Bag
+				Tooltip: ""
 			}
 		}
 
@@ -5642,6 +5650,7 @@ Mods: {
 			WataBoom2.DisplayName: Wata Boom2
 			HeatBeam.DisplayName: Heat Beam
 			Dulcans.DisplayName: Dulcans
+			CarianKnightProj.DisplayName: Carian Knight Proj
 		}
 
 		NPCs: {

@@ -73,6 +73,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
 			recipe.AddIngredient(ItemID.SoulofLight, 10);
+			recipe.AddIngredient(ItemID.Ectoplasm, 10);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
 		}
