@@ -45,6 +45,7 @@
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
@@ -105,6 +106,12 @@
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidBody_Body.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidHead_Head.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidLegs_Legs.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianCloak.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianCloak_Body.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianHood.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianHood_Head.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianLegs.png" />
+    <None Remove="Items\Armors\Eldritchian\EldritchianLegs_Legs.png" />
     <None Remove="Items\Armors\Miracle\MiracleBody.png" />
     <None Remove="Items\Armors\Miracle\MiracleBody_Body.png" />
     <None Remove="Items\Armors\Miracle\MiracleHead.png" />
