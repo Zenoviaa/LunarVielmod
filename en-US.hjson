@@ -4274,7 +4274,7 @@ Mods: {
 
 			BonedThrowBroochA: {
 				DisplayName: Boned Throw Brooch
-				Tooltip: Increases throwing velocity and damage by 20%
+				Tooltip: Increases throwing speed and damage by 20%, increased speed!
 			}
 
 			LuckyWinnerBroochA: {
@@ -4908,7 +4908,7 @@ Mods: {
 				DisplayName: Ducanblitz Breastplate
 				Tooltip:
 					'''
-					+40 Max Health
+					+20 Max Health
 					+20% Melee Damage!
 					'''
 			}
@@ -4942,8 +4942,8 @@ Mods: {
 				DisplayName: Eldritchian Cloak
 				Tooltip:
 					'''
-					+12% Ranged Attack Speed
-					+8% Ranged Damage
+					+12% Throwing Attack Speed
+					+16% Throwing Damage
 					Slightly increased life regen
 					'''
 			}
@@ -4952,8 +4952,8 @@ Mods: {
 				DisplayName: Eldritchian Hood
 				Tooltip:
 					'''
-					+10% Ranged Attack Speed
-					+8% Ranged Damage
+					+10% Throwing Attack Speed
+					+20% Throwing Damage
 					Slightly increased vision
 					'''
 			}
@@ -4962,8 +4962,8 @@ Mods: {
 				DisplayName: Eldritchian Legs
 				Tooltip:
 					'''
-					+8% Ranged Attack Speed
-					+8% Ranged Damage
+					+8% Throwing Attack Speed
+					+23% Throwing Damage
 					Slightly increased movement speed
 					'''
 			}
@@ -5880,87 +5880,87 @@ Mods: {
 					}
 
 					TheBurningRodBuff: {
-						Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+						Description: It burns with passion
 						DisplayName: The Burning Rod Buff
 					}
 
 					SwarmerMinionBuff: {
-						Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+						Description: Getting swarmed
 						DisplayName: Swarmer Minion Buff
 					}
 
 					SolMothBuff: {
-						Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+						Description: Ooo a moth!~
 						DisplayName: Sol Moth Buff
 					}
 
 					ProbeBuff: {
-						Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+						Description: Getting probed might be actually really hot.
 						DisplayName: Probe Buff
 					}
 
 					MushroomStaveBuff: {
-						Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+						Description: Im not on shrooms I promise officer!
 						DisplayName: Mushroom Stave Buff
 					}
 
 					ManaWandMinionBuff: {
-						Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
+						Description: Mana!
 						DisplayName: Mana Wand Minion Buff
 					}
 
 					LifeWandMinionBuff: {
-						Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
+						Description: Life!
 						DisplayName: Life Wand Minion Buff
 					}
 
 					JellyMinionBuff: {
-						Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
+						Description: I love sticky stuff~
 						DisplayName: Jelly Minion Buff
 					}
 
 					IvyakenBuff: {
-						Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
+						Description: Really powerful bow!
 						DisplayName: Ivyaken Buff
 					}
 
 					IrradiatedCreeperBuff: {
-						Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
+						Description: Its a creeper what did you think?
 						DisplayName: Irradiated Creeper Buff
 					}
 
 					IceboundMinionBuff: {
-						Description: Mods.Stellamod.Buffs.IceboundMinionBuff.Description
+						Description: Become frozen.
 						DisplayName: Icebound Minion Buff
 					}
 
 					HMMinionBuff: {
-						Description: Mods.Stellamod.Buffs.HMMinionBuff.Description
+						Description: You're so dead.
 						DisplayName: H M Minion Buff
 					}
 
 					FCBuff: {
-						Description: Mods.Stellamod.Buffs.FCBuff.Description
+						Description: Getting powerful now aren't we?
 						DisplayName: F C Buff
 					}
 
 					DripperBuff: {
-						Description: Mods.Stellamod.Buffs.DripperBuff.Description
+						Description: Drippin out.
 						DisplayName: Dripper Buff
 					}
 
 					AuroranSeekerMinionBuff: {
-						Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
+						Description: It does mix up its spells.
 						DisplayName: Auroran Seeker Minion Buff
 					}
 
 					ArncharMinionBuff: {
-						Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
+						Description: Its remote controlled!
 						DisplayName: Arnchar Minion Buff
 					}
 
 					Wounded: {
-						Description: Mods.Stellamod.Buffs.Wounded.Description
+						Description: Getting wounded
 						DisplayName: Wounded
 					}
 
@@ -5975,7 +5975,7 @@ Mods: {
 					}
 
 					Morrow: {
-						Description: Mods.Stellamod.Buffs.Morrow.Description
+						Description: Morrowed bitch
 						DisplayName: Morrow
 					}
 
@@ -5995,12 +5995,12 @@ Mods: {
 					}
 
 					Love: {
-						Description: Mods.Stellamod.Buffs.Love.Description
+						Description: Sometimes the gambit supports you with speed!
 						DisplayName: Love
 					}
 
 					Irradiation: {
-						Description: Mods.Stellamod.Buffs.Irradiation.Description
+						Description: You are growing new limbs.
 						DisplayName: Irradiation
 					}
 
@@ -6010,27 +6010,27 @@ Mods: {
 					}
 
 					Gintzingwinds: {
-						Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
+						Description: A wonderous event
 						DisplayName: Gintzingwinds
 					}
 
 					GintzeSeen: {
-						Description: Mods.Stellamod.Buffs.GintzeSeen.Description
+						Description: You are being seen.
 						DisplayName: Gintze Seen
 					}
 
 					GintzelSheildCD: {
-						Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
+						Description: This sheild is reallly helping
 						DisplayName: Gintzel Sheild C D
 					}
 
 					GintzelSheild: {
-						Description: Mods.Stellamod.Buffs.GintzelSheild.Description
-						DisplayName: Gintzel Sheild
+						Description: A good shield
+						DisplayName: Gintzel Shield
 					}
 
 					Elegance: {
-						Description: Mods.Stellamod.Buffs.Elegance.Description
+						Description: You float with elegance.
 						DisplayName: Elegance
 					}
 
@@ -6130,107 +6130,107 @@ Mods: {
 					}
 
 					DeathMultiplierBloodLamp: {
-						Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+						Description: Hit with blood lamp
 						DisplayName: Death Multiplier Blood Lamp
 					}
 
 					DeathMultiplier: {
-						Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
+						Description: You are multiplying damage
 						DisplayName: Death Multiplier
 					}
 
 					DarkHold: {
-						Description: Mods.Stellamod.Buffs.DarkHold.Description
+						Description: Something has a grasp on your eyes.
 						DisplayName: Dark Hold
 					}
 
 					VixedB: {
-						Description: Mods.Stellamod.Buffs.VixedB.Description
-						DisplayName: Vixed B
+						Description: Something feels warm inside you.
+						DisplayName: Vixed!
 					}
 
 					VerliaBroo: {
-						Description: Mods.Stellamod.Buffs.VerliaBroo.Description
-						DisplayName: Verlia Broo
+						Description: Her soul still stares at you while you have this on.
+						DisplayName: Verlias Brooch
 					}
 
 					StoneB: {
-						Description: Mods.Stellamod.Buffs.StoneB.Description
-						DisplayName: Stone B
+						Description: I'm high rn
+						DisplayName: Your stoned.
 					}
 
 					Spragald: {
-						Description: Mods.Stellamod.Buffs.Spragald.Description
+						Description: Look at this, so much defense!
 						DisplayName: Spragald
 					}
 
 					Slimee: {
-						Description: Mods.Stellamod.Buffs.Slimee.Description
-						DisplayName: Slimee
+						Description: I wish I could have this title right now.
+						DisplayName: Slimed!
 					}
 
 					MalB: {
-						Description: Mods.Stellamod.Buffs.MalB.Description
-						DisplayName: Mal B
+						Description: Something evil is brewing
+						DisplayName: Malicous Brooch
 					}
 
 					IceBrooch: {
-						Description: Mods.Stellamod.Buffs.IceBrooch.Description
+						Description: Its colder the more you see it.
 						DisplayName: Ice Brooch
 					}
 
 					GovheilB: {
-						Description: Mods.Stellamod.Buffs.GovheilB.Description
-						DisplayName: Govheil B
+						Description: Very useful!
+						DisplayName: Govheil Brooch
 					}
 
 					Goldren: {
-						Description: Mods.Stellamod.Buffs.Goldren.Description
+						Description: Feeling gold yet?
 						DisplayName: Goldren
 					}
 
 					GintBroo: {
-						Description: Mods.Stellamod.Buffs.GintBroo.Description
-						DisplayName: Gint Broo
+						Description: Very not useful
+						DisplayName: Gintze Brooch
 					}
 
 					Flyfish: {
-						Description: Mods.Stellamod.Buffs.Flyfish.Description
-						DisplayName: Flyfish
+						Description: You feel faster!
+						DisplayName: Flyfish Brooch
 					}
 
 					DreadB: {
-						Description: Mods.Stellamod.Buffs.DreadB.Description
-						DisplayName: Dread B
+						Description: Some health goes a long way
+						DisplayName: Dreaded Brooch
 					}
 
 					Diarii: {
-						Description: Mods.Stellamod.Buffs.Diarii.Description
+						Description: Thanks for playing!
 						DisplayName: Diarii
 					}
 
 					BurningGB: {
-						Description: Mods.Stellamod.Buffs.BurningGB.Description
-						DisplayName: Burning G B
+						Description: I meant the name.
+						DisplayName: Burning roach
 					}
 
 					BearB: {
-						Description: Mods.Stellamod.Buffs.BearB.Description
-						DisplayName: Bear B
+						Description: Its a bear
+						DisplayName: Bear Brooch
 					}
 
 					AurelusB: {
-						Description: Mods.Stellamod.Buffs.AurelusB.Description
-						DisplayName: Aurelus B
+						Description: Can you even tell?
+						DisplayName: Aurelus Brooch
 					}
 
 					AmethystBroo: {
-						Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-						DisplayName: Amethyst Broo
+						Description: I love amethyst!
+						DisplayName: Amethyst Brooch
 					}
 
 					AssassinsSlashBuff: {
-						Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
+						Description: Its buffing you
 						DisplayName: Assassins Slash Buff
 					}
 
@@ -6240,12 +6240,12 @@ Mods: {
 					}
 
 					AcidFlame: {
-						Description: Mods.Stellamod.Buffs.AcidFlame.Description
+						Description: You feel like your limbs have new appendages.
 						DisplayName: Acid Flame
 					}
 
 					AbyssalFlame: {
-						Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
+						Description: The night burns you with this.
 						DisplayName: Abyssal Flame
 					}
 				}
@@ -6452,96 +6452,6 @@ Mods: {
 					DisplayName: F C Buff
 				}
 
-				DripperBuff: {
-					Description: Mods.Stellamod.Buffs.DripperBuff.Description
-					DisplayName: Dripper Buff
-				}
-
-				AuroranSeekerMinionBuff: {
-					Description: Mods.Stellamod.Buffs.AuroranSeekerMinionBuff.Description
-					DisplayName: Auroran Seeker Minion Buff
-				}
-
-				ArncharMinionBuff: {
-					Description: Mods.Stellamod.Buffs.ArncharMinionBuff.Description
-					DisplayName: Arnchar Minion Buff
-				}
-
-				Wounded: {
-					Description: Mods.Stellamod.Buffs.Wounded.Description
-					DisplayName: Wounded
-				}
-
-				Whipdeath: {
-					Description: Mods.Stellamod.Buffs.Whipdeath.Description
-					DisplayName: Whipdeath
-				}
-
-				MorrowWhipDebuff: {
-					Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-					DisplayName: Morrow Whip Debuff
-				}
-
-				Morrow: {
-					Description: Mods.Stellamod.Buffs.Morrow.Description
-					DisplayName: Morrow
-				}
-
-				SnowFlame: {
-					Description: Mods.Stellamod.Buffs.SnowFlame.Description
-					DisplayName: Snow Flame
-				}
-
-				Rekin: {
-					Description: Mods.Stellamod.Buffs.Rekin.Description
-					DisplayName: Rekin
-				}
-
-				PocketSandBuff: {
-					Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
-					DisplayName: Pocket Sand Buff
-				}
-
-				Love: {
-					Description: Mods.Stellamod.Buffs.Love.Description
-					DisplayName: Love
-				}
-
-				Irradiation: {
-					Description: Mods.Stellamod.Buffs.Irradiation.Description
-					DisplayName: Irradiation
-				}
-
-				Harvester: {
-					Description: Mods.Stellamod.Buffs.Harvester.Description
-					DisplayName: Harvester
-				}
-
-				Gintzingwinds: {
-					Description: Mods.Stellamod.Buffs.Gintzingwinds.Description
-					DisplayName: Gintzingwinds
-				}
-
-				GintzeSeen: {
-					Description: Mods.Stellamod.Buffs.GintzeSeen.Description
-					DisplayName: Gintze Seen
-				}
-
-				GintzelSheildCD: {
-					Description: Mods.Stellamod.Buffs.GintzelSheildCD.Description
-					DisplayName: Gintzel Sheild C D
-				}
-
-				GintzelSheild: {
-					Description: Mods.Stellamod.Buffs.GintzelSheild.Description
-					DisplayName: Gintzel Sheild
-				}
-
-				Elegance: {
-					Description: Mods.Stellamod.Buffs.Elegance.Description
-					DisplayName: Elegance
-				}
-
 				VoiddDust: {
 					Description: Mods.Stellamod.Buffs.VoiddDust.Description
 					DisplayName: Voidd Dust
@@ -6632,111 +6542,6 @@ Mods: {
 					DisplayName: Aivan Dust
 				}
 
-				Dusted: {
-					Description: Mods.Stellamod.Buffs.Dusted.Description
-					DisplayName: Dusted
-				}
-
-				DeathMultiplierBloodLamp: {
-					Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-					DisplayName: Death Multiplier Blood Lamp
-				}
-
-				DeathMultiplier: {
-					Description: Mods.Stellamod.Buffs.DeathMultiplier.Description
-					DisplayName: Death Multiplier
-				}
-
-				DarkHold: {
-					Description: Mods.Stellamod.Buffs.DarkHold.Description
-					DisplayName: Dark Hold
-				}
-
-				VixedB: {
-					Description: Mods.Stellamod.Buffs.VixedB.Description
-					DisplayName: Vixed B
-				}
-
-				VerliaBroo: {
-					Description: Mods.Stellamod.Buffs.VerliaBroo.Description
-					DisplayName: Verlia Broo
-				}
-
-				StoneB: {
-					Description: Mods.Stellamod.Buffs.StoneB.Description
-					DisplayName: Stone B
-				}
-
-				Spragald: {
-					Description: Mods.Stellamod.Buffs.Spragald.Description
-					DisplayName: Spragald
-				}
-
-				Slimee: {
-					Description: Mods.Stellamod.Buffs.Slimee.Description
-					DisplayName: Slimee
-				}
-
-				MalB: {
-					Description: Mods.Stellamod.Buffs.MalB.Description
-					DisplayName: Mal B
-				}
-
-				IceBrooch: {
-					Description: Mods.Stellamod.Buffs.IceBrooch.Description
-					DisplayName: Ice Brooch
-				}
-
-				GovheilB: {
-					Description: Mods.Stellamod.Buffs.GovheilB.Description
-					DisplayName: Govheil B
-				}
-
-				Goldren: {
-					Description: Mods.Stellamod.Buffs.Goldren.Description
-					DisplayName: Goldren
-				}
-
-				GintBroo: {
-					Description: Mods.Stellamod.Buffs.GintBroo.Description
-					DisplayName: Gint Broo
-				}
-
-				Flyfish: {
-					Description: Mods.Stellamod.Buffs.Flyfish.Description
-					DisplayName: Flyfish
-				}
-
-				DreadB: {
-					Description: Mods.Stellamod.Buffs.DreadB.Description
-					DisplayName: Dread B
-				}
-
-				Diarii: {
-					Description: Mods.Stellamod.Buffs.Diarii.Description
-					DisplayName: Diarii
-				}
-
-				BurningGB: {
-					Description: Mods.Stellamod.Buffs.BurningGB.Description
-					DisplayName: Burning G B
-				}
-
-				BearB: {
-					Description: Mods.Stellamod.Buffs.BearB.Description
-					DisplayName: Bear B
-				}
-
-				AurelusB: {
-					Description: Mods.Stellamod.Buffs.AurelusB.Description
-					DisplayName: Aurelus B
-				}
-
-				AmethystBroo: {
-					Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-					DisplayName: Amethyst Broo
-				}
-
 				AssassinsSlashBuff: {
 					Description: Mods.Stellamod.Buffs.AssassinsSlashBuff.Description
 					DisplayName: Assassins Slash Buff
@@ -6747,69 +6552,9 @@ Mods: {
 					DisplayName: Arcane Dust
 				}
 
-				AcidFlame: {
-					Description: Mods.Stellamod.Buffs.AcidFlame.Description
-					DisplayName: Acid Flame
-				}
-
-				AbyssalFlame: {
-					Description: Mods.Stellamod.Buffs.AbyssalFlame.Description
-					DisplayName: Abyssal Flame
-				}
-
-				IrradiatedCreeperBuff: {
-					DisplayName: Irradiated Creeper Buff
-					Description: Mods.Stellamod.Buffs.IrradiatedCreeperBuff.Description
-				}
-
-				IvyakenBuff: {
-					DisplayName: Ivyaken Buff
-					Description: Mods.Stellamod.Buffs.IvyakenBuff.Description
-				}
-
-				JellyMinionBuff: {
-					DisplayName: Jelly Minion Buff
-					Description: Mods.Stellamod.Buffs.JellyMinionBuff.Description
-				}
-
-				LifeWandMinionBuff: {
-					DisplayName: Life Wand Minion Buff
-					Description: Mods.Stellamod.Buffs.LifeWandMinionBuff.Description
-				}
-
-				ManaWandMinionBuff: {
-					DisplayName: Mana Wand Minion Buff
-					Description: Mods.Stellamod.Buffs.ManaWandMinionBuff.Description
-				}
-
-				MushroomStaveBuff: {
-					DisplayName: Mushroom Stave Buff
-					Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-				}
-
-				ProbeBuff: {
-					DisplayName: Probe Buff
-					Description: Mods.Stellamod.Buffs.ProbeBuff.Description
-				}
-
-				SolMothBuff: {
-					DisplayName: Sol Moth Buff
-					Description: Mods.Stellamod.Buffs.SolMothBuff.Description
-				}
-
-				SwarmerMinionBuff: {
-					DisplayName: Swarmer Minion Buff
-					Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
-				}
-
-				TheBurningRodBuff: {
-					DisplayName: The Burning Rod Buff
-					Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-				}
-
 				VoidMinionBuff: {
 					DisplayName: Void Minion Buff
-					Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+					Description: Voidriffic!
 				}
 			}
 
@@ -7313,96 +7058,6 @@ Mods: {
 				Description: Slashin
 			}
 
-			AmethystBroo: {
-				DisplayName: Amethyst Broo
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
-			}
-
-			AurelusB: {
-				DisplayName: Aurelus B
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
-			}
-
-			BearB: {
-				DisplayName: Bear B
-				Description: Mods.Stellamod.Buffs.BearB.Description
-			}
-
-			BurningGB: {
-				DisplayName: Burning G B
-				Description: Mods.Stellamod.Buffs.BurningGB.Description
-			}
-
-			Diarii: {
-				DisplayName: Diarii
-				Description: Diari Brooch
-			}
-
-			DreadB: {
-				DisplayName: Dread B
-				Description: Mods.Stellamod.Buffs.DreadB.Description
-			}
-
-			Flyfish: {
-				DisplayName: Flyfish
-				Description: Flying Fish brooch
-			}
-
-			GintBroo: {
-				DisplayName: Gintzl Brooch
-				Description: Gives good defense
-			}
-
-			Goldren: {
-				DisplayName: Goldren
-				Description: Golded
-			}
-
-			GovheilB: {
-				DisplayName: Govheil B
-				Description: Mods.Stellamod.Buffs.GovheilB.Description
-			}
-
-			IceBrooch: {
-				DisplayName: Ice Brooch
-				Description: Ice brooch
-			}
-
-			MalB: {
-				DisplayName: Mal B
-				Description: Mods.Stellamod.Buffs.MalB.Description
-			}
-
-			Morrow: {
-				DisplayName: Morrow
-				Description: The Morrowed brooch..
-			}
-
-			Slimee: {
-				DisplayName: Slimee
-				Description: Slime brooch
-			}
-
-			Spragald: {
-				DisplayName: Spragald
-				Description: Morrowed Spragald Brooch +10 Def
-			}
-
-			StoneB: {
-				DisplayName: Stone B
-				Description: Mods.Stellamod.Buffs.StoneB.Description
-			}
-
-			VerliaBroo: {
-				Description: Verlia's enchantment
-				DisplayName: Verlia Brooch
-			}
-
-			VixedB: {
-				DisplayName: Vixed B
-				Description: Mods.Stellamod.Buffs.VixedB.Description
-			}
-
 			DarkHold: {
 				DisplayName: Dark Hold
 				Description: You feel like everything around you is darker.
@@ -7411,16 +7066,6 @@ Mods: {
 			DeathMultiplier: {
 				DisplayName: Death Multiplier
 				Description: Death
-			}
-
-			DeathMultiplierBloodLamp: {
-				DisplayName: Death Multiplier Blood Lamp
-				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
-			}
-
-			Dusted: {
-				DisplayName: Dusted
-				Description: Mods.Stellamod.Buffs.Dusted.Description
 			}
 
 			AivanDust: {
@@ -7520,7 +7165,7 @@ Mods: {
 
 			GintzelSheild: {
 				DisplayName: Gintzel Shield
-				Description: + 15 Defense!
+				Description: +15 Defense!
 			}
 
 			GintzelSheildCD: {
@@ -7560,7 +7205,7 @@ Mods: {
 
 			Rekin: {
 				DisplayName: Rekin
-				Description: Mods.Stellamod.Buffs.Rekin.Description
+				Description: Rekin your mom
 			}
 
 			SnowFlame: {
@@ -7571,6 +7216,11 @@ Mods: {
 			MorrowWhipDebuff: {
 				DisplayName: Morrow Whip Debuff
 				Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
+			}
+
+			Morrow: {
+				DisplayName: Morrow
+				Description: Mods.Stellamod.Buffs.Morrow.Description
 			}
 
 			Whipdeath: {
@@ -7638,36 +7288,6 @@ Mods: {
 				DisplayName: Mana Wand Minion Buff
 			}
 
-			MushroomStaveBuff: {
-				DisplayName: Mushroom Stave Buff
-				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
-			}
-
-			ProbeBuff: {
-				DisplayName: Probe Buff
-				Description: Dont get probed
-			}
-
-			SolMothBuff: {
-				DisplayName: Sol Moth Buff
-				Description: Moth helpers!
-			}
-
-			SwarmerMinionBuff: {
-				DisplayName: Swarmer Minion Buff
-				Description: It swarms enemies!
-			}
-
-			TheBurningRodBuff: {
-				DisplayName: The Burning Rod Buff
-				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
-			}
-
-			VoidMinionBuff: {
-				DisplayName: Void Minion Buff
-				Description: It do be a black hole.
-			}
-
 			DarkWhipDebuff: {
 				DisplayName: Dark Whip Debuff
 				Description: Mods.Stellamod.Buffs.DarkWhipDebuff.Description
@@ -7675,7 +7295,7 @@ Mods: {
 
 			MasteryMagic: {
 				DisplayName: Mastery Magic
-				Description: Mods.Stellamod.Buffs.MasteryMagic.Description
+				Description: You are finally a master of magic with this spell circle
 			}
 
 			MoonMothBuff: {
@@ -7695,7 +7315,7 @@ Mods: {
 
 			Alcadded: {
 				DisplayName: Alcadded
-				Description: Mods.Stellamod.Buffs.Alcadded.Description
+				Description: Been served
 			}
 
 			CloudMinionBuff: {
@@ -7744,28 +7364,28 @@ Mods: {
 			}
 
 			JellyB: {
-				DisplayName: Jelly B
-				Description: Mods.Stellamod.Buffs.JellyB.Description
+				DisplayName: Jelly Brooch
+				Description: Extremely goof for defense!
 			}
 
 			RoseB: {
-				DisplayName: Rose B
-				Description: Mods.Stellamod.Buffs.RoseB.Description
+				DisplayName: Rose Brooch
+				Description: totally not a steven universe or dreamshield reference.
 			}
 
 			AlcadWandMinionBuff: {
 				DisplayName: Alcad Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.AlcadWandMinionBuff.Description
+				Description: Its really spookyy~
 			}
 
 			MagicalBroo: {
-				DisplayName: Magical Broo
-				Description: Mods.Stellamod.Buffs.MagicalBroo.Description
+				DisplayName: Magical Brooch
+				Description: Maybe one of the most powerful things in the game!
 			}
 
 			HallowWandMinionBuff: {
 				DisplayName: Hallow Wand Minion Buff
-				Description: Mods.Stellamod.Buffs.HallowWandMinionBuff.Description
+				Description: Hallow!
 			}
 
 			AgreviDust: {
@@ -7790,17 +7410,142 @@ Mods: {
 
 			UseIgniter: {
 				DisplayName: Use Igniter
-				Description: Mods.Stellamod.Buffs.UseIgniter.Description
+				Description: You should use your igniter cards now.
 			}
 
 			Chained: {
 				DisplayName: Chained
-				Description: Mods.Stellamod.Buffs.Chained.Description
+				Description: Feel the blockade!
 			}
 
 			ShadowBoost: {
 				DisplayName: Shadow Boost
-				Description: Mods.Stellamod.Buffs.ShadowBoost.Description
+				Description: Gain your boost!
+			}
+
+			AmethystBroo: {
+				DisplayName: Amethyst Broo
+				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+			}
+
+			AurelusB: {
+				DisplayName: Aurelus B
+				Description: Mods.Stellamod.Buffs.AurelusB.Description
+			}
+
+			BearB: {
+				DisplayName: Bear B
+				Description: Mods.Stellamod.Buffs.BearB.Description
+			}
+
+			BurningGB: {
+				DisplayName: Burning G B
+				Description: Mods.Stellamod.Buffs.BurningGB.Description
+			}
+
+			Diarii: {
+				DisplayName: Diarii
+				Description: Mods.Stellamod.Buffs.Diarii.Description
+			}
+
+			DreadB: {
+				DisplayName: Dread B
+				Description: Mods.Stellamod.Buffs.DreadB.Description
+			}
+
+			Flyfish: {
+				DisplayName: Flyfish
+				Description: Mods.Stellamod.Buffs.Flyfish.Description
+			}
+
+			GintBroo: {
+				DisplayName: Gint Broo
+				Description: Mods.Stellamod.Buffs.GintBroo.Description
+			}
+
+			Goldren: {
+				DisplayName: Goldren
+				Description: Mods.Stellamod.Buffs.Goldren.Description
+			}
+
+			GovheilB: {
+				DisplayName: Govheil B
+				Description: Mods.Stellamod.Buffs.GovheilB.Description
+			}
+
+			IceBrooch: {
+				DisplayName: Ice Brooch
+				Description: Mods.Stellamod.Buffs.IceBrooch.Description
+			}
+
+			MalB: {
+				DisplayName: Mal B
+				Description: Mods.Stellamod.Buffs.MalB.Description
+			}
+
+			Slimee: {
+				DisplayName: Slimee
+				Description: Mods.Stellamod.Buffs.Slimee.Description
+			}
+
+			Spragald: {
+				DisplayName: Spragald
+				Description: Mods.Stellamod.Buffs.Spragald.Description
+			}
+
+			StoneB: {
+				DisplayName: Stone B
+				Description: Mods.Stellamod.Buffs.StoneB.Description
+			}
+
+			VerliaBroo: {
+				DisplayName: Verlia Broo
+				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+			}
+
+			VixedB: {
+				DisplayName: Vixed B
+				Description: Mods.Stellamod.Buffs.VixedB.Description
+			}
+
+			DeathMultiplierBloodLamp: {
+				DisplayName: Death Multiplier Blood Lamp
+				Description: Mods.Stellamod.Buffs.DeathMultiplierBloodLamp.Description
+			}
+
+			Dusted: {
+				DisplayName: Dusted
+				Description: Mods.Stellamod.Buffs.Dusted.Description
+			}
+
+			MushroomStaveBuff: {
+				DisplayName: Mushroom Stave Buff
+				Description: Mods.Stellamod.Buffs.MushroomStaveBuff.Description
+			}
+
+			ProbeBuff: {
+				DisplayName: Probe Buff
+				Description: Mods.Stellamod.Buffs.ProbeBuff.Description
+			}
+
+			SolMothBuff: {
+				DisplayName: Sol Moth Buff
+				Description: Mods.Stellamod.Buffs.SolMothBuff.Description
+			}
+
+			SwarmerMinionBuff: {
+				DisplayName: Swarmer Minion Buff
+				Description: Mods.Stellamod.Buffs.SwarmerMinionBuff.Description
+			}
+
+			TheBurningRodBuff: {
+				DisplayName: The Burning Rod Buff
+				Description: Mods.Stellamod.Buffs.TheBurningRodBuff.Description
+			}
+
+			VoidMinionBuff: {
+				DisplayName: Void Minion Buff
+				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
 			}
 		}
 	}

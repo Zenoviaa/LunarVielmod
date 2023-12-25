@@ -38,7 +38,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 		{
 		
 			 // Increase how many minions the player can have by one
-			player.statLifeMax2 += 40;
+			player.statLifeMax2 += 20;
 			player.GetDamage(DamageClass.Melee) *= 1.2f;
 		}
 

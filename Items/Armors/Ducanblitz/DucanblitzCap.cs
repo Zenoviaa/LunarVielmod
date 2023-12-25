@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using Terraria;
@@ -68,13 +69,13 @@ namespace Stellamod.Items.Armors.Ducanblitz
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 3);
-			recipe.AddIngredient(ItemID.SoulofLight, 10);
-			recipe.AddIngredient(ItemID.Ectoplasm, 10);
-			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 25);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 10);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
+			recipe.AddIngredient(ItemID.Ectoplasm, 8);
+			recipe.AddIngredient(ItemID.BrokenHeroSword, 1);
+			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
 	}

@@ -32,8 +32,8 @@ namespace Stellamod.Items.Armors.Eldritchian
 			player.runAcceleration *= 1.1f;
 			player.moveSpeed += 0.2f;
 			player.maxRunSpeed += 0.2f; // Increase the movement speed of the player
-			player.GetAttackSpeed(DamageClass.Ranged) += 0.8f;
-			player.GetDamage(DamageClass.Ranged) += 0.08f;
+			player.GetAttackSpeed(DamageClass.Throwing) += 0.8f;
+			player.GetDamage(DamageClass.Throwing) += 0.23f;
 		}
 
 		public override void AddRecipes()
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
 			recipe.AddIngredient(ItemID.SoulofFlight, 10);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 8);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

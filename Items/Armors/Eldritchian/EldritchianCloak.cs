@@ -31,8 +31,8 @@ namespace Stellamod.Items.Armors.Eldritchian
 		public override void UpdateEquip(Player player)
 		{
 			player.lifeRegen += 3;
-			player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
-			player.GetDamage(DamageClass.Ranged) += 0.08f;
+			player.GetAttackSpeed(DamageClass.Throwing) += 0.12f;
+			player.GetDamage(DamageClass.Throwing) += 0.16f;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -41,7 +41,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 25);
 			recipe.AddIngredient(ItemID.SoulofMight, 10);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 10);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

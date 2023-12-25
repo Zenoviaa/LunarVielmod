@@ -18,6 +18,7 @@ namespace Stellamod.Buffs.Charms
 			player.statDefense += 2;
 			player.moveSpeed += 0.1f;
 			player.maxRunSpeed += 0.2f;
+			player.GetAttackSpeed(DamageClass.Throwing) += 0.1f;
 		}
 	}
 }

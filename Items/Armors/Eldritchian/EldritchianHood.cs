@@ -92,8 +92,8 @@ namespace Stellamod.Items.Armors.Eldritchian
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetAttackSpeed(DamageClass.Ranged) += 0.1f;
-			player.GetDamage(DamageClass.Ranged) += 0.08f;
+			player.GetAttackSpeed(DamageClass.Throwing) += 0.1f;
+			player.GetDamage(DamageClass.Throwing) += 0.20f;
 			player.nightVision = true;
 		}
 
@@ -139,7 +139,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
 			recipe.AddIngredient(ItemID.SoulofSight, 10);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 8);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
