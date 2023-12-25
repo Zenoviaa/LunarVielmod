@@ -7039,23 +7039,23 @@ Mods: {
 
 		Buffs: {
 			AbyssalFlame: {
+				Description: The night burns you with this.
 				DisplayName: Abyssal Flame
-				Description: Burn
 			}
 
 			AcidFlame: {
+				Description: You feel like your limbs have new appendages.
 				DisplayName: Acid Flame
-				Description: Burn more
 			}
 
 			ArcaneDust: {
+				Description: Mods.Stellamod.Buffs.ArcaneDust.Description
 				DisplayName: Arcane Dust
-				Description: Arcanal stuff
 			}
 
 			AssassinsSlashBuff: {
+				Description: Its buffing you
 				DisplayName: Assassins Slash Buff
-				Description: Slashin
 			}
 
 			DarkHold: {
@@ -7424,109 +7424,79 @@ Mods: {
 			}
 
 			AmethystBroo: {
-				DisplayName: Amethyst Broo
-				Description: Mods.Stellamod.Buffs.AmethystBroo.Description
+				Description: I love amethyst!
+				DisplayName: Amethyst Brooch
 			}
 
 			AurelusB: {
-				DisplayName: Aurelus B
-				Description: Mods.Stellamod.Buffs.AurelusB.Description
+				Description: Can you even tell?
+				DisplayName: Aurelus Brooch
 			}
 
 			StoneB: {
-						Description: I'm high rn
-						DisplayName: Your stoned.
-					}
+				Description: I'm high rn
+				DisplayName: Your stoned.
+			}
 
-					Spragald: {
-						Description: Look at this, so much defense!
-						DisplayName: Spragald
-					}
+			Spragald: {
+				Description: Look at this, so much defense!
+				DisplayName: Spragald
+			}
 
-					Slimee: {
-						Description: I wish I could have this title right now.
-						DisplayName: Slimed!
-					}
+			Slimee: {
+				Description: I wish I could have this title right now.
+				DisplayName: Slimed!
+			}
 
-					MalB: {
-						Description: Something evil is brewing
-						DisplayName: Malicous Brooch
-					}
+			MalB: {
+				Description: Something evil is brewing
+				DisplayName: Malicous Brooch
+			}
 
-					IceBrooch: {
-						Description: Its colder the more you see it.
-						DisplayName: Ice Brooch
-					}
+			IceBrooch: {
+				Description: Its colder the more you see it.
+				DisplayName: Ice Brooch
+			}
 
-					GovheilB: {
-						Description: Very useful!
-						DisplayName: Govheil Brooch
-					}
+			GovheilB: {
+				Description: Very useful!
+				DisplayName: Govheil Brooch
+			}
 
-					Goldren: {
-						Description: Feeling gold yet?
-						DisplayName: Goldren
-					}
+			Goldren: {
+				Description: Feeling gold yet?
+				DisplayName: Goldren
+			}
 
-					GintBroo: {
-						Description: Very not useful
-						DisplayName: Gintze Brooch
-					}
+			GintBroo: {
+				Description: Very not useful
+				DisplayName: Gintze Brooch
+			}
 
-					Flyfish: {
-						Description: You feel faster!
-						DisplayName: Flyfish Brooch
-					}
+			Flyfish: {
+				Description: You feel faster!
+				DisplayName: Flyfish Brooch
+			}
 
-					DreadB: {
-						Description: Some health goes a long way
-						DisplayName: Dreaded Brooch
-					}
+			DreadB: {
+				Description: Some health goes a long way
+				DisplayName: Dreaded Brooch
+			}
 
-					Diarii: {
-						Description: Thanks for playing!
-						DisplayName: Diarii
-					}
+			Diarii: {
+				Description: Thanks for playing!
+				DisplayName: Diarii
+			}
 
-					BurningGB: {
-						Description: I meant the name.
-						DisplayName: Burning roach
-					}
+			BurningGB: {
+				Description: I meant the name.
+				DisplayName: Burning roach
+			}
 
-					BearB: {
-						Description: Its a bear
-						DisplayName: Bear Brooch
-					}
-
-					AurelusB: {
-						Description: Can you even tell?
-						DisplayName: Aurelus Brooch
-					}
-
-					AmethystBroo: {
-						Description: I love amethyst!
-						DisplayName: Amethyst Brooch
-					}
-
-					AssassinsSlashBuff: {
-						Description: Its buffing you
-						DisplayName: Assassins Slash Buff
-					}
-
-					ArcaneDust: {
-						Description: Mods.Stellamod.Buffs.ArcaneDust.Description
-						DisplayName: Arcane Dust
-					}
-
-					AcidFlame: {
-						Description: You feel like your limbs have new appendages.
-						DisplayName: Acid Flame
-					}
-
-					AbyssalFlame: {
-						Description: The night burns you with this.
-						DisplayName: Abyssal Flame
-					}
+			BearB: {
+				Description: Its a bear
+				DisplayName: Bear Brooch
+			}
 
 			DeathMultiplierBloodLamp: {
 				DisplayName: Death Multiplier Blood Lamp
@@ -7566,6 +7536,16 @@ Mods: {
 			VoidMinionBuff: {
 				DisplayName: Void Minion Buff
 				Description: Mods.Stellamod.Buffs.VoidMinionBuff.Description
+			}
+
+			VerliaBroo: {
+				DisplayName: Verlia Broo
+				Description: Mods.Stellamod.Buffs.VerliaBroo.Description
+			}
+
+			VixedB: {
+				DisplayName: Vixed B
+				Description: Mods.Stellamod.Buffs.VixedB.Description
 			}
 		}
 	}
