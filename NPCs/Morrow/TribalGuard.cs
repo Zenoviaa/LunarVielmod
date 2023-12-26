@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.damage = 80;
 			NPC.defense = 8;
 			NPC.lifeMax = 400;
-			NPC.HitSound = SoundID.DSTMaleHurt;
+			NPC.HitSound = SoundID.NPCHit48;
 			NPC.DeathSound = SoundID.DD2_SkeletonDeath;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
