@@ -98,7 +98,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.aiStyle = -1;
 			NPC.damage = 90;
 			NPC.defense = 42;
-			NPC.lifeMax = 2000;
+			NPC.lifeMax = 9000;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;

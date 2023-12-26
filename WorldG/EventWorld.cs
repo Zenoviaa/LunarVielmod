@@ -24,6 +24,9 @@ namespace Stellamod.WorldG
         public static bool AuroreanSpawn;
         public static bool Aurorean;
         public static bool AuroreanText;
+        public static bool NoBloodMood;
+        public static bool HasHadBloodMoon;
+        public static bool BLText;
         public static void GintzeWin()
         {
             if (GintzingBoss)
@@ -56,6 +59,21 @@ namespace Stellamod.WorldG
                     }
                 }
             }
+
+            if (!Main.dayTime && !Aurorean && !AuroreanSpawn && NoBloodMood && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
+            {
+                HasHadBloodMoon = true;
+                    if (!BLText)
+                    {
+                        Main.NewText("The Moon has turned red for tonight!", 234, 96, 114);
+                        BLText = true;
+                    }
+
+                Main.bloodMoon = true;
+                
+            }
+
+
             if (Main.dayTime && Aurorean)
             {
                 

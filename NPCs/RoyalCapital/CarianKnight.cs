@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.height = 62;
             NPC.damage = 40;
             NPC.defense = 10;
-            NPC.lifeMax = 575;
+            NPC.lifeMax = 975;
             NPC.value = 90f;
             NPC.noGravity = true;
             NPC.noTileCollide = false;

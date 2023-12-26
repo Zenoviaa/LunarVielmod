@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.height = 80;
 			NPC.damage = 20;
 			NPC.defense = 10;
-			NPC.lifeMax = 150;
+			NPC.lifeMax = 100;
 			NPC.noGravity = true;
 			NPC.value = 90f;
 			NPC.noTileCollide = false;
@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Morrow
 			if (spawnInfo.Player.ZoneCorrupt)
 			{
 
-				return SpawnCondition.OverworldDay.Chance * 0.3f;
+				return SpawnCondition.OverworldDay.Chance * 0.5f;
 
 			}
 			return SpawnCondition.OverworldNight.Chance * 0f;
