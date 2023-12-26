@@ -24,6 +24,9 @@ namespace Stellamod.WorldG
         public static bool AuroreanSpawn;
         public static bool Aurorean;
         public static bool AuroreanText;
+
+
+        //-----------------------------------
         public static bool NoBloodMood;
         public static bool HasHadBloodMoon;
         public static bool BLText;
@@ -49,7 +52,7 @@ namespace Stellamod.WorldG
             if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
             {
                 AuroreanSpawn = true;
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(4))
                 {
                     Aurorean = true;
                     if (!AuroreanText)
@@ -60,7 +63,7 @@ namespace Stellamod.WorldG
                 }
             }
 
-            if (!Main.dayTime && !Aurorean && !AuroreanSpawn && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
+            if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
             {
                 HasHadBloodMoon = true;
                     if (!BLText)

@@ -117,7 +117,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest) ? (0.100f) : 0f;
+            return (spawnInfo.Player.ZoneForest) ? (0.040f) : 0f;
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

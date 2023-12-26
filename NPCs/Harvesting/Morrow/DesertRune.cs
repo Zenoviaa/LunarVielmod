@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneDesert) ? (0.100f) : 0f;
+            return (spawnInfo.Player.ZoneDesert) ? (0.050f) : 0f;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
