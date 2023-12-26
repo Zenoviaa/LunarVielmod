@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.lifeMax = 975;
             NPC.value = 90f;
             NPC.noGravity = true;
-            NPC.noTileCollide = false;
+            NPC.noTileCollide = true;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.aiStyle = 10;
