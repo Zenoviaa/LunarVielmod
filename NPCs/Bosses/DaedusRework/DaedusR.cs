@@ -8,6 +8,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.Daedus;
@@ -433,6 +434,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 ItemDropRule.Common(ModContent.ItemType<BearBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<VixedBroochA>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<HeatGlider>(), chanceDenominator: numResults),
+                 ItemDropRule.Common(ModContent.ItemType<DaedCard>(), chanceDenominator: numResults),
                 ItemDropRule.Common(ModContent.ItemType<DaedussSunSheid>(), chanceDenominator: numResults)));
 
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
