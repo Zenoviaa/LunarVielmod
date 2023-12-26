@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<MyPlayer>().SpiritPendent = true;
-            Lighting.AddLight(player.position, 1.0f, 1.0f, 2.75f);
+            Lighting.AddLight(player.position, 2.0f, 2.0f, 4.75f);
         }
 
         public override void AddRecipes()

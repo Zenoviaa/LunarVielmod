@@ -33,7 +33,7 @@ namespace Stellamod.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Magic) += 0.2f;
+            player.GetDamage(DamageClass.Magic) *= 1.2f;
             player.manaCost -= 0.1f;
             player.manaRegen += 1;
 

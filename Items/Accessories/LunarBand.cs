@@ -28,12 +28,12 @@ namespace Stellamod.Items.Accessories
         {
             if (!Main.dayTime)
             {
-                player.GetDamage(DamageClass.Generic) += 0.12f;
+                player.GetDamage(DamageClass.Generic) *= 1.12f;
 
                 //Lighting Effect
                 float osc = VectorHelper.Osc(0.5f, 1f);
                 float lightingStrength = 1 * osc;
-                Lighting.AddLight(player.position, lightingStrength * 0.5f, lightingStrength * 0.5f, lightingStrength);
+                Lighting.AddLight(player.position, lightingStrength * 1f, lightingStrength * 1f, lightingStrength);
                 if (!hideVisual)
                 {
                     int count = Main.rand.Next(3);

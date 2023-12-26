@@ -15,12 +15,12 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 16;
+			Item.damage = 13;
 			Item.mana = 2;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 10;
-			Item.useAnimation = 10;
+			Item.useTime = 14;
+			Item.useAnimation = 14;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.noMelee = true;
 			Item.knockBack = 2f;
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shoot = ProjectileID.Flamelash;
 			Item.shootSpeed = 7f;
 			Item.autoReuse = true;
-			Item.crit = 12;
+			Item.crit = 2;
 			Item.noUseGraphic = true;
 		}
 		

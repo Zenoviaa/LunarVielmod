@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Minibosses
 				return 0f;
 			}
 
-			return SpawnCondition.Cavern.Chance * 0.012f;
+			return SpawnCondition.Cavern.Chance * 0.0012f;
 			
 
 		}
