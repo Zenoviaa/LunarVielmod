@@ -60,12 +60,12 @@ namespace Stellamod.WorldG
                 }
             }
 
-            if (!Main.dayTime && !Aurorean && !AuroreanSpawn && NoBloodMood && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
+            if (!Main.dayTime && !Aurorean && !AuroreanSpawn && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
             {
                 HasHadBloodMoon = true;
                     if (!BLText)
                     {
-                        Main.NewText("The Moon has turned red for tonight!", 234, 96, 114);
+                        Main.NewText("The Moon has turned red for tonight!", 234, 16, 50);
                         BLText = true;
                     }
 
