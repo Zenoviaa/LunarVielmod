@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.WorldG
 {
@@ -11,25 +12,21 @@ namespace Stellamod.WorldG
     {
         //Gintzing--------------------------
         public static bool Gintzing;
-        public static bool GintzingText;
         public static bool TryForGintze;
         public static bool GintzeDayReset;
         public static int GintzeKills;
 
         public static bool GintzingBoss;
+
         //SoulStorm--------------------------
         public static bool SoulStorm;
 
         //AuroreanStars--------------------------
         public static bool AuroreanSpawn;
         public static bool Aurorean;
-        public static bool AuroreanText;
-
 
         //-----------------------------------
-        public static bool NoBloodMood;
         public static bool HasHadBloodMoon;
-        public static bool BLText;
         public static void GintzeWin()
         {
             if (GintzingBoss)
@@ -41,78 +38,28 @@ namespace Stellamod.WorldG
             }
         }
 
-        public override void PostUpdateWorld()
+        private void TrySpawnGintzeArmy()
         {
             Player player = Main.LocalPlayer;
-            if (!player.active)
-                return;
-
-            //AuroreanStars--------------------------
-
-            if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
-            {
-                AuroreanSpawn = true;
-                if (Main.rand.NextBool(4))
-                {
-                    Aurorean = true;
-                    if (!AuroreanText)
-                    {
-                        Main.NewText("Aurorean Stars are falling!", 234, 96, 114);
-                        AuroreanText = true;
-                    }
-                }
-            }
-
-            if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
-            {
-                HasHadBloodMoon = true;
-                    if (!BLText)
-                    {
-                        Main.NewText("The Moon has turned red for tonight!", 234, 16, 50);
-                        BLText = true;
-                    }
-
-                Main.bloodMoon = true;
-                
-            }
-
-
-            if (Main.dayTime && Aurorean)
-            {
-                
-                Aurorean = false;
-                if (AuroreanText)
-                {
-                    Main.NewText("The Aurorean starfall has ended", 234, 96, 114);
-                    AuroreanText = false;
-                }
-            }
-            if (Main.dayTime)
-            {
-                AuroreanSpawn = false;
-            }
-
             //------------------------------------------------------------------------------
             if (Gintzing)
             {
-       
+
                 if (Main.expertMode)
                 {
                     if (GintzeKills >= 80)
                     {
                         GintzingBoss = true;
-                        GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
                     }
 
                 }
-                else if(Main.masterMode)
+                else if (Main.masterMode)
                 {
                     if (GintzeKills >= 100)
                     {
-                        GintzingBoss = true;      
-                        GintzingText = false;
+                        GintzingBoss = true;
                         Gintzing = false;
                         GintzeKills = 0;
                     }
@@ -122,12 +69,11 @@ namespace Stellamod.WorldG
                     if (GintzeKills >= 65)
                     {
                         GintzingBoss = true;
-                        GintzingText = false;
                         Gintzing = false;
                         GintzeKills = 0;
                     }
                 }
-      
+
                 player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
             }
 
@@ -139,15 +85,8 @@ namespace Stellamod.WorldG
 
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && DownedBossSystem.downedStoneGolemBoss && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
             {
-                if (Main.rand.NextBool(1))
-                {
-                    Gintzing = true;
-                    if (!GintzingText)
-                    {
-                        Main.NewText("The Gintze army is approaching...", 34, 121, 100);
-                        GintzingText = true;
-                    }
-                }
+                Gintzing = true;
+                Main.NewText("The Gintze army is approaching...", 34, 121, 100);
                 TryForGintze = true;
             }
 
@@ -157,14 +96,87 @@ namespace Stellamod.WorldG
                 if (Main.rand.NextBool(40))
                 {
                     Gintzing = true;
-                    if (!GintzingText)
-                    {
-                        Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
-                        GintzingText = true;
-                    }
+                    Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
                 }
                 TryForGintze = true;
             }
+        }
+
+        private void TrySpawnAuroreanStarfall()
+        {
+            //AuroreanStars--------------------------
+            if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
+            {
+                AuroreanSpawn = true;
+                if (Main.rand.NextBool(4))
+                {
+                    Aurorean = true;
+                    Main.NewText("Aurorean Stars are falling!", 234, 96, 114);
+                }
+            }
+            else if (Main.dayTime && Aurorean)
+            {
+                Aurorean = false;
+                Main.NewText("The Aurorean starfall has ended", 234, 96, 114);
+            }
+            else if (Main.dayTime)
+            {
+                AuroreanSpawn = false;
+            }
+        }
+
+        private void TryForceBloodmoon()
+        {
+            if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
+            {
+                HasHadBloodMoon = true;
+                Main.NewText("The Moon has turned red for tonight!", 234, 16, 50);
+                Main.bloodMoon = true;
+            }
+        }
+
+        public override void PostUpdateWorld()
+        {
+            Player player = Main.LocalPlayer;
+            if (!player.active)
+                return;
+
+            TrySpawnGintzeArmy();
+            TrySpawnAuroreanStarfall();
+            TryForceBloodmoon();
+        }
+
+        public override void ClearWorld()
+        {
+            HasHadBloodMoon = false;
+            Aurorean = false;
+            Gintzing = false;
+            GintzingBoss = false;
+            TryForGintze = false;
+            GintzeKills = 0;
+            GintzeDayReset = false;
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            HasHadBloodMoon = tag.GetBool("HasHadBloodmoon");
+            Aurorean = tag.GetBool("Aurorean");
+            Gintzing = tag.GetBool("Gintzing");
+            GintzingBoss = tag.GetBool("GintzingBoss");
+            TryForGintze = tag.GetBool("TryForGintze");
+            GintzeKills = tag.GetInt("GintzeKills");
+            GintzeDayReset = tag.GetBool("GintzeDayReset");
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag["HasHadBloodmoon"] = HasHadBloodMoon;
+            tag["Aurorean"] = Aurorean;
+            tag["Gintzing"] = Gintzing;
+            tag["GintzingBoss"] = GintzingBoss;
+            tag["GintzeKills"] = GintzeKills;
+            tag["GintzeDayReset"] = GintzeDayReset;
+            tag["TryForGintze"] = TryForGintze;
         }
     }
 }

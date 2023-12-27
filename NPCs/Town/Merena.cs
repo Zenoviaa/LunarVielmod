@@ -1,41 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Assets.Biomes;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
-using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Safunais;
-using Stellamod.Items.Weapons.PowdersItem;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	[AutoloadHead]
+    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+    [AutoloadHead]
 	public class Merena : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -52,7 +36,7 @@ namespace Stellamod.NPCs.Town
 			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
-
+			NPCID.Sets.NoTownNPCHappiness[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
@@ -67,12 +51,6 @@ namespace Stellamod.NPCs.Town
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-	
-
-
-
-
-			; // < Mind the semicolon!
 		}
 
 		// Current state
@@ -101,9 +79,8 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
-
-
 		}
+
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.16f;
@@ -217,6 +194,7 @@ namespace Stellamod.NPCs.Town
 
 			return chat; // chat is implicitly cast to a string.
 		}
+
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			int num = NPC.life > 0 ? 1 : 5;
@@ -226,11 +204,6 @@ namespace Stellamod.NPCs.Town
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenBlood);
 			}
 		}
-
-
-
-
-
 	
 		public override List<string> SetNPCNameList()
 		{
@@ -242,8 +215,6 @@ namespace Stellamod.NPCs.Town
 		}
 
 
-
-
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button2 = Language.GetTextValue("LegacyInterface.28");
@@ -251,160 +222,240 @@ namespace Stellamod.NPCs.Town
 
 		}
 
+		private void Quest_VerliaStart()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+			Main.npcChatText = $"What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<KillVerlia>(), 1);
+		}
+
+
+		private void Quest_VerliaComplete()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+
+			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
+
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<KillVerliaC>());
+			var entitySource = NPC.GetSource_GiftOrReward();
+
+			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
+
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
+		}
+
+		private void Quest_MorrowStart()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
+		}
+
+		private void Quest_MorrowComplete()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+
+			Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
+
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<ExploreMorrowedVillageC>());
+			var entitySource = NPC.GetSource_GiftOrReward();
+
+			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
+
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
+		}
+
+		private void Quest_DustBagsStart()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
+		}
+
+		private void Quest_DustBagsComplete()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+
+			Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
+
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<Give100DustBagsC>());
+			var entitySource = NPC.GetSource_GiftOrReward();
+
+			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
+
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
+		}
+
+		private void Quest_MagicPaperStart()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
+		}
+		
+		private void Quest_MagicPaperComplete()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+
+			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<MakeMagicPaperC>());
+			var entitySource = NPC.GetSource_GiftOrReward();
+
+			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
+
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
+		}
+
+		private void Quest_TomeStart()
+        {
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
+		}
+
+		private void Quest_TomeComplete()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. ";
+			
+
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
+			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted, -1);
+		}
+
+
+		private bool CompleteQuests()
+		{
+			Player player = Main.LocalPlayer;
+	
+			if (player.HasItem(ModContent.ItemType<KillVerliaC>()))
+			{
+				Quest_VerliaComplete();
+				return true;
+			} 
+			else if (player.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
+			{
+				Quest_MorrowComplete();
+				return true;
+			}
+			else if (player.HasItem(ModContent.ItemType<Give100DustBagsC>()))
+			{
+				Quest_DustBagsComplete();
+				return true;
+			}
+			else if (player.HasItem(ModContent.ItemType<MakeMagicPaperC>()))
+			{
+				Quest_MagicPaperComplete();
+				return true;
+			}
+			else if (player.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
+			{
+				Quest_TomeComplete();
+				return true;
+			}
+
+			return false;
+		}
+
+		private void StartQuests()
+        {
+			Player player = Main.LocalPlayer;
+
+			//Go through the list of quests in a specific order and see if any need to be started
+			if (!MerenaQuestSystem.KillVerliaCompleted)
+			{
+				if (!player.HasItem(ModContent.ItemType<KillVerlia>()))
+				{
+					Quest_VerliaStart();
+				}
+			}
+			else if (!MerenaQuestSystem.ExploreMorrowedVillageCompleted)
+			{
+				if (!player.HasItem(ModContent.ItemType<ExploreMorrowedVillage>()))
+				{
+					Quest_MorrowStart();
+				}
+			}
+			else if (!MerenaQuestSystem.Give100DustBagsCompleted)
+			{
+				if (!player.HasItem(ModContent.ItemType<Give100DustBags>()))
+				{
+					Quest_DustBagsStart();
+				}
+			}
+			else if (!MerenaQuestSystem.MakeMagicPaperCompleted)
+			{
+				if (!player.HasItem(ModContent.ItemType<MakeMagicPaper>()))
+				{
+					Quest_MagicPaperStart();
+				}
+			}
+			else if (!MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted)
+			{
+				if (!player.HasItem(ModContent.ItemType<MakeUltimateScroll>()))
+				{
+					Quest_TomeStart();
+				}
+			}
+			else
+			{
+				//All Quests completed
+				Main.npcChatText = $"Hey, I have nothing else for you to do! Thanks for all of your help, have you checked out my shop yet?";
+			}
+		}
+
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (!firstButton)
 			{
-				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
-
-				//if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-				//{
-				//	SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
-
-				//	Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
-
-				//	int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-				//	var entitySource = NPC.GetSource_GiftOrReward();
-
-				//	Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-				//	Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
-
-				//	return;
-				//}
-
 				shop = ShopName;
 			}
 
 			if (firstButton)
 			{
-
-				Player player = Main.LocalPlayer;
-				WeightedRandom<string> chat = new WeightedRandom<string>();
-
-
-
-				//-----------------------------------------------------------------------------------------------	
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-
-					Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but its needed for this tome.";
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<KillVerliaC>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
-
-
+				//We need to complete current quests before trying to start them otherwise it will break
+				bool hasCompletedQuest = CompleteQuests();
+                if (!hasCompletedQuest)
+                {
+					StartQuests();
 				}
-
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-
-					Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<ExploreMorrowedVillageC>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
-
-
-				}
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-
-					Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<Give100DustBagsC>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
-
-
-				}
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-
-					Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<MakeMagicPaperC>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-
-					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-
-
-				}
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
-				{
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-
-					Main.npcChatText = $"THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. ";
-
-					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<TomeOfInfiniteSorcery>());
-					var entitySource = NPC.GetSource_GiftOrReward();
-	
-					
-					
-					
-					
-					
-					
-					// Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-
-
-				}
-
+			
+				//Leaving this here incase ya need the text at some point, but it probably won't ever be needed.
+				/*
 				if (!Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
 				{
-
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 					Main.npcChatText = $"Hey you wanna do a quest? I'll open up my expansive magic shop for you if you do.. I have quite some great goodies in store but I want to become the best witch in all of the Lunar Veil, and I want you to help me make a tome, but first I need you to kill Verlia first for me.";
 
 					var entitySource = NPC.GetSource_GiftOrReward();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<KillVerlia>(), 1);
-
-
-
-
-
-					// Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-
-
 				}
-
-
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerlia>()) && !Main.LocalPlayer.HasItem(ModContent.ItemType<TomeOfInfiniteSorcery>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<MakeMagicPaperC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<Give100DustBagsC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<KillVerliaC>()) || !Main.LocalPlayer.HasItem(ModContent.ItemType<ExploreMorrowedVillageC>()))
-				{
-
-					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
-					Main.npcChatText = $"What are you standing there for, go kill Verlia! She's an enemy of the royal capital and she has a book I need lmao";
-
-				
-
-
-
-
-
-					// Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-
-
-				}
-
+				*/
 			}
-
-
 		}
 
 
@@ -414,16 +465,6 @@ namespace Stellamod.NPCs.Town
 			frameCounter = 0;
 			frameTick = 0;
 		}
-
-
-
-
-
-
-
-
-
-
 
 		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
@@ -445,93 +486,26 @@ namespace Stellamod.NPCs.Town
 		}
 
 
-
-
 		public override void AddShops()
 		{
-
-
-			Player player = Main.LocalPlayer;
-
-
-
 			var npcShop = new NPCShop(Type, ShopName)
-
 			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
 			.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
-
-			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
+			.Add<WickofSorcery>(MerenaQuestSystem.ShopConditionTome)
 			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<AlcadzianCard>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<PearlescentScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))
-			.Add<LostScrap>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))// { shopCustomPrice = Item.buyPrice(silver: 50) })
-			.Add<Hyua>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<BlossomingScissor>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<AlcadThrowingCards>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>()))//{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<AlcaricMush>(Condition.PlayerCarriesItem(ModContent.ItemType<TomeOfInfiniteSorcery>())); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
-			 //{ shopCustomPrice = Item.buyPrice(gold: 1) });
-
-			npcShop.Register(); // Name of this shop tab
-			
-
-
-
-		
+			.Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)
+			.Add<LostScrap>(MerenaQuestSystem.ShopConditionKillVerlia)// { shopCustomPrice = Item.buyPrice(silver: 50) })
+			.Add<Hyua>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
+			.Add<BlossomingScissor>(MerenaQuestSystem.ShopConditionGive100DustBags) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
+			.Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionMakeMagicPaper)//{ shopCustomPrice = Item.buyPrice(silver: 10) })
+			.Add<AlcaricMush>(MerenaQuestSystem.ShopConditionTome); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
+			npcShop.Register(); // Name of this shop tab		
 		}
-
-
-
 
 		public override void AI()
 		{
-
 			timer++;
 			NPC.spriteDirection = NPC.direction;
 		}
-
-
-
-
-
-
-
-
-			//	else if (Main.moonPhase < 4) {
-			// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-			//		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-			//	}
-			//	else if (Main.moonPhase < 6) {
-			// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-			// 	}
-			//
-			// 	// todo: Here is an example of how your npc can sell items from other mods.
-			// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-			// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-			// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-			// 	// 	nextSlot++;
-			// 	// }
-			//
-			// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-			// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-			// 	// 		if (Item.IsUnloaded) continue;
-			// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-			// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-			// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-			// 	// 		nextSlot++;
-			// 	// 		//TODO: Have tModLoader handle index issues.
-			// 	// 	}
-			// 	// }
-			// }
-
-
-
-
-
-
-
-		}
-
-
-
-
-
 	}
+}

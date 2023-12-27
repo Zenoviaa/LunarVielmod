@@ -29,10 +29,9 @@ namespace Stellamod.Helpers
 		public static bool downedWaterJellyfish = false;
 		public static bool downedSparn=false;
 		public static bool downedCogwork = false;
-		// public static bool downedOtherBoss = false;
 
-		public override void OnWorldLoad()
-		{
+        public override void ClearWorld()
+        {
 			downedVeriBoss = false;
 			downedJackBoss = false;
 			downedDaedusBoss = false;
@@ -52,137 +51,48 @@ namespace Stellamod.Helpers
 			downedCogwork = false;
 		}
 
-		public override void OnWorldUnload()
+        // We save our data sets using TagCompounds.
+        // NOTE: The tag instance provided here is always empty by default.
+        public override void SaveWorldData(TagCompound tag)
 		{
-			downedVeriBoss = false;
-			downedJackBoss = false;
-			downedDaedusBoss = false;
-			downedDreadBoss = false;
-			downedSOMBoss = false;
-			downedGothBoss = false;
-			downedSunsBoss = false;
-			downedGintzlBoss = false;
-			downedSyliaBoss = false;
-			downedStoneGolemBoss = false;
-			downedSTARBoss = false;
-			downedFenixBoss = false;
-			downedPandorasBox = false;
-			downedBlazingSerpent = false;
-			downedWaterJellyfish = false;
-			downedSparn = false;
-			downedCogwork = false;
-		}
-
-		// We save our data sets using TagCompounds.
-		// NOTE: The tag instance provided here is always empty by default.
-		public override void SaveWorldData(TagCompound tag)
-		{
-			if (downedVeriBoss)
-			{
-				tag["downedVeriBoss"] = true;
-			}
-
-			if (downedGintzlBoss)
-			{
-				tag["downedGintzlBoss"] = true;
-			}
-
-			if (downedSunsBoss)
-			{
-				tag["downedSunsBoss"] = true;
-			}
-
-			if (downedGothBoss)
-			{
-				tag["downedGothBoss"] = true;
-			}
-
-			if (downedSOMBoss)
-			{
-				tag["downedSOMBoss"] = true;
-			}
-
-			if (downedJackBoss)
-			{
-				tag["downedJackBoss"] = true;
-			}
-			if (downedDaedusBoss)
-			{
-				tag["downedDaedusBoss"] = true;
-			}
-			if (downedDreadBoss)
-			{
-				tag["downedDreadBoss"] = true;
-			}
-			if (downedSyliaBoss)
-			{
-				tag["downedSyliaBoss"] = true;
-			}
-            if (downedStoneGolemBoss)
-            {
-				tag["downedStoneGolemBoss"] = true;
-			}
-
-			if (downedSTARBoss)
-			{
-				tag["downedSTARBoss"] = true;
-			}
-
-			if (downedFenixBoss)
-			{
-				tag["downedFenixBoss"] = true;
-			}
-
-			if (downedBlazingSerpent)
-			{
-				tag["downedBlazingSerpent"] = true;
-			}
-
-			if (downedCogwork)
-			{
-				tag["downedCogwork"] = true;
-			}
-
-			if (downedPandorasBox)
-			{
-				tag["downedPandorasBox"] = true;
-			}
-
-			if (downedSparn)
-			{
-				tag["downedSparn"] = true;
-			}
-
-			if (downedWaterJellyfish)
-			{
-				tag["dowendWaterJellyfish"] = true;
-			}
-
-			// if (downedOtherBoss) {
-			//	tag["downedOtherBoss"] = true;
-			// }
+			tag["downedVeriBoss"] = downedVeriBoss;
+			tag["downedGintzlBoss"] = downedGintzlBoss;
+			tag["downedSunsBoss"] = downedSunsBoss;
+			tag["downedGothBoss"] = downedGothBoss;
+			tag["downedSOMBoss"] = downedSOMBoss;
+			tag["downedJackBoss"] = downedJackBoss;
+			tag["downedDaedusBoss"] = downedDaedusBoss;
+			tag["downedDreadBoss"] = downedDreadBoss;
+			tag["downedSyliaBoss"] = downedSyliaBoss;
+			tag["downedStoneGolemBoss"] = downedStoneGolemBoss;
+			tag["downedSTARBoss"] = downedSTARBoss;
+			tag["downedFenixBoss"] = downedFenixBoss;
+			tag["downedBlazingSerpent"] = downedBlazingSerpent;
+			tag["downedCogwork"] = downedBlazingSerpent;
+			tag["downedPandorasBox"] = downedPandorasBox;
+			tag["downedSparn"] = downedSparn;
+			tag["downedWaterJellyfish"] = downedWaterJellyfish;
 		}
 
 		public override void LoadWorldData(TagCompound tag)
 		{
-			downedVeriBoss = tag.ContainsKey("downedVeriBoss");
-			downedDreadBoss = tag.ContainsKey("downedDreadBoss");
-			downedSOMBoss = tag.ContainsKey("downedSOMBoss");
-			downedJackBoss = tag.ContainsKey("downedJackBoss");
-			downedDaedusBoss = tag.ContainsKey("downedDaedusBoss");
-			downedGothBoss = tag.ContainsKey("downedGothBoss");
-			downedSunsBoss = tag.ContainsKey("downedSunsBoss");
-			downedGintzlBoss = tag.ContainsKey("downedGintzlBoss");
-			downedSyliaBoss = tag.ContainsKey("downedSyliaBoss");
-			downedStoneGolemBoss = tag.ContainsKey("downedStoneGolemBoss");
-			downedSTARBoss = tag.ContainsKey("downedSTARBoss");
-			downedFenixBoss = tag.ContainsKey("downedFenixBoss");
-			downedCogwork = tag.ContainsKey("downedCogwork");
-			downedWaterJellyfish = tag.ContainsKey("downedWaterJellyfish");
-			downedSparn = tag.ContainsKey("downedSparn");
-			downedPandorasBox = tag.ContainsKey("downedPandorasBox");
-			downedBlazingSerpent = tag.ContainsKey("downedBlazingSerpent");
-			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
+			downedVeriBoss = tag.GetBool("downedVeriBoss");
+			downedDreadBoss = tag.GetBool("downedDreadBoss");
+			downedSOMBoss = tag.GetBool("downedSOMBoss");
+			downedJackBoss = tag.GetBool("downedJackBoss");
+			downedDaedusBoss = tag.GetBool("downedDaedusBoss");
+			downedGothBoss = tag.GetBool("downedGothBoss");
+			downedSunsBoss = tag.GetBool("downedSunsBoss");
+			downedGintzlBoss = tag.GetBool("downedGintzlBoss");
+			downedSyliaBoss = tag.GetBool("downedSyliaBoss");
+			downedStoneGolemBoss = tag.GetBool("downedStoneGolemBoss");
+			downedSTARBoss = tag.GetBool("downedSTARBoss");
+			downedFenixBoss = tag.GetBool("downedFenixBoss");
+			downedCogwork = tag.GetBool("downedCogwork");
+			downedWaterJellyfish = tag.GetBool("downedWaterJellyfish");
+			downedSparn = tag.GetBool("downedSparn");
+			downedPandorasBox = tag.GetBool("downedPandorasBox");
+			downedBlazingSerpent = tag.GetBool("downedBlazingSerpent");
 		}
 
 		public override void NetSend(BinaryWriter writer)
@@ -206,13 +116,7 @@ namespace Stellamod.Helpers
 			flags[14] = downedSparn;
 			flags[15] = downedWaterJellyfish;
 			flags[16] = downedPandorasBox;
-			//blazing
-			//water cogwork
-
-			// flags[1] = downedOtherBoss;
-			writer.Write(flags);
-
-			
+			writer.Write(flags);		
 		}
 
 		public override void NetReceive(BinaryReader reader)
