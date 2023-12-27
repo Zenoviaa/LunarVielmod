@@ -2,6 +2,7 @@
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
@@ -33,7 +34,7 @@ namespace Stellamod.Items.Quest.Merena
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 100);
             recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 100);
             recipe.AddIngredient(ModContent.ItemType<Twirlers>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<StumpBuster>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<MorrowChestKey>(), 10);
             recipe.AddIngredient(ModContent.ItemType<Plate>(), 1000);
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
             recipe.Register();

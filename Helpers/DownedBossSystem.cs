@@ -165,7 +165,7 @@ namespace Stellamod.Helpers
 
 		public override void LoadWorldData(TagCompound tag)
 		{
-			downedVeriBoss = tag.ContainsKey("downedVerliaBoss");
+			downedVeriBoss = tag.ContainsKey("downedVeriBoss");
 			downedDreadBoss = tag.ContainsKey("downedDreadBoss");
 			downedSOMBoss = tag.ContainsKey("downedSOMBoss");
 			downedJackBoss = tag.ContainsKey("downedJackBoss");

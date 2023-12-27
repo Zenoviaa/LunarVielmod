@@ -66,6 +66,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
                 }
             }
         }
+
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
@@ -91,6 +92,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
                 0);
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
@@ -109,11 +111,12 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (!EventWorld.Aurorean)
                 return 0f;
-            return SpawnCondition.Overworld.Chance * 3000f;
+            return SpawnCondition.Overworld.Chance;
         }
 
         public override void AI()

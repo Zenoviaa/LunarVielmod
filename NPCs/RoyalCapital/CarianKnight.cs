@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -79,6 +81,11 @@ namespace Stellamod.NPCs.RoyalCapital
                 SoundEngine.PlaySound(SoundID.Zombie82, NPC.position);
                 SoundEngine.PlaySound(SoundID.Zombie99, NPC.position);
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 2, 1, 2));
         }
 
         public override void FindFrame(int frameHeight)

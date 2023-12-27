@@ -175,18 +175,10 @@ namespace Stellamod.NPCs.RoyalCapital
 			return true;
 		}
 
-
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 2, 1, 2));
-
-
-
-
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 1, 2));
 		}
-
-
-		
 
 		public void Speed()
 		{
