@@ -4882,7 +4882,7 @@ namespace Stellamod.WorldG
 		private void WorldGenVillage(GenerationProgress progress, GameConfiguration configuration)
 		{
 
-
+			/*
 
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Huntria Ark";
@@ -5003,7 +5003,7 @@ namespace Stellamod.WorldG
 
 			}
 
-
+			*/
 		}
 
 

@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles
 
             if(ai_Counter < 70)
             {
-                float speed = 10;
+                float speed = 8;
                 Vector2 velocity;
                 Vector2 direction = Projectile.DirectionTo(playerToHomeTo.Center);
                 Vector2 maxVelocity = direction * (speed * ai_Counter / 60);

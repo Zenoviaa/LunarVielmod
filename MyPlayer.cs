@@ -6,6 +6,7 @@ using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
@@ -705,8 +706,7 @@ namespace Stellamod
 
 			if (EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight))
 			{
-
-                if (Main.rand.NextBool(90)&& Main.netMode != NetmodeID.MultiplayerClient)
+                if (Main.rand.NextBool(90) && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int offsetX = Main.rand.Next(-1000, 1000) * 2;
                     int offsetY = Main.rand.Next(-1000, 1000) - 1700;
@@ -714,29 +714,16 @@ namespace Stellamod
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
                 }	
 				
-				bool npcAlreadyExists = false;
-				for (int i = 0; i < Main.maxNPCs; i++)
-				{
-					NPC npc = Main.npc[i];
-					if (npc.type == ModContent.NPCType<STARBOMBER>())
-					{
-						npcAlreadyExists = true;
-						break;
-					}
-				}
-
 				//Don't spawn the npc if it already exists
-				if (!npcAlreadyExists)
+				if (Main.rand.NextBool(4500) && !NPCHelper.IsBossAlive() && Main.netMode != NetmodeID.MultiplayerClient && Main.hardMode)
 				{
-					if (Main.rand.NextBool(4000) && Main.netMode != NetmodeID.MultiplayerClient && Main.hardMode)
-					{
-						int offsetX = Main.rand.Next(-10, 10) * 2;
-						int offsetY = Main.rand.Next(-500, 500) - 1700;
-						int damage = Main.expertMode ? 0 : 0;
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
-					}
+					int offsetX = Main.rand.Next(-10, 10) * 2;
+					int offsetY = Main.rand.Next(-500, 500) - 1700;
+					int damage = Main.expertMode ? 0 : 0;
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
 				}
 			}
+
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
             {
@@ -1736,7 +1723,7 @@ namespace Stellamod
                 GoldenSparkleCooldown++;
                 RayCooldown++;
 
-                for (int j = 0; j < 2; j++)
+                for (int j = 0; j < 1; j++)
                 {
                     RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
                     RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1747,7 +1734,7 @@ namespace Stellamod
                     ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<FabledParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
                 }
 
-                for (int j = 0; j < 2; j++)
+                for (int j = 0; j < 1; j++)
                 {
                     RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
                     RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1758,7 +1745,7 @@ namespace Stellamod
                     ParticleManager.NewParticle(Player.Center - RandomOrig3, speed * 0.5f, ParticleManager.NewInstance<FabledParticle2>(), Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
                 }
 
-				for (int j = 0; j < 5; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));

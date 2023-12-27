@@ -6,6 +6,21 @@ namespace Stellamod.Helpers
     public static class NPCHelper
     {
         /// <summary>
+        /// Returns whether a boss is alive
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsBossAlive()
+        {
+            for(int k = 0; k < Main.maxNPCs; k++)
+            {
+                NPC npc = Main.npc[k];
+                if (npc.boss)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Finds the closest NPC to a point that can be chased by a minion/projectile
         /// </summary>
         /// <param name="position"></param>

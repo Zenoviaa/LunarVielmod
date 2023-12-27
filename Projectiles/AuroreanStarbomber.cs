@@ -14,16 +14,15 @@ namespace Stellamod.Projectiles
     internal class AuroreanStarbomber : ModProjectile
     {
         bool Moved;
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 9;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
-
             Projectile.penetrate = 1;
             Projectile.width = 150;
             Projectile.height = 150;
@@ -34,11 +33,10 @@ namespace Stellamod.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.Kill();
-
-
             if (Projectile.ai[1] >= 30)
             {
                 float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
@@ -46,19 +44,15 @@ namespace Stellamod.Projectiles
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 4000f, 12f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                
-
-
-
             }
 
             for (int i = 0; i < 150; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 3, Scale: 3f);
-                ;
                 d.noGravity = true;
             }
+
             return false;
         }
 
@@ -75,13 +69,13 @@ namespace Stellamod.Projectiles
                 Projectile.alpha = 255;
                 Moved = true;
             }
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
 
+            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             if (Projectile.ai[1] <= 1)
             {
                 Projectile.scale = 1.5f;
-
             }
+
             if (Main.rand.NextBool(3))
             {
                 int dustnumber = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 150, Color.White, 1f);
@@ -92,26 +86,21 @@ namespace Stellamod.Projectiles
                 Main.dust[dustnumber].noLight = false;
             }
 
-
-
             Projectile.spriteDirection = Projectile.direction;
         }
+
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromAI();
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X - 200, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBER>());
-            NPC minionNPC = Main.npc[index];
-
+            int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBER>());
             for (int i = 0; i < 150; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 3, Scale: 3f);
-                ;
                 d.noGravity = true;
             }
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;

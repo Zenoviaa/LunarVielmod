@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
@@ -117,7 +118,11 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneForest) ? (0.040f) : 0f;
+            if (spawnInfo.Player.ZoneForest)
+            {
+                return SpawnCondition.Overworld.Chance * 0.075f;
+            }
+            return 0f;
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

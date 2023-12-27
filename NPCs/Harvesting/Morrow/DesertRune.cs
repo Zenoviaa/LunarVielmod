@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
@@ -25,7 +26,12 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneDesert) ? (0.050f) : 0f;
+            if (spawnInfo.Player.ZoneDesert)
+            {
+                return SpawnCondition.Overworld.Chance * 0.075f;
+            }
+
+            return SpawnCondition.DesertCave.Chance * 0.075f;
         }
 
         public override void HitEffect(NPC.HitInfo hit)

@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Harvesting.Morrow
@@ -118,8 +119,11 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (spawnInfo.Player.ZoneJungle) ? (0.050f) : 0f;
+            //You can't be in the surface and underground at the same time so this should work
+            //0.05f should make it 20 less common than normal spawns.
+            return (SpawnCondition.SurfaceJungle.Chance * 0.075f) + (SpawnCondition.UndergroundJungle.Chance * 0.075f);
         }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JungleRuneI>(), 1, 1));
