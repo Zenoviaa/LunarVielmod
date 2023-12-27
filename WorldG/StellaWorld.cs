@@ -3118,16 +3118,36 @@ namespace Stellamod.WorldG
 			
 			bool placed = false;
 			int attempts = 0;
+			int leftmostJungleTileX=int.MaxValue;
+			int rightmostJungleTileX=int.MinValue;
+			for (int x = 500; x < Main.maxTilesX - 500; x++)
+            {
+				int jungleY = (int)(Main.worldSurface - 50);
+				while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
+				{
+					jungleY++;
+				}
+
+				Tile tile = Main.tile[x, jungleY];
+				if (tile.TileType == TileID.Mud)
+				{
+					if (leftmostJungleTileX > x)
+						leftmostJungleTileX = x;
+					if (rightmostJungleTileX < x)
+						rightmostJungleTileX = x;
+				}
+			}
+
+
+
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-																			   // 50% of choosing the last 6th of the world
-																			   // Choose which side of the world to be on randomly
-				///if (WorldGen.genRand.NextBool())
-				///{
-				///	towerX = Main.maxTilesX - towerX;
-				///}
+				int minX = leftmostJungleTileX + 200;
+				int maxX = rightmostJungleTileX - 200;
+				if (maxX < minX)
+					maxX = minX + 1;
+				int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
 				int abysmy = (int)(Main.worldSurface - 50);
@@ -3137,26 +3157,6 @@ namespace Stellamod.WorldG
 				{
 					abysmy++;
 				}
-
-				// If we went under the world's surface, try again
-				if (abysmy > Main.worldSurface)
-				{
-					continue;
-				}
-				Tile tile = Main.tile[abysmx, abysmy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Mud))
-				{
-					continue;
-				}
-
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
 
 
 				for (int da = 0; da < 1; da++)
