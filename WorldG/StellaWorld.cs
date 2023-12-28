@@ -52,25 +52,13 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
 				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
-			}
-
-	//		int FableGen = tasks.FindIndex(genpass => genpass.Name.Equals("Pyramids"));
-		//	if (FableGen != -1)
-		//	{
-		//		tasks.Insert(FableGen + 1, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-
-		//	}
-
-			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
-			if (ShiniesIndex != -1)
-			{
-
-				tasks.Insert(ShiniesIndex + 1, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-				tasks.Insert(ShiniesIndex + 2, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(ShiniesIndex + 3, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));			
-				tasks.Insert(ShiniesIndex + 4, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-				tasks.Insert(ShiniesIndex + 5, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
-				tasks.Insert(ShiniesIndex + 6, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
+				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+				tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+				tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
+				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
+				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
+	
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -78,33 +66,33 @@ namespace Stellamod.WorldG
 			{
 				tasks.Insert(CathedralGen3 + 1, new PassLegacy("World Gen Ambience", WorldGenAmbience));
 			}
-				int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
+				
+			int CathedralGen2 = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
 			if (CathedralGen2 != -1)
 			{
 
 				//tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				//	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-			
+
 				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
-				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Village", WorldGenVillage));
-				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenBig));
-				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen More skies", WorldGenMed));
-				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
-				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
-				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Bridget", WorldGenBridget));			
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
-				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
-				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
-				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Sylia", WorldGenSylia));
-				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen More skies", WorldGenBig));
+				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenMed));
+				tasks.Insert(CathedralGen2 + 6, new PassLegacy("World Gen Sunstalker", WorldGenStalker));
+				tasks.Insert(CathedralGen2 + 7, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
+				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
+				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Bridget", WorldGenBridget));			
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
+				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
+				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Sylia", WorldGenSylia));
+				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Rallad", WorldGenRallad));
 			}
 
 
@@ -369,7 +357,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next((Main.maxTilesX / 2) - 150, (Main.maxTilesX / 2) - 140); // from 50 since there's a unaccessible area at the world's borders
+				int smx = WorldGen.genRand.Next((Main.maxTilesX / 2) - 200, (Main.maxTilesX / 2) - 150); // from 50 since there's a unaccessible area at the world's borders
 																								   // 50% of choosing the last 6th of the world
 																								   // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -890,6 +878,8 @@ namespace Stellamod.WorldG
 
 		private void WorldGenStalker(GenerationProgress progress, GameConfiguration configuration)
 		{
+			StructureMap structures = GenVars.structures;
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ocean/SunAlter2");
 			progress.Message = "Bird building alters";
 
 
@@ -945,6 +935,8 @@ namespace Stellamod.WorldG
 					for (int da = 0; da < 1; da++)
 					{
 						Point Loc = new Point(smx, smy + 5);
+						rectangle.Location = Loc;
+						structures.AddProtectedStructure(rectangle);
 						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ocean/SunAlter2");
 						foreach (int chestIndex in ChestIndexs)
 						{
@@ -1124,11 +1116,12 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Definitely not making more elder guardians from minecraft.";
 
-
-			for (int k = 0; k < 1; k++)
+			int yOffset = 0;
+			for (int k = 0; k < 4; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
+
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
@@ -1154,230 +1147,73 @@ namespace Stellamod.WorldG
 					{
 						continue;
 					}
+
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
 					if (!(tile.TileType == TileID.Sand
 							|| tile.TileType == TileID.HardenedSand
 							|| tile.TileType == TileID.Dirt
-						|| tile.TileType == TileID.Sandstone))
+						|| tile.TileType == TileID.Sandstone
+						|| tile.TileType == TileID.Stone))
 
 					{
 						continue;
 					}
 
 
-					// place the Rogue
-					//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-					//Main.npc[num].homeTileX = -1;
-					//	Main.npc[num].homeTileY = -1;
-					//	Main.npc[num].direction = 1;
-					//	Main.npc[num].homeless = true;
-
-
-
-					for (int da = 0; da < 1; da++)
+					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
+                    {
+						yOffset++;
+						continue;
+					}
+					
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
+					foreach (int chestIndex in ChestIndexs)
 					{
-						Point Loc = new Point(smx + 100, smy + 275);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+								Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+
+
+						);
+						if (specialItem != ItemID.None)
 						{
-							var chest = Main.chest[chestIndex];
-							// etc
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
 
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
 
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+								break;
 
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
 						}
 
-
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
 					}
 
 
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx + 100, smy + 400);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
-
-
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx + 100, smy + 525);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx + 100, smy + 655);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
+					yOffset += 125;
 					placed = true;
 				}
 			}
@@ -1385,18 +1221,16 @@ namespace Stellamod.WorldG
 		}
 
 
-
-
-
 		private void WorldGenCatacombsWater(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Definitely not making more elder guardians from minecraft.";
 
-
-			for (int k = 0; k < 1; k++)
+			int yOffset = 0;
+			for (int k = 0; k < 4; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
+			
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
@@ -1422,230 +1256,73 @@ namespace Stellamod.WorldG
 					{
 						continue;
 					}
+
 					Tile tile = Main.tile[smx, smy];
 					// If the type of the tile we are placing the tower on doesn't match what we want, try again
 					if (!(tile.TileType == TileID.Sand
 							|| tile.TileType == TileID.HardenedSand
 							|| tile.TileType == TileID.Dirt
-						|| tile.TileType == TileID.Sandstone))
+						|| tile.TileType == TileID.Sandstone
+						|| tile.TileType == TileID.Stone))
 
 					{
 						continue;
 					}
 
 
-					// place the Rogue
-					//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-					//Main.npc[num].homeTileX = -1;
-					//	Main.npc[num].homeTileY = -1;
-					//	Main.npc[num].direction = 1;
-					//	Main.npc[num].homeless = true;
-
-
-
-					for (int da = 0; da < 1; da++)
+					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
+                    {
+						yOffset++;
+						continue;
+					}
+				
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
+					foreach (int chestIndex in ChestIndexs)
 					{
-						Point Loc = new Point(smx - 100, smy + 275);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+								Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+
+
+						);
+						if (specialItem != ItemID.None)
 						{
-							var chest = Main.chest[chestIndex];
-							// etc
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
 
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
 
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+								break;
 
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
 						}
 
-
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
 					}
 
 
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx - 100, smy + 400);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
-
-
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx - 100, smy + 525);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
-					for (int da = 0; da < 1; da++)
-					{
-						Point Loc = new Point(smx - 100, smy + 655);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
-						foreach (int chestIndex in ChestIndexs)
-						{
-							var chest = Main.chest[chestIndex];
-							// etc
-
-							// itemsToAdd will hold type and stack data for each item we want to add to the chest
-							var itemsToAdd = new List<(int type, int stack)>();
-
-							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
-
-
-							);
-							if (specialItem != ItemID.None)
-							{
-								itemsToAdd.Add((specialItem, 1));
-							}
-							// Using a switch statement and a random choice to add sets of items.
-							switch (Main.rand.Next(1))
-							{
-								case 0:
-
-									itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-
-									break;
-
-							}
-
-							// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-							int chestItemIndex = 0;
-							foreach (var itemToAdd in itemsToAdd)
-							{
-								Item item = new Item();
-								item.SetDefaults(itemToAdd.type);
-								item.stack = itemToAdd.stack;
-								chest.item[chestItemIndex] = item;
-								chestItemIndex++;
-								if (chestItemIndex >= 40)
-									break; // Make sure not to exceed the capacity of the chest
-							}
-						}
-
-
-					}
-
+					yOffset += 125;
 					placed = true;
 				}
 			}
@@ -1719,130 +1396,44 @@ namespace Stellamod.WorldG
 
 		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		private void WorldGenCatacombsFlames(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Burning the world with catacombs";
-
-
-
-			bool placed = false;
-			int attempts = 0;
-			while (!placed && attempts++ < 1000000)
-			{
-
-
-				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-
-				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmyy = (((Main.maxTilesY / 2)));
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmyy) && abysmyy <= Main.UnderworldLayer)
+	
+			for(int k = 0; k < 4; k++)
+            {
+				bool placed = false;
+				int attempts = 0;
+				while (!placed && attempts++ < 1000000)
 				{
-					abysmyy++;
-				}
+					int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 
-				// If we went under the world's surface, try again
-				if (abysmyy > Main.UnderworldLayer - 50)
-				{
-					continue;
-				}
-				int abysmy = abysmyy + 50;
-				Tile tile = Main.tile[abysmx, abysmy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Sandstone))
-				{
-					continue;
-				}
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int abysmyy = Main.maxTilesY - (Main.maxTilesY/3) + WorldGen.genRand.Next(0, 200) - 100;
 
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
-
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 50, abysmy + 200);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
-					foreach (int chestIndex in ChestIndexs)
+					// We go down until we hit a solid tile or go under the world's surface
+					while (!WorldGen.SolidTile(abysmx, abysmyy) && abysmyy <= Main.UnderworldLayer)
 					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-							
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
+						abysmyy++;
 					}
-				}
 
+					// If we went under the world's surface, try again
+					if (abysmyy > Main.UnderworldLayer - 50)
+					{
+						continue;
+					}
 
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 150, abysmy + 350);
+					int abysmy = abysmyy;
+					Tile tile = Main.tile[abysmx, abysmy];
+					// If the type of the tile we are placing the tower on doesn't match what we want, try again
+					if (!(tile.TileType == TileID.Sandstone))
+					{
+						continue;
+					}
+
+					Point Loc = new Point(abysmx, abysmy);
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsFire"))
+						continue;
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
 					foreach (int chestIndex in ChestIndexs)
@@ -1886,605 +1477,111 @@ namespace Stellamod.WorldG
 								break; // Make sure not to exceed the capacity of the chest
 						}
 					}
+
+					placed = true;
 				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx + 50, abysmy + 350);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx + 150, abysmy + 200);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 50, abysmy + 400);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsFire");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				placed = true;
 			}
-
-
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		private void WorldGenCatacombsTrap(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Trapping the world with catacombs";
 
-
-
-			bool placed = false;
-			int attempts = 0;
-			while (!placed && attempts++ < 1000000)
+			int leftmostTileX = int.MaxValue;
+			int rightmostTileX = int.MinValue;
+			for (int x = 0; x < Main.maxTilesX; x++)
 			{
-
-
-				int abysmx = WorldGen.genRand.Next((Main.maxTilesX / 2) + (Main.maxTilesX / 9), Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
-
-				// Select a place in the first 6th of the world, avoiding the oceans
-				int abysmy = (((Main.maxTilesY / 3)));
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+				int y = (int)(Main.worldSurface - 50);
+				while (!WorldGen.SolidTile(x, y) && y <= Main.worldSurface)
 				{
-					abysmy++;
+					y++;
 				}
 
-				// If we went under the world's surface, try again
-				if (abysmy > Main.UnderworldLayer - 50)
+				Tile tile = Main.tile[x, y];
+				if (tile.TileType == TileID.SnowBlock)
 				{
-					continue;
+					if (leftmostTileX > x)
+						leftmostTileX = x;
+					if (rightmostTileX < x)
+						rightmostTileX = x;
 				}
-				
-				Tile tile = Main.tile[abysmx, abysmy];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Stone))
-				{
-					continue;
-				}
-
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
-
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 50, abysmy + 200);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 50, abysmy + 50);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 50, abysmy + 350);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx + 50, abysmy + 200);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx + 50, abysmy + 350);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 150, abysmy + 200);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(abysmx - 150, abysmy + 50);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
-					foreach (int chestIndex in ChestIndexs)
-					{
-						var chest = Main.chest[chestIndex];
-						// etc
-
-						// itemsToAdd will hold type and stack data for each item we want to add to the chest
-						var itemsToAdd = new List<(int type, int stack)>();
-
-						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-						// Choose no item with a high weight of 7.
-						);
-						if (specialItem != ItemID.None)
-						{
-							itemsToAdd.Add((specialItem, 1));
-						}
-						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(1))
-						{
-							case 0:
-								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
-								break;
-
-						}
-
-						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-						int chestItemIndex = 0;
-						foreach (var itemToAdd in itemsToAdd)
-						{
-							Item item = new Item();
-							item.SetDefaults(itemToAdd.type);
-							item.stack = itemToAdd.stack;
-							chest.item[chestItemIndex] = item;
-							chestItemIndex++;
-							if (chestItemIndex >= 40)
-								break; // Make sure not to exceed the capacity of the chest
-						}
-					}
-				}
-
-					placed = true;
 			}
 
+			int xOffset = -400;
+			for (int k = 0; k < 6; k++)
+			{
+				bool placed = false;
+				int attempts = 0;
+				while (!placed && attempts++ < 1000000)
+				{
+					int x = leftmostTileX + xOffset; // from 50 since there's a unaccessible area at the world's borders
 
+					// Select a place in the first 6th of the world, avoiding the oceans
+					int y = Main.UnderworldLayer - 300;
+
+
+					// We go down until we hit a solid tile or go under the world's surface
+					while (!WorldGen.SolidTile(x, y))
+					{
+						x++;
+					}
+
+					Point Loc = new Point(x, y);
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsTrap"))
+                    {
+						xOffset++;
+						continue;
+                    }
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsTrap");
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(1))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<CursedShard>(), Main.rand.Next(4, 5)));
+								break;
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+
+					xOffset += 90;
+					placed = true;
+				}
+			}
 		}
 
 
@@ -2677,16 +1774,14 @@ namespace Stellamod.WorldG
 
 		private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
 		{
+			StructureMap structures = GenVars.structures;
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Aurelus/AurelusTemple");
 			progress.Message = "Singularities singing!";
-
-
 
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 1000000)
 			{
-
-
 				int abysmx = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
 
 				// Select a place in the first 6th of the world, avoiding the oceans
@@ -2723,7 +1818,8 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(abysmx - 150, abysmy + 100);
-					
+					rectangle.Location = Loc;
+					structures.AddProtectedStructure(rectangle);
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
 					foreach (int chestIndex in ChestIndexs)
 					{
@@ -2845,6 +1941,8 @@ namespace Stellamod.WorldG
 
 		private void WorldGenGovheilCastle(GenerationProgress progress, GameConfiguration configuration)
 		{
+			StructureMap structures = GenVars.structures;
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Huntria/GovheilCastle");
 			progress.Message = "Gothivia marrying Paraffin";
 
 
@@ -2898,9 +1996,10 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					
 
+					rectangle.Location = pointL;
 					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, "Struct/Huntria/GovheilCastle");
+					structures.AddProtectedStructure(rectangle);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -3293,6 +2392,8 @@ namespace Stellamod.WorldG
 
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
+			StructureMap structures = GenVars.structures;
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Alcad/RoyalCapital");
 			progress.Message = "Fighting the Virulent with magic";
 
 
@@ -3347,8 +2448,9 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx - 10, smyy + 60);
+					rectangle.Location = Loc;
 					StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital");
-
+					structures.AddProtectedStructure(rectangle);
 
 					Point Loc2 = new Point(smx - 10, smyy);
 					Point Loc4 = new Point(smx - 30, smyy + 40);
@@ -3384,26 +2486,15 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Leaving the Royal Capital";
 
-
-
-
-
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int smx = WorldGen.genRand.Next(220, (Main.maxTilesX) / 15); // from 50 since there's a unaccessible area at the world's borders
-																			 // 50% of choosing the last 6th of the world
-																			 // Choose which side of the world to be on randomly
-				///if (WorldGen.genRand.NextBool())
-				///{
-				///	towerX = Main.maxTilesX - towerX;
-				///}
-
+																			 // 50% of choosing the last 6th of the world																	 // Choose which side of the world to be on randomly
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
 				int smy = ((int)(Main.UnderworldLayer - 200));
-
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.maxTilesY)
 				{
@@ -3415,6 +2506,7 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
+
 				Tile tile = Main.tile[smx, smy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if ((tile.TileType == TileID.Ash))
@@ -3422,43 +2514,13 @@ namespace Stellamod.WorldG
 					continue;
 				}
 
-				int smxx = smx;
 				int smyy = smy + Main.maxTilesY / 18;
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
+				Point Loc = new Point(smx - 10, smyy + 170);
+				if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underworld/UnderworldRuins"))
+					continue;
 
-
-
-				for (int da = 0; da < 1; da++)
-				{
-					Point Loc = new Point(smx - 10, smyy + 170);
-					StructureLoader.ReadStruct(Loc, "Struct/Underworld/UnderworldRuins");
-
-
-					Point Loc2 = new Point(smx - 10, smyy);
-					Point Loc4 = new Point(smx - 30, smyy + 40);
-					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
-					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
-			
-					//	Point resultPoint;
-					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
-					//	{
-					//new Conditions.IsSolid().AreaAnd(10, 10),
-					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
-					//	}), out resultPoint);
-					//		if (searchSuccessful)
-					//		{
-					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
-					//		}
-					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smyy, 433, 100));
-					//WorldGen.TileRunner(Loc2.X - 20, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
-					//	WorldGen.TileRunner(Loc3.X + 30, Loc2.Y - 60, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
-					placed = true;
-				}
+				StructureLoader.ReadStruct(Loc, "Struct/Underworld/UnderworldRuins");
+				placed = true;
 			}
 		}
 
@@ -4357,22 +3419,16 @@ namespace Stellamod.WorldG
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Hunters settling down";
-			StructureMap structures = GenVars.structures;
-
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowStructHouse1");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 200, (int)GenVars.rockLayerHigh + 200);
 				Point Loc = new Point(xa, ya);
-
-				//Set the location to place
-				rectangle.Location = Loc;
 			
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && structures.CanPlace(rectangle))
+				if (tile.HasTile && StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Morrow/MorrowStructHouse1"))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouse1");
 					foreach (int chestIndex in ChestIndexs)
@@ -4463,40 +3519,15 @@ namespace Stellamod.WorldG
 				}
 			}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowedSmallStruct");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07); k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayerLow + 150, (int)GenVars.rockLayerHigh + 150);
 				Point Loc = new Point(xa, ya);
-				rectangle.Location = Loc;
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && tile.TileType == TileID.Dirt && structures.CanPlace(rectangle))
+				if (tile.HasTile && tile.TileType == TileID.Dirt && StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Morrow/MorrowedSmallStruct"))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowedSmallStruct");
 					Chest c = Main.chest[ChestIndexs[0]];
@@ -4582,34 +3613,29 @@ namespace Stellamod.WorldG
 			}
 
 
-			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowUnder1");
 			for (int g = 0; g < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 40); g++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
-				rectangle.Location = Loc;
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
 				{
 					continue;
 				}
 
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && structures.CanPlace(rectangle))
+				if (tile.HasTile && StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Morrow/MorrowUnder1"))
 				{
 					StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowUnder1");
 				}
 			}
 
 
-			rectangle = StructureLoader.ReadRectangle("Struct/Morrow/MorrowStructHouseM");
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-07 + 30); k++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh + 100, Main.maxTilesY);
 				Point Loc = new Point(xab, yab);
-				rectangle.Location = Loc;
-
 				if (Loc.X < 0 || Loc.X > Main.maxTilesX || Loc.Y < 0 || Loc.Y > Main.maxTilesX)
 				{
 
@@ -4617,7 +3643,7 @@ namespace Stellamod.WorldG
 				}
 
 				Tile tile = Main.tile[Loc.X, Loc.Y];
-				if (tile.HasTile && structures.CanPlace(rectangle))
+				if (tile.HasTile && StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Morrow/MorrowStructHouseM"))
 				{
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Morrow/MorrowStructHouseM");
 					Chest c = Main.chest[ChestIndexs[0]];
@@ -4704,6 +3730,7 @@ namespace Stellamod.WorldG
 	
 		private void WorldGenCathedral(GenerationProgress progress, GameConfiguration configuration)
 		{
+
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Verlia Ark";
 
@@ -4741,34 +3768,17 @@ namespace Stellamod.WorldG
 				{
 					continue;
 				}
-	
-				
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
-				
 
 
 				for (int da = 0; da < 1; da++)
 				{
-
 					Point Loc = new Point(towerX, towerY - 50);
 
-
 					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				
-
-
-
-
-
-
-
-
-
+					StructureMap structures = GenVars.structures;
+					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ice/VerliasCathedral");
+					rectangle.Location = Loc;
+					structures.AddProtectedStructure(rectangle);
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VerliasCathedral");
 					Chest c = Main.chest[ChestIndexs[0]];
 
@@ -5347,7 +4357,7 @@ namespace Stellamod.WorldG
 
 
 
-			public override void SaveWorldData(TagCompound tag)
+		public override void SaveWorldData(TagCompound tag)
 		{
 			tag[SavestringX] = MorrowEdge.X;
 			tag[SavestringY] = MorrowEdge.Y;
@@ -5358,41 +4368,6 @@ namespace Stellamod.WorldG
 			int x = tag.Get<int>(SavestringX);
 			int y = tag.Get<int>(SavestringY);
 			MorrowEdge = new Point(x, y);
-		}
-
-		
+		}	
 	}
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -113,7 +113,7 @@ namespace Stellamod.NPCs.Town
 			if (spawnInfo.Player.InModBiome<AlcadziaBiome>())
 			{
 
-				return 0.34f;
+				return 0.41f;
 
 			}
 

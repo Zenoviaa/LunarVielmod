@@ -6,6 +6,7 @@ using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.Helpers
 {
@@ -29,6 +30,17 @@ namespace Stellamod.Helpers
                     return rectangle;
                 }
             }
+        }
+
+        public static bool TryPlaceAndProtectStructure(Point location, string path)
+        {
+            StructureMap structures = GenVars.structures;
+            Rectangle rectangle = StructureLoader.ReadRectangle(path);
+            rectangle.Location = location;
+            if (!structures.CanPlace(rectangle))
+                return false;
+            structures.AddProtectedStructure(rectangle);
+            return true;
         }
 
         /// <summary>
