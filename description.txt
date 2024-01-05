@@ -45,7 +45,7 @@ The Royal Capital, Catacombs, Veriplant biomes. Fenix, Sylia, Stone Golem and ma
 This update focuses on improving curent mechanics and adding an overall better vibe as well as a bunch of hardmode content as well as making the mod much more enjoyable!
 ----
 1.4.1 - Some Generation fixes
-1.4.2 - Texture configuration added, also adds a bunch of multiplayer support to make bosses actually spawn, not fully multiplayer yet though! Fenix and Sunstalker do not work in multiplayer!
+1.4.2 - Texture configuration added, also adds some multiplayer support to make bosses actually spawn, not fully multiplayer yet though! Fenix and Sunstalker do not work in multiplayer!
 
 
 
