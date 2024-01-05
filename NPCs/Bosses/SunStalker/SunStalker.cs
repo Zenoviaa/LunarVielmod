@@ -66,6 +66,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.npcSlots = 10f;
             NPC.noGravity = true;
             NPC.scale = 1f;
+            NPC.aiStyle = 0;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }

@@ -218,7 +218,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
 			NPC.alpha = 255;
-		
+			NPC.aiStyle = 0;
 
 
 

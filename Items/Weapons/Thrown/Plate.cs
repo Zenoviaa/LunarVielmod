@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.knockBack = 8;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
+            Item.value = Item.sellPrice(0, 0, 0, 29);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
