@@ -109,8 +109,22 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 			attackCounter = reader.ReadInt32();
 		}
 		public float ty = 0;
+		public float Spawner = 0;
 		public override void AI()
 		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
 			ty++;
 
 			if (Main.netMode != NetmodeID.MultiplayerClient)

@@ -92,6 +92,8 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 float radians = (i + timer) * MathHelper.TwoPi;
 
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug).RotatedBy(radians) * time, NPC.frame, new Color(234, 132, 54, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                NPC.netUpdate = true;
+
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
@@ -99,6 +101,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 float radians = (i + timer) * MathHelper.TwoPi;
 
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug * 2).RotatedBy(radians) * time, NPC.frame, new Color(254, 204, 72, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                NPC.netUpdate = true;
             }
 
             return true;
@@ -120,6 +123,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
@@ -214,8 +218,22 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 }
             }
         }
+        public float Spawner = 0;
         public override void AI()
         {
+            Spawner++;
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
+
+            {
+
+
+
+                int distanceY = Main.rand.Next(-250, -250);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+
+            }
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             NPC.damage = 0;

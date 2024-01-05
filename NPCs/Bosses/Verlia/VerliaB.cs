@@ -158,8 +158,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
-		
-		
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+
 
 
 
@@ -429,8 +429,30 @@ namespace Stellamod.NPCs.Bosses.Verlia
         int bee = 220;
 		private Vector2 originalHitbox;
 
+		public float Spawner = 0;
 		public override void AI()
 		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+            {
+				
+
+			
+					int distanceY = Main.rand.Next(-250, -250);
+					NPC.position.X = players.Center.X;
+					NPC.position.Y = players.Center.Y + distanceY;
+				
+			}
+			NPC.TargetClosest();
+
+			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+			{
+				NPC.TargetClosest();
+			}
+
+
 			NPC.velocity *= 0.97f;
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
@@ -449,12 +471,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			
 			Player player = Main.player[NPC.target];
 
-			NPC.TargetClosest();
-
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-			{
-				NPC.TargetClosest();
-			}
+			
 
 
 

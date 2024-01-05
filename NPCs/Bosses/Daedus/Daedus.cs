@@ -303,8 +303,20 @@ namespace Stellamod.NPCs.Bosses.Daedus
         private int moveSpeedY = 0;
         private int Timer2 = 0;
 
+        public float Spawner = 0;
         public override void AI()
         {
+            Spawner++;
+            if (Spawner < 2)
+            {
+                Player players = Main.player[NPC.target];
+
+               
+                    int distanceY = Main.rand.Next(-250, -250);
+                    NPC.position.X = players.Center.X;
+                    NPC.position.Y = players.Center.Y + distanceY;
+                
+            }
 
             bee--;
             //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);

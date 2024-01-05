@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
 			NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
-
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
 
 
@@ -373,9 +373,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		private Vector2 originalHitbox;
 		//int Timer2 = 0;
 		float timert = 0;
+		public float Spawner = 0;
 		public override void AI()
 		{
-            p2 = NPC.life < NPC.lifeMax * 0.5f;
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
+
+			p2 = NPC.life < NPC.lifeMax * 0.5f;
             bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 

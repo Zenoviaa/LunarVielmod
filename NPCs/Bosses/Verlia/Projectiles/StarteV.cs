@@ -56,9 +56,22 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.noGravity = true;
 			NPC.friendly = true;
 		}
-
+		public float Spawner = 0;
 		public override void AI()
 		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
 			NPC.damage = 0;
 			switch (State)
 			{

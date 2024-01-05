@@ -145,8 +145,22 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			ai_State = (float)attackState;
 		}
 
-        public override void AI()
-        {
+		public float Spawner = 0;
+		public override void AI()
+		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
 			//Sparn AI Time
 			//3 Attacks
 			//1. Summons homing, exploding gren skulls!

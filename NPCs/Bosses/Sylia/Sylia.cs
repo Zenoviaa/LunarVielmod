@@ -130,7 +130,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.scale = 1f;
-
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 			// Take up open spawn slots, preventing random NPCs from spawning during the fight
 			NPC.npcSlots = 10f;
 
@@ -212,8 +212,23 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			ai_Counter++;
 		}
 
+		public float Spawner = 0;
+
 		public override void AI()
 		{
+
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
 			//Spawning Animation
 			NPC.damage = 0;
 			if (!_spawned)

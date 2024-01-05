@@ -113,6 +113,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Player player = Main.player[NPC.target];
             NPC.velocity.Y *= 0.94f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.025f), NPC.Center.Distance(player.Center) * 0.15f), 0.008f);
+            NPC.netUpdate = true;
         }
         public int rippleCount = 20;
         public int rippleSize = 5;
@@ -127,8 +128,23 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public int Attack;
         public int SparkCount;
         public int SparkCountMax;
+        public float Spawner = 0;
+        
         public override void AI()
         {
+            Spawner++;
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
+
+            {
+
+
+
+                int distanceY = Main.rand.Next(-150, -150);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+
+            }
             PH2 = NPC.life < NPC.lifeMax * 0.4f;
             if (PH2)
             {
@@ -343,6 +359,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         {
                             CasuallyApproachChild();
                             NPC.velocity *= 0.90f;
+                            NPC.netUpdate = true;
                         }
                         else
                         {
@@ -389,6 +406,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                     NPC.ai[0] = 0;
                                 }
                                 CasuallyApproachChild();
+                                NPC.netUpdate = true;
                             }
                             else
                             {
@@ -415,6 +433,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 NPC.ai[0] = 0;
                             }
                             CasuallyApproachChild();
+                            NPC.netUpdate = true;
                         }
                         else
                         {
@@ -483,6 +502,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     case 4:
                         NPC.ai[0]++;
                         CasuallyApproachChild();
+                        NPC.netUpdate = true;
                         base.NPC.velocity.Y *= 0.95f;
                         if (NPC.ai[0] == 50 || NPC.ai[0] == 150)
                         {

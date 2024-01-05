@@ -97,38 +97,6 @@ namespace Stellamod
 			switch (id)
 			{
 
-				/*case MessageType.Dodge:
-					player = reader.ReadByte();
-					byte type = reader.ReadByte();
-					if (Main.netMode == NetmodeID.Server)
-					{
-						ModPacket packet = Stellamod.Instance.GetPacket(MessageType.Dodge, 2);
-						packet.Write(player);
-						packet.Write(type);
-						packet.Send(-1, whoAmI);
-					}
-					if (type == 1)
-						Items.Glyphs.VeilGlyph.Block(Main.player[player]);
-					else
-						Stellamod.Instance.Logger.Error("Unknown message (2:" + type + ")");
-					break;
-				
-				case MessageType.Dash:
-					player = reader.ReadByte();
-					DashType dash = (DashType)reader.ReadByte();
-					sbyte dir = reader.ReadSByte();
-					if (Main.netMode == NetmodeID.Server)
-					{
-						ModPacket packet = Stellamod.Instance.GetPacket(MessageType.Dash, 3);
-						packet.Write(player);
-						packet.Write((byte)dash);
-						packet.Write(dir);
-						packet.Send(-1, whoAmI);
-					}
-					Main.player[player].GetModPlayer<DashPlayer>();
-					Main.player[player].GetModPlayer<DashPlayer2>();
-					break;
-				*/
 				case MessageType.BossSpawnFromClient:
 					if (Main.netMode == NetmodeID.Server)
 					{

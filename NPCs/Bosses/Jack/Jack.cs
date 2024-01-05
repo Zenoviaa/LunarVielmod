@@ -62,6 +62,8 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.alpha = 255;
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
+
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
         int frame = 0;
@@ -206,8 +208,23 @@ namespace Stellamod.NPCs.Bosses.Jack
             return true;
         }
 
+        public float Spawner = 0;
         public override void AI()
         {
+            Spawner++;
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
+
+            {
+
+
+
+                int distanceY = Main.rand.Next(-250, -250);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+
+            }
+
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
@@ -245,7 +262,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                     NPC.alpha -= 5;
                 }
                 NPC.ai[0]++;
-                if (NPC.ai[0] == 1)
+                if (NPC.ai[0] == 2)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Jack_Spawn"), NPC.position);
                     Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 600, 0, -10, ModContent.ProjectileType<JackSpawnRay>(), 50, 0f, -1, 0, NPC.whoAmI);
@@ -496,12 +513,14 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     {
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Jack_Land"), NPC.position);
                                         Jumping = false;
+                                        NPC.netUpdate = true;
                                     }
-
+                                    NPC.netUpdate = true;
                                     NPC.velocity.X *= 0.1f;
                                 }
                                 else
                                 {
+                                    NPC.netUpdate = true;
                                     NPC.velocity.X *= 1.05f;
                                 }
                             }

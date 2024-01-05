@@ -247,7 +247,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
 			NPC.alpha = 255;
-
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
 
 
@@ -790,11 +790,26 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 		int bee = 220;
 		private Vector2 originalHitbox;
-		
 
 
+
+		public float Spawner = 0;
 		public override void AI()
 		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
+
 			NPC.velocity *= 0.97f;
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);

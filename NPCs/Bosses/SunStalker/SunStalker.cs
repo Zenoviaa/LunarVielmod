@@ -66,6 +66,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.npcSlots = 10f;
             NPC.noGravity = true;
             NPC.scale = 1f;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }
 
@@ -74,9 +75,22 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
-
+        public float Spawner = 0;
         public override void AI()
         {
+            Spawner++;
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
+
+            {
+
+
+
+                int distanceY = Main.rand.Next(-250, -250);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+
+            }
             if (NPC.life < NPC.lifeMax / 2)
             {
                 Attacks = 6;

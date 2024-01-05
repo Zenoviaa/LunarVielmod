@@ -95,8 +95,22 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 			ai_State = (float)attackState;
         }
 
+		public float Spawner = 0;
 		public override void AI()
-		{           
+		{
+			Spawner++;
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}
 			//No contact damage
 			NPC.damage = 0;
 			NPC.spriteDirection = NPC.direction;
