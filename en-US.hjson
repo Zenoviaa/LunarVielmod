@@ -7578,6 +7578,18 @@ Mods: {
 				Description: Mods.Stellamod.Buffs.VixedB.Description
 			}
 		}
+
+		Configs: {
+			LunarVeilConfig: {
+				VanillaTexturesToggle: {
+					Tooltip: ""
+					Label: Vanilla Textures Toggle
+				}
+
+				Headers.ReplaceVanillaTextures: Replace Vanilla Textures Header
+				DisplayName: Lunar Veil Config
+			}
+		}
 	}
 
 	Tiles: {
