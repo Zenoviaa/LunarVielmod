@@ -124,6 +124,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.npcSlots = 10f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPC.aiStyle = 0;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }

@@ -159,7 +159,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			NPC.npcSlots = 10f;
 			NPC.scale = 2f;
 			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-
+			NPC.aiStyle = 0;
 
 
 

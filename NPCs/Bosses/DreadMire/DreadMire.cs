@@ -60,6 +60,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.HitSound = SoundID.NPCHit9;
             NPC.DeathSound = SoundID.NPCDeath23;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPC.aiStyle = 0;
         }
         private void Disappear()
         {

@@ -62,6 +62,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.alpha = 255;
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
+            NPC.aiStyle = 0;
 
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }

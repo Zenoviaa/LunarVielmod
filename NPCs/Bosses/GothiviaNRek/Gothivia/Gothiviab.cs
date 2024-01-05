@@ -146,7 +146,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			NPC.scale = 2f;
 			NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
 			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-
+			NPC.aiStyle = 0;
 
 
 

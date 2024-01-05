@@ -248,7 +248,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.scale = 2f;
 			NPC.alpha = 255;
 			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-
+			NPC.aiStyle = 0;
 
 
 

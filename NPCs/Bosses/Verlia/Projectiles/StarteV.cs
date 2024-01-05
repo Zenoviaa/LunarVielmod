@@ -55,6 +55,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			NPC.friendly = true;
+			NPC.aiStyle = 0;
 		}
 		public float Spawner = 0;
 		public override void AI()

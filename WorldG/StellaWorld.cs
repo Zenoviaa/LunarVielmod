@@ -1125,7 +1125,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 1000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next(120, 160); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next(220, 260); // from 50 since there's a unaccessible area at the world's borders
 																									 // 50% of choosing the last 6th of the world
 																									 // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
