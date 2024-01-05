@@ -154,6 +154,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
         public override void AI()
         {
             Spawner++;
+            /*
             Player players = Main.player[NPC.target];
             if (Spawner == 2)
 
@@ -165,7 +166,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 NPC.position.X = players.Center.X;
                 NPC.position.Y = players.Center.Y + distanceY;
 
-            }
+            }*/
             //OK so 
             //Cogwork will move around the arena kinda like a blazing wheel
             //He has contact damage obviously

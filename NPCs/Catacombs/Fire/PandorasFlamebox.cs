@@ -118,6 +118,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 		public override void AI()
 		{
 			Spawner++;
+			/*
 			Player players = Main.player[NPC.target];
 			if (Spawner == 2)
 
@@ -129,7 +130,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				NPC.position.X = players.Center.X;
 				NPC.position.Y = players.Center.Y + distanceY;
 
-			}
+			}*/
 
 			NPC.TargetClosest();
 			if (!NPC.HasValidTarget)

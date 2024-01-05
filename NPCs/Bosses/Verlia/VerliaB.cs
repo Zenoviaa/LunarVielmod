@@ -433,18 +433,15 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		public override void AI()
 		{
 			Spawner++;
-			Player players = Main.player[NPC.target];
-			if (Spawner == 2)
-
+			/*
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
             {
-				
+                int distanceY = Main.rand.Next(-250, -250);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+            }*/
 
-			
-					int distanceY = Main.rand.Next(-250, -250);
-					NPC.position.X = players.Center.X;
-					NPC.position.Y = players.Center.Y + distanceY;
-				
-			}
 			NPC.TargetClosest();
 
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)

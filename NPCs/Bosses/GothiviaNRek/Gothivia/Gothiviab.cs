@@ -377,18 +377,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 		public override void AI()
 		{
 			Spawner++;
-			Player players = Main.player[NPC.target];
-			if (Spawner == 2)
-
-			{
-
-
-
-				int distanceY = Main.rand.Next(-250, -250);
-				NPC.position.X = players.Center.X;
-				NPC.position.Y = players.Center.Y + distanceY;
-
-			}
+			/*
+            Player players = Main.player[NPC.target];
+            if (Spawner == 2)
+            {
+                int distanceY = Main.rand.Next(-250, -250);
+                NPC.position.X = players.Center.X;
+                NPC.position.Y = players.Center.Y + distanceY;
+            }*/
 
 			p2 = NPC.life < NPC.lifeMax * 0.5f;
             bee--;

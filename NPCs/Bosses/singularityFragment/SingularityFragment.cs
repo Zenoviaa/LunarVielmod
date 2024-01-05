@@ -134,18 +134,15 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public override void AI()
         {
             Spawner++;
+            /*
             Player players = Main.player[NPC.target];
             if (Spawner == 2)
-
             {
-
-
-
                 int distanceY = Main.rand.Next(-150, -150);
                 NPC.position.X = players.Center.X;
                 NPC.position.Y = players.Center.Y + distanceY;
+            }*/
 
-            }
             PH2 = NPC.life < NPC.lifeMax * 0.4f;
             if (PH2)
             {

@@ -223,18 +223,15 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
         public override void AI()
         {
             Spawner++;
+            /*
             Player players = Main.player[NPC.target];
             if (Spawner == 2)
-
             {
-
-
-
                 int distanceY = Main.rand.Next(-250, -250);
                 NPC.position.X = players.Center.X;
                 NPC.position.Y = players.Center.Y + distanceY;
+            }*/
 
-            }
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             NPC.damage = 0;

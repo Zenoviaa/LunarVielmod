@@ -80,18 +80,15 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         public override void AI()
         {
             Spawner++;
+            /*
             Player players = Main.player[NPC.target];
             if (Spawner == 2)
-
             {
-
-
-
                 int distanceY = Main.rand.Next(-250, -250);
                 NPC.position.X = players.Center.X;
                 NPC.position.Y = players.Center.Y + distanceY;
+            }*/
 
-            }
             if (NPC.life < NPC.lifeMax / 2)
             {
                 Attacks = 6;
