@@ -74,6 +74,10 @@ namespace Stellamod
             return whoAmI > -1 && whoAmI < Main.maxPlayers && Main.player[whoAmI].active && !Main.player[whoAmI].dead && !Main.player[whoAmI].ghost ? Main.player[whoAmI] : null;
         }
 
+
+       
+
+
         public static Stellamod Instance;
         public static int MedalCurrencyID;
         public override void Load()
@@ -171,7 +175,7 @@ namespace Stellamod
 
 
 
-            if (!Main.dedServ)
+            if (!Main.dedServ && ModContent.GetInstance<LunarVeilConfig>().VanillaTexturesToggle == true)
             {
 
 
