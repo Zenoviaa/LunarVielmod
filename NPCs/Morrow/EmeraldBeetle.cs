@@ -35,7 +35,8 @@ namespace Stellamod.NPCs.Morrow
 			NPC.noTileCollide = false;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-        }
+			NPC.aiStyle = 0;
+		}
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.ZoneJungle)

@@ -26,6 +26,7 @@ namespace Stellamod.NPCs.Ice.WinterSouls
 
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.defense = 3;

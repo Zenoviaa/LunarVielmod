@@ -110,7 +110,7 @@ namespace Stellamod
 						if (NPC.AnyNPCs(bossType))
 							return;
 
-						int npcID = NPC.NewNPC(new EntitySource_TileBreak(TileCordsX, TileCordsY), npcCenterX, npcCenterY, bossType);
+						int npcID = NPC.NewNPC(new EntitySource_TileBreak(TileCordsX, TileCordsY), TileCordsX, TileCordsY, bossType);
 						Main.npc[npcID].netUpdate2 = true;
 						
 					}
