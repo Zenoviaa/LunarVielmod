@@ -26,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.lifeMax = 100;

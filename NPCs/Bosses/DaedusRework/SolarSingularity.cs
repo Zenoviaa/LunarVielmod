@@ -77,6 +77,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.alpha = 0;
             NPC.width = 100;
             NPC.height = 60;

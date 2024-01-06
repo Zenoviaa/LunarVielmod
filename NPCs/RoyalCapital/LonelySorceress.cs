@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
-
+	
 		}
 		public override void FindFrame(int frameHeight)
 		{
@@ -242,7 +242,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			if (target.InModBiome<AlcadziaBiome>())
 			{
 				Vector2 targetCenter = target.Center;
-				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -60);
+				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -128);
 				NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.15f);
 			}
 				if (!target.InModBiome<AlcadziaBiome>())
