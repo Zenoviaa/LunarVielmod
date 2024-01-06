@@ -38,6 +38,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
         }
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.noGravity = true;
             NPC.lifeMax = 800;
             NPC.defense = 10;

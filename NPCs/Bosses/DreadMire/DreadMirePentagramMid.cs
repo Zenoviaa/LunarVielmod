@@ -46,6 +46,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.alpha = 255;
             NPC.width = 0;
             NPC.height = 0;
