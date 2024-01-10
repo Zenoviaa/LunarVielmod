@@ -31,6 +31,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
         {
             return body.type == ModContent.ItemType<HeavyMetalBody>() && legs.type == ModContent.ItemType<HeavyMetalLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;

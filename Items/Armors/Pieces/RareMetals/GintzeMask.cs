@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Armors.HeavyMetal;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,8 +39,22 @@ namespace Stellamod.Items.Armors.Pieces.RareMetals
 
 		}
 
+		public override bool IsArmorSet(Item head, Item body, Item legs)
+		{
+			return body.type == ModContent.ItemType<HeavyMetalBody>() && legs.type == ModContent.ItemType<HeavyMetalLegs>();
+		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	
+		public override void ArmorSetShadows(Player player)
+		{
+			player.armorEffectDrawShadow = true;
+		}
+
+		public override void UpdateArmorSet(Player player)
+		{
+			player.maxMinions += 1;
+			Main.LocalPlayer.GetModPlayer<MyPlayer>().HMArmor = true;
+			player.setBonus = "2 Gintze Guards come to fight for you" +
+				 "\n+1 Summons!";  // This is the setbonus tooltip
+		}
 	}
 }

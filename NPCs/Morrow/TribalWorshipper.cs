@@ -154,9 +154,8 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 2, 1, 10));
-
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
 		}
-
 
 		public void Wait()
 		{

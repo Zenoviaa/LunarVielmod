@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -135,8 +136,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), 2, 1, 10));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 4, 1, 1));
-
-
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
 		}
 
 
