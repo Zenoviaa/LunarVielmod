@@ -459,8 +459,7 @@ namespace Stellamod.NPCs.Town
 
 
 			var npcShop = new NPCShop(Type, ShopName)
-
-
+				.Add(new Item(ItemID.Wood))
 				.Add(new Item(ModContent.ItemType<DiariBroochA>())
 				{
 					shopCustomPrice = 1,
