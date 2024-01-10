@@ -36,6 +36,7 @@ namespace Stellamod.Items.Armors.HeavyMetal
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
             player.maxMinions += 1;
@@ -43,10 +44,8 @@ namespace Stellamod.Items.Armors.HeavyMetal
       
             player.setBonus = "2 Gintze Guards come to fight for you" +
                  "\n+1 Summons!";  // This is the setbonus tooltip
-
-
-
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

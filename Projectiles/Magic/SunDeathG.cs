@@ -19,9 +19,9 @@ namespace Stellamod.Projectiles.Magic
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+        
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 4;
             Projectile.width = 36;
             Projectile.height = 36;
             Projectile.timeLeft = 500;
@@ -30,6 +30,7 @@ namespace Stellamod.Projectiles.Magic
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
