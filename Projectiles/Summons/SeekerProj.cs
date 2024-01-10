@@ -202,12 +202,16 @@ namespace Stellamod.Projectiles.Summons
 					for (int i = 0; i < Main.maxNPCs; i++)
 					{
 						NPC npc2 = Main.npc[i];
-						if (!npc2.dontTakeDamage && !hitByThisStardustExplosion[npc2.whoAmI])
+						if (!npc2.dontTakeDamage 
+							&& npc2.chaseable
+							&& !npc2.townNPC
+							&& NPCID.Sets.ActsLikeTownNPC[npc2.type] == false 
+							&& !hitByThisStardustExplosion[npc2.whoAmI])
 						{
 							hitByThisStardustExplosion[npc2.whoAmI] = true;
 							NPC.HitInfo hitInfo = new();
 							hitInfo.Damage = Projectile.damage / 2;
-							//(int)Main.player[Projectile.owner].GetDamage(DamageClass.Summon).ApplyTo(Projectile.damage)
+					
 							hitInfo.DamageType = DamageClass.Summon;
 							npc2.StrikeNPC(hitInfo);
 						}
