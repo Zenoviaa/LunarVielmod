@@ -468,7 +468,6 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnItems"] = summonItem8,
 					["spawnInfo"] = spawnConditionText
 					// Other optional arguments as needed are inferred from the wiki
 				}
