@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void SetDefaults()
         {
             NPC.noGravity = true;
-            NPC.lifeMax = 3000;
+            NPC.lifeMax = 2200;
             NPC.defense = 9;
             NPC.damage = 1;
             NPC.value = 65f;
@@ -62,6 +62,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPC.aiStyle = 0;
         }
+
         private void Disappear()
         {
             Player obj = Main.player[NPC.target];
