@@ -32,6 +32,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
         }
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.scale = 1.1f;
             NPC.alpha = 255;
             NPC.width = 30;

@@ -33,6 +33,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
 
         public override void SetDefaults()
         {
+            NPC.aiStyle = 0;
             NPC.noGravity = true;
             NPC.noTileCollide = false;
             NPC.lifeMax = 50;
@@ -49,6 +50,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
         }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneOverworldHeight && EventWorld.Gintzing) ? (278f) : 0f;
