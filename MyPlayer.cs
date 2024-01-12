@@ -2507,20 +2507,13 @@ namespace Stellamod
 						Main.dust[dustnumber].noGravity = true;
 					}
 				}
-				Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
-				Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
+
+				Player.GetDamage(DamageClass.Generic) += StealthTime / 1500f;
 			}
 
 			if (SpiritPendent && ZoneAbyss)
 			{
-				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
-				Player.GetDamage(DamageClass.Summon) += 250 / 1500f;
-				Player.GetDamage(DamageClass.Throwing) += 250 / 1500f;
-				Player.GetDamage(DamageClass.Ranged) += 250 / 1500f;
-				Player.GetDamage(DamageClass.Melee) += 250 / 1500f;
+				Player.GetDamage(DamageClass.Generic) += 250 / 1500f;
 			}
 
 
@@ -2572,31 +2565,8 @@ namespace Stellamod
 			{
 				Player.GetDamage(DamageClass.Magic) *= 1.4f;
 				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
-
 			}
 
-			if (StealthRune)
-			{
-				if (StealthTime <= 500)
-				{
-					StealthTime++;
-				}
-				else
-				{
-					if (Main.rand.NextBool(5))
-					{
-						int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
-						Main.dust[dustnumber].velocity *= 0.3f;
-						Main.dust[dustnumber].noGravity = true;
-					}
-				}
-				Player.GetDamage(DamageClass.Magic) += StealthTime / 150f;
-				Player.GetDamage(DamageClass.Summon) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Throwing) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Ranged) += StealthTime / 1500f;
-				Player.GetDamage(DamageClass.Melee) += StealthTime / 1500f;
-
-			}
 			if (SpiritPendent && ZoneAbyss)
 			{
 				Player.GetDamage(DamageClass.Magic) += 250 / 150f;
