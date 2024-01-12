@@ -242,7 +242,7 @@ namespace Stellamod
         public float CorsageTime;
 
         public bool DetonationRune;
-
+		public bool Towned = false;
 
 		public bool ClamsPearl;
 
