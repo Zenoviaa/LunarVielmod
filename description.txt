@@ -47,7 +47,7 @@ This update focuses on improving curent mechanics and adding an overall better v
 1.4.1 - Some Generation fixes
 1.4.2 - Texture configuration added, also adds some multiplayer support to make bosses actually spawn, not fully multiplayer yet though! Fenix and Sunstalker do not work in multiplayer!
 1.4.2.1 - Fixed Dreadmire's phases breaking
-
+1.4.2.2 - Fixed a lot of bugs and some item issues!
 
 
 
