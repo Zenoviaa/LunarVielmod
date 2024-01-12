@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             NPC.height = 20;
             NPC.damage = 8;
 			NPC.defense = 2;
-			NPC.lifeMax = 40;
+			NPC.lifeMax = 50;
             NPC.HitSound = SoundID.DD2_SkeletonHurt;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 30f;
@@ -74,9 +74,8 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (!Main.hardMode)
-                return 0f;
-            return SpawnCondition.OverworldNightMonster.Chance * 0.3f;
+        
+            return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

@@ -38,6 +38,8 @@ namespace Stellamod.NPCs.Town
 			// Specify the debuffs it is immune to
 
 		}
+
+		public bool Towned = false;
 		public override void SetDefaults()
 		{
 
@@ -144,6 +146,7 @@ namespace Stellamod.NPCs.Town
 		{
 			NPC.Transform(ModContent.NPCType<Gia>());
 			NPC.dontTakeDamage = false;
+			ModContent.GetInstance<MyPlayer>().Towned = true;
 		}
 
 
