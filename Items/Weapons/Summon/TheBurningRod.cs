@@ -360,10 +360,10 @@ namespace Stellamod.Items.Weapons.Summon
 				if (TimerShoot >= 30 && foundTarget)
 				{
 
-					float speedXa = (Projectile.velocity.X / 6) + Main.rand.NextFloat(1f, 10f);
-					float speedYa = (Projectile.velocity.Y / 6) + Main.rand.Next(1, 10);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 0.9f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+					float speedXa = (Projectile.velocity.X / 3);
+					float speedYa = (Projectile.velocity.Y / 3);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 1f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 1f, speedYa * 1f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 
 
