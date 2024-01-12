@@ -7586,8 +7586,23 @@ Mods: {
 					Label: Vanilla Textures Toggle
 				}
 
-				Headers.ReplaceVanillaTextures: Replace Vanilla Textures Header
+				Headers: {
+					ReplaceVanillaTextures: Replace Vanilla Textures Header
+					BiomeParticles: Biome Particles Header
+					ModdedBiomeParticles: Modded Biome Particles Header
+				}
+
 				DisplayName: Lunar Veil Config
+
+				VanillaParticlesToggle: {
+					Label: Vanilla Particles Toggle
+					Tooltip: ""
+				}
+
+				ParticlesToggle: {
+					Label: Particles Toggle
+					Tooltip: ""
+				}
 			}
 		}
 	}
