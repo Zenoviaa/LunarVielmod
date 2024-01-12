@@ -224,7 +224,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 					}
 
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(0, -32), Vector2.Zero,
-						ProjectileID.CultistBossLightningOrb, 40, 1);
+						ProjectileID.CultistBossLightningOrb, 15, 1);
 					SwitchState(AttackState.Idle);
 					break;
 				case AttackState.Lightning_Attack_3:
@@ -241,7 +241,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 						Vector2 velocity = target.DirectionFrom(_nextLightningPosition) * 6;
 
 						Projectile projectile = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
-							ProjectileID.DD2LightningBugZap, 40, 1);
+							ProjectileID.DD2LightningBugZap, 32, 1);
 						projectile.tileCollide = false;
 						projectile.timeLeft = 60;
 						for (int i = 0; i < 16; i++)
