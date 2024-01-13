@@ -45,7 +45,6 @@ namespace Stellamod.WorldG
 
 			
 
-
 			int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lakes"));
 			if (MorrowGen != -1)
 			{
@@ -85,14 +84,14 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
 				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Bridget", WorldGenBridget));			
 				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
-				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
-				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
-				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
-				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
-				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
-				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
-				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Sylia", WorldGenSylia));
-				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Rallad", WorldGenRallad));
+				//tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Sea Temple", WorldGenSeaTemple));
+				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
+				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Catacombs Fire", WorldGenCatacombsFlames));
+				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Catacombs Trap", WorldGenCatacombsTrap));
+				tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Catacombs Water 1", WorldGenCatacombsWater));
+				tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Catacombs Water 2", WorldGenCatacombsWater2));
+				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Sylia", WorldGenSylia));
+				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Rallad", WorldGenRallad));
 			}
 
 
@@ -1148,19 +1147,6 @@ namespace Stellamod.WorldG
 						continue;
 					}
 
-					Tile tile = Main.tile[smx, smy];
-					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					if (!(tile.TileType == TileID.Sand
-							|| tile.TileType == TileID.HardenedSand
-							|| tile.TileType == TileID.Dirt
-						|| tile.TileType == TileID.Sandstone
-						|| tile.TileType == TileID.Stone))
-
-					{
-						continue;
-					}
-
-
 					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
 					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
                     {
@@ -1256,19 +1242,6 @@ namespace Stellamod.WorldG
 					{
 						continue;
 					}
-
-					Tile tile = Main.tile[smx, smy];
-					// If the type of the tile we are placing the tower on doesn't match what we want, try again
-					if (!(tile.TileType == TileID.Sand
-							|| tile.TileType == TileID.HardenedSand
-							|| tile.TileType == TileID.Dirt
-						|| tile.TileType == TileID.Sandstone
-						|| tile.TileType == TileID.Stone))
-
-					{
-						continue;
-					}
-
 
 					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
 					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
