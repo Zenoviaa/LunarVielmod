@@ -3255,7 +3255,7 @@ Mods: {
 				Tooltip:
 					'''
 					This puppet was worn out.
-					+10% Damage
+					+5% Damage
 					+40 Health
 					'''
 			}

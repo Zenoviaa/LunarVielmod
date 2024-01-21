@@ -24,8 +24,8 @@ namespace Stellamod.Items.Materials
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 5);
-			recipe.AddTile(TileID.BewitchingTable);
-			recipe.Register();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
 		}
 	}
 }
