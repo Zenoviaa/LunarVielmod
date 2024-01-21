@@ -83,12 +83,12 @@ Mods: {
 			}
 
 			MorrowedBroochA: {
-				DisplayName: Brooch of The Huntria Morrow
+				DisplayName: Brooch of The Huntria Fable
 				Tooltip:
 					'''
 					Heavy increased damage to your arrows
 					+2 Defense and increased ranged damage
-					Use the power of the deep dark morrow..
+					Use the power of the deep dark fable..
 					'''
 			}
 
@@ -565,7 +565,7 @@ Mods: {
 				DisplayName: Sky Blue Dreas Flower
 				Tooltip:
 					'''
-					All the way from the Morrowed temples..
+					All the way from the Fabled temples..
 					Used for planting and harvesting
 					Best use for magical items and plants!
 					'''
@@ -597,17 +597,17 @@ Mods: {
 			}
 
 			MorrowRocks: {
-				DisplayName: Morrow Rocks
-				Tooltip: Rocks from the deep morrow
+				DisplayName: Fabled Rocks
+				Tooltip: Rocks from the deep fable
 			}
 
 			Morrowshroom: {
-				DisplayName: Morrowshroom
+				DisplayName: Fableshroom
 				Tooltip: Shroomster
 			}
 
 			MorrowVine: {
-				DisplayName: Morrowed Vine
+				DisplayName: Fabled Vine
 				Tooltip:
 					'''
 					A useful piece of string!
@@ -670,22 +670,22 @@ Mods: {
 			}
 
 			OvermorrowDirt: {
-				DisplayName: Morrow Dirt
+				DisplayName: Fable Dirt
 				Tooltip: ""
 			}
 
 			OvermorrowdirtwallBlock: {
-				DisplayName: Morrow wall
+				DisplayName: Fable wall
 				Tooltip: ""
 			}
 
 			OvermorrowWall: {
-				DisplayName: Morrow Wall
+				DisplayName: Fabled Wall
 				Tooltip: ""
 			}
 
 			OvermorrowWood: {
-				DisplayName: Morrow Wood
+				DisplayName: Fabled Wood
 				Tooltip: Yummy wood am I right?
 			}
 
@@ -713,7 +713,7 @@ Mods: {
 				Tooltip:
 					'''
 					Ew! It's sticky! I wonder what else is sticky...
-					A sticky substance that resonates with the stars and the morrow!
+					A sticky substance that resonates with the stars and the fable!
 					'''
 			}
 
@@ -862,17 +862,17 @@ Mods: {
 			}
 
 			MorrowChesti: {
-				DisplayName: Morrow Chest
+				DisplayName: Fable Chest
 				Tooltip: ""
 			}
 
 			MorrowChestKey: {
-				DisplayName: Morrow Chest Key
+				DisplayName: Fabled Chest Key
 				Tooltip: ""
 			}
 
 			MorrowDeath: {
-				DisplayName: Morrow Death
+				DisplayName: Fable Death
 				Tooltip: You arent meant to collect this :(
 			}
 
@@ -882,12 +882,12 @@ Mods: {
 			}
 
 			MorrowSpike: {
-				DisplayName: Morrow Spike
+				DisplayName: Fabled Spike
 				Tooltip: ""
 			}
 
 			MorrowStone: {
-				DisplayName: Morrow Stone
+				DisplayName: Fable Stone
 				Tooltip: You arent meant to collect this :(
 			}
 
@@ -1115,17 +1115,17 @@ Mods: {
 			}
 
 			MorrowRapier: {
-				DisplayName: Morrow Rapier
+				DisplayName: Fabled Rapier
 				Tooltip: Poke poke-dont get the wrong idea of the weapon function-poke
 			}
 
 			MorrowSword: {
-				DisplayName: Morrow Sword
+				DisplayName: Fabled Sword
 				Tooltip: This sword feels warm, what is this Materials?
 			}
 
 			MorrowValswa: {
-				DisplayName: Morrow Valswa
+				DisplayName: Fabled Valswa
 				Tooltip: Very bad sword don't use it, I warned you
 			}
 
@@ -1294,7 +1294,7 @@ Mods: {
 			}
 
 			MorrowSalface: {
-				DisplayName: Morrowed Salface
+				DisplayName: Fabled Salface
 				Tooltip: Shoots three bolts and then a big arcanal bolt
 			}
 
@@ -1318,7 +1318,7 @@ Mods: {
 				Tooltip:
 					'''
 					Let them burn in harmony!
-					Simple weapon forged from Stellean bricks and the heat from plants of the morrow
+					Simple weapon forged from Stellean bricks and the heat from plants of the fable
 					Impractical but very rewarding...
 					'''
 			}
@@ -1333,7 +1333,7 @@ Mods: {
 			}
 
 			AlcadizDagger: {
-				DisplayName: Morrowed String n' Brooch
+				DisplayName: Fabled String n' Brooch
 				Tooltip:
 					'''
 					Your summons will target focused enemies
@@ -1765,11 +1765,11 @@ Mods: {
 			}
 
 			MorrowedCrossbow: {
-				DisplayName: Morrowed Crossbow
+				DisplayName: Fabled Crossbow
 				Tooltip:
 					'''
 					Sniper type crossbow that can be held down to shoot fast rail bolts!
-					The morrow is coming inside of me!
+					The fable is coming inside of me!
 					'''
 			}
 
@@ -1936,7 +1936,7 @@ Mods: {
 
 			EaglesGrace: {
 				DisplayName: Eagles Grace
-				Tooltip: A special eagle gives you flight from a sacred nest of the morrow
+				Tooltip: A special eagle gives you flight from a sacred nest of the fable
 			}
 
 			GhostExcalibur: {
@@ -3858,7 +3858,7 @@ Mods: {
 			}
 
 			OrbOfTheMorrow: {
-				DisplayName: Heart of The Morrow
+				DisplayName: Heart of The Morrow and Fable
 				Tooltip: The voices of Gothivia reek with this one.
 			}
 
@@ -4983,11 +4983,6 @@ Mods: {
 					May be useful for mages and summoners!
 					Fills you with wisdom, I think?
 					'''
-			}
-
-			ChiseledSandstone: {
-				DisplayName: Chiseled Sandstone
-				Tooltip: ""
 			}
 
 			ChiseledSandstone: {
