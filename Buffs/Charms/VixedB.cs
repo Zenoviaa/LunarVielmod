@@ -15,13 +15,12 @@ namespace Stellamod.Buffs.Charms
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
 		}
+
 		public override void Update(Player player, ref int buffIndex)
 		{
-
-			player.GetDamage(DamageClass.Generic) *= 1.1f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic) += 0.05f;
 			player.statLifeMax2 += 40;
-			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SilverCoin, Vector2.Zero); 
-			
+			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SilverCoin, Vector2.Zero); 	
 		}
 	}
 }

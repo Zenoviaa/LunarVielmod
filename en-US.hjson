@@ -3255,7 +3255,7 @@ Mods: {
 				Tooltip:
 					'''
 					This puppet was worn out.
-					+10% Damage
+					+5% Damage
 					+40 Health
 					'''
 			}
@@ -4974,6 +4974,20 @@ Mods: {
 					+23% Throwing Damage
 					Slightly increased movement speed
 					'''
+			}
+
+			StickOfWisdom: {
+				DisplayName: Stick Of Wisdom
+				Tooltip:
+					'''
+					May be useful for mages and summoners!
+					Fills you with wisdom, I think?
+					'''
+			}
+
+			ChiseledSandstone: {
+				DisplayName: Chiseled Sandstone
+				Tooltip: ""
 			}
 
 			ChiseledSandstone: {
