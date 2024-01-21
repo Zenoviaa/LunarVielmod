@@ -37,16 +37,15 @@ namespace Stellamod.NPCs.Morrow
 		{
 			NPC.width = 46;
 			NPC.height = 50;
-			NPC.damage = 50;
+			NPC.damage = 42;
 			NPC.defense = 8;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 75;
 			NPC.HitSound = SoundID.NPCHit5;
 			NPC.DeathSound = SoundID.DD2_SkeletonDeath;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
 			NPC.aiStyle = 3;
 			AIType = NPCID.SnowFlinx;
-
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -73,8 +72,6 @@ namespace Stellamod.NPCs.Morrow
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
 
 		public override void FindFrame(int frameHeight)
@@ -197,12 +194,10 @@ namespace Stellamod.NPCs.Morrow
 
 						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 15, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 
+							15, 0f, 0, 0f, 0f);
 					}
 				}
-
-
-
 			}
 
 			if (timer == 100)

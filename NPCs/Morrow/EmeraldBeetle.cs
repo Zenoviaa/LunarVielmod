@@ -23,13 +23,14 @@ namespace Stellamod.NPCs.Morrow
 			// DisplayName.SetDefault("Ruby Beetle");
 			Main.npcFrameCount[NPC.type] = 6;
 		}
+
 		public override void SetDefaults()
 		{
-			NPC.width = 80;
-			NPC.height = 80;
+			NPC.width = 32;
+			NPC.height = 32;
 			NPC.damage = 20;
 			NPC.defense = 10;
-			NPC.lifeMax = 80;
+			NPC.lifeMax = 70;
 			NPC.noGravity = true;
 			NPC.value = 90f;
 			NPC.noTileCollide = false;
@@ -37,6 +38,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.aiStyle = 0;
 		}
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.ZoneJungle)
@@ -65,12 +67,14 @@ namespace Stellamod.NPCs.Morrow
 			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
 			NPC.rotation = NPC.velocity.X * 0.1f;
-			if (NPC.Center.X >= player.Center.X && moveSpeed >= -60) 
+
+            int xSpeed = 21;
+            if (NPC.Center.X >= player.Center.X && moveSpeed >= -xSpeed) 
 			{
 				moveSpeed--;
 			}
 
-			if (NPC.Center.X <= player.Center.X && moveSpeed <= 60)
+			if (NPC.Center.X <= player.Center.X && moveSpeed <= xSpeed)
 			{
 				moveSpeed++;
 			}

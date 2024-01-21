@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Govheil
             NPC.height = 90;
             NPC.damage = 40;
             NPC.defense = 10;
-            NPC.lifeMax = 500;
+            NPC.lifeMax = 350;
             NPC.HitSound = SoundID.Tink;
             NPC.DeathSound = SoundID.Tink;
             NPC.value = 30f;
@@ -75,7 +75,8 @@ namespace Stellamod.NPCs.Govheil
 
                 float speedXB = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f);
                 float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y , speedXB * 3, speedY, ProjectileID.GreekFire3, 15, 0f, 0, 0f, 0f);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y , speedXB * 3, speedY, 
+                    ProjectileID.GreekFire3, 12, 0f, 0, 0f, 0f);
 
             }
             if (games >= 761)

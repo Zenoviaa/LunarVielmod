@@ -36,16 +36,15 @@ namespace Stellamod.NPCs.Desert
 		{
 			NPC.width = 36;
 			NPC.height = 16;
-			NPC.damage = 40;
+			NPC.damage = 30;
 			NPC.defense = 8;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 80;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
 			NPC.aiStyle = 3;
 			AIType = NPCID.SnowFlinx;
-
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -60,8 +59,6 @@ namespace Stellamod.NPCs.Desert
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Sand, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
 
 		public override void FindFrame(int frameHeight)
@@ -74,7 +71,6 @@ namespace Stellamod.NPCs.Desert
 
 		public override void AI()
 		{
-
 			timer++;
 			NPC.spriteDirection = NPC.direction;
 
@@ -92,7 +88,6 @@ namespace Stellamod.NPCs.Desert
 
 			switch (State)
 			{
-
 				case ActionState.Wait:
 					counter++;
 					Wait();
@@ -103,7 +98,6 @@ namespace Stellamod.NPCs.Desert
 					Speed();
 					NPC.velocity *= 0.98f;
 					break;
-
 
 				default:
 					counter++;
@@ -117,23 +111,14 @@ namespace Stellamod.NPCs.Desert
 			npcLoot.Add(ItemDropRule.Common(ItemID.Amber, 5, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ArncharChunk>(), 5, 1, 5));
-
-
-
 		}
-
 
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
-
 				NPC.oldVelocity *= 0.99f;
-
-
-
 			}
 			else if (timer == 60)
 			{

@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 10; // The amount of defense that this npc has
-			NPC.lifeMax = 600; // The amount of health that this npc has
+			NPC.lifeMax = 100; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Morrow
 					NPC.damage = 0;
 					counter++;
 					NPC.aiStyle = 22;
-					NPC.velocity.Y *= 1.04f;
+					NPC.velocity.Y *= 1.01f;
 					FallAsleep();
 					break;
 				case ActionState.Notice:
@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Morrow
 					Notice();
 					break;
 				case ActionState.Attack:
-					NPC.damage = 250;
+					NPC.damage = 67;
 					counter++;
 					Attack();
 					break;

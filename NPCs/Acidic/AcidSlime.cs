@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Acidic
         {
             NPC.width = 32;
             NPC.height = 24;
-            NPC.damage = 8;
+            NPC.damage = 13;
             NPC.defense = 14;
             NPC.lifeMax = 166;
             NPC.HitSound = SoundID.NPCHit1;
@@ -50,6 +50,7 @@ namespace Stellamod.NPCs.Acidic
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
             }
+
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 20; i++)
@@ -63,6 +64,7 @@ namespace Stellamod.NPCs.Acidic
                 }
             }
         }
+
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;

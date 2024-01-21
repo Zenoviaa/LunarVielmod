@@ -26,8 +26,8 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override void SetDefaults()
 		{
-			NPC.width = 80;
-			NPC.height = 80;
+			NPC.width = 32;
+			NPC.height = 32;
 			NPC.damage = 20;
 			NPC.defense = 10;
 			NPC.lifeMax = 80;
@@ -38,6 +38,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.aiStyle = 0;
 		}
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
 			//Multiply by overworld chance so it doesn't spawn during vanilla events and such
@@ -63,12 +64,13 @@ namespace Stellamod.NPCs.Morrow
 			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
 			NPC.rotation = NPC.velocity.X * 0.1f;
-			if (NPC.Center.X >= player.Center.X && moveSpeed >= -60) 
+			int xSpeed = 21;
+			if (NPC.Center.X >= player.Center.X && moveSpeed >= -xSpeed) 
 			{
 				moveSpeed--;
 			}
 
-			if (NPC.Center.X <= player.Center.X && moveSpeed <= 60)
+			if (NPC.Center.X <= player.Center.X && moveSpeed <= xSpeed)
 			{
 				moveSpeed++;
 			}
@@ -104,6 +106,7 @@ namespace Stellamod.NPCs.Morrow
 					NPC.velocity = direction;
 				}
 			}
+
 			if (counter == 180)
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -112,21 +115,18 @@ namespace Stellamod.NPCs.Morrow
 				counter = 0;
 				dash = false;
 			}
-
-			
 		}
-
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-		
+	
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 2, 1, 4));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 3, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 5, 1, 1));
-
 		}
+
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.22f;
