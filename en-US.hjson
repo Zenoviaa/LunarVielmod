@@ -4986,13 +4986,13 @@ Mods: {
 			}
 
 			ChiseledSandstone: {
-				DisplayName: Chiseled Sandstone
 				Tooltip: ""
+				DisplayName: Chiseled Sandstone
 			}
 
-			ChiseledSandstone: {
+			VeiizalsUmbrella: {
+				DisplayName: Veiizals Umbrella
 				Tooltip: ""
-				DisplayName: Chiseled Sandstone
 			}
 		}
 

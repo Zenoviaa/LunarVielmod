@@ -19,7 +19,8 @@ namespace Stellamod
 
 		private static List<Wait> _waits = new List<Wait>();
 
-		public static void Load() => Main.OnTickForInternalCodeOnly += OnTick;
+		public static bool IsHost => Main.netMode != NetmodeID.MultiplayerClient;
+        public static void Load() => Main.OnTickForInternalCodeOnly += OnTick;
 
 		public static void Unload()
 		{

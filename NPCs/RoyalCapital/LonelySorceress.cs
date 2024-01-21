@@ -280,16 +280,12 @@ namespace Stellamod.NPCs.RoyalCapital
 
 			if (firstButton)
 			{
-
 				Player target = Main.player[NPC.target];
 				NPC.alpha = 255;
 				var entitySource = NPC.GetSource_FromThis();
 				int index = NPC.NewNPC(entitySource, (int)target.Center.X, (int)target.Center.Y, ModContent.NPCType<Fenix>());
 				NPC.Kill();
-
 			}
-
-
 		}
 
 
