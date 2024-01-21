@@ -1,4 +1,5 @@
 ﻿using Stellamod.Projectiles.Crossbows;
+using Stellamod.Projectiles.Spears;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
