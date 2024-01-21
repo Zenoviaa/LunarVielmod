@@ -2366,7 +2366,7 @@ namespace Stellamod.WorldG
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
 			StructureMap structures = GenVars.structures;
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Alcad/RoyalCapital");
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Alcad/RoyalCapital2");
 			progress.Message = "Fighting the Virulent with magic";
 
 
@@ -2420,9 +2420,9 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx - 10, smyy + 60);
+					Point Loc = new Point(smx - 10, smyy - 100);
 					rectangle.Location = Loc;
-					StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital");
+					StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital2");
 					structures.AddProtectedStructure(rectangle);
 
 					Point Loc2 = new Point(smx - 10, smyy);
@@ -2432,10 +2432,10 @@ namespace Stellamod.WorldG
 					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
 					//new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt))
-					WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
-					WorldUtils.Gen(Loc5, new Shapes.Rectangle(590, 70), new Actions.SetTile(TileID.Dirt));
+				//	WorldUtils.Gen(Loc4, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					//WorldUtils.Gen(Loc5, new Shapes.Rectangle(590, 70), new Actions.SetTile(TileID.Dirt));
 					Point Loc3 = new Point(smx + 555, smyy + 60);
-					WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
+					//WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile((ushort)ModContent.TileType<StarbloomDirt>()));
 					//	Point resultPoint;
 					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
 					//	{

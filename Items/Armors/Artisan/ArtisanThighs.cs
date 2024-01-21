@@ -37,9 +37,9 @@ namespace Stellamod.Items.Armors.Artisan
 		public override void UpdateEquip(Player player)
 		{
 			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.moveSpeed += 0.4f;
-			player.maxRunSpeed += 0.4f;
-			player.statLifeMax2 += 25;
+			player.moveSpeed += 0.2f;
+			player.maxRunSpeed += 0.2f;
+			player.statLifeMax2 += 15;
 			player.GetDamage(DamageClass.Generic) *= 1.05f;
 
 		}

@@ -3991,9 +3991,9 @@ Mods: {
 				Tooltip:
 					'''
 					Woa, dont forget to cover yourself up, don't want paint on your skin right?
-					+10% Damage
+					+5% Damage
 					+5% Critical Strike Chance
-					+25 Health
+					+15 Health
 					Great for working in the arts :)
 					'''
 			}
@@ -4003,9 +4003,9 @@ Mods: {
 				Tooltip:
 					'''
 					Jamming out while making sprites and art is one of the most fun activities ever.
-					+10% Damage
+					+5% Damage
 					+5% Critical Strike Chance
-					+10 Health
+					+15 Health
 					You also look hot am I right?
 					'''
 			}
@@ -4015,9 +4015,9 @@ Mods: {
 				Tooltip:
 					'''
 					Shawty you better hide those thighs, someone is coming for you :(
-					+40% Increased Movement speed
+					+20% Increased Movement speed
 					+5% Damage
-					+25 Health
+					+15 Health
 					Skating on paint like splatoon!
 					'''
 			}
@@ -4916,8 +4916,8 @@ Mods: {
 				DisplayName: Ducanblitz Breastplate
 				Tooltip:
 					'''
-					+20 Max Health
-					+20% Melee Damage!
+					+10 Max Health
+					+10% Melee Damage!
 					'''
 			}
 
@@ -4926,7 +4926,7 @@ Mods: {
 				Tooltip:
 					'''
 					+10 Critical Strike Chance
-					+22% Melee Damage!
+					+12% Melee Damage!
 					'''
 			}
 
@@ -4935,9 +4935,9 @@ Mods: {
 				Tooltip:
 					'''
 					A hell of a lot of movement speed!
-					+50 Max Health
+					+10 Max Health
 					+15 Armor penetration
-					+12% Melee Damage!
+					+2% Melee Damage!
 					'''
 			}
 
@@ -4974,6 +4974,11 @@ Mods: {
 					+23% Throwing Damage
 					Slightly increased movement speed
 					'''
+			}
+
+			ChiseledSandstone: {
+				Tooltip: ""
+				DisplayName: Chiseled Sandstone
 			}
 		}
 
