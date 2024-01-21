@@ -57,6 +57,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
+            NPC.aiStyle = 0;
         }
 
         private float alphaCounter = 0;

@@ -137,6 +137,7 @@ namespace Stellamod.NPCs.Morrow
 			}
 			return false;
 		}
+		
 		public void FallAsleep()
 		{
 			// TargetClosest sets npc.target to the player.whoAmI of the closest player.
@@ -152,26 +153,23 @@ namespace Stellamod.NPCs.Morrow
 				ResetTimers();
 			}
 		}
-		public void Notice()
-		{
-			
-				timer++;
-				if (timer >= 23)
-				{
-					State = ActionState.Attack;
-					ResetTimers();
-				}
-			
-			
-				
 
-				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 60f)
-				{
-					State = ActionState.Asleep;
-					ResetTimers();
-				}
+		public void Notice()
+		{		
+			timer++;
+			if (timer >= 23)
+			{
+				State = ActionState.Attack;
+				ResetTimers();
+			}
 			
+			if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 60f)
+			{
+				State = ActionState.Asleep;
+				ResetTimers();
+			}	
 		}
+
 		public void Attack()
 		{
 			timer++;
@@ -202,7 +200,8 @@ namespace Stellamod.NPCs.Morrow
 
 
 			}
-			 if (timer == 21)
+			 
+			if (timer == 21)
 			{
 				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				State = ActionState.Notice;

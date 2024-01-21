@@ -5754,9 +5754,9 @@ Mods: {
 			MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
 			EmeraldBeetle.DisplayName: Emerald Beetle
 			AmethystBeetle.DisplayName: Amethyst Beetle
-			WinterSoul3.DisplayName: Winter Soul3
-			WinterSoul2.DisplayName: Winter Soul2
-			WinterSoul1.DisplayName: Winter Soul1
+			WinterSoul3.DisplayName: Winter Soul
+			WinterSoul2.DisplayName: Winter Soul
+			WinterSoul1.DisplayName: Winter Soul
 			WinterBornSlime.DisplayName: Winter Born Slime
 			WinterbornBat.DisplayName: Winterborn Bat
 			HarvestVirulent.DisplayName: Harvest Virulent
@@ -6652,9 +6652,9 @@ Mods: {
 				HarvestVirulent.DisplayName: Harvest Virulent
 				WinterbornBat.DisplayName: Winterborn Bat
 				WinterBornSlime.DisplayName: Winter Born Slime
-				WinterSoul1.DisplayName: Winter Soul1
-				WinterSoul2.DisplayName: Winter Soul2
-				WinterSoul3.DisplayName: Winter Soul3
+				WinterSoul1.DisplayName: Winter Soul
+				WinterSoul2.DisplayName: Winter Soul
+				WinterSoul3.DisplayName: Winter Soul
 				AmethystBeetle.DisplayName: Amethyst Beetle
 				EmeraldBeetle.DisplayName: Emerald Beetle
 				MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
@@ -8785,9 +8785,9 @@ NPCs: {
 	HarvestVirulent.DisplayName: Harvest Virulent
 	WinterbornBat.DisplayName: Winterborn Bat
 	WinterBornSlime.DisplayName: Winter Born Slime
-	WinterSoul1.DisplayName: Winter Soul1
-	WinterSoul2.DisplayName: Winter Soul2
-	WinterSoul3.DisplayName: Winter Soul3
+	WinterSoul1.DisplayName: Winter Soul
+	WinterSoul2.DisplayName: Winter Soul
+	WinterSoul3.DisplayName: Winter Soul
 	MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
 	MossyZombie.DisplayName: Mossy Zombie
 	RubyBeetle.DisplayName: Ruby Beetle
