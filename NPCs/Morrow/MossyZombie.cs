@@ -37,16 +37,15 @@ namespace Stellamod.NPCs.Morrow
 		{
 			NPC.width = 46;
 			NPC.height = 50;
-			NPC.damage = 20;
+			NPC.damage = 30;
 			NPC.defense = 8;
-			NPC.lifeMax = 400;
+			NPC.lifeMax = 125;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
 			NPC.knockBackResist = .45f;
 			NPC.aiStyle = 3;
 			AIType = NPCID.SnowFlinx;
-
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)

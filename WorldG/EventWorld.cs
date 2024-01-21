@@ -104,11 +104,14 @@ namespace Stellamod.WorldG
 
         private void TrySpawnAuroreanStarfall()
         {
+            //If not eye of cthulu is killed then don't run aurorean starfall code
+            if (!NPC.downedBoss1)
+                return;
             //AuroreanStars--------------------------
             if (!Main.dayTime && !Aurorean && !AuroreanSpawn)
             {
                 AuroreanSpawn = true;
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(5))
                 {
                     Aurorean = true;
                     Main.NewText("Aurorean Stars are falling!", 234, 96, 114);

@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Acidic
             NPC.height = 28;
             NPC.damage = 8;
             NPC.defense = 14;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 90;
             NPC.HitSound = SoundID.NPCHit42;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/AcidProbeDeath") with { PitchVariance = 0.1f };
             NPC.value = 30f;
@@ -186,9 +186,10 @@ namespace Stellamod.NPCs.Acidic
                     SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                     float offsetX = Main.rand.Next(-350, 350) * 0.01f;
                     float offsetY = Main.rand.Next(-350, 350) * 0.01f;
-                    int damage = Main.expertMode ? 4 : 7;
+
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<ToxicMissile>(), damage, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                            ModContent.ProjectileType<ToxicMissile>(), 12, 1, Main.myPlayer, 0, 0);
                 }
             }
             if (Timer == 450)

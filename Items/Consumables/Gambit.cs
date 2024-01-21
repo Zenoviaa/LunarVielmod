@@ -20,13 +20,12 @@ namespace Stellamod.Items.Consumables
 				"\n Gamble away your soul after battle for great rewards!"); */ // References a language key that says "Right Click To Open" in the language of the game
 
 			ItemID.Sets.PreHardmodeLikeBossBag[Type] = true; // ..But this set ensures that dev armor will only be dropped on special world seeds, since that's the behavior of pre-hardmode boss bags.
-
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 10;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;
@@ -52,8 +51,8 @@ namespace Stellamod.Items.Consumables
             NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DiceinNPC>());
             player.GetModPlayer<MyPlayer>().Dice = true;
 		}
-		// Below is code for the visuals
 
+		// Below is code for the visuals
 		public override Color? GetAlpha(Color lightColor)
 		{
 			// Makes sure the dropped bag is always visible

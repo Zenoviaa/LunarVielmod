@@ -27,11 +27,10 @@ namespace Stellamod.NPCs.Ice.WinterBornSlime
 
         public override void SetDefaults()
         {
-            NPC.damage = 6;
+            NPC.damage = 10;
             NPC.width = 38;
             NPC.height = 15;
             NPC.lifeMax = 55;
-            NPC.defense = 20;
             NPC.defense = 3;
             NPC.lifeMax = 40;
             NPC.HitSound = SoundID.NPCHit1;

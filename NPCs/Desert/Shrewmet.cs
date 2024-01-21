@@ -38,7 +38,7 @@ namespace Stellamod.NPCs.Desert
 			NPC.height = 16;
 			NPC.damage = 20;
 			NPC.defense = 1;
-			NPC.lifeMax = 200;
+			NPC.lifeMax = 80;
 			NPC.HitSound = SoundID.NPCHit32;
 			NPC.DeathSound = SoundID.NPCDeath6;
 			NPC.value = 563f;
@@ -46,7 +46,6 @@ namespace Stellamod.NPCs.Desert
 			NPC.aiStyle = 38;
 			AIType = NPCID.MisterStabby;
 			NPC.noTileCollide = false;
-
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -61,8 +60,6 @@ namespace Stellamod.NPCs.Desert
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Sand, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
 
 		public override void FindFrame(int frameHeight)

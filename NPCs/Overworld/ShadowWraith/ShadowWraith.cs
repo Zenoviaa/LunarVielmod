@@ -74,7 +74,6 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-        
             return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
         }
 

@@ -49,8 +49,8 @@ namespace Stellamod.NPCs.Morrow
 		}
 		public override void SetDefaults()
 		{
-			NPC.width = 72; // The width of the npc's hitbox (in pixels)
-			NPC.height = 84; // The height of the npc's hitbox (in pixels)
+			NPC.width = 42; // The width of the npc's hitbox (in pixels)
+			NPC.height = 60; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 10; // The amount of defense that this npc has
@@ -60,6 +60,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = .5f;
 		}
+
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			
@@ -92,7 +93,7 @@ namespace Stellamod.NPCs.Morrow
 					Jump();
 					break;
 				case ActionState.Fall:
-					NPC.damage = 150;
+					NPC.damage = 50;
 					counter++;
 					if (NPC.velocity.Y == 0)
 					{

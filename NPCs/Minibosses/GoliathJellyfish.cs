@@ -76,6 +76,7 @@ namespace Stellamod.NPCs.Minibosses
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
+			/*
 			Player player = spawnInfo.Player;
 			bool npcAlreadyExists = false;
 			for (int i = 0; i < Main.maxNPCs; i++)
@@ -95,10 +96,11 @@ namespace Stellamod.NPCs.Minibosses
 			}
 
 			return SpawnCondition.Cavern.Chance * 0.0012f;
-			
+			*/
 
-		}
-		int invisibilityTimer;
+			return 0f;
+        }
+        int invisibilityTimer;
 		int invsTimer;
 		public override void HitEffect(NPC.HitInfo hit)
 		{

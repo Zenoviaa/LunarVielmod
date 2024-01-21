@@ -52,9 +52,7 @@ namespace Stellamod.NPCs.Overworld.RoyalSlime
         {
             if(EventWorld.Gintzing)
                 return 0;
-            if (!spawnInfo.Player.ZonePurity)
-                return 0;
-            return SpawnCondition.OverworldDaySlime.Chance * 0.01f;
+            return SpawnCondition.OverworldDaySlime.Chance * 0.02f;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

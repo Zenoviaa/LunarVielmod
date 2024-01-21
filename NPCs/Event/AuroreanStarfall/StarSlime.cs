@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Materials;
 using Stellamod.WorldG;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -32,7 +34,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
             NPC.height = 24;
             NPC.damage = 8;
             NPC.defense = 0;
-            NPC.lifeMax = 100;
+            NPC.lifeMax = 75;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath7;
             NPC.value = 30f;
@@ -44,6 +46,7 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 74;
@@ -122,6 +125,12 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
         public override void AI()
         {
             NPC.spriteDirection = NPC.direction;
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 1, 1));
         }
     }
 }
