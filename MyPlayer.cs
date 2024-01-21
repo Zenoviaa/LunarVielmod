@@ -2549,22 +2549,22 @@ namespace Stellamod
 
 			if (GovheilB && GovheilBCooldown > 300)
 			{
-				Player.GetDamage(DamageClass.Magic) *= 1.2f;
-				Player.GetDamage(DamageClass.Summon) *= 1.2f;
+				Player.GetDamage(DamageClass.Magic) *= 1.1f;
+				Player.GetDamage(DamageClass.Summon) *= 1.1f;
 
 			}
 
 			if (DucanB && DucanBCooldown > 350)
 			{
-				Player.GetDamage(DamageClass.Melee) *= 1.3f;
+				Player.GetDamage(DamageClass.Melee) *= 1.1f;
 				
 
 			}
 
 			if (NotiaB && NotiaBCooldown > 300)
 			{
-				Player.GetDamage(DamageClass.Magic) *= 1.4f;
-				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
+				Player.GetDamage(DamageClass.Magic) *= 1.2f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.2f;
 			}
 
 			if (SpiritPendent && ZoneAbyss)

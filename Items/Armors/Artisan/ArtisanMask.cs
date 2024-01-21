@@ -40,8 +40,8 @@ namespace Stellamod.Items.Armors.Artisan
 
 		
 			player.GetCritChance(DamageClass.Generic) += 5f;
-			player.GetDamage(DamageClass.Generic) *= 1.1f;
-			player.statLifeMax2 += 10;
+			player.GetDamage(DamageClass.Generic) *= 1.05f;
+			player.statLifeMax2 += 15;
 
 
 

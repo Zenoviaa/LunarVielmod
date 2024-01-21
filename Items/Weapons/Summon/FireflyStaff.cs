@@ -154,11 +154,11 @@ namespace Stellamod.Items.Weapons.Summon
             base.AddRecipes();
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
+            recipe.AddIngredient(ItemType<StickOfWisdom>(), 1);
+            recipe.AddIngredient(ItemType<PearlescentScrap>(), 12);
 			recipe.AddIngredient(ItemType<LostScrap>(), 10);
 			recipe.AddIngredient(ItemID.SoulofLight, 10);
 			recipe.AddIngredient(ItemID.LifeCrystal, 1);
-			recipe.AddIngredient(ItemID.Firefly, 1);
 			recipe.Register();
 		}
     }
