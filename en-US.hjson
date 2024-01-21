@@ -4975,6 +4975,16 @@ Mods: {
 					Slightly increased movement speed
 					'''
 			}
+
+			VeiizalsUmbrella: {
+				Tooltip: ""
+				DisplayName: Veiizals Umbrella
+			}
+
+			ChiseledSandstone: {
+				Tooltip: ""
+				DisplayName: Chiseled Sandstone
+			}
 		}
 
 		JungleRuneI: {
@@ -5689,6 +5699,10 @@ Mods: {
 			HeatBeam.DisplayName: Heat Beam
 			Dulcans.DisplayName: Dulcans
 			CarianKnightProj.DisplayName: Carian Knight Proj
+			VeiizalsUmbrellaProj.DisplayName: Veiizals Umbrella Proj
+			VeiizalsUmbrellaProjOpen.DisplayName: Veiizals Umbrella Proj Open
+			VeiizalsUmbrellaFireProj.DisplayName: Veiizals Umbrella Fire Proj
+			VeiizalsUmbrellaWaveProj.DisplayName: Veiizals Umbrella Wave Proj
 		}
 
 		NPCs: {
