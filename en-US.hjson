@@ -4975,6 +4975,20 @@ Mods: {
 					Slightly increased movement speed
 					'''
 			}
+
+			StickOfWisdom: {
+				DisplayName: Stick Of Wisdom
+				Tooltip:
+					'''
+					May be useful for mages and summoners!
+					Fills you with wisdom, I think?
+					'''
+			}
+
+			ChiseledSandstone: {
+				DisplayName: Chiseled Sandstone
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {

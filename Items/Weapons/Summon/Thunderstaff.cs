@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
@@ -55,7 +56,7 @@ namespace Stellamod.Items.Weapons.Summon
             base.AddRecipes();
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemID.NimbusRod, 1);
+			recipe.AddIngredient(ItemType<StickOfWisdom>(), 1);
 			recipe.AddIngredient(ItemID.SoulofFlight, 12);
 			recipe.AddIngredient(ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ItemType<PearlescentScrap>(), 8);

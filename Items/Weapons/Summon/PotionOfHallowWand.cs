@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.DataStructures;
@@ -87,7 +88,8 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ItemID.HallowedBar, 15);
+            recipe.AddIngredient(ModContent.ItemType<StickOfWisdom>(), 1);
+            recipe.AddIngredient(ItemID.HallowedBar, 15);
 			recipe.Register();
 		}
 	}
