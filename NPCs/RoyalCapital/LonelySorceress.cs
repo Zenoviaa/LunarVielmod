@@ -20,6 +20,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Fenix;
 using System.Collections.Generic;
 using System.Linq;
@@ -244,17 +245,17 @@ namespace Stellamod.NPCs.RoyalCapital
 				Vector2 targetCenter = target.Center;
 				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -128);
 				NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.15f);
+				NPC.netUpdate = true;
 			}
-				if (!target.InModBiome<AlcadziaBiome>())
-                {
 
-					NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
-					NPC.EncourageDespawn(1);
-					NPC.noTileCollide = true;
-				}
-			
+			if (!target.InModBiome<AlcadziaBiome>())
+            {
+
+				NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
+				NPC.EncourageDespawn(1);
+				NPC.noTileCollide = true;
+			}			
 		}
-
 
 		public override List<string> SetNPCNameList()
 		{
@@ -265,9 +266,6 @@ namespace Stellamod.NPCs.RoyalCapital
 			};
 		}
 
-
-
-
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			
@@ -277,13 +275,11 @@ namespace Stellamod.NPCs.RoyalCapital
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
-
 			if (firstButton)
 			{
 				Player target = Main.player[NPC.target];
 				NPC.alpha = 255;
-				var entitySource = NPC.GetSource_FromThis();
-				int index = NPC.NewNPC(entitySource, (int)target.Center.X, (int)target.Center.Y, ModContent.NPCType<Fenix>());
+                StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Fenix>(), (int)target.Center.X, (int)target.Center.Y - 5);
 				NPC.Kill();
 			}
 		}

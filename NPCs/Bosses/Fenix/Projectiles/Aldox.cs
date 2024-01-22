@@ -64,16 +64,16 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
 				for (int i = 0; i < numberProjectiles; i++)
 				{
+					if (StellaMultiplayer.IsHost)
+                    {
+                        Vector2 perturbedSpeed = new Vector2(25 * 2, Projectile.velocity.Y * 2).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
 
-					Vector2 perturbedSpeed = new Vector2(25 * 2, Projectile.velocity.Y * 2).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-
-
-
-				}
+                    }
+                }
 
 
 
@@ -84,25 +84,20 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
 			if (Timer == 100)
 			{
-
-				float numberProjectiles = 12;
-				float rotation = MathHelper.ToRadians(25);
-
-
-				for (int i = 0; i < numberProjectiles; i++)
+				if (StellaMultiplayer.IsHost)
 				{
-
-					
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0) ;
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    float numberProjectiles = 12;
+                    float rotation = MathHelper.ToRadians(25);
+                    for (int i = 0; i < numberProjectiles; i++)
+					{
 
 
-
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, -25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 25, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+					}
 				}
-
-
 
 				Timer = 0;
 
