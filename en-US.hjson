@@ -4994,6 +4994,14 @@ Mods: {
 				DisplayName: Veiizals Umbrella
 				Tooltip: ""
 			}
+
+			AnotherRock: {
+				DisplayName: Another Rock
+				Tooltip:
+					'''
+					Use it to descend to the Old Guardian's Shrine, deep underground
+					'''
+			}
 		}
 
 		JungleRuneI: {
