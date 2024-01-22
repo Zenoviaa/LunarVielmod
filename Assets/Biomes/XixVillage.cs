@@ -24,7 +24,7 @@ namespace Stellamod.Assets.Biomes
 
 
 
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Witchtown");
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Witchtown4");
 		/*
 		public override void SpecialVisuals(Player player, bool isActive)
 		{
