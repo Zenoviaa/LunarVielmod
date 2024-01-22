@@ -4998,9 +4998,29 @@ Mods: {
 
 			AnotherRock: {
 				DisplayName: Another Rock
+				Tooltip: Use it to descend to the Old Guardian's Shrine, deep underground
+			}
+
+			AlcaricQuiver: {
+				DisplayName: Alcaric Quiver
 				Tooltip:
 					'''
-					Use it to descend to the Old Guardian's Shrine, deep underground
+					Converts wooden arrows into void arrows
+					Void arrows travel faster, deal more damage, and explode!
+					'''
+			}
+
+			BlackRose: {
+				DisplayName: Black Rose
+				Tooltip: Using a mana potion hurts you a little instead of sickening you
+			}
+
+			LittleWand: {
+				DisplayName: Little Wand
+				Tooltip:
+					'''
+					Use this to cast powerful magic!
+					Only used by the mightiest of wizards
 					'''
 			}
 		}
@@ -5721,6 +5741,7 @@ Mods: {
 			VeiizalsUmbrellaProjOpen.DisplayName: Veiizals Umbrella Proj Open
 			VeiizalsUmbrellaFireProj.DisplayName: Veiizals Umbrella Fire Proj
 			VeiizalsUmbrellaWaveProj.DisplayName: Veiizals Umbrella Wave Proj
+			VoidArrow.DisplayName: Void Arrow
 		}
 
 		NPCs: {
