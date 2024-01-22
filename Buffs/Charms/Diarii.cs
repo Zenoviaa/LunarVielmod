@@ -17,13 +17,13 @@ namespace Stellamod.Buffs.Charms
 		}
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.statDefense += 4;
+			player.statDefense += 2;
 			player.armorEffectDrawOutlines = true;
 			player.autoReuseGlove = true;
 			player.GetDamage(DamageClass.Generic) *= 1.05f; // Increase ALL player damage by 100%
 			player.wellFed = true;
-			player.statManaMax2 += 40; // Increase how many mana points the player can have by 20
-			player.statLifeMax2 += 40;
+			player.statManaMax2 += 10; // Increase how many mana points the player can have by 20
+			player.statLifeMax2 += 10;
 			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SolarFlare, Vector2.Zero);
 			
 		}

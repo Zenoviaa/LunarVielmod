@@ -17,7 +17,7 @@ namespace Stellamod.Buffs.Charms
 		{
 
 		
-			player.statLifeMax2 += 10;
+			player.statLifeMax2 += 40;
 			
 
 			

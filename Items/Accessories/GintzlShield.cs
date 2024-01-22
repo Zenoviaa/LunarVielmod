@@ -17,7 +17,7 @@ namespace Stellamod.Items.Accessories
             Item.accessory = true;
             Item.value = Item.sellPrice(silver: 50);
             Item.rare = ItemRarityID.Blue;
-            Item.defense = 6;
+            Item.defense = 4;
         }
 
     }

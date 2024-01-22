@@ -43,8 +43,8 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetDamage(DamageClass.Summon) *= 1.13f; // Increase ALL player damage by 100%
-			player.maxMinions += 3;
+			player.GetDamage(DamageClass.Summon) *= 1.10f; // Increase ALL player damage by 100%
+			player.maxMinions += 2;
 		}
 
 

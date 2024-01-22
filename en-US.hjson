@@ -47,7 +47,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increased Regeneration! 
-					+10% damage
+					+4% damage
 					Allows you to equip advanced brooches! Very useful 
 					Allows the effects of the Hiker's Backpack!
 					'''
@@ -57,10 +57,11 @@ Mods: {
 				DisplayName: Diari Brooch
 				Tooltip:
 					'''
-					+ 4 Defense!
-					Auto swing capabilities!
-					Flame walking? Always Fed!
-					+40 Health and Mana
+					+2 Defense!
+					Flame walking? 
+					Always Well Fed!
+					+10 Health and Mana
+					+5% Damage!
 					'''
 			}
 
@@ -1911,7 +1912,7 @@ Mods: {
 
 			ArncharMagazine: {
 				DisplayName: Arnchar Magazine
-				Tooltip: Increases ranged critical strike chance by 5%
+				Tooltip: Increases ranged critical strike chance by 10%
 			}
 
 			ClamsPearl: {
@@ -2008,8 +2009,8 @@ Mods: {
 				Tooltip:
 					'''
 					Increased movement speed
-					+10% Damage
-					Gives effects of steali and adds +40 Health and +10% critical strike chance!
+					+2% Damage
+					Gives effects of steali and adds +10 Health and +10% critical strike chance!
 					Increased life regeneration!
 					'''
 			}
@@ -3235,7 +3236,7 @@ Mods: {
 				DisplayName: Dreaded Dreadmire Brooch
 				Tooltip:
 					'''
-					+10 Health
+					40 Health
 					You know maybe she wasn't all that bad.
 					'''
 			}
@@ -3327,8 +3328,8 @@ Mods: {
 				Tooltip:
 					'''
 					Perfect for mages!
-					+3 Max minions!
-					13% increased summon damage!
+					+2 Max minions!
+					10% increased summon damage!
 					'''
 			}
 
