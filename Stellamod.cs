@@ -120,6 +120,9 @@ namespace Stellamod
             SkyManager.Instance["Stellamod:SyliaSky"] = new SyliaSky();
             SkyManager.Instance["Stellamod:SyliaSky"].Load();
 
+            SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
+            SkyManager.Instance["Stellamod:VillageSky"].Load();
+
             // ...other Load stuff goes here
             MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
             Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);

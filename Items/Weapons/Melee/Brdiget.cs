@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void SetDefaults()
         {
 
-            Item.damage = 5; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 4; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Melee;
             Item.width = 40; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item

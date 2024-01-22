@@ -228,7 +228,7 @@ namespace Stellamod
 		public bool ZoneCatacombsFire;
 		public bool ZoneCatacombsTrap;
 		public bool ZoneCatacombsWater;
-
+		public bool ZoneVillage;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -1210,19 +1210,22 @@ namespace Stellamod
 
 			if (Player.HasBuff<Gintzingwinds>()) 
             {
+				if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true)
+                {
+					for (int j = 0; j < 1; j++)
+					{
+						RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
+						RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+						RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
 
-				for (int j = 0; j < 1 ; j++)
-				{
-					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-					Vector2 speed2 = Main.rand.NextVector2Square(1f, 1f);
-					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<windline>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
+						Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+						Vector2 speed2 = Main.rand.NextVector2Square(1f, 1f);
+						ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<windline>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 
+					}
 				}
+			
 
 				Main.GraveyardVisualIntensity = 0.8f;
 				Main.windPhysicsStrength = 90;
@@ -1384,6 +1387,28 @@ namespace Stellamod
 				}
 
 			}
+
+
+			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneVillage)
+			{
+				Main.GraveyardVisualIntensity = 0.1f;
+				Main.windPhysicsStrength = 50;
+
+
+				
+
+				for (int j = 0; j < 6; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1500f, 1500f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+			}
+
 
 
 			if (ModContent.GetInstance<LunarVeilConfig>().VanillaParticlesToggle == true && Player.ZoneHallow)

@@ -6969,6 +6969,11 @@ Mods: {
 				DisplayName: Catacomb Water
 				TownNPCDialogueName: the Catacomb Water
 			}
+
+			XixVillage: {
+				TownNPCDialogueName: the Xix Village
+				DisplayName: Xix Village
+			}
 		}
 
 		Tiles: {

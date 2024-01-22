@@ -28,9 +28,9 @@ namespace Stellamod.NPCs.Morrow
 		{
 			NPC.width = 32;
 			NPC.height = 32;
-			NPC.damage = 20;
+			NPC.damage = 40;
 			NPC.defense = 10;
-			NPC.lifeMax = 80;
+			NPC.lifeMax = 300;
 			NPC.noGravity = true;
 			NPC.value = 90f;
 			NPC.noTileCollide = false;
@@ -78,7 +78,7 @@ namespace Stellamod.NPCs.Morrow
 				moveSpeed++;
 			}
 
-			NPC.velocity.X = moveSpeed * 0.09f;
+			NPC.velocity.X = moveSpeed * 0.14f;
 
 			if (NPC.Center.Y >= player.Center.Y - NPC.ai[0] && moveSpeedY >= -50) 
 			{
