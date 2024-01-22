@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Placeable;
+using Stellamod.Items.Special;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
@@ -85,33 +86,14 @@ namespace Stellamod.Items.Consumables
 						break;
 				}
 			}
-			
 
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1));
-			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<DiariBroochA>(), Main.rand.Next(1, 1));
-			}
-
+            player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
+            player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1));
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<DiariBroochA>(), Main.rand.Next(1, 1));
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<AnotherRock>(), Main.rand.Next(1, 1));
 		}
 
 		// Below is code for the visuals
