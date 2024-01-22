@@ -103,7 +103,6 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
-	
 		}
 		public override void FindFrame(int frameHeight)
 		{
@@ -112,39 +111,6 @@ namespace Stellamod.NPCs.RoyalCapital
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
 		}
-
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			bool npcAlreadyExists = false;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if (npc.type == ModContent.NPCType<LonelySorceress>() || npc.type == ModContent.NPCType<Fenix>())
-				{
-					npcAlreadyExists = true;
-					break;
-				}
-			}
-
-			//Don't spawn the npc if it already exists
-			if (npcAlreadyExists)
-			{
-				return 0f;
-			}
-
-			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-
-			if (spawnInfo.Player.InModBiome<AlcadziaBiome>())
-			{
-
-				return 10f;
-
-			}
-
-			//Else, the example bone merchant will not spawn if the above conditions are not met.
-			return 0f;
-		}
-
 
 		public override bool CanChat()
 		{
@@ -218,10 +184,11 @@ namespace Stellamod.NPCs.RoyalCapital
 
 			return chat; // chat is implicitly cast to a string.
 		}
+
+
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			int num = NPC.life > 0 ? 1 : 5;
-
 			for (int k = 0; k < num; k++)
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenBlood);
@@ -229,32 +196,11 @@ namespace Stellamod.NPCs.RoyalCapital
 		}
 
 
-
-
 		public override void AI()
 		{
 			NPC.TargetClosest();
-
 			NPC.spriteDirection = NPC.direction;
-
-			
-				Player target = Main.player[NPC.target];
-
-			if (target.InModBiome<AlcadziaBiome>())
-			{
-				Vector2 targetCenter = target.Center;
-				Vector2 targetHoverCenter = targetCenter + new Vector2(0, -128);
-				NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.15f);
-				NPC.netUpdate = true;
-			}
-
-			if (!target.InModBiome<AlcadziaBiome>())
-            {
-
-				NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
-				NPC.EncourageDespawn(1);
-				NPC.noTileCollide = true;
-			}			
+			Player target = Main.player[NPC.target];
 		}
 
 		public override List<string> SetNPCNameList()

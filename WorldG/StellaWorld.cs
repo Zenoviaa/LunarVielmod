@@ -2672,6 +2672,7 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(smx - 10, smyy - 60);
 					rectangle.Location = Loc;
+                    NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
 					structures.AddProtectedStructure(rectangle);
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital2");
 					structures.AddProtectedStructure(rectangle);

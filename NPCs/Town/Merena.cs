@@ -53,9 +53,6 @@ namespace Stellamod.NPCs.Town
 			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
 		}
 
-		// Current state
-
-
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -74,6 +71,7 @@ namespace Stellamod.NPCs.Town
 			NPC.damage = 90;
 			NPC.defense = 42;
 			NPC.lifeMax = 200;
+			NPC.npcSlots = 0;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
@@ -87,39 +85,6 @@ namespace Stellamod.NPCs.Town
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
 		}
-
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			bool npcAlreadyExists = false;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if (npc.type == ModContent.NPCType<Merena>())
-				{
-					npcAlreadyExists = true;
-					break;
-				}
-			}
-
-			//Don't spawn the npc if it already exists
-			if (npcAlreadyExists)
-			{
-				return 0f;
-			}
-
-			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-
-			if (spawnInfo.Player.InModBiome<AlcadziaBiome>())
-			{
-
-				return 0.41f;
-
-			}
-
-			//Else, the example bone merchant will not spawn if the above conditions are not met.
-			return 0f;
-		}
-
 
 		public override bool CanChat()
 		{
@@ -504,7 +469,8 @@ namespace Stellamod.NPCs.Town
 		public override void AI()
 		{
 			timer++;
-			NPC.spriteDirection = NPC.direction;
+            NPC.CheckActive();
+            NPC.spriteDirection = NPC.direction;
 		}
 	}
 }
