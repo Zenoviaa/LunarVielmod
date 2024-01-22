@@ -124,8 +124,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		}
 		public float Shooting = 0f;
 
-
-
 		int bee = 220;
 		int bee2 = 535;
 		public int rippleCount = 20;
@@ -137,25 +135,25 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			var entitySource = NPC.GetSource_FromAI();
 			timer++;
 			NPC.spriteDirection = NPC.direction;
+
 			Shooting++;
-
-
 			if (Shooting == 1)
-            {
-				
+            {			
 				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
 			}
-			invisibilityTimer++;
 
+			invisibilityTimer++;
 			if (invisibilityTimer == 5)
             {
-				float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y , speedYa * 0, speedYa * 0, ModContent.ProjectileType<Starbombing>(), 0, 0f, 0, 0f, 0f);
-
+				if (StellaMultiplayer.IsHost)
+                {
+                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-20, 20);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedYa * 0, speedYa * 0, 
+						ModContent.ProjectileType<Starbombing>(), 0, 0f, 0, 0f, 0f);
+                }
 				invisibilityTimer = 0;
 			}
 			NPC.rotation -= 0.2f;
-
 			UpdateFrame(0.8f, 1, 90);
 			bee2--;
 
@@ -175,9 +173,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				}
 			}
 
-
-
-
 			if (bee2 == 0)
 			{
 				NPC.Kill();
@@ -185,29 +180,23 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
 					var d = Dust.NewDustPerfect(NPC.Center, DustID.BoneTorch, speed * 11, Scale: 3f);
-					;
 					d.noGravity = true;
 
 					Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
 					var da = Dust.NewDustPerfect(NPC.Center, DustID.CoralTorch, speeda * 5, Scale: 3f);
-					;
 					da.noGravity = false;
 
 					Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
 					var dab = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speeda * 20, Scale: 3f);
-					;
 					dab.noGravity = false;
 				}
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
 
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARGROP"));
 				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
 			}
-
-
-
 
 			
 			switch (State)
@@ -257,15 +246,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		}
 
 
-
-
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
-
 
 
 
@@ -288,20 +273,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		public void Speed()
 		{
 			timer++;
-
-
-			if (timer > 50)
-			{
-
-
-
-
-
-
-
-
-			}
-
 			if (timer == 60)
 			{
 				State = ActionState.Wait;
@@ -315,9 +286,5 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 		}
-
-		
-
-
 	}
 }

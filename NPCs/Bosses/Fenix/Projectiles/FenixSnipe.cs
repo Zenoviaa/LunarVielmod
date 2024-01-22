@@ -119,11 +119,15 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
             if (NPC.ai[0] <= 1)
             {
-                NPC.position.X += Main.rand.Next(-350, 351);
-                NPC.position.Y += Main.rand.Next(-350, 351);
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.position.X += Main.rand.Next(-350, 351);
+                    NPC.position.Y += Main.rand.Next(-350, 351);
+                    NPC.netUpdate = true;
+                }
             }
-            Die -= 0.008f;
 
+            Die -= 0.008f;
             if (Die < 0.08)
             {
                 for (int i = 0; i < 20; i++)
@@ -142,23 +146,28 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
                         Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                 }
                 var entitySource = NPC.GetSource_FromThis();
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<CaevaSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
-
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<CaevaSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -25, 0, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25 * 0, -25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 25 * 0, 25, ModContent.ProjectileType<NekoNeko>(), 60, 1, Main.myPlayer, 0, 0);
+                }
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                 SoundEngine.PlaySound(SoundID.Item27, NPC.position);
                 SoundEngine.PlaySound(SoundID.Item50, NPC.position);
                 NPC.active = false;
             }
+
             if (NPC.alpha > 0)
             {
                 NPC.alpha -= 2;
             }
-            base.NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.045f * Die), NPC.Center.Distance(player.Center) * 0.55f * Die), 0.018f * Die);
+            
+            
+            NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, player.Center, 0.045f * Die), NPC.Center.Distance(player.Center) * 0.55f * Die), 0.018f * Die);
             NPC.rotation = NPC.velocity.X * 2;
             if (NPC.position.Y <= player.position.Y)
             {
@@ -168,9 +177,6 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             {
                 NPC.velocity.Y -= 0.3f;
             }
-
         }
-
-
     }
 }
