@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Consumables;
@@ -2701,7 +2702,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(9))
 						{
 							case 0:
-								itemsToAdd.Add((ModContent.ItemType<GovheilPowder>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(5, 20)));
 								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10))); ;
@@ -2710,7 +2711,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 								break;
 							case 1:
-								itemsToAdd.Add((ModContent.ItemType<GreekLantern>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -2720,7 +2721,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<Kilvier>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
@@ -2775,7 +2776,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 								break;
 
-							case 9:
+							case 8:
 								itemsToAdd.Add((ModContent.ItemType<Blackdot>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
