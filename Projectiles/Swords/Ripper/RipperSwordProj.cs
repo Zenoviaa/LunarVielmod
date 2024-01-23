@@ -78,9 +78,12 @@ namespace Stellamod.Projectiles.Swords.Ripper
             }
 
             ai_Counter++;
-            if(ai_Counter == Fire)
+        
+            if(ai_Counter >= Fire)
             {
-                Projectile.velocity = _velocity;
+                AI_Movement(Main.MouseWorld, 25, 5);
+                float targetRotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
             } 
             else if (ai_Counter > Freeze)
             {
