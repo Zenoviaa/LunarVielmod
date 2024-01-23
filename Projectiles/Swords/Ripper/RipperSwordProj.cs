@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Swords.Ripper
             {
                 //I made the projectile just move super slow when it spawned, so gotta do this to return to normal speed.
                 Projectile.velocity = Vector2.Zero;
-                _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 25;
+                _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 45;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
             }
             else if (ai_Counter < Freeze)
