@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Bow
             Projectile.scale = 0.9f;
             Projectile.width = 12;
             Projectile.height = 12;
-            Projectile.timeLeft = 500;
+            Projectile.timeLeft = 300;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
@@ -44,7 +44,9 @@ namespace Stellamod.Projectiles.Bow
            
 
         }
-        public override void OnKill(int timeLeft)
+        
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Player Player = Main.player[Projectile.owner];
             for (int j = 0; j < 20; j++)
@@ -53,22 +55,22 @@ namespace Stellamod.Projectiles.Bow
                 ParticleManager.NewParticle(Projectile.Center, speed * 10, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
             }
 
-           SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
-           float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-           float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-           Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomKaev>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
+            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomKaev>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 
-                        SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
+
             float Speed = Main.rand.Next(4, 7);
             float offsetRandom = Main.rand.Next(0, 50);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32f);
-          
+
             float spread = 45f * 0.0174f;
             double startAngle = Math.Atan2(1, 0) - spread / 2;
             double deltaAngle = spread / 8f;
             double offsetAngle;
 
-            
+
             for (int i = 0; i < 2; i++)
             {
                 Player.Heal(1);
@@ -77,6 +79,47 @@ namespace Stellamod.Projectiles.Bow
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * Speed), (float)(-Math.Cos(offsetAngle) * Speed), ProjectileID.VampireHeal, 16, 0, Main.myPlayer);
                 Projectile.netUpdate = true;
             }
+
+            Projectile.Kill();
+            return false;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Player Player = Main.player[Projectile.owner];
+            for (int j = 0; j < 20; j++)
+            {
+                Vector2 speed = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
+                ParticleManager.NewParticle(Projectile.Center, speed * 10, ParticleManager.NewInstance<MoonTrailParticle>(), Color.DarkRed, Main.rand.NextFloat(0.2f, 0.8f));
+            }
+
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
+            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomKaev>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+
+
+            float Speed = Main.rand.Next(4, 7);
+            float offsetRandom = Main.rand.Next(0, 50);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 32f);
+
+            float spread = 45f * 0.0174f;
+            double startAngle = Math.Atan2(1, 0) - spread / 2;
+            double deltaAngle = spread / 8f;
+            double offsetAngle;
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                Player.Heal(1);
+                offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * Speed), (float)(Math.Cos(offsetAngle) * Speed), ProjectileID.VampireHeal, 16, 0, Main.myPlayer);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * Speed), (float)(-Math.Cos(offsetAngle) * Speed), ProjectileID.VampireHeal, 16, 0, Main.myPlayer);
+                Projectile.netUpdate = true;
+            }
+
+            Projectile.Kill();
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override Color? GetAlpha(Color lightColor)
         {
