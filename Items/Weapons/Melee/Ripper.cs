@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 	public class Ripper : ModItem
     {
-		private const int Mana_Cost = 50;
+		private const int Mana_Cost = 200;
 
 
 		public override void SetDefaults()
@@ -37,19 +37,6 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.noMelee = true;
 		}
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			float swordSpeed = 16;
-			float degrees = Main.rand.Next(0, 360);
-			float circleDistance = 256;
-			Vector2 circlePosition = Main.MouseWorld + new Vector2(circleDistance, 0)
-					.RotatedBy(MathHelper.ToRadians(degrees));
-			Vector2 vel = (circlePosition.DirectionTo(Main.MouseWorld) * swordSpeed) / 100;
-			Projectile.NewProjectile(Item.GetSource_FromThis(), circlePosition, vel,
-				ModContent.ProjectileType<RipperSwordProj>(), Item.damage, Item.knockBack, player.whoAmI);
-			return false;
-        }
-
         public override bool AltFunctionUse(Player player)
 		{
 			return true;
@@ -60,8 +47,8 @@ namespace Stellamod.Items.Weapons.Melee
 			if (player.altFunctionUse == 2 && player.statMana >= Mana_Cost)
 			{
 				int sound = Main.rand.Next(0, 3);
-                switch (sound)
-                {
+				switch (sound)
+				{
 					case 0:
 						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), player.position);
 						break;
@@ -71,12 +58,12 @@ namespace Stellamod.Items.Weapons.Melee
 					case 2:
 						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
 						break;
-                }
-			
+				}
+
 				player.statMana -= Mana_Cost;
-				float swordCount = 8;
-				for(int i = 0; i < swordCount; i++)
-                {
+				float swordCount = 24;
+				for (int i = 0; i < swordCount; i++)
+				{
 					//360 degrees in circle :P
 					float degreesBetween = 360 / swordCount;
 					float degrees = degreesBetween * i;
@@ -87,8 +74,8 @@ namespace Stellamod.Items.Weapons.Melee
 
 					//I divide by 100 here cause I want there to be a delay before the swords converge
 					Vector2 velocity = (circlePosition.DirectionTo(Main.MouseWorld) * swordSpeed) / 100;
-					Projectile.NewProjectile(player.GetSource_FromThis(), circlePosition, velocity,
-						ModContent.ProjectileType<RipperSwordProj>(), Item.damage*10, Item.knockBack, player.whoAmI);
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity,
+						ModContent.ProjectileType<RipperSwordProj>(), Item.damage * 5, Item.knockBack, player.whoAmI);
 				}
 			}
 
