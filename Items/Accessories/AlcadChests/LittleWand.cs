@@ -65,7 +65,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         Vector2 velocity = new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-5, 5));
                         int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
                             ProjectileID.Typhoon, 200, 1, player.whoAmI);
-                        Main.projectile[p].timeLeft = 180;
+                        Main.projectile[p].timeLeft = 600;
                     }
                     SoundEngine.PlaySound(SoundID.Item84);
                     break;
@@ -75,7 +75,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         Vector2 velocity = new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-10, 10));
                         int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
                             ProjectileID.InfernoFriendlyBolt, 200, 1, player.whoAmI);
-                        Main.projectile[p].timeLeft = 180;
+                        Main.projectile[p].timeLeft = 600;
                     }
                     SoundEngine.PlaySound(SoundID.Item73);
                     break;
@@ -85,7 +85,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         Vector2 velocity = new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-10, 10));
                         int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
                             ProjectileID.LostSoulFriendly, 200, 1, player.whoAmI);
-                        Main.projectile[p].timeLeft = 180;
+                        Main.projectile[p].timeLeft = 600;
                     }
                     SoundEngine.PlaySound(SoundID.Item43);
                     break;
@@ -96,7 +96,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         int p = Projectile.NewProjectile(player.GetSource_FromThis(), player.position, velocity, 
                             ProjectileID.FairyQueenMagicItemShot,
                             200, 1, player.whoAmI);
-                        Main.projectile[p].timeLeft = 180;
+                        Main.projectile[p].timeLeft = 600;
                     }
                     SoundEngine.PlaySound(SoundID.Item82);
                     break;
