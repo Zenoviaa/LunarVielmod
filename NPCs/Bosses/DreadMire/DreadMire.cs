@@ -427,7 +427,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                             {
                                 float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                 float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                int damage = Main.expertMode ? 8 : 12;
+                                int damage = Main.expertMode ? 20 : 24;
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<DreadFire>(), damage, 1, Main.myPlayer, 0, 0);
                             }
@@ -608,7 +608,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                             NPC.alpha = 255;
                             SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                             SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
-                            int damage = Main.expertMode ? 12 : 20;
+                            int damage = Main.expertMode ? 16 : 24;
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<DreadMireDash>(), damage, 1, Main.myPlayer, 0, 0);
                         }

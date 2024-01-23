@@ -5023,6 +5023,54 @@ Mods: {
 					Only used by the mightiest of wizards
 					'''
 			}
+
+			WindedQuiver: {
+				DisplayName: Winded Quiver
+				Tooltip: Turns wooden arrows into winded shots that pierce enemies!
+			}
+
+			AimacraWig: {
+				DisplayName: Aimacra's Wig
+				Tooltip: Great for impersonating Aimacra from Diari!
+			}
+
+			WindmillionBoots: {
+				DisplayName: Windmillion Boots
+				Tooltip: '''
+					10% increased movement speed
+					10% Increased throwing damage	
+					'''
+			}
+
+			WindmillionHat: {
+				DisplayName: Windmillion Hat
+				Tooltip: '''
+					+10 Life!
+					+10 Throwing Critical Strike Chance
+					+10% Throwing Damage
+					'''
+			}
+
+			WindmillionRobe: {
+				DisplayName: Windmillion Robe
+				Tooltip: '''
+					+2 Throwing Critical Strike Chance
+					Getting snazzy!
+					'''
+			}
+
+			VampiricVine: {
+				DisplayName: Vampiric Vine
+				Tooltip: '''
+					Getting some bitches finally?
+					Randomly will shoot out vampire arrows that will heal you in a shot array!
+					'''
+			}
+
+			WindmillShuriken: {
+				DisplayName: Windmill Shuriken
+				Tooltip: Heyyyyy you can't just save the Ohio president!
+			}
 		}
 
 		JungleRuneI: {
@@ -5742,6 +5790,8 @@ Mods: {
 			VeiizalsUmbrellaFireProj.DisplayName: Veiizals Umbrella Fire Proj
 			VeiizalsUmbrellaWaveProj.DisplayName: Veiizals Umbrella Wave Proj
 			VoidArrow.DisplayName: Void Arrow
+			WindmillShurikenProj.DisplayName: Windmill Shuriken Proj
+			VampiricArrowProj.DisplayName: Vampiric Arrow Proj
 		}
 
 		NPCs: {

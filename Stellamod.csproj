@@ -339,6 +339,7 @@
     <None Remove="Projectiles\BloodWaterProj.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
+    <None Remove="Projectiles\Bow\VampiricArrowProj.png" />
     <None Remove="Projectiles\Bow\Warrow.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />

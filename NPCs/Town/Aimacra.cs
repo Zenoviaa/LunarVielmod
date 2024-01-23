@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Igniter;
+using Stellamod.Items.Armors.Vanity.Aimacra;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -471,6 +472,12 @@ namespace Stellamod.NPCs.Town
 					shopCustomPrice = 3,
 					shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 				})
+
+					.Add(new Item(ModContent.ItemType<AimacraWig>())
+					{
+						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
 
 					.Add(new Item(ItemID.BattlePotion)
 					{

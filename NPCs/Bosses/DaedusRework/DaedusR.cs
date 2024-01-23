@@ -111,9 +111,9 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.alpha = 0;
             NPC.width = 230;
             NPC.height = 230;
-            NPC.damage = 10;
+            NPC.damage = 14;
             NPC.defense = 10;
-            NPC.lifeMax = 2500;
+            NPC.lifeMax = 2600;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0f;
@@ -243,7 +243,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
                     moveSpeed++;
 
-                NPC.velocity.X = moveSpeed * 0.10f;
+                NPC.velocity.X = moveSpeed * 0.18f;
 
                 if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
                 {
@@ -260,7 +260,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             if (Attack)
             {
-                NPC.velocity *= 0.82f;
+                NPC.velocity *= 0.80f;
                 if (DaedusDrug <= 18)
                 {
                     DaedusDrug += 0.1f;
