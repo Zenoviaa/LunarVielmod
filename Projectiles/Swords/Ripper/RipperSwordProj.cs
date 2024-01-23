@@ -81,13 +81,17 @@ namespace Stellamod.Projectiles.Swords.Ripper
             if(ai_Counter == Fire)
             {
                 Projectile.velocity = _velocity;
+            } 
+            else if (ai_Counter > Freeze)
+            {
+                float targetRotation = _velocity.ToRotation() + MathHelper.ToRadians(45);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
             }
             else if (ai_Counter == Freeze)
             {
                 //I made the projectile just move super slow when it spawned, so gotta do this to return to normal speed.
                 Projectile.velocity = Vector2.Zero;
                 _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 25;
-                Projectile.rotation = _velocity.ToRotation() + MathHelper.ToRadians(45);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
             }
             else if (ai_Counter < Freeze)
