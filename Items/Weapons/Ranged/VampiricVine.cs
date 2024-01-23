@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetDefaults()
 		{
-			Item.damage = 20;
+			Item.damage = 17;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 84;
 			Item.height = 36;
