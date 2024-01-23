@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -122,12 +123,20 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 }
             }
         }
-        public Vector2  DaedusPosAdd;
+        public Vector2 DaedusPosAdd;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(DaedusPosAdd);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            DaedusPosAdd = reader.ReadVector2();
+        }
+
         public override void AI()
         {
             Player player = Main.player[NPC.target];
-            bool expertMode = Main.expertMode;
-
             if (Flying)
             {
                 if (NPC.Center.X >= DaedusPosAdd.X && moveSpeed >= -120) // flies to players x position
@@ -169,7 +178,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             {
                 NPC.TargetClosest(false);
                 Player player1 = Main.player[NPC.target];
-
                 if (!NPC.HasPlayerTarget || NPC.Distance(player1.Center) > 3000f)
                 {
                     return;
@@ -206,8 +214,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         if (NPC.ai[0] > 20)
                         {
                             DaedusPos = NPC.position;
-                            DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-50, 50);
-                            DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-50, 50);
+                                DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
+                                NPC.netUpdate = true;
+                            }
+
                             Flying = true;
                             NPC.ai[0] = 290;
                             NPC.ai[1] = 1;
@@ -216,8 +229,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     case 1:
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 100)
-                        {
-       
+                        {      
                             NPC.ai[1] = 2;
                         }
 
@@ -227,10 +239,15 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
                         if (NPC.ai[0] >= 300)
                         {
-                            DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-90, 90);
-                            DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
                             NPC.ai[0] = 0;
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SolarPortal>());
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                DaedusPosAdd.X = DaedusPos.X + Main.rand.Next(-90, 90);
+                                DaedusPosAdd.Y = DaedusPos.Y + Main.rand.Next(-50, 50);
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                                    ModContent.NPCType<SolarPortal>());
+                                NPC.netUpdate = true;
+                            }
                         }
                         break;
                 }
