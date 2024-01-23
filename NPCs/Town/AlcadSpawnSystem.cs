@@ -3,6 +3,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Stellamod.NPCs.RoyalCapital;
+using Stellamod.NPCs.Bosses.Fenix;
 
 namespace Stellamod.NPCs.Town
 {
@@ -30,7 +31,8 @@ namespace Stellamod.NPCs.Town
                 NPC.NewNPC(null, (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y, ModContent.NPCType<Merena>());
             }
 
-            if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) && StellaMultiplayer.IsHost)
+            if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) && 
+                !NPC.AnyNPCs(ModContent.NPCType<Fenix>()) && StellaMultiplayer.IsHost)
             {
                 NPC.NewNPC(null, (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y, ModContent.NPCType<LonelySorceress>());
             }

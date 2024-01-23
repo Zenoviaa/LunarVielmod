@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
@@ -225,7 +226,19 @@ namespace Stellamod.NPCs.RoyalCapital
 			{
 				Player target = Main.player[NPC.target];
 				NPC.alpha = 255;
-                StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Fenix>(), (int)target.Center.X, (int)target.Center.Y - 5);
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5, 
+						ModContent.NPCType<Fenix>());
+                }
+				else
+                {
+                    if (Main.netMode == NetmodeID.SinglePlayer)
+                        return;
+
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+						ModContent.NPCType<Fenix>(), (int)target.Center.X, (int)target.Center.Y - 5);
+                }
 				NPC.Kill();
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,15 +11,33 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
     internal class SyliaScissorSmall2 : ModProjectile
     {
+        private bool _sync;
         public Vector2 startCenter;
         public Vector2 targetCenter;
         public int delay;
         public bool playedSound;
-        public bool setRotation;
+
+        //Stats
+        private const float Projectile_Speed = 24;
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(startCenter);
+            writer.WriteVector2(targetCenter);
+            writer.Write(delay);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            startCenter = reader.ReadVector2();
+            targetCenter = reader.ReadVector2();
+            delay = reader.ReadInt32();
         }
 
         public override void SetDefaults()
@@ -34,22 +53,22 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void AI()
         {
-
-            //THIS PROJECTILE IS MOVED BY SYLIA
-            delay--;
-
-            Vector2 direction = (targetCenter - startCenter).SafeNormalize(Vector2.Zero);
-            if (!setRotation)
+            if(!_sync && Main.myPlayer == Projectile.owner)
             {
-                Projectile.Center = Vector2.Lerp(Projectile.Center, startCenter, 1f);
-                float targetRotation = direction.ToRotation() + MathHelper.ToRadians(45);
-                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 1f);
-                setRotation = true;
+                Projectile.Center = startCenter;
+                Projectile.netUpdate = true;
+                _sync = true;
             }
 
+            delay--;
+
+            Vector2 direction = startCenter.DirectionTo(targetCenter);
+            float targetRotation = direction.ToRotation() + MathHelper.ToRadians(45);
+            Projectile.rotation = targetRotation;
+        
             if (delay <= 0)
             {
-                Projectile.velocity = direction * 24;
+                Projectile.velocity = direction * Projectile_Speed;
                 if (!playedSound)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2"), Projectile.position);
