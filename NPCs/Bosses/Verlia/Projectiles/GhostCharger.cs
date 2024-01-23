@@ -92,20 +92,17 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 			if (counter == 140)
 			{
-				if (Main.netMode != NetmodeID.MultiplayerClient)
+				if (StellaMultiplayer.IsHost)
 				{
 					Vector2 direction = player.Center - NPC.Center;
 					direction.Normalize();
 					direction.X *= (Main.rand.NextFloat(5f, 16f));
 					direction.Y *= (Main.rand.NextFloat(5f, 13f));
 					NPC.velocity = direction;
-					
-					
 				}
 			}
 			if (counter == 170)
             {
-				if (Main.netMode != NetmodeID.MultiplayerClient)
 				NPC.ai[0] += -25f;
 				npcCounter++;
 				NPC.velocity = Vector2.Zero;

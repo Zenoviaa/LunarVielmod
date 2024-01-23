@@ -17,51 +17,41 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		int rotationalSpeed = 4;
 		int afterImgCancelDrawCount = 0;
 		float t = 0;
+
 		public override void SetStaticDefaults()
 		{
-
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
+
 		public override void SetDefaults()
 		{
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 300;
-			//projectile.extraUpdates = 1;
 			Projectile.width = Projectile.height = 64;
 			Projectile.hostile = true;
 			Projectile.friendly = false;
 			Projectile.damage = 90;
-
-
 		}
+
 		bool initialized = false;
-		float alphaCounter;
 		Vector2 initialSpeed = Vector2.Zero;
 
 		public override void OnSpawn(IEntitySource source)
 		{
 			ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 0, ParticleManager.NewInstance<SpinewBlue>(), Color.Purple, 0.4f, Projectile.whoAmI);
-
 		}
+
 		public override void AI()
 		{
 			Projectile.velocity *= 0.991f;
-			alphaCounter += 0.04f;
-			int rightValue = (int)Projectile.ai[1] - 1;
-			if (rightValue < (double)Main.projectile.Length && rightValue != -1)
-			{
-				Projectile other = Main.projectile[rightValue];
-				Vector2 direction9 = other.Center - Projectile.Center;
-				int distance = (int)Math.Sqrt((direction9.X * direction9.X) + (direction9.Y * direction9.Y));
-				direction9.Normalize();
-			}
 			if (!initialized)
 			{
 				initialSpeed = Projectile.velocity;
 				initialized = true;
 			}
+
 			if (initialSpeed.Length() < 20)
 				initialSpeed *= 1.03f;
 			Projectile.spriteDirection = 1;
@@ -80,8 +70,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Projectile.rotation -= 0.5f;
 
 			if (t > 2)
-			{
-				
+			{	
 				afterImgCancelDrawCount++;
 			}
 

@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.NPCs.Bosses.Daedus;
 using System;
-using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -18,13 +17,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
     public class SolarPortal : ModNPC
     {
-
         public int PrevAtack;
         int moveSpeed = 0;
         int moveSpeedY = 0;
         float DaedusDrug = 8;
         float HomeY = 330f;
-        private bool p2 = false;
         bool Attack;
         bool Flying;
         public override void SetStaticDefaults()
@@ -126,18 +123,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             return true;
         }
 
-        public Vector2  DaedusPosAdd;
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
- 
-        }
-
+        public Vector2 DaedusPosAdd;
         public override void AI()
         {
             Player player = Main.player[NPC.target];
@@ -178,6 +164,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     DaedusDrug -= 0.1f;
                 }
             }
+
             if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
@@ -188,6 +175,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -200,13 +188,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     NPC.active = false;
                 }
             }
+
             if (NPC.ai[2] == 0)
             {
-   
                 NPC.ai[2] = 1;
             }
-            p2 = NPC.life < NPC.lifeMax * 0.5f;
-
            
             if (NPC.ai[2] == 1)
             {
