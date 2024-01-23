@@ -5036,7 +5036,8 @@ Mods: {
 
 			WindmillionBoots: {
 				DisplayName: Windmillion Boots
-				Tooltip: '''
+				Tooltip:
+					'''
 					10% increased movement speed
 					10% Increased throwing damage	
 					'''
@@ -5044,7 +5045,8 @@ Mods: {
 
 			WindmillionHat: {
 				DisplayName: Windmillion Hat
-				Tooltip: '''
+				Tooltip:
+					'''
 					+10 Life!
 					+10 Throwing Critical Strike Chance
 					+10% Throwing Damage
@@ -5053,7 +5055,8 @@ Mods: {
 
 			WindmillionRobe: {
 				DisplayName: Windmillion Robe
-				Tooltip: '''
+				Tooltip:
+					'''
 					+2 Throwing Critical Strike Chance
 					Getting snazzy!
 					'''
@@ -5061,7 +5064,8 @@ Mods: {
 
 			VampiricVine: {
 				DisplayName: Vampiric Vine
-				Tooltip: '''
+				Tooltip:
+					'''
 					Getting some bitches finally?
 					Randomly will shoot out vampire arrows that will heal you in a shot array!
 					'''

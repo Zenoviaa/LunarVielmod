@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
 				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 
-			if (Main.rand.NextBool(3))
+			if (Main.rand.NextBool(4))
 			{
 				int numProjectiles2 = Main.rand.Next(2, 5);
 				for (int p = 0; p < numProjectiles2; p++)
