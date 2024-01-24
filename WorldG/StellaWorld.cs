@@ -504,7 +504,7 @@ namespace Stellamod.WorldG
 
 		private void WorldGenXixVillage(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = "Witches spreading love!";
+			progress.Message = "Witches spreading love all inside you!";
 
 
 
