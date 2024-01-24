@@ -116,8 +116,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                     Dust.NewDust(NPC.Center, 0, 0, DustID.Water, newVelocity.X, newVelocity.Y);
                 }
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                    ModContent.ProjectileType<WaterBolt>(), 47, 0f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                    ModContent.ProjectileType<WaterBolt>(), 47, 0f, Owner: Main.myPlayer);
+                }
+ 
                 ai_Counter = 0;
                 attack_Count++;
             }

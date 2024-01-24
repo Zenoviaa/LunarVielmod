@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 
 		}
 
-		
+
 
 		int invisibilityTimer;
 		public override void HitEffect(NPC.HitInfo hit)
@@ -95,33 +95,34 @@ namespace Stellamod.NPCs.Catacombs.Fire
 
 			if (timer == 1)
 			{
+				if (StellaMultiplayer.IsHost)
+				{
+					int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0,
+						ModContent.ProjectileType<KaBoom>(), 0, 0f, Owner: Main.myPlayer);
 
-
-
-				int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<KaBoom>(), 0, 0f, 0, 0f, 0f);
-
-				Projectile ichor = Main.projectile[fireball];
-				ichor.hostile = true;
-				ichor.friendly = false;
+					Projectile ichor = Main.projectile[fireball];
+					ichor.hostile = true;
+					ichor.friendly = false;
+				}
 			}
 
 			invisibilityTimer++;
 			if (invisibilityTimer >= 100)
 			{
-
-				int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -NPC.velocity.X, -NPC.velocity.Y, ProjectileID.GreekFire2, 0, 0f, 0, 0f, 0f);
-
-				Projectile ichor = Main.projectile[fireball];
-				ichor.hostile = true;
-				ichor.friendly = false;
+				if (StellaMultiplayer.IsHost)
+				{
+					int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -NPC.velocity.X, -NPC.velocity.Y,
+						ProjectileID.GreekFire2, 0, 0f, Owner: Main.myPlayer);
+					Projectile ichor = Main.projectile[fireball];
+					ichor.hostile = true;
+					ichor.friendly = false;
+				}
 
 				invisibilityTimer = 0;
 			}
 			NPC.noTileCollide = true;
 
 		}
-
-
 
 		public void Speed()
 		{
@@ -137,23 +138,21 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 25, 0f, 0, 0f, 0f);
+					if (StellaMultiplayer.IsHost)
+					{
+						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
+						float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY,
+							ProjectileID.GreekFire3, 25, 0f, Owner: Main.myPlayer);
+					}
 				}
 
-
-
-
-
+				if (timer == 100)
+				{
+					State = ActionState.Wait;
+					timer = 0;
+				}
 			}
-
-			if (timer == 100)
-			{
-				State = ActionState.Wait;
-				timer = 0;
-			}
-
 		}
 	}
 }

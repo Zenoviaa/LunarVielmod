@@ -59,13 +59,16 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/DeathShotBomb2"));
             }
 
-            for (int i = 0; i < Main.rand.Next(8, 12); i++)
+            if(Main.myPlayer == Projectile.owner)
             {
-                Vector2 velocity = Vector2.One.RotatedBy(MathHelper.ToRadians(Main.rand.Next(0, 360))) * Main.rand.NextFloat(3, 4);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(),
-                    Projectile.Center.X, Projectile.Center.Y,
-                    velocity.X, velocity.Y,
-                    ModContent.ProjectileType<WaterBolt>(), Projectile.damage, 0f, Projectile.owner);
+                for (int i = 0; i < Main.rand.Next(8, 12); i++)
+                {
+                    Vector2 velocity = Vector2.One.RotatedBy(MathHelper.ToRadians(Main.rand.Next(0, 360))) * Main.rand.NextFloat(3, 4);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(),
+                        Projectile.Center.X, Projectile.Center.Y,
+                        velocity.X, velocity.Y,
+                        ModContent.ProjectileType<WaterBolt>(), Projectile.damage, 0f, Projectile.owner);
+                }
             }
 
             int count = 64;

@@ -139,8 +139,14 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 
 				if (ty == 100)
                 {
-					var entitySource = NPC.GetSource_FromThis();
-					int index = NPC.NewNPC(entitySource, (int)target.Center.X + Main.rand.Next(-40, 40), (int)target.Center.Y, ModContent.NPCType<BlazeBeamWarn>());
+				
+					if (StellaMultiplayer.IsHost)
+                    {
+                        var entitySource = NPC.GetSource_FromThis();
+                        int index = NPC.NewNPC(entitySource, (int)target.Center.X + Main.rand.Next(-40, 40), (int)target.Center.Y,
+							ModContent.NPCType<BlazeBeamWarn>());
+                    }
+			
 					ty = 0;
 				}
 				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
@@ -149,8 +155,10 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, ProjectileID.BallofFire, 60, 0, Main.myPlayer);
-					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2, ProjectileID.BallofFire, 60, 0, Main.myPlayer);
+					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, 
+						ProjectileID.BallofFire, 60, 0, Main.myPlayer);
+					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2, 
+						ProjectileID.BallofFire, 60, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					Projectile ichor = Main.projectile[projectile];
 					ichor.hostile = true;

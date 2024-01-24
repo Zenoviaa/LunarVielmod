@@ -30,6 +30,7 @@ namespace Stellamod.NPCs.Catacombs.Fire
 		{
 			// DisplayName.SetDefault("Morrowed Swampster");
 			Main.npcFrameCount[NPC.type] = 60;
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 		}
 
 		public enum ActionState
@@ -118,19 +119,6 @@ namespace Stellamod.NPCs.Catacombs.Fire
 		public override void AI()
 		{
 			Spawner++;
-			/*
-			Player players = Main.player[NPC.target];
-			if (Spawner == 2)
-
-			{
-
-
-
-				int distanceY = Main.rand.Next(-250, -250);
-				NPC.position.X = players.Center.X;
-				NPC.position.Y = players.Center.Y + distanceY;
-
-			}*/
 
 			NPC.TargetClosest();
 			if (!NPC.HasValidTarget)
@@ -197,75 +185,53 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				var entitySource = NPC.GetSource_FromThis();
 				timer++;
 
-
-				switch (Main.rand.Next(4))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-                        {
-						
-							
-							
-							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
-							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
-							// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
-							// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
-							// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-							NPC minionNPC = Main.npc[index];
-							NPC minionNPC2 = Main.npc[index2];
-						}
-						
 
-						break;
-					case 1:
-						{
-							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
-							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
-							int index3 = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
-							// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
-							// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
-							// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-							NPC minionNPC = Main.npc[index];
-							NPC minionNPC2 = Main.npc[index2];
-							NPC minionNPC3 = Main.npc[index3];
-						}
-						break;
-					case 2:
-                        {
-							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
-							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
-							NPC minionNPC = Main.npc[index];
-							NPC minionNPC2 = Main.npc[index2];
-					
-						}
-						
-						break;
-					case 3:
+                    switch (Main.rand.Next(4))
+                    {
+                        case 0:
+                            {
 
-						{
-							int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
-							int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
+                                int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
+                                int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasGuard>());
 
-							int index3 = NPC.NewNPC(entitySource, (int)NPC.Center.X - 40, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasKnife>());
-							int index4 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 40, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasKnife>());
-							int index5 = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasGuard>());
-
-							NPC minionNPC = Main.npc[index];
-							NPC minionNPC2 = Main.npc[index2];
-							NPC minionNPC3 = Main.npc[index3];
-							NPC minionNPC4 = Main.npc[index4];
-							NPC minionNPC5 = Main.npc[index5];
-							
-						}
-						break;
-				}
+                            }
 
 
+                            break;
+                        case 1:
+                            {
+                                int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
+                                int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
+                                int index3 = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y - 20, ModContent.NPCType<PandorasKnife>());
+                                // Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
+                                // This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
+                                // Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
+                            }
+                            break;
+                        case 2:
+                            {
+                                int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
+                                int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasSeeker>());
+  
+                            }
 
-				
+                            break;
+                        case 3:
 
+                            {
+                                int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
+                                int index2 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 20, (int)NPC.Center.Y - 10, ModContent.NPCType<PandorasSeeker>());
 
-
-				}
+                                int index3 = NPC.NewNPC(entitySource, (int)NPC.Center.X - 40, (int)NPC.Center.Y - 40, ModContent.NPCType<PandorasKnife>());
+                                int index4 = NPC.NewNPC(entitySource, (int)NPC.Center.X + 40, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasKnife>());
+                                int index5 = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y - 30, ModContent.NPCType<PandorasGuard>());
+                            }
+                            break;
+                    }
+                }
+            }
 			else if (timer == 120)
 			{
 				State = ActionState.Speed;
@@ -287,11 +253,6 @@ namespace Stellamod.NPCs.Catacombs.Fire
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Torch, NPC.direction, -1f, 1, default, .61f);
 				}
-
-
-
-
-
 			}
 
 			if (timer == 500)

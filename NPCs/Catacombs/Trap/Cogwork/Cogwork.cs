@@ -31,6 +31,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             Main.npcFrameCount[NPC.type] = 46;
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
         public override void SetDefaults()
@@ -67,8 +68,13 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
         {
             ai_Counter = 0;
             ai_last_State = ai_State;
-            ai_State = (float)attackState;
+            if (StellaMultiplayer.IsHost)
+            {
+                ai_State = (float)attackState;
+                NPC.netUpdate = true;
+            }
         }
+
         private void WheelSparks(Vector2 sparksOffset)
         {
             float count = 8;
@@ -89,6 +95,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 return;
 
             _gun.Center = Vector2.Lerp(_gun.Center, NPC.Center, 0.2f);
+            _gun.netUpdate = true;
         }
 
         private int _frameCounter;
@@ -203,28 +210,35 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                         //Determine the Attack
                         if (attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
                         {
-                            switch (Main.rand.Next(0, 3))
+                            if (StellaMultiplayer.IsHost)
                             {
-                                case 0:
-                                    SwitchState(AttackState.Bolt);
-                                    break;
-                                case 1:
-                                    SwitchState(AttackState.Launcher);
-                                    break;
-                                case 2:
-                                    SwitchState(AttackState.Rifle);
-                                    break;
+                                switch (Main.rand.Next(0, 3))
+                                {
+                                    case 0:
+                                        SwitchState(AttackState.Bolt);
+                                        break;
+                                    case 1:
+                                        SwitchState(AttackState.Launcher);
+                                        break;
+                                    case 2:
+                                        SwitchState(AttackState.Rifle);
+                                        break;
+                                }
                             }
+
                         }
                         else
                         {
-                            if (Main.rand.NextBool(5))
+                            if (StellaMultiplayer.IsHost)
                             {
-                                SwitchState(AttackState.Spin_Fast);
-                            }
-                            else
-                            {
-                                SwitchState(AttackState.Spin_Slow);
+                                if (Main.rand.NextBool(5))
+                                {
+                                    SwitchState(AttackState.Spin_Fast);
+                                }
+                                else
+                                {
+                                    SwitchState(AttackState.Spin_Slow);
+                                }
                             }
                         }
                     }
@@ -284,8 +298,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 case AttackState.Bolt:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                             ModContent.NPCType<IronNailGun>());
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
@@ -294,8 +311,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 case AttackState.Rifle:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                             ModContent.NPCType<NeedleGun>());
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
@@ -304,8 +324,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 case AttackState.Launcher:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
                             ModContent.NPCType<SpikeBallGun>());
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);

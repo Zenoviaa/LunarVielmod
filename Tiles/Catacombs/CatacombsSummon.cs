@@ -123,22 +123,17 @@ namespace Stellamod.Tiles.Catacombs
 
 				player.RemoveItem(key);
 				int npcType = bosses[Main.rand.Next(0, bosses.Length)];
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, (j * 16)-64, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
-
-				/*if (Main.netMode != NetmodeID.MultiplayerClient)
+				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, npcType);
-					Main.npc[npcID].netUpdate2 = true;
+					NPC.NewNPC(player.GetSource_FromThis(), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
 				}
 				else
 				{
 					if (Main.netMode == NetmodeID.SinglePlayer)
 						return false;
-
-					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Jack>(), i * 16, (j * 16) - 5);
-				}*/
-
-
+                    NPC.NewNPC(player.GetSource_FromThis(), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
+					NetMessage.SendData(MessageID.SyncNPC);   
+				}
 
 				return true;
 			}

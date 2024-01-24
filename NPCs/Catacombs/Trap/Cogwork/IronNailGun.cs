@@ -116,8 +116,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                     Dust.NewDust(NPC.Center, 0, 0, DustID.Iron, newVelocity.X, newVelocity.Y);
                 }
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                    ModContent.ProjectileType<IronNail>(), 21, 0f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                        ModContent.ProjectileType<IronNail>(), 21, 0f, Owner: Main.myPlayer);
+                }
+
                 ai_Counter = 0;
                 attack_Count++;
             }

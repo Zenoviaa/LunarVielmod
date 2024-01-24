@@ -85,9 +85,10 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             base.OnKill(timeLeft);
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GhostExcalibur1"));
             int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<JungleBoom>(), Projectile.damage, Projectile.knockBack);
+                ModContent.ProjectileType<JungleBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             Projectile projectile = Main.projectile[p];
             projectile.hostile = true;
+            NetMessage.SendData(MessageID.SyncProjectile);
         }
     }
 }

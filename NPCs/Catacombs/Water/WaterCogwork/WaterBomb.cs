@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
         public override void OnKill(int timeLeft)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<WataBoom>(), Projectile.damage, 6);
+                ModContent.ProjectileType<WataBoom>(), Projectile.damage, 6, Projectile.owner);
             int count = 32;
             for (int i = 0; i < count; i++)
             {
