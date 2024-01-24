@@ -51,15 +51,8 @@ namespace Stellamod.Helpers
             downedCogwork = false;
         }
 
-        public override void Unload()
+        public override void ClearWorld()
         {
-            base.Unload();
-			ResetFlags();
-        }
-
-        public override void Load()
-        {
-            base.Load();
 			ResetFlags();
         }
 
