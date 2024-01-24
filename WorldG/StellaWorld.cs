@@ -7,6 +7,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Windmillion;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Flasks;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -582,7 +583,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(5))
+						switch (Main.rand.Next(4))
 						{
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<PerfectionStaff>(), Main.rand.Next(1, 1)));
@@ -600,9 +601,9 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								break;
 							case 2:
-								itemsToAdd.Add((ItemID.EndlessQuiver, Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 50)));
 								itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								break;
@@ -614,14 +615,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 
 								break;
-							case 4:
-								itemsToAdd.Add((ModContent.ItemType<StoniaHat>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<StoniaBoots>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<StoniaChestplate>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ItemID.GenderChangePotion, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-								break;
+					
 
 
 
@@ -3011,7 +3005,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(9))
+						switch (Main.rand.Next(6))
 						{
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
@@ -3041,7 +3035,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<Galvinie>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
@@ -3069,33 +3063,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
 								break;
 
-							case 6:
-								itemsToAdd.Add((ModContent.ItemType<TheBurningRod>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
-								break;
-
-
-							case 7:
-								itemsToAdd.Add((ModContent.ItemType<GovheilHolsterBroochA>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
-								break;
-
-							case 8:
-								itemsToAdd.Add((ModContent.ItemType<Blackdot>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-								break;
+						
 						}
 
 						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Flasks;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Special;
 using Stellamod.Items.Weapons.Igniters;
@@ -50,12 +51,12 @@ namespace Stellamod.Items.Consumables
 
 			if (Main.rand.NextBool(1))
 			{
-				switch (Main.rand.Next(6))
+				switch (Main.rand.Next(7))
 				{
 
 
 					case 0:
-
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstidust>());
 
 						break;
@@ -66,7 +67,7 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 2:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstibloom>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<IronHook>());
 
 						break;
 					case 3:
@@ -77,23 +78,33 @@ namespace Stellamod.Items.Consumables
 					case 4:
 
 						player.QuickSpawnItem(entitySource, ItemID.LeadBar, Main.rand.Next(5, 20));
-
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
 						break;
 					case 5:
 
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<AlcaologyI>());
+						player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
+						break;
 
+					case 6:
+
+						
+						player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 5));
+						break;
+
+					case 7:
+
+
+						player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(1, 7));
 						break;
 				}
 			}
 
-            player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-            player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
             player.QuickSpawnItem(entitySource, ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1));
             player.QuickSpawnItem(entitySource, ModContent.ItemType<DiariBroochA>(), Main.rand.Next(1, 1));
             player.QuickSpawnItem(entitySource, ModContent.ItemType<AnotherRock>(), Main.rand.Next(1, 1));
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<XixianFlask>(), Main.rand.Next(1, 1));
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<HealthyInsource>(), Main.rand.Next(1, 1));
 		}
 
 		// Below is code for the visuals
