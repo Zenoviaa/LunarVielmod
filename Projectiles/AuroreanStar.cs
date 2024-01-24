@@ -50,7 +50,8 @@ namespace Stellamod.Projectiles
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, 
                         ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
                  
-                    Item.NewItem(Projectile.GetSource_FromThis(), Projectile.getRect(), ModContent.ItemType<AuroreanStarI>(), Main.rand.Next(1, 1));
+                    int itemIndex = Item.NewItem(Projectile.GetSource_FromThis(), Projectile.getRect(), ModContent.ItemType<AuroreanStarI>(), Main.rand.Next(1, 1));
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                 }
             }
 

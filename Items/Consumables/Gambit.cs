@@ -43,12 +43,8 @@ namespace Stellamod.Items.Consumables
 		{
 			var entitySource = player.GetSource_OpenItem(Type);
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Trick"));
-			float speedX = Main.rand.NextFloat(-4f, 4f);
-			float speedY = Main.rand.Next(-10, 11) * 0.2f;
-			Vector2 here = player.position;
-
-
             NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DiceinNPC>());
+            NetMessage.SendData(MessageID.SyncNPC);
             player.GetModPlayer<MyPlayer>().Dice = true;
 		}
 
