@@ -37,9 +37,9 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
             NPC.alpha = 255;
             NPC.width = 30;
             NPC.height = 30;
-            NPC.damage = 30;
+            NPC.damage = 40;
             NPC.defense = 0;
-            NPC.lifeMax = 50;
+            NPC.lifeMax = 60;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
@@ -364,7 +364,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                             SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                             float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                             float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                            int damage = Main.expertMode ? 4 : 7;
+                            int damage = Main.expertMode ? 6 : 10;
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<Gintzianado>(), damage, 1, Main.myPlayer, 0, 0);
                         }

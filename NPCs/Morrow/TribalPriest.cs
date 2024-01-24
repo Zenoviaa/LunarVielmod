@@ -55,7 +55,7 @@ namespace Stellamod.NPCs.Morrow
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 1; // The amount of damage that this npc deals
 			NPC.defense = 20; // The amount of defense that this npc has
-			NPC.lifeMax = 200; // The amount of health that this npc has
+			NPC.lifeMax = 210; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
 			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Morrow
 					Notice();
 					break;
 				case ActionState.Attack:
-					NPC.damage = 67;
+					NPC.damage = 70;
 					counter++;
 					Attack();
 					break;
@@ -163,7 +163,7 @@ namespace Stellamod.NPCs.Morrow
 				ResetTimers();
 			}
 			
-			if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 60f)
+			if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 75f)
 			{
 				State = ActionState.Asleep;
 				ResetTimers();
@@ -219,7 +219,7 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
@@ -243,7 +243,7 @@ namespace Stellamod.NPCs.Morrow
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("A much richer form of the morrow warriors")
+				new FlavorTextBestiaryInfoElement("A much richer form of the trible worshippers")
 			});
 		}
 	}
