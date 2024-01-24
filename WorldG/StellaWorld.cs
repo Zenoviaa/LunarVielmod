@@ -96,7 +96,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Sylia", WorldGenSylia));
 				tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Rallad", WorldGenRallad));
 				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
-				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Xix Village", WorldGenWindmills));
+				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
 			}
 
 
@@ -585,7 +585,7 @@ namespace Stellamod.WorldG
 						switch (Main.rand.Next(5))
 						{
 							case 0:
-								itemsToAdd.Add((ModContent.ItemType<Gutinier>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<PerfectionStaff>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
@@ -593,7 +593,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
 								break;
 							case 1:
-								itemsToAdd.Add((ItemID.ShinyRedBalloon, Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.CordageGuide, Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 3)));

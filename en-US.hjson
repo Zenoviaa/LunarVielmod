@@ -5075,6 +5075,11 @@ Mods: {
 				DisplayName: Windmill Shuriken
 				Tooltip: Heyyyyy you can't just save the Ohio president!
 			}
+
+			PerfectionStaff: {
+				Tooltip: ""
+				DisplayName: Perfection Staff
+			}
 		}
 
 		JungleRuneI: {
@@ -5796,6 +5801,7 @@ Mods: {
 			VoidArrow.DisplayName: Void Arrow
 			WindmillShurikenProj.DisplayName: Windmill Shuriken Proj
 			VampiricArrowProj.DisplayName: Vampiric Arrow Proj
+			PerfectionProj.DisplayName: Perfection Proj
 		}
 
 		NPCs: {
