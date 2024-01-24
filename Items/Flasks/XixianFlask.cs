@@ -77,7 +77,7 @@ namespace Stellamod.Items.Flasks
             {
                 player.statLife += 45;
                 player.AddBuff(ModContent.BuffType<CannotUseFlask>(), 2400);
-
+                player.AddBuff(BuffID.PotionSickness, 2400);
                 return true;
             }
 
@@ -86,6 +86,7 @@ namespace Stellamod.Items.Flasks
                 player.statLife += 102;
                 player.statMana += 102;
                 player.AddBuff(BuffID.Honey, 2400);
+                player.AddBuff(BuffID.PotionSickness, 2400);
                 player.AddBuff(ModContent.BuffType<CannotUseFlask>(), 2400);
 
                 return true;
@@ -94,7 +95,7 @@ namespace Stellamod.Items.Flasks
             if (FlaskPlayer.hasFloweredInsource && !player.HasBuff<CannotUseFlask>())
             {
 
-             
+                player.AddBuff(BuffID.PotionSickness, 1200);
                 player.AddBuff(ModContent.BuffType<CannotUseFlask>(), 1200);
                 player.AddBuff(ModContent.BuffType<Friendzied>(), 300);
                 return true;
@@ -103,7 +104,7 @@ namespace Stellamod.Items.Flasks
             if (FlaskPlayer.hasVialedInsource && !player.HasBuff<CannotUseFlask>())
             {
 
-             
+                player.AddBuff(BuffID.PotionSickness, 1200);
                 player.AddBuff(ModContent.BuffType<CannotUseFlask>(), 1200);
                 player.AddBuff(ModContent.BuffType<VialedUp>(), 600);
                 return true;
