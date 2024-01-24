@@ -49,51 +49,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		public enum ActionState
 		{
-			StartVerlia,
-			SummonStartup,
-			SummonIdle,
 			Unsummon,
-			HoldUP,
-			SwordUP,
-			SwordSimple,
-			SwordHold,
-			TriShot,
-			Explode,
-			In,
-			CutExplode,
-			IdleInvis,
-			InvisCut,
-			MoonSummonStartup,
-			CloneSummonStartup,
-			BigSwordSummonStartup,
-			BeggingingMoonStart,
-			Dienow,
-			SummonBeamer,
-			idleSummonBeamer,
-			HoldUPdie,
-
-
-
-
-
-
-
-			Dash,
-			Slam,
-			Pulse,
-			Spin,
-			Start,
-			WindUp,
-			WindUpSp,
-			TeleportPulseIn,
-			TeleportPulseOut,
-			TeleportWindUp,
-			TeleportSlam,
-			SpinLONG,
-			TeleportBIGSlam,
-			BIGSlam,
-			BIGLand,
-
 			StartGintze,
 			Slammer,
 			Rulse,
@@ -102,12 +58,24 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			HandsNRun,
 			Stop,
 			Fallin,
-
-
 		}
 		// Current state
-
-		public ActionState State = ActionState.Jumpstartup;
+		private ActionState _state = ActionState.Jumpstartup;
+		public ActionState State
+		{
+			get
+			{
+				return _state;
+			}
+			set
+			{
+				_state = value;
+				if (StellaMultiplayer.IsHost)
+				{
+					NPC.netUpdate = true;
+				}
+			}
+		}
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -132,20 +100,8 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
 			NPCID.Sets.TrailingMode[NPC.type] = 0;
-
-			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
-			// Automatically group with other bosses
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-		
-
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
@@ -215,27 +171,20 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{
-			writer.Write(attackCounter);
-			writer.Write(timeBetweenAttacks);
-			writer.WriteVector2(dashDirection);
-			writer.Write(dashDistance);
+			writer.Write((float)_state);
+            writer.Write(timer);
+            writer.Write(frameCounter);
+            writer.Write(frameTick);
+        }
 
-		}
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
-			attackCounter = reader.ReadInt32();
-			timeBetweenAttacks = reader.ReadInt32();
+			_state = (ActionState)reader.ReadSingle();
+            timer = reader.ReadSingle();
+            frameCounter = reader.ReadInt32();
+            frameTick = reader.ReadInt32();
+        }
 
-
-			dashDirection = reader.ReadVector2();
-			dashDistance = reader.ReadSingle();
-
-		}
-
-		int attackCounter;
-		int timeBetweenAttacks = 120;
-		Vector2 dashDirection = Vector2.Zero;
-		float dashDistance = 0f;
         public override void HitEffect(NPC.HitInfo hit)
         {
             for (int k = 0; k < 20; k++)
@@ -555,26 +504,12 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				NPC.velocity.Y *= 0;
 			}
 
-
 			if (timer == 19)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
-				{
-					case 0:
-						State = ActionState.Jumpin;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
-		}
+                ResetTimers();
+                State = ActionState.Jumpin;
+            }
+        }
 
 		private void JumpinGintze()
 		{
@@ -599,43 +534,12 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				// GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, -10, ModContent.ProjectileType<VRay>(), 50, 0f, -1, 0, NPC.whoAmI);
 
 			}
-		/*	if (timer > 30)
-			{
-
-				int distance = Main.rand.Next(2, 2);
-				NPC.ai[3] = Main.rand.Next(1);
-				Vector2 Top = (player.Center - new Vector2(0, 100));
-
-				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-				Vector2 angle = new Vector2((float)anglex, (float)angley);
-				dashDirection = (Top - (angle * distance)) - NPC.Center;
-				dashDistance = dashDirection.Length();
-				dashDirection.Normalize();
-				dashDirection *= speed;
-				NPC.velocity = dashDirection;
-			
-			}
-*/
 
 			if (timer == 60)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
-				{
-					case 0:
-						State = ActionState.Fallin;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
+            {
+                ResetTimers();
+                State = ActionState.Fallin;
+            }
 		}
 
 
@@ -650,13 +554,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			if (timer < 9)
 			{
-
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 15, 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 15, 0f, 0, 0f, 0f);
-
+				float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+				float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedX + 2 * 6, speedY, 
+					ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 130, speedXB - 2 * 6, speedY, 
+					ModContent.ProjectileType<SpikeBullet>(), 15, 0f, Owner: Main.myPlayer);
 			}
 
 			if (timer == 20)
@@ -666,39 +570,26 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
 
-				State = ActionState.Stop;
-
-
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.Stop;
 			}
-
-
-
 		}
 
 
 		private void StartGintze()
 		{
 			timer++;
-	
 			if (timer == 10)
-            {
+			{
 				NPC.velocity.X *= 0;
 				NPC.velocity.Y *= 0;
 			}
-		
 
 			if (timer == 20)
 			{
-
-				State = ActionState.Jumpstartup;
-
-
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.Jumpstartup;		
 			}
-
-
-
 		}
 
 
@@ -707,33 +598,26 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			NPC.spriteDirection = NPC.direction;
 			timer++;
 
-			
-
-
-
 			if (timer == 30)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(2))
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                ResetTimers();
+                if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						State = ActionState.StartGintze;
-						ResetTimers();
-						break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            State = ActionState.StartGintze;
+                            break;
 
-					case 1:
-						State = ActionState.Rulse;
-						ResetTimers();
-						break;
+                        case 1:
+                            State = ActionState.Rulse;
+                            break;
 
-				}
+                    }
 
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
+                }
+            }
 		}
 
 		private void HandTime()
@@ -753,26 +637,24 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			if (timer == 400)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(2))
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                ResetTimers();
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						State = ActionState.Jumpstartup;
-						ResetTimers();
-						break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            State = ActionState.Jumpstartup;
+                            break;
 
-					case 1:
-						State = ActionState.Stop;
-						ResetTimers();
-						break;
+                        case 1:
+                            State = ActionState.Stop;
+                            break;
 
-				}
+                    }
 
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
+                }
+            }
 
 		}
 		private void HandSummon()
@@ -782,7 +664,11 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			if (timer == 2)
             {
                 var entitySource = NPC.GetSource_FromThis();
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
+				if (StellaMultiplayer.IsHost)
+				{
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GintziaHand>());
+                }
+      
                 //Summon hands here
             }
 			if (timer == 3)
@@ -796,70 +682,10 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			if (timer == 50)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(1))
-				{
-					case 0:
-						State = ActionState.HandsNRun;
-						ResetTimers();
-						break;
-
-				}
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
+				ResetTimers();
+                State = ActionState.HandsNRun;
+            }
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-
 
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -908,13 +734,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			// Finally add the leading rule
 			npcLoot.Add(notExpertRule);
 		}
+
 		public void ResetTimers()
 		{
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
 		}
-
 
 		public override void OnKill()
 		{
@@ -923,8 +749,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			{
 				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 			}
-
 		}
-
 	}
 }

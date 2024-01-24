@@ -106,7 +106,8 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			set
 			{
 				_state = value;
-				NPC.netUpdate = true;
+				if(StellaMultiplayer.IsHost)
+					NPC.netUpdate = true;
 			}
 		}
 
@@ -215,19 +216,19 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			writer.Write((float)_state);
 			writer.WriteVector2(dashDirection);
 			writer.Write(dashDistance);
-			//writer.Write(frameCounter);
-			//writer.Write(frameTick);
-			//writer.Write(counter);
-
+			writer.Write(frameCounter);
+			writer.Write(frameTick);
+			writer.Write(counter);
 		}
+
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
 			dashDirection = reader.ReadVector2();
 			dashDistance = reader.ReadSingle();
-			//frameCounter = reader.ReadInt32();
-			//frameTick = reader.ReadInt32();
-			//counter = reader.ReadInt32();
+			frameCounter = reader.ReadInt32();
+			frameTick = reader.ReadInt32();
+			counter = reader.ReadInt32();
         }
 
 		Vector2 dashDirection = Vector2.Zero;

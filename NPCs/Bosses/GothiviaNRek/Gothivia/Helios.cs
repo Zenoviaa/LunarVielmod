@@ -40,8 +40,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 if (Projectile.velocity.Y != oldVelocity.Y)
                     Projectile.velocity.Y = -oldVelocity.Y;
             }
-
-          
+         
             for (int i = 0; i < 7; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
@@ -78,8 +77,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             closestplayer.RotatedRelativePoint(Projectile.Center);
 
-
-
             // Trying to find NPC closest to the projectile
 
             if (closestplayer == null)
@@ -87,8 +84,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             // If found, change the velocity of the projectile and turn it in the direction of the target
             // Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
-        
-
+       
         }
 
         // Finding the closest NPC to attack within maxDetectDistance range

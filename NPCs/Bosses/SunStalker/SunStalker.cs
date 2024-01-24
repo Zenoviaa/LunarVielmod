@@ -8,6 +8,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.Ranged;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -25,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             // DisplayName.SetDefault("Sun Stalker");
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Main.npcFrameCount[NPC.type] = 6;
         }
 
@@ -67,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.noGravity = true;
             NPC.scale = 1f;
             NPC.aiStyle = 0;
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }
 
@@ -76,19 +78,23 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
         }
+
         public float Spawner = 0;
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(TPChance);
+            writer.Write(Attack);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            TPChance = reader.ReadBoolean();
+            Attack = reader.ReadInt32();
+        }
+
         public override void AI()
         {
             Spawner++;
-            /*
-            Player players = Main.player[NPC.target];
-            if (Spawner == 2)
-            {
-                int distanceY = Main.rand.Next(-250, -250);
-                NPC.position.X = players.Center.X;
-                NPC.position.Y = players.Center.Y + distanceY;
-            }*/
-
             if (NPC.life < NPC.lifeMax / 2)
             {
                 Attacks = 6;
@@ -120,28 +126,22 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     if (NPC.alpha >= 0)
                     {
                         NPC.alpha -= 2;
-
                     }
                 }
 
                 if (NPC.alpha >= 5 && NPC.ai[1] == 0)
                 {
-      
-                    if (Main.netMode != NetmodeID.Server)
-                    {
-                        Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
-                        dust.velocity *= -1f;
-                        dust.scale *= .8f;
-                        dust.noGravity = true;
-                        Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                        vector2_1.Normalize();
-                        Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                        dust.velocity = vector2_2;
-                        vector2_2.Normalize();
-                        Vector2 vector2_3 = vector2_2 * 34f;
-                        dust.position = NPC.Center - vector2_3;
-                        NPC.netUpdate = true;
-                    }
+                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
+                    dust.velocity *= -1f;
+                    dust.scale *= .8f;
+                    dust.noGravity = true;
+                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+                    vector2_1.Normalize();
+                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
+                    dust.velocity = vector2_2;
+                    vector2_2.Normalize();
+                    Vector2 vector2_3 = vector2_2 * 34f;
+                    dust.position = NPC.Center - vector2_3;
                     NPC.velocity.Y -= 0.01f;
                 }
                 if (NPC.ai[0] == 2)
@@ -286,17 +286,26 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Rock2"), NPC.position);
                             }
-                            Vector2 RockPos;
-                            RockPos.Y = NPC.Center.Y;
-                            RockPos.X = Main.rand.NextFloat(player.Center.X + 600, player.Center.X - 600 + 1);
-                            int damage = Main.expertMode ? 8 : 12;
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero, ModContent.ProjectileType<NPCs.Bosses.SunStalker.SunRock>(), damage, 0);
+                 
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 RockPos;
+                                RockPos.Y = NPC.Center.Y;
+                                RockPos.X = Main.rand.NextFloat(player.Center.X + 600, player.Center.X - 600 + 1);
+                                int damage = Main.expertMode ? 8 : 12;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero, 
+                                    ModContent.ProjectileType<SunRock>(), damage, 0, Owner: Main.myPlayer);
+                            }
                         }
                         if (NPC.ai[0] == 210)
                         {
                             NPC.alpha = 0;
-                            NPC.ai[3] = Main.rand.Next(1, Attacks);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.ai[3] = Main.rand.Next(1, Attacks);
+                                NPC.netUpdate = true;
+                            }
+                
                             NPC.ai[0] = 0;
                         }
                         break;
@@ -363,11 +372,14 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             int amountOfProjectiles = Main.rand.Next(1, 4);
                             for (int i = 0; i < amountOfProjectiles; ++i)
                             {
-                                float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                                float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                int damage = Main.expertMode ? 8 : 12;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<SunFeather>(), damage, 1, Main.myPlayer, 0, 0);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                                    int damage = Main.expertMode ? 8 : 12;
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
+                                       ModContent.ProjectileType<SunFeather>(), damage, 1, Owner: Main.myPlayer);
+                                }              
                             }
                         }
                         if (NPC.ai[0] == 280)
@@ -502,9 +514,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         if (NPC.ai[0] <= 100)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
-
-
-
                             if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
                                 moveSpeed--;
                             else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
@@ -584,8 +593,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             {
                                 NPC.alpha -= 1;
                             }
-
-
                         }
                         if (NPC.ai[0] == 150 || NPC.ai[0] == 170 || NPC.ai[0] == 190)
                         {
@@ -598,12 +605,16 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_2"), NPC.position);
                             }
-                            Vector2 RockPos;
-                            RockPos.Y = Main.rand.NextFloat(player.Center.Y + 300, player.Center.Y - 300 + 1);
-                            RockPos.X = Main.rand.NextFloat(player.Center.X + 300, player.Center.X - 300 + 1);
-                            int damage = Main.expertMode ? 8 : 12;
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero, ModContent.ProjectileType<NPCs.Bosses.SunStalker.SunBomb>(), damage, 0);
+
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 RockPos;
+                                RockPos.Y = Main.rand.NextFloat(player.Center.Y + 300, player.Center.Y - 300 + 1);
+                                RockPos.X = Main.rand.NextFloat(player.Center.X + 300, player.Center.X - 300 + 1);
+                                int damage = Main.expertMode ? 8 : 12;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero,
+                                    ModContent.ProjectileType<SunBomb>(), damage, 0, Owner: Main.myPlayer);
+                            }
                         }
                         if (NPC.ai[0] == 210)
                         {
@@ -709,11 +720,15 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         break;
                     case 5:
                         NPC.ai[0]++;
-                        if (Main.rand.NextBool(6) && NPC.ai[0] <= 240)
+                        if (StellaMultiplayer.IsHost)
                         {
-                            var entitySource = NPC.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SunStalkerRayLightBig>());
+                            if (Main.rand.NextBool(6) && NPC.ai[0] <= 240)
+                            {
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
+                                    ModContent.NPCType<SunStalkerRayLightBig>());
+                            }
                         }
+        
                         if (NPC.ai[0] <= 240)
                         {
                             NPC.rotation = NPC.velocity.X * 0.07f;
@@ -755,35 +770,38 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             PrevAttack = 5;
                             NPC.ai[3] = 10;
                         }
-                        if(Main.netMode != NetmodeID.Server)
+
+                        if (NPC.ai[0] == 240 || NPC.ai[0] == 180 || NPC.ai[0] == 60 || NPC.ai[0] == 120)
                         {
-                            if (NPC.ai[0] == 240 || NPC.ai[0] == 180 || NPC.ai[0] == 60 || NPC.ai[0] == 120)
+                            int Sound = Main.rand.Next(1, 3);
+                            if (Sound == 1)
                             {
-                                int Sound = Main.rand.Next(1, 3);
-                                if (Sound == 1)
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot1"), NPC.position);
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot2"), NPC.position);
+                            }
+                            float offsetRandom = Main.rand.Next(0, 50);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 124f);
+                            for (int i = 0; i < 20; i++)
+                            {
+                                Dust.NewDustPerfect(NPC.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
+                            }
+
+                            float spread = 45f * 0.0174f;
+                            double startAngle = Math.Atan2(1, 0) - spread / 2;
+                            double deltaAngle = spread / 8f;
+                            double offsetAngle;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot1"), NPC.position);
-                                }
-                                else
-                                {
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot2"), NPC.position);
-                                }
-                                float offsetRandom = Main.rand.Next(0, 50);
-                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 124f);
-                                for (int i = 0; i < 20; i++)
-                                {
-                                    Dust.NewDustPerfect(base.NPC.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
-                                }
-                                float spread = 45f * 0.0174f;
-                                double startAngle = Math.Atan2(1, 0) - spread / 2;
-                                double deltaAngle = spread / 8f;
-                                double offsetAngle;
-                                for (int i = 0; i < 4; i++)
-                                {
-                                    offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<SunDeath>(), 16, 0, Main.myPlayer);
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<SunDeath>(), 16, 0, Main.myPlayer);
-                                    NPC.netUpdate = true;
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
+                                        ModContent.ProjectileType<SunDeath>(), 16, 0, Main.myPlayer);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f),
+                                        ModContent.ProjectileType<SunDeath>(), 16, 0, Main.myPlayer);
                                 }
                             }
                         }
@@ -792,7 +810,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     case 10:
                         NPC.ai[0]++;
 
-                        if (NPC.ai[0] >= 2)
+                        if (NPC.ai[0] >= 2 && StellaMultiplayer.IsHost)
                         {
                             if (Main.rand.NextBool(2))
                             {
@@ -810,7 +828,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             else
                             {
 
-                                int ATT = Main.rand.Next(1, Attacks);
                                 if (NPC.ai[3] == PrevAttack)
                                 {
                                     TPChance = false;
@@ -820,19 +837,16 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 {
                                     TPChance = true;
                                     NPC.ai[0] = 0;
-                                    NPC.ai[3] = ATT;
+                                    NPC.ai[3] = Main.rand.Next(1, Attacks);
                                 }
                             }
+
+                            NPC.netUpdate = true;
                         }
 
                         break;
                 }
             }
-
-
-
-
-    
 
             if (Main.rand.NextBool(2))
             {
@@ -840,6 +854,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].noGravity = true;
             }
+
             if (Intro)
             {
                 if (!player.active || player.dead || !Main.dayTime || !player.ZoneDesert && !player.ZoneBeach) //despawns when player is ded
@@ -871,17 +886,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     }
                 }
             }
-
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
-            bool expertMode = Main.expertMode;
-            Player player = Main.player[NPC.target];
             NPC.frameCounter++;
-
             if (!Dashing)
             {
                 if (NPC.frameCounter >= 7)
@@ -894,12 +904,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     frame = 0;
                 }
             }
+
             if (Dashing)
             {
                 frame = 5;
             }
             NPC.frame.Y = frameHeight * frame;
-
         }
 
 
@@ -910,15 +920,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             if (NPC.ai[3] == 3 && NPC.ai[0] >= 100)
             {
-                Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-                // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-                Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-                float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-                Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
                 Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
-
                 Vector2 frameOrigin = NPC.frame.Size();
                 Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 10, NPC.height - NPC.frame.Height + 0);
                 Vector2 DrawPos = NPC.position - screenPos + frameOrigin + offset;

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -11,13 +13,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 
     internal class DreadMiresHeartVomit1 : ModProjectile
     {
-        int Spin = 0;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Sun Death");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -28,6 +29,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
         }
+
         public override void AI()
         {
             Projectile.velocity.Y += 0.1f;
@@ -36,16 +38,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
-            if (Projectile.ai[0] >= 30)
-            {
-
-
-            }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -63,6 +59,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                 if (Main.dust[num].position != Projectile.Center)
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
+
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
         }
 
@@ -81,12 +78,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             }
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleVioletRed.ToVector3() * 0.15f * Main.essScale);
-
         }
     }
-
 }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -8,7 +9,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.DreadMire
 {
-
     internal class DreadBone : ModProjectile
     {
         int Spin = 0;
@@ -18,6 +18,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 50;
@@ -28,17 +29,33 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Spin);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Spin = reader.ReadInt32();
+        }
+
         public override void AI()
         {
             Projectile.velocity *= .98f;
-
             Projectile.spriteDirection = Projectile.direction;
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                Spin = Main.rand.Next(0, 2);
+                if(Projectile.owner == Main.myPlayer)
+                {
+                    Spin = Main.rand.Next(0, 2);
+                    Projectile.netUpdate = true;
+                }
+          
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
+
             if (Projectile.ai[0] >= 30)
             {
                 if (Spin == 1)
@@ -49,10 +66,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 {
                     Projectile.rotation *= .99f;
                 }
-
             }
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -97,15 +113,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return true;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleVioletRed.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
-
 }
 

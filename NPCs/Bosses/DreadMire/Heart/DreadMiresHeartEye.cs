@@ -11,7 +11,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
 
     internal class DreadMiresHeartEye : ModProjectile
     {
-        int Spin = 0;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Death");
@@ -36,15 +35,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
-            if (Projectile.ai[0] >= 30)
-            {
-
-
-            }
-
         }
         public override void OnKill(int timeLeft)
         {

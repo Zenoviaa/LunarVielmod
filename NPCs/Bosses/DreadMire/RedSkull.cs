@@ -42,6 +42,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             return true;
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -49,6 +50,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Dirt, 0, 60, 133);
             }
         }
+
         public override Color? GetAlpha(Color lightColor) => Color.White;
 
         public override void AI()
@@ -83,6 +85,5 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 Main.dust[index2].noLight = true;
             }
         }
-
     }
 }

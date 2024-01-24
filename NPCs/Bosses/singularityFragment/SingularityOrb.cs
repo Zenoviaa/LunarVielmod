@@ -37,14 +37,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-
-            Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 
@@ -178,26 +170,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         }
         public override bool PreAI()
         {
-            bool expertMode = Main.expertMode;
-            if (Main.rand.NextBool(45))
-            {
-                NPC.netUpdate = false;
-            }
             NPC.TargetClosest(true);
-            Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
-            direction.Normalize();
-            direction *= 9f;
             NPC.ai[3]++;
 
-
-
-            for (int index1 = 0; index1 < 6; ++index1)
-            {
-                float x = (NPC.Center.X - 22);
-                float xnum2 = (NPC.Center.X + 22);
-                float y = (NPC.Center.Y);
- 
-            }
             int parent = (int)NPC.ai[0];
             if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<SingularityFragment>())
             {
@@ -206,7 +181,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             }
 
             NPC.Center = Main.npc[parent].Center + NPC.ai[2] * NPC.ai[1].ToRotationVector2();
-
             if (NPC.ai[3] <= 60)
             {
                 if (NPC.alpha >= 0)

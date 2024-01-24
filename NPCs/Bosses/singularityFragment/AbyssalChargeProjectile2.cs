@@ -35,6 +35,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 			AIType = ProjectileID.Bullet;
 			Projectile.extraUpdates = 1;
 		}
+
 		int counter = 6;
 		float alphaCounter = 4;
         public override Color? GetAlpha(Color lightColor)
@@ -74,20 +75,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 counter = -1440;
             }
-            for (int i = 0; i < 4; i++)
-            {
-                float x = Projectile.Center.X - Projectile.velocity.X / 10f * i;
-                float y = Projectile.Center.Y - Projectile.velocity.Y / 10f * i;
-            }
+
             if(Projectile.timeLeft == 100)
             {
-                Utilities.NewProjectileBetter(Projectile.Center.X, Projectile.Center.Y - 900, 0, 10, ModContent.ProjectileType<SoulBeam>(), 100, 0f, -1, 0, Projectile.whoAmI);
+                Utilities.NewProjectileBetter(Projectile.Center.X, Projectile.Center.Y - 900, 0, 10, 
+                    ModContent.ProjectileType<SoulBeam>(), 100, 0f, -1, 0, Projectile.whoAmI);
             }
-
         }
+
         public override void OnKill(int timeLeft)
         {
-
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 			for (int i = 0; i < 10; i++)
 			{
@@ -104,5 +101,4 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 			}
 		}
 	}
-
 }

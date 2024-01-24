@@ -30,26 +30,38 @@ namespace Stellamod.Helpers
 		public static bool downedSparn=false;
 		public static bool downedCogwork = false;
 
-        public override void ClearWorld()
+		private static void ResetFlags()
+		{
+            downedVeriBoss = false;
+            downedJackBoss = false;
+            downedDaedusBoss = false;
+            downedDreadBoss = false;
+            downedSOMBoss = false;
+            downedGothBoss = false;
+            downedSunsBoss = false;
+            downedGintzlBoss = false;
+            downedSyliaBoss = false;
+            downedStoneGolemBoss = false;
+            downedSTARBoss = false;
+            downedFenixBoss = false;
+            downedPandorasBox = false;
+            downedBlazingSerpent = false;
+            downedWaterJellyfish = false;
+            downedSparn = false;
+            downedCogwork = false;
+        }
+
+        public override void Unload()
         {
-			downedVeriBoss = false;
-			downedJackBoss = false;
-			downedDaedusBoss = false;
-			downedDreadBoss = false;
-			downedSOMBoss = false;
-			downedGothBoss = false;
-			downedSunsBoss = false;
-			downedGintzlBoss = false;
-			downedSyliaBoss = false;
-			downedStoneGolemBoss = false;
-			downedSTARBoss = false;
-			downedFenixBoss = false;
-			downedPandorasBox = false;
-			downedBlazingSerpent = false;
-			downedWaterJellyfish = false;
-			downedSparn = false;
-			downedCogwork = false;
-		}
+            base.Unload();
+			ResetFlags();
+        }
+
+        public override void Load()
+        {
+            base.Load();
+			ResetFlags();
+        }
 
         // We save our data sets using TagCompounds.
         // NOTE: The tag instance provided here is always empty by default.
@@ -97,49 +109,62 @@ namespace Stellamod.Helpers
 
 		public override void NetSend(BinaryWriter writer)
 		{
-			// Order of operations is important and has to match that of NetReceive
-			var flags = new BitsByte();
-			flags[0] = downedVeriBoss;
-			flags[1] = downedGintzlBoss;
-			flags[2] = downedDaedusBoss;
-			flags[3] = downedDreadBoss;
-			flags[4] = downedSOMBoss;
-			flags[5] = downedGothBoss;
-			flags[6] = downedSunsBoss;
-			flags[7] = downedJackBoss;
-			flags[8] = downedSyliaBoss;
-			flags[9] = downedStoneGolemBoss;
-			flags[10] = downedSTARBoss;
-			flags[11] = downedFenixBoss;
-			flags[12] = downedBlazingSerpent;
-			flags[13] = downedCogwork;
-			flags[14] = downedSparn;
-			flags[15] = downedWaterJellyfish;
-			flags[16] = downedPandorasBox;
-			writer.Write(flags);		
+            // Order of operations is important and has to match that of NetReceive
+            writer.Write(new BitsByte
+            {
+                [0] = downedVeriBoss,
+                [1] = downedGintzlBoss,
+                [2] = downedDaedusBoss,
+                [3] = downedDreadBoss,
+                [4] = downedSOMBoss,
+                [5] = downedGothBoss,
+                [6] = downedSunsBoss,
+                [7] = downedJackBoss
+            });
+
+            writer.Write(new BitsByte
+            {
+                [0] = downedSyliaBoss,
+                [1] = downedStoneGolemBoss,
+                [2] = downedSTARBoss,
+                [3] = downedFenixBoss,
+                [4] = downedBlazingSerpent,
+                [5] = downedCogwork,
+                [6] = downedSparn,
+                [7] = downedWaterJellyfish
+            });
+
+            writer.Write(new BitsByte
+            {
+                [0] = downedPandorasBox
+            });	
 		}
 
 		public override void NetReceive(BinaryReader reader)
 		{
-			// Order of operations is important and has to match that of NetSend
-			BitsByte flags = reader.ReadByte();
-			flags[0] = downedVeriBoss;
-			flags[1] = downedGintzlBoss;
-			flags[2] = downedDaedusBoss;
-			flags[3] = downedDreadBoss;
-			flags[4] = downedSOMBoss;
-			flags[5] = downedGothBoss;
-			flags[6] = downedSunsBoss;
-			flags[7] = downedJackBoss;
-			flags[8] = downedSyliaBoss;
-			flags[9] = downedStoneGolemBoss;
-			flags[10] = downedSTARBoss;
-			flags[11] = downedFenixBoss;
-			flags[12] = downedBlazingSerpent;
-			flags[13] = downedCogwork;
-			flags[14] = downedSparn;
-			flags[15] = downedWaterJellyfish;
-			flags[16] = downedPandorasBox;
+            // Order of operations is important and has to match that of NetSend
+            BitsByte flags = reader.ReadByte();
+			downedVeriBoss = flags[0];
+			downedGintzlBoss = flags[1];
+			downedDaedusBoss = flags[2];
+			downedDreadBoss = flags[3];
+			downedSOMBoss = flags[4];
+			downedGothBoss = flags[5];
+			downedSunsBoss = flags[6];
+			downedJackBoss = flags[7];
+
+            flags = reader.ReadByte();
+			downedSyliaBoss = flags[0];
+			downedStoneGolemBoss = flags[1];
+			downedSTARBoss = flags[2];
+			downedFenixBoss = flags[3];
+			downedBlazingSerpent = flags[4];
+			downedCogwork = flags[5];
+			downedSparn = flags[6];
+			downedWaterJellyfish = flags[7];
+
+			flags = reader.ReadByte();
+			downedPandorasBox = flags[0];
 		}
 	}
 }

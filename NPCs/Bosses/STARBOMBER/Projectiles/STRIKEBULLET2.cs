@@ -54,32 +54,22 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Timer++;
 			if (Timer == 3)
 			{
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center - new Vector2(100, 0), Projectile.velocity * 0,
+                        ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner);
+                    p.rotation = direction.ToRotation();
+					p.netUpdate = true;
+                }
 
-
-
-
-				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
-
-
-				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center - new Vector2(100,0), Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-				p.rotation = direction.ToRotation();
 				Timer = 0;
-
-
 			}
-
 
 			float maxDetectRadius = 4f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 28f; // The speed at which the projectile moves towards the target
-
-
-
-
 			if (Timer2 == 6)
 			{
-				maxDetectRadius = 0f;
-				
+				maxDetectRadius = 0f;			
 			}
 			
 			Player closestplayer = FindClosestNPC(maxDetectRadius);
@@ -109,23 +99,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				}
 			}
 
-			// Trying to find NPC closest to the projectile
-			
-			
-
-			// If found, change the velocity of the projectile and turn it in the direction of the target
-			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity = (closestplayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
-
-
-
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
-
 			behindNPCs.Add(index);
-
 		}
+
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
 		public Player FindClosestNPC(float maxDetectDistance)

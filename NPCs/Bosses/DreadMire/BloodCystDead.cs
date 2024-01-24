@@ -59,7 +59,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if (NPC.ai[0] == 130)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
-
                 if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()))
                 {
                     if (!text)
@@ -68,7 +67,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(255, 44, 44, 44),
                         "...");
                         text = true;
-                        NPC.netUpdate = true;
                     }
                 }
                 else
@@ -77,11 +75,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     {
                         if (!text)
                         {
-
                             CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(255, 44, 44, 44),
                             "The dread shrouds you...");
                             text = true;
-                            NPC.netUpdate = true;
                         }
                     }
                     if (Main.netMode != NetmodeID.MultiplayerClient && Main.dayTime)
@@ -92,7 +88,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                             CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(255, 44, 44, 44),
                             "Darkness...");
                             text = true;
-                            NPC.netUpdate = true;
                         }
                     }
                 }
@@ -101,15 +96,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             if (NPC.ai[0] == 300)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient && !FalseSpawn)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Laugh"));
-                    NPC.active = false;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Laugh"));
+                NPC.active = false;
+                if (StellaMultiplayer.IsHost)
+                { 
                     var entitySource = NPC.GetSource_FromThis();
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMire>());
                 }
-
-
             }
 
             float num = 1f - NPC.alpha / 255f;
@@ -119,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public void Movement(Vector2 Player2, float PosX, float PosY, float Speed)
         {
             Vector2 target = Player2 + new Vector2(PosX, PosY);
-            base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, VectorHelper.MovemontVelocity(NPC.Center, Vector2.Lerp(NPC.Center, target, 0.5f), NPC.Center.Distance(target) * Speed), 0.1f);
         }
 
         public override void SetDefaults()
@@ -159,7 +152,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
         }
 
-        private Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
@@ -169,10 +161,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(NPC.rotation + j) - Main.screenPosition, NPC.frame, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - NPC.alpha), NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, Effects, 0f);
             }
+
             spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center - Main.screenPosition, NPC.frame, NPC.GetAlpha(lightColor), NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, Effects, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
             for (int k = 0; k < NPC.oldPos.Length; k++)
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);

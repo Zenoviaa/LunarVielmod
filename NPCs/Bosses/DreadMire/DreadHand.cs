@@ -11,13 +11,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     internal class DreadHand : ModProjectile
     {
-        int Spin = 0;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Death");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 50;
@@ -28,18 +28,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.velocity *= .98f;
-
             Projectile.spriteDirection = Projectile.direction;
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
-
         }
         public override void OnKill(int timeLeft)
         {

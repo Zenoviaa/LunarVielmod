@@ -146,22 +146,26 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 				for (int k = 0; k < 11; k++)
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);
-			
-
-				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-	
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50 , 20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50 , -20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50 , -20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, 20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
 
 
+				if (StellaMultiplayer.IsHost)
+				{
+
+                    float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, 20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, -20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, -20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, 20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                }
 
 
 
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
 
 
 				ShakeModSystem.Shake = 7;
@@ -177,24 +181,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);
 
 
-				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				if (StellaMultiplayer.IsHost)
+				{
+                    float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                }
 
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-
-
-
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
 
 
 
@@ -211,28 +221,34 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);
 
 
-				float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+				if (StellaMultiplayer.IsHost)
+				{
+                    float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
 
 
 
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0, ModContent.ProjectileType<STARDREAM>(), 40, 0f, 0, 0f, 0f);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0,
+                        ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
+                }
 
-
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
-
-
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGROP"));
 				ShakeModSystem.Shake = 7;
-
-
 			}
 
 
@@ -240,13 +256,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			
 
 			if (timer == 2)
-            {
-
+			{
 				SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
 			}
-
-
-	
 
 			if (invisibilityTimer == 250)
             {
@@ -257,31 +269,25 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				{
 					Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
 					var d = Dust.NewDustPerfect(NPC.Center, DustID.BoneTorch, speed * 11, Scale: 3f);
-					;
 					d.noGravity = true;
 
 					Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
 					var da = Dust.NewDustPerfect(NPC.Center, DustID.CoralTorch, speeda * 5, Scale: 3f);
-					;
 					da.noGravity = false;
 
 					Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
 					var dab = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speeda * 20, Scale: 3f);
-					;
 					dab.noGravity = false;
 				}
 
-
-
-
-
-
-				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X - 200, (int)NPC.Center.Y - 200, ModContent.NPCType<STARLING>());
-				NPC minionNPC = Main.npc[index];
+				if (StellaMultiplayer.IsHost)
+				{
+					NPC.NewNPC(entitySource, (int)NPC.Center.X - 200, (int)NPC.Center.Y - 200, ModContent.NPCType<STARLING>());
+                }
 			}
+
 			switch (State)
 			{
-
 				case ActionState.Wait:
 					counter++;
 					Wait();
@@ -293,20 +299,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 					NPC.velocity *= 0.98f;
 					break;
 
-
 				default:
 					counter++;
 					break;
 			}
 		}
 
-
-
-
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
 
@@ -326,26 +327,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public void Speed()
 		{
 			timer++;
-
-
-			if (timer > 50)
-			{
-
-
-
-
-
-
-
-
-			}
-
 			if (timer == 100)
 			{
 				State = ActionState.Wait;
 				timer = 0;
 			}
-
 		}
 	}
 }

@@ -67,9 +67,25 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			FallStartSlam,
 			TeleportStartSlam
 		}
+
+
+		private ActionState _state = ActionState.Start;
 		// Current state
 
-		public ActionState State = ActionState.Start;
+		public ActionState State
+		{
+			get
+			{
+				return _state;
+			}
+			set
+			{
+				_state = value;
+				if(StellaMultiplayer.IsHost)
+					NPC.netUpdate = true;
+			}
+		}
+
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -88,26 +104,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Starr Veriplant");
-			
 			Main.npcFrameCount[Type] = 64;
-
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
 			NPCID.Sets.TrailingMode[NPC.type] = 0;
-
-			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
-			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
-			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
@@ -167,29 +168,21 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{
-			writer.Write(attackCounter);
-			writer.Write(timeBetweenAttacks);
-			writer.WriteVector2(dashDirection);
-			writer.Write(dashDistance);
-
-		}
+			writer.Write((float)State);
+            writer.Write(timer);
+            writer.Write(frameCounter);
+            writer.Write(frameTick);
+        }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
-			attackCounter = reader.ReadInt32();
-			timeBetweenAttacks = reader.ReadInt32();
-			
+			_state = (ActionState)reader.ReadSingle();
+            timer = reader.ReadSingle();
+            frameCounter = reader.ReadInt32();
+            frameTick = reader.ReadInt32();
+        }
 		
-			dashDirection = reader.ReadVector2();
-			dashDistance = reader.ReadSingle();
 
-		}
-		
-		int attackCounter;
-		int timeBetweenAttacks = 120;
-		Vector2 dashDirection = Vector2.Zero;
-		float dashDistance = 0f;
-		Vector2 TeleportPos = Vector2.Zero;
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (NPC.life <= 0)
@@ -214,15 +207,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			}
 		}
 
-		
-		
-		
+			
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
-
-			
-;
 			Texture2D texture = TextureAssets.Npc[NPC.type].Value;
 			// Using a rectangle to crop a texture can be imagined like this:
 			// Every rectangle has an X, a Y, a Width, and a Height
@@ -359,20 +346,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					rect = new(0, 9 * 89, 80, 11 * 89);
 					spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 11, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
 					break;
-
-
-
-				
-
 			}
 
-			
-			
-
 			return false;
-
-
 		}
+
 		int bee = 220;
         private Vector2 originalHitbox;
 
@@ -391,16 +369,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 			NPC.spriteDirection = NPC.direction;
 			Player player = Main.player[NPC.target];
-			
+
 			NPC.TargetClosest();
-
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-			{
-				NPC.TargetClosest();
-			}
-			
-			
-
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
@@ -412,7 +382,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				Falling();
 				
 			}
-				switch (State)
+				
+			switch (State)
 			{
 				case ActionState.Pulse:
 					NPC.damage = 0;
@@ -561,9 +532,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					counter++;
 					TeleportWindUp();
 					break;
-
-				default:
-					break;
 			}
 		}
 
@@ -578,59 +546,72 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ShakeModSystem.Shake = 3;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verispin"));
 
-				switch (Main.rand.Next(3))
+				if (StellaMultiplayer.IsHost)
 				{
-					
+                    switch (Main.rand.Next(3))
+                    {
+                        case 0:
 
+                            float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                            float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3,
+                                ProjectileID.DandelionSeed, 3, 0f, Owner: Main.myPlayer);
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
+                            break;
 
-					case 0:
-						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY * 1f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 2, speedY - 3 * 1.5f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 1, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 3, speedY - 2 * 2f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 1 * 3, speedY - 1 * 1f, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 1 * 1, speedY - 3, ProjectileID.DandelionSeed, 3, 0f, 0, 0f, 0f);
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
-						break;
+                        case 1:
 
-					case 1:
-						
-						break;
+                            break;
 
-					case 2:
-						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, ModContent.ProjectileType<CosButterfly>(), 4, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, ModContent.ProjectileType<CosButterfly>(), 4, 0f, 0, 0f, 0f);
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
-						break;
+                        case 2:
+                            float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                            float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa + 1 * 3, speedYa * 1f, 
+								ModContent.ProjectileType<CosButterfly>(), 4, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 1 * 3, speedYa - 2 * 1f, 
+								ModContent.ProjectileType<CosButterfly>(), 4, 0f, Owner: Main.myPlayer);
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VeriButterfly"));
+                            break;
 
-				}
+                    }
+                }
+
 			}
 
 			
 
 			if (timer == 23)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				//Reset our timers
+                ResetTimers();
 
-				switch (Main.rand.Next(2))
+				//Set the new state
+				//Don't forget to check IsHost!
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						State = ActionState.TeleportPulseIn;
-						break;
-					case 1:
-						State = ActionState.TeleportPulseIn;
-						break;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            State = ActionState.TeleportPulseIn;
+                            break;
+                        case 1:
+                            State = ActionState.TeleportPulseIn;
+                            break;
 
-				}
-				ResetTimers();
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                    }
 
-
-			}
+                }
+            }
 		}
 
         private void PulseIn()
@@ -654,31 +635,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			if (timer == 27)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				
-					switch (Main.rand.Next(4))
-					{
-						case 0:
-							State = ActionState.TeleportWindUp;
-							break;
-						case 1:
-							State = ActionState.TeleportWindUp;
-							break;
-						case 2:
-							State = ActionState.TeleportWindUp;
-							break;
-						case 3:
-
-							State = ActionState.TeleportWindUp;
-							break;
-					}
-				
-				
-
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
 				ResetTimers();
-			}
+                State = ActionState.TeleportWindUp;
+            }
 			
 		}
         private void TeleportSlam()
@@ -687,22 +646,20 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			timer++;
 			Player player = Main.player[NPC.target];
 
-			if (timer == 1)
-				{					
-					int distanceY = Main.rand.Next(-250, -250);
-						NPC.position.X = player.Center.X ;
-						NPC.position.Y = player.Center.Y + distanceY;
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
-			}
-
-						if (timer == 27)
+			if (timer == 1)	
 			{
-				State = ActionState.FallSlam;
-
-				ResetTimers();
+				int distanceY = -250;
+                NPC.position.X = player.Center.X;
+                NPC.position.Y = player.Center.Y + distanceY;
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
-			
+						
+			if (timer == 27)
+            {
+                ResetTimers();
+                State = ActionState.FallSlam;
+			}	
 		}
 
 
@@ -713,21 +670,18 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			Player player = Main.player[NPC.target];
 
 			if (timer == 1)
-			{
-				int distanceY = Main.rand.Next(-250, -250);
-				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + distanceY;
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
+            {
+				int distanceY = -250;
+                NPC.position.X = player.Center.X;
+                NPC.position.Y = player.Center.Y + distanceY;
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 			}
 
 			if (timer == 27)
-			{
-				State = ActionState.FallStartSlam;
-
-				ResetTimers();
+            {
+                ResetTimers();
+                State = ActionState.FallStartSlam;
 			}
-
-
 		}
 
 
@@ -740,11 +694,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 1)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
-				int distanceY = Main.rand.Next(-300, -300);
-				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + distanceY;
-
-			}
+				int distanceY = -300;
+                NPC.position.X = player.Center.X;
+                NPC.position.Y = player.Center.Y + distanceY;
+            }
 
 			if (timer == 27)
 			{
@@ -766,38 +719,35 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veriappear"));
 
-				switch (Main.rand.Next(2))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						int distance = Main.rand.Next(20, 20);
-						int distanceY = Main.rand.Next(-110, -110);
-						NPC.position.X = player.Center.X + distance;
-						NPC.position.Y = player.Center.Y + distanceY;
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            int distance = Main.rand.Next(20, 20);
+                            int distanceY = Main.rand.Next(-110, -110);
+                            NPC.position.X = player.Center.X + distance;
+                            NPC.position.Y = player.Center.Y + distanceY;
+							NPC.netUpdate = true;
+                            break;
 
-						break;
 
-
-					case 1:
-						int distance2 = Main.rand.Next(-120, -120);
-						int distanceY2 = Main.rand.Next(-110, -110);
-						NPC.position.X = player.Center.X + distance2;
-						NPC.position.Y = player.Center.Y + distanceY2;
-
-						break;
-				}
-
-			}
+                        case 1:
+                            int distance2 = Main.rand.Next(-120, -120);
+                            int distanceY2 = Main.rand.Next(-110, -110);
+                            NPC.position.X = player.Center.X + distance2;
+                            NPC.position.Y = player.Center.Y + distanceY2;
+                            NPC.netUpdate = true;
+                            break;
+                    }
+                }
+            }
 
 			if (timer == 27)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				State = ActionState.WindUp;
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-				ResetTimers();
-			}
-			
-			
+                ResetTimers();
+                State = ActionState.WindUp;
+			}	
         }
 
 
@@ -813,6 +763,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
             {
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
 			}
+
 			if (timer < 5)
             {
 				NPC.damage = 30;
@@ -821,8 +772,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
 				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
 				Vector2 angle = new Vector2((float)anglex, (float)angley);
-				dashDirection = (player.Center - (angle * distance)) - NPC.Center;
-				dashDistance = dashDirection.Length();
+				Vector2 dashDirection = (player.Center - (angle * distance)) - NPC.Center;
 				dashDirection.Normalize();
 				dashDirection *= speed;
 				NPC.velocity = dashDirection;
@@ -830,54 +780,53 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ShakeModSystem.Shake = 3;
 			}
 				
-		
-
 			
-				if (timer == 20)
+			if (timer == 20)
 			{
 				NPC.damage = 0;
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				if (NPC.life < NPC.lifeMax / 2)
-				{
-					switch (Main.rand.Next(2))
+                {
+                    ResetTimers();
+					if (StellaMultiplayer.IsHost)
 					{
-						case 0:
-							State = ActionState.TeleportWindUp;
-							break;
-						case 1:
-							State = ActionState.TeleportSlam;
+                        switch (Main.rand.Next(2))
+                        {
+                            case 0:
+                                State = ActionState.TeleportWindUp;
+                                break;
+                            case 1:
+                                State = ActionState.TeleportSlam;
+                                break;
 
-							break;
-
-					}
-					ResetTimers();
+                        }
+                    }
 				}
 
 				if (NPC.life > NPC.lifeMax / 2)
-				{
-					switch (Main.rand.Next(3))
+                {
+                    ResetTimers();
+                    if (StellaMultiplayer.IsHost)
 					{
-						case 0:
-							State = ActionState.TeleportWindUp;
-							break;
-						case 1:
-							State = ActionState.TeleportSlam;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                State = ActionState.TeleportWindUp;
+                                break;
+                            case 1:
+                                State = ActionState.TeleportSlam;
 
-							break;
+                                break;
 
-						case 2:
-							State = ActionState.TeleportBIGSlam;
+                            case 2:
+                                State = ActionState.TeleportBIGSlam;
 
-							break;
-					}
-					ResetTimers();
+                                break;
+                        }
+                    }
+
 				}
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
-			}
-
-			
+			}	
         }
 
 
@@ -887,25 +836,10 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			timer++;
 			if (timer == 20)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(2))
-				{
-					case 0:
-						State = ActionState.TeleportStartSlam;
-						ResetTimers();
-						break;
-					case 1:
-						State = ActionState.TeleportStartSlam;
-						break;
-				
-				}
-			
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				
-
-			}
-			
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                ResetTimers();
+                State = ActionState.TeleportStartSlam;
+            }		
         }
 
 
@@ -915,16 +849,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (NPC.collideY)
 			{
 				NPC.velocity.Y *= 0;
-				State = ActionState.Slam;
-
-
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.Slam;
 			}
 
 			if (timer > 120)
-			{
-				State = ActionState.Slam;
-				ResetTimers();
+            {
+                ResetTimers();
+                State = ActionState.Slam;	
 			}
 		}
 
@@ -934,17 +866,15 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (NPC.collideY)
 			{
 				NPC.velocity.Y *= 0;
-				State = ActionState.BIGSlam;
-
-
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.BIGSlam;		
 			}
 
 
 			if (timer > 120)
             {
-				State = ActionState.BIGSlam;
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.BIGSlam;
 			}
 		}
 
@@ -954,17 +884,15 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (NPC.collideY)
 			{
 				NPC.velocity.Y *= 0;
-				State = ActionState.StartSlam;
-
-
-				ResetTimers();
+                ResetTimers();
+                State = ActionState.StartSlam;
 			}
 
 
 			if (timer > 120)
-			{
-				State = ActionState.StartSlam;
-				ResetTimers();
+            {
+                ResetTimers();
+                State = ActionState.StartSlam;
 			}
 		}
 		private void Slam()
@@ -973,7 +901,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 3)
             {
 				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
-
 			}
 
 			if (timer > 10)
@@ -981,14 +908,16 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				
 				if (NPC.velocity.Y == 0)
 				{
-
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedX + 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 5, 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedXB - 2 * 6, speedY, ModContent.ProjectileType<SpikeBullet>(), 5, 0f, 0, 0f, 0f);
-
-
+					if (StellaMultiplayer.IsHost)
+					{
+                        float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                        float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                        float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedX + 2 * 6, speedY,
+                            ModContent.ProjectileType<SpikeBullet>(), 5, 0f, Owner: Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 90, speedXB - 2 * 6, speedY,
+                            ModContent.ProjectileType<SpikeBullet>(), 5, 0f, Owner: Main.myPlayer);
+                    }
 					
 					ShakeModSystem.Shake = 8;
 
@@ -1001,28 +930,18 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			
 
 			if (timer == 27)
-				{
-				
-				if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-
+			{
+                ResetTimers();
+                if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
 				{
 					State = ActionState.WindUp;
 				}
 
 				if (NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-
 				{
 					State = ActionState.WindUpSp;
 				}
-
-
-				ResetTimers();
-				}
-
-
-
-
-
+			}
 		}
 
 
@@ -1032,7 +951,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 3)
 			{
 				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
-
 			}
 
 			if (timer > 10)
@@ -1055,27 +973,17 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 			if (timer == 27)
 			{
-
-				if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-
+                ResetTimers();
+                if (NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
 				{
 					State = ActionState.WindUp;
 				}
 
 				if (NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-
 				{
 					State = ActionState.WindUpSp;
 				}
-
-
-				ResetTimers();
 			}
-
-
-
-
-
 		}
 
 		private void BIGLand()
@@ -1085,11 +993,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 1)
             {
 				ShakeModSystem.Shake = 8;
-				float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-				float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, 0, 0f, 0, 0f, 0f);
-		
-
+				if (StellaMultiplayer.IsHost)
+				{
+                    float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                    float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX * 0, speedY * 0,
+                        ProjectileID.DD2OgreSmash, 0, 0f, Owner: Main.myPlayer);
+                }
 			}
 
 
@@ -1101,16 +1011,9 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
 
-				State = ActionState.WindUpSp;
-
-
 				ResetTimers();
+				State = ActionState.WindUpSp;
 			}
-
-
-
-
-
 		}
 
 
@@ -1126,8 +1029,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			timer++;
 			if (timer < 20)
 			{
-				NPC.velocity = new Vector2(NPC.direction * 0, 70f);
-			
+				NPC.velocity = new Vector2(NPC.direction * 0, 70f);		
 			}
 
 			if (timer == 20)
@@ -1135,49 +1037,27 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				NPC.velocity *= 0f;
 				if (NPC.velocity.Y == 0)
 				{
+					if (StellaMultiplayer.IsHost)
+					{
+                        float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                        float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                        float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 2, speedY,
+                            ModContent.ProjectileType<SmallRock2>(), 3, 0f, Owner: Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 2, speedY,
+                            ModContent.ProjectileType<SmallRock2>(), 3, 0f, Owner: Main.myPlayer);
+                    }
 
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-					float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX + 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), 3, 0f, 0, 0f, 0f);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB - 2 * 2, speedY, ModContent.ProjectileType<SmallRock2>(), 3, 0f, 0, 0f, 0f);
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifallstar"));
-
-
-
-
-
-
-
-
-
-
-
-
 				}
 			}
 
 			if (timer > 25)
-			{
-				State = ActionState.BIGLand;
-
-
-				ResetTimers();
+            {
+                ResetTimers();
+                State = ActionState.BIGLand;
 			}
-
-
-
-
-
-
-
-
-
-			}
-
-		
-			
-		
+		}
 
 		private void Spin()
         {
@@ -1188,69 +1068,63 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				ShakeModSystem.Shake = 3;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verispin"));
 
-				switch (Main.rand.Next(4))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						//Summon
+                    switch (Main.rand.Next(4))
+                    {
+                        case 0:
+                            //Summon
 
-						break;
+                            break;
 
+                        case 1:
+                            float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                            float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                            float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 2,
+                                ModContent.ProjectileType<SmallRock>(), 2, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1,
+                                ModContent.ProjectileType<SmallRock>(), 2, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1,
+                                ModContent.ProjectileType<SmallRock>(), 2, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2,
+                                ModContent.ProjectileType<SmallRock>(), 2, 0f, Owner: Main.myPlayer);
 
-					case 1:
-						float speedXB = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX -2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 1, speedY - 2 * 1 , ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedX - 2 * 2, speedY - 2 * 1, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY + 110, speedXB + 2 * 2, speedY - 2 * 2, ModContent.ProjectileType<SmallRock>(), 2, 0f, 0, 0f, 0f);
-
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
-						break;
-
-
-					case 2:
-						float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-						float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-						float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 60, speedXb * 0.1f, speedYb - 1 * 1, ModContent.ProjectileType<BigRock>(), 11, 0f, 0, 0f, 0f);
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
-						break;
-
-					case 3:
-						float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-						float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), 5, 0f, 0, 0f, 0f);
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 5, speedYa - 1 * 1, ModContent.ProjectileType<Rock>(), 5, 0f, 0, 0f, 0f);
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Flowers"));
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
+                            break;
 
 
-						break;
-				
-				}
+                        case 2:
+                            float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                            float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                            float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 60, NPC.position.Y + speedYb + 60, speedXb * 0.1f, speedYb - 1 * 1,
+                                ModContent.ProjectileType<BigRock>(), 11, 0f, Owner: Main.myPlayer);
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verirocks"));
+                            break;
+
+                        case 3:
+                            float speedXBa = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                            float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                            float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 5, speedYa - 1 * 1,
+                                ModContent.ProjectileType<Rock>(), 5, 0f, Owner: Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 5, speedYa - 1 * 1,
+                                ModContent.ProjectileType<Rock>(), 5, 0f, Owner: Main.myPlayer);
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Flowers"));
+                            break;
+
+                    }
+                }
 			}
 			
 
 			if (timer == 23)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-				switch (Main.rand.Next(2))
-				{
-					case 0:
-						State = ActionState.TeleportPulseIn;
-						break;
-					case 1:
-						State = ActionState.TeleportPulseIn;
-						break;
-
-				}
-				ResetTimers();
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-			
-
-			}
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                ResetTimers();
+                State = ActionState.TeleportPulseIn;
+            }
 		}
 
 
@@ -1259,59 +1133,34 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
         {
 			timer++;
 			if (timer == 27)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (NPC.life > NPC.lifeMax / 2 && NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-					
+            {
+                ResetTimers();
+                if (NPC.life > NPC.lifeMax / 2 && NPC.life > (NPC.lifeMax / 4) + (NPC.lifeMax / 2))				
 				{
-					switch (Main.rand.Next(4))
-					{
+                    State = ActionState.Dash;
+                }
 
-						case 0:
-							State = ActionState.Dash;
-							break;
-						case 1:
-							State = ActionState.Dash;
-							break;
-						case 2:
-							State = ActionState.Dash;
-							break;
-						case 3:
-
-							State = ActionState.Dash;
-							break;
-
-					}
-				}
 
 				if (NPC.life > NPC.lifeMax / 2 && NPC.life < (NPC.lifeMax / 4) + (NPC.lifeMax / 2))
-
 				{
-					switch (Main.rand.Next(4))
+					if (StellaMultiplayer.IsHost)
 					{
+                        switch (Main.rand.Next(2))
+                        {
 
-						case 0:
-							State = ActionState.SpinLONG;
-							break;
-						case 1:
-							State = ActionState.Dash;
-							break;
-						case 2:
-							State = ActionState.Dash;
-							break;
-						case 3:
-
-							State = ActionState.SpinLONG;
-							break;
-
-					}
+                            case 0:
+                                State = ActionState.SpinLONG;
+                                break;
+                            case 1:
+                                State = ActionState.Dash;
+                                break;
+                        }
+                    }
 				}
-
-
 
 				if (NPC.life < NPC.lifeMax / 2)
 				{
-					switch (Main.rand.Next(4))
+					switch (Main.rand.Next(2))
 					{
 
 						case 0:
@@ -1320,76 +1169,25 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 						case 1:
 							State = ActionState.Dash;
 							break;
-						case 2:
-							State = ActionState.Dash;
-							break;
-						case 3:
-
-							State = ActionState.Spin;
-							break;
-
 					}
 				}
-					ResetTimers();
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-				
-
 			}
 		}
-
-
-		
-
-
 
 		private void WindUpSp()
 		{
 			timer++;
 			if (timer == 27)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (NPC.life < NPC.lifeMax / 2)
+                ResetTimers();
+                if (NPC.life < NPC.lifeMax / 2)
                 {
-					switch (Main.rand.Next(4))
-					{
-						case 0:
-							State = ActionState.Spin;
-							break;
-						case 1:
-							State = ActionState.Spin;
-							break;
-						case 2:
-							State = ActionState.Spin;
-							break;
-						case 3:
-
-							State = ActionState.Spin;
-							break;
-					}
-				}
-				if (NPC.life > NPC.lifeMax / 2)
+                    State = ActionState.Spin;
+                }
+				else if (NPC.life > NPC.lifeMax / 2)
 				{
-					switch (Main.rand.Next(4))
-					{
-						case 0:
-							State = ActionState.SpinLONG;
-							break;
-						case 1:
-							State = ActionState.SpinLONG;
-							break;
-						case 2:
-							State = ActionState.SpinLONG;
-							break;
-						case 3:
-
-							State = ActionState.SpinLONG;
-							break;
-					}
-				}
-				ResetTimers();
-				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
-
+                    State = ActionState.SpinLONG;
+                }
 			}
 		}
 
@@ -1400,101 +1198,61 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (timer == 7)
             {
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veripulse"));
-				switch (Main.rand.Next(4))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Weak!", true, false);
-						player.AddBuff(BuffID.Weak, 60);
-						break;
+                    switch (Main.rand.Next(4))
+                    {
+                        case 0:
+                            CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Weak!", true, false);
+                            player.AddBuff(BuffID.Weak, 60);
+                            break;
 
 
-					case 1:
-						CombatText.NewText(NPC.getRect(), Color.MistyRose, "Armor Broke!", true, false);
-						player.AddBuff(BuffID.BrokenArmor, 60);
-						break;
+                        case 1:
+                            CombatText.NewText(NPC.getRect(), Color.MistyRose, "Armor Broke!", true, false);
+                            player.AddBuff(BuffID.BrokenArmor, 60);
+                            break;
 
 
-					case 2:
-						CombatText.NewText(NPC.getRect(), Color.Coral, "Player Wrath UP!", true, false);
-						player.AddBuff(BuffID.Wrath, 300);
-						break;
+                        case 2:
+                            CombatText.NewText(NPC.getRect(), Color.Coral, "Player Wrath UP!", true, false);
+                            player.AddBuff(BuffID.Wrath, 300);
+                            break;
 
 
-					case 3:
+                        case 3:
 
-						CombatText.NewText(NPC.getRect(), Color.Purple, "Player Speed UP!", true, false);
-						player.AddBuff(BuffID.Swiftness, 600);
-						break;
-				}
-			
+                            CombatText.NewText(NPC.getRect(), Color.Purple, "Player Speed UP!", true, false);
+                            player.AddBuff(BuffID.Swiftness, 600);
+                            break;
+                    }
+                }
 			}
 
 			if (timer == 43)
-			{
-				State = ActionState.TeleportPulseOut;
-
-				ResetTimers();
-			}
-			
+            {
+                ResetTimers();
+                State = ActionState.TeleportPulseOut;
+			}		
 		}
 
 
         public override void OnKill()
         {
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedStoneGolemBoss, -1);
-		}
+        }
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-		//	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-		
-		
-
-			// ItemDropRule.MasterModeCommonDrop for the relic
-		
-		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-
-			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-			// Boss masks are spawned with 1/7 chance
-			//notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-			// This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-			// We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-			// which requires these parameters to be defined
-			//int itemType = ModContent.ItemType<Gambit>();
-			//var parameters = new DropOneByOne.Parameters()
-			//{
-			//	ChanceNumerator = 1,
-			//	ChanceDenominator = 1,
-			//	MinimumStackPerChunkBase = 1,
-			//	MaximumStackPerChunkBase = 1,
-			//	MinimumItemDropsCount = 1,
-			//	MaximumItemDropsCount = 3,
-			//};
-
-			//notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-			// Finally add the leading rule
-			npcLoot.Add(notExpertRule);
 		}
+
 		public void ResetTimers()
 		{
 			timer = 0;
 			frameCounter = 0;
 			frameTick = 0;
 		}
-
-
-
     }
 }

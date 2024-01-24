@@ -16,7 +16,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public const float LaserLength = 2400f;
-        // public override void SetStaticDefaults() => DisplayName.SetDefault("Final Beam");
 
         public override void SetDefaults()
         {
@@ -34,19 +33,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
-
             Projectile.scale = MathF.Sin(Time / 500f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
-
             // And create bright light.
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 1.4f);
-
-
-
             CreateDustAtBeginning();
-
             Time++;
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,26 +55,35 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.defense = 8;
             NPC.lifeMax = 156;
             NPC.value = 30f;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
         }
+
         float alphaCounter = 0;
         float counter = 4;
-
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Pentagram").Value;
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(15f * alphaCounter), (int)(25f * alphaCounter), 0), NPC.rotation, new Vector2(157, 157), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Rot);
+            writer.Write(Lightning);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Rot = reader.ReadSingle();
+            Lightning = reader.ReadBoolean();
+        }
+
         public override void AI()
         {
-
             counter -= 0.09f;
             if (!Down)
             {
@@ -81,7 +91,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
@@ -89,7 +98,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 if (alphaCounter <= 0)
                 {
                     NPC.active = false;
-
                 }
                 alphaCounter -= 0.09f;
             }
@@ -100,9 +108,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             if (!Lightning)
             {
-                Rot = Main.rand.NextFloat(-0.05f, 0.05f);
-                Lightning = true;
-                NPC.rotation = Main.rand.NextFloat(360);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Rot = Main.rand.NextFloat(-0.05f, 0.05f);
+                    Lightning = true;
+                    NPC.rotation = Main.rand.NextFloat(360);
+                    NPC.netUpdate = true;
+                }
             }
             NPC.rotation -= Rot;
         }

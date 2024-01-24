@@ -19,7 +19,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void SetDefaults()
 		{
-			base.Projectile.aiStyle = 0;
+			Projectile.aiStyle = 0;
 			Projectile.alpha = 255;
 			Projectile.friendly = false;
             Projectile.hostile = true;
