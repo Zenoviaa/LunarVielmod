@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -14,16 +15,15 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     internal class DreadMireDash : ModProjectile
     {
-        int Spin = 0;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Death");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
+
         public override void SetDefaults()
         {
-
             Projectile.width = 50;
             Projectile.height = 50;
             Projectile.timeLeft = 450;
@@ -32,6 +32,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.velocity *= 1.01f;
@@ -39,33 +40,28 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Dust dust = Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<RuneDust>());
-                dust.velocity *= -1f;
-                dust.scale *= .8f;
-                dust.noGravity = true;
-                Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                vector2_1.Normalize();
-                Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                dust.velocity = vector2_2;
-                vector2_2.Normalize();
-                Vector2 vector2_3 = vector2_2 * 34f;
-                dust.position = Projectile.Center - vector2_3;
-                Projectile.netUpdate = true;
-            }
 
+            Dust dust = Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<RuneDust>());
+            dust.velocity *= -1f;
+            dust.scale *= .8f;
+            dust.noGravity = true;
+            Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+            vector2_1.Normalize();
+            Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
+            dust.velocity = vector2_2;
+            vector2_2.Normalize();
+            Vector2 vector2_3 = vector2_2 * 34f;
+            dust.position = Projectile.Center - vector2_3;
         }
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleVioletRed.ToVector3() * 1.75f * Main.essScale);
             Lighting.AddLight(Projectile.Center, Color.DarkRed.ToVector3() * 1.75f * Main.essScale);
-
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -90,12 +86,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
@@ -120,7 +118,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             return false;
         }
-
     }
 
 }

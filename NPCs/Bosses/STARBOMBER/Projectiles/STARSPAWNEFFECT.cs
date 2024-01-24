@@ -11,14 +11,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Rune Spawn Effect");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
 
         public override void SetDefaults()
         {
-            base.Projectile.aiStyle = 0;
+            Projectile.aiStyle = 0;
             Projectile.alpha = 255;
             Projectile.friendly = true;
             Projectile.hostile = false;
@@ -29,7 +28,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
             Projectile.extraUpdates = 1;
         }
 
-
         float alphaCounter = 5;
         public override void AI()
         {
@@ -38,13 +36,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_56").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(30f * alphaCounter), (int)(15f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.4f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
-
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(30f * alphaCounter), (int)(15f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(171, 51), 0.6f * (alphaCounter + 0.6f), SpriteEffects.None, 0f);
             return true;
         }
-
     }
 }

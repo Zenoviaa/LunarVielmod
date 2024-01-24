@@ -68,8 +68,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             Acrossfinish,
         }
 
+        private ActionState _state = ActionState.Fallslowly;
         // Current state
-        public ActionState State = ActionState.Fallslowly;
+        public ActionState State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                if(StellaMultiplayer.IsHost)
+                    NPC.netUpdate = true;
+            }
+        }
+
         // Current frame
         public int frameCounter;
         // Current frame's progress
@@ -94,20 +108,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
-
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new int[] {
-                    BuffID.Poisoned,
 
-                    BuffID.Confused // Most NPCs have this
-				}
-            };
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 
             // Influences how the NPC looks in the Bestiary
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
@@ -163,27 +168,21 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(attackCounter);
-            writer.Write(timeBetweenAttacks);
-            writer.WriteVector2(dashDirection);
-            writer.Write(dashDistance);
-
+            writer.Write((float)_state);
+            writer.Write(timer);
+            writer.Write(frameCounter);
+            writer.Write(frameTick);
         }
+
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            attackCounter = reader.ReadInt32();
-            timeBetweenAttacks = reader.ReadInt32();
-
-
-            dashDirection = reader.ReadVector2();
-            dashDistance = reader.ReadSingle();
-
+            _state = (ActionState)reader.ReadSingle();
+            timer = reader.ReadSingle();
+            frameCounter = reader.ReadInt32();
+            frameTick = reader.ReadInt32();
         }
 
-        private int attackCounter;
-        private int timeBetweenAttacks = 120;
         private Vector2 dashDirection = Vector2.Zero;
-        private float dashDistance = 0f;
         public override void HitEffect(NPC.HitInfo hit)
         {
             for (int k = 0; k < 20; k++)
@@ -192,92 +191,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Player player = Main.player[NPC.target];
-
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-            Vector2 position = NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY);
-            originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(0, -20);
-
-            ///Animation Stuff for Verlia
-            /// 1 - 2 Summon Start
-            /// 3 - 7 Summon Idle / Idle
-            /// 8 - 11 Summon down
-            /// 12 - 19 Hold UP
-            /// 20 - 30 Sword UP
-            /// 31 - 35 Sword Slash Simple
-            /// 36 - 45 Hold Sword
-            /// 46 - 67 Barrage 
-            /// 68 - 75 Explode
-            /// 76 - 80 Appear
-            /// 133 width
-            /// 92 height
-
-
-            ///Animation Stuff for Veribloom
-            /// 1 = Idle
-            /// 2 = Blank
-            /// 2 - 8 Appear Pulse
-            /// 9 - 19 Pulse Buff Att
-            /// 20 - 26 Disappear Pulse
-            /// 27 - 33 Appear Winding
-            /// 34 - 38 Wind Up
-            /// 39 - 45 Dash
-            /// 46 - 52 Slam Appear
-            /// 53 - 58 Slam
-            /// 59 - 64 Spin
-            /// 80 width
-            /// 89 height
-            /// 
-
-            /// 1 = Idle
-            /// 1 - 4 Jump Startup
-            /// 5 - 8 Jump
-            /// 9 - 12 land
-            /// 13 - 29 Doublestart
-            /// 30 - 42 Tiptoe
-
-
-
-
-
-
-            return true;
-        }
-
         //Custom function so that I don't have to copy and paste the same thing in FindFrame
 
         //private float HomeY = 330f;
         private int bee = 220;
-        private Vector2 originalHitbox;
         //private int Timer2 = 0;
         public override void AI()
         {
 
             bee--;
-            //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
-
-
-            NPC.HasBuff<Rekin>();
             for (int k = 0; k < Main.maxNPCs; k++)
             {
                 NPC ba = Main.npc[k];
                 // Check if NPC able to be targeted. It means that NPC is
                 if (!ba.active && ba.type == ModContent.NPCType<Rek>())
                 {
-
-
-
-                    #region Active check
-                    // This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-
-                    #endregion
-
                     NPC.Kill();
-
-
                 }
             }
 
@@ -290,17 +219,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             Vector3 RGB = new(2.30f, 0.21f, 0.72f);
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 
-
             Player player = Main.player[NPC.target];
-
             NPC.TargetClosest();
-
-            if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-            {
-                NPC.TargetClosest();
-            }
-
-
 
             if (player.dead)
             {
@@ -426,38 +346,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                     Acrossfinish();
                     NPC.aiStyle = -1;
                     break;
-
-
-
-
-
-
-                    //case ActionState.HandsoutVoid:
-                    /*	NPC.damage = 0;
-                        counter++;
-                        NPC.noGravity = true;
-
-                        if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                        {
-                            Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", NPC.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(NPC.Center);
-
-                        }
-
-                        if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
-                        {
-                            float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                            Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
-                        }
-
-                        SummonVoid();
-                        NPC.aiStyle = -1;
-                    break;
-                    */
-
-
-                    ////////////////////////////////////////////////////////////////////////////////////
-                    ///
-
             }
         }
 
@@ -466,51 +354,23 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
         private void Fallslowly()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
             if (timer == 1)
             {
-                float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                var entitySource = NPC.GetSource_FromThis();
-                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-
-
-
-
-
                 NPC.spriteDirection *= -1;
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
+
             if (timer == 3)
             {
                 NPC.velocity = new Vector2(NPC.direction * 2, +15f);
 
             }
 
-
-
-
             if (timer == 40)
             {
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Across;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                State = ActionState.Across;
             }
-
-
         }
 
         private void StopRight()
@@ -523,98 +383,43 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
 
-
-
-
             if (timer == 50)
             {
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Dashright2;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                State = ActionState.Dashright2;
             }
-
-
         }
 
 
         private void StopLeft()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
             if (timer == 1)
             {
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
 
-
-
-
             if (timer == 50)
             {
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Dashleft2;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                State = ActionState.Dashleft2;
             }
-
-
         }
 
 
         private void Acrossfinish()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
             if (timer == 1)
             {
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
 
-
-
-
             if (timer == 50)
             {
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Dashright2;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                State = ActionState.Dashright2;
             }
-
-
         }
 
 
@@ -622,41 +427,23 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
         private void Fallslowly2()
         {
             timer++;
-
             Player player = Main.player[NPC.target];
             if (timer == 1)
             {
-
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
             if (timer == 20)
             {
                 NPC.velocity = new Vector2(NPC.direction * 2, +22f);
-
             }
-
-
 
 
             if (timer == 40)
             {
+                ResetTimers();      
                 NPC.spriteDirection *= -1;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Dashleft;
-                        break;
-
-                }
-                ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                State = ActionState.Dashleft;
             }
-
-
         }
 
 
@@ -667,7 +454,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             Player player = Main.player[NPC.target];
             if (timer == 1)
             {
-
                 // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Veridash1"));
             }
             if (timer == 20)
@@ -676,28 +462,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
             }
 
-
-
-
             if (timer == 40)
             {
-
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                NPC.spriteDirection *= -1;
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Across;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.spriteDirection *= -1;
+                State = ActionState.Across;
             }
-
-
         }
 
 
@@ -705,9 +475,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
         private void Dashright()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
-
             float speed = 25f;
             if (timer == 1)
             {
@@ -722,7 +489,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
                 Vector2 angle = new Vector2((float)anglex, (float)angley);
                 dashDirection = ((angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
+                float dashDistance = dashDirection.Length();
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = -dashDirection;
@@ -730,37 +497,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 ShakeModSystem.Shake = 3;
             }
 
-
-
-
             if (timer == 40)
             {
-                NPC.damage = 0;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.StopRight;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.damage = 0;
+                State = ActionState.StopRight;
             }
-
-
         }
 
 
         private void Dashright2()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
-
             float speed = 25f;
             if (timer == 1)
             {
@@ -775,7 +523,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
                 Vector2 angle = new Vector2((float)anglex, (float)angley);
                 dashDirection = ((angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
+                float dashDistance = dashDirection.Length();
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = -dashDirection;
@@ -783,48 +531,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 ShakeModSystem.Shake = 3;
             }
 
-
-
-
             if (timer == 40)
             {
-                NPC.damage = 0;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Fallslowly2;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.damage = 0;
+                State = ActionState.Fallslowly2;
             }
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
         private void Dashleft()
         {
             timer++;
-
-            Player player = Main.player[NPC.target];
-
             float speed = 25f;
             if (timer == 1)
             {
@@ -839,7 +557,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
                 Vector2 angle = new Vector2((float)anglex, (float)angley);
                 dashDirection = ((angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
+                float dashDistance = dashDirection.Length();
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
@@ -847,30 +565,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 ShakeModSystem.Shake = 3;
             }
 
-
-
-
             if (timer == 40)
             {
-                NPC.damage = 0;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.StopLeft;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.damage = 0;
+                State = ActionState.StopLeft;
             }
-
-
         }
-
 
 
         private void Dashleft2()
@@ -893,7 +594,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
                 Vector2 angle = new Vector2((float)anglex, (float)angley);
                 dashDirection = ((angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
+                float dashDistance = dashDirection.Length();
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
@@ -901,28 +602,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 ShakeModSystem.Shake = 3;
             }
 
-
-
-
             if (timer == 40)
             {
-                NPC.damage = 0;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Riseslowly;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.damage = 0;
+                State = ActionState.Riseslowly;
             }
-
-
         }
 
 
@@ -946,45 +631,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 NPC.velocity.X += 0.3f;
             }
 
-
-
-
             if (timer == 120)
             {
-                NPC.damage = 0;
-                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-
-                switch (Main.rand.Next(1))
-                {
-                    case 0:
-                        State = ActionState.Acrossfinish;
-                        break;
-
-                }
                 ResetTimers();
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-
+                NPC.damage = 0;
+                State = ActionState.Acrossfinish;
             }
-
-
         }
-
-
-
-
-
-
-
 
         public void ResetTimers()
         {
             timer = 0;
             frameCounter = 0;
             frameTick = 0;
-           //Timer2 = 0;
         }
-
 
         public override void OnKill()
         {
@@ -993,8 +653,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
-
         }
-
     }
 }

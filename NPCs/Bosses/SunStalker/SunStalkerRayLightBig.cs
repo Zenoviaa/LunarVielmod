@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,10 +13,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         public bool Down;
         public float Rot;
         public bool Lightning;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Sun Stalker Lighting");
-        }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
@@ -52,13 +49,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.defense = 8;
             NPC.lifeMax = 156;
             NPC.value = 30f;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
         }
+
         float alphaCounter = 0;
         float counter = 8;
 
@@ -69,24 +65,36 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             Main.spriteBatch.Draw(texture2D4, (NPC.Center - Main.screenPosition), null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(45f * alphaCounter), 0), NPC.rotation, new Vector2(171 / 2, 51 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Down);
+            writer.Write(Rot);
+            writer.Write(Lightning);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Down = reader.ReadBoolean();
+            Rot = reader.ReadSingle();
+            Lightning = reader.ReadBoolean();
+        }
+
         public override void AI()
         {
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
-                dust.velocity *= -1f;
-                dust.scale *= .8f;
-                dust.noGravity = true;
+            Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
+            dust.velocity *= -1f;
+            dust.scale *= .8f;
+            dust.noGravity = true;
 
-                Vector2 vector2_1 = new Vector2(Main.rand.Next(-180, 181), Main.rand.Next(-180, 181));
-                vector2_1.Normalize();
-                Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 200) * 0.04f);
-                dust.velocity = vector2_2;
-                vector2_2.Normalize();
-                Vector2 vector2_3 = vector2_2 * 34f;
-                dust.position = NPC.Center - vector2_3;
-                NPC.netUpdate = true;
-            }
+            Vector2 vector2_1 = new Vector2(Main.rand.Next(-180, 181), Main.rand.Next(-180, 181));
+            vector2_1.Normalize();
+            Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 200) * 0.04f);
+            dust.velocity = vector2_2;
+            vector2_2.Normalize();
+            Vector2 vector2_3 = vector2_2 * 34f;
+            dust.position = NPC.Center - vector2_3;
+
             counter -= 0.05f;
             if (!Down)
             { 
@@ -94,7 +102,6 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 if(alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
@@ -102,16 +109,19 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 if (alphaCounter <= 0)
                 {
                     NPC.active = false;
-
                 }
                 alphaCounter -= 0.14f;
             }
 
             if (!Lightning)
             {
-                Rot = Main.rand.NextFloat(-0.05f, 0.05f);
-                Lightning = true;
-                NPC.rotation = Main.rand.NextFloat(360);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Rot = Main.rand.NextFloat(-0.05f, 0.05f);
+                    Lightning = true;
+                    NPC.rotation = Main.rand.NextFloat(360);
+                    NPC.netUpdate = true;
+                }
             }
             NPC.rotation -= Rot;
         }

@@ -14,7 +14,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     public class DreadFireCircle : ModNPC
     {
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Dread Fire");
@@ -22,14 +21,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPCID.Sets.TrailCacheLength[NPC.type] = 5;
             Main.npcFrameCount[NPC.type] = 4;
         }
+
         float Size = 0;
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 0.5f;
-
             if (NPC.frameCounter >= 5)
             {
                 frame++;
@@ -40,7 +37,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 frame = 0;
             }
             NPC.frame.Y = frameHeight * frame;
-
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {

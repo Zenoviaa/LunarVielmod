@@ -1,6 +1,8 @@
 ﻿using Stellamod.Buffs;
 using Stellamod.Helpers;
+using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -38,6 +40,31 @@ namespace Stellamod.WorldG
             }
         }
 
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.Write(Gintzing);
+            writer.Write(TryForGintze);
+            writer.Write(GintzeDayReset);
+            writer.Write(GintzeKills);
+            writer.Write(GintzingBoss);
+            writer.Write(AuroreanSpawn);
+            writer.Write(Aurorean);
+            writer.Write(HasHadBloodMoon);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            Gintzing = reader.ReadBoolean();
+            TryForGintze = reader.ReadBoolean();
+            GintzeDayReset = reader.ReadBoolean();
+            GintzeKills = reader.ReadInt32();
+            GintzingBoss = reader.ReadBoolean();
+            AuroreanSpawn = reader.ReadBoolean();
+            Aurorean = reader.ReadBoolean();
+            HasHadBloodMoon = reader.ReadBoolean();
+        }
+
         private void TrySpawnGintzeArmy()
         {
             Player player = Main.LocalPlayer;
@@ -52,6 +79,7 @@ namespace Stellamod.WorldG
                         GintzingBoss = true;
                         Gintzing = false;
                         GintzeKills = 0;
+                        NetMessage.SendData(MessageID.WorldData);
                     }
 
                 }
@@ -62,6 +90,7 @@ namespace Stellamod.WorldG
                         GintzingBoss = true;
                         Gintzing = false;
                         GintzeKills = 0;
+                        NetMessage.SendData(MessageID.WorldData);
                     }
                 }
                 else
@@ -71,16 +100,18 @@ namespace Stellamod.WorldG
                         GintzingBoss = true;
                         Gintzing = false;
                         GintzeKills = 0;
+                        NetMessage.SendData(MessageID.WorldData);
                     }
                 }
 
                 player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
             }
 
-            if (!Main.dayTime)
+            if (!Main.dayTime && TryForGintze)
             {
                 TryForGintze = false;
                 GintzeDayReset = false;
+                NetMessage.SendData(MessageID.WorldData);
             }
 
             if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && DownedBossSystem.downedStoneGolemBoss && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
@@ -88,6 +119,7 @@ namespace Stellamod.WorldG
                 Gintzing = true;
                 Main.NewText("The Gintze army is approaching...", 34, 121, 100);
                 TryForGintze = true;
+                NetMessage.SendData(MessageID.WorldData);
             }
 
 
@@ -99,6 +131,7 @@ namespace Stellamod.WorldG
                     Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
                 }
                 TryForGintze = true;
+                NetMessage.SendData(MessageID.WorldData);
             }
         }
 
@@ -116,15 +149,18 @@ namespace Stellamod.WorldG
                     Aurorean = true;
                     Main.NewText("Aurorean Stars are falling!", 234, 96, 114);
                 }
+                NetMessage.SendData(MessageID.WorldData);
             }
             else if (Main.dayTime && Aurorean)
             {
                 Aurorean = false;
                 Main.NewText("The Aurorean starfall has ended", 234, 96, 114);
+                NetMessage.SendData(MessageID.WorldData);
             }
-            else if (Main.dayTime)
+            else if (Main.dayTime && AuroreanSpawn)
             {
                 AuroreanSpawn = false;
+                NetMessage.SendData(MessageID.WorldData);
             }
         }
 
@@ -135,19 +171,17 @@ namespace Stellamod.WorldG
                 HasHadBloodMoon = true;
                 Main.NewText("The Moon has turned red for tonight!", 234, 16, 50);
                 Main.bloodMoon = true;
+                NetMessage.SendData(MessageID.WorldData);
             }
         }
 
         public override void PostUpdateWorld()
         {
-            Player player = Main.LocalPlayer;
-            if (!player.active)
-                return;
-
             TrySpawnGintzeArmy();
             TrySpawnAuroreanStarfall();
             TryForceBloodmoon();
         }
+
 
         public override void ClearWorld()
         {

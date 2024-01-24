@@ -88,7 +88,6 @@ namespace Stellamod
 
 		private void DoDaedusIntegration()
         {
-
 			string internalName2 = "DaedustheForgotten";
 
 			// The NPC type of the boss

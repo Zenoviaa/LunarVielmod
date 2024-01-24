@@ -30,11 +30,16 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.friendly = false;
             Projectile.hostile = true;
         }
+        
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextBool(2))
-                target.AddBuff(BuffID.OnFire, 180);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                if (Main.rand.NextBool(2))
+                    target.AddBuff(BuffID.OnFire, 180);
+            }
         }
+
         float offsetRandom;
         public override void AI()
         {
@@ -52,29 +57,35 @@ namespace Stellamod.NPCs.Bosses.Jack
                 if (Projectile.ai[0] == 70)
                 {
                     offsetRandom = Main.rand.Next(0, 50);
-
                     for (int i = 0; i < 20; i++)
                     {
-                        Dust.NewDustPerfect(base.Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
+                        Dust.NewDustPerfect(Projectile.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
                     }
+
                     float spread = 45f * 0.0174f;
                     double startAngle = Math.Atan2(1, 0) - spread / 2;
                     double deltaAngle = spread / 8f;
                     double offsetAngle;
                     for (int i = 0; i < 4; i++)
                     {
-                        offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<JackWarning2>(), 16, 0, Main.myPlayer);
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f), ModContent.ProjectileType<JackWarning2>(), 16, 0, Main.myPlayer);
-
+                        if(Main.myPlayer == Projectile.owner)
+                        {
+                            offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
+                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
+                                ModContent.ProjectileType<JackWarning2>(), 16, 0, Projectile.owner);
+                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f),
+                                ModContent.ProjectileType<JackWarning2>(), 16, 0, Projectile.owner);
+                        }
                     }
                 }
+
                 if (Projectile.ai[0] <= 60)
                 {
-                    if (Projectile.ai[0] % 5 == 0)
+                    if (Projectile.ai[0] % 5 == 0  && Main.myPlayer == Projectile.owner)
                     {
                         Projectile.velocity.Y = Main.rand.NextFloat(-ShakeVelY, ShakeVelY);
                         Projectile.velocity.X = Main.rand.NextFloat(-ShakeVel, ShakeVel);
+                        Projectile.netUpdate = true;
                     }
                     Projectile.velocity *= 0.98f;
                 }
@@ -97,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                 Projectile.Kill();
             }
             Player player;
-            if ((player = VectorHelper.GetNearestPlayerDirect(base.Projectile.position, Alive: true)) != null)
+            if ((player = VectorHelper.GetNearestPlayerDirect(Projectile.position, Alive: true)) != null)
             {
                 if (Projectile.position.Y + 5 <= player.position.Y)
                 {

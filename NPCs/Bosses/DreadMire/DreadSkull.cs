@@ -27,14 +27,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
-            base.Projectile.frame = (((int)base.Projectile.ai[0] % 4 > 2) ? 1 : 0);
-            base.Projectile.velocity = base.Projectile.velocity.RotatedBy(Math.Sin(base.Projectile.ai[0] * 0.45f) * 0.02500000037252903);
-            base.Projectile.rotation = base.Projectile.velocity.ToRotation();
-            base.Projectile.ai[0] += 0.55f;
+            Projectile.frame = (((int)base.Projectile.ai[0] % 4 > 2) ? 1 : 0);
+            Projectile.velocity = base.Projectile.velocity.RotatedBy(Math.Sin(base.Projectile.ai[0] * 0.45f) * 0.02500000037252903);
+            Projectile.rotation = base.Projectile.velocity.ToRotation();
+            Projectile.ai[0] += 0.55f;
             Dust.NewDustPerfect(base.Projectile.Center, 114, Vector2.Zero, 0, Color.White).noGravity = true;
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
@@ -54,10 +56,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (Main.rand.NextBool(5))
@@ -89,9 +93,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
-
 }
 

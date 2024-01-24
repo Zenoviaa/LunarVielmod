@@ -78,8 +78,20 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		}
 
 		// Current state
-
-		public ActionState State = ActionState.StartFen;
+		private ActionState _state = ActionState.StartFen;
+		public ActionState State
+		{
+			get
+			{
+				return _state;
+			}
+			set
+			{
+				_state = value;
+				if (StellaMultiplayer.IsHost)
+					NPC.netUpdate = true;
+			}
+		}
 		// Current frame
 		public int frameCounter;
 		// Current frame's progress
@@ -193,6 +205,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			writer.Write((float)State);
 			writer.Write(Spawner);
 			writer.Write(timer);
+            writer.Write(frameCounter);
+            writer.Write(frameTick);
+            writer.Write(counter);
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
@@ -202,6 +217,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			State = (ActionState)reader.ReadSingle();
 			Spawner = reader.ReadSingle();
 			timer = reader.ReadSingle();
+            frameCounter = reader.ReadInt32();
+            frameTick = reader.ReadInt32();
+            counter = reader.ReadInt32();
         }
 
 		Vector2 dashDirection = Vector2.Zero;
@@ -706,7 +724,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                 {
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + 80, NPC.Center.Y - 40, 0, speedYa * 0, 
-					ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+					ModContent.ProjectileType<SpawnFen>(), 0, 0f, Owner: Main.myPlayer);
                 }
 			}
 
@@ -729,8 +747,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 3)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.Startset;
                 ResetTimers();
+                State = ActionState.Startset;
+           
             }
 		}
 
@@ -760,8 +779,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 90)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.ReadySwordsDance;
                 ResetTimers();
+                State = ActionState.ReadySwordsDance;
+               
             }
 		}
 
@@ -802,8 +822,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			if (timer > 53)
 			{
-                State = ActionState.SwordsDanceFen2;
                 ResetTimers();
+                State = ActionState.SwordsDanceFen2;   
             }
 		}
 
@@ -826,7 +846,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<AlcShot>(), 50, 0f, Main.myPlayer, 0f, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, 
+						ModContent.ProjectileType<AlcShot>(), 50, 0f, Main.myPlayer, 0f, 0);
 				}
 			}
 
@@ -843,8 +864,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 53)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.SwordsDanceFen3;
                 ResetTimers();
+                State = ActionState.SwordsDanceFen3;
+               
             }
 		}
 
@@ -874,9 +896,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 24)
-			{
-                State = ActionState.IdleFloating;
+            {
                 ResetTimers();
+                State = ActionState.IdleFloating;
             }
 		}
 
@@ -891,8 +913,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 24)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.SwordSlashPhase2;
                 ResetTimers();
+                State = ActionState.SwordSlashPhase2;
             }
 		}
 
@@ -905,9 +927,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 24)
-			{
-                State = ActionState.LaughingCircle;
+            {
                 ResetTimers();
+                State = ActionState.LaughingCircle;
             }
 		}
 
@@ -920,9 +942,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 24)
-			{
-                State = ActionState.IdleFen;
+            {
                 ResetTimers();
+                State = ActionState.IdleFen;
             }
 		}
 
@@ -945,8 +967,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 			if (timer > 35)
-			{
-				if (StellaMultiplayer.IsHost)
+            {
+                ResetTimers();
+                if (StellaMultiplayer.IsHost)
 				{
 					switch (Main.rand.Next(2))
 					{
@@ -960,7 +983,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 					}
                 }
-                ResetTimers();
+       
             }
 		}
 
@@ -977,9 +1000,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 35)
-			{
-                State = ActionState.SwordSlash1st;
+            {
                 ResetTimers();
+                State = ActionState.SwordSlash1st;       
             }
 		}
 
@@ -1024,8 +1047,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			if (timer > 64)
 			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (StellaMultiplayer.IsHost)
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                ResetTimers();
+                if (StellaMultiplayer.IsHost)
 				{
                     switch (Main.rand.Next(2))
                     {
@@ -1040,7 +1064,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                     }
                 }
 
-                ResetTimers();
+
             }
 		}
 
@@ -1088,9 +1112,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 			if (timer > 64)
-			{
-                State = ActionState.SwordSlash1st;
+            {
                 ResetTimers();
+                State = ActionState.SwordSlash1st;
             }
 		}
 
@@ -1213,7 +1237,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				if (NPC.life > NPC.lifeMax / 2)
-				{
+                {
+                    ResetTimers();
                     if (StellaMultiplayer.IsHost)
                     {
 						switch (Main.rand.Next(5))
@@ -1237,8 +1262,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 								break;
 						}
                     }
-
-                    ResetTimers();
                 }
 
 				if (NPC.life < NPC.lifeMax / 2)
@@ -1248,15 +1271,15 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						if (StellaMultiplayer.IsHost)
 						{
                             float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, Owner: Main.myPlayer);
                         }
 
                         Wingies = true;
 						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
 					}
 
-                    State = ActionState.SwordsSwirlPhase2;
                     ResetTimers();
+                    State = ActionState.SwordsSwirlPhase2;
                 }
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 
@@ -1299,8 +1322,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 150)
-			{
-				if (StellaMultiplayer.IsHost)
+            {
+                ResetTimers();
+                if (StellaMultiplayer.IsHost)
 				{
 					switch (Main.rand.Next(3))
 					{
@@ -1317,7 +1341,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 							break;
 					}
                 }
-                ResetTimers();
             }
 		}
 
@@ -1396,9 +1419,10 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FenixWarn>());
 			if (timer > 360)
-			{
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-				if (StellaMultiplayer.IsHost)
+            {
+                ResetTimers();
+                // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+                if (StellaMultiplayer.IsHost)
 				{
 					switch (Main.rand.Next(4))
 					{
@@ -1420,7 +1444,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					}
                 }
 
-                ResetTimers();
+         
             }
 		}
 
@@ -1436,8 +1460,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 35)
-			{
-				if (StellaMultiplayer.IsHost)
+            {
+                ResetTimers();
+                if (StellaMultiplayer.IsHost)
                 {
                     switch (Main.rand.Next(1))
                     {
@@ -1446,8 +1471,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
                             break;
                     }
                 }
-
-                ResetTimers();
             }
 		}
 
@@ -1479,9 +1502,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 35)
-			{
-                State = ActionState.Backdown;
+            {
                 ResetTimers();
+                State = ActionState.Backdown;
             }
 		}
 
@@ -1502,7 +1525,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					if (StellaMultiplayer.IsHost)
 					{
 						float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, Owner: Main.myPlayer);
 					}
 					Wingies = true;
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
@@ -1530,8 +1553,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 65)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.OutSD3;
                 ResetTimers();
+                State = ActionState.OutSD3;
                 // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
             }
 
@@ -1622,9 +1645,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 
 				if (timer > 620)
-				{
-                    State = ActionState.ReadySwordsDance;
+                {
                     ResetTimers();
+                    State = ActionState.ReadySwordsDance;
                 }
 			}
 		}
@@ -1649,8 +1672,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			if (timer > 35)
 			{
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
-                State = ActionState.Backdown;
                 ResetTimers();
+                State = ActionState.Backdown;
             }
 		}
 
@@ -1684,9 +1707,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 			if (timer > 35)
-			{
-                State = ActionState.Backdown;
+            {
                 ResetTimers();
+                State = ActionState.Backdown;
             }
 		}
 
@@ -1975,9 +1998,9 @@ namespace Stellamod.NPCs.Bosses.Fenix
             }
 
 			if (timer == 90)
-			{
-                State = ActionState.Pause2;
+            {
                 ResetTimers();
+                State = ActionState.Pause2;
             }
 		}
 
@@ -2449,21 +2472,20 @@ namespace Stellamod.NPCs.Bosses.Fenix
 						if (StellaMultiplayer.IsHost)
 						{
                             float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, 0, 0f, 0f);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 40, 0, speedYa * 0, ModContent.ProjectileType<SpawnFen>(), 0, 0f, Owner: Main.myPlayer);
                         }
 
 						Wingies = true;
 						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixLaugh"), NPC.position);
-					}		
+					}
 
-                    State = ActionState.OutSD2;
                     ResetTimers();
+                    State = ActionState.OutSD2;
 				}
 				else
 				{
-
-                    State = ActionState.OutSD;
                     ResetTimers();
+                    State = ActionState.OutSD;
                 }
             }
 		}

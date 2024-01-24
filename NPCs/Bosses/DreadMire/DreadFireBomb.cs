@@ -27,20 +27,15 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.noTileCollide = true;
             NPC.damage = 25;
             NPC.alpha = 0;
-            NPC.buffImmune[BuffID.Confused] = true;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.dontCountMe = true;
             NPC.dontTakeDamage = true;
             NPC.lifeMax = 2700;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 3f;
-
             if (NPC.frameCounter >= 8)
             {
                 frame++;
@@ -52,19 +47,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 frame = 0;
             }
             NPC.frame.Y = frameHeight * frame;
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + 4, NPC.height - NPC.frame.Height + 8);

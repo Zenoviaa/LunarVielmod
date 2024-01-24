@@ -21,7 +21,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         }
         public override void SetDefaults()
         {
-
             Projectile.penetrate = 4;
             Projectile.width = 40;
             Projectile.height = 40;
@@ -32,6 +31,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -51,7 +51,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             }
    
-
             Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
         }

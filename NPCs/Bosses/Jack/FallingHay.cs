@@ -23,6 +23,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             Projectile.friendly = false;
             Projectile.hostile = true;
         }
+
         public override bool PreAI()
         {
             Projectile.velocity.Y *= 0.98f;
@@ -52,33 +53,34 @@ namespace Stellamod.NPCs.Bosses.Jack
             }
             return true;
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            {
-                Projectile.Kill();
-
-            }
+            Projectile.Kill();
             for (int i = 0; i < 30; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
             }
+
             for (int i = 0; i < 15; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Hay, 0f, -2f, 0, default(Color), .8f);
-                int dust1 = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Hay, 0f, -2f, 0, default(Color), .8f);
+                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Hay, 0f, -2f, 0, default(Color), .8f);
+                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Hay, 0f, -2f, 0, default(Color), .8f);
             }
+
             return false;
         }
+
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
         {
             width = (height = 8);
             fallThrough = base.Projectile.position.Y <= base.Projectile.ai[1];
             return true;
         }
+        
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Grass, Projectile.position);
         }
-
     }
 }

@@ -152,9 +152,9 @@ namespace Stellamod.NPCs.Bosses.Jack
                     {
                         Dust.NewDustPerfect(base.NPC.Center, DustID.Grass, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
                     }
+
                     for (int j = 0; j < 26; j++)
                     {
-
                         int a = Gore.NewGore(EntitySource, new Vector2(NPC.Center.X + Main.rand.Next(-10, 10), NPC.Center.Y + Main.rand.Next(-10, 10)), NPC.velocity, 911);
                         Main.gore[a].timeLeft = 20;
                         Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
@@ -166,12 +166,14 @@ namespace Stellamod.NPCs.Bosses.Jack
 
                     int Gore2 = ModContent.Find<ModGore>("Stellamod/Jack1").Type;
                     Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
-                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<JackSpawnEffect>(), 50, 0f, -1, 0, NPC.whoAmI);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<JackSpawnEffect>(), 50, 0f, -1, 0, NPC.whoAmI);
+                    }
+
                     NPC.active = false;
                 }
             }
-
-
         }
     }
 }

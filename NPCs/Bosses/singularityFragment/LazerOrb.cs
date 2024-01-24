@@ -37,34 +37,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.damage = 15;
-            NPC.buffImmune[BuffID.Confused] = true;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.dontCountMe = false;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.lifeMax = 200;
             NPC.alpha = 255;
         }
+
         public override bool PreAI()
         {
-            //bool expertMode = Main.expertMode;
-            if (Main.rand.NextBool(45))
-            {
-                NPC.netUpdate = false;
-            }
-
             NPC.TargetClosest(true);
-            /*
-            // What is this for?
-            for (int index1 = 0; index1 < 6; ++index1)
-            {
-                float x = (NPC.Center.X - 22);
-                float xnum2 = (NPC.Center.X + 22);
-                float y = (NPC.Center.Y);
-            }
-            */
-
             int parent = (int)NPC.ai[0];
             if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<SingularityFragment>())
             {
@@ -84,8 +66,12 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                     Timer = -179f;
                 }
 
-                Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 250, 0f, -1, 0, NPC.whoAmI);
-                Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 250, 0f, -1, 0, NPC.whoAmI);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 250, 0f, -1, 0, NPC.whoAmI);
+                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 250, 0f, -1, 0, NPC.whoAmI);
+                }
+              
                 Lazer = true;
             }
 

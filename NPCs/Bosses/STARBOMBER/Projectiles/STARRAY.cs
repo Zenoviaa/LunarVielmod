@@ -44,9 +44,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
             // And create bright light.
             Lighting.AddLight(Projectile.Center, Color.DarkBlue.ToVector3() * 1.5f);
-
-
-
             CreateDustAtBeginning();
 
             Time++;

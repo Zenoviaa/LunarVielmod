@@ -107,36 +107,22 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 				// 6. not immortal (e.g. not a target dummy)
 				
 					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+				float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-					// Check if it is within the radius
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestplayer = target;
-					}
-			
+				// Check if it is within the radius
+				if (sqrDistanceToTarget < sqrMaxDetectDistance)
+				{
+					sqrMaxDetectDistance = sqrDistanceToTarget;
+					closestplayer = target;
+				}	
 			}
-
-			
+	
 			return closestplayer;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
 			Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
 			Vector2 frameOrigin = frame.Size() / 2;
 			Vector2 offset = new Vector2(Projectile.width - frameOrigin.X);
@@ -158,19 +144,16 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			for (float i = 0f; i < 1f; i += 0.25f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(220, 70, 255, 80), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(96, 190, 70, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
+
 			return true;
 		}
-
-
 	}
 }

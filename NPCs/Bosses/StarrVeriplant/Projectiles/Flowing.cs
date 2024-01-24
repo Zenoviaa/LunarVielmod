@@ -31,32 +31,16 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			var entitySource = Projectile.GetSource_FromAI();
 			timer++;
 			if (timer == 30)
-            {
-				
+            {		
 				ParticleManager.NewParticle(Projectile.Center, Projectile.velocity * 1, ParticleManager.NewInstance<Strip>(), Color.HotPink, Main.rand.NextFloat(1f, 1f));
 			}
 			if (timer == 60)
 			{
-
-
-
-				
-					int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<Flowerball>());
-					NPC minionNPC = Main.npc[index];
-
-					// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
-					// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
-
-
-
-					// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-					if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
-					{
-						NetMessage.SendData(MessageID.SyncNPC, number: index);
-					}
-
-
-				
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y,
+                        ModContent.NPCType<Flowerball>());
+                }
 			}
 			if (timer == 70)
 			{

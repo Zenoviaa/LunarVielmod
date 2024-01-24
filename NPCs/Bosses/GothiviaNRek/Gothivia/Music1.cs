@@ -62,6 +62,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)

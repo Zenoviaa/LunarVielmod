@@ -48,13 +48,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.noGravity = true;
             NPC.noTileCollide = true;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
-
-
             NPC.frameCounter += 0.5f;
-
             if (NPC.frameCounter >= 4)
             {
                 frame++;
@@ -65,8 +63,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 frame = 0;
             }
             NPC.frame.Y = frameHeight * frame;
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -126,15 +124,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         }
         public override void AI()
         {
-
-
             Player player = Main.player[NPC.target];
             if (Main.dayTime || player.dead)
             {
                 for (int j = 0; j < 10; j++)
                 {
                     var EntitySource = NPC.GetSource_Death();
-
                     int a = Gore.NewGore(EntitySource, NPC.position, NPC.velocity, 99);
                     Main.gore[a].timeLeft = 20;
                     Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
@@ -148,8 +143,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             if (NPC.ai[2] == 1 && !Spawn)
             {
                 Spawn = true;
-                var entitySource = NPC.GetSource_FromThis();
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
+  
+                if (StellaMultiplayer.IsHost)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
+                }    
             }
             if (NPC.alpha > 0)
             {

@@ -59,13 +59,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            // This will always be true, so it's a nothing statement
-            /*
-            if (Main.rand.Next(1) == 0)
-                target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200);
-            */
-
-            //Use ModContent.BuffType<> instead of Mod.Find, it's faster and cleaner
             target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
 

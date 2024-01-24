@@ -102,6 +102,7 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.defense = 42;
 			NPC.lifeMax = 9000;
 			NPC.knockBackResist = 0.5f;
+			NPC.npcSlots = 0;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
 		}

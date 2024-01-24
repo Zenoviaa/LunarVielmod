@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,17 +55,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.defense = 8;
             NPC.lifeMax = 156;
             NPC.value = 30f;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
         }
+
         float alphaCounter = 0;
         float counter = 6;
-
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture2D5 = Request<Texture2D>("Stellamod/Effects/Masks/PentagramP2").Value;
@@ -73,32 +71,41 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Main.spriteBatch.Draw(texture2D5, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(15f * alphaCounter), (int)(25f * alphaCounter), 0), -NPC.rotation, new Vector2(157, 157), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }
+
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Rot);
+            writer.Write(Lightning);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Rot = reader.ReadSingle();
+            Lightning = reader.ReadBoolean();
+        }
+
         public override void AI()
         {
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
-                dust.velocity *= -1f;
-                dust.scale *= .8f;
-                dust.noGravity = true;
+            Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CopperCoin);
+            dust.velocity *= -1f;
+            dust.scale *= .8f;
+            dust.noGravity = true;
 
-                Vector2 vector2_1 = new Vector2(Main.rand.Next(-180, 181), Main.rand.Next(-180, 181));
-                vector2_1.Normalize();
-                Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 200) * 0.04f);
-                dust.velocity = vector2_2;
-                vector2_2.Normalize();
-                Vector2 vector2_3 = vector2_2 * 34f;
-                dust.position = NPC.Center - vector2_3;
-                NPC.netUpdate = true;
-            }
-       
+            Vector2 vector2_1 = new Vector2(Main.rand.Next(-180, 181), Main.rand.Next(-180, 181));
+            vector2_1.Normalize();
+            Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 200) * 0.04f);
+            dust.velocity = vector2_2;
+            vector2_2.Normalize();
+            Vector2 vector2_3 = vector2_2 * 34f;
+            dust.position = NPC.Center - vector2_3;
+
             if (!Down)
             {
                 alphaCounter += 0.09f;
                 if (alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
@@ -113,9 +120,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
             if (!Lightning)
             {
-                Rot = Main.rand.NextFloat(-0.05f, 0.05f);
-                Lightning = true;
-                NPC.rotation = Main.rand.NextFloat(360);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Rot = Main.rand.NextFloat(-0.05f, 0.05f);
+                    Lightning = true;
+                    NPC.rotation = Main.rand.NextFloat(360);
+                    NPC.netUpdate = true;
+                }
             }
             NPC.rotation -= Rot;
         }

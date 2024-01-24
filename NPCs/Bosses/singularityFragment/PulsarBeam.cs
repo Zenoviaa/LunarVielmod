@@ -37,11 +37,6 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            /*
-            if (Main.rand.Next(1) == 0) // This is a nothing statement, since Main.rand.Next is exclusive, it'll always be true
-                target.AddBuff(Mod.Find<ModBuff>("AbyssalFlame").Type, 200); //Use BuffType<> instead, it's faster :P
-            */
-
             target.AddBuff(BuffType<AbyssalFlame>(), 200);
         }
 
@@ -63,42 +58,38 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 Projectile.scale = 1.5f;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
             }
+
             alphaCounter = 1;
-
-
             Projectile.spriteDirection = Projectile.direction;
         }
-        public override void OnKill(int timeLeft)
-        {
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
-        }
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.0f;
             return MathHelper.SmoothStep(baseWidth, 0.35f, completionRatio);
         }
+
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.RoyalBlue, Color.Purple, completionRatio) * 0.7f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LightningTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
             return false;
         }
+
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
@@ -107,11 +98,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
             Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
-
         }
-
     }
-
 }
 
 

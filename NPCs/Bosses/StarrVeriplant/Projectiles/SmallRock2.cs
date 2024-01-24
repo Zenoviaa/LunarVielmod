@@ -29,6 +29,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.hostile = true;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
@@ -37,12 +38,11 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 		public float Timer2;
 		
 		public override void AI()
-		{
-			Timer2++;
+        {
+            Timer++;
+            Timer2++;
 
-			Projectile.rotation -= 0.2f;
-
-			Timer++;
+			Projectile.rotation -= 0.2f;	
             if (Timer < 80)
             {
 				AIType = ProjectileID.TruffleSpore;
@@ -67,8 +67,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
             {
 				maxDetectRadius = 0f;
 			}
-
-			
+	
 			// Trying to find NPC closest to the projectile
 			Player closestplayer = FindClosestNPC(maxDetectRadius);
 			if (closestplayer == null)
@@ -77,13 +76,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			// If found, change the velocity of the projectile and turn it in the direction of the target
 			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity = (closestplayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
-
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
-			
 			behindNPCs.Add(index);
 		}
+
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
 		public Player FindClosestNPC(float maxDetectDistance)
@@ -117,25 +116,12 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			
 			}
 
-			
 			return closestplayer;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
-			Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
 			Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
 			Vector2 frameOrigin = frame.Size() / 2;
 			Vector2 offset = new Vector2(Projectile.width - frameOrigin.X);
@@ -157,19 +143,16 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			for (float i = 0f; i < 1f; i += 0.25f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(220, 70, 255, 80), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(96, 190, 70, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
+
 			return true;
 		}
-
-
 	}
 }

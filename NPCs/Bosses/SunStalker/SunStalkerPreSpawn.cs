@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -35,22 +37,24 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         public override void AI()
         {
             Spawner++;
-            /*
-            Player players = Main.player[NPC.target];
-            if (Spawner == 2)
-            {
-                int distanceY = Main.rand.Next(-250, -250);
-                NPC.position.X = players.Center.X;
-                NPC.position.Y = players.Center.Y + distanceY;
-            }*/
-
             NPC.ai[0]++;
             var entitySource = NPC.GetSource_FromThis();
-            if (NPC.ai[0] == 100 && Main.dayTime )
+            if (NPC.ai[0] == 100 && Main.dayTime)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), NPC.position);
-                int n = NPC.NewNPC(entitySource, (int)(NPC.position.X), (int)(NPC.position.Y), ModContent.NPCType<SunStalker>(), NPC.whoAmI, NPC.whoAmI);
-                Main.npc[n].netUpdate = true;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    NPC.NewNPC(entitySource, (int)(NPC.position.X), (int)(NPC.position.Y),
+                        ModContent.NPCType<SunStalker>(), NPC.whoAmI, NPC.whoAmI);
+                }
+                else
+                {
+                    if (Main.netMode == NetmodeID.SinglePlayer)
+                        return;
+
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, 
+                        ModContent.NPCType<SunStalker>(), (int)(NPC.position.X), (int)(NPC.position.Y));
+                }
             }
             if (NPC.ai[0] == 200 && Main.dayTime)
             {
@@ -58,8 +62,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             }
             if (Main.rand.NextBool(6) && NPC.ai[0] >= 20 && Main.dayTime)
             {
-
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SunStalkerRayLightBig>());
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                        ModContent.NPCType<SunStalkerRayLightBig>());
+                }
             }
             if (Main.rand.NextBool(6) && NPC.ai[0] >= 20 && !Main.dayTime)
             {
@@ -68,8 +75,8 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             if (NPC.ai[0] == 1)
             {
                 Player player = Main.player[NPC.target];
-       
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1024f, 54f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 54f);
+
                 if (Main.dayTime)
                 {
                     player.velocity.X = NPC.direction * 6f;

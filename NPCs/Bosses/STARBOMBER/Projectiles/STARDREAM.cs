@@ -49,26 +49,19 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public override void AI()
 		{
 			Timer2++;
-
 			Timer++;
 			Projectile.velocity *= 0.98f;
 			if (Timer == 2)
 			{
-
 				for (int i = 0; i < 20; i++) 
-				{ 
-		
+				{ 	
 					Vector2 speed2 = Main.rand.NextVector2CircularEdge(2f, 2f);
 					var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed2 * 2, Scale: 2f);
-					;
 					d.noGravity = true;
 				}
 				Timer = 0;
 
 			}
-
-
-
 		}
 
 
@@ -98,9 +91,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				d.noGravity = true;
 			}
 		}
-		// Finding the closest NPC to attack within maxDetectDistance range
-		// If not found then returns null
-
 
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
@@ -112,6 +102,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		{
 			return Color.Lerp(Color.BlueViolet, Color.Transparent, completionRatio) * 0.7f;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			if (Main.rand.NextBool(5))

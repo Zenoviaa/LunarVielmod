@@ -24,13 +24,12 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
 			Projectile.timeLeft = 600;
 			Projectile.tileCollide = true;
 			Projectile.penetrate = -1;
-			Projectile.hostile = true;
-		
+			Projectile.hostile = true;	
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
@@ -123,21 +122,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			return closestplayer;
 		}
 		public override bool PreDraw(ref Color lightColor)
-		{
-			Vector2 center = Projectile.Center + new Vector2(0f, Projectile.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(Projectile.width * 0.6f, Projectile.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+		{ 
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
 			Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
 			Vector2 frameOrigin = frame.Size() / 2;
 			Vector2 offset = new Vector2(Projectile.width - frameOrigin.X);
@@ -159,36 +145,29 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			for (float i = 0f; i < 1f; i += 0.25f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(96, 70, 255, 50), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(96, 190, 70, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
+
 			return true;
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX , Projectile.position.Y + speedY , speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, 0, 0f, 0, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
+        public override void OnKill(int timeLeft)
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0,
+                    ProjectileID.DD2OgreSmash, 0, 0f, Owner: Main.myPlayer);
+            }
 
-			Projectile.Kill();
-		}
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ProjectileID.DD2OgreSmash, 0, 0f, 0, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
-			Projectile.Kill();
-			return false;
-		}
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Verifall"));
+        }
 	}
 }
