@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.alpha = 255;
             NPC.width = 30;
             NPC.height = 75;
-            NPC.damage = 10;
+            NPC.damage = 15;
             NPC.defense = 6;         
             NPC.lifeMax = 1100;
             NPC.HitSound = SoundID.NPCHit16;
@@ -366,7 +366,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     {
                                         float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                         float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                        int damage = Main.expertMode ? 4 : 6;
+                                        int damage = Main.expertMode ? 10 : 13;
                                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
                                             ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
                                     }
@@ -384,7 +384,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     {
                                         float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                         float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                        int damage = Main.expertMode ? 4 : 6;
+                                        int damage = Main.expertMode ? 9 : 15;
                                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
                                             ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
                                     }
@@ -433,7 +433,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         NukePos.X = NPC.Center.X + OffSet;
                                         NukePos.Y = NPC.Center.Y;
                                         Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
-                                            Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0, Owner: Main.myPlayer);
+                                            Mod.Find<ModProjectile>("JackSpawnEffect").Type, 0, 0, Owner: Main.myPlayer);
                                         Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
                                             Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 3, 0, Owner: Main.myPlayer);
                                     }
@@ -489,7 +489,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         NukePos.Y = NPC.Center.Y;
 
                                         Projectile.NewProjectile(entitySource, NukePos, new Vector2(OffSet / 10, 6),
-                                            Mod.Find<ModProjectile>("FallingHay").Type, NPC.damage / 9, 0, Owner: Main.myPlayer);
+                                            Mod.Find<ModProjectile>("FallingHay").Type, 12, 0, Owner: Main.myPlayer);
                                     }
                                 }
                             }
@@ -579,7 +579,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 {
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                    int damage = Main.expertMode ? 4 : 6;
+                                    int damage = Main.expertMode ? 8 : 11;
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 8, 
                                         ModContent.ProjectileType<JackoBall>(), damage, 1, Owner: Main.myPlayer);
                                 }

@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             NPC.width = 100;
             NPC.height = 116;
-            NPC.damage = 38;
+            NPC.damage = 52;
             NPC.defense = 14;
             NPC.lifeMax = 1600;
             NPC.HitSound = SoundID.NPCHit28;
@@ -292,7 +292,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 Vector2 RockPos;
                                 RockPos.Y = NPC.Center.Y;
                                 RockPos.X = Main.rand.NextFloat(player.Center.X + 600, player.Center.X - 600 + 1);
-                                int damage = Main.expertMode ? 8 : 12;
+                                int damage = Main.expertMode ? 16 : 20;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero, 
                                     ModContent.ProjectileType<SunRock>(), damage, 0, Owner: Main.myPlayer);
                             }
@@ -376,7 +376,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 {
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                    int damage = Main.expertMode ? 8 : 12;
+                                    int damage = Main.expertMode ? 16 : 22;
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY,
                                        ModContent.ProjectileType<SunFeather>(), damage, 1, Owner: Main.myPlayer);
                                 }              
@@ -611,7 +611,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                                 Vector2 RockPos;
                                 RockPos.Y = Main.rand.NextFloat(player.Center.Y + 300, player.Center.Y - 300 + 1);
                                 RockPos.X = Main.rand.NextFloat(player.Center.X + 300, player.Center.X - 300 + 1);
-                                int damage = Main.expertMode ? 8 : 12;
+                                int damage = Main.expertMode ? 15 : 19;
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), RockPos, Vector2.Zero,
                                     ModContent.ProjectileType<SunBomb>(), damage, 0, Owner: Main.myPlayer);
                             }
