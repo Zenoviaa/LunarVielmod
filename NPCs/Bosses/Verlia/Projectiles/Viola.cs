@@ -48,26 +48,26 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.knockBackResist = 0f;
 			NPC.damage = 1; // The amount of damage that this NPC deals
 			NPC.defense = 0; // The amount of defense that this NPC has
-		
-
 		}
 		
 		// Our AI here makes our NPC sit waiting for a player to enter range, jumps to attack, flutter mid-fall to stay afloat a little longer, then falls to the ground. Note that animation should happen in FindFrame
 		public override void AI()
 		{
 			NPC.velocity *= 0.9f;
-
-
-			float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-			float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-			Player player = Main.player[NPC.target];
-
 			timer2++;
 
 			if (timer2 == 8)
 			{
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<Notia>(), 10, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<Notia>(), 10, 0f, 0, 0f, 0f);
+				if (StellaMultiplayer.IsHost)
+                {
+                    float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                    float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY - 2 * 2, 
+						ModContent.ProjectileType<Notia>(), 10, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y + speedY, speedX * 0, speedY + 2 * 2, 
+						ModContent.ProjectileType<Notia>(), 10, 0f, Owner: Main.myPlayer);
+                }
+				
 				timer2 = 0;
 			}
 
@@ -84,20 +84,10 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			Vector3 RGB = new(2.55f, 0.45f, 0.94f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-
-
-
-
 		}
 		
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)

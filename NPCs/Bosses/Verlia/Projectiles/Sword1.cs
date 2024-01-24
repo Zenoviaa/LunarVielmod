@@ -55,59 +55,27 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		public override void AI()
 		{
 			NPC.velocity *= 1.01f;
-
-
-			float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-			float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-			Player player = Main.player[NPC.target];
-
 			timer2++;
-
-			
-
-
 			timer++;
 
 			if (timer > 10)
             {
-
 				NPC.aiStyle = 56;
-
             }
+
 			if (timer == 450)
 			{
 				NPC.SimpleStrikeNPC(9999, 1, crit: false, NPC.knockBackResist);
 			}
 
-
-
-
 			Vector3 RGB = new(2.55f, 0.45f, 0.94f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
-
-
-
-
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-			// Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
-
-
-
-
-
-
 			Vector2 frameOrigin = NPC.frame.Size();
 			Vector2 offset = new Vector2(NPC.width - frameOrigin.X, NPC.height - NPC.frame.Height);
 			Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
@@ -150,9 +118,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 		{
-
 			NPC.SimpleStrikeNPC(9999, 1, crit: false, NPC.knockBackResist);
-
 		}
 	}
 }

@@ -56,20 +56,22 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			
 				for (int j = 0; j < 35; j++)
 				{
-
-					Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(150, 150), speed2 * 9 + Projectile.velocity, ModContent.ProjectileType<MoonOut>(), Projectile.damage, 0f, 0, 0f, 0f);
+					if(Main.myPlayer == Projectile.owner)
+					{
+                        Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + new Vector2(150, 150), speed2 * 9 + Projectile.velocity,
+							ModContent.ProjectileType<MoonOut>(), Projectile.damage, 0f, Owner: Projectile.owner);
+                    }
+					
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
 				}
 			}
 			if (Projectile.timeLeft <= 180)
 			{
-
 				if (Projectile.ai[0] == 0)
 				{
 					Projectile.ai[0] = 1; // Set state to exploded
 					Projectile.alpha = 255; // Make the Projectile invisible.
-
 
 					if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 					{
@@ -83,14 +85,6 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 				}
 			}
-
-			if (Projectile.timeLeft == 0)
-			{
-				Projectile.Kill();
-			}
-
-
-
 		}
 		
 		public override bool PreAI()
@@ -105,9 +99,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 				}
 			}
 			return true;
-
-
 		}
+
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
