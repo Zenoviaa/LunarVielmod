@@ -5031,7 +5031,7 @@ Mods: {
 
 			AimacraWig: {
 				DisplayName: Aimacra's Wig
-				Tooltip: Great for impersonating Aimacra from Diari!
+				Tooltip: Great for impersonating Aimacra from Diari! Also gives 50 health!
 			}
 
 			WindmillionBoots: {
@@ -5079,6 +5079,54 @@ Mods: {
 			PerfectionStaff: {
 				Tooltip: ""
 				DisplayName: Perfection Staff
+			}
+
+			XixianFlask: {
+				DisplayName: Xixian Flask
+				Tooltip: Passed down from the wonders of Zui and sacred special withces!
+			}
+
+			VitalityInsource: {
+				Tooltip:
+					'''
+					40 Seconds of duration on flask!
+					Heals 102 Health and Mana
+					Gives a honey buff as well!
+					'''
+				DisplayName: Vitality Insource
+			}
+
+			HealthyInsource: {
+				Tooltip:
+					'''
+					40 Seconds of duration on flask!
+					Heals 35 Health
+					'''
+				DisplayName: Healthy Insource
+			}
+
+			FloweredInsource: {
+				DisplayName: Flowered Insource
+				Tooltip:
+					'''
+					20 Seconds of duration on flask!
+					Gives 10 Defense while in use
+					Attack speed increased by 50% while active, 
+					A shadowy alcaric trail will lead behind!
+					'''
+			}
+
+			VialedInsource: {
+				DisplayName: Vialed Insource
+				Tooltip:
+					'''
+					20 Seconds of duration on flask!
+					300% Fall speed
+					No Fall damage
+					Jump boost!
+					Movement speed increased by 40%
+					A morrowed trail will follow behind you!
+					'''
 			}
 		}
 
@@ -5802,6 +5850,10 @@ Mods: {
 			WindmillShurikenProj.DisplayName: Windmill Shuriken Proj
 			VampiricArrowProj.DisplayName: Vampiric Arrow Proj
 			PerfectionProj.DisplayName: Perfection Proj
+			HealthyInsourceProj.DisplayName: Healthy Insource Proj
+			VitalityInsourceProj.DisplayName: Vitality Insource Proj
+			FloweredInsourceProj.DisplayName: Flowered Insource Proj
+			VialedInsourceProj.DisplayName: Vialed Insource Proj
 		}
 
 		NPCs: {
@@ -7694,6 +7746,21 @@ Mods: {
 			VixedB: {
 				DisplayName: Vixed B
 				Description: Mods.Stellamod.Buffs.VixedB.Description
+			}
+
+			CannotUseFlask: {
+				Description: Mods.Stellamod.Buffs.CannotUseFlask.Description
+				DisplayName: Cannot Use Flask
+			}
+
+			Friendzied: {
+				DisplayName: Friendzied
+				Description: Mods.Stellamod.Buffs.Friendzied.Description
+			}
+
+			VialedUp: {
+				DisplayName: Vialed Up
+				Description: Mods.Stellamod.Buffs.VialedUp.Description
 			}
 		}
 

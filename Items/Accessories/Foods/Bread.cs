@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Foods
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-          //  player.statDefense += 2;
+            player.statDefense += 2;
         }
     }
 }
