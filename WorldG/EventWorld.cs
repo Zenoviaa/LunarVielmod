@@ -1,5 +1,6 @@
 ﻿using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Projectiles;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -67,72 +68,73 @@ namespace Stellamod.WorldG
 
         private void TrySpawnGintzeArmy()
         {
-            Player player = Main.LocalPlayer;
-            //------------------------------------------------------------------------------
-            if (Gintzing)
-            {
-
-                if (Main.expertMode)
+                 Player player = Main.LocalPlayer;
+                if (Gintzing)
                 {
-                    if (GintzeKills >= 80)
+                    if (Main.expertMode)
                     {
-                        GintzingBoss = true;
-                        Gintzing = false;
-                        GintzeKills = 0;
-                        NetMessage.SendData(MessageID.WorldData);
+                        if (GintzeKills >= 80)
+                        {
+                            GintzingBoss = true;
+                            Gintzing = false;
+                            GintzeKills = 0;
+                            NetMessage.SendData(MessageID.WorldData);
+                        }
+
+                    }
+                    else if (Main.masterMode)
+                    {
+                        if (GintzeKills >= 100)
+                        {
+                            GintzingBoss = true;
+                            Gintzing = false;
+                            GintzeKills = 0;
+                            NetMessage.SendData(MessageID.WorldData);
+                        }
+                    }
+                    else
+                    {
+                        if (GintzeKills >= 65)
+                        {
+                            GintzingBoss = true;
+                            Gintzing = false;
+                            GintzeKills = 0;
+                            NetMessage.SendData(MessageID.WorldData);
+                        }
                     }
 
+                    player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
                 }
-                else if (Main.masterMode)
+
+                if (!Main.dayTime)
                 {
-                    if (GintzeKills >= 100)
-                    {
-                        GintzingBoss = true;
-                        Gintzing = false;
-                        GintzeKills = 0;
-                        NetMessage.SendData(MessageID.WorldData);
-                    }
-                }
-                else
-                {
-                    if (GintzeKills >= 65)
-                    {
-                        GintzingBoss = true;
-                        Gintzing = false;
-                        GintzeKills = 0;
-                        NetMessage.SendData(MessageID.WorldData);
-                    }
+                    TryForGintze = false;
+                    GintzeDayReset = false;
+                    NetMessage.SendData(MessageID.WorldData);
                 }
 
-                player.AddBuff(ModContent.BuffType<GintzeSeen>(), 2);
-            }
-
-            if (!Main.dayTime && TryForGintze)
-            {
-                TryForGintze = false;
-                GintzeDayReset = false;
-                NetMessage.SendData(MessageID.WorldData);
-            }
-
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && DownedBossSystem.downedStoneGolemBoss && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
-            {
-                Gintzing = true;
-                Main.NewText("The Gintze army is approaching...", 34, 121, 100);
-                TryForGintze = true;
-                NetMessage.SendData(MessageID.WorldData);
-            }
-
-
-            if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
-            {
-                if (Main.rand.NextBool(40))
+                if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && DownedBossSystem.downedStoneGolemBoss 
+                    && !Main.hardMode && !GintzeDayReset && !GintzingBoss && !DownedBossSystem.downedGintzlBoss)
                 {
                     Gintzing = true;
-                    Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
+                    Main.NewText("The Gintze army is approaching...", 34, 121, 100);
+                    TryForGintze = true;
+                    NetMessage.SendData(MessageID.WorldData);
                 }
-                TryForGintze = true;
-                NetMessage.SendData(MessageID.WorldData);
-            }
+
+
+                if (!TryForGintze && Main.dayTime && player.townNPCs >= 3 && player.ZoneOverworldHeight && player.ZoneForest 
+                    && !Main.hardMode && !GintzeDayReset && !GintzingBoss && DownedBossSystem.downedGintzlBoss)
+                {
+                    if (Main.rand.NextBool(40))
+                    {
+                        Gintzing = true;
+                        Main.NewText("The Gintze army is returning for another round...", 34, 121, 100);
+                    }
+                    TryForGintze = true;
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            
         }
 
         private void TrySpawnAuroreanStarfall()
@@ -168,6 +170,7 @@ namespace Stellamod.WorldG
         {
             if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
             {
+                
                 HasHadBloodMoon = true;
                 Main.NewText("The Moon has turned red for tonight!", 234, 16, 50);
                 Main.bloodMoon = true;
@@ -180,8 +183,48 @@ namespace Stellamod.WorldG
             TrySpawnGintzeArmy();
             TrySpawnAuroreanStarfall();
             TryForceBloodmoon();
+            SpawnAuroreanStars();
         }
 
+
+        private void SpawnAuroreanStars()
+        {
+            if (!Aurorean)
+                return;
+
+            for(int i = 0; i < Main.maxPlayers; i++)
+            {
+                Player player = Main.player[i];
+                if (!player.active)
+                    continue;
+                if (player.ZoneOverworldHeight || player.ZoneSkyHeight)
+                {
+                    if (Main.rand.NextBool(90))
+                    {
+                        int offsetX = Main.rand.Next(-1000, 1000) * 2;
+                        int offsetY = Main.rand.Next(-1000, 1000) - 1700;
+                        int damage = Main.expertMode ? 0 : 0;
+                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f, 
+                            ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+
+                    //Don't spawn the npc if it already exists
+                    if (Main.rand.NextBool(4500) && !NPCHelper.IsBossAlive() && Main.hardMode)
+                    {
+                        int offsetX = Main.rand.Next(-10, 10) * 2;
+                        int offsetY = Main.rand.Next(-500, 500) - 1700;
+                        int damage = Main.expertMode ? 0 : 0;
+                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f, 
+                            ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
+                    }
+                }
+            }
+        }
+
+        private static void ResetEvents()
+        {
+            ResetEvents();
+        }
 
         public override void ClearWorld()
         {
@@ -194,6 +237,15 @@ namespace Stellamod.WorldG
             GintzeDayReset = false;
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+        }
+
+        public override void Load()
+        {
+            base.Load();
+        }
         public override void LoadWorldData(TagCompound tag)
         {
             HasHadBloodMoon = tag.GetBool("HasHadBloodmoon");

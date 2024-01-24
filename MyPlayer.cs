@@ -704,26 +704,6 @@ namespace Stellamod
                 }
             }
 
-			if (EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight))
-			{
-                if (Main.rand.NextBool(90) && Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    int offsetX = Main.rand.Next(-1000, 1000) * 2;
-                    int offsetY = Main.rand.Next(-1000, 1000) - 1700;
-                    int damage = Main.expertMode ? 0 : 0;
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStar>(), damage, 1, Main.myPlayer, 0, 0);
-                }	
-				
-				//Don't spawn the npc if it already exists
-				if (Main.rand.NextBool(4500) && !NPCHelper.IsBossAlive() && Main.netMode != NetmodeID.MultiplayerClient && Main.hardMode)
-				{
-					int offsetX = Main.rand.Next(-10, 10) * 2;
-					int offsetY = Main.rand.Next(-500, 500) - 1700;
-					int damage = Main.expertMode ? 0 : 0;
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X + offsetX, Player.Center.Y + offsetY, 0f, 10f, ModContent.ProjectileType<AuroreanStarbomber>(), damage, 1, Main.myPlayer, 0, 0);
-				}
-			}
-
             bool expertMode = Main.expertMode;
             if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
             {

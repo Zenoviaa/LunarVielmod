@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -92,12 +94,29 @@ namespace Stellamod.Projectiles
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_FromAI();
-            int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBER>());
+            SpawnStarBomber();
             for (int i = 0; i < 150; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 3, Scale: 3f);
                 d.noGravity = true;
+            }
+        }
+
+        private void SpawnStarBomber()
+        {
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                Main.NewText("STARBOMBER crashes down!", Color.Pink);
+                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBER>());
+            }
+            else
+            {
+                if (Main.netMode == NetmodeID.SinglePlayer)
+                    return;
+
+                StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<STARBOMBER>(), 
+                    (int)Projectile.Center.X, (int)Projectile.Center.Y);
             }
         }
 
