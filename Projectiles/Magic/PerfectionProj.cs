@@ -45,7 +45,7 @@ namespace Stellamod.Projectiles.Magic
 
 
 
-            alphaCounter += 0.08f;
+           
 
             if (alphaCounter < 3)
             {

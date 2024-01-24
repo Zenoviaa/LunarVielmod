@@ -5107,7 +5107,8 @@ Mods: {
 
 			FloweredInsource: {
 				DisplayName: Flowered Insource
-				Tooltip: '''
+				Tooltip:
+					'''
 					20 Seconds of duration on flask!
 					Gives 10 Defense while in use
 					Attack speed increased by 50% while active, 
@@ -5117,7 +5118,8 @@ Mods: {
 
 			VialedInsource: {
 				DisplayName: Vialed Insource
-				Tooltip: '''
+				Tooltip:
+					'''
 					20 Seconds of duration on flask!
 					300% Fall speed
 					No Fall damage

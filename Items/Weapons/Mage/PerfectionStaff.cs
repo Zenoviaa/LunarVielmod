@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
 
-            Item.damage = 3; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 4; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Magic;
             Item.width = 20; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item
