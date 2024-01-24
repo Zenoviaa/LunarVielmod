@@ -79,6 +79,21 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
         private ref float ai_Counter => ref NPC.ai[0];
         private ref float attack_Count => ref NPC.ai[1];
+        private ref float follow => ref NPC.ai[2];
+
+        private void FollowNPC()
+        {
+            int npcIndex = (int)follow;
+            if (npcIndex == -1)
+                return;
+
+            NPC npcToFollow = Main.npc[npcIndex];
+            if (npcToFollow == null || !npcToFollow.active)
+                return;
+
+            Vector2 followVel = VectorHelper.VelocitySlowdownTo(NPC.Center, npcToFollow.Center, 20);
+            NPC.velocity = followVel;
+        }
 
         public override void AI()
         {
@@ -99,6 +114,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
             Player player = Main.player[NPC.target];
             LookAtTarget();
+            FollowNPC();
 
             ai_Counter++;
             if(ai_Counter > 72)
