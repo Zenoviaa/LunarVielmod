@@ -791,7 +791,7 @@ namespace Stellamod.WorldG
 					for (int da = 0; da < 1; da++)
 					{
 						Point Loc2 = new Point(smx, smy + 2);
-						WorldUtils.Gen(Loc2, new Shapes.Rectangle(31, 10), new Actions.SetTile(TileID.Grass));
+						WorldUtils.Gen(Loc2, new Shapes.Rectangle(34, 10), new Actions.SetTile(TileID.Grass));
 
 
 
@@ -944,7 +944,7 @@ namespace Stellamod.WorldG
 					for (int da = 0; da < 1; da++)
 					{
 						Point Loc2 = new Point(smx, smy + 2);
-						WorldUtils.Gen(Loc2, new Shapes.Rectangle(31, 10), new Actions.SetTile(TileID.Grass));
+						WorldUtils.Gen(Loc2, new Shapes.Rectangle(34, 10), new Actions.SetTile(TileID.Grass));
 
 
 
