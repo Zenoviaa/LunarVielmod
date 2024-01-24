@@ -573,7 +573,7 @@ namespace Stellamod.WorldG
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-							Tuple.Create(ModContent.ItemType<StoniaBroochA>(), 0.5)
+							Tuple.Create(ModContent.ItemType<Ivythorn>(), 0.5)
 
 
 						// Choose no item with a high weight of 7.
