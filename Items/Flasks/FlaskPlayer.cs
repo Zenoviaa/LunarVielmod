@@ -20,7 +20,7 @@ namespace Stellamod.Items.Flasks
         public bool hasTime;
         public bool hasVialedInsource;
         public bool hasFloweredInsource;
-
+        public bool hasEpsidonInsource;
 
 
 

@@ -60,6 +60,7 @@ namespace Stellamod.Items.Flasks
                 FlaskPlayer.hasHealthyInsource = true;
                 FlaskPlayer.hasVitalityInsource = false;
                 FlaskPlayer.hasVialedInsource = false;
+                FlaskPlayer.hasEpsidonInsource = false;
                 FlaskPlayer.hasFloweredInsource = false;
 
 

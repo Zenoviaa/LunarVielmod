@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -14,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Flasks
 {
-    public class VialedInsource : ModItem
+    public class EpsidonInsource : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -51,22 +49,22 @@ namespace Stellamod.Items.Flasks
         public override bool? UseItem(Player player)
         {
             FlaskPlayer FlaskPlayer = player.GetModPlayer<FlaskPlayer>();
-            if (FlaskPlayer.hasVialedInsource)
+            if (FlaskPlayer.hasEpsidonInsource)
             {
-                FlaskPlayer.hasVialedInsource = false;
+                FlaskPlayer.hasEpsidonInsource = false;
 
                 return true;
             }
-            if (!FlaskPlayer.hasVialedInsource)
+            if (!FlaskPlayer.hasEpsidonInsource)
             {
-                FlaskPlayer.hasVialedInsource = true;
+                FlaskPlayer.hasVialedInsource = false;
                 FlaskPlayer.hasVitalityInsource = false;
                 FlaskPlayer.hasFloweredInsource = false;
                 FlaskPlayer.hasHealthyInsource = false;
-                FlaskPlayer.hasEpsidonInsource = false;
+                FlaskPlayer.hasEpsidonInsource = true;
 
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
-                ModContent.ProjectileType<VialedInsourceProj>(), 0, 1f, player.whoAmI);
+                ModContent.ProjectileType<EpsidonInsourceProj>(), 0, 1f, player.whoAmI);
 
 
                 return true;
@@ -75,17 +73,6 @@ namespace Stellamod.Items.Flasks
             return true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-            recipe.AddIngredient(ItemID.Daybloom, 5);
-            recipe.AddIngredient(ItemID.Moonglow, 5);
-            recipe.AddIngredient(ItemID.Bottle, 1);
-            recipe.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe.Register();
-        }
 
     }
 }

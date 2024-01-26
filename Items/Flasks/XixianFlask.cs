@@ -57,7 +57,7 @@ namespace Stellamod.Items.Flasks
                 //Give backglow to show that the effect is active
                 DrawHelper.DrawAdvancedBroochGlow(Item, spriteBatch, position, new Color(198, 200, 124));
             }
-            if (player.HasBuff<CannotUseFlask>())
+            if (player.HasBuff<CannotUseFlask>() || player.HasBuff(BuffID.PotionSickness))
             {
                 
                 float sizeLimit = 28;
@@ -110,7 +110,22 @@ namespace Stellamod.Items.Flasks
                 return true;
             }
 
-            if (player.HasBuff<CannotUseFlask>())
+
+            if (FlaskPlayer.hasEpsidonInsource && !player.HasBuff<CannotUseFlask>())
+            {
+                player.statLife += 200;
+                player.AddBuff(BuffID.Honey, 1200);
+                player.AddBuff(BuffID.Swiftness, 1200);
+                player.AddBuff(BuffID.Ironskin, 1200);
+                player.AddBuff(BuffID.PotionSickness, 2400);
+                player.AddBuff(ModContent.BuffType<CannotUseFlask>(), 2400);
+
+                return true;
+            }
+
+
+
+            if (player.HasBuff<CannotUseFlask>() || player.HasBuff(BuffID.PotionSickness))
             {
 
                 return false;

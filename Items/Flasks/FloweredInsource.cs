@@ -61,6 +61,7 @@ namespace Stellamod.Items.Flasks
                 FlaskPlayer.hasVitalityInsource = false;
                 FlaskPlayer.hasFloweredInsource = true;
                 FlaskPlayer.hasHealthyInsource = false;
+                FlaskPlayer.hasEpsidonInsource = false;
 
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
                 ModContent.ProjectileType<FloweredInsourceProj>(), 0, 1f, player.whoAmI);
