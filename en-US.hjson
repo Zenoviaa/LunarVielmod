@@ -5130,7 +5130,11 @@ Mods: {
 			}
 
 			EpsidonInsource: {
-				Tooltip: ""
+				Tooltip: '''
+					40 Seconds of duration on flask!
+					Honey, ironskin and swiftness buffs for 20 seconds!
+					+200 Heal on use!
+					'''
 				DisplayName: Epsidon Insource
 			}
 		}
