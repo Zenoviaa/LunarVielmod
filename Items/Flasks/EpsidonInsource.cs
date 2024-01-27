@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -71,6 +73,19 @@ namespace Stellamod.Items.Flasks
             }
 
             return true;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+
+            recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 3);
+            recipe.AddIngredient(ModContent.ItemType<MiracleThread>(), 10);
+            recipe.AddIngredient(ItemID.Fireblossom, 10);
+            recipe.AddIngredient(ItemID.Deathweed, 2);
+            recipe.AddIngredient(ItemID.GreaterHealingPotion, 10);
+            recipe.AddTile(ModContent.TileType<AlcaologyTable>());
+            recipe.Register();
         }
 
 
