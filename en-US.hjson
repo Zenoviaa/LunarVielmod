@@ -5128,6 +5128,11 @@ Mods: {
 					A morrowed trail will follow behind you!
 					'''
 			}
+
+			EpsidonInsource: {
+				Tooltip: ""
+				DisplayName: Epsidon Insource
+			}
 		}
 
 		JungleRuneI: {
@@ -5854,6 +5859,7 @@ Mods: {
 			VitalityInsourceProj.DisplayName: Vitality Insource Proj
 			FloweredInsourceProj.DisplayName: Flowered Insource Proj
 			VialedInsourceProj.DisplayName: Vialed Insource Proj
+			EpsidonInsourceProj.DisplayName: Epsidon Insource Proj
 		}
 
 		NPCs: {
