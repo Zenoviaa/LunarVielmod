@@ -5130,12 +5130,32 @@ Mods: {
 			}
 
 			EpsidonInsource: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					40 Seconds of duration on flask!
 					Honey, ironskin and swiftness buffs for 20 seconds!
 					+200 Heal on use!
 					'''
 				DisplayName: Epsidon Insource
+			}
+
+			CogBomber: {
+				DisplayName: Cog Bomber
+				Tooltip:
+					'''
+					Fires mini nukes that explode into several small fires
+					Boom :) 
+					'''
+			}
+
+			GearGutter: {
+				DisplayName: Gear Gutter
+				Tooltip: Shoots an extremely fast and long iron needle that pierces infinitely
+			}
+
+			TheTingler: {
+				DisplayName: The Tingler
+				Tooltip: Shoots small iron needles that lodge into targets and deal damage over time
 			}
 		}
 
@@ -5864,6 +5884,10 @@ Mods: {
 			FloweredInsourceProj.DisplayName: Flowered Insource Proj
 			VialedInsourceProj.DisplayName: Vialed Insource Proj
 			EpsidonInsourceProj.DisplayName: Epsidon Insource Proj
+			CogBomb.DisplayName: Cog Bomb
+			CogKaboom.DisplayName: Cog Kaboom
+			CogNeedle.DisplayName: Cog Needle
+			GearSniper.DisplayName: Gear Sniper
 		}
 
 		NPCs: {
