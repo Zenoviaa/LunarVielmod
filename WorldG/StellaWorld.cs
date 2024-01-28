@@ -2860,55 +2860,20 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			int leftmostJungleTileX = int.MaxValue;
-			int rightmostJungleTileX = int.MinValue;
-			for (int x = 500; x < Main.maxTilesX - 500; x++)
-			{
-				int jungleY = (int)(Main.worldSurface - 50);
-				while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
-				{
-					jungleY++;
-				}
-
-				Tile tile = Main.tile[x, jungleY];
-				if (tile.TileType == TileID.Dirt)
-				{
-					if (leftmostJungleTileX > x)
-						leftmostJungleTileX = x;
-					if (rightmostJungleTileX < x)
-						rightmostJungleTileX = x;
-				}
-			}
+			
 
 
 
 			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int minX = leftmostJungleTileX + 200;
-				int maxX = rightmostJungleTileX - 200;
-				if (maxX < minX)
-					maxX = minX + 1;
-				int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
-
-				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int abysmy = (int)(Main.worldSurface - 50);
-
-				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
-				{
-					abysmy++;
-				}
+				
 
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc7 = new Point(abysmx, abysmy);
+					
 					WorldGen.TileRunner(pointAlcadthingy.X + 200, pointAlcadthingy.Y + 150, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
-
-
-					Point Loc = new Point(abysmx + 50, abysmy + 255);
-					pointL = new Point(abysmx + 50, abysmy + 255);//
 
 					
 					placed = true;
