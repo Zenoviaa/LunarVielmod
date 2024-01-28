@@ -2873,7 +2873,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					
-					WorldGen.TileRunner(pointAlcadthingy.X + 200, pointAlcadthingy.Y + 150, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
+					WorldGen.TileRunner(pointAlcadthingy.X + 160, pointAlcadthingy.Y + 150, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
 
 					
 					placed = true;
