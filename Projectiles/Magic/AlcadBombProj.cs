@@ -67,7 +67,7 @@ namespace Stellamod.Projectiles.Magic
 
         private void AI_IncreaseSuckTimers()
         {
-            float maxSuckStrength = 5f;
+            float maxSuckStrength = 1.25f;
             float maxSuckDistance = 512;
 
             ai_suckStrength += 0.01f;
@@ -110,9 +110,7 @@ namespace Stellamod.Projectiles.Magic
                             suckStrength = distance;
 
                         Vector2 suckVelocity = direction * suckStrength;
-
-                        if(npc.velocity.Length() < suckVelocity.Length())
-                            npc.velocity -= suckVelocity;
+                        npc.velocity -= suckVelocity * 0.66f;
                     }
                 }
             }
@@ -177,16 +175,17 @@ namespace Stellamod.Projectiles.Magic
                     float scale = Main.rand.NextFloat(0.5f, 1f);
                     Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(circularEdge, circularEdge);
                     Vector2 speed = position.DirectionTo(Projectile.Center) * speedMultiplier;
-                    ParticleManager.NewParticle(position, speed,
+                    Particle p = ParticleManager.NewParticle(position, speed,
                         ParticleManager.NewInstance<VoidSuckParticle>(), Color.White, scale);
+                    p.scale.X *= (speedMultiplier / 1.5f);
                 }
             }
 
 
-            if (IsCharged)
+            if (IsCharged && ai_suckTimer % 4 == 0)
             {
          
-                for (int i = 0; i < particleCount / 10; i++)
+                for (int i = 0; i < particleCount - 2; i++)
                 {
                     float scale = Main.rand.NextFloat(0.5f, 1f);
                     Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(circularEdge, circularEdge);
@@ -195,7 +194,7 @@ namespace Stellamod.Projectiles.Magic
                         ParticleManager.NewInstance<VoidParticle>(), Color.White, scale);
                 }
 
-                for (int i = 0; i < particleCount / 20; i++)
+                for (int i = 0; i < particleCount - 2; i++)
                 {
                     float scale = Main.rand.NextFloat(0.5f, 1f);
                     Vector2 position = Projectile.Center + Main.rand.NextVector2CircularEdge(circularEdge, circularEdge);
