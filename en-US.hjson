@@ -5157,6 +5157,16 @@ Mods: {
 				DisplayName: The Tingler
 				Tooltip: Shoots small iron needles that lodge into targets and deal damage over time
 			}
+
+			KnivedQuiver: {
+				DisplayName: Knived Quiver
+				Tooltip: Turns wooden arrows into throwing knives that pierce and are fast!
+			}
+
+			LifeSeekingVial: {
+				DisplayName: Life Seeking Vial
+				Tooltip: Throw a bottle at an enemy to heal a small portion of health!
+			}
 		}
 
 		JungleRuneI: {
@@ -5888,6 +5898,8 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
+			GlassBreak.DisplayName: Glass Break
+			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
 		}
 
 		NPCs: {
@@ -7063,6 +7075,11 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			WhiteFlower.DisplayName: White Flower
+			RedFlower.DisplayName: Red Flower
+			FloweredWhiteLight.DisplayName: Flowered White Light
+			FloweredRedLight.DisplayName: Flowered Red Light
 		}
 
 		Biomes: {

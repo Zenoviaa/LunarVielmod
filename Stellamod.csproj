@@ -321,6 +321,8 @@
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
+    <None Remove="NPCs\Underground\FloweredRedLight.png" />
+    <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />
