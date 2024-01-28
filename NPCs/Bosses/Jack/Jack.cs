@@ -384,7 +384,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     {
                                         float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                         float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                        int damage = Main.expertMode ? 9 : 15;
+                                        int damage = Main.expertMode ? 9 : 12;
                                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
                                             ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
                                     }

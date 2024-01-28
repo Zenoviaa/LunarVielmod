@@ -178,7 +178,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                int damage = Main.expertMode ? 9 : 13;
+                int damage = Main.expertMode ? 15 : 20;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<ShadowFlare>(), damage, 1, Main.myPlayer, 0, 0);
             }
