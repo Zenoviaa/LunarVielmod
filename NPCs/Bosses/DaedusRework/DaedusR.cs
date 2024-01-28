@@ -1,11 +1,9 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
@@ -58,17 +56,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
             Lighting.AddLight(NPC.Center, Color.LightBlue.ToVector3() * 1.25f * Main.essScale);
-            // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-            Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-            float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-            Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-
-
 
             Vector2 frameOrigin = NPC.frame.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X + (NPC.scale * 4), NPC.height - NPC.frame.Height + 0);
@@ -90,30 +82,26 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             for (float i = 0f; i < 1f; i += 0.25f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
-
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug).RotatedBy(radians) * time, NPC.frame, new Color(234, 132, 54, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
-                NPC.netUpdate = true;
-
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
-
                 spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug * 2).RotatedBy(radians) * time, NPC.frame, new Color(254, 204, 72, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
-                NPC.netUpdate = true;
             }
 
             return true;
         }
+
         public override void SetDefaults()
         {
             NPC.alpha = 0;
             NPC.width = 230;
             NPC.height = 230;
-            NPC.damage = 10;
+            NPC.damage = 14;
             NPC.defense = 10;
-            NPC.lifeMax = 2500;
+            NPC.lifeMax = 2600;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.knockBackResist = 0f;
@@ -125,14 +113,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPC.aiStyle = 0;
-
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.5f;
-
             if (Attack)
             {
                 if (NPC.frameCounter >= 8)
@@ -177,27 +164,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(attackCounter);
-            writer.Write(timeBetweenAttacks);
-            writer.WriteVector2(dashDirection);
-            writer.Write(dashDistance);
-
+            writer.Write(Flying);
         }
+
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            attackCounter = reader.ReadInt32();
-            timeBetweenAttacks = reader.ReadInt32();
-
-
-            dashDirection = reader.ReadVector2();
-            dashDistance = reader.ReadSingle();
-
+            Flying = reader.ReadBoolean();
         }
-
-        private int attackCounter;
-        private int timeBetweenAttacks = 120;
-        private Vector2 dashDirection = Vector2.Zero;
-        private float dashDistance = 0f;
 
         public override void HitEffect(NPC.HitInfo hit)
         {
@@ -219,21 +192,10 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 }
             }
         }
-        public float Spawner = 0;
+
         public override void AI()
         {
-            Spawner++;
-            /*
-            Player players = Main.player[NPC.target];
-            if (Spawner == 2)
-            {
-                int distanceY = Main.rand.Next(-250, -250);
-                NPC.position.X = players.Center.X;
-                NPC.position.Y = players.Center.Y + distanceY;
-            }*/
-
             Player player = Main.player[NPC.target];
-            bool expertMode = Main.expertMode;
             NPC.damage = 0;
 
             if (Flying)
@@ -243,7 +205,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
                     moveSpeed++;
 
-                NPC.velocity.X = moveSpeed * 0.10f;
+                NPC.velocity.X = moveSpeed * 0.18f;
 
                 if (NPC.Center.Y >= player.Center.Y - HomeY && moveSpeedY >= -20) //Flies to players Y position
                 {
@@ -260,7 +222,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             if (Attack)
             {
-                NPC.velocity *= 0.82f;
+                NPC.velocity *= 0.80f;
                 if (DaedusDrug <= 18)
                 {
                     DaedusDrug += 0.1f;
@@ -273,6 +235,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     DaedusDrug -= 0.1f;
                 }
             }
+
             if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
@@ -295,9 +258,9 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     NPC.active = false;
                 }
             }
+
             if (NPC.ai[2] == 0)
             {
-   
                 NPC.ai[2] = 1;
             }
             p2 = NPC.life < NPC.lifeMax * 0.5f;
@@ -308,9 +271,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     Vector2 GPos;
                     GPos.X = DaedusPos.X;
                     GPos.Y = NPC.Center.Y;
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y, ModContent.NPCType<SolarSingularity>());
-                    var entitySource = NPC.GetSource_FromThis();
-                    Projectile.NewProjectile(entitySource, GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, 10 / 9, 0);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y, 
+                            ModContent.NPCType<SolarSingularity>());
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, 10 / 9, 0);
+                    }
+                  
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(GPos, 1212f, 62f);
                     Solar = true;
                 }
@@ -337,23 +304,27 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 100)
                         {
-                            int Atack = Main.rand.Next(2, 5);
-                            if (Atack == PrevAtack)
+                            if (StellaMultiplayer.IsHost)
                             {
+                                int attack = Main.rand.Next(2, 5);
+                                if (attack == PrevAtack)
+                                {
+                                    NPC.ai[0] = 1;
+                                }
+                                else
+                                {
+                                    NPC.ai[0] = 0;
+                                    NPC.ai[1] = attack;
+                                }
+
                                 Flying = true;
-                                NPC.ai[0] = 1;
-                            }
-                            else
-                            {
-                                Flying = true;
-                                NPC.ai[0] = 0;
-                                NPC.ai[1] = Atack;
+                                NPC.netUpdate = true;
                             }
                         }
 
                         break;
                     case 2:
-                        Vector2 DLightPos;
+              
                         NPC.ai[0]++;
                         if (NPC.ai[0] == 20)
                         {
@@ -367,13 +338,21 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
+                            Vector2 DLightPos;
                             DLightPos.Y = DaedusPos.Y + 230;
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
-                            DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
-                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, ModContent.NPCType<DRay>());
+
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, 
+                                    ModContent.NPCType<DRay>());
+                                DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, 
+                                    ModContent.NPCType<DRay>());
+                                DLightPos.X = Main.rand.NextFloat(DaedusPos.X - 300, DaedusPos.X + 300);
+                                NPC.NewNPC(NPC.GetSource_FromThis(), (int)DLightPos.X, (int)DLightPos.Y, 
+                                    ModContent.NPCType<DRay>());
+                            }                     
                         }
                         break;
                     case 3:
@@ -391,7 +370,12 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 65, 0, 0, ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 65, 0, 0, 
+                                    ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
+                            }
+                            
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                         }
                         break;
@@ -410,7 +394,12 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         if (NPC.ai[0] == 90)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, 
+                                    ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f);
+                            }
+                           
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
                         }
                         break;
@@ -421,23 +410,9 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-            // Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-            //	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-
-
-
-            // ItemDropRule.MasterModeCommonDrop for the relic
-
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 2));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GothiviasSeal>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DaedusBag>()));
-            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
-            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DaedusBossRel>()));
 
 
@@ -455,27 +430,6 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-
-            // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-            // Boss masks are spawned with 1/7 chance
-            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-            // This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-            // We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-            // which requires these parameters to be defined
-            //int itemType = ModContent.ItemType<Gambit>();
-            //var parameters = new DropOneByOne.Parameters()
-            //{
-            //	ChanceNumerator = 1,
-            //	ChanceDenominator = 1,
-            //	MinimumStackPerChunkBase = 1,
-            //	MaximumStackPerChunkBase = 1,
-            //	MinimumItemDropsCount = 1,
-            //	MaximumItemDropsCount = 3,
-            //};
-
-            //notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
             // Finally add the leading rule
             npcLoot.Add(notExpertRule);
         }

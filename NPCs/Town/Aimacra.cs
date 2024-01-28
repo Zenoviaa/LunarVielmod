@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Igniter;
+using Stellamod.Items.Armors.Vanity.Aimacra;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
@@ -98,8 +99,8 @@ namespace Stellamod.NPCs.Town
 			NPC.height = 40;
 			NPC.aiStyle = 7;
 			NPC.damage = 90;
-			NPC.defense = 42;
-			NPC.lifeMax = 200;
+			NPC.defense = 72;
+			NPC.lifeMax = 600;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
@@ -459,7 +460,10 @@ namespace Stellamod.NPCs.Town
 
 
 			var npcShop = new NPCShop(Type, ShopName)
-				.Add(new Item(ItemID.Wood))
+				.Add(new Item(ItemID.Wood)
+				{
+					shopCustomPrice = Item.sellPrice(copper: 2)
+				})
 				.Add(new Item(ModContent.ItemType<DiariBroochA>())
 				{
 					shopCustomPrice = 1,
@@ -471,6 +475,12 @@ namespace Stellamod.NPCs.Town
 					shopCustomPrice = 3,
 					shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 				})
+
+					.Add(new Item(ModContent.ItemType<AimacraWig>())
+					{
+						shopCustomPrice = 5,
+						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					})
 
 					.Add(new Item(ItemID.BattlePotion)
 					{

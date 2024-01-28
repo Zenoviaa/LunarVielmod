@@ -34,19 +34,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
         {
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
-
             Projectile.scale = MathF.Sin(Time / 60f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
-
             // And create bright light.
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 1.4f);
-
-
-
             CreateDustAtBeginning();
-
             Time++;
         }
 

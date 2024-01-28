@@ -71,7 +71,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
 			broochPlayer.hasAdvancedBrooches = true;
 			player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
-			player.GetDamage(DamageClass.Generic) *= 1.1f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic) *= 1.04f; // Increase ALL player damage by 100%
 		}
 	}
 }

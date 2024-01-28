@@ -18,7 +18,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void SetDefaults()
 		{
-			base.Projectile.aiStyle = 0;
+			Projectile.aiStyle = 0;
             Projectile.alpha = 255;
             Projectile.friendly = true;
             Projectile.hostile = false;
@@ -28,7 +28,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.width = 1;
             Projectile.extraUpdates = 1;
         }
-
 
 		float alphaCounter = 5;
 		public override void AI()

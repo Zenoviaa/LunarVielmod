@@ -54,32 +54,24 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Timer++;
 			if (Timer == 3)
 			{
-
-
-
-
-				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
-
-
-				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-				p.rotation = direction.ToRotation();
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0,
+						ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
+                    p.rotation = direction.ToRotation();
+					p.netUpdate = true;
+                }
+	
 				Timer = 0;
-
-
 			}
 
 
 			float maxDetectRadius = 4f; // The maximum radius at which a projectile can detect a target
 			float projSpeed = 28f; // The speed at which the projectile moves towards the target
 
-
-
-
 			if (Timer2 == 6)
 			{
 				maxDetectRadius = 0f;
-				
 			}
 			
 			Player closestplayer = FindClosestNPC(maxDetectRadius);
@@ -109,17 +101,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				}
 			}
 
-			// Trying to find NPC closest to the projectile
-			
-			
-
-			// If found, change the velocity of the projectile and turn it in the direction of the target
-			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity = (closestplayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
-
-
-
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 
@@ -162,6 +146,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 			return closestplayer;
 		}
+
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			Projectile.Kill();
@@ -170,8 +155,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 				ParticleManager.NewParticle(Projectile.Center, speed * 3, ParticleManager.NewInstance<BurnParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
 			}
 
 			for (int i = 0; i < 7; i++)
@@ -180,13 +163,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			}
 
 			return false;
-
 		}
-
-		
-		
-
-
-
 	}
 }

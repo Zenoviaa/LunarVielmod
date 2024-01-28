@@ -46,7 +46,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     Projectile.frame = 0;
 
             }
-
             return true;
         }
 

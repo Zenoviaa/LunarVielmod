@@ -141,6 +141,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;
         }
 
+
         public override void SetDefaults()
         {
             NPC.noTileCollide = true;

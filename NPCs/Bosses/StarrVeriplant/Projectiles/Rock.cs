@@ -23,7 +23,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			Projectile.light = 1.5f;
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
 			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
@@ -158,14 +157,12 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles
 			for (float i = 0f; i < 1f; i += 0.25f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(220, 70, 255, 80), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
-
 				Main.EntitySpriteDraw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(96, 190, 70, 77), Projectile.rotation, frameOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 			return true;

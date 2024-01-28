@@ -28,22 +28,21 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Morrowed Swampster");
 			Main.npcFrameCount[NPC.type] = 28;
 		}
 
 		public enum ActionState
 		{
-
 			Speed,
 			Wait
 		}
+
 		// Current state
 		public int frameTick;
 		// Current state's timer
 		public float timer;
 		public int PrevAtack;
-		float DaedusDrug = 4;
+
 		// AI counter
 		public int counter;
 
@@ -65,7 +64,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			NPC.scale = 0.5f;
 			NPC.noGravity = true;
 		}
-
 		
 		int invisibilityTimer;
 		public override void HitEffect(NPC.HitInfo hit)
@@ -74,8 +72,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
 		
 
@@ -98,28 +94,28 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			if (invisibilityTimer >= 100)
 			{
 				Speed();
-
 				for (int k = 0; k < 11; k++)
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);
-
 
 				invisibilityTimer = 0;
 			}
 
 			if (Shooting == 80)
 			{
-				float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-				float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-				float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 1, speedYb - 2 * 1, ProjectileID.BombSkeletronPrime, 30, 0f, 0, 0f, 0f);
+				if (StellaMultiplayer.IsHost)
+                {
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 1, speedYb - 2 * 1,
+						ProjectileID.BombSkeletronPrime, 30, 0f, Owner: Main.myPlayer);
+                }
+	
 				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, NPC.direction, -1f, 1, default, .61f);
 				}
 				Shooting = 0;
-
-
 			}
 
 			switch (State)
@@ -149,7 +145,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public void Wait()
 		{
 			timer++;
-
 			if (timer > 50)
 			{
 
@@ -169,26 +164,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public void Speed()
 		{
 			timer++;
-
-
-			if (timer > 50)
-			{
-
-				
-				
-
-
-
-
-
-			}
-			
 			if (timer == 100)
 			{
 				State = ActionState.Wait;
 				timer = 0;
 			}
-
 		}
 	}
 }

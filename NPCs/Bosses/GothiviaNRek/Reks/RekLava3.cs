@@ -47,16 +47,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                 NPC player = Main.npc[k];
                 if (!player.active && player.type == ModContent.NPCType<Rek>())
                 {
-
-
                     if (!player.active)
                     {
                         Projectile.Kill();
                     }
-                    #region Active check
-                    // This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-
-                    #endregion
                 }
                     // Check if NPC able to be targeted. It means that NPC is
                     if (player.active && player.type == ModContent.NPCType<Rek>())
@@ -67,11 +61,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                     {
                         Projectile.Kill();
                     }
-                    #region Active check
-                    // This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-
-                    #endregion
-
 
                     Vector2 idlePosition;
                 idlePosition.X = player.Center.X - 300;
@@ -93,7 +82,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
                     // and then set netUpdate to true
                     Projectile.position = idlePosition;
                     Projectile.velocity *= 0.20f;
-                    Projectile.netUpdate = true;
                 }
 
                 // If your minion is flying, you want to do this independently of any conditions

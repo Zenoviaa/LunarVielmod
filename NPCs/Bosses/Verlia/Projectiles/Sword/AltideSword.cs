@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using System.Net;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -31,6 +33,24 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                 end * tCubed);
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(controlPoint1);
+            writer.WriteVector2(controlPoint2);
+            writer.WriteVector2(initialPos);
+            writer.WriteVector2(endPoint);
+            writer.Write(initialization);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            controlPoint1 = reader.ReadVector2();
+            controlPoint2 = reader.ReadVector2();
+            initialPos = reader.ReadVector2();
+            endPoint = reader.ReadVector2();
+            initialization = reader.ReadBoolean();
+        }
+
         public override void AI()
         {
             if (!initialization)
@@ -59,37 +79,19 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword
                     endPoint = wantedEndPoint;
                 }
             }
-            if (!initialization)
+            
+            //Net Sync
+            if (!initialization && Main.myPlayer == Projectile.owner)
             {
                 controlPoint1 = Projectile.Center + Main.rand.NextVector2CircularEdge(1000, 1000);
                 controlPoint2 = endPoint + Main.rand.NextVector2CircularEdge(1000, 1000);
-                //controlPoint2 = Vector2.Lerp(endPoint, initialPos, 0.33f) + Main.player[Projectile.owner].velocity * 70;
-                //if (target != null)
-                //    controlPoint1 = Vector2.Lerp(endPoint, initialPos, 0.66f) + target.velocity * 70;
-                //else
-                //    Projectile.Kill();
+                Projectile.netUpdate = true;
                 initialization = true;
             }
+
             Projectile.velocity = Vector2.Zero;
             Projectile.rotation = (Projectile.Center - CubicBezier(initialPos, controlPoint1, controlPoint2, endPoint, t + 0.01f)).ToRotation() - MathHelper.PiOver2;
             endPoint = endPoint.MoveTowards(wantedEndPoint, 1);
-            if (t > 1)
-            {
-                for (int i = 0; i < Main.maxPlayers; i++)
-                {
-                    Player npc = Main.player[i];
-                    if (npc.Center.DistanceSQ(Projectile.Center) < AoERadiusSquared && !hitByThisStardustExplosion[npc.whoAmI])
-                    {
-
-                        NPC.HitInfo hitInfo = new();
-                        hitInfo.Damage = Projectile.damage;
-                        //(int)Main.player[Projectile.owner].GetDamage(DamageClass.Summon).ApplyTo(Projectile.damage)
-
-
-                    }
-                }
-                afterImgCancelDrawCount++;
-            }
 
             if (t > 1.02)
             {

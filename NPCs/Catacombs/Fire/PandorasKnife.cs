@@ -65,14 +65,16 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			timer2++;
 			if (timer == 1)
             {
+				if (StellaMultiplayer.IsHost)
+				{
+                    int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0,
+                            ModContent.ProjectileType<KaBoom>(), 0, 0f, Owner: Main.myPlayer);
 
-				
-
-				int fireball = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<KaBoom>(), 0, 0f, 0, 0f, 0f);
-
-				Projectile ichor = Main.projectile[fireball];
-				ichor.hostile = true;
-				ichor.friendly = false;
+                    Projectile ichor = Main.projectile[fireball];
+                    ichor.hostile = true;
+                    ichor.friendly = false;
+					ichor.netUpdate = true;
+                }
 			}
 
 

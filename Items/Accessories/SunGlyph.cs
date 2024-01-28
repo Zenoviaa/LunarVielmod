@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories
         {
             if (Main.dayTime)
             {
-                player.GetDamage(DamageClass.Generic) += 0.25f;
+                player.GetDamage(DamageClass.Generic) += 0.30f;
             }
         }
 	}

@@ -110,9 +110,14 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
-                    var EntitySource = NPC.GetSource_FromThis();
-                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10, ModContent.ProjectileType<HeatBeam>(), 300, 0f, -1, 0, NPC.whoAmI);
-                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ModContent.ProjectileType<STARSPAWNEFFECT>(), 0, 1, Main.myPlayer, 0, 0);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        var EntitySource = NPC.GetSource_FromThis();
+                        Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,
+                            ModContent.ProjectileType<HeatBeam>(), 300, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
+                        Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0,
+                            ModContent.ProjectileType<STARSPAWNEFFECT>(), 0, 1, Main.myPlayer, 0, 0);
+                    }
                 }
                 if (NPC.ai[0] >= 10)
                 {

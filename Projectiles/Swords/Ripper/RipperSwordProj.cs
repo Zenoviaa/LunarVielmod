@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,10 +10,13 @@ namespace Stellamod.Projectiles.Swords.Ripper
 {
     internal class RipperSwordProj : ModProjectile
     {
-        private const int Delay = 15;
+        private Vector2 _targetCenter;
+        private Vector2 _velocity;
+        private const int Freeze = 45;
+        private const int Fire = 80; 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -23,20 +27,82 @@ namespace Stellamod.Projectiles.Swords.Ripper
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.timeLeft = 82-50;
+            Projectile.timeLeft = 112;
+        }
+
+        private void AI_Movement(Vector2 targetCenter, float moveSpeed, float accel = 1f)
+        {
+            //This code should give quite interesting movement
+
+            //Accelerate to being on top of the player
+            float distX = targetCenter.X - Projectile.Center.X;
+            if (Projectile.Center.X < targetCenter.X && Projectile.velocity.X < moveSpeed)
+            {
+                Projectile.velocity.X += accel;
+                if (Projectile.velocity.X > distX)
+                    Projectile.velocity.X = distX;
+
+            }
+            else if (Projectile.Center.X > targetCenter.X && Projectile.velocity.X > -moveSpeed)
+            {
+                Projectile.velocity.X -= accel;
+                if (Projectile.velocity.X < distX)
+                    Projectile.velocity.X = distX;
+            }
+
+            //Accelerate to being above the player.
+            float distY = targetCenter.Y - Projectile.Center.Y;
+            if (Projectile.Center.Y < targetCenter.Y && Projectile.velocity.Y < moveSpeed)
+            {
+                Projectile.velocity.Y += accel;
+                if (Projectile.velocity.Y > distY)
+                    Projectile.velocity.Y = distY;
+            }
+            else if (Projectile.Center.Y > targetCenter.Y && Projectile.velocity.Y > -moveSpeed)
+            {
+                Projectile.velocity.Y -= accel;
+                if (Projectile.velocity.Y < distY)
+                    Projectile.velocity.Y = distY;
+            }
         }
 
         public override void AI()
         {
             ref float ai_Counter = ref Projectile.ai[0];
-            ai_Counter++;
-            if (ai_Counter == Delay)
+            if(ai_Counter == 0)
             {
-                //I made the projectile just move super slow when it spawned, so gotta do this to return to normal speed.
-                Projectile.velocity *= 100;
+                float radius = 384;
+                _targetCenter = Projectile.Center + new Vector2(
+                    Main.rand.NextFloat(-radius, radius),
+                    Main.rand.NextFloat(-radius, radius));
             }
 
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+            ai_Counter++;
+        
+            if(ai_Counter >= Fire)
+            {
+                AI_Movement(Main.MouseWorld, 25, 5);
+                float targetRotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
+            } 
+            else if (ai_Counter > Freeze)
+            {
+                float targetRotation = _velocity.ToRotation() + MathHelper.ToRadians(45);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
+            }
+            else if (ai_Counter == Freeze)
+            {
+                //I made the projectile just move super slow when it spawned, so gotta do this to return to normal speed.
+                Projectile.velocity = Vector2.Zero;
+                _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 45;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
+            }
+            else if (ai_Counter < Freeze)
+            {
+                AI_Movement(_targetCenter, 25, 5);
+                Projectile.rotation += ai_Counter * 0.01f;
+            }
+
             Visuals();
         }
 

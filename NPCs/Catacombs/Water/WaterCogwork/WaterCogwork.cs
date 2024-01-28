@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -32,6 +33,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             Main.npcFrameCount[NPC.type] = 46;
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
         public override void SetDefaults()
@@ -69,6 +71,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             ai_Counter = 0;
             ai_last_State = ai_State;
             ai_State = (float)attackState;
+
         }
 
         private void WheelSparks(Vector2 sparksOffset)
@@ -82,15 +85,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 Vector2 vel = direction * 4;
                 Dust.NewDust(NPC.Center + sparksOffset, 0, 0, DustID.Iron, vel.X, vel.Y);
             }
-        }
-        private void GunMovement()
-        {
-            if (_gun == null)
-                return;
-            if (!_gun.active)
-                return;
-
-            _gun.Center = Vector2.Lerp(_gun.Center, NPC.Center, 0.2f);
         }
 
         private int _frameCounter;
@@ -154,32 +148,27 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
 
         public float Spawner = 0;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(ai_State);
+            writer.Write(ai_Counter);
+            writer.Write(ai_last_State);
+            writer.Write(_frameCounter);
+            writer.Write(_frameTick);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            ai_State = reader.ReadSingle();
+            ai_Counter = reader.ReadSingle();
+            ai_last_State = reader.ReadSingle();
+            _frameCounter = reader.ReadInt32();
+            _frameTick = reader.ReadInt32();
+        }
+
         public override void AI()
         {
-            Spawner++;
-            /*
-            Player players = Main.player[NPC.target];
-            if (Spawner == 2)
-
-            {
-
-
-
-                int distanceY = Main.rand.Next(-250, -250);
-                NPC.position.X = players.Center.X;
-                NPC.position.Y = players.Center.Y + distanceY;
-
-            }*/
-            //OK so 
-            //Cogwork will move around the arena kinda like a blazing wheel
-            //He has contact damage obviously
-            //Rotates around the arena and shoots projectiles
-            //He'll make gear noises as he moves and have sparke particles coming out from where he touches the ground
-            //The cogwork will roll around the arena and every once in a while stop and pull out a different gun to shoot you with
-            //He sticks to walls like blazing wheels
-            //Also has a ram attack where he revs up and goes around fast, you have to jump over em
-            //So 4 attacks
-            base.AI();
             if (!NPC.HasValidTarget)
             {
                 //WheelMovement(2);
@@ -196,7 +185,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             AttackState attackState = (AttackState)ai_State;
             AttackState attackLastState = (AttackState)ai_last_State;
 
-            GunMovement();
             switch (attackState)
             {
                 case AttackState.Idle:
@@ -206,7 +194,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                         //Determine the Attack
                         if(attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
                         {
-                            switch(Main.rand.Next(0, 3))
+                            switch (Main.rand.Next(0, 3))
                             {
                                 case 0:
                                     SwitchState(AttackState.Bolt);
@@ -218,17 +206,19 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                                     SwitchState(AttackState.Rifle);
                                     break;
                             }
+                            NPC.netUpdate = true;
                         }
                         else
                         {
                             if (Main.rand.NextBool(5))
                             {
-                                SwitchState(AttackState.Spin_Fast);   
+                                SwitchState(AttackState.Spin_Fast);
                             }
                             else
                             {
                                 SwitchState(AttackState.Spin_Slow);
-                            }                      
+                            }
+                            NPC.netUpdate = true;
                         }      
                     }
 
@@ -289,8 +279,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 case AttackState.Bolt:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
-                            ModContent.NPCType<WaterGun>());
+                        if (StellaMultiplayer.IsHost)
+                        {
+                           NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                                ModContent.NPCType<WaterGun>(), ai2: NPC.whoAmI);
+                        }
+         
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
@@ -299,8 +293,11 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 case AttackState.Rifle:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-                            ModContent.NPCType<WaterRifle>());
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                            ModContent.NPCType<WaterRifle>(), ai2: NPC.whoAmI);
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);
@@ -309,8 +306,11 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 case AttackState.Launcher:
                     if (ai_Counter == 0)
                     {
-                        _gun = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, 
-                            ModContent.NPCType<WaterLauncher>());
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+                            ModContent.NPCType<WaterLauncher>(), ai2: NPC.whoAmI);
+                        }
                     }
                     ai_Counter++;
                     SwitchState(AttackState.Idle);

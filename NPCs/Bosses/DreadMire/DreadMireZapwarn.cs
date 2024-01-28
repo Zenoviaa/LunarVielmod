@@ -55,17 +55,15 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.defense = 8;
             NPC.lifeMax = 156;
             NPC.value = 30f;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.friendly = true;
             NPC.dontCountMe = true;
         }
+
         float alphaCounter = 0;
         float counter = 8;
-
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
@@ -73,17 +71,15 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Main.spriteBatch.Draw(texture2D4, NPC.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(15f * alphaCounter), (int)(25f * alphaCounter), 0), 0, new Vector2(30 / 2, 1028 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
             return true;
         }
+
         public override void AI()
         {
-
-       
             if (!Down)
             {
                 alphaCounter += 0.04f;
                 if (alphaCounter >= 5)
                 {
                     Down = true;
-
                 }
             }
             else
@@ -105,14 +101,18 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     if (Sound == 3)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"), NPC.position);
-
                     }
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
                     var EntitySource = NPC.GetSource_FromThis();
-                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y, 0, 10, ModContent.ProjectileType<TerrorBeam>(), 150, 0f, -1, 0, NPC.whoAmI);
-                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ModContent.ProjectileType<DreadSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Utilities.NewProjectileBetter(LightPos.X, LightPos.Y, 0, 10,
+                            ModContent.ProjectileType<TerrorBeam>(), 150, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
+                        Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0,
+                            ModContent.ProjectileType<DreadSpawnEffect>(), 40, 1, Owner: Main.myPlayer);
+                    }
                 }
                 if (NPC.ai[0] >= 10)
                 {
@@ -123,8 +123,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     }
                     alphaCounter -= 0.29f;
                 }
-
-
             }
 
             if (!Lightning)

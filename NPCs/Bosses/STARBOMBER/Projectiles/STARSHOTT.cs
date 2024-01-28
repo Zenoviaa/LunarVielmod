@@ -21,20 +21,20 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 16;
 			Projectile.scale = 0.6f;
-
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void AI()
 		{
 			
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
 		}
 
 		public override Color? GetAlpha(Color lightColor)
@@ -54,8 +54,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				}
 			}
 			return true;
-
-
 		}
 
 
@@ -63,7 +61,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		{
 			behindNPCs.Add(index);
 			behindProjectiles.Add(index);
-
 		}
 	}
 

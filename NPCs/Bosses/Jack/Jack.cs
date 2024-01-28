@@ -12,6 +12,7 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Utilis;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -42,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.Jack
         {
             NPCID.Sets.TrailCacheLength[NPC.type] = 4;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
-            // DisplayName.SetDefault("Jack");
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Main.npcFrameCount[NPC.type] = 12;
         }
 
@@ -51,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.alpha = 255;
             NPC.width = 30;
             NPC.height = 75;
-            NPC.damage = 10;
+            NPC.damage = 32;
             NPC.defense = 6;         
             NPC.lifeMax = 1100;
             NPC.HitSound = SoundID.NPCHit16;
@@ -63,15 +64,12 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
             NPC.aiStyle = 0;
-
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.5f;
-
             if (Jumping)
             {
                 if (NPC.frameCounter >= 8)
@@ -135,7 +133,12 @@ namespace Stellamod.NPCs.Bosses.Jack
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Jack_Death1"), NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
                 var entitySource = NPC.GetSource_FromThis();
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<JackDeath>());
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y,
+                        ModContent.NPCType<JackDeath>());
+                }
+
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Hay, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
@@ -210,34 +213,31 @@ namespace Stellamod.NPCs.Bosses.Jack
         }
 
         public float Spawner = 0;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(JackFirerand);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            JackFirerand = reader.ReadInt32();
+        }
+
         public override void AI()
         {
-            Spawner++;
-            Player players = Main.player[NPC.target];
-            if (Spawner == 2)
-
-            {
-
-
-
-                int distanceY = Main.rand.Next(-250, -250);
-                NPC.position.X = players.Center.X;
-                NPC.position.Y = players.Center.Y + distanceY;
-
-            }
-
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
                 Player player1 = Main.player[NPC.target];
-
                 if (!NPC.HasPlayerTarget || NPC.Distance(player1.Center) > 3000f)
                 {
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -335,18 +335,20 @@ namespace Stellamod.NPCs.Bosses.Jack
                         NPC.ai[0]++;
                         if (NPC.ai[0] >= 2)
                         {
-
-                            int Atack = Main.rand.Next(2, 6 + 1);
-                            if (Atack == PrevAtack)
+                            if (StellaMultiplayer.IsHost)
                             {
-                                NPC.ai[0] = 1;
+                                int Atack = Main.rand.Next(2, 6 + 1);
+                                if (Atack == PrevAtack)
+                                {
+                                    NPC.ai[0] = 1;
+                                }
+                                else
+                                {
+                                    NPC.ai[0] = 0;
+                                    NPC.ai[1] = Atack;
+                                }
+                                NPC.netUpdate = true;
                             }
-                            else
-                            {
-                                NPC.ai[0] = 0;
-                                NPC.ai[1] = Atack;
-                            }
-
                         }
 
                         break;
@@ -357,29 +359,37 @@ namespace Stellamod.NPCs.Bosses.Jack
                             if (NPC.ai[0] == 20)
                             {
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                int amountOfProjectiles = Main.rand.Next(1, 3);
-                                for (int i = 0; i < amountOfProjectiles; ++i)
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                    int damage = Main.expertMode ? 4 : 6;
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<JackFire2>(), damage, 1, Main.myPlayer, 0, 0);
+                                    int amountOfProjectiles = Main.rand.Next(1, 3);
+                                    for (int i = 0; i < amountOfProjectiles; ++i)
+                                    {
+                                        float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                                        float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                                        int damage = Main.expertMode ? 10 : 13;
+                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                                            ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
+                                    }
                                 }
+
                             }
                             NPC.velocity *= 0.96f;
                             if (NPC.ai[0] == 80)
                             {
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                                int amountOfProjectiles = Main.rand.Next(1, 3);
-                                for (int i = 0; i < amountOfProjectiles; ++i)
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                    int damage = Main.expertMode ? 4 : 6;
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<JackFire2>(), damage, 1, Main.myPlayer, 0, 0);
+                                    int amountOfProjectiles = Main.rand.Next(1, 3);
+                                    for (int i = 0; i < amountOfProjectiles; ++i)
+                                    {
+                                        float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                                        float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                                        int damage = Main.expertMode ? 9 : 15;
+                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
+                                            ModContent.ProjectileType<JackFire2>(), damage, 1, Owner: Main.myPlayer);
+                                    }
                                 }
+
                             }
                             if (NPC.ai[0] >= 100)
                             {
@@ -394,7 +404,12 @@ namespace Stellamod.NPCs.Bosses.Jack
                         {
                             if (NPC.ai[0] == 20)
                             {
-                                JackFirerand = Main.rand.Next(25, 40 + 1);
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    JackFirerand = Main.rand.Next(25, 40 + 1);
+                                    NPC.netUpdate = true;
+                                }
+                          
                                 NPC.noGravity = true;
                                 NPC.noTileCollide = true;
                                 NPC.velocity.Y -= 15;
@@ -410,15 +425,17 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 {
                                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, NPC.position);
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                                    if (StellaMultiplayer.IsHost)
                                     {
                                         var entitySource = NPC.GetSource_FromThis();
                                         int OffSet = Main.rand.Next(-130, 130 + 1);
                                         Vector2 NukePos;
                                         NukePos.X = NPC.Center.X + OffSet;
                                         NukePos.Y = NPC.Center.Y;
-                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 3, 0);
+                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
+                                            Mod.Find<ModProjectile>("JackSpawnEffect").Type, 0, 0, Owner: Main.myPlayer);
+                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
+                                            Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 3, 0, Owner: Main.myPlayer);
                                     }
                                 }
                             }
@@ -428,9 +445,9 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 NPC.noGravity = false;
                                 NPC.noTileCollide = false;
                             }
+
                             if (NPC.ai[0] >= 330)
                             {
-                                NPC.netUpdate = true;
                                 PrevAtack = 2;
                                 NPC.ai[1] = 1;
                                 NPC.ai[0] = 0;
@@ -463,7 +480,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 if (NPC.ai[0] % 7 == 0)
                                 {
                                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, NPC.position);
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                                    if (StellaMultiplayer.IsHost)
                                     {
                                         var entitySource = NPC.GetSource_FromThis();
                                         int OffSet = Main.rand.Next(-30, 30 + 1);
@@ -471,19 +488,19 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         NukePos.X = NPC.Center.X + OffSet;
                                         NukePos.Y = NPC.Center.Y;
 
-                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(OffSet / 10, 6), Mod.Find<ModProjectile>("FallingHay").Type, NPC.damage / 9, 0);
+                                        Projectile.NewProjectile(entitySource, NukePos, new Vector2(OffSet / 10, 6),
+                                            Mod.Find<ModProjectile>("FallingHay").Type, 12, 0, Owner: Main.myPlayer);
                                     }
                                 }
                             }
+
                             if (NPC.ai[0] >= 100)
                             {
-                                NPC.netUpdate = true;
                                 Jumping = false;
                                 PrevAtack = 3;
                                 NPC.ai[1] = 1;
                                 NPC.ai[0] = 0;
                             }
-
                         }
                         else
                         {
@@ -514,19 +531,14 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     {
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Jack_Land"), NPC.position);
                                         Jumping = false;
-                                        NPC.netUpdate = true;
                                     }
-                                    NPC.netUpdate = true;
                                     NPC.velocity.X *= 0.1f;
                                 }
                                 else
                                 {
-                                    NPC.netUpdate = true;
                                     NPC.velocity.X *= 1.05f;
                                 }
                             }
-
-
 
                             if (NPC.ai[0] >= 100)
                             {
@@ -559,15 +571,20 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                                 }
                             }
-                            int amountOfProjectiles = Main.rand.Next(1, 2);
-                            for (int i = 0; i < amountOfProjectiles; ++i)
+
+                            if (StellaMultiplayer.IsHost)
                             {
-                                float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                                float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                int damage = Main.expertMode ? 4 : 6;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 8, ModContent.ProjectileType<JackoBall>(), damage, 1, Main.myPlayer, 0, 0);
+                                int amountOfProjectiles = Main.rand.Next(1, 2);
+                                for (int i = 0; i < amountOfProjectiles; ++i)
+                                {
+                                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                                    int damage = Main.expertMode ? 8 : 11;
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 8, 
+                                        ModContent.ProjectileType<JackoBall>(), damage, 1, Owner: Main.myPlayer);
+                                }
                             }
+
                         }
                         if (NPC.ai[0] >= 50)
                         {
@@ -598,19 +615,22 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                                 }
                             }
-                            int amountOfProjectiles = Main.rand.Next(2, 4);
-                            for (int i = 0; i < amountOfProjectiles; ++i)
+
+                            if (StellaMultiplayer.IsHost)
                             {
-                                float offsetX = Main.rand.Next(-200, 200) * 0.01f;
-                                float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                int damage = Main.expertMode ? 4 : 6;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 5, ModContent.ProjectileType<MossBall>(), damage, 1, Main.myPlayer, 0, 0);
+                                int amountOfProjectiles = Main.rand.Next(2, 4);
+                                for (int i = 0; i < amountOfProjectiles; ++i)
+                                {
+                                    float offsetX = Main.rand.Next(-200, 200) * 0.01f;
+                                    float offsetY = Main.rand.Next(-200, 200) * 0.01f;
+                                    int damage = Main.expertMode ? 4 : 6;
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY - 5, 
+                                        ModContent.ProjectileType<MossBall>(), damage, 1, Owner: Main.myPlayer);
+                                }
                             }
                         }
                         if (NPC.ai[0] >= 50)
                         {
-                            NPC.netUpdate = true;
                             PrevAtack = 5;
                             NPC.ai[1] = 1;
                             NPC.ai[0] = 0;
@@ -622,7 +642,6 @@ namespace Stellamod.NPCs.Bosses.Jack
                         {
                             if (NPC.ai[0] >= 2)
                             {
-                                NPC.netUpdate = true;
                                 PrevAtack = 6;
                                 NPC.ai[1] = 1;
                                 NPC.ai[0] = 0;
@@ -664,6 +683,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     NPC.velocity.X -= 4;
                                 }
                             }
+
                             if (NPC.ai[0] == 60)
                             {
                                 NPC.velocity.Y -= 7;
@@ -676,6 +696,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                     NPC.velocity.X -= 4;
                                 }
                             }
+
                             if (NPC.ai[0] == 100)
                             {
                                 NPC.velocity.Y -= 7;
@@ -689,29 +710,22 @@ namespace Stellamod.NPCs.Bosses.Jack
                                 }
                             }
 
-
-
                             if (NPC.ai[0] >= 150)
                             {
                                 PrevAtack = 6;
                                 NPC.ai[1] = 1;
                                 NPC.ai[0] = 0;
-                                NPC.netUpdate = true;
                             }
                         }
 
                         break;
                 }
-
             }
-
-
         }
 
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedJackBoss, -1);
-
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -726,7 +740,6 @@ namespace Stellamod.NPCs.Bosses.Jack
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), minimumDropped: 7, maximumDropped: 50));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 7, maximumDropped: 50));
                 notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingFlames>(), chanceDenominator: 1));
-
 
             //Dunno if she should drop verlia brooch in classic mode or not
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.JackBossRel>()));

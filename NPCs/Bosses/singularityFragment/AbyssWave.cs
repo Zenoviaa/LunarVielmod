@@ -29,6 +29,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 			Projectile.damage = 60;
 			AIType = ProjectileID.Bullet;
         }
+
         public override Color? GetAlpha(Color lightColor) => Color.White;
         int timer;
 		int colortimer;
@@ -49,6 +50,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 			}
 			return true;
 		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
             Main.instance.LoadProjectile(Projectile.type);
@@ -67,6 +69,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
 		}
+        
         public override void AI()
         {
 

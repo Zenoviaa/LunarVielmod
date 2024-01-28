@@ -17,13 +17,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
     public class SolarPortal : ModNPC
     {
-
         public int PrevAtack;
         int moveSpeed = 0;
         int moveSpeedY = 0;
         float DaedusDrug = 8;
         float HomeY = 330f;
-        private bool p2 = false;
         bool Attack;
         bool Flying;
         public override void SetStaticDefaults()
@@ -125,7 +123,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             return true;
         }
 
-        public Vector2  DaedusPosAdd;
+        public Vector2 DaedusPosAdd;
         public override void AI()
         {
             Player player = Main.player[NPC.target];
@@ -166,6 +164,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     DaedusDrug -= 0.1f;
                 }
             }
+
             if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
@@ -176,6 +175,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -188,13 +188,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     NPC.active = false;
                 }
             }
+
             if (NPC.ai[2] == 0)
             {
-   
                 NPC.ai[2] = 1;
             }
-            p2 = NPC.life < NPC.lifeMax * 0.5f;
-
            
             if (NPC.ai[2] == 1)
             {
@@ -221,47 +219,81 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     case 2:
                         NPC.ai[0]++;
                         var entitySource = NPC.GetSource_FromThis();
-                        float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-                        float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                        if (NPC.scale <= 1)
-                        {
-                            NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-                            NPC.scale += 0.04f;
-                        }
 
-                        if (NPC.ai[0] == 230 -  50)
+                        if (NPC.ai[0] == 230 - 50)
                         {
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-                            Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                                float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                                float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(),
+                                    NPC.position.X + speedX + 10,
+                                    NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, Owner: Main.myPlayer);
+                            }
+                               
                             DaedusDrug = 10;
                         }
+
                         if (NPC.ai[0] == 250 - 50)
                         {
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-                            Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                                float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                                float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(),
+                                    NPC.position.X + speedX + 10,
+                                    NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, Owner: Main.myPlayer);
+                            }
                             DaedusDrug = 10;
                         }
+
                         if (NPC.ai[0] == 270 - 50)
                         {
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-                            Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                                float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                                float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(),
+                                    NPC.position.X + speedX + 10,
+                                    NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, Owner: Main.myPlayer);
+                            }
                             DaedusDrug = 10;
                         }
                         if (NPC.ai[0] == 290 - 50)
                         {
                             NPC.active = false;
                             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-                            Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
-                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 10, NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, 0, 0f, 0f);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, NPC.damage / 9, 0);
+                                float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                                float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), 
+                                    NPC.position.X + speedX + 10, 
+                                    NPC.position.Y, speedX * 0, speedY - 2 * 2, ModContent.ProjectileType<LanturnSpear>(), 12, 0f, Owner: Main.myPlayer);
+                            }
+
                             DaedusDrug = 10;
+                        }          
+                      
+                        if (NPC.scale <= 1)
+                        {
+                            NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
+                            NPC.scale += 0.04f;
                         }
+
                         break;
                 }
             }

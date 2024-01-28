@@ -34,53 +34,39 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Projectile.hostile = true;
 			Projectile.friendly = false;
 			Projectile.damage = 90;
-
-
 		}
-		bool initialized = false;
-		float alphaCounter;
-		Vector2 initialSpeed = Vector2.Zero;
 
-	
+		bool initialized = false;
+		Vector2 initialSpeed = Vector2.Zero;	
 		public float Timer = 0;
 		public override void AI()
 		{
-
 			Timer++;
-
-
 			if (Timer == 3)
 			{
-
-
-
-
-				float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-
-
-				
-				int fireball = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
-				Projectile ichor = Main.projectile[fireball];
-				ichor.hostile = true;
-				ichor.friendly = false;
-
-				Timer = 0;
-
-
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                    float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                    int fireball = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0,
+                        ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 0, 0f, Projectile.owner);
+                    Projectile ichor = Main.projectile[fireball];
+                    ichor.hostile = true;
+                    ichor.friendly = false;
+					ichor.netUpdate = true;
+                    Timer = 0;
+                }
 			}
 
-
 			Projectile.velocity *= 0.991f;
-			alphaCounter += 0.04f;
 			int rightValue = (int)Projectile.ai[1] - 1;
 			if (rightValue < (double)Main.projectile.Length && rightValue != -1)
 			{
 				Projectile other = Main.projectile[rightValue];
 				Vector2 direction9 = other.Center - Projectile.Center;
-				int distance = (int)Math.Sqrt((direction9.X * direction9.X) + (direction9.Y * direction9.Y));
 				direction9.Normalize();
 			}
+
 			if (!initialized)
 			{
 				initialSpeed = Projectile.velocity;
@@ -117,7 +103,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Color afterImgColor = Main.hslToRgb(Projectile.ai[1], 1, 0.5f);
-			float opacityForSparkles = 1 - (float)afterImgCancelDrawCount / 30;
 			afterImgColor.A = 90;
 			afterImgColor.B = 223;
 			afterImgColor.G = 188;

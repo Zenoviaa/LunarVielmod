@@ -31,6 +31,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			Main.npcFrameCount[Type] = 29;
 			NPCID.Sets.TrailCacheLength[Type] = 60;
 			NPCID.Sets.TrailingMode[Type] = 2;
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
 		}
 
 		public override void SetDefaults()
@@ -142,7 +143,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 		private void SwitchState(AttackState attackState)
         {
 			ai_Counter = 0;
-			ai_State = (float)attackState;
+			if (StellaMultiplayer.IsHost)
+			{
+                ai_State = (float)attackState;
+                NPC.netUpdate = true;
+            }
 		}
 
 		public float Spawner = 0;
@@ -226,18 +231,22 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			ai_Counter++;
 			if (ai_Counter > 60)
 			{
-				switch (Main.rand.Next(3))
+				if (StellaMultiplayer.IsHost)
 				{
-					case 0:
-						SwitchState(AttackState.Telegraph_Cage);
-						break;
-					case 1:
-						SwitchState(AttackState.Telegraph_Death_Skulls);
-						break;
-					case 2:
-						SwitchState(AttackState.Telegraph_Shockwave);
-						break;
-				}
+                    switch (Main.rand.Next(3))
+                    {
+                        case 0:
+                            SwitchState(AttackState.Telegraph_Cage);
+                            break;
+                        case 1:
+                            SwitchState(AttackState.Telegraph_Death_Skulls);
+                            break;
+                        case 2:
+                            SwitchState(AttackState.Telegraph_Shockwave);
+                            break;
+                    }
+                }
+
 			}
 		}
 
@@ -275,33 +284,39 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			DustBurst(nodeSpawnPosition3);
 			DustBurst(nodeSpawnPosition4);
 
-			var source = NPC.GetSource_FromThis();
-			SparnCageNode sparnCageNode1 = Projectile.NewProjectileDirect(source, nodeSpawnPosition1, Vector2.Zero,
-				ModContent.ProjectileType<SparnCageNode>(), 40, 1).ModProjectile as SparnCageNode;
-			sparnCageNode1.targetCenter = target.Center;
-			sparnCageNode1.distanceFromTargetCenter = distance;
+			if (StellaMultiplayer.IsHost)
+			{
+                var source = NPC.GetSource_FromThis();
+                SparnCageNode sparnCageNode1 = Projectile.NewProjectileDirect(source, nodeSpawnPosition1, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
+                sparnCageNode1.targetCenter = target.Center;
+                sparnCageNode1.distanceFromTargetCenter = distance;
 
-			SparnCageNode sparnCageNode2 = Projectile.NewProjectileDirect(source, nodeSpawnPosition2, Vector2.Zero,
-				ModContent.ProjectileType<SparnCageNode>(), 40, 1).ModProjectile as SparnCageNode;
-			sparnCageNode2.targetCenter = target.Center;
-			sparnCageNode2.distanceFromTargetCenter = distance;
+                SparnCageNode sparnCageNode2 = Projectile.NewProjectileDirect(source, nodeSpawnPosition2, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
+                sparnCageNode2.targetCenter = target.Center;
+                sparnCageNode2.distanceFromTargetCenter = distance;
 
-			SparnCageNode sparnCageNode3 = Projectile.NewProjectileDirect(source, nodeSpawnPosition3, Vector2.Zero,
-				ModContent.ProjectileType<SparnCageNode>(), 40, 1).ModProjectile as SparnCageNode;
-			sparnCageNode3.targetCenter = target.Center;
-			sparnCageNode3.distanceFromTargetCenter = distance;
+                SparnCageNode sparnCageNode3 = Projectile.NewProjectileDirect(source, nodeSpawnPosition3, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
+                sparnCageNode3.targetCenter = target.Center;
+                sparnCageNode3.distanceFromTargetCenter = distance;
 
-			SparnCageNode sparnCageNode4 = Projectile.NewProjectileDirect(source, nodeSpawnPosition4, Vector2.Zero,
-				ModContent.ProjectileType<SparnCageNode>(), 40, 1).ModProjectile as SparnCageNode;
-			sparnCageNode4.targetCenter = target.Center;
-			sparnCageNode4.distanceFromTargetCenter = distance;
+                SparnCageNode sparnCageNode4 = Projectile.NewProjectileDirect(source, nodeSpawnPosition4, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
+                sparnCageNode4.targetCenter = target.Center;
+                sparnCageNode4.distanceFromTargetCenter = distance;
 
-			sparnCageNode1.targetProjectile = sparnCageNode2.Projectile;
-			sparnCageNode2.targetProjectile = sparnCageNode3.Projectile;
-			sparnCageNode3.targetProjectile = sparnCageNode4.Projectile;
-			sparnCageNode4.targetProjectile = sparnCageNode1.Projectile;
-			SwitchState(AttackState.Idle);
-		}
+                sparnCageNode1.targetProjectile = sparnCageNode2.Projectile;
+                sparnCageNode2.targetProjectile = sparnCageNode3.Projectile;
+                sparnCageNode3.targetProjectile = sparnCageNode4.Projectile;
+                sparnCageNode4.targetProjectile = sparnCageNode1.Projectile;
+                NetMessage.SendData(MessageID.SyncProjectile);
+         
+            }
+
+            SwitchState(AttackState.Idle);
+        }
 
 		private void TelegraphDeathSkulls()
 		{
@@ -341,18 +356,23 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			ai_Counter++;
 			if(ai_Counter % 9 == 0)
             {
-				int numProjectiles = Main.rand.Next(1, 2);
-				for (int p = 0; p < numProjectiles; p++)
-				{
-					// Rotate the velocity randomly by 30 degrees at max.
-					Vector2 spawnPosition = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
-					Vector2 velocity = VectorHelper.VelocityDirectTo(spawnPosition, target.Center, Main.rand.NextFloat(4, 12));
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPosition, velocity,
-						ModContent.ProjectileType<SparnSkull>(), 34, 2);
+                if (StellaMultiplayer.IsHost)
+                {
+                    int numProjectiles = Main.rand.Next(1, 2);
+                    for (int p = 0; p < numProjectiles; p++)
+                    {
+                        // Rotate the velocity randomly by 30 degrees at max.
 
-					DustBurst(spawnPosition);
-					SoundEngine.PlaySound(SoundID.Item43);
-				}
+                        Vector2 spawnPosition = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                        Vector2 velocity = VectorHelper.VelocityDirectTo(spawnPosition, target.Center, Main.rand.NextFloat(4, 12));
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPosition, velocity,
+                            ModContent.ProjectileType<SparnSkull>(), 34, 2, Owner: Main.myPlayer);
+
+                        DustBurst(spawnPosition);
+                        SoundEngine.PlaySound(SoundID.Item43);
+                    }
+                }
+
 			} 
 			else if (ai_Counter > 64)
             {

@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetCritChance(DamageClass.Ranged) += 5f;
+            player.GetCritChance(DamageClass.Ranged) += 10f;
         }
 
         public override void AddRecipes()

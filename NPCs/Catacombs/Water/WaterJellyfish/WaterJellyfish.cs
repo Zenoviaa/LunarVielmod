@@ -38,6 +38,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 60;
+			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 		}
 
 		public override void SetDefaults()
@@ -92,7 +93,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 		private void SwitchState(AttackState attackState)
         {
 			ai_Counter = 0;
-			ai_State = (float)attackState;
+            ai_State = (float)attackState;
         }
 
 		public float Spawner = 0;
@@ -180,11 +181,14 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 					if(ai_Counter % 10 == 0)
                     {			
 						Vector2 velocity = target.DirectionFrom(_nextLightningPosition) * 3;
-
-						Projectile projectile = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
-							ProjectileID.DD2LightningBugZap, 29, 1);
-						projectile.tileCollide = false;
-						projectile.timeLeft = 60;
+						if (StellaMultiplayer.IsHost)
+						{
+							int index = Projectile.NewProjectile(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
+								ProjectileID.DD2LightningBugZap, 29, 1, Owner: Main.myPlayer);
+							Main.projectile[index].tileCollide = false;
+							Main.projectile[index].timeLeft = 60;
+							NetMessage.SendData(MessageID.SyncProjectile, number: index);
+						}
 						for (int i = 0; i < 16; i++)
 						{
 							Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
@@ -222,9 +226,11 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 						Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.Center, 1024f, 32f);
 						SoundEngine.PlaySound(SoundID.Item121);
 					}
-
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(0, -32), Vector2.Zero,
-						ProjectileID.CultistBossLightningOrb, 15, 1);
+					if (StellaMultiplayer.IsHost)
+					{
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(0, -32), Vector2.Zero,
+						ProjectileID.CultistBossLightningOrb, 15, 1, Owner: Main.myPlayer);
+					}
 					SwitchState(AttackState.Idle);
 					break;
 				case AttackState.Lightning_Attack_3:
@@ -239,11 +245,15 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 					if (ai_Counter % 10 == 0)
 					{
 						Vector2 velocity = target.DirectionFrom(_nextLightningPosition) * 6;
-
-						Projectile projectile = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
-							ProjectileID.DD2LightningBugZap, 32, 1);
-						projectile.tileCollide = false;
-						projectile.timeLeft = 60;
+						if (StellaMultiplayer.IsHost)
+						{
+                           int index = Projectile.NewProjectile(NPC.GetSource_FromThis(), _nextLightningPosition, velocity,
+								ProjectileID.DD2LightningBugZap, 32, 1, Owner: Main.myPlayer);
+							Main.projectile[index].tileCollide = false;
+							Main.projectile[index].timeLeft = 60;
+                            NetMessage.SendData(MessageID.SyncProjectile, number: index);
+                        }
+		
 						for (int i = 0; i < 16; i++)
 						{
 							Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);

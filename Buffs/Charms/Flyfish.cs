@@ -16,8 +16,8 @@ namespace Stellamod.Buffs.Charms
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.statDefense += 2;
-			player.moveSpeed += 0.1f;
-			player.maxRunSpeed += 0.2f;
+			player.moveSpeed += 0.3f;
+			player.maxRunSpeed += 0.3f;
 		}
 	}
 }

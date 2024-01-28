@@ -44,6 +44,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
         }
 
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {

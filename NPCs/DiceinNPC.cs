@@ -67,47 +67,47 @@ namespace Stellamod.NPCs
             {
                 SoundEngine.PlaySound(SoundID.NPCHit25, NPC.position);
                 SoundEngine.PlaySound(SoundID.NPCDeath28, NPC.position);
-                if (Main.netMode != NetmodeID.Server)
+                for (int k = 0; k < 50; k++)
                 {
-                    for (int k = 0; k < 50; k++)
-                    {
-                        Dust d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<Sparkle>(), Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(7), 0, default, 0.95f);
-                        d.noGravity = true;
-                    }
+                    Dust d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<Sparkle>(), Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(7), 0, default, 0.95f);
+                    d.noGravity = true;
                 }
 
-                var entitySource = player.GetSource_OpenItem(Type);
+                int itemIndex;
                 switch (Main.rand.Next(5))
                 {
-
                     case 0:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Wohooo", true, false);
-                        Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 1));
+                        if(Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 1:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Omg, its something!", true, false);
-                        Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 2));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 2:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Are you disappointed? You should be.", true, false);
-                        Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                     case 3:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Wow, you have no maidens and no luck..", true, false);
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
                         break;
                     case 4:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
-                        Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
                 }
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Kaboom"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
                 NPC.active = false;
-
             }
         }
 

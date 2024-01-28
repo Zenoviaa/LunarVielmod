@@ -36,50 +36,33 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		{
 			var entitySource = Projectile.GetSource_FromAI();
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
+
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 			Projectile.velocity *= 0.99f;
 
 			Dream++;
 			if (Dream == 250)
-		{
-			SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
-			Projectile.ownerHitCheck = true;
-
-		
-
-			// Damage enemies within the splash radius
-			
-
-			for (int i = 0; i < 150; i++)
 			{
-				Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-				var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 11, Scale: 3f);
-				;
-				d.noGravity = true;
-			}
+				SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
+				Projectile.ownerHitCheck = true;
 
-
-
-
-
-
-				int index = NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARLING>());
-				NPC minionNPC = Main.npc[index];
-
-				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
-				// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
-
-
-
-				// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
-				if (Main.netMode == NetmodeID.Server && index < Main.maxNPCs)
+	
+				for (int i = 0; i < 150; i++)
 				{
-					NetMessage.SendData(MessageID.SyncNPC, number: index);
+					Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+					var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 11, Scale: 3f);
+					d.noGravity = true;
 				}
+				
+				if(Main.myPlayer == Projectile.owner)
+				{
+                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARLING>());
+                }
+
 				Projectile.Kill();
 			}
-	}
+		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{

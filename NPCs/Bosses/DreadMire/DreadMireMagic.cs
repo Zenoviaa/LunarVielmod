@@ -8,9 +8,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("SalfaCirle");
             Main.projFrames[Projectile.type] = 19;
         }
+
         public override void SetDefaults()
         {
             Projectile.friendly = false;
@@ -22,15 +22,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             DrawOriginOffsetY = 0;
             Projectile.damage = 0;
             Projectile.timeLeft = 161;
-
         }
+        
         public override bool PreAI()
         {
-
             Projectile.tileCollide = false;
-
             return true;
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);

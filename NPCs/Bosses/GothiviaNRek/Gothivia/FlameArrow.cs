@@ -20,23 +20,28 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextBool(2))
-                target.AddBuff(BuffID.OnFire, 180);
+            if(Main.myPlayer == Projectile.owner)
+            {
+                if (Main.rand.NextBool(2))
+                    target.AddBuff(BuffID.OnFire, 180);
+            }
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 9;
             Projectile.height = 17;
-
             Projectile.knockBack = 12.9f;
             Projectile.aiStyle = 1;
-            AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
+            AIType = ProjectileID.Bullet;
         }
+
         public override void AI()
         {
             Projectile.ai[1]++;
@@ -72,8 +77,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
             Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.0f * Main.essScale);
-
         }
+
         public override void OnKill(int timeLeft)
         {
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 512f, 32f);
@@ -91,13 +96,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-
         }
 
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
+
         public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
@@ -124,6 +129,5 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 
             return false;
         }
-
     }
 }

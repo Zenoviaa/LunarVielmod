@@ -3,6 +3,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Stellamod.NPCs.RoyalCapital;
+using Stellamod.NPCs.Bosses.Fenix;
 
 namespace Stellamod.NPCs.Town
 {
@@ -25,14 +26,22 @@ namespace Stellamod.NPCs.Town
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
-            if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()) && StellaMultiplayer.IsHost)
+            for(int i = 0; i < Main.maxPlayers; i++)
             {
-                NPC.NewNPC(null, (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y, ModContent.NPCType<Merena>());
-            }
+                Player player = Main.player[i];
+                if (player.active && player.GetModPlayer<MyPlayer>().ZoneAlcadzia)
+                {
+                    if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()) && StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(null, (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y, ModContent.NPCType<Merena>());
+                    }
 
-            if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) && StellaMultiplayer.IsHost)
-            {
-                NPC.NewNPC(null, (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y, ModContent.NPCType<LonelySorceress>());
+                    if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
+                        !NPC.AnyNPCs(ModContent.NPCType<Fenix>()) && StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(null, (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y, ModContent.NPCType<LonelySorceress>());
+                    }
+                }
             }
         }
 

@@ -47,7 +47,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increased Regeneration! 
-					+10% damage
+					+4% damage
 					Allows you to equip advanced brooches! Very useful 
 					Allows the effects of the Hiker's Backpack!
 					'''
@@ -57,10 +57,11 @@ Mods: {
 				DisplayName: Diari Brooch
 				Tooltip:
 					'''
-					+ 4 Defense!
-					Auto swing capabilities!
-					Flame walking? Always Fed!
-					+40 Health and Mana
+					+2 Defense!
+					Flame walking? 
+					Always Well Fed!
+					+10 Health and Mana
+					+5% Damage!
 					'''
 			}
 
@@ -1911,7 +1912,7 @@ Mods: {
 
 			ArncharMagazine: {
 				DisplayName: Arnchar Magazine
-				Tooltip: Increases ranged critical strike chance by 5%
+				Tooltip: Increases ranged critical strike chance by 10%
 			}
 
 			ClamsPearl: {
@@ -2008,8 +2009,8 @@ Mods: {
 				Tooltip:
 					'''
 					Increased movement speed
-					+10% Damage
-					Gives effects of steali and adds +40 Health and +10% critical strike chance!
+					+2% Damage
+					Gives effects of steali and adds +10 Health and +10% critical strike chance!
 					Increased life regeneration!
 					'''
 			}
@@ -3235,7 +3236,7 @@ Mods: {
 				DisplayName: Dreaded Dreadmire Brooch
 				Tooltip:
 					'''
-					+10 Health
+					40 Health
 					You know maybe she wasn't all that bad.
 					'''
 			}
@@ -3327,8 +3328,8 @@ Mods: {
 				Tooltip:
 					'''
 					Perfect for mages!
-					+3 Max minions!
-					13% increased summon damage!
+					+2 Max minions!
+					10% increased summon damage!
 					'''
 			}
 
@@ -4994,6 +4995,168 @@ Mods: {
 				DisplayName: Veiizals Umbrella
 				Tooltip: ""
 			}
+
+			AnotherRock: {
+				DisplayName: Another Rock
+				Tooltip: Use it to descend to the Old Guardian's Shrine, deep underground
+			}
+
+			AlcaricQuiver: {
+				DisplayName: Alcaric Quiver
+				Tooltip:
+					'''
+					Converts wooden arrows into void arrows
+					Void arrows travel faster, deal more damage, and explode!
+					'''
+			}
+
+			BlackRose: {
+				DisplayName: Black Rose
+				Tooltip: Using a mana potion hurts you a little instead of sickening you
+			}
+
+			LittleWand: {
+				DisplayName: Little Wand
+				Tooltip:
+					'''
+					Use this to cast powerful magic!
+					Only used by the mightiest of wizards
+					'''
+			}
+
+			WindedQuiver: {
+				DisplayName: Winded Quiver
+				Tooltip: Turns wooden arrows into winded shots that pierce enemies!
+			}
+
+			AimacraWig: {
+				DisplayName: Aimacra's Wig
+				Tooltip: Great for impersonating Aimacra from Diari! Also gives 50 health!
+			}
+
+			WindmillionBoots: {
+				DisplayName: Windmillion Boots
+				Tooltip:
+					'''
+					10% increased movement speed
+					10% Increased throwing damage	
+					'''
+			}
+
+			WindmillionHat: {
+				DisplayName: Windmillion Hat
+				Tooltip:
+					'''
+					+10 Life!
+					+10 Throwing Critical Strike Chance
+					+10% Throwing Damage
+					'''
+			}
+
+			WindmillionRobe: {
+				DisplayName: Windmillion Robe
+				Tooltip:
+					'''
+					+2 Throwing Critical Strike Chance
+					Getting snazzy!
+					'''
+			}
+
+			VampiricVine: {
+				DisplayName: Vampiric Vine
+				Tooltip:
+					'''
+					Getting some bitches finally?
+					Randomly will shoot out vampire arrows that will heal you in a shot array!
+					'''
+			}
+
+			WindmillShuriken: {
+				DisplayName: Windmill Shuriken
+				Tooltip: Heyyyyy you can't just save the Ohio president!
+			}
+
+			PerfectionStaff: {
+				Tooltip: ""
+				DisplayName: Perfection Staff
+			}
+
+			XixianFlask: {
+				DisplayName: Xixian Flask
+				Tooltip: Passed down from the wonders of Zui and sacred special witches!
+			}
+
+			VitalityInsource: {
+				Tooltip:
+					'''
+					40 Seconds of duration on flask!
+					Heals 102 Health and Mana
+					Gives a honey buff as well!
+					'''
+				DisplayName: Vitality Insource
+			}
+
+			HealthyInsource: {
+				Tooltip:
+					'''
+					40 Seconds of duration on flask!
+					Heals 35 Health
+					'''
+				DisplayName: Healthy Insource
+			}
+
+			FloweredInsource: {
+				DisplayName: Flowered Insource
+				Tooltip:
+					'''
+					20 Seconds of duration on flask!
+					Gives 10 Defense while in use
+					Attack speed increased by 50% while active, 
+					A shadowy alcaric trail will lead behind!
+					'''
+			}
+
+			VialedInsource: {
+				DisplayName: Vialed Insource
+				Tooltip:
+					'''
+					20 Seconds of duration on flask!
+					300% Fall speed
+					No Fall damage
+					Jump boost!
+					Movement speed increased by 40%
+					A morrowed trail will follow behind you!
+					'''
+			}
+
+			EpsidonInsource: {
+				Tooltip:
+					'''
+					40 Seconds of duration on flask!
+					Honey, ironskin and swiftness buffs for 20 seconds!
+					+200 Heal on use!
+					'''
+				DisplayName: Epsidon Insource
+			}
+
+			CogBomber: {
+				DisplayName: Cog Bomber
+				Tooltip:
+					'''
+					Fires mini nukes that explode into several small fires
+					Boom :) 
+					'''
+			}
+
+			GearGutter: {
+				DisplayName: Gear Gutter
+				Tooltip: Shoots an extremely fast and long iron needle that pierces infinitely
+			}
+
+			TheTingler: {
+				DisplayName: The Tingler
+				Tooltip: Shoots small iron needles that lodge into targets and deal damage over time
+			}
 		}
 
 		JungleRuneI: {
@@ -5712,9 +5875,19 @@ Mods: {
 			VeiizalsUmbrellaProjOpen.DisplayName: Veiizals Umbrella Proj Open
 			VeiizalsUmbrellaFireProj.DisplayName: Veiizals Umbrella Fire Proj
 			VeiizalsUmbrellaWaveProj.DisplayName: Veiizals Umbrella Wave Proj
-			VeiizalBullet.DisplayName: Veiizal Bullet
-			VeiizalBeam.DisplayName: Veiizal Beam
-			Veiizallighting.DisplayName: Veiizallighting
+			VoidArrow.DisplayName: Void Arrow
+			WindmillShurikenProj.DisplayName: Windmill Shuriken Proj
+			VampiricArrowProj.DisplayName: Vampiric Arrow Proj
+			PerfectionProj.DisplayName: Perfection Proj
+			HealthyInsourceProj.DisplayName: Healthy Insource Proj
+			VitalityInsourceProj.DisplayName: Vitality Insource Proj
+			FloweredInsourceProj.DisplayName: Flowered Insource Proj
+			VialedInsourceProj.DisplayName: Vialed Insource Proj
+			EpsidonInsourceProj.DisplayName: Epsidon Insource Proj
+			CogBomb.DisplayName: Cog Bomb
+			CogKaboom.DisplayName: Cog Kaboom
+			CogNeedle.DisplayName: Cog Needle
+			GearSniper.DisplayName: Gear Sniper
 		}
 
 		NPCs: {
@@ -7610,6 +7783,21 @@ Mods: {
 			VixedB: {
 				DisplayName: Vixed B
 				Description: Mods.Stellamod.Buffs.VixedB.Description
+			}
+
+			CannotUseFlask: {
+				Description: Mods.Stellamod.Buffs.CannotUseFlask.Description
+				DisplayName: Cannot Use Flask
+			}
+
+			Friendzied: {
+				DisplayName: Friendzied
+				Description: Mods.Stellamod.Buffs.Friendzied.Description
+			}
+
+			VialedUp: {
+				DisplayName: Vialed Up
+				Description: Mods.Stellamod.Buffs.VialedUp.Description
 			}
 		}
 

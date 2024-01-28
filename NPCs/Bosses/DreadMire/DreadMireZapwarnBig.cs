@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
@@ -13,11 +12,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     {
         public bool Down;
         public bool Lightning;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Sun Stalker Lighting");
-        }
-
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;
         public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
@@ -54,18 +48,15 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.defense = 8;
             NPC.lifeMax = 156;
             NPC.value = 30f;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
             NPC.friendly = true;
             NPC.dontCountMe = true;
         }
+
         float alphaCounter = 0;
         float counter = 8;
-
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
@@ -76,16 +67,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         }
         public override void AI()
-        {
-
-       
+        {   
             if (!Down)
             {
                 alphaCounter += 0.04f;
                 if (alphaCounter >= 4)
                 {
                     Down = true;
-
                 }
             }
             else
@@ -111,27 +99,28 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
                     LightPos.X = NPC.position.X;
                     LightPos.Y = NPC.position.Y - 500;
-                    var EntitySource = NPC.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ModContent.ProjectileType<DreadlightingBig>(), 50, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ModContent.ProjectileType<DreadSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        var entitySource = NPC.GetSource_FromThis();
+                        Projectile.NewProjectile(entitySource, LightPos.X, LightPos.Y, 0, 0,
+                            ModContent.ProjectileType<DreadlightingBig>(), 50, 1, Owner: Main.myPlayer);
+                        Projectile.NewProjectile(entitySource, LightPos.X, LightPos.Y, 0, 0,
+                            ModContent.ProjectileType<DreadSpawnEffect>(), 40, 1, Owner: Main.myPlayer);
+                    }
                 }
                 if (NPC.ai[0] >= 10)
                 {
                     if (alphaCounter <= 0)
                     {
                         NPC.active = false;
-
                     }
                     alphaCounter -= 0.29f;
                 }
-
-
             }
 
             if (!Lightning)
             {
                 Lightning = true;
- 
             }
         }
     }

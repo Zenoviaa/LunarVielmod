@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,6 +11,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
     internal class SyliaScissorSmall : ModProjectile
     {
+        private bool _sync;
         public Vector2 startCenter;
         public Vector2 targetCenter;
         public int delay;
@@ -31,9 +33,29 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Projectile.timeLeft = 100;
         }
 
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(startCenter);
+            writer.WriteVector2(targetCenter);
+            writer.Write(delay);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            startCenter = reader.ReadVector2();
+            targetCenter = reader.ReadVector2();
+            delay = reader.ReadInt32();
+        }
+
         public override void AI()
         {
-            //THIS PROJECTILE IS MOVED BY SYLIA
+            if (!_sync && Main.myPlayer == Projectile.owner)
+            {
+                Projectile.netUpdate = true;
+                _sync = true;
+            }
+
             delay--;
             Vector2 direction = (targetCenter - startCenter).SafeNormalize(Vector2.Zero);
             if (delay <= 0)
