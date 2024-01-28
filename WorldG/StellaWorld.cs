@@ -819,7 +819,7 @@ namespace Stellamod.WorldG
 				while (!placed && attempts++ < 10000000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
-					int smx = WorldGen.genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 5), (Main.maxTilesX) - 200); // from 50 since there's a unaccessible area at the world's borders
+					int smx = WorldGen.genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 3), (Main.maxTilesX) - 200); // from 50 since there's a unaccessible area at the world's borders
 																				// 50% of choosing the last 6th of the world
 																				// Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
@@ -2910,7 +2910,7 @@ namespace Stellamod.WorldG
 					Point Loc = new Point(abysmx + 50, abysmy + 255);
 					pointL = new Point(abysmx + 50, abysmy + 255);//
 
-					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
+					
 					placed = true;
 				}
 			}
