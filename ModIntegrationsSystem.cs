@@ -267,8 +267,9 @@ namespace Stellamod
         {
 			string internalName6 = "SingularityoftheMoon";
 
-			// The NPC type of the boss
-			int bossType6 = ModContent.NPCType<NPCs.Bosses.singularityFragment.SingularityFragment>();
+            // The NPC type of the boss
+            int bossType6 = ModContent.NPCType<NPCs.Bosses.singularityFragment.SingularityFragment>();
+
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight6 = 3.4f;

@@ -307,6 +307,7 @@
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
+    <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazeBeamWarn.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazingSerpentHead_Head_Boss.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\HeatBeam.png" />

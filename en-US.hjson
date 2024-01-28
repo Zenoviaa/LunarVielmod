@@ -5712,6 +5712,9 @@ Mods: {
 			VeiizalsUmbrellaProjOpen.DisplayName: Veiizals Umbrella Proj Open
 			VeiizalsUmbrellaFireProj.DisplayName: Veiizals Umbrella Fire Proj
 			VeiizalsUmbrellaWaveProj.DisplayName: Veiizals Umbrella Wave Proj
+			VeiizalBullet.DisplayName: Veiizal Bullet
+			VeiizalBeam.DisplayName: Veiizal Beam
+			Veiizallighting.DisplayName: Veiizallighting
 		}
 
 		NPCs: {
@@ -6887,6 +6890,9 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			Veiizal.DisplayName: Veiizal
+			Zapwarn.DisplayName: Zapwarn
 		}
 
 		Biomes: {

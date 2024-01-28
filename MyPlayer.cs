@@ -30,6 +30,7 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.STARBOMBER;
+using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
