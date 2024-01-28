@@ -5888,6 +5888,7 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
+			VoidHostileRift.DisplayName: Void Hostile Rift
 		}
 
 		NPCs: {

@@ -21,7 +21,7 @@ namespace Stellamod.Particles
             height = 32;
             Scale = 1f;
             timeLeft = Frame_Count * Frame_Duration;
-
+           
             layer = Layer.BeforeNPCs;
         }
 

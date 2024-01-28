@@ -137,11 +137,9 @@ namespace Stellamod.Projectiles.Swords.Ripper
 
         public override void OnKill(int timeLeft)
         {
-            var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-              ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner);
-            RipperSlashProjBig ripperSlash = proj.ModProjectile as RipperSlashProjBig;
-            ripperSlash.randomRotation = false;
-            proj.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+              ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner,
+              ai1: Projectile.velocity.ToRotation() + MathHelper.ToRadians(45));
             for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);

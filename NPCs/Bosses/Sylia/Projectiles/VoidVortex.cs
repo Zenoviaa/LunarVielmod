@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			Projectile.width = 64;
 			Projectile.height = 64;
 			Projectile.penetrate = -1;
-			Projectile.timeLeft = 2;
+			Projectile.timeLeft = 240;
 			Projectile.scale = 1.3f;
 			Projectile.usesLocalNPCImmunity = true;
 
@@ -35,6 +35,9 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
 		public override void AI()
 		{
+			int npcIndex = (int)Projectile.ai[0];
+			NPC centerNpc = Main.npc[npcIndex];
+			Projectile.Center = centerNpc.Center;
 			Projectile.rotation += 0.5f;
 			Projectile.velocity.X *= 0.0f;
 			Projectile.velocity.Y *= 0.01f;

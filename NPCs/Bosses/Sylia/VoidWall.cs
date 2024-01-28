@@ -19,7 +19,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
         private float _projSpeed = 5.5f;
         private bool _tooFar;
         private bool _spawned;
-        private Projectile _voidVortexProj;
 
         private enum AttackState
         {
@@ -267,7 +266,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     {
                         Vector2 velocity = (targetCenter - NPC.Center).SafeNormalize(Vector2.Zero) * 20;
                         int p = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                            ModContent.ProjectileType<VoidBall>(), 20, 1);
+                            ModContent.ProjectileType<VoidBall>(), 20, 1, Owner: Main.myPlayer);
                         Main.projectile[p].timeLeft *= 2;
                     }
     
@@ -297,12 +296,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
                             if (Main.rand.NextBool(2))
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, voidBlastVelocity,
-                                    ModContent.ProjectileType<VoidWallEater>(), 60, 1);
+                                    ModContent.ProjectileType<VoidWallEater>(), 60, 1, Owner: Main.myPlayer);
                             }
                             else
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, voidBlastVelocity,
-                                    ModContent.ProjectileType<VoidWallEaterMini>(), 60, 1);
+                                    ModContent.ProjectileType<VoidWallEaterMini>(), 60, 1, Owner: Main.myPlayer);
                             }
                         }
 
@@ -342,29 +341,15 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     break;
 
                 case AttackState.Void_Suck:
-                    if (StellaMultiplayer.IsHost)
+                    if (StellaMultiplayer.IsHost && ai_Counter == 0)
                     {
-                        if (_voidVortexProj == null || !_voidVortexProj.active)
-                        {
-                            _voidVortexProj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                                ModContent.ProjectileType<VoidVortex>(), 0, 0);
-                        }
-
-                        _voidVortexProj.timeLeft = 2;
-                        _voidVortexProj.Center = NPC.Center;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                            ModContent.ProjectileType<VoidVortex>(), 0, 0, Owner: Main.myPlayer, NPC.whoAmI);
                     }
-               
-
-       
+                
                     ai_Counter++;
                     if(ai_Counter >= 240)
                     {
-                        if (StellaMultiplayer.IsHost)
-                        {
-                            _voidVortexProj.Kill();
-                            _voidVortexProj = null;
-                        }
-
                         SwitchState(AttackState.Idle);
                     }
                     break;

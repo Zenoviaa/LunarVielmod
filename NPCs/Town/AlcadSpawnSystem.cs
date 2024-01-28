@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Stellamod.NPCs.RoyalCapital;
 using Stellamod.NPCs.Bosses.Fenix;
+using System.IO;
 
 namespace Stellamod.NPCs.Town
 {
@@ -21,6 +22,16 @@ namespace Stellamod.NPCs.Town
         {
             base.ClearWorld();
 
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.WriteVector2(AlcadTile.ToVector2());
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            AlcadTile = reader.ReadVector2().ToPoint();
         }
 
         public override void PostUpdateWorld()
