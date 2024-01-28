@@ -53,15 +53,15 @@ namespace Stellamod.WorldG
 			if (MorrowGen != -1)
 			{
 				tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));
-				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
-				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-				tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
-				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
-				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
-	
+				tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Virulent", WorldGenVirulent));	
+				tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+				tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+				tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Starry Ores", WorldGenArncharOre));
+				tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
+				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
+				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
+
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -243,11 +243,16 @@ namespace Stellamod.WorldG
 				if (Main.tile[X, Y].TileType == TileID.Dirt)
 				{
 					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.TreeOver2>());
+					
 				}
 			}
+
+
+
+
 		}
 		Point pointVeri;
-
+		Point pointAlcadthingy;
 		private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Buring the landscape with Cinder and Fable";
@@ -495,7 +500,7 @@ namespace Stellamod.WorldG
 				}
 
 				placed = true;
-
+				
 
 			}
 
@@ -2855,70 +2860,99 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 10000000)
+			int leftmostJungleTileX = int.MaxValue;
+			int rightmostJungleTileX = int.MinValue;
+			for (int x = 500; x < Main.maxTilesX - 500; x++)
+			{
+				int jungleY = (int)(Main.worldSurface - 50);
+				while (!WorldGen.SolidTile(x, jungleY) && jungleY <= Main.worldSurface)
+				{
+					jungleY++;
+				}
+
+				Tile tile = Main.tile[x, jungleY];
+				if (tile.TileType == TileID.Dirt)
+				{
+					if (leftmostJungleTileX > x)
+						leftmostJungleTileX = x;
+					if (rightmostJungleTileX < x)
+						rightmostJungleTileX = x;
+				}
+			}
+
+
+
+			while (!placed && attempts++ < 100000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 5), (Main.maxTilesX / 2) - 700); // from 50 since there's a unaccessible area at the world's borders
-																									 // 50% of choosing the last 6th of the world
-																									 // Choose which side of the world to be on randomly
-				///if (WorldGen.genRand.NextBool())
-				///{
-				///	towerX = Main.maxTilesX - towerX;
-				///}
+				int minX = leftmostJungleTileX + 200;
+				int maxX = rightmostJungleTileX - 200;
+				if (maxX < minX)
+					maxX = minX + 1;
+				int abysmx = WorldGen.genRand.Next(minX, maxX); // from 50 since there's a unaccessible area at the world's borders
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.worldSurface - 200));
+				int abysmy = (int)(Main.worldSurface - 50);
 
 				// We go down until we hit a solid tile or go under the world's surface
-				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.worldSurface)
 				{
-					smy++;
+					abysmy++;
+				}
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc7 = new Point(abysmx, abysmy);
+					WorldGen.TileRunner(pointAlcadthingy.X + 200, pointAlcadthingy.Y + 150, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
+
+
+					Point Loc = new Point(abysmx + 50, abysmy + 255);
+					pointL = new Point(abysmx + 50, abysmy + 255);//
+
+					WorldGen.DirtyRockRunner(0, Main.maxTilesX - 50);
+					placed = true;
+				}
+			}
+
+			for (int fa = 0; fa < 20; fa++)
+			{
+				int abysmxd = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
+				int abysmyd = (int)(Main.worldSurface - 50);
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmxd, abysmyd) && abysmyd <= Main.worldSurface)
+				{
+					abysmyd++;
 				}
 
 				// If we went under the world's surface, try again
-				if (smy > Main.worldSurface - 20)
+				if (abysmyd > Main.worldSurface)
 				{
 					continue;
 				}
-				Tile tile = Main.tile[smx, smy];
+				Tile tile = Main.tile[abysmxd, abysmyd];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Sand
-					|| tile.TileType == TileID.IceBlock
-					|| tile.TileType == TileID.SnowBlock
-					|| tile.TileType == TileID.Ebonstone
-					|| tile.TileType == TileID.Crimstone
-					|| tile.TileType == TileID.BlueDungeonBrick
-					|| tile.TileType == TileID.PinkDungeonBrick
-					|| tile.TileType == TileID.GreenDungeonBrick
-					|| tile.TileType == ModContent.TileType<AcidialDirt>()
-					|| tile.TileType == ModContent.TileType<AcidicTreeSapling>()
-					|| tile.TileType == TileID.Sandstone))
+				if (!(tile.TileType == ModContent.TileType<Tiles.StarbloomDirt>()))
 				{
 					continue;
 				}
-				
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc7 = new Point(smx, smy);
-					WorldGen.TileRunner(Loc7.X, Loc7.Y, 1, 2, ModContent.TileType<Tiles.StarbloomDirt>(), false, 0f, 0f, true, true);
+					Point Loc = new Point(abysmxd, abysmyd);
 
-					Point Loc = new Point(smx + 50, smy + 255);
 
-					placed = true;
+					WorldGen.digTunnel(Loc.X, Loc.Y, 0, 1, 130, 3, false);
 				}
-
-				// place the Rogue
-				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-				//Main.npc[num].homeTileX = -1;
-				//	Main.npc[num].homeTileY = -1;
-				//	Main.npc[num].direction = 1;
-				//	Main.npc[num].homeless = true;
 
 
 
 
 			}
+
+
 		}
+		
 
 		public void WorldGenRoyalCapital(GenerationProgress progress, GameConfiguration configuration)
 		{
@@ -2978,6 +3012,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx - 10, smyy - 60);
+					pointAlcadthingy = new Point(smx - 10, smyy - 60);
 					rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
 					structures.AddProtectedStructure(rectangle);
