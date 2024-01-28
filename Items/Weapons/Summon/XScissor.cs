@@ -172,7 +172,8 @@ namespace Stellamod.Items.Weapons.Summon
         {
 			Player owner = Main.player[Projectile.owner];
 			_voidRiftProjectile1 = Projectile.NewProjectileDirect(owner.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-				ModContent.ProjectileType<VoidRift>(), Projectile.damage*2, Projectile.knockBack, owner.whoAmI);
+				ModContent.ProjectileType<VoidRift>(), Projectile.damage*2, Projectile.knockBack,
+				owner.whoAmI);
 			_voidRiftProjectile1.rotation = MathHelper.ToRadians(-45);
 			_voidRiftProjectile1.DamageType = DamageClass.Summon;
 
@@ -205,14 +206,12 @@ namespace Stellamod.Items.Weapons.Summon
 					_counter++;
 					if(_counter > RipperSlashTelegraphParticle.Animation_Length)
 					{
-					//	Vector2 ripperSlashOffset = new Vector2(16, 16);
-						var xSlashPart1 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+						Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
 							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
-						var xSlashPart2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 0f, 0f);
-						(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
-						(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;
-						xSlashPart2.rotation = MathHelper.ToRadians(90);
+						Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+							ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, Projectile.owner, 
+							ai1: MathHelper.ToRadians(90));
+
 						_counter = 0;
 						_summonState = SummonState.Void_Rift;
 						SpawnVoidRiftProjectiles();

@@ -8,6 +8,7 @@ namespace Stellamod.Projectiles.Swords
 {
     public class RipperSlashProjBig : ModProjectile
     {
+        private bool _sync;
         public float VEL = 1;
         public bool randomRotation=true;
         public override void SetStaticDefaults()
@@ -29,6 +30,12 @@ namespace Stellamod.Projectiles.Swords
 
         public override bool PreAI()
         {
+            if(!_sync && Main.myPlayer == Projectile.owner)
+            {
+                Projectile.netUpdate = true;
+                _sync = true;
+            }
+
             Projectile.ai[0]++;
             Projectile.alpha -= 40;
             if (Projectile.alpha < 0)
@@ -37,10 +44,10 @@ namespace Stellamod.Projectiles.Swords
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1"), Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-                if(randomRotation)
-                    Projectile.rotation = Main.rand.Next(0, 360);
+      
             }
 
+            Projectile.rotation = Projectile.ai[1];
             Projectile.spriteDirection = Projectile.direction;
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 2)
