@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Magic
             base.Projectile.penetrate = 35;
             base.Projectile.width = 24;
             base.Projectile.height = 24;
-            base.Projectile.timeLeft = 250;
+            base.Projectile.timeLeft = 150;
             base.Projectile.alpha = 0;
             base.Projectile.friendly = true;
             base.Projectile.hostile = false;
@@ -40,6 +40,13 @@ namespace Stellamod.Projectiles.Magic
             {
                 target.AddBuff(BuffID.OnFire, 180);
             }
+            var EntitySource = Projectile.GetSource_Death();
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+            }
+            Projectile.velocity *= 0.1f;
+            Projectile.ai[1] = 70;
         }
 
         private float alphaCounter = 0;
@@ -69,7 +76,7 @@ namespace Stellamod.Projectiles.Magic
             if (Projectile.ai[1] == 70)
             {
                 var EntitySource = Projectile.GetSource_Death();
-                Projectile.Kill();
+              
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
@@ -79,8 +86,10 @@ namespace Stellamod.Projectiles.Magic
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower2"), Projectile.position);
 
+                Projectile.Kill();
+
             }
-            if (Projectile.timeLeft <= 240)
+            if (Projectile.timeLeft <= 140)
             {
                 Projectile.alpha += 4;
                 alphaCounter -= 0.08f;
