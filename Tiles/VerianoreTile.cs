@@ -30,7 +30,7 @@ namespace Stellamod.Tiles
 			RegisterItemDrop(ModContent.ItemType<Items.Ores.VerianOre>());
 			HitSound = SoundID.Tink;
 		 MineResist = 2f;
-		 MinPick = 70;
+		 MinPick = 65;
 		}
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
