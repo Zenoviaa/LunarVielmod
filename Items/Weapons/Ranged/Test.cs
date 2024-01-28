@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -41,7 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<WaterBolt>();
+			Item.shoot = ModContent.ProjectileType<TestProj>();
 			Item.shootSpeed = 15f;
 		}
 
@@ -51,23 +52,5 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-			SparnCageNode sparnCageNode1 = Projectile.NewProjectileDirect(source, position + new Vector2(64, 64), velocity,
-				ModContent.ProjectileType<SparnCageNode>(), 10, 1, player.whoAmI).ModProjectile as SparnCageNode;
-			SparnCageNode sparnCageNode2 = Projectile.NewProjectileDirect(source, position + new Vector2(-64, 64), velocity,
-				ModContent.ProjectileType<SparnCageNode>(), 10, 1, player.whoAmI).ModProjectile as SparnCageNode;
-			SparnCageNode sparnCageNode3 = Projectile.NewProjectileDirect(source, position + new Vector2(-64, -64), velocity,
-				ModContent.ProjectileType<SparnCageNode>(), 10, 1, player.whoAmI).ModProjectile as SparnCageNode;
-			SparnCageNode sparnCageNode4 = Projectile.NewProjectileDirect(source, position + new Vector2(64, -64), velocity,
-				ModContent.ProjectileType<SparnCageNode>(), 10, 1, player.whoAmI).ModProjectile as SparnCageNode;
-
-			sparnCageNode1.targetProjectile = sparnCageNode2.Projectile;
-			sparnCageNode2.targetProjectile = sparnCageNode3.Projectile;
-			sparnCageNode3.targetProjectile = sparnCageNode4.Projectile;
-			sparnCageNode4.targetProjectile = sparnCageNode1.Projectile;
-			return false;
-        }
     }
 }

@@ -5172,6 +5172,16 @@ Mods: {
 				DisplayName: Grafted Wax Melter
 				Tooltip: Make this shit feel like a firework party! I say let the children burn.
 			}
+
+			AlcadBomb: {
+	
+				DisplayName: Alcad Bomb
+				Tooltip:
+					'''
+					Casts a controllable blackhole
+					Suck em' up!
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -5908,6 +5918,8 @@ Mods: {
 			VoidHostileRift.DisplayName: Void Hostile Rift
 			CandleShotProj1.DisplayName: Candle Shot Proj1
 			CandleShotProj2.DisplayName: Candle Shot Proj2
+			TestProj.DisplayName: Test Proj
+			AlcadBombProj.DisplayName: Alcad Bomb Proj
 		}
 
 		NPCs: {
