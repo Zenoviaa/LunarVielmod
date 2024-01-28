@@ -5900,6 +5900,7 @@ Mods: {
 			GearSniper.DisplayName: Gear Sniper
 			GlassBreak.DisplayName: Glass Break
 			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
+			VoidHostileRift.DisplayName: Void Hostile Rift
 		}
 
 		NPCs: {
@@ -7080,6 +7081,7 @@ Mods: {
 			RedFlower.DisplayName: Red Flower
 			FloweredWhiteLight.DisplayName: Flowered White Light
 			FloweredRedLight.DisplayName: Flowered Red Light
+			UnderworldRift.DisplayName: Underworld Rift
 		}
 
 		Biomes: {
