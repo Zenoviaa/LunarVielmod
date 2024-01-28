@@ -65,6 +65,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			NPC.noTileCollide = true;
 			NPC.scale = 0.5f;
 			NPC.noGravity = true;
+			NPC.dontTakeDamage = true;
 		}
 
 

@@ -435,7 +435,7 @@ namespace Stellamod.NPCs.Bosses.Jack
                                         Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
                                             Mod.Find<ModProjectile>("JackSpawnEffect").Type, 0, 0, Owner: Main.myPlayer);
                                         Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, 0), 
-                                            Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 3, 0, Owner: Main.myPlayer);
+                                            Mod.Find<ModProjectile>("JackFire").Type, NPC.damage / 4, 0, Owner: Main.myPlayer);
                                     }
                                 }
                             }
