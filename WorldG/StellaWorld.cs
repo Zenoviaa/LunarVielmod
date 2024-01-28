@@ -3130,6 +3130,7 @@ namespace Stellamod.WorldG
 					continue;
 
 				StructureLoader.ReadStruct(Loc, "Struct/Underworld/UnderworldRuins");
+                NPCs.Town.AlcadSpawnSystem.UnderworldRuinsTile = Loc;
 				placed = true;
 			}
 		}
