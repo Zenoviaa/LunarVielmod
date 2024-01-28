@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -15,8 +16,11 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.Bosses.Sylia
 {
     public class UnderworldRift : ModNPC
-	{
-		public override void SetStaticDefaults()
+    {
+        private int _portalFrameCounter;
+        private int _portalFrameTick;
+
+        public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = 1;
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
@@ -191,6 +195,17 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
             PreDrawTrail(spriteBatch, screenPos, drawColor);
             PreDrawGlow(spriteBatch, screenPos, drawColor);
+
+            Vector2 drawPosition = NPC.Center - screenPos + new Vector2(4, -48);
+            float width = 43;
+            float height = 126;
+            Vector2 origin = new Vector2(width / 2, height / 2);
+            Texture2D tex = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/UnderworldRiftPortal").Value;
+            int frameSpeed = 1;
+            int frameCount = 60;
+            spriteBatch.Draw(tex, drawPosition,
+                tex.AnimationFrame(ref _portalFrameCounter, ref _portalFrameTick, frameSpeed, frameCount, true),
+                drawColor, 0f, origin, 2f, SpriteEffects.None, 0f);
             return true;
 		}
 
