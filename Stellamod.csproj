@@ -354,6 +354,8 @@
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\HallowRain.png" />
     <None Remove="Projectiles\IgniterExplosions\FireBoom.png" />
+    <None Remove="Projectiles\Magic\CandleShotProj1.png" />
+    <None Remove="Projectiles\Magic\CandleShotProj2.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />

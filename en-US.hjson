@@ -5167,6 +5167,11 @@ Mods: {
 				DisplayName: Life Seeking Vial
 				Tooltip: Throw a bottle at an enemy to heal a small portion of health!
 			}
+
+			GraftedWaxMelter: {
+				DisplayName: Grafted Wax Melter
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5901,6 +5906,8 @@ Mods: {
 			GlassBreak.DisplayName: Glass Break
 			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
 			VoidHostileRift.DisplayName: Void Hostile Rift
+			CandleShotProj1.DisplayName: Candle Shot Proj1
+			CandleShotProj2.DisplayName: Candle Shot Proj2
 		}
 
 		NPCs: {
