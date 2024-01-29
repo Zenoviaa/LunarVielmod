@@ -4,6 +4,7 @@ using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Whips;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -26,6 +27,7 @@ namespace Stellamod.Items.Weapons.Whips
 			Item.width = 40;
 			Item.height = 34;
 			Item.rare = ItemRarityID.LightPurple;
+			Item.value = Item.sellPrice(gold: 5);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

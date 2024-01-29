@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.noMelee = true;
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Throwing;
-			Item.value = 200;
+			Item.value = 12000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = true;

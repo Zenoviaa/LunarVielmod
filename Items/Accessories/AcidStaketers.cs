@@ -18,7 +18,7 @@ namespace Stellamod.Items.Accessories
         {
             Item.Size = new Vector2(20);
             Item.accessory = true;
-            Item.value = Item.sellPrice(silver: 12);
+            Item.value = Item.sellPrice(silver: 25);
             Item.rare = ItemRarityID.Green;
         }
 

@@ -21,6 +21,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             Item.height = 36;
             Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
+            Item.value = Item.sellPrice(gold: 2);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

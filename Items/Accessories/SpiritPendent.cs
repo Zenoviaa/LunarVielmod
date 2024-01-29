@@ -9,10 +9,6 @@ namespace Stellamod.Items.Accessories
 {
     public class SpiritPendent : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Spirit Pendent");
-        }
         public override void SetDefaults()
         {
             Item.value = Item.sellPrice(gold: 2);

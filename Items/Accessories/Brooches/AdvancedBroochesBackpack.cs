@@ -45,7 +45,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.buyPrice(0, 0, 90);
+			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Orange;
 			Item.accessory = true;
 		}

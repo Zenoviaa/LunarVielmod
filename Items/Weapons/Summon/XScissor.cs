@@ -26,8 +26,8 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.useTime = 18;
 			Item.useAnimation = 18;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.value = Item.buyPrice(0, 30, 0, 0);
-			Item.rare = ItemRarityID.LightPurple;
+            Item.value = Item.sellPrice(0, 0, 33, 0);
+            Item.rare = ItemRarityID.LightPurple;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
 
 			// These below are needed for a minion weapon

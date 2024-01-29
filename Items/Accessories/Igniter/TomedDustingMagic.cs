@@ -35,7 +35,7 @@ namespace Stellamod.Items.Accessories.Igniter
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.sellPrice(silver: 12);
+			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Pink;
 			Item.accessory = true;
 		}

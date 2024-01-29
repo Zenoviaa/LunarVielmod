@@ -21,6 +21,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
             Item.useTime = 100;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.UseSound = new SoundStyle($"Stellamod/Assets/Sounds/StormDragon_LightingZap");
+            Item.value = Item.sellPrice(gold: 1);
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)

@@ -58,7 +58,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<Flameball>();
 			Item.shootSpeed = 8f;
-			 // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			// Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			Item.value = 5000;
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
