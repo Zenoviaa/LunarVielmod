@@ -455,6 +455,7 @@ namespace Stellamod.NPCs.Town
 			var npcShop = new NPCShop(Type, ShopName)
 			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
 			.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
+			.Add(new Item(ModContent.ItemType<BurnedCarianTome>()))
 			.Add<WickofSorcery>(MerenaQuestSystem.ShopConditionTome)
 			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<AlcadzianCard>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 			.Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)

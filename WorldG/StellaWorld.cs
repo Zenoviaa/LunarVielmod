@@ -569,6 +569,7 @@ namespace Stellamod.WorldG
 					Point Loc = new Point(smx, smy + 18);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/XixVillage");
+					NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];

@@ -5191,6 +5191,14 @@ Mods: {
 				DisplayName: Empty Flower Bag
 				Tooltip: Whats wrong? Need some love to keep ya going? Fill up the damn bag
 			}
+
+			BurnedCarianTome: {
+				DisplayName: Burned Carian Tome
+				Tooltip:
+					'''
+					Casts black stars that aggressively home and assault enemies!
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -5929,6 +5937,7 @@ Mods: {
 			CandleShotProj2.DisplayName: Candle Shot Proj2
 			TestProj.DisplayName: Test Proj
 			AlcadBombProj.DisplayName: Alcad Bomb Proj
+			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
 		}
 
 		NPCs: {
