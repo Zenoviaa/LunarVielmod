@@ -36,7 +36,22 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			set => Projectile.ai[0] = value;
 		}
 
-		public override void AI()
+
+        public override bool PreAI()
+        {
+            if (++_frameTick >= 1)
+            {
+                _frameTick = 0;
+                if (++_frameCounter >= 30)
+                {
+                    _frameCounter = 0;
+                }
+            }
+            return true;
+        }
+
+
+        public override void AI()
 		{
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
@@ -44,21 +59,24 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-			switch (Main.rand.Next(0, 4))
+			for(int i = 0; i < 3; i++)
 			{
-				case 0:
-					target.AddBuff(BuffID.OnFire3, 120);
-					break;
-				case 1:
-					target.AddBuff(BuffID.ShadowFlame, 120);
-					break;
-				case 2:
-					target.AddBuff(BuffID.CursedInferno, 120);
-					break;
-				case 3:
-					target.AddBuff(BuffID.Daybreak, 60);
-					break;
-			}
+                switch (Main.rand.Next(0, 4))
+                {
+                    case 0:
+                        target.AddBuff(BuffID.OnFire3, 120);
+                        break;
+                    case 1:
+                        target.AddBuff(BuffID.ShadowFlame, 120);
+                        break;
+                    case 2:
+                        target.AddBuff(BuffID.CursedInferno, 120);
+                        break;
+                    case 3:
+                        target.AddBuff(BuffID.Daybreak, 60);
+                        break;
+                }
+            }
 		}
 
 		public override Color? GetAlpha(Color lightColor)
@@ -78,7 +96,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             int frameCount = 30;
 			SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
-                texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, true),
+                texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
 				(Color)GetAlpha(lightColor), 0f, origin, 4f, SpriteEffects.None, 0f);
 			return false;
         }

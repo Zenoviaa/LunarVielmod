@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Magic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,8 +17,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.knockBack = 8;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 10;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 10;
+            Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.noMelee = true;
             Item.knockBack = 2f;
@@ -41,24 +35,27 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            switch (_combo)
+            int slowdown = 6;
+            int maxCombo = 15;
+            if(_combo == maxCombo)
             {
-                case 0:
-                    type = ModContent.ProjectileType<CombusterSparkProj1>();
-                    break;
-                case 1:
-                    type = ModContent.ProjectileType<CombusterSparkProj2>();
-                    Item.useTime *= 3;
-                    Item.useAnimation *= 3;
-                    break;
-                case 2:
-                    type = ModContent.ProjectileType<CombusterSparkProj3>();
-                    Item.useTime /= 3;
-                    Item.useAnimation /= 3;
-                    break;
+                type = ModContent.ProjectileType<CombusterSparkProj3>();
+                Item.useTime /= slowdown;
+                Item.useAnimation /= slowdown;
+            } else if(_combo == maxCombo - 1)
+            {
+                type = ModContent.ProjectileType<CombusterSparkProj2>();
+                Item.useTime *= slowdown;
+                Item.useAnimation *= slowdown;
             }
+            else
+            {
+                bool alternate = _combo % 2 == 0;
+                type = alternate ? ModContent.ProjectileType<CombusterSparkProj1>() : ModContent.ProjectileType<CombusterSparkProj2>();
+            }
+
             _combo++;
-            if (_combo >= 3)
+            if (_combo >= maxCombo+1)
                 _combo = 0;
             position = Main.MouseWorld;
         }

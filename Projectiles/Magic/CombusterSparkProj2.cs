@@ -5,6 +5,7 @@ using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -59,19 +60,21 @@ namespace Stellamod.Projectiles.Magic
         {
             ShakeModSystem.Shake = 10;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-            int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<FireBoom>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<CombustionBoomMini>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             for (int i = 0; i < 6; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
                 ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
                     Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
-            float mult = 0.5f;
-            Main.projectile[p].Center += new Vector2(0, 2 * 16);
-            Main.projectile[p].scale = mult;
-            Main.projectile[p].width = (int)((float)Main.projectile[p].width * mult);
-            Main.projectile[p].height = (int)((float)Main.projectile[p].height * mult);
+
+            for (int i = 0; i < Main.rand.Next(3, 6); i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
+            }
         }
     }
 }

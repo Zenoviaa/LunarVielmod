@@ -48,8 +48,8 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(),
-                        Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle4>(),
+                        Color.OrangeRed, Vector2.One * scaleMult * 2f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;
                 }
@@ -61,7 +61,7 @@ namespace Stellamod.Projectiles.Magic
             ShakeModSystem.Shake = 30;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 20, Projectile.knockBack * 2, Projectile.owner);
+                ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 8, Projectile.knockBack * 2, Projectile.owner);
             for (int i = 0; i < Main.rand.Next(10, 15); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);

@@ -5209,7 +5209,7 @@ Mods: {
 
 			Combuster: {
 				DisplayName: Combuster
-				Tooltip: Creates a fiery explosion at your cursor, it grows stronger up to three times!
+				Tooltip: Creates fiery explosions around you cursor! Eventually forming a MASSIVE boom!
 			}
 		}
 
@@ -5956,6 +5956,7 @@ Mods: {
 			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
 			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
 			CombustionBoom.DisplayName: Combustion Boom
+			CombustionBoomMini.DisplayName: Combustion Boom Mini
 		}
 
 		NPCs: {
