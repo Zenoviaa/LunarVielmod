@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
@@ -92,6 +93,7 @@ namespace Stellamod.Items.Weapons.Mage
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
             recipe.AddIngredient(ItemID.SoulofMight, 10);
             recipe.AddIngredient(ItemID.SoulofFright, 10);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);

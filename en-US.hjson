@@ -5201,6 +5201,11 @@ Mods: {
 				DisplayName: Empty Collectors Bag
 				Tooltip: ""
 			}
+
+			CinderedLantern: {
+				DisplayName: Cindered Lantern
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -5940,6 +5945,7 @@ Mods: {
 			TestProj.DisplayName: Test Proj
 			AlcadBombProj.DisplayName: Alcad Bomb Proj
 			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
+			LampShot.DisplayName: Lamp Shot
 		}
 
 		NPCs: {
