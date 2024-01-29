@@ -317,7 +317,11 @@ namespace Stellamod.WorldG
 
 					Point Loc2 = new Point(smx + 10, smy + 380);
 					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
+					//
 
+					Point Loc22 = new Point(smx +10, smy - 33);
+		//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
+					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
 					pointVeri = new Point(smx + 10, smy + 470);
 					Point Loc4 = new Point(smx + 233, smy + 45);
 				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
@@ -2806,7 +2810,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(350, 350), ModContent.TileType<CindersparkDirt>());
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(400, 400), ModContent.TileType<CindersparkDirt>());
 
 
 
@@ -3417,10 +3421,10 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05 - 3); k++)
 			{
 
-				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
+				int xa = WorldGen.genRand.Next(250, Main.maxTilesX - 250);
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 				Point Loc = new Point(xa, ya);
 
