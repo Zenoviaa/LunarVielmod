@@ -341,7 +341,7 @@ namespace Stellamod.NPCs.Town
 			{
 				Quest_NotCheckmarkedHardmode();
 			}
-			else
+			else if (ZuiQuestSystem.ThirtyQuestsCompleted)
 			{
 				//All Quests completed
 				Main.npcChatText = $"Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!";
