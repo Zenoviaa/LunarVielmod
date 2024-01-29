@@ -1902,7 +1902,7 @@ Mods: {
 
 			AquaCrystal: {
 				DisplayName: Aqua Crystal
-				Tooltip: Increased Critical Strike Chance!
+				Tooltip: 15% Increased Ranged Critical Strike Chance!
 			}
 
 			AquaticHealingNecklace: {

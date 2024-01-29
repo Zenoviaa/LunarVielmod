@@ -853,7 +853,17 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                 State = ActionState.Slam;
 			}
 
-			if (timer > 120)
+			if (timer < 15)
+			{
+				NPC.noTileCollide = true;
+			}
+
+			if (timer > 15)
+			{
+				NPC.noTileCollide = false;
+			}
+
+			if (timer > 80)
             {
                 ResetTimers();
                 State = ActionState.Slam;	
