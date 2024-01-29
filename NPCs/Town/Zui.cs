@@ -197,6 +197,14 @@ namespace Stellamod.NPCs.Town
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyFlowerBag>(), 1);
 		}
 
+		private void Quest_NotCheckmarkedHardmode()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"Hehe I'm gonna up the difficulty of these, I'm gonna need some bigger plants, so you'll need to fill up this bag! Thanks!";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCollectorsBag>(), 1);
+		}
+
 		private void Quest_1Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -324,9 +332,14 @@ namespace Stellamod.NPCs.Town
 			Player player = Main.LocalPlayer;
 
 			//Go through the list of quests in a specific order and see if any need to be started
-			if (!ZuiQuestSystem.ThirtyQuestsCompleted && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			if (!ZuiQuestSystem.TenQuestsCompleted && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
 			{
 				Quest_NotCheckmarked();
+			}
+
+			if (ZuiQuestSystem.TenQuestsCompleted && !ZuiQuestSystem.ThirtyQuestsCompleted && !player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			{
+				Quest_NotCheckmarkedHardmode();
 			}
 			else
 			{
