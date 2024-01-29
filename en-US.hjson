@@ -5206,6 +5206,14 @@ Mods: {
 				DisplayName: Cindered Lantern
 				Tooltip: ""
 			}
+
+			Combuster: {
+				DisplayName: Combuster
+				Tooltip:
+					'''
+					Creates a fiery explosion at your cursor, it grows stronger up to three times!
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -5946,6 +5954,9 @@ Mods: {
 			AlcadBombProj.DisplayName: Alcad Bomb Proj
 			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
 			LampShot.DisplayName: Lamp Shot
+			CombusterSparkProj1.DisplayName: Combuster Spark Proj1
+			CombusterSparkProj2.DisplayName: Combuster Spark Proj2
+			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
 		}
 
 		NPCs: {
