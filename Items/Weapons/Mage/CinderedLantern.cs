@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 21;
+            Item.damage = 18;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.HoldUp;
@@ -52,6 +52,7 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.Anvils);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<SingulariumBar>(), 5);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
             recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
             recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 10);
