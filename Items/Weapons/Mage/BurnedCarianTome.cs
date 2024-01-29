@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.width = 30;
             Item.height = 42;
             Item.DamageType = DamageClass.Magic;
-            Item.damage = 12;
+            Item.damage = 9;
             Item.knockBack = 3;
             Item.value = Item.sellPrice(gold: 1);
             Item.shootSpeed = 15;
