@@ -5,6 +5,7 @@ using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
@@ -46,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle>(), 
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(), 
                         Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;
@@ -57,23 +58,16 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             ShakeModSystem.Shake = 10;
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-            int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<FunBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
-            Main.projectile[p].friendly = true;
-
-            for(int i = 0; i < 6; i++)
+            for(int i = 0; i < 24; i++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(16f, 16f);
                 ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
                     Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
-
-          //  float mult = 0.33f;
-         //   Main.projectile[p].scale = mult;
-         //   Main.projectile[p].width = (int)((float)Main.projectile[p].width * mult);
-          //  Main.projectile[p].height = (int)((float)Main.projectile[p].height * mult);
         }
     }
 }

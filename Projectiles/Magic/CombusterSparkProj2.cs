@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle>(),
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(),
                         Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;
@@ -68,6 +68,7 @@ namespace Stellamod.Projectiles.Magic
                     Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
             float mult = 0.5f;
+            Main.projectile[p].Center += new Vector2(0, 2 * 16);
             Main.projectile[p].scale = mult;
             Main.projectile[p].width = (int)((float)Main.projectile[p].width * mult);
             Main.projectile[p].height = (int)((float)Main.projectile[p].height * mult);

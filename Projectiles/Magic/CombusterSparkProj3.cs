@@ -14,6 +14,7 @@ namespace Stellamod.Projectiles.Magic
     {
         private ref float ai_Timer => ref Projectile.ai[0];
         private ref float ai_RotationTimer => ref Projectile.ai[1];
+
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -47,7 +48,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle>(),
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(),
                         Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;
@@ -59,14 +60,13 @@ namespace Stellamod.Projectiles.Magic
         {
             ShakeModSystem.Shake = 30;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
-            int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<FireBoom>(), Projectile.damage * 6, Projectile.knockBack, Projectile.owner);
-            for (int i = 0; i < Main.rand.Next(18, 30); i++)
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<CombustionBoom>(), Projectile.damage * 20, Projectile.knockBack * 2, Projectile.owner);
+            for (int i = 0; i < Main.rand.Next(10, 15); i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16f, 16f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);
-         
+                    ProjectileID.WandOfSparkingSpark, Projectile.damage, 0f, Projectile.owner);     
             }
 
             for (int i = 0; i < Main.rand.Next(3, 7); i++)
@@ -84,12 +84,6 @@ namespace Stellamod.Projectiles.Magic
                 ParticleManager.NewParticle(Projectile.Center, velocity, ParticleManager.NewInstance<UnderworldParticle1>(),
                     Color.HotPink, Main.rand.NextFloat(0.2f, 0.8f));
             }
-
-            float mult = 2.25f;
-            Main.projectile[p].Center += new Vector2(0, (512 / 2 * mult) - (11 * 16));
-            Main.projectile[p].scale = mult;
-            Main.projectile[p].width = (int)((float)Main.projectile[p].width * mult);
-            Main.projectile[p].height = (int)((float)Main.projectile[p].height * mult);
         }
     }
 }

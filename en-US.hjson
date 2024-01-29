@@ -5954,6 +5954,8 @@ Mods: {
 			CombusterSparkProj1.DisplayName: Combuster Spark Proj1
 			CombusterSparkProj2.DisplayName: Combuster Spark Proj2
 			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
+			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
+			CombustionBoom.DisplayName: Combustion Boom
 		}
 
 		NPCs: {
