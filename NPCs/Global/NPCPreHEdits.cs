@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Global
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.6f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Global
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.6f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
@@ -112,23 +112,23 @@ namespace Stellamod.NPCs.Global
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.7f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.WallofFlesh)
 			{
-				npc.damage = 240;
+				npc.damage = 400;
 		
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.9f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.WallofFleshEye)
 			{
-				npc.damage = 140;		
+				npc.damage = 300;		
 			}
 
 			if (npc.type == NPCID.Creeper)

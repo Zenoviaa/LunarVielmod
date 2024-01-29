@@ -5181,6 +5181,16 @@ Mods: {
 					Suck em' up!
 					'''
 			}
+
+			CompletedFlowerBag: {
+				DisplayName: Completed Flower Bag
+				Tooltip: ""
+			}
+
+			EmptyFlowerBag: {
+				DisplayName: Empty Flower Bag
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7100,6 +7110,7 @@ Mods: {
 			FloweredWhiteLight.DisplayName: Flowered White Light
 			FloweredRedLight.DisplayName: Flowered Red Light
 			UnderworldRift.DisplayName: Underworld Rift
+			Zui.DisplayName: Zui
 		}
 
 		Biomes: {
