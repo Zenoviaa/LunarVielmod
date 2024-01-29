@@ -13,8 +13,8 @@ namespace Stellamod.Projectiles.Ambient
 		}
 		public override void SetDefaults()
 		{
-			Projectile.width = 360;
-			Projectile.height = 360;
+			Projectile.width = 278;
+			Projectile.height = 2000;
 
 			Projectile.timeLeft = 320;
 			Projectile.scale = 1f;
