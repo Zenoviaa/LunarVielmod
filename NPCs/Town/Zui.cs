@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Town
 
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frameCounter += 0.15f;
+			NPC.frameCounter += 0.07f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
@@ -404,13 +404,7 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) },(ZuiQuestSystem.ShopCondition3))
 			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)
-			.Add<LostScrap>(MerenaQuestSystem.ShopConditionKillVerlia)// { shopCustomPrice = Item.buyPrice(silver: 50) })
-            .Add<AlcadBomb>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage)
-            .Add<Hyua>(MerenaQuestSystem.ShopConditionExploreMorrowedVillage) //{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<BlossomingScissor>(MerenaQuestSystem.ShopConditionGive100DustBags) //{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			.Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionMakeMagicPaper)//{ shopCustomPrice = Item.buyPrice(silver: 10) })
-			.Add<AlcaricMush>(MerenaQuestSystem.ShopConditionTome); //{ shopCustomPrice = Item.buyPrice(gold: 2) })
+			
 			npcShop.Register(); // Name of this shop tab		
 		}
 

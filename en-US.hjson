@@ -5184,12 +5184,12 @@ Mods: {
 
 			CompletedFlowerBag: {
 				DisplayName: Completed Flower Bag
-				Tooltip: ""
+				Tooltip: Take this to Zui for some rewards!
 			}
 
 			EmptyFlowerBag: {
 				DisplayName: Empty Flower Bag
-				Tooltip: ""
+				Tooltip: Whats wrong? Need some love to keep ya going? Fill up the damn bag
 			}
 		}
 
