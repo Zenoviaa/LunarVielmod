@@ -5204,7 +5204,7 @@ Mods: {
 
 			CinderedLantern: {
 				DisplayName: Cindered Lantern
-				Tooltip: ""
+				Tooltip: A volley of flamed missles
 			}
 
 			Combuster: {
