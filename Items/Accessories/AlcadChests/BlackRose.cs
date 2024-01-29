@@ -1,12 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Buffs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,6 +13,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
             Item.height = 36;
             Item.rare = ItemRarityID.Green;
             Item.accessory = true;
+            Item.value = Item.sellPrice(gold: 1);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

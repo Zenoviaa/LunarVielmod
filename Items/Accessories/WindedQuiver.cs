@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles.Arrows;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;
@@ -37,6 +36,7 @@ namespace Stellamod.Items.Accessories
             Item.height = 46;
             Item.accessory = true;
             Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(silver: 50);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

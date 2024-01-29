@@ -18,7 +18,7 @@ namespace Stellamod.Items.Accessories.Runes
         {
             Item.width = 20;
             Item.height = 20;
-            Item.value = 2500;
+            Item.value = Item.sellPrice(silver: 75);
             Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }

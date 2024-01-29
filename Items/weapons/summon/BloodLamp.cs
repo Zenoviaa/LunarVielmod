@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.autoReuse = true;
 			Item.scale = 0.8f;
 			Item.crit = 15;
-			Item.value = 200;
+			Item.value = 1200;
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{

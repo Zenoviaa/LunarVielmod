@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_DarkMageAttack;
 			Item.autoReuse = false;
-			Item.value = Item.sellPrice(0, 0, 0, 20);
+			Item.value = Item.sellPrice(0, 0, 12, 20);
 			Item.shoot = ModContent.ProjectileType<FrostSwProj2>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;

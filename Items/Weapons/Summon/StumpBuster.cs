@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.noMelee = true;
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Summon;
-			Item.value = 200;
+			Item.value = 1200;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_BookStaffCast;
 			Item.autoReuse = true;

@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<wowBullet>();
 			Item.shootSpeed = 2f;
+			Item.value = 5000;
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.

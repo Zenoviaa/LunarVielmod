@@ -7,12 +7,6 @@ namespace Stellamod.Items.Accessories
 {
     internal class StarflareBand : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Starflare Band");
-            // Tooltip.SetDefault("Decreases Mana Cost and magic damage");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 20;

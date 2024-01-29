@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.shoot = ModContent.ProjectileType<ScissorianHold>();
             Item.scale = 1f;
             Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 3);
+            Item.value = Item.sellPrice(gold: 2);
             Item.noUseGraphic = true;
             Item.channel = true;
         }

@@ -44,6 +44,7 @@ namespace Stellamod.Items.Weapons.Whips
 			// This is used for the charging functionality. Remove it if your whip shouldn't be chargeable.
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
+			Item.value = 10000;
 		}
 
 		public override void AddRecipes()

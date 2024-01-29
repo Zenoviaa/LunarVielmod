@@ -73,7 +73,9 @@ namespace Stellamod.Items.Weapons.Ranged
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<Violarproj>();
 			Item.shootSpeed = 4f;
+			Item.value = 5000;
 		}
+
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);

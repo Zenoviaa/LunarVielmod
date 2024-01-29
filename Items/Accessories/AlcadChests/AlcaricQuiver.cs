@@ -36,6 +36,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
             Item.height = 46;
             Item.accessory = true;
             Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(gold: 1);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

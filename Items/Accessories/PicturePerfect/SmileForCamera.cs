@@ -40,9 +40,6 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 			Tornado_Attack = 2
 		}
 
-		private ClimateTornadoProj _tornadoProj;
-		private Vector2 _targetIdlePosition;
-		private float _movementCounter;
 		public AttackState State { get; set; }
 		public override void SetStaticDefaults()
 		{
