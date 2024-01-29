@@ -56,6 +56,9 @@ namespace Stellamod
         public int XixCount;
         public static bool InXixVillage => ModContent.GetInstance<BiomeTileCounts>().XixCount > 10;
 
+
+        public int CinderCount;
+        public static bool InCinder => ModContent.GetInstance<BiomeTileCounts>().CinderCount > 10;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -72,6 +75,7 @@ namespace Stellamod
             FireCount = tileCounts[ModContent.TileType<CatacombStoneFire>()];
             WaterCount = tileCounts[ModContent.TileType<CatacombStoneWater>()];
             XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
+            CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
         }
     }
 }
