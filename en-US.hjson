@@ -7209,6 +7209,11 @@ Mods: {
 				TownNPCDialogueName: the Xix Village
 				DisplayName: Xix Village
 			}
+
+			CindersparkBiome: {
+				DisplayName: Cinderspark Biome
+				TownNPCDialogueName: the Cinderspark Biome
+			}
 		}
 
 		Tiles: {

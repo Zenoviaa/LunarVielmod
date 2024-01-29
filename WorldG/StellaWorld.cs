@@ -61,6 +61,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
 				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
 				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
+				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
 
 			}
 
@@ -2744,7 +2745,86 @@ namespace Stellamod.WorldG
 			}
 		}
 
-	
+
+
+
+		private void WorldGenCinderspark(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Shifting Shadows deep in the Ice";
+
+
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int abysmx = WorldGen.genRand.Next(250, Main.maxTilesX - 250); // from 50 since there's a unaccessible area at the world's borders
+																			   // 50% of choosing the last 6th of the world
+																			   // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int abysmy = (Main.UnderworldLayer - (Main.maxTilesY / 20));
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(abysmx, abysmy) && abysmy <= Main.UnderworldLayer)
+				{
+					abysmy++;
+				}
+
+				// If we went under the world's surface, try again
+				if (abysmy > Main.UnderworldLayer - 50)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[abysmx, abysmy];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.Stone
+					|| tile.TileType == TileID.Ash
+					|| tile.TileType == TileID.Dirt
+					|| tile.TileType == TileID.Mud
+					|| tile.TileType == TileID.IceBlock))
+				{
+					continue;
+				}
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+				Point Loc = new Point(abysmx, abysmy);
+
+				for (int da = 0; da < 1; da++)
+				{
+
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(350, 350), ModContent.TileType<CindersparkDirt>());
+
+
+
+
+
+
+
+				}
+
+
+
+
+
+			}
+		}
+
+
+
 
 
 		public void WorldGenVirulent(GenerationProgress progress, GameConfiguration configuration)
@@ -4217,7 +4297,8 @@ namespace Stellamod.WorldG
 				Tile tile = Main.tile[Loc.X, Loc.Y];
 
 				if (!(tile.TileType == TileID.Ash ||
-					tile.TileType == TileID.Stone))
+					tile.TileType == TileID.Stone ||
+					tile.TileType == ModContent.TileType<CindersparkDirt>()))
 				{
 					continue;
 				}
