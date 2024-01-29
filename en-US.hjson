@@ -5196,6 +5196,11 @@ Mods: {
 				DisplayName: Burned Carian Tome
 				Tooltip: Casts black stars that aggressively home and assault enemies!
 			}
+
+			EmptyCollectorsBag: {
+				DisplayName: Empty Collectors Bag
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {

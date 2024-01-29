@@ -131,9 +131,10 @@ namespace Stellamod.Items.Quest.Zui
             Recipe recipe14 = CreateRecipe();
             recipe14.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe14.AddIngredient(ModContent.ItemType<FlowerBatch>(), 3);
-            recipe14.AddIngredient(ModContent.ItemType<AlcaricMush>(), 5);
+            recipe14.AddIngredient(ModContent.ItemType<AlcaricMush>(), 10);
             recipe14.AddIngredient(ModContent.ItemType<EmptyCollectorsBag>(), 1);
             recipe14.AddIngredient(ItemID.Moonglow, 10);
+            recipe14.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
             recipe14.Register();
 
             Recipe recipe15 = CreateRecipe();
@@ -143,6 +144,7 @@ namespace Stellamod.Items.Quest.Zui
             recipe15.AddIngredient(ItemID.Deathweed, 5);
             recipe15.AddIngredient(ItemID.Waterleaf, 5);
             recipe15.AddIngredient(ItemID.Blinkroot, 15);
+            recipe15.AddIngredient(ItemID.SoulofMight, 5);
             recipe15.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
             recipe15.Register();
 
@@ -154,6 +156,7 @@ namespace Stellamod.Items.Quest.Zui
             recipe16.AddIngredient(ItemID.Hellstone, 5);
             recipe16.AddIngredient(ItemID.Waterleaf, 5);
             recipe16.AddIngredient(ItemID.Fireblossom, 15);
+            recipe16.AddIngredient(ItemID.SoulofMight, 5);
             recipe16.Register();
 
             Recipe recipe17 = CreateRecipe();
