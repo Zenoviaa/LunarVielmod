@@ -22,7 +22,7 @@ namespace Stellamod.Tiles
             Main.tileBlockLight[Type] = true;
             AddMapEntry(new Color(100, 25, 40));
 
-            MineResist = 2f;
+            MineResist = 3f;
             MinPick = 65;
             // name.SetDefault("Arnchar");
             RegisterItemDrop(ModContent.ItemType<Cinderscrap>());
