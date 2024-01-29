@@ -14,25 +14,29 @@ namespace Stellamod.NPCs.Town
     {
         public static Point AlcadTile;
         public static Point UnderworldRuinsTile;
+        public static Point LittleWitchTownTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
+        public static Point ZuiSpawnTileOffset => new Point(15, -15);
 
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
         public static Vector2 UnderworldRiftSpawnWorld => UnderworldRuinsTile.ToWorldCoordinates() + UnderworldRiftTileOffset.ToWorldCoordinates();
-      
+        public static Vector2 LittleWitchSpawnWorld => LittleWitchTownTile.ToWorldCoordinates() + ZuiSpawnTileOffset.ToWorldCoordinates();
         public override void NetSend(BinaryWriter writer)
         {
             writer.WriteVector2(AlcadTile.ToVector2());
             writer.WriteVector2(UnderworldRuinsTile.ToVector2());
+            writer.WriteVector2(LittleWitchTownTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
         {
             AlcadTile = reader.ReadVector2().ToPoint();
             UnderworldRuinsTile = reader.ReadVector2().ToPoint();
+            LittleWitchTownTile = reader.ReadVector2().ToPoint();
         }
 
         public override void PostUpdateWorld()
@@ -41,8 +45,12 @@ namespace Stellamod.NPCs.Town
             for(int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
+                if (!player.active)
+                    continue;
+
+                MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
                 float distanceToUnderworldRuins = Vector2.Distance(player.Center, UnderworldRiftSpawnWorld);
-                if (player.active && player.GetModPlayer<MyPlayer>().ZoneAlcadzia)
+                if (myPlayer.ZoneAlcadzia)
                 {
                     if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                     {
@@ -61,7 +69,14 @@ namespace Stellamod.NPCs.Town
                         NetMessage.SendData(MessageID.SyncNPC);
                     }
                 } 
-                else if (player.active && distanceToUnderworldRuins < 600 && !NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
+                else if (myPlayer.ZoneVillage && !NPC.AnyNPCs(ModContent.NPCType<Zui>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                            (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
+                            ModContent.NPCType<Zui>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+                else if (distanceToUnderworldRuins < 600 && !NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(), 
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
@@ -76,6 +91,7 @@ namespace Stellamod.NPCs.Town
             base.SaveWorldData(tag);
             tag["AlcadTile"] = AlcadTile;
             tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
+            tag["LittleWitchTownTile"] = LittleWitchTownTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -83,6 +99,7 @@ namespace Stellamod.NPCs.Town
             base.LoadWorldData(tag);
             AlcadTile = tag.Get<Point>("AlcadTile");
             UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
+            LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
         }
     }
 }
