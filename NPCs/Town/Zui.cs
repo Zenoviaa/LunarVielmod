@@ -401,10 +401,17 @@ namespace Stellamod.NPCs.Town
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<Heatspot>(ZuiQuestSystem.ShopCondition3)
-			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) },(ZuiQuestSystem.ShopCondition3))
+			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
 			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-			
+
+
+
+
+
+
+
+			;
 			npcShop.Register(); // Name of this shop tab		
 		}
 
