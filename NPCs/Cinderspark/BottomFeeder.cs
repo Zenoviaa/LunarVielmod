@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.Projectiles;
 using System;
@@ -130,6 +131,7 @@ namespace Stellamod.NPCs.Cinderspark
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), chanceDenominator: 4, minimumDropped: 2,  maximumDropped: 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MoltenScrap>(), chanceDenominator: 2, minimumDropped: 1, maximumDropped: 3));
         }
     }
 }
