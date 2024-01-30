@@ -66,7 +66,8 @@ namespace Stellamod.Items.Weapons.Igniters
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 20);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 30);
 			recipe.AddTile(TileID.MythrilAnvil);

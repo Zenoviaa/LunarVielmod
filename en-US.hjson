@@ -5237,6 +5237,21 @@ Mods: {
 					'''
 				DisplayName: Witchen Hat
 			}
+
+			IceClimbers: {
+				DisplayName: Ice Climbers
+				Tooltip: Get the ability to climb walls, skate on ice and get 10 Health!
+			}
+
+			MoltenScrap: {
+				DisplayName: Molten Scrap
+				Tooltip: Burning from the depths of the cinderspark
+			}
+
+			VehementRhapsody: {
+				DisplayName: Vehement Rhapsody
+				Tooltip: It's musically challenged.. Adding more summons makes this summon do more damage!
+			}
 		}
 
 		JungleRuneI: {
@@ -5983,6 +5998,7 @@ Mods: {
 			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
 			CombustionBoom.DisplayName: Combustion Boom
 			CombustionBoomMini.DisplayName: Combustion Boom Mini
+			VehementMinion.DisplayName: Vehement Minion
 		}
 
 		NPCs: {
@@ -7903,6 +7919,11 @@ Mods: {
 			VialedUp: {
 				DisplayName: Vialed Up
 				Description: Mods.Stellamod.Buffs.VialedUp.Description
+			}
+
+			VehementBuff: {
+				DisplayName: Vehement Buff
+				Description: Mods.Stellamod.Buffs.VehementBuff.Description
 			}
 		}
 
