@@ -260,16 +260,12 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Buring the landscape with Cinder and Fable";
 
-			/*
+			
 			int[] tileBlend = new int[]
 			{
-				TileID.Dirt,
-				TileID.Stone,
-				TileID.ClayBlock,
-				TileID.Grass,
-				TileID.Sand
+				TileID.RubyGemspark
 			};
-			*/
+
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 10000000)
@@ -321,7 +317,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx + 10, smy + 340 );
-					StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew");
+					StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew", tileBlend);
 
 					Point Loc2 = new Point(smx + 10, smy + 380);
 					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
