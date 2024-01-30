@@ -5999,6 +5999,7 @@ Mods: {
 			CombustionBoom.DisplayName: Combustion Boom
 			CombustionBoomMini.DisplayName: Combustion Boom Mini
 			VehementMinion.DisplayName: Vehement Minion
+			CinderFireball.DisplayName: Cinder Fireball
 		}
 
 		NPCs: {
@@ -7182,6 +7183,7 @@ Mods: {
 			UnderworldRift.DisplayName: Underworld Rift
 			Zui.DisplayName: Zui
 			NaturalWitch.DisplayName: Natural Witch
+			BottomFeeder.DisplayName: Bottom Feeder
 		}
 
 		Biomes: {
