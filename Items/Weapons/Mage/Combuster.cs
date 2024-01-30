@@ -69,6 +69,7 @@ namespace Stellamod.Items.Weapons.Mage
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
             recipe.AddIngredient(ItemID.SoulofLight, 10);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
