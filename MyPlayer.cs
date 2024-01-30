@@ -81,6 +81,7 @@ namespace Stellamod
 		public int LovestruckBCooldown = 0;
 		public bool ADisease;
 		public bool ZoneFable = false;
+
 		private Vector2 RandomOrig;
 		private Vector2 RandomOrig2;
 		private Vector2 RandomOrig3;

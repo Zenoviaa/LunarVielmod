@@ -5197,7 +5197,7 @@ Mods: {
 
 			EmptyCollectorsBag: {
 				DisplayName: Empty Collectors Bag
-				Tooltip: ""
+				Tooltip: Collecting up the dust of your remains after you're done with this.
 			}
 
 			CinderedLantern: {
@@ -5208,6 +5208,31 @@ Mods: {
 			Combuster: {
 				DisplayName: Combuster
 				Tooltip: Creates fiery explosions around you cursor! Eventually forming a MASSIVE boom!
+			}
+
+			WitchenRobe: {
+				Tooltip: '''
+					+5% Magical Critical Strike Chance and Health
+					+20% Magic damage
+					Suck em' up!
+					'''
+				DisplayName: Witchen Robe
+			}
+
+			WitchenPants: {
+				Tooltip: '''
+					30% more movement speed!
+					+20 Health
+					'''
+				DisplayName: Witchen Pants
+			}
+
+			WitchenHat: {
+				Tooltip: '''
+					+3% Magic damage
+					+10% Magical Critical Strike Chance
+					'''
+				DisplayName: Witchen Hat
 			}
 		}
 
@@ -7137,6 +7162,7 @@ Mods: {
 			FloweredRedLight.DisplayName: Flowered Red Light
 			UnderworldRift.DisplayName: Underworld Rift
 			Zui.DisplayName: Zui
+			NaturalWitch.DisplayName: Natural Witch
 		}
 
 		Biomes: {
