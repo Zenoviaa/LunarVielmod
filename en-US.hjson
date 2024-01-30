@@ -5211,7 +5211,8 @@ Mods: {
 			}
 
 			WitchenRobe: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					+5% Magical Critical Strike Chance and Health
 					+20% Magic damage
 					Suck em' up!
@@ -5220,7 +5221,8 @@ Mods: {
 			}
 
 			WitchenPants: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					30% more movement speed!
 					+20 Health
 					'''
@@ -5228,7 +5230,8 @@ Mods: {
 			}
 
 			WitchenHat: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					+3% Magic damage
 					+10% Magical Critical Strike Chance
 					'''
