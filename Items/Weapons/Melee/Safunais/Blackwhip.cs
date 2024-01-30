@@ -60,7 +60,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 101;
+			Item.damage = 95;
 			Item.rare = ItemRarityID.LightRed;
 		}
 
@@ -94,6 +94,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 12);
 			recipe.Register();
 		}
