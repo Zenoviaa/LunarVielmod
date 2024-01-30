@@ -17,6 +17,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using Stellamod.Items.Armors.Witchen;
 
 namespace Stellamod.NPCs.Town
 {
