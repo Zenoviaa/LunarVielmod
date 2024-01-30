@@ -54,6 +54,7 @@ namespace Stellamod.Items.Weapons.Mage
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddIngredient(ModContent.ItemType<SingulariumBar>(), 5);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
             recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
             recipe.AddRecipeGroup(nameof(ItemID.ShadowScale), 10);
             recipe.Register();
