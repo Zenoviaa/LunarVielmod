@@ -43,78 +43,6 @@ namespace Stellamod.Helpers
             return true;
         }
 
-        public static int[,] ReadTiles(string Path)
-        {
-            using (var stream = Mod.GetFileStream(Path + ".str"))
-            {
-                using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
-                {
-              
-                    int Xlenght = reader.ReadInt32();
-                    int Ylenght = reader.ReadInt32();
-                    var tileTypes = new int[Xlenght+1, Ylenght+1];
-                    for (int i = 0; i <= Xlenght; i++)
-                    {
-
-                        for (int j = 0; j <= Ylenght; j++)
-                        {
-                            Tile t = new Tile();
-                            //tile
-                            bool hastile = reader.ReadBoolean();
-                            t.LiquidType = reader.ReadInt32();
-                            t.LiquidAmount = reader.ReadByte();
-                            t.BlueWire = reader.ReadBoolean();
-                            t.RedWire = reader.ReadBoolean();
-                            t.GreenWire = reader.ReadBoolean();
-                            t.YellowWire = reader.ReadBoolean();
-                            t.HasActuator = reader.ReadBoolean();
-                            t.IsActuated = reader.ReadBoolean();
-                            if (hastile)
-                            {
-                                t.HasTile = hastile;
-                                bool Modded = reader.ReadBoolean();
-                                int TileType = 0;
-                                if (Modded)
-                                {
-                                    TileType = ReadModTile(reader);
-                                }
-                                else
-                                {
-                                    TileType = reader.ReadInt16();
-                                }
-                                t.TileType = (ushort)TileType;
-                                t.BlockType = (BlockType)reader.ReadByte();
-                                t.IsHalfBlock = reader.ReadBoolean();
-                                //t.LiquidType = reader.ReadInt32();
-                                t.Slope = (SlopeType)reader.ReadByte();
-                                t.TileFrameNumber = reader.ReadInt32();
-                                t.TileFrameX = reader.ReadInt16();
-                                t.TileFrameY = reader.ReadInt16();
-                                bool Chest = reader.ReadBoolean();
-                            }
-                            //wall
-                            int WallType = 0;
-                            bool ModdedWall = reader.ReadBoolean();
-                            if (ModdedWall)
-                            {
-                                WallType = ReadModWall(reader);
-                            }
-                            else
-                            {
-                                WallType = reader.ReadInt16();
-                            }
-                            t.WallType = (ushort)WallType;
-                            t.WallFrameX = reader.ReadInt32();
-                            t.WallFrameY = reader.ReadInt32();
-                            tileTypes[i, j] = t.TileType;
-                        }
-                    }
-
-                    return tileTypes;
-                }
-            }
-        }
-
         /// <summary>
         /// reads a .str file and places its structure
         /// </summary>
@@ -123,7 +51,6 @@ namespace Stellamod.Helpers
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
         public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend=null)
         {
-            //int[,] tileTypes = ReadTiles(Path);
             using (var stream = Mod.GetFileStream(Path + ".str"))
             {
                 using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
