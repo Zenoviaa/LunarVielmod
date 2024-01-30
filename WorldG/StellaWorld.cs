@@ -260,8 +260,16 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Buring the landscape with Cinder and Fable";
 
-
-
+			/*
+			int[] tileBlend = new int[]
+			{
+				TileID.Dirt,
+				TileID.Stone,
+				TileID.ClayBlock,
+				TileID.Grass,
+				TileID.Sand
+			};
+			*/
 			bool placed = false;
 			int attempts = 0;
 			while (!placed && attempts++ < 10000000)
