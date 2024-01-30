@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Ores;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -72,8 +73,9 @@ namespace Stellamod.Items.Armors.Xexterian
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 20);
 			recipe.AddIngredient(ItemID.SandBlock, 55);
-			recipe.AddIngredient(ItemID.AntlionMandible, 12);
+			recipe.AddIngredient(ItemID.AntlionMandible, 2);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
 			recipe.AddTile(TileID.MythrilAnvil);

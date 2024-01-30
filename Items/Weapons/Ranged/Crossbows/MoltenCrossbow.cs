@@ -48,6 +48,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 5);
             recipe.AddIngredient(ItemID.HellstoneBar, 12);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
             recipe.AddIngredient(ItemID.FallenStar, 12);

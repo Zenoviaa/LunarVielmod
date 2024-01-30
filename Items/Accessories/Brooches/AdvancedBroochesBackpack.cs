@@ -55,6 +55,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<HikersBackpack>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
+			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 30);
 			recipe.AddIngredient(ItemID.Wood, 50);
 			recipe.AddIngredient(ItemID.HellstoneBar, 10);
 			recipe.AddIngredient(ItemID.JungleSpores, 10);
