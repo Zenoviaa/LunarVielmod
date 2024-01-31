@@ -18,6 +18,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Stellamod.Items.Armors.Witchen;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod.NPCs.Town
 {
@@ -210,6 +211,26 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Nice nice, I'll take these, could you fetch some more for me!  ";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.HealingPotion, 7);
+			}
+
+			if (Main.rand.NextBool(3))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.GreaterHealingPotion, 7);
+			}
+
+			if (Main.rand.NextBool(5))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SuperHealingPotion, 5);
+			}
+
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 9);
+			}
 
 			ZuiQuestSystem.QuestsCompleted += 1;
 
@@ -418,6 +439,7 @@ namespace Stellamod.NPCs.Town
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<Morrowshroom>(ZuiQuestSystem.ShopCondition3)
+			.Add<SunClaw>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
 
 
