@@ -5888,6 +5888,9 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
+			VeiizalBeam.DisplayName: Veiizal Beam
+			VeiizalBullet.DisplayName: Veiizal Bullet
+			Veiizallighting.DisplayName: Veiizallighting
 		}
 
 		NPCs: {
