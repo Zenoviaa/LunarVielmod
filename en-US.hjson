@@ -5252,6 +5252,11 @@ Mods: {
 				DisplayName: Vehement Rhapsody
 				Tooltip: It's musically challenged.. Adding more summons makes this summon do more damage!
 			}
+
+			VeilScriptureI: {
+				DisplayName: Veil Scripture I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7395,6 +7400,7 @@ Mods: {
 			CatacombsDoorClosed.MapEntry: Catacombs Door Closed
 			CatacombsSummon.MapEntry: Catacombs Summon
 			Rallad.MapEntry: Rallad
+			VeilScripture.MapEntry: Veil Scripture
 		}
 
 		Buffs: {

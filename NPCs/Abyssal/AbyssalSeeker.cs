@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Abyssal
         {
             NPC.width = 40;
             NPC.height = 40;
-            NPC.damage = 80;
+            NPC.damage = 93;
             NPC.defense = 18;
             NPC.lifeMax = 240;
             NPC.HitSound = SoundID.NPCHit1;

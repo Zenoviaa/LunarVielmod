@@ -177,7 +177,7 @@ namespace Stellamod.NPCs.Abyssal
                 SoundEngine.PlaySound(SoundID.Zombie83, NPC.position);
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                int damage = Main.expertMode ? 34 : 37;
+                int damage = Main.expertMode ? 40 : 43;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<VoidFlame>(), damage, 1, Main.myPlayer, 0, 0);
             }
