@@ -317,7 +317,18 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx + 10, smy + 340 );
-					StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew", tileBlend);
+
+					//This code just places
+					int width = 253;
+					int height = 50;
+                    ShapeData shapeData = new ShapeData();
+					Point dirtLoc = Loc;
+					dirtLoc.Y -= 338;
+                    WorldUtils.Gen(dirtLoc, new Shapes.Rectangle(width, height), new Actions.Blank().Output(shapeData));
+                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.SetTile(TileID.Dirt, true));
+                    WorldUtils.Gen(dirtLoc, new ModShapes.All(shapeData), new Actions.Smooth());
+
+                    StructureLoader.ReadStruct(Loc, "Struct/Morrow/FableBiomeNew", tileBlend);
 
 					Point Loc2 = new Point(smx + 10, smy + 380);
 					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
