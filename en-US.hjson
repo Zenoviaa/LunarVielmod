@@ -7189,6 +7189,9 @@ Mods: {
 			Zui.DisplayName: Zui
 			NaturalWitch.DisplayName: Natural Witch
 			BottomFeeder.DisplayName: Bottom Feeder
+			CinderCrawlerBody.DisplayName: Cinder Crawler Body
+			CinderCrawlerHead.DisplayName: Cinder Crawler Head
+			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
 		}
 
 		Biomes: {
