@@ -2814,7 +2814,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(400, 400), ModContent.TileType<CindersparkDirt>());
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(480, 480), ModContent.TileType<CindersparkDirt>());
 
 
 
