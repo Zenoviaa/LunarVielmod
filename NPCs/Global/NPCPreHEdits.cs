@@ -78,11 +78,11 @@ namespace Stellamod.NPCs.Global
         {
 			if (npc.type == NPCID.EyeofCthulhu)
 			{
-				npc.damage = 50;
+				npc.damage = 60;
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.6f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
@@ -93,7 +93,7 @@ namespace Stellamod.NPCs.Global
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.6f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
@@ -112,24 +112,25 @@ namespace Stellamod.NPCs.Global
 
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.7f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.WallofFlesh)
 			{
-				npc.damage = 240;
+				npc.damage = 400;
 		
 				//Increase boss health by 50%
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.9f;
 				npc.lifeMax = (int)lifeMax;
 			}
 
 			if (npc.type == NPCID.WallofFleshEye)
 			{
-				npc.damage = 140;		
+				npc.damage = 300;		
 			}
+
 
 			if (npc.type == NPCID.Creeper)
 			{
@@ -185,6 +186,13 @@ namespace Stellamod.NPCs.Global
 
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 6)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
+
+			if (npc.type == NPCID.BlackRecluseWall)
+			{
+
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 6)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
 			if (npc.type == NPCID.WallCreeper)
 			{
 
@@ -192,7 +200,12 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 6)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			if (npc.type == NPCID.WallCreeperWall)
+			{
 
+
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 6)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+			}
 
 
 

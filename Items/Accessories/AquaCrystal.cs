@@ -7,11 +7,6 @@ namespace Stellamod.Items.Accessories
 {
     public class AquaCrystal : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Aquatic Healing Necklace");
-            // Tooltip.SetDefault("Speeds up life Regen");
-        }
         public override void SetDefaults()
         {
             Item.Size = new Vector2(20);
@@ -22,8 +17,8 @@ namespace Stellamod.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetCritChance(DamageClass.Ranged) += 30f;
+            player.GetCritChance(DamageClass.Ranged) += 15f;
         }
     }
-    }
+}
 

@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 20;
+			Item.damage = 13;
 			Item.knockBack = 4;
 			Item.noMelee = true;
 
@@ -61,6 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ProjectileID.PurificationPowder;
 			Item.shootSpeed = 8f;
 			Item.useAmmo = AmmoID.Bullet; // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			Item.value = 10000;
 		}
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
@@ -80,7 +81,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 16);
 			recipe.AddIngredient(ItemID.Minishark, 1);
 
 			recipe.Register();

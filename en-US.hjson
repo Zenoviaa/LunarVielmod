@@ -1902,7 +1902,7 @@ Mods: {
 
 			AquaCrystal: {
 				DisplayName: Aqua Crystal
-				Tooltip: Increased Critical Strike Chance!
+				Tooltip: 15% Increased Ranged Critical Strike Chance!
 			}
 
 			AquaticHealingNecklace: {
@@ -4251,8 +4251,6 @@ Mods: {
 					No knockback and Immunity to lava!
 					+12% Damage
 					+12% Armor penetration!
-					Double tap a direction to dash- but very quickly and on a short cooldown!
-					Leave behind homing void bolts as you dash
 					'''
 			}
 
@@ -5157,6 +5155,103 @@ Mods: {
 				DisplayName: The Tingler
 				Tooltip: Shoots small iron needles that lodge into targets and deal damage over time
 			}
+
+			KnivedQuiver: {
+				DisplayName: Knived Quiver
+				Tooltip: Turns wooden arrows into throwing knives that pierce and are fast!
+			}
+
+			LifeSeekingVial: {
+				DisplayName: Life Seeking Vial
+				Tooltip: Throw a bottle at an enemy to heal a small portion of health!
+			}
+
+			GraftedWaxMelter: {
+				DisplayName: Grafted Wax Melter
+				Tooltip: Make this shit feel like a firework party! I say let the children burn.
+			}
+
+			AlcadBomb: {
+				DisplayName: Alcad Bomb
+				Tooltip:
+					'''
+					Casts a controllable blackhole
+					Suck em' up!
+					'''
+			}
+
+			CompletedFlowerBag: {
+				DisplayName: Completed Flower Bag
+				Tooltip: Take this to Zui for some rewards!
+			}
+
+			EmptyFlowerBag: {
+				DisplayName: Empty Flower Bag
+				Tooltip: Whats wrong? Need some love to keep ya going? Fill up the damn bag
+			}
+
+			BurnedCarianTome: {
+				DisplayName: Burned Carian Tome
+				Tooltip: Casts black stars that aggressively home and assault enemies!
+			}
+
+			EmptyCollectorsBag: {
+				DisplayName: Empty Collectors Bag
+				Tooltip: Collecting up the dust of your remains after you're done with this.
+			}
+
+			CinderedLantern: {
+				DisplayName: Cindered Lantern
+				Tooltip: A volley of flamed missles
+			}
+
+			Combuster: {
+				DisplayName: Combuster
+				Tooltip: Creates fiery explosions around you cursor! Eventually forming a MASSIVE boom!
+			}
+
+			WitchenRobe: {
+				Tooltip:
+					'''
+					+5% Magical Critical Strike Chance and Health
+					+20% Magic damage
+					Suck em' up!
+					'''
+				DisplayName: Witchen Robe
+			}
+
+			WitchenPants: {
+				Tooltip:
+					'''
+					30% more movement speed!
+					+20 Health
+					'''
+				DisplayName: Witchen Pants
+			}
+
+			WitchenHat: {
+				Tooltip:
+					'''
+					+3% Magic damage
+					+10% Magical Critical Strike Chance
+					'''
+				DisplayName: Witchen Hat
+			}
+
+			IceClimbers: {
+				DisplayName: Ice Climbers
+				Tooltip: Get the ability to climb walls, skate on ice and get 10 Health!
+			}
+
+			MoltenScrap: {
+				DisplayName: Molten Scrap
+				Tooltip: Burning from the depths of the cinderspark
+			}
+
+			VehementRhapsody: {
+				DisplayName: Vehement Rhapsody
+				Tooltip: It's musically challenged.. Adding more summons makes this summon do more damage!
+			}
 		}
 
 		JungleRuneI: {
@@ -5888,9 +5983,23 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
-			VeiizalBeam.DisplayName: Veiizal Beam
-			VeiizalBullet.DisplayName: Veiizal Bullet
-			Veiizallighting.DisplayName: Veiizallighting
+			GlassBreak.DisplayName: Glass Break
+			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
+			VoidHostileRift.DisplayName: Void Hostile Rift
+			CandleShotProj1.DisplayName: Candle Shot Proj1
+			CandleShotProj2.DisplayName: Candle Shot Proj2
+			TestProj.DisplayName: Test Proj
+			AlcadBombProj.DisplayName: Alcad Bomb Proj
+			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
+			LampShot.DisplayName: Lamp Shot
+			CombusterSparkProj1.DisplayName: Combuster Spark Proj1
+			CombusterSparkProj2.DisplayName: Combuster Spark Proj2
+			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
+			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
+			CombustionBoom.DisplayName: Combustion Boom
+			CombustionBoomMini.DisplayName: Combustion Boom Mini
+			VehementMinion.DisplayName: Vehement Minion
+			CinderFireball.DisplayName: Cinder Fireball
 		}
 
 		NPCs: {
@@ -7067,8 +7176,14 @@ Mods: {
 				}
 			}
 
-			Veiizal.DisplayName: Veiizal
-			Zapwarn.DisplayName: Zapwarn
+			WhiteFlower.DisplayName: White Flower
+			RedFlower.DisplayName: Red Flower
+			FloweredWhiteLight.DisplayName: Flowered White Light
+			FloweredRedLight.DisplayName: Flowered Red Light
+			UnderworldRift.DisplayName: Underworld Rift
+			Zui.DisplayName: Zui
+			NaturalWitch.DisplayName: Natural Witch
+			BottomFeeder.DisplayName: Bottom Feeder
 		}
 
 		Biomes: {
@@ -7155,6 +7270,11 @@ Mods: {
 			XixVillage: {
 				TownNPCDialogueName: the Xix Village
 				DisplayName: Xix Village
+			}
+
+			CindersparkBiome: {
+				DisplayName: Cinderspark Biome
+				TownNPCDialogueName: the Cinderspark Biome
 			}
 		}
 
@@ -7801,6 +7921,11 @@ Mods: {
 			VialedUp: {
 				DisplayName: Vialed Up
 				Description: Mods.Stellamod.Buffs.VialedUp.Description
+			}
+
+			VehementBuff: {
+				DisplayName: Vehement Buff
+				Description: Mods.Stellamod.Buffs.VehementBuff.Description
 			}
 		}
 

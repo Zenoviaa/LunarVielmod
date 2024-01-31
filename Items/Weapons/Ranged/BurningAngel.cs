@@ -72,6 +72,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<BurningAngelProj>();
 			Item.shootSpeed = 4f;
+			Item.value = 10000;
 		}
 		public override Vector2? HoldoutOffset()
 		{

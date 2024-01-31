@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.Audio;
@@ -196,15 +197,17 @@ namespace Stellamod.NPCs.Morrow
 			frameCounter = 0;
 			frameTick = 0;
 		}
+		
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.BlackPearl, 3, 1, 2));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 25, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, 1, 1, 7));
-
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), 25, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, 1, 1, 7));
 		}
+
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 

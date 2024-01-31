@@ -18,15 +18,15 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public bool playedSound;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 62;
+            Projectile.height = 54;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
             Projectile.hostile = false;

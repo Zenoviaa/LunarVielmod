@@ -19,9 +19,9 @@ namespace Stellamod.Tiles.RoyalCapital
             SpecialGroupMaximumSaturationValue = 1f
         };
 
-        public override void SetStaticDefaults() => GrowsOnTileId = new int[] { ModContent.TileType<AcidialDirt>() };
+        public override void SetStaticDefaults() => GrowsOnTileId = new int[] { ModContent.TileType<StarbloomDirt>() };
         public override int CreateDust() => 22;
-        public override int DropWood() => ModContent.ItemType<VirulentPlating>();
+        public override int DropWood() => ModContent.ItemType<CarianWood>();
         public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("Stellamod/Tiles/RoyalCapital/CarianTree");
         public override Asset<Texture2D> GetTopTextures() => ModContent.Request<Texture2D>("Stellamod/Tiles/RoyalCapital/CarianTree_Top");
         public override Asset<Texture2D> GetBranchTextures() => ModContent.Request<Texture2D>("Stellamod/Tiles/RoyalCapital/CarianTree_Branches");

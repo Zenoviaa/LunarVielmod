@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.sellPrice(silver: 12);
+			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.LightPurple;
 			Item.accessory = true;
 

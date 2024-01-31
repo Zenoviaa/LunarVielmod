@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.knockBack = 2f;
 			Item.scale = 0.5f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = 10000;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_BookStaffCast;
 			Item.autoReuse = true;

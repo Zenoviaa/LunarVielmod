@@ -374,7 +374,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.2f;
+				NPC.velocity.Y -= 0.5f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
@@ -388,6 +388,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				case ActionState.Pulse:
 					NPC.damage = 0;
 					counter++;
+					NPC.noTileCollide = false;
 					Pulse();
 					break;
 
@@ -407,6 +408,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				case ActionState.Spin:
 					NPC.damage = 0;
 					counter++;
+					NPC.noTileCollide = false;
 					Spin();
 					break;
 
@@ -420,6 +422,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					NPC.damage = 0;
 					counter++;
 					Slam();
+					NPC.noTileCollide = false;
 					break;
 
 				case ActionState.StartSlam:
@@ -441,7 +444,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					break;
 
 				case ActionState.Dash:
-					
+					NPC.noTileCollide = false;
 					NPC.velocity *= 0.8f;
 					
 					counter++;
@@ -487,7 +490,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
 				case ActionState.BIGSlam:
 					NPC.damage = 0;
-
+					NPC.noTileCollide = false;
 					NPC.velocity *= 2;
 						if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 						{
@@ -531,6 +534,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 					NPC.velocity *= 0;
 					counter++;
 					TeleportWindUp();
+					NPC.noTileCollide = false;
 					break;
 			}
 		}
@@ -853,7 +857,17 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
                 State = ActionState.Slam;
 			}
 
-			if (timer > 120)
+			if (timer < 15)
+			{
+				NPC.noTileCollide = true;
+			}
+
+			if (timer > 15)
+			{
+				NPC.noTileCollide = false;
+			}
+
+			if (timer > 80)
             {
                 ResetTimers();
                 State = ActionState.Slam;	

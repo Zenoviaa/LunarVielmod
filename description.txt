@@ -1,5 +1,5 @@
 PLEASE PLAY MASTERMODE or EXPERTMODE FOR THIS MOD!
-NOT FULLY MULTIPLAYER COMPATIBLE!
+MULTIPLAYER COMPATIBLE!!!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The Lunar Veil is an expansive mod for the world of Aimacra. As a crossover from a personal game Diari, 
 Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet.
@@ -49,8 +49,12 @@ This update focuses on improving curent mechanics and adding an overall better v
 1.4.2.1 - Fixed Dreadmire's phases breaking
 1.4.2.2 - Fixed a lot of bugs and some item issues!
 -----
-Prismatic love Update: 1.5!
-See the new improvements across the mod containing 3 new bosses
+Prismatic love Update: 1.5 has been released!
+See the new improvements across the mod containing 3 new bosses, MULTIPLAYER COMPATIBILITY and a bunch of new edits to make this mod feel super special! World generation differences and 
+small little parts, quests and remakes to make everything up to standard! Much balancing and new ways to pay, including many weapons and accessories to fill out other classes!
+(Melee doesn't get much so go suck it). Cinderspark, Royal Capital overhaul, Veriplant overhaul, Xixian village and many underground structures were added! Harvesting now feels good as well!
+
+
 
 
 

@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 63;
+			Item.damage = 33;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
 			Item.mana = 2;
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = false;
-			Item.value = Item.sellPrice(0, 0, 0, 20);
+			Item.value = Item.sellPrice(0, 0, 12, 20);
 			Item.shoot = ModContent.ProjectileType<PetalDance>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;

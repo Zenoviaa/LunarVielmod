@@ -49,7 +49,7 @@ namespace Stellamod.Helpers
         /// <param name="BottomLeft"> bottom left of the placed structure</param>
         /// <param name="Path">path, starting past the mod root folder to read the .str from. Do not inculde the name of the mod in the path, or .str</param>
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
-        public static int[] ReadStruct(Point BottomLeft, string Path)
+        public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend=null)
         {
             using (var stream = Mod.GetFileStream(Path + ".str"))
             {
@@ -64,6 +64,28 @@ namespace Stellamod.Helpers
                         for (int j = 0; j <= Ylenght; j++)
                         {
                             Tile t = Framing.GetTileSafely(BottomLeft.X + i, BottomLeft.Y - j);
+                  
+                            //Get old values incase we don't want this tile
+                            int oldLiquidType = t.LiquidType;
+                            byte oldLiquidAmount = t.LiquidAmount;
+                            bool oldBlueWire = t.BlueWire;
+                            bool oldGreenWire = t.GreenWire;
+                            bool oldYellowWire = t.YellowWire;
+                            bool oldHasActuator = t.HasActuator;
+                            bool oldIsActuated = t.IsActuated;
+                            bool oldHasTile = t.HasTile;
+                            ushort oldTileType = t.TileType;
+                            BlockType oldBlockType = t.BlockType;
+                            bool oldIsHalfBlock = t.IsHalfBlock;
+                            SlopeType oldSlopeType = t.Slope;
+                            int oldTileFrameNumber = t.TileFrameNumber;
+                            short oldTileFrameX = t.TileFrameX;
+                            short oldTileFrameY = t.TileFrameY;
+                            ushort oldWallType = t.WallType;
+                            int oldWallFrameX = t.WallFrameX;
+                            int oldWallFrameY = t.WallFrameY;
+  
+                            bool makeOld = false;
                             t.ClearEverything();
                             //tile
                             bool hastile = reader.ReadBoolean();
@@ -87,7 +109,21 @@ namespace Stellamod.Helpers
                                 else
                                 {
                                     TileType = reader.ReadInt16();
+                                    if(tileBlend != null)
+                                    {
+                                        for (int tb = 0; tb < tileBlend.Length; tb++)
+                                        {
+                                            int tbTileType = tileBlend[tb];
+                                            if (TileType == tbTileType)
+                                            {
+                                                makeOld = true;
+                                                break;
+                                            }
+                                          
+                                        }
+                                    }
                                 }
+
                                 t.TileType = (ushort)TileType;
                                 t.BlockType = (BlockType)reader.ReadByte();
                                 t.IsHalfBlock = reader.ReadBoolean();
@@ -119,7 +155,31 @@ namespace Stellamod.Helpers
                             t.WallType = (ushort)WallType;
                             t.WallFrameX = reader.ReadInt32();
                             t.WallFrameY = reader.ReadInt32();
-                        }
+
+
+                            if (makeOld)
+                            {
+                                t.LiquidType = oldLiquidType;
+                                t.LiquidAmount = oldLiquidAmount;
+                                t.BlueWire = oldBlueWire;
+                                t.GreenWire = oldGreenWire;
+                                t.YellowWire = oldGreenWire;
+                                t.HasActuator = oldHasActuator;
+                                t.IsActuated = oldIsActuated;
+                                t.HasTile = oldHasTile;
+                                t.TileType = oldTileType;
+                                t.BlockType = oldBlockType;
+                                t.IsHalfBlock = oldIsHalfBlock;
+                                t.Slope = oldSlopeType;
+                                t.TileFrameNumber = oldTileFrameNumber;
+                                t.TileFrameX = oldTileFrameX;
+                                t.TileFrameY = oldTileFrameY;
+                                t.WallType = oldWallType;
+                                t.WallFrameX = oldWallFrameX;
+                                t.WallFrameY = oldWallFrameY;
+                            }
+                        }                 
+                        
                     }
                     return ChestIndexs.ToArray();
                 }

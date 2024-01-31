@@ -7,11 +7,6 @@ namespace Stellamod.Items.Accessories
 {
     public class AquaticHealingNecklace : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Aquatic Healing Necklace");
-            // Tooltip.SetDefault("Speeds up life Regen");
-        }
         public override void SetDefaults()
         {
             Item.Size = new Vector2(20);

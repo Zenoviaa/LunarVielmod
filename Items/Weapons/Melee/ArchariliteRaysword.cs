@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 0, 16, 0);
+            Item.value = Item.sellPrice(0, 1, 16, 0);
             Item.rare = ItemRarityID.Blue;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;

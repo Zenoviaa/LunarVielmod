@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.useStyle = ItemUseStyleID.Rapier;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Melee;
-			Item.value = 200;
+			Item.value = 1000;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = true;

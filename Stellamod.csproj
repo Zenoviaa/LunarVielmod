@@ -322,6 +322,8 @@
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
+    <None Remove="NPCs\Underground\FloweredRedLight.png" />
+    <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />
@@ -352,8 +354,12 @@
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
     <None Remove="Projectiles\HallowRain.png" />
+    <None Remove="Projectiles\IgniterExplosions\CombustionBoomMini.png" />
     <None Remove="Projectiles\IgniterExplosions\FireBoom.png" />
+    <None Remove="Projectiles\Magic\CandleShotProj1.png" />
+    <None Remove="Projectiles\Magic\CandleShotProj2.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
+    <None Remove="Projectiles\Magic\LampShot.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
     <None Remove="Projectiles\Magic\PoyaProj.png" />
     <None Remove="Projectiles\Magic\Poyashot.png" />
@@ -397,6 +403,7 @@
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />
     <None Remove="Projectiles\Summons\VoidMonsters\VoidEater.png" />
+    <None Remove="Projectiles\Summons\VoidMonsters\VoidHostileRift.png" />
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />
     <None Remove="Projectiles\Swords\Altride\EverneanProj.png" />
     <None Remove="Projectiles\Swords\Altride\MooningProj.png" />

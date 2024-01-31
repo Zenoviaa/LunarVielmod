@@ -47,6 +47,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             NPC.aiStyle = -1;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            NPC.dontTakeDamage = true;
         }
 
         public float Shooter = 0;

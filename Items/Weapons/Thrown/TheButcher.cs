@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.useStyle = ItemUseStyleID.Rapier;
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Throwing;
-			Item.value = 200;
+			Item.value = 1200;
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = true;

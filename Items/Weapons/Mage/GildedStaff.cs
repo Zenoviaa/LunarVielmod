@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.noMelee = true;
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = Item.sellPrice(silver: 10);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item2;
 			Item.autoReuse = true;

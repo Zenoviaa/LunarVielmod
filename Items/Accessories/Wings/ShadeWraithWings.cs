@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories.Wings
 		{
 			Item.width = 22;
 			Item.height = 20;
-			Item.value = 10000;
+			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.LightRed;
 			Item.accessory = true;
 		}

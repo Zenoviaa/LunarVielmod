@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Morrow
 					Notice();
 					break;
 				case ActionState.Attack:
-					NPC.damage = 70;
+					NPC.damage = 90;
 					counter++;
 					Attack();
 					break;

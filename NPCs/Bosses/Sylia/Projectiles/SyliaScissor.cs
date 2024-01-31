@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
 using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
-using System.Diagnostics.Metrics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -28,8 +25,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 24;
-            Projectile.height = 24;
+            Projectile.width = 76;
+            Projectile.height = 80;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
             Projectile.hostile = false;

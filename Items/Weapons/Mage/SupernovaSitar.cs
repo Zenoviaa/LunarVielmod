@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Mage
 	
 			Item.knockBack = 0f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = 15000;
 			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bongo");
 			Item.autoReuse = true;

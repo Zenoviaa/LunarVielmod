@@ -45,7 +45,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.buyPrice(0, 0, 90);
+			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Orange;
 			Item.accessory = true;
 		}
@@ -55,6 +55,7 @@ namespace Stellamod.Items.Accessories.Brooches
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<HikersBackpack>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 50);
+			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 30);
 			recipe.AddIngredient(ItemID.Wood, 50);
 			recipe.AddIngredient(ItemID.HellstoneBar, 10);
 			recipe.AddIngredient(ItemID.JungleSpores, 10);

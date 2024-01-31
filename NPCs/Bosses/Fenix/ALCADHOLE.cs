@@ -141,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
             {			
 				//NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ALCADSWIRL>());
 			}
-
+			NPC.noTileCollide = true;
 			invisibilityTimer++;
 			if (invisibilityTimer == 5)
             {

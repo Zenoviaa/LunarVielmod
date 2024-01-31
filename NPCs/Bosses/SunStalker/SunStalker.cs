@@ -54,9 +54,9 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             NPC.width = 100;
             NPC.height = 116;
-            NPC.damage = 63;
+            NPC.damage = 50;
             NPC.defense = 12;
-            NPC.lifeMax = 1600;
+            NPC.lifeMax = 1300;
             NPC.HitSound = SoundID.NPCHit28;
             NPC.DeathSound = SoundID.NPCDeath42;
             NPC.value = 30f;

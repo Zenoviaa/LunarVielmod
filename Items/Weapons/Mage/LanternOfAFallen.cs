@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.noMelee = true;
 			Item.knockBack = 2f;
 			Item.DamageType = DamageClass.Magic;
-			Item.value = 200;
+			Item.value = 15000;
 			Item.scale = 0.5f;
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.DD2_DarkMageSummonSkeleton;

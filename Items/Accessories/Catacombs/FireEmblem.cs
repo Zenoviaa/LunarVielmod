@@ -11,14 +11,22 @@ namespace Stellamod.Items.Accessories.Catacombs
     internal class FireEmblemPlayer : ModPlayer
     {
         public bool hasFireEmblem;
+        public int fireEmblemCooldown;
         public override void ResetEffects()
         {
             hasFireEmblem = false;
         }
 
+        public override void PostUpdateEquips()
+        {
+            if (fireEmblemCooldown > 0)
+                fireEmblemCooldown--;
+        }
+
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hasFireEmblem)
+            if (hasFireEmblem && fireEmblemCooldown <= 0)
             {
                 switch (Main.rand.Next(0, 4))
                 {
@@ -36,14 +44,15 @@ namespace Stellamod.Items.Accessories.Catacombs
                         break;
                 }
 
-                //1/3 chance for crits to EXPLODE
-                if (hit.Crit && Main.rand.NextBool(4))
+                if (hit.Crit && Main.rand.NextBool(2))
                 {
                     ShakeModSystem.Shake = 10;
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
                     Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center, Vector2.Zero,
                         ModContent.ProjectileType<FireBoom>(), damageDone / 2, hit.Knockback, Player.whoAmI);
                 }
+
+                fireEmblemCooldown = 30;
             }
         }
     }
@@ -56,6 +65,7 @@ namespace Stellamod.Items.Accessories.Catacombs
             Item.height = 28;
             Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
+            Item.value = Item.sellPrice(gold: 2);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

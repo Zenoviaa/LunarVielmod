@@ -23,6 +23,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useStyle = ItemUseStyleID.Swing;
             Item.autoReuse = true;
             Item.rare = ItemRarityID.Blue;
+            Item.value = 10000;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

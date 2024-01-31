@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
             Item.shoot = ModContent.ProjectileType<CoralCrossbowHold>();
             Item.scale = 0.8f;
             Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 3);
+            Item.value = Item.buyPrice(silver: 12);
             Item.noUseGraphic = true;
             Item.channel = true;
        
