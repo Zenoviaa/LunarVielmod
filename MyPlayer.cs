@@ -1129,34 +1129,11 @@ namespace Stellamod
 				ThreeTwoOneSmileBCooldown = 1720 + PPPaintTime;
 			}
 
-		/*	if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
-			{
-				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
-				Player.GetCritChance(DamageClass.Generic) = 100f;
-
-
-				if (PPPaintI)
-                {
-					PPPaintDMG2 = 15;
-				}
-
-				if (PPPaintI && PPPaintII)
-				{
-					PPPaintDMG2 = 50;
-				}
-
-				if (PPPaintI && PPPaintII && PPPaintIII)
-				{
-					PPPaintDMG2 = 150;
-				}
-
-			}*/
-
 			if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
             {
 				RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(0f, 20f)));
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
-
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f, 
+					ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
 
 				PaintdropBCooldown = 25;
 			}
@@ -2629,7 +2606,7 @@ namespace Stellamod
 
 			if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
 			{
-				Player.GetDamage(DamageClass.Generic) *= 2f + PPPaintDMG;
+				Player.GetDamage(DamageClass.Generic) += PPPaintDMG;
 				Player.GetCritChance(DamageClass.Generic) = 100f;
 
 
@@ -2647,7 +2624,6 @@ namespace Stellamod
 				{
 					PPPaintDMG2 = 150;
 				}
-
 			}
 
 			if (GovheilC && GovheilBCooldown > 300)
