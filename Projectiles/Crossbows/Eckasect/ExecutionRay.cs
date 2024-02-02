@@ -124,7 +124,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
             {
                 
                
-                 npc.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
+                 npc.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
                     
 
                 

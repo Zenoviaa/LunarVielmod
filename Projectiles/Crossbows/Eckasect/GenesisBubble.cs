@@ -81,8 +81,6 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 		// Finding the closest NPC to attack within maxDetectDistance range
 		// If not found then returns null
-		
-		
 
 
 
@@ -90,6 +88,12 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 
 
+
+		public override void PostDraw(Color lightColor)
+		{
+			Lighting.AddLight(Projectile.Center, Color.SpringGreen.ToVector3() * 1.75f * Main.essScale);
+			
+		}
 
 
 

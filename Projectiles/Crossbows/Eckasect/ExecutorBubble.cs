@@ -90,7 +90,11 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 
 
-
+		public override void PostDraw(Color lightColor)
+		{
+			Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
+			
+		}
 
 
 

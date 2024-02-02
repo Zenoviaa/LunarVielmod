@@ -2,10 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Crossbows.Eckasect;
 using Stellamod.Projectiles.Crossbows.Ultras;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -28,10 +31,36 @@ namespace Stellamod.Items.Weapons.Ranged
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
         }
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
 
-        public override void SetDefaults()
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Sire", "(A) 3 Weapons in one!")
+			{
+				OverrideColor = new Color(108, 271, 99)
+
+			};
+			tooltips.Add(line);
+
+			line = new TooltipLine(Mod, "Sire", "(A) Use your right click to switch between 3 forms!")
+			{
+				OverrideColor = new Color(220, 87, 24)
+
+			};
+			tooltips.Add(line);
+
+
+
+
+
+
+
+
+		}
+		public override void SetDefaults()
         {
-            Item.damage = 15;
+            Item.damage = 16;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
             Item.height = 25;
@@ -268,7 +297,23 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			return false;
 		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.HellstoneBar, 10);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<Venatici>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 3);
+			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
+			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
+			recipe.AddIngredient(ItemID.Silk, 5);
 
+			recipe.Register();
+		}
 
 
 	}

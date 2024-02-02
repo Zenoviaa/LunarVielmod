@@ -5260,7 +5260,13 @@ Mods: {
 
 			EckasectSire: {
 				DisplayName: Eckasect Sire
-				Tooltip: ""
+				Tooltip: '''
+					A beloved weapon by Sirestias and Zenovia (creator)
+					Can switch modes for unique abilities for this one weapon!
+					Hitting an enemy will cause colored circles to appear on parts of an enemy!
+					The colors coordinate to one of the modes on the weapon, and when used correctly,
+					will do devastating damage!
+					'''
 			}
 		}
 
