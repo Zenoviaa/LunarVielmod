@@ -350,6 +350,7 @@
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Bow\VampiricArrowProj.png" />
     <None Remove="Projectiles\Bow\Warrow.png" />
+    <None Remove="Projectiles\Crossbows\Eckasect\ExecutionRay.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
     <None Remove="Projectiles\Crossbows\WoodenCrossbowBolt - Copy.png" />

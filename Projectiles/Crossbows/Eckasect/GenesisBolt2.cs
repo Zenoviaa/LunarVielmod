@@ -79,13 +79,13 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			NPC npc = target;
 			if (npc.active && !npc.HasBuff<Sected>())
 			{
-				target.AddBuff(ModContent.BuffType<Sected>(), 1500);
+				target.AddBuff(ModContent.BuffType<Sected>(), 700);
 
 
 				switch (Main.rand.Next(3))
 				{
 					case 0:
-						target.AddBuff(ModContent.BuffType<Genesis>(), 1280);
+						target.AddBuff(ModContent.BuffType<Genesis>(), 640);
 
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
 
@@ -97,14 +97,14 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<ExecutorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
-						target.AddBuff(ModContent.BuffType<Executor>(), 1280);
+						target.AddBuff(ModContent.BuffType<Executor>(), 640);
 						break;
 
 
 					case 2:
 
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<LiberatorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
-						target.AddBuff(ModContent.BuffType<Liberator>(), 1280);
+						target.AddBuff(ModContent.BuffType<Liberator>(), 640);
 						break;
 				}
 
@@ -115,9 +115,10 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 			if (npc.active && npc.HasBuff<Genesis>())
 			{
-				npc.SimpleStrikeNPC(Projectile.damage * 8, 1, crit: false, Projectile.knockBack);
+				npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
 
 			}
+
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)

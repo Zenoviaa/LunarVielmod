@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 24;
+            Item.damage = 15;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
             Item.height = 25;
@@ -168,6 +168,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			}
 			else
 			{
+				Item.mana = 0;
 				Item.UseSound = null;
 			}
 
@@ -259,7 +260,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
 				if (player.HasBuff<Executor>())
 				{
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<MoltenCrossbowHold>(), damage, knockback, player.whoAmI, 1, dir);
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EckasectExecutorHold>(), damage, knockback, player.whoAmI, 1, dir);
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ExecutionRay>(), damage / 2, knockback, player.whoAmI, 1, dir);
 				}
 			}
 

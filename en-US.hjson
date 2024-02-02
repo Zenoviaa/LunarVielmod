@@ -6026,6 +6026,11 @@ Mods: {
 			ExecutorDebuff.DisplayName: Executor Debuff
 			GenesisDebuff.DisplayName: Genesis Debuff
 			LiberatorDebuff.DisplayName: Liberator Debuff
+			ExecutorBubble.DisplayName: Executor Bubble
+			GenesisBubble.DisplayName: Genesis Bubble
+			LiberatorBubble.DisplayName: Liberator Bubble
+			EckasectExecutorHold.DisplayName: Eckasect Executor Hold
+			ExecutionRay.DisplayName: Execution Ray
 		}
 
 		NPCs: {
