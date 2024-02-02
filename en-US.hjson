@@ -5983,23 +5983,6 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
-			GlassBreak.DisplayName: Glass Break
-			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
-			VoidHostileRift.DisplayName: Void Hostile Rift
-			CandleShotProj1.DisplayName: Candle Shot Proj1
-			CandleShotProj2.DisplayName: Candle Shot Proj2
-			TestProj.DisplayName: Test Proj
-			AlcadBombProj.DisplayName: Alcad Bomb Proj
-			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
-			LampShot.DisplayName: Lamp Shot
-			CombusterSparkProj1.DisplayName: Combuster Spark Proj1
-			CombusterSparkProj2.DisplayName: Combuster Spark Proj2
-			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
-			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
-			CombustionBoom.DisplayName: Combustion Boom
-			CombustionBoomMini.DisplayName: Combustion Boom Mini
-			VehementMinion.DisplayName: Vehement Minion
-			CinderFireball.DisplayName: Cinder Fireball
 		}
 
 		NPCs: {
@@ -7175,15 +7158,6 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
-
-			WhiteFlower.DisplayName: White Flower
-			RedFlower.DisplayName: Red Flower
-			FloweredWhiteLight.DisplayName: Flowered White Light
-			FloweredRedLight.DisplayName: Flowered Red Light
-			UnderworldRift.DisplayName: Underworld Rift
-			Zui.DisplayName: Zui
-			NaturalWitch.DisplayName: Natural Witch
-			BottomFeeder.DisplayName: Bottom Feeder
 		}
 
 		Biomes: {
