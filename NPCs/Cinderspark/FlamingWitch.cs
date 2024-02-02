@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Cinderspark
         public override void AI()
         {
             NPC.TargetClosest();
-            NPC.spriteDirection = NPC.direction;
+            NPC.spriteDirection = -NPC.direction;
             NPC.damage = 0;
             Player target = Main.player[NPC.target];
  
