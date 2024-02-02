@@ -7190,11 +7190,13 @@ Mods: {
 			BottomFeeder.DisplayName: Bottom Feeder
 			NaturalWitch.DisplayName: Natural Witch
 			Zui.DisplayName: Zui
-			NaturalWitch.DisplayName: Natural Witch
-			BottomFeeder.DisplayName: Bottom Feeder
 			CinderCrawlerBody.DisplayName: Cinder Crawler Body
 			CinderCrawlerHead.DisplayName: Cinder Crawler Head
 			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
+			FloweredRedLight.DisplayName: Flowered Red Light
+			FloweredWhiteLight.DisplayName: Flowered White Light
+			RedFlower.DisplayName: Red Flower
+			WhiteFlower.DisplayName: White Flower
 		}
 
 		Biomes: {

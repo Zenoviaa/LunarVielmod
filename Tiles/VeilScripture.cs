@@ -45,8 +45,8 @@ namespace Stellamod.Tiles
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             r = .354f * 3;
-            g = .200f * 3;
-            b = .055f * 3;
+            g = .000f * 3;
+            b = .255f * 3;
         }
 
         public override bool CanExplode(int i, int j) => false;
