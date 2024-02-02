@@ -5983,6 +5983,26 @@ Mods: {
 			CogKaboom.DisplayName: Cog Kaboom
 			CogNeedle.DisplayName: Cog Needle
 			GearSniper.DisplayName: Gear Sniper
+			LifeSeekingVialProj.DisplayName: Life Seeking Vial Proj
+			GlassBreak.DisplayName: Glass Break
+			TestProj.DisplayName: Test Proj
+			VoidHostileRift.DisplayName: Void Hostile Rift
+			LampShot.DisplayName: Lamp Shot
+			CombusterSparkProj3.DisplayName: Combuster Spark Proj3
+			CombusterSparkProj2.DisplayName: Combuster Spark Proj2
+			CombusterSparkProj1.DisplayName: Combuster Spark Proj1
+			CombusterExplosionProj1.DisplayName: Combuster Explosion Proj1
+			CandleShotProj2.DisplayName: Candle Shot Proj2
+			CandleShotProj1.DisplayName: Candle Shot Proj1
+			BurnedCarianTomeProj.DisplayName: Burned Carian Tome Proj
+			AlcadBombProj.DisplayName: Alcad Bomb Proj
+			CombustionBoomMini.DisplayName: Combustion Boom Mini
+			CombustionBoom.DisplayName: Combustion Boom
+			CinderFireball.DisplayName: Cinder Fireball
+			Veiizallighting.DisplayName: Veiizallighting
+			VeiizalBullet.DisplayName: Veiizal Bullet
+			VehementMinion.DisplayName: Vehement Minion
+			VeiizalBeam.DisplayName: Veiizal Beam
 		}
 
 		NPCs: {
@@ -7158,6 +7178,17 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			UnderworldRift.DisplayName: Underworld Rift
+			Veiizal.DisplayName: Veiizal
+			Zapwarn.DisplayName: Zapwarn
+			BottomFeeder.DisplayName: Bottom Feeder
+			NaturalWitch.DisplayName: Natural Witch
+			Zui.DisplayName: Zui
+			FloweredRedLight.DisplayName: Flowered Red Light
+			FloweredWhiteLight.DisplayName: Flowered White Light
+			RedFlower.DisplayName: Red Flower
+			WhiteFlower.DisplayName: White Flower
 		}
 
 		Biomes: {
