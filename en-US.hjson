@@ -5257,6 +5257,11 @@ Mods: {
 				DisplayName: Veil Scripture I
 				Tooltip: ""
 			}
+
+			EckasectSire: {
+				DisplayName: Eckasect Sire
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6005,6 +6010,16 @@ Mods: {
 			CombustionBoomMini.DisplayName: Combustion Boom Mini
 			VehementMinion.DisplayName: Vehement Minion
 			CinderFireball.DisplayName: Cinder Fireball
+			EckasectGenesisHold.DisplayName: Eckasect Genesis Hold
+			GenesisBolt1.DisplayName: Genesis Bolt1
+			GenesisBoom1.DisplayName: Genesis Boom1
+			GenesisBoom2.DisplayName: Genesis Boom2
+			GenesisBoom3.DisplayName: Genesis Boom3
+			GenesisBolt2.DisplayName: Genesis Bolt2
+			GenesisBolt3.DisplayName: Genesis Bolt3
+			EckasectLiberatorSwitch.DisplayName: Eckasect Liberator Switch
+			EckasectGenesisSwitch.DisplayName: Eckasect Genesis Switch
+			EckasectExecutorSwitch.DisplayName: Eckasect Executor Switch
 		}
 
 		NPCs: {
@@ -7192,6 +7207,9 @@ Mods: {
 			CinderCrawlerBody.DisplayName: Cinder Crawler Body
 			CinderCrawlerHead.DisplayName: Cinder Crawler Head
 			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
+			GreenLightBig.DisplayName: Green Light Big
+			BlueLightBig.DisplayName: Blue Light Big
+			RedLightBig.DisplayName: Red Light Big
 		}
 
 		Biomes: {
@@ -7935,6 +7953,21 @@ Mods: {
 			VehementBuff: {
 				DisplayName: Vehement Buff
 				Description: Mods.Stellamod.Buffs.VehementBuff.Description
+			}
+
+			Liberator: {
+				Description: Mods.Stellamod.Buffs.Liberator.Description
+				DisplayName: Liberator
+			}
+
+			Genesis: {
+				Description: Mods.Stellamod.Buffs.Genesis.Description
+				DisplayName: Genesis
+			}
+
+			Executor: {
+				Description: Mods.Stellamod.Buffs.Executor.Description
+				DisplayName: Executor
 			}
 		}
 
