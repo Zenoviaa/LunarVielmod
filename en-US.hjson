@@ -7192,6 +7192,10 @@ Mods: {
 			CinderCrawlerBody.DisplayName: Cinder Crawler Body
 			CinderCrawlerHead.DisplayName: Cinder Crawler Head
 			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
+			GreenLightBig.DisplayName: Green Light Big
+			CharredSoul.DisplayName: Charred Soul
+			CharredSkulls.DisplayName: Charred Skulls
+			FlamingWitch.DisplayName: Flaming Witch
 		}
 
 		Biomes: {
