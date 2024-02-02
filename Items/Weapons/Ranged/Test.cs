@@ -44,6 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<TestProj>();
 			Item.shootSpeed = 15f;
+			Item.channel = true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

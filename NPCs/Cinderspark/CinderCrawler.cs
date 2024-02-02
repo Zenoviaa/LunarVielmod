@@ -22,6 +22,9 @@ namespace Stellamod.NPCs.Cinderspark
     internal class CinderCrawlerHead : WormHead
     {
         private int _attackCounter;
+        private int _movementTimer;
+        private float _xDir;
+        private float _yDir;
         public override int BodyType => ModContent.NPCType<CinderCrawlerBody>();
 
         public override int TailType => ModContent.NPCType<CinderCrawlerTail>();
@@ -78,12 +81,14 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.frame.Y = frame * frameHeight;
         }
 
+
         public override void AI()
         {
             NPC.TargetClosest();
             if (NPC.HasValidTarget)
             {
                 _attackCounter++;
+                _movementTimer++;
                 Player target = Main.player[NPC.target];
 
                 //The below code is for cardinal only flying movement
@@ -91,35 +96,40 @@ namespace Stellamod.NPCs.Cinderspark
                 float xDist = Math.Abs(target.Center.X - NPC.Center.X);
                 float yDist = Math.Abs(target.Center.Y - NPC.Center.Y);
 
-                //Direction
-                float xDir = 0f;
-                float yDir = 0f;
-
-                if(xDist > yDist)
+                //Switch Direction
+                if(_movementTimer > 60)
                 {
-                    if (target.Center.X < NPC.Center.X)
+                    if (xDist > yDist)
                     {
-                        xDir = -1f;
+                        if (target.Center.X < NPC.Center.X)
+                        {
+                            _xDir = -1f;
+                            _yDir = 0f;
+                        }
+                        else if (target.Center.X > NPC.Center.X)
+                        {
+                            _xDir = 1f;
+                            _yDir = 0f;
+                        }
                     }
-                    else if (target.Center.X > NPC.Center.X)
+                    else if (yDist > xDist)
                     {
-                        xDir = 1f;
+                        if (target.Center.Y < NPC.Center.Y)
+                        {
+                            _xDir = 0f;
+                            _yDir = -1f;
+                        }
+                        else if (target.Center.Y > NPC.Center.Y)
+                        {
+                            _xDir = 0f;
+                            _yDir = 1f;
+                        }
                     }
-                } 
-                else if (yDist > xDist)
-                {
-                    if (target.Center.Y < NPC.Center.Y)
-                    {
-                        yDir = -1f;
-                    }
-                    else if (target.Center.Y > NPC.Center.Y)
-                    {
-                        yDir = 1f;
-                    }
+                    _movementTimer = 0;
                 }
 
-                Vector2 targetDirection = new Vector2(xDir, yDir);
-                Vector2 targetVelocity = new Vector2(xDir, yDir) * 1.2f;
+                Vector2 targetDirection = new Vector2(_xDir, _yDir);
+                Vector2 targetVelocity = new Vector2(_xDir, _yDir) * 1.2f;
                 NPC.velocity = targetVelocity;
                 if(_attackCounter > 120)
                 {
