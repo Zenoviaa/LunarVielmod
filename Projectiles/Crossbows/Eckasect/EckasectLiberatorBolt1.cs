@@ -28,15 +28,15 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Melee;
-			Projectile.width = 130;
-			Projectile.height = 373;
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.width = 373;
+			Projectile.height = 130;
 			Projectile.penetrate = -1;
 			Projectile.scale = 1f;
 			Projectile.knockBack = 12.9f;
 			Projectile.aiStyle = 1;
 			AIType = ProjectileID.Bullet;
-			Projectile.DamageType = DamageClass.Melee;
+			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.tileCollide = false;
 
 		}
@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 			nigga++;
 
-			Projectile.velocity *= 1.02f;
+			Projectile.velocity *= 1.04f;
 			if (nigga < 2)
             {
 				ShakeModSystem.Shake = 13;

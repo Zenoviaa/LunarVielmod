@@ -254,7 +254,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 				if (player.HasBuff<Liberator>())
 				{
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<CoralCrossbowHold>(), damage, knockback, player.whoAmI, 1, dir);
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EckasectLiberatorHold>(), damage, knockback, player.whoAmI, 1, dir);
 				}
 
 				if (player.HasBuff<Executor>())

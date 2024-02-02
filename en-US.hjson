@@ -6020,6 +6020,9 @@ Mods: {
 			EckasectLiberatorSwitch.DisplayName: Eckasect Liberator Switch
 			EckasectGenesisSwitch.DisplayName: Eckasect Genesis Switch
 			EckasectExecutorSwitch.DisplayName: Eckasect Executor Switch
+			EckasectLiberatorHold.DisplayName: Eckasect Liberator Hold
+			EckasectLiberatorBolt1.DisplayName: Eckasect Liberator Bolt1
+			Alvial.DisplayName: Alvial
 		}
 
 		NPCs: {

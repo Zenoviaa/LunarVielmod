@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
-			Projectile.timeLeft = 320;
+			Projectile.timeLeft = 480;
 		}
 
 		public override bool? CanDamage()
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 		public override void AI()
 		{
 			Timer++;
-			if (Timer > 319)
+			if (Timer > 481)
 			{
 				// Our timer has finished, do something here:
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.		
@@ -77,15 +77,99 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 			if (Timer == 1)
 			{
-				float speedX = Projectile.velocity.X * 15;
+				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
-
-				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<LiberatorBolt1>(), Projectile.damage * 7, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 4, Projectile.knockBack * 4, player.whoAmI);
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"));
 				ShakeModSystem.Shake = 4;
 			}
 
-			
+			if (Timer == 61)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 4, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 121)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 181)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 2, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 241)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 301)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 2, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 361)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 7, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"));
+				ShakeModSystem.Shake = 4;
+			}
+
+			if (Timer == 421)
+			{
+				float speedX = Projectile.velocity.X * 10;
+				float speedY = Projectile.velocity.Y * 7;
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 3f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 6f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"));
+				ShakeModSystem.Shake = 4;
+			}
 
 			Projectile.Center = playerCenter + new Vector2(80, 0).RotatedBy(swordRotation); ;// customization of the hitbox position
 
