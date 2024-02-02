@@ -13,7 +13,7 @@ using Stellamod.Items.Harvesting;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
-
+using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
@@ -75,6 +75,52 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisBoom3>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
+
+
+
+
+			NPC npc = target;
+			if (npc.active && !npc.HasBuff<Sected>())
+			{
+				target.AddBuff(ModContent.BuffType<Sected>(), 1500);
+
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						target.AddBuff(ModContent.BuffType<Genesis>(), 1280);
+
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+
+
+						break;
+
+
+					case 1:
+
+
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<ExecutorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+						target.AddBuff(ModContent.BuffType<Executor>(), 1280);
+						break;
+
+
+					case 2:
+
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<LiberatorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+						target.AddBuff(ModContent.BuffType<Liberator>(), 1280);
+						break;
+				}
+
+
+
+			}
+
+
+			if (npc.active && npc.HasBuff<Genesis>())
+			{
+				npc.SimpleStrikeNPC(Projectile.damage * 8, 1, crit: false, Projectile.knockBack);
+
+			}
 
 		}
 

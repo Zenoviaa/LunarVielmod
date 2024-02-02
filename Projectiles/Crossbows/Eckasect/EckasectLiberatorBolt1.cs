@@ -13,6 +13,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Stellamod.UI.Systems;
+using Stellamod.Buffs;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
@@ -68,10 +69,10 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
 			Projectile.velocity *= 1.04f;
 			if (nigga < 2)
-            {
+			{
 				ShakeModSystem.Shake = 13;
 			}
-			
+
 
 			if (++Projectile.frameCounter >= 2)
 			{
@@ -97,14 +98,64 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 		}
 		public override bool PreDraw(ref Color lightColor)
 		{
-			
 
-			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;		
+
+			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
 			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail2);
 			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 			return true;
 		}
+
+
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			Player player = Main.player[Projectile.owner];
+			NPC npc = target;
+			if (npc.active && !npc.HasBuff<Sected>())
+			{
+				target.AddBuff(ModContent.BuffType<Sected>(), 1500);
+				float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+				float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						target.AddBuff(ModContent.BuffType<Genesis>(), 1280);
+
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+
+
+						break;
+
+
+					case 1:
+
+					
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<ExecutorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+						target.AddBuff(ModContent.BuffType<Executor>(), 1280);
+						break;
+
+
+					case 2:
+
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<LiberatorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+						target.AddBuff(ModContent.BuffType<Liberator>(), 1280);
+						break;
+				}
+
+
+
+			}
+
+
+			if (npc.active && npc.HasBuff<Liberator>())
+            {
+				npc.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, Projectile.knockBack);
+
+			}
+		}
+
 	}
 }
 

@@ -6023,6 +6023,9 @@ Mods: {
 			EckasectLiberatorHold.DisplayName: Eckasect Liberator Hold
 			EckasectLiberatorBolt1.DisplayName: Eckasect Liberator Bolt1
 			Alvial.DisplayName: Alvial
+			ExecutorDebuff.DisplayName: Executor Debuff
+			GenesisDebuff.DisplayName: Genesis Debuff
+			LiberatorDebuff.DisplayName: Liberator Debuff
 		}
 
 		NPCs: {
@@ -7213,6 +7216,9 @@ Mods: {
 			GreenLightBig.DisplayName: Green Light Big
 			BlueLightBig.DisplayName: Blue Light Big
 			RedLightBig.DisplayName: Red Light Big
+			CharredSkulls.DisplayName: Charred Skulls
+			CharredSoul.DisplayName: Charred Soul
+			FlamingWitch.DisplayName: Flaming Witch
 		}
 
 		Biomes: {
@@ -7971,6 +7977,11 @@ Mods: {
 			Executor: {
 				Description: Mods.Stellamod.Buffs.Executor.Description
 				DisplayName: Executor
+			}
+
+			Sected: {
+				DisplayName: Sected
+				Description: Mods.Stellamod.Buffs.Sected.Description
 			}
 		}
 
