@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 1280;
-			Projectile.scale = 1.5f
+			Projectile.scale = 1.5f;
 
 		}
 		public float Timer
