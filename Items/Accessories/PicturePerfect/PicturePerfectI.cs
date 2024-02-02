@@ -52,7 +52,7 @@ namespace Stellamod.Items.Accessories.PicturePerfect
 			player.GetModPlayer<MyPlayer>().PPCrit = 5;
 			player.GetModPlayer<MyPlayer>().PPSpeed = 0.5f;
 			player.GetModPlayer<MyPlayer>().PPPaintI = true;
-			player.GetModPlayer<MyPlayer>().PPPaintDMG = 0.2f;
+			player.GetModPlayer<MyPlayer>().PPPaintDMG = 0.5f;
 			player.GetModPlayer<MyPlayer>().PPPaintDMG2 = 5;
 			player.GetModPlayer<MyPlayer>().PPPaintTime = 60;
 			player.GetModPlayer<MyPlayer>().PPFrameTime = 2;

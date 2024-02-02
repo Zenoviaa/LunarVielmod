@@ -5252,6 +5252,11 @@ Mods: {
 				DisplayName: Vehement Rhapsody
 				Tooltip: It's musically challenged.. Adding more summons makes this summon do more damage!
 			}
+
+			VeilScriptureI: {
+				DisplayName: Veil Scripture I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7185,10 +7190,11 @@ Mods: {
 			BottomFeeder.DisplayName: Bottom Feeder
 			NaturalWitch.DisplayName: Natural Witch
 			Zui.DisplayName: Zui
-			FloweredRedLight.DisplayName: Flowered Red Light
-			FloweredWhiteLight.DisplayName: Flowered White Light
-			RedFlower.DisplayName: Red Flower
-			WhiteFlower.DisplayName: White Flower
+			NaturalWitch.DisplayName: Natural Witch
+			BottomFeeder.DisplayName: Bottom Feeder
+			CinderCrawlerBody.DisplayName: Cinder Crawler Body
+			CinderCrawlerHead.DisplayName: Cinder Crawler Head
+			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
 		}
 
 		Biomes: {
@@ -7400,6 +7406,7 @@ Mods: {
 			CatacombsDoorClosed.MapEntry: Catacombs Door Closed
 			CatacombsSummon.MapEntry: Catacombs Summon
 			Rallad.MapEntry: Rallad
+			VeilScripture.MapEntry: Veil Scripture
 		}
 
 		Buffs: {

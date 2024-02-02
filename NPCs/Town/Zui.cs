@@ -18,6 +18,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Stellamod.Items.Armors.Witchen;
+using Stellamod.Items.Consumables;
 
 namespace Stellamod.NPCs.Town
 {
@@ -142,15 +143,15 @@ namespace Stellamod.NPCs.Town
 			chat.Add(Language.GetTextValue("We've had to kick a few witches out of this town you know, its quite a shame.."));
 			chat.Add(Language.GetTextValue("I keep going out to find more plants but somehow you're always here when I return. "));
 			chat.Add(Language.GetTextValue("I'm trying to find a way to stop the corruption and virulent from spreading but I have no fix currently."));
-			chat.Add(Language.GetTextValue("Hey love, you know you could be collecting stuff for me!"), 5.0);
+			chat.Add(Language.GetTextValue("Hey love, you know you could be collecting stuff for me!"), 1.0);
 			chat.Add(Language.GetTextValue("Sirestias? Oh um yeahh we go pretty far back."), 0.4);
-			chat.Add(Language.GetTextValue("Aimacra is cool too, this is my first time meeting her lol"), 0.1);
+			chat.Add(Language.GetTextValue("Aimacra is cool too, this is my first time meeting her lol"), 0.5);
 			chat.Add(Language.GetTextValue("I wouldn't say I'm too powerful, afterall I a just a traveller"), 0.1);
 			chat.Add(Language.GetTextValue("Sometimes I wonder what they did in Vodhome after we all left. I really have to catch up with Sirestias and the others."), 0.1);
 			chat.Add(Language.GetTextValue("Are you here with Sirestias?"), 0.1);
-			chat.Add(Language.GetTextValue("All these plants are so cool! I did just arrive here before Sirestias, there was some commotion and I think people here are trying to disrupt time and power."), 0.1);
+			chat.Add(Language.GetTextValue("All these plants are so cool! I did just arrive here before Sirestias, there was some commotion and I think people here are trying to disrupt time and power."), 0.5);
 			chat.Add(Language.GetTextValue("Sirestias is a balancer, same goes for me but I like to just collect things."), 0.1);
-			chat.Add(Language.GetTextValue("Hey if you collect some items for me I can give you some stuff!"), 3.0);
+			chat.Add(Language.GetTextValue("Hey if you collect some items for me I can give you some stuff!"), 2.0);
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
@@ -210,6 +211,26 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Nice nice, I'll take these, could you fetch some more for me!  ";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.HealingPotion, 7);
+			}
+
+			if (Main.rand.NextBool(3))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.GreaterHealingPotion, 7);
+			}
+
+			if (Main.rand.NextBool(5))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SuperHealingPotion, 5);
+			}
+
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 9);
+			}
 
 			ZuiQuestSystem.QuestsCompleted += 1;
 
@@ -418,6 +439,7 @@ namespace Stellamod.NPCs.Town
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<Morrowshroom>(ZuiQuestSystem.ShopCondition3)
+			.Add<SunClaw>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
 
 

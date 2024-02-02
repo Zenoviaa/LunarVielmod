@@ -145,6 +145,7 @@
     <None Remove="Items\Placeable\Govheil\GovheilWallsI.png" />
     <None Remove="Items\Placeable\RalladI.png" />
     <None Remove="Items\Placeable\SunSall.png" />
+    <None Remove="Items\Placeable\VeilScriptureI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineBUANI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />
@@ -315,6 +316,9 @@
     <None Remove="NPCs\Catacombs\Trap\Cogwork\IronNailLodged.png" />
     <None Remove="NPCs\Catacombs\Water\WaterCogwork\WaterBolt.png" />
     <None Remove="NPCs\Catacombs\Water\WaterJellyfish\WaterJellyfish_Head_Boss.png" />
+    <None Remove="NPCs\Cinderspark\CinderCrawlerBody.png" />
+    <None Remove="NPCs\Cinderspark\CinderCrawlerHead.png" />
+    <None Remove="NPCs\Cinderspark\CinderCrawlerTail.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
