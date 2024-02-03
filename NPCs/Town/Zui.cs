@@ -435,7 +435,7 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.Bottle) { shopCustomPrice = Item.buyPrice(copper: 50) })
 			.Add(new Item(ItemID.JungleRose) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add<IceClimbers>()
-
+			.Add<FloweredCard>()
 
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
@@ -458,6 +458,8 @@ namespace Stellamod.NPCs.Town
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
 			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
 
+
+			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}

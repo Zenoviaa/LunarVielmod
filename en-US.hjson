@@ -948,7 +948,7 @@ Mods: {
 			}
 
 			BonePicklerCard: {
-				DisplayName: Bone Pickler Card Igniter
+				DisplayName: Bone Pickler Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -957,7 +957,7 @@ Mods: {
 			}
 
 			DaedCard: {
-				DisplayName: Daed Card Igniter
+				DisplayName: Daed Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -966,7 +966,7 @@ Mods: {
 			}
 
 			EYIgniter: {
-				DisplayName: EyeCard Igniter
+				DisplayName: Eye Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -975,7 +975,7 @@ Mods: {
 			}
 
 			FrostCard: {
-				DisplayName: Frost Card Igniter
+				DisplayName: Frost Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -984,7 +984,7 @@ Mods: {
 			}
 
 			GothivCard: {
-				DisplayName: Gothiv Card Igniter
+				DisplayName: Gothiv Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -993,7 +993,7 @@ Mods: {
 			}
 
 			LovestruckCard: {
-				DisplayName: Lovestruck Card Igniter
+				DisplayName: Lovestruck Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1002,7 +1002,7 @@ Mods: {
 			}
 
 			ScorcheCard: {
-				DisplayName: ScorcheCard Igniter
+				DisplayName: Scorche Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1011,7 +1011,7 @@ Mods: {
 			}
 
 			StarrCard: {
-				DisplayName: StarrCard Igniter
+				DisplayName: Starr Card 
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1020,7 +1020,7 @@ Mods: {
 			}
 
 			StarterCard: {
-				DisplayName: Starter Card Igniter
+				DisplayName: Starter Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1029,7 +1029,7 @@ Mods: {
 			}
 
 			WCIgniter: {
-				DisplayName: WildCard Igniter
+				DisplayName: Wild Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -5275,7 +5275,34 @@ Mods: {
 
 			TheTraumatizer: {
 				DisplayName: The Traumatizer
-				Tooltip: ""
+				Tooltip: It will shoot a fan like laser and will kill things, and traumatize them.
+			}
+
+			FloweredCard: {
+				DisplayName: Flowered Card
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			MetallianCard: {
+				DisplayName: Metallian Card
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			ZuiCard: {
+				DisplayName: Zui Card
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
 			}
 		}
 
