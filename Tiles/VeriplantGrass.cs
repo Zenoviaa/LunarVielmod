@@ -29,10 +29,10 @@ namespace Stellamod.Tiles
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantGrassBlock>());
 			HitSound = SoundID.Grass;
 			MineResist = 1f;
-			MinPick = 20;
 		}
-		public override bool CanExplode(int i, int j) => false;
-		public override void NumDust(int i, int j, bool fail, ref int num)
+
+        public override bool CanExplode(int i, int j) => true;
+        public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}
