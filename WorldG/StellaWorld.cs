@@ -3300,7 +3300,7 @@ namespace Stellamod.WorldG
 				int yz = WorldGen.genRand.Next(Main.UnderworldLayer - (Main.maxTilesY / 20));
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 13), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>(),false,0,0,false,true,-1);
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 9), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>(),false,0,0,false,true,-1);
 			}
 
 
