@@ -102,9 +102,9 @@ namespace Stellamod.NPCs.Underground
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.SpelunkerGlowstick, minimumDropped: 1, maximumDropped: 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.Coal, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));
-            npcLoot.Add(ItemDropRule.Common(ItemID.MiningPants, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));
-            npcLoot.Add(ItemDropRule.Common(ItemID.MiningShirt, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));
-            npcLoot.Add(ItemDropRule.Common(ItemID.MiningHelmet, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.MiningPants, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.MiningShirt, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.MiningHelmet, chanceDenominator: 20, minimumDropped: 1, maximumDropped: 1));
         }
     }
 }
