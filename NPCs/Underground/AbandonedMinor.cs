@@ -2,11 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -37,7 +35,6 @@ namespace Stellamod.NPCs.Underground
 
         public override void AI()
         {
-     
             _waitTimer++;
             if (_waitTimer < 120)
             {
@@ -91,12 +88,6 @@ namespace Stellamod.NPCs.Underground
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            //You can't be in the surface and underground at the same time so this should work
-            //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Cavern.Chance * 0.75f);
-        }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

@@ -7237,6 +7237,7 @@ Mods: {
 			FlamingWitch.DisplayName: Flaming Witch
 			THEGREATDEVOURER.DisplayName: THE GREAT DEVOURER
 			AbandonedMinor.DisplayName: Abandoned Minor
+			AbandonedMinorSummon.DisplayName: Abandoned Minor Summon
 		}
 
 		Biomes: {
