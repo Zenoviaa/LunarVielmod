@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Cinderspark
                 NPC.velocity.X = 0;
             }
 
-            float targetRotation = NPC.velocity.X * 0.1f;
+            float targetRotation = NPC.velocity.X * 0.06f;
             NPC.rotation = MathHelper.WrapAngle(MathHelper.Lerp(NPC.rotation, targetRotation, 0.33f));
         }
 
