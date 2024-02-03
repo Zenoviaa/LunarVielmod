@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 2;
             Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
-            Item.shootSpeed = 30f;
+            Item.shootSpeed = 20f;
             Item.shoot = ModContent.ProjectileType<WigglerShot>();
         }
 

@@ -6098,6 +6098,7 @@ Mods: {
 			WigglerStick.DisplayName: Wiggler Stick
 			WigglerShot.DisplayName: Wiggler Shot
 			WigglerKaboom.DisplayName: Wiggler Kaboom
+			KaBoomBlue.DisplayName: Ka Boom Blue
 		}
 
 		NPCs: {

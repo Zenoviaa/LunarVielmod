@@ -3583,6 +3583,7 @@ namespace Stellamod.WorldG
 
 									case 8:
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
@@ -3709,6 +3710,7 @@ namespace Stellamod.WorldG
 
 									case 7:
 										itemsToAdd.Add((ItemID.WaterWalkingBoots, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ItemID.IronOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
 										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -3991,6 +3993,7 @@ namespace Stellamod.WorldG
 
 									case 8:
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));

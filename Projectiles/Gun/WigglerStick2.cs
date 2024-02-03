@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Gun
                     ShakeModSystem.Shake = 3;
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                        ModContent.ProjectileType<WigglerKaboom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<KaBoomBlue>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
                     Projectile.Kill();
                 }
 

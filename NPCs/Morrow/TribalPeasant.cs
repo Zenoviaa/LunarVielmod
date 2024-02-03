@@ -228,11 +228,9 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizDagger>(), 50, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 2, 1, 5));
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
