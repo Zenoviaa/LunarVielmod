@@ -5327,6 +5327,11 @@ Mods: {
 				DisplayName: Completed Collectors Bag
 				Tooltip: Take this to Zui for some rewards!
 			}
+
+			ArncharSuperCharger: {
+				DisplayName: Arnchar Super Charger
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6077,7 +6082,6 @@ Mods: {
 			Veiizallighting.DisplayName: Veiizallighting
 			VeiizalBullet.DisplayName: Veiizal Bullet
 			VehementMinion.DisplayName: Vehement Minion
-			CinderFireball.DisplayName: Cinder Fireball
 			EckasectGenesisHold.DisplayName: Eckasect Genesis Hold
 			GenesisBolt1.DisplayName: Genesis Bolt1
 			GenesisBoom1.DisplayName: Genesis Boom1
@@ -6107,6 +6111,11 @@ Mods: {
 			WigglerShot.DisplayName: Wiggler Shot
 			WigglerKaboom.DisplayName: Wiggler Kaboom
 			KaBoomBlue.DisplayName: Ka Boom Blue
+			VeiizalBeam.DisplayName: Veiizal Beam
+			ArchariliteArrowSC.DisplayName: Archarilite Arrow S C
+			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
+			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
+			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 		}
 
 		NPCs: {
@@ -7301,6 +7310,10 @@ Mods: {
 			THEGREATDEVOURER.DisplayName: THE GREAT DEVOURER
 			AbandonedMinor.DisplayName: Abandoned Minor
 			AbandonedMinorSummon.DisplayName: Abandoned Minor Summon
+			FloweredRedLight.DisplayName: Flowered Red Light
+			FloweredWhiteLight.DisplayName: Flowered White Light
+			RedFlower.DisplayName: Red Flower
+			WhiteFlower.DisplayName: White Flower
 		}
 
 		Biomes: {
