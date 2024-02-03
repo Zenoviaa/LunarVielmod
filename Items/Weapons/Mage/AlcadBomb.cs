@@ -29,7 +29,6 @@ namespace Stellamod.Items.Weapons.Mage
             Item.rare = ItemRarityID.LightRed;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
-
             Item.noMelee = true;
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<AlcadBombProj>();

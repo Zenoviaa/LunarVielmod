@@ -211,7 +211,7 @@ Mods: {
 				Tooltip:
 					'''
 					When enemies hit you deal big amounts of damage back
-					+10% Melee damage...
+					+3% Melee damage...
 					-5 defense
 					'''
 			}
@@ -948,7 +948,7 @@ Mods: {
 			}
 
 			BonePicklerCard: {
-				DisplayName: Bone Pickler Card Igniter
+				DisplayName: Bone Pickler Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -957,7 +957,7 @@ Mods: {
 			}
 
 			DaedCard: {
-				DisplayName: Daed Card Igniter
+				DisplayName: Daed Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -966,7 +966,7 @@ Mods: {
 			}
 
 			EYIgniter: {
-				DisplayName: EyeCard Igniter
+				DisplayName: Eye Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -975,7 +975,7 @@ Mods: {
 			}
 
 			FrostCard: {
-				DisplayName: Frost Card Igniter
+				DisplayName: Frost Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -984,7 +984,7 @@ Mods: {
 			}
 
 			GothivCard: {
-				DisplayName: Gothiv Card Igniter
+				DisplayName: Gothiv Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -993,7 +993,7 @@ Mods: {
 			}
 
 			LovestruckCard: {
-				DisplayName: Lovestruck Card Igniter
+				DisplayName: Lovestruck Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1002,7 +1002,7 @@ Mods: {
 			}
 
 			ScorcheCard: {
-				DisplayName: ScorcheCard Igniter
+				DisplayName: Scorche Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1011,7 +1011,7 @@ Mods: {
 			}
 
 			StarrCard: {
-				DisplayName: StarrCard Igniter
+				DisplayName: Starr Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1020,7 +1020,7 @@ Mods: {
 			}
 
 			StarterCard: {
-				DisplayName: Starter Card Igniter
+				DisplayName: Starter Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1029,7 +1029,7 @@ Mods: {
 			}
 
 			WCIgniter: {
-				DisplayName: WildCard Igniter
+				DisplayName: Wild Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -1927,7 +1927,7 @@ Mods: {
 
 			CoralBand: {
 				DisplayName: Coral Band
-				Tooltip: 20% increased Melee damage and Critical Strike Chance!
+				Tooltip: 5% increased Melee damage and Critical Strike Chance!
 			}
 
 			GintzlMetal: {
@@ -1966,7 +1966,7 @@ Mods: {
 
 			OceanScroll: {
 				DisplayName: Ocean Scroll
-				Tooltip: Increased Magical Critical strike chance by 20%
+				Tooltip: Increased Magical Critical strike chance by 10%
 			}
 
 			OceansTrinket: {
@@ -5258,9 +5258,74 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ArncharSuperCharger: {
-				Tooltip: ""
-				DisplayName: Arnchar Super Charger
+			EckasectSire: {
+				DisplayName: Eckasect Sire
+				Tooltip:
+					'''
+					A beloved weapon by Sirestias and Zenovia (creator)
+					Can switch modes for unique abilities for this one weapon! Uses 20 mana!!
+					Hitting an enemy will cause colored circles to appear on parts of an enemy!
+					The colors coordinate to one of the modes on the weapon, and when used correctly,
+					will do devastating damage!
+					Genesis - Green Version which shoots out bombs!
+					Liberator - Purple version which snipes out a high damage shot!
+					Execution - An Orange laser comes out of the gun taking wide spread and less damage...
+					'''
+			}
+
+			TheTraumatizer: {
+				DisplayName: The Traumatizer
+				Tooltip: It will shoot a fan like laser and will kill things, and traumatize them.
+			}
+
+			FloweredCard: {
+				DisplayName: Flowered Card
+				Tooltip:
+					'''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			MetallianCard: {
+				DisplayName: Metallian Card
+				Tooltip:
+					'''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			ZuiCard: {
+				DisplayName: Zui Card
+				Tooltip:
+					'''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			CinderedQuiver: {
+				DisplayName: Cindered Quiver
+				Tooltip: Turns wooden arrows into hellfire ones with 7 more damage!
+			}
+
+			TheWiggler: {
+				DisplayName: The Wiggler
+				Tooltip:
+					'''
+					Shoots blobs that stick to tiles and enemies!
+					Right click to detonate blobs!
+					'It's icky, sticky, and it gets everywhere'
+					'''
+			}
+
+			CompletedCollectorsBag: {
+				DisplayName: Completed Collectors Bag
+				Tooltip: Take this to Zui for some rewards!
 			}
 		}
 
@@ -6012,11 +6077,36 @@ Mods: {
 			Veiizallighting.DisplayName: Veiizallighting
 			VeiizalBullet.DisplayName: Veiizal Bullet
 			VehementMinion.DisplayName: Vehement Minion
-			VeiizalBeam.DisplayName: Veiizal Beam
-			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
-			ArchariliteArrowSC.DisplayName: Archarilite Arrow S C
-			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
-			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
+			CinderFireball.DisplayName: Cinder Fireball
+			EckasectGenesisHold.DisplayName: Eckasect Genesis Hold
+			GenesisBolt1.DisplayName: Genesis Bolt1
+			GenesisBoom1.DisplayName: Genesis Boom1
+			GenesisBoom2.DisplayName: Genesis Boom2
+			GenesisBoom3.DisplayName: Genesis Boom3
+			GenesisBolt2.DisplayName: Genesis Bolt2
+			GenesisBolt3.DisplayName: Genesis Bolt3
+			EckasectLiberatorSwitch.DisplayName: Eckasect Liberator Switch
+			EckasectGenesisSwitch.DisplayName: Eckasect Genesis Switch
+			EckasectExecutorSwitch.DisplayName: Eckasect Executor Switch
+			EckasectLiberatorHold.DisplayName: Eckasect Liberator Hold
+			EckasectLiberatorBolt1.DisplayName: Eckasect Liberator Bolt1
+			Alvial.DisplayName: Alvial
+			ExecutorDebuff.DisplayName: Executor Debuff
+			GenesisDebuff.DisplayName: Genesis Debuff
+			LiberatorDebuff.DisplayName: Liberator Debuff
+			ExecutorBubble.DisplayName: Executor Bubble
+			GenesisBubble.DisplayName: Genesis Bubble
+			LiberatorBubble.DisplayName: Liberator Bubble
+			EckasectExecutorHold.DisplayName: Eckasect Executor Hold
+			ExecutionRay.DisplayName: Execution Ray
+			CinderFireball2.DisplayName: Cinder Fireball2
+			TheTraumatizerHold.DisplayName: The Traumatizer Hold
+			TraumatizingRay.DisplayName: Traumatizing Ray
+			WigglerStick2.DisplayName: Wiggler Stick2
+			WigglerStick.DisplayName: Wiggler Stick
+			WigglerShot.DisplayName: Wiggler Shot
+			WigglerKaboom.DisplayName: Wiggler Kaboom
+			KaBoomBlue.DisplayName: Ka Boom Blue
 		}
 
 		NPCs: {
@@ -7202,10 +7292,15 @@ Mods: {
 			CinderCrawlerBody.DisplayName: Cinder Crawler Body
 			CinderCrawlerHead.DisplayName: Cinder Crawler Head
 			CinderCrawlerTail.DisplayName: Cinder Crawler Tail
-			FloweredRedLight.DisplayName: Flowered Red Light
-			FloweredWhiteLight.DisplayName: Flowered White Light
-			RedFlower.DisplayName: Red Flower
-			WhiteFlower.DisplayName: White Flower
+			GreenLightBig.DisplayName: Green Light Big
+			BlueLightBig.DisplayName: Blue Light Big
+			RedLightBig.DisplayName: Red Light Big
+			CharredSkulls.DisplayName: Charred Skulls
+			CharredSoul.DisplayName: Charred Soul
+			FlamingWitch.DisplayName: Flaming Witch
+			THEGREATDEVOURER.DisplayName: THE GREAT DEVOURER
+			AbandonedMinor.DisplayName: Abandoned Minor
+			AbandonedMinorSummon.DisplayName: Abandoned Minor Summon
 		}
 
 		Biomes: {
@@ -7949,6 +8044,26 @@ Mods: {
 			VehementBuff: {
 				DisplayName: Vehement Buff
 				Description: Mods.Stellamod.Buffs.VehementBuff.Description
+			}
+
+			Liberator: {
+				Description: Mods.Stellamod.Buffs.Liberator.Description
+				DisplayName: Liberator
+			}
+
+			Genesis: {
+				Description: Mods.Stellamod.Buffs.Genesis.Description
+				DisplayName: Genesis
+			}
+
+			Executor: {
+				Description: Mods.Stellamod.Buffs.Executor.Description
+				DisplayName: Executor
+			}
+
+			Sected: {
+				DisplayName: Sected
+				Description: Mods.Stellamod.Buffs.Sected.Description
 			}
 		}
 

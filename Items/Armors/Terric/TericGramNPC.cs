@@ -33,6 +33,7 @@ namespace Stellamod.Items.Armors.Terric
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.friendly = true;
+            NPC.aiStyle = 0;
         }
         float alphaCounter = 0;
         float counter = 2;

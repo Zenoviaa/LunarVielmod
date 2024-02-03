@@ -319,13 +319,16 @@
     <None Remove="NPCs\Cinderspark\CinderCrawlerBody.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerHead.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerTail.png" />
+    <None Remove="NPCs\Harvesting\Morrow\BlueLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\HarvestGovheil.png" />
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
+    <None Remove="NPCs\Harvesting\Morrow\RedLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
+    <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
@@ -349,6 +352,8 @@
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Bow\VampiricArrowProj.png" />
     <None Remove="Projectiles\Bow\Warrow.png" />
+    <None Remove="Projectiles\CinderFireball2.png" />
+    <None Remove="Projectiles\Crossbows\Eckasect\ExecutionRay.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
     <None Remove="Projectiles\Crossbows\Magical\TONCrossbowBolt.png" />
     <None Remove="Projectiles\Crossbows\WoodenCrossbowBolt - Copy.png" />

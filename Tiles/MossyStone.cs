@@ -27,11 +27,10 @@ namespace Stellamod.Tiles
 			DustType = DustID.Web;
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.MossyStones>());
 			HitSound = SoundID.Grass;
-		 MineResist = 4f;
-		 MinPick = 25;
+			MineResist = 2f;
 		}
-		public override bool CanExplode(int i, int j) => false;
-		public override void NumDust(int i, int j, bool fail, ref int num)
+        public override bool CanExplode(int i, int j) => true;
+        public override void NumDust(int i, int j, bool fail, ref int num)
 		{
 			num = fail ? 1 : 3;
 		}

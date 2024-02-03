@@ -62,7 +62,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
 				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
 				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-
+				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
+				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -2775,7 +2776,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 300000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmx = WorldGen.genRand.Next(250, Main.maxTilesX - 250); // from 50 since there's a unaccessible area at the world's borders
@@ -2825,7 +2826,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(480, 480), ModContent.TileType<CindersparkDirt>());
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(500, 500), ModContent.TileType<CindersparkDirt>());
 
 
 
@@ -3250,7 +3251,7 @@ namespace Stellamod.WorldG
 				int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 9), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
+				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 14), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
 
 				
 			}
@@ -3274,11 +3275,36 @@ namespace Stellamod.WorldG
 				int yz = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY - 200);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 13), WorldGen.genRand.Next(5, 9), ModContent.TileType<Arnchar>());
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 13), WorldGen.genRand.Next(7, 13), ModContent.TileType<Arnchar>());
 			}
 
 			
 			
+
+			// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+
+
+		}
+
+		private void WorldGenArncharOre2(GenerationProgress progress, GameConfiguration configuration)
+		{
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Scorching more Arnchar into the world";
+
+
+			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+			{
+
+
+				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
+				int yz = WorldGen.genRand.Next(Main.UnderworldLayer - (Main.maxTilesY / 20), Main.UnderworldLayer);
+
+				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 20), WorldGen.genRand.Next(5, 15), ModContent.TileType<Arnchar>(),false,0,0,true,true,-1);
+			}
+
+
+
 
 			// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 
@@ -3557,6 +3583,7 @@ namespace Stellamod.WorldG
 
 									case 8:
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
@@ -3683,6 +3710,7 @@ namespace Stellamod.WorldG
 
 									case 7:
 										itemsToAdd.Add((ItemID.WaterWalkingBoots, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ItemID.IronOre, Main.rand.Next(1, 100)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
 										itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
@@ -3965,6 +3993,7 @@ namespace Stellamod.WorldG
 
 									case 8:
 										itemsToAdd.Add((ItemID.MiningShirt, Main.rand.Next(1, 1)));
+										itemsToAdd.Add((ModContent.ItemType<StumpBuster>(), Main.rand.Next(1, 1)));
 										itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 6)));
 										itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));

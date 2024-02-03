@@ -22,6 +22,9 @@ namespace Stellamod.NPCs.Cinderspark
     internal class CinderCrawlerHead : WormHead
     {
         private int _attackCounter;
+        private int _movementTimer;
+        private float _xDir;
+        private float _yDir;
         public override int BodyType => ModContent.NPCType<CinderCrawlerBody>();
 
         public override int TailType => ModContent.NPCType<CinderCrawlerTail>();
@@ -52,6 +55,11 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override void Init()
         {
             // Set the segment variance
@@ -78,12 +86,14 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.frame.Y = frame * frameHeight;
         }
 
+
         public override void AI()
         {
             NPC.TargetClosest();
             if (NPC.HasValidTarget)
             {
                 _attackCounter++;
+                _movementTimer++;
                 Player target = Main.player[NPC.target];
 
                 //The below code is for cardinal only flying movement
@@ -91,35 +101,40 @@ namespace Stellamod.NPCs.Cinderspark
                 float xDist = Math.Abs(target.Center.X - NPC.Center.X);
                 float yDist = Math.Abs(target.Center.Y - NPC.Center.Y);
 
-                //Direction
-                float xDir = 0f;
-                float yDir = 0f;
-
-                if(xDist > yDist)
+                //Switch Direction
+                if(_movementTimer > 60)
                 {
-                    if (target.Center.X < NPC.Center.X)
+                    if (xDist > yDist)
                     {
-                        xDir = -1f;
+                        if (target.Center.X < NPC.Center.X)
+                        {
+                            _xDir = -1f;
+                            _yDir = 0f;
+                        }
+                        else if (target.Center.X > NPC.Center.X)
+                        {
+                            _xDir = 1f;
+                            _yDir = 0f;
+                        }
                     }
-                    else if (target.Center.X > NPC.Center.X)
+                    else if (yDist > xDist)
                     {
-                        xDir = 1f;
+                        if (target.Center.Y < NPC.Center.Y)
+                        {
+                            _xDir = 0f;
+                            _yDir = -1f;
+                        }
+                        else if (target.Center.Y > NPC.Center.Y)
+                        {
+                            _xDir = 0f;
+                            _yDir = 1f;
+                        }
                     }
-                } 
-                else if (yDist > xDist)
-                {
-                    if (target.Center.Y < NPC.Center.Y)
-                    {
-                        yDir = -1f;
-                    }
-                    else if (target.Center.Y > NPC.Center.Y)
-                    {
-                        yDir = 1f;
-                    }
+                    _movementTimer = 0;
                 }
 
-                Vector2 targetDirection = new Vector2(xDir, yDir);
-                Vector2 targetVelocity = new Vector2(xDir, yDir) * 1.2f;
+                Vector2 targetDirection = new Vector2(_xDir, _yDir);
+                Vector2 targetVelocity = new Vector2(_xDir, _yDir) * 1.2f;
                 NPC.velocity = targetVelocity;
                 if(_attackCounter > 120)
                 {
@@ -133,7 +148,7 @@ namespace Stellamod.NPCs.Cinderspark
                                 Main.rand.NextFloat(0.5f, 1f));
 
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                                ModContent.ProjectileType<CinderFireball>(), (int)(NPC.damage * 0.1f), 1, Main.myPlayer);
+                                ModContent.ProjectileType<CinderFireball2>(), (int)(NPC.damage * 0.1f), 1, Main.myPlayer);
 
                             //Dust Particles
                             for (int k = 0; k < 4; k++)
@@ -198,6 +213,11 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.aiStyle = -1;
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 1f;
@@ -228,10 +248,14 @@ namespace Stellamod.NPCs.Cinderspark
     {
         public override void SetStaticDefaults()
         {
-
             Main.npcFrameCount[NPC.type] = 1;
-
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
 
         public override void FindFrame(int frameHeight)
         {

@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 17;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -50,7 +50,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 8);
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

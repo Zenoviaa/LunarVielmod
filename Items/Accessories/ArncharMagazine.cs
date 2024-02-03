@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -30,10 +31,11 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<LostScrap>(), 5);
+            recipe.AddIngredient(ItemType<Cinderscrap>(), 50);
+            recipe.AddIngredient(ItemType<MoltenScrap>(), 5);
             recipe.AddIngredient(ItemType<ArnchaliteBar>(), 15);
             recipe.AddIngredient(ItemID.MusketBall, 50);
-            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
     }

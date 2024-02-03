@@ -146,7 +146,7 @@ namespace Stellamod.NPCs.Morrow
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Vine, 3, 1, 2));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 6, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 1, 1, 5));
 		
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 2));

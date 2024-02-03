@@ -57,8 +57,8 @@ namespace Stellamod.NPCs.Morrow
 			NPC.defense = 20; // The amount of defense that this npc has
 			NPC.lifeMax = 210; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
-			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
-			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
+            NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
@@ -220,10 +220,8 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 2, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowVine>(), 3, 1, 5));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RippedFabric>(), 5, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StumpBuster>(), 20, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
 		}
 		public override void HitEffect(NPC.HitInfo hit)

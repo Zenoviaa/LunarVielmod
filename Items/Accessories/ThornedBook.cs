@@ -44,7 +44,7 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().ThornedBook = true;
-			player.GetDamage(DamageClass.Melee) *= 1.1f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Melee) *= 1.03f; // Increase ALL player damage by 100%
 			player.statDefense -= 5;
 
 

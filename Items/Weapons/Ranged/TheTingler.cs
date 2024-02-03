@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -38,6 +39,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
             recipe.AddIngredient(ItemID.Wire, 100);
             recipe.AddIngredient(ItemID.Spike, 100);

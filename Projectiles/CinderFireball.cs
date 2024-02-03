@@ -42,14 +42,20 @@ namespace Stellamod.Projectiles
 
         private void Visuals()
         {
-            for(int i = 0; i < 4; i++)
+            float radius = 1 / 6f;
+            for (int i = 0; i < 2; i++)
             {
-                float speedX = Main.rand.NextFloat(-1f, 1f);
-                float speedY = Main.rand.NextFloat(-1f, 1f);
+                float speedX = Main.rand.NextFloat(-radius, radius);
+                float speedY = Main.rand.NextFloat(-radius, radius);
                 float scale = Main.rand.NextFloat(0.66f, 1f);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork,
                     speedX, speedY, Scale: scale);
             }
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
         }
 
         public float WidthFunction(float completionRatio)

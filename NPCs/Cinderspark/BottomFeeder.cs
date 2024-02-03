@@ -161,6 +161,11 @@ namespace Stellamod.NPCs.Cinderspark
             }
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.InModBiome<CindersparkBiome>())

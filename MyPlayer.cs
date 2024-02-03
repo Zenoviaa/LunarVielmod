@@ -46,6 +46,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod
 {
@@ -285,6 +286,57 @@ namespace Stellamod
         {
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
         }
+
+        public override void CatchFish(FishingAttempt attempt, 
+			ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+			int chance = 75;
+			string jellyfishWarning = "You feel threatened...";
+			if (Player.ZoneBeach && Main.rand.NextBool(chance))
+			{
+                int npc = ModContent.NPCType<GoliathJellyfish>();
+                if (!NPC.AnyNPCs(npc))
+                {
+                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
+                    npcSpawn = npc;
+                    itemDrop = -1;
+
+                    // Also, to make it cooler, we will make a special sonar message for when it shows up
+                    sonar.Text = jellyfishWarning;
+                    sonar.Color = Color.LimeGreen;
+                    sonar.Velocity = Vector2.Zero;
+                    sonar.DurationInFrames = 300;
+
+                    // And that text shows up on the player's head, not on the bobber location.
+                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
+
+                    return; // This is important so your code after this that rolls items will not run
+                }
+            }
+
+            if (Player.ZoneSnow && Main.rand.NextBool(chance))
+            {
+                int npc = ModContent.NPCType<GoliathCryogenicJellyfish>();
+                if (!NPC.AnyNPCs(npc))
+                {
+                    // Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
+                    npcSpawn = npc;
+                    itemDrop = -1;
+
+                    // Also, to make it cooler, we will make a special sonar message for when it shows up
+                    sonar.Text = jellyfishWarning;
+                    sonar.Color = Color.LimeGreen;
+                    sonar.Velocity = Vector2.Zero;
+                    sonar.DurationInFrames = 300;
+
+                    // And that text shows up on the player's head, not on the bobber location.
+                    sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
+
+                    return; // This is important so your code after this that rolls items will not run
+                }
+            }
+        }
+
         public override void ModifyScreenPosition()
         {
             if (shouldFocus)
