@@ -74,7 +74,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shoot = ModContent.ProjectileType<EckasectGenesisHold>();
             Item.scale = 0.8f;
             Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 12);
+            Item.value = Item.buyPrice(gold: 50);
             Item.noUseGraphic = true;
             Item.channel = true;
 
