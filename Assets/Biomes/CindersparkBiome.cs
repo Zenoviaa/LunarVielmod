@@ -9,7 +9,7 @@ namespace Stellamod.Assets.Biomes
     public class CindersparkBiome : ModBiome
     {
         //public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("SpiritMod/Biomes/SpiritUgBgStyle");
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/CinderNew");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Cinderspark");
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
