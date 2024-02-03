@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
 using Terraria;
@@ -43,7 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 12);
-
+            recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
