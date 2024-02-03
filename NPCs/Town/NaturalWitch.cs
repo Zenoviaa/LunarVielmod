@@ -145,10 +145,13 @@ namespace Stellamod.NPCs.Town
 					break;
 			}
 
+            if (NPC.collideX)
+            {
+                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+            }
 
 
-
-			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
+            Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			// The multiplication here wasn't doing anything
 
 			//for (int j = 0; j < 2; j++)

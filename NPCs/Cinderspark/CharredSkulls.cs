@@ -1,4 +1,7 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
@@ -71,6 +74,18 @@ namespace Stellamod.NPCs.Cinderspark
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork,
                     speedX, speedY, Scale: scale);
             }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                Color.OrangeRed.ToVector3(),
+                Color.Red.ToVector3(),
+                new Vector3(3, 3, 3), 0);
+
+            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, Color.OrangeRed, Color.White, 0);
+            Lighting.AddLight(screenPos, Color.OrangeRed.ToVector3() * 1.0f * Main.essScale);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
