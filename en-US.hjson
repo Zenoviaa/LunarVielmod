@@ -6041,6 +6041,7 @@ Mods: {
 			LiberatorBubble.DisplayName: Liberator Bubble
 			EckasectExecutorHold.DisplayName: Eckasect Executor Hold
 			ExecutionRay.DisplayName: Execution Ray
+			CinderFireball2.DisplayName: Cinder Fireball2
 		}
 
 		NPCs: {

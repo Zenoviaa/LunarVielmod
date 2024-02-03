@@ -1,19 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    internal class CinderFireball : ModProjectile
+    internal class CinderFireball2 : ModProjectile
     {
         private ref float ai_Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
@@ -27,35 +21,44 @@ namespace Stellamod.Projectiles
             Projectile.height = 16;
             Projectile.width = 16;
             Projectile.hostile = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.timeLeft = 120;
         }
 
         public override void AI()
         {
             ai_Timer++;
-            Projectile.velocity.Y += 0.5f;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
-        }
-
-
-        private void Visuals()
-        {
-            float radius = 1 / 6f;
-            for (int i = 0; i < 2; i++)
-            {
-                float speedX = Main.rand.NextFloat(-radius, radius);
-                float speedY = Main.rand.NextFloat(-radius, radius);
-                float scale = Main.rand.NextFloat(0.66f, 1f);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork,
-                    speedX, speedY, Scale: scale);
-            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.OnFire, 180);
+        }
+
+        private void Visuals()
+        {
+            float radius = 1/6f;
+            for(int i = 0; i < 2; i++)
+            {
+                float speedX = Main.rand.NextFloat(-radius, radius);
+                float speedY = Main.rand.NextFloat(-radius, radius);
+                float scale = Main.rand.NextFloat(0.66f, 1f);
+                int d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork,
+                    speedX, speedY, Scale: scale);
+                Main.dust[d].noGravity = true;
+            }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.InfernoFork, speed, Scale: 3f);
+                d.noGravity = true;
+            }
         }
 
         public float WidthFunction(float completionRatio)

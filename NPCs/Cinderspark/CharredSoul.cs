@@ -36,6 +36,11 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.DeathSound = SoundID.NPCDeath39;
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.25f;

@@ -55,6 +55,11 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override void Init()
         {
             // Set the segment variance
@@ -143,7 +148,7 @@ namespace Stellamod.NPCs.Cinderspark
                                 Main.rand.NextFloat(0.5f, 1f));
 
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                                ModContent.ProjectileType<CinderFireball>(), (int)(NPC.damage * 0.1f), 1, Main.myPlayer);
+                                ModContent.ProjectileType<CinderFireball2>(), (int)(NPC.damage * 0.1f), 1, Main.myPlayer);
 
                             //Dust Particles
                             for (int k = 0; k < 4; k++)
@@ -208,6 +213,11 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.aiStyle = -1;
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 1f;
@@ -238,10 +248,14 @@ namespace Stellamod.NPCs.Cinderspark
     {
         public override void SetStaticDefaults()
         {
-
             Main.npcFrameCount[NPC.type] = 1;
-
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
 
         public override void FindFrame(int frameHeight)
         {

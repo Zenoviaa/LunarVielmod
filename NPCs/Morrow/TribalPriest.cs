@@ -57,8 +57,8 @@ namespace Stellamod.NPCs.Morrow
 			NPC.defense = 20; // The amount of defense that this npc has
 			NPC.lifeMax = 210; // The amount of health that this npc has
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
-			NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
-			NPC.value = 500f; // How many copper coins the NPC will drop when killed.
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
+            NPC.value = 500f; // How many copper coins the NPC will drop when killed.
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;

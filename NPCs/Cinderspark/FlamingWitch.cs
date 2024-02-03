@@ -1,7 +1,10 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Microsoft.Xna.Framework;
+using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -12,9 +15,13 @@ namespace Stellamod.NPCs.Cinderspark
 {
     internal class FlamingWitch : ModNPC
     {
+        private Vector2 _dir;
+        private ref float ai_Timer => ref NPC.ai[0];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 15; // The amount of frames the NPC has
+            NPCID.Sets.TrailCacheLength[NPC.type] = 6;
+            NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
         public override void SetDefaults()
@@ -22,15 +29,21 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.width = 70;
             NPC.height = 54;
             NPC.aiStyle = -1;
-            NPC.damage = 1;
-            NPC.defense = 42;
+            NPC.damage = 45;
+            NPC.defense = 10;
             NPC.lifeMax = 158;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 1;
             NPC.lavaImmune = true;
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
-            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
 
         public override void FindFrame(int frameHeight)
         {
@@ -42,31 +55,99 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override void AI()
         {
+            ai_Timer++;
             NPC.TargetClosest();
             NPC.spriteDirection = -NPC.direction;
-            NPC.damage = 0;
             Player target = Main.player[NPC.target];
- 
-            if(NPC.frameCounter == 7)
+
+            if (ai_Timer > 120)
+            {
+                Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.InfernoFork);
+                dust.velocity *= -1f;
+                dust.scale *= .8f;
+                dust.noGravity = true;
+
+                Vector2 randVector = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+                randVector.Normalize();
+                
+                Vector2 randVector2 = randVector * (Main.rand.Next(50, 100) * 0.04f);
+                dust.velocity = randVector2;
+                randVector2.Normalize();
+                
+                Vector2 vector2_3 = randVector2 * 34f;
+                dust.position = NPC.Center - vector2_3;
+            }
+
+            if(ai_Timer == 240)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Vector2 targetDirection = NPC.Center.DirectionTo(target.Center);
+                        Vector2 velocity = targetDirection.RotatedByRandom(MathHelper.ToRadians(10)) * 15;
+                        velocity *= new Vector2(
+                            Main.rand.NextFloat(0.5f, 1f),
+                            Main.rand.NextFloat(0.5f, 1f));
+
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                            ModContent.ProjectileType<CinderFireball2>(), (int)(NPC.damage * 0.1f), 1, Main.myPlayer);
+
+                        //Dust Particles
+                        for (int k = 0; k < 4; k++)
+                        {
+                            Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(7));
+                            newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                            Dust.NewDust(NPC.Center, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+                        }
+                    }
+                }
+
+                SoundEngine.PlaySound(SoundID.Item73, NPC.position);
+                ai_Timer = 0;
+            }
+
+            if (NPC.frameCounter == 7 && NPC.collideY)
             {
                 float ySpeed = 3;
                 NPC.velocity.Y -= ySpeed;
+                _dir = NPC.Center.DirectionTo(target.Center);
             }
 
             if (NPC.frameCounter >= 7)
             {
-                float xSpeed = 7;  
-                Vector2 dir = NPC.Center.DirectionTo(target.Center);
-                float xVelocity = dir.X * xSpeed;
+                float xSpeed = 5;  
                 float xAcceleration = 1f;
-                if(dir.X <= 1 && NPC.velocity.X > xSpeed)
+                if(_dir.X < 0 && NPC.velocity.X > -xSpeed)
                 {
                     NPC.velocity.X -= xAcceleration;
-                } else if(dir.X >= 1 && NPC.velocity.X < xSpeed)
+                } else if(_dir.X > 0 && NPC.velocity.X < xSpeed)
                 {
                     NPC.velocity.X += xAcceleration;
                 }
             }
+            else
+            {
+                NPC.velocity.X = 0;
+            }
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire, 180);
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                Color.OrangeRed.ToVector3(),
+                Color.Red.ToVector3(),
+                new Vector3(3, 3, 3), 0);
+
+            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, Color.OrangeRed, Color.White, 0);
+            Lighting.AddLight(screenPos, Color.OrangeRed.ToVector3() * 1.0f * Main.essScale);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
