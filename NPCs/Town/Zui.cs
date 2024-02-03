@@ -19,6 +19,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod.NPCs.Town
 {
@@ -455,7 +456,7 @@ namespace Stellamod.NPCs.Town
 			.Add<WitchenHat>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenRobe>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
-
+			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
 
 			;
 			npcShop.Register(); // Name of this shop tab		

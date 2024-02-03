@@ -60,7 +60,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void SetDefaults()
         {
-            Item.damage = 16;
+            Item.damage = 23;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
             Item.height = 25;
@@ -110,7 +110,7 @@ namespace Stellamod.Items.Weapons.Ranged
 					Item.autoReuse = true;
 					Item.mana = 20;
 					Item.useTurn = true;
-					Item.DamageType = DamageClass.Ranged;
+					Item.DamageType = DamageClass.Magic;
 					Item.shootSpeed = 10f;
 					Item.useAnimation = 20;
 					Item.useTime = 20;
@@ -135,7 +135,7 @@ namespace Stellamod.Items.Weapons.Ranged
 					Item.autoReuse = true;
 					Item.mana = 20;
 					Item.useTurn = true;
-					Item.DamageType = DamageClass.Ranged;
+					Item.DamageType = DamageClass.Magic;
 					Item.shootSpeed = 10f;
 					Item.useAnimation = 20;
 					Item.useTime = 20;
@@ -159,7 +159,7 @@ namespace Stellamod.Items.Weapons.Ranged
 					Item.autoReuse = true;
 					Item.mana = 20;
 					Item.useTurn = true;
-					Item.DamageType = DamageClass.Ranged;
+					Item.DamageType = DamageClass.Magic;
 					Item.shootSpeed = 10f;
 					Item.useAnimation = 20;
 					Item.useTime = 20;
@@ -183,7 +183,7 @@ namespace Stellamod.Items.Weapons.Ranged
 					Item.autoReuse = true;
 					Item.mana = 20;
 					Item.useTurn = true;
-					Item.DamageType = DamageClass.Ranged;
+					Item.DamageType = DamageClass.Magic;
 					Item.shootSpeed = 10f;
 					Item.useAnimation = 20;
 					Item.useTime = 20;
@@ -199,6 +199,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			{
 				Item.mana = 0;
 				Item.UseSound = null;
+				Item.DamageType = DamageClass.Magic;
 			}
 
 			return true;
@@ -297,23 +298,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			return false;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.HellstoneBar, 10);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 30);
-			recipe.AddIngredient(ModContent.ItemType<Venatici>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 3);
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 100);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
-			recipe.AddIngredient(ItemID.Silk, 5);
-
-			recipe.Register();
-		}
+	
 
 
 	}
