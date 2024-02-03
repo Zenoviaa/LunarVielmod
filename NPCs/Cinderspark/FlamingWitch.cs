@@ -39,12 +39,20 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
         }
 
+        private bool CanMove()
+        {
+            return NPC.collideY || NPC.collideX || (NPC.velocity.Y == 0 && NPC.velocity.X == 0);
+        }
+
         public override void FindFrame(int frameHeight)
         {
-            if(NPC.collideY || NPC.collideX)
+            int frame = (int)NPC.frameCounter;
+            if (CanMove())
+                NPC.frameCounter += 0.5f;
+            else if(frame < 12 && !CanMove())
                 NPC.frameCounter += 0.5f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
-            int frame = (int)NPC.frameCounter;
+            frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
 
@@ -102,9 +110,9 @@ namespace Stellamod.NPCs.Cinderspark
                 ai_Timer = 0;
             }
 
-            if (NPC.frameCounter == 7 && NPC.collideY)
+            if (NPC.frameCounter == 7 && CanMove())
             {
-                float ySpeed = 9;
+                float ySpeed = 6;
                 NPC.velocity.Y -= ySpeed;
                 _dir = NPC.Center.DirectionTo(target.Center);
 
@@ -116,7 +124,7 @@ namespace Stellamod.NPCs.Cinderspark
 
             if (NPC.frameCounter >= 7)
             {
-                float xSpeed = 5;  
+                float xSpeed = 3.5f;  
                 float xAcceleration = 1f;
                 if(_dir.X < 0 && NPC.velocity.X > -xSpeed)
                 {
@@ -130,6 +138,9 @@ namespace Stellamod.NPCs.Cinderspark
             {
                 NPC.velocity.X = 0;
             }
+
+            float targetRotation = NPC.velocity.X * 0.1f;
+            NPC.rotation = MathHelper.WrapAngle(MathHelper.Lerp(NPC.rotation, targetRotation, 0.33f));
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
