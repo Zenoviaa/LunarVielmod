@@ -1966,7 +1966,7 @@ Mods: {
 
 			OceanScroll: {
 				DisplayName: Ocean Scroll
-				Tooltip: Increased Magical Critical strike chance by 20%
+				Tooltip: Increased Magical Critical strike chance by 10%
 			}
 
 			OceansTrinket: {
