@@ -1011,7 +1011,7 @@ Mods: {
 			}
 
 			StarrCard: {
-				DisplayName: Starr Card 
+				DisplayName: Starr Card
 				Tooltip:
 					'''
 					Use with a combination of dusts to make spells :)
@@ -5280,7 +5280,8 @@ Mods: {
 
 			FloweredCard: {
 				DisplayName: Flowered Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					An igniter for dusts and powders!
 					Reaching from the depths of the galaxy!
 					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
@@ -5289,7 +5290,8 @@ Mods: {
 
 			MetallianCard: {
 				DisplayName: Metallian Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					An igniter for dusts and powders!
 					Reaching from the depths of the galaxy!
 					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
@@ -5298,11 +5300,17 @@ Mods: {
 
 			ZuiCard: {
 				DisplayName: Zui Card
-				Tooltip: '''
+				Tooltip:
+					'''
 					An igniter for dusts and powders!
 					Reaching from the depths of the galaxy!
 					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 					'''
+			}
+
+			CinderedQuiver: {
+				DisplayName: Cindered Quiver
+				Tooltip: ""
 			}
 		}
 
