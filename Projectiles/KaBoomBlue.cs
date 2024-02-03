@@ -23,13 +23,16 @@ namespace Stellamod.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 24;
 			Projectile.scale = 1f;
-			
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
         public override void AI()
         {
 			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.BlueTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
@@ -39,15 +42,18 @@ namespace Stellamod.Projectiles
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 		}
+
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
 		}
+
 		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 		{
 			overPlayers.Add(index);
 			overWiresUI.Add(index);
 		}
+
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
