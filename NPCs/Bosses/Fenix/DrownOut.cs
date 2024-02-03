@@ -54,8 +54,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
 		{
-			NPC.width = 500;
-			NPC.height = 500;
+			NPC.width = 250;
+			NPC.height = 250;
 			NPC.damage = 1;
 			NPC.lifeMax = 9000;
 			NPC.value = 0f;
@@ -107,8 +107,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		float trueFrame = 0;
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frame.Width = 500;
-			NPC.frame.Height = 500;
+			NPC.frame.Width = 250;
+			NPC.frame.Height = 250;
 			NPC.frame.X = ((int)trueFrame % 12) * NPC.frame.Width;
 			NPC.frame.Y = (((int)trueFrame - ((int)trueFrame % 12)) / 12) * NPC.frame.Height;
 		}
