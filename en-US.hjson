@@ -5312,6 +5312,16 @@ Mods: {
 				DisplayName: Cindered Quiver
 				Tooltip: ""
 			}
+
+			TheWiggler: {
+				DisplayName: The Wiggler
+				Tooltip:
+					'''
+					Shoots blobs that stick to tiles and enemies!
+					Right click to detonate blobs!
+					'It's icky, sticky, and it gets everywhere'
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -6084,6 +6094,10 @@ Mods: {
 			CinderFireball2.DisplayName: Cinder Fireball2
 			TheTraumatizerHold.DisplayName: The Traumatizer Hold
 			TraumatizingRay.DisplayName: Traumatizing Ray
+			WigglerStick2.DisplayName: Wiggler Stick2
+			WigglerStick.DisplayName: Wiggler Stick
+			WigglerShot.DisplayName: Wiggler Shot
+			WigglerKaboom.DisplayName: Wiggler Kaboom
 		}
 
 		NPCs: {
