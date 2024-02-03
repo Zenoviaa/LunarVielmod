@@ -1,4 +1,8 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -74,6 +78,17 @@ namespace Stellamod.NPCs.Underground
                 int frame = (int)NPC.frameCounter;
                 NPC.frame.Y = frame * frameHeight;
             }
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                Color.White.ToVector3(),
+                Color.WhiteSmoke.ToVector3(),
+                new Vector3(3, 3, 3), 0);
+
+            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, Color.White, Color.WhiteSmoke, 0);
+            Lighting.AddLight(screenPos, Color.White.ToVector3() * 1.0f * Main.essScale);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
