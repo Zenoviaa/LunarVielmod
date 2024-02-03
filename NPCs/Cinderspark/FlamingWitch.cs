@@ -39,15 +39,10 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.AddBuff(BuffID.OnFire, 180);
-        }
-
-
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.5f;
+            if(NPC.collideY || NPC.collideX)
+                NPC.frameCounter += 0.5f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
@@ -109,9 +104,14 @@ namespace Stellamod.NPCs.Cinderspark
 
             if (NPC.frameCounter == 7 && NPC.collideY)
             {
-                float ySpeed = 3;
+                float ySpeed = 9;
                 NPC.velocity.Y -= ySpeed;
                 _dir = NPC.Center.DirectionTo(target.Center);
+
+                if (NPC.collideX)
+                {
+                    _dir = -_dir;
+                } 
             }
 
             if (NPC.frameCounter >= 7)
