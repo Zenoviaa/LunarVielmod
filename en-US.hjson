@@ -211,7 +211,7 @@ Mods: {
 				Tooltip:
 					'''
 					When enemies hit you deal big amounts of damage back
-					+10% Melee damage...
+					+3% Melee damage...
 					-5 defense
 					'''
 			}
@@ -1927,7 +1927,7 @@ Mods: {
 
 			CoralBand: {
 				DisplayName: Coral Band
-				Tooltip: 20% increased Melee damage and Critical Strike Chance!
+				Tooltip: 5% increased Melee damage and Critical Strike Chance!
 			}
 
 			GintzlMetal: {
