@@ -2776,7 +2776,7 @@ namespace Stellamod.WorldG
 
 			bool placed = false;
 			int attempts = 0;
-			while (!placed && attempts++ < 100000)
+			while (!placed && attempts++ < 300000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmx = WorldGen.genRand.Next(250, Main.maxTilesX - 250); // from 50 since there's a unaccessible area at the world's borders
@@ -2826,7 +2826,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 
-					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(480, 480), ModContent.TileType<CindersparkDirt>());
+					WorldGen.TileRunner(Loc.X, Loc.Y, WorldGen.genRand.Next(150, 150), WorldGen.genRand.Next(500, 500), ModContent.TileType<CindersparkDirt>());
 
 
 
@@ -3297,7 +3297,7 @@ namespace Stellamod.WorldG
 
 
 				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yz = WorldGen.genRand.Next(Main.UnderworldLayer - (Main.maxTilesY / 20));
+				int yz = WorldGen.genRand.Next(Main.UnderworldLayer - (Main.maxTilesY / 20), Main.UnderworldLayer);
 
 				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 20), WorldGen.genRand.Next(5, 15), ModContent.TileType<Arnchar>(),false,0,0,true,true,-1);
