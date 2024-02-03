@@ -241,6 +241,40 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 
 		}
+
+		private void Quest_16Complete()
+		{
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
+			Main.npcChatText = $"Nice nice, I'll take these, could you fetch some more for me!  ";
+			var entitySource = NPC.GetSource_GiftOrReward();
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.HealingPotion, 10);
+			}
+
+			if (Main.rand.NextBool(3))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.GreaterHealingPotion, 15);
+			}
+
+			if (Main.rand.NextBool(5))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SuperHealingPotion, 10);
+			}
+
+			if (Main.rand.NextBool(1))
+			{
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 18);
+			}
+
+			ZuiQuestSystem.QuestsCompleted += 1;
+
+
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
+			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
+
+		}
 		private void Quest_3Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -291,14 +325,14 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 		}
 		private void Quest_30Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p ";
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
@@ -330,19 +364,25 @@ namespace Stellamod.NPCs.Town
 				Quest_10Complete();
 				return true;
 			}
-			else if (ZuiQuestSystem.QuestsCompleted == 19 && player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			else if (ZuiQuestSystem.QuestsCompleted == 19 && player.HasItem(ModContent.ItemType<CompletedCollectorsBag>()))
 			{
 				Quest_20Complete();
 				return true;
 			}
-			else if (ZuiQuestSystem.QuestsCompleted == 29 && player.HasItem(ModContent.ItemType<CompletedFlowerBag>()))
+			else if (ZuiQuestSystem.QuestsCompleted == 29 && player.HasItem(ModContent.ItemType<CompletedCollectorsBag>()))
 			{
 				Quest_30Complete();
 				return true;
 			}
-			else if (player.HasItem(ModContent.ItemType<CompletedFlowerBag>()) && ZuiQuestSystem.QuestsCompleted != 29 && ZuiQuestSystem.QuestsCompleted != 19 && ZuiQuestSystem.QuestsCompleted != 9 && ZuiQuestSystem.QuestsCompleted != 5 && ZuiQuestSystem.QuestsCompleted != 2)
+			else if (player.HasItem(ModContent.ItemType<CompletedFlowerBag>()) && ZuiQuestSystem.QuestsCompleted != 29 && ZuiQuestSystem.QuestsCompleted != 19 && ZuiQuestSystem.QuestsCompleted != 9 && ZuiQuestSystem.QuestsCompleted != 5 && ZuiQuestSystem.QuestsCompleted != 2  && ZuiQuestSystem.QuestsCompleted < 10)
 			{
 				Quest_1Complete();
+				return true;
+			}
+
+			else if (player.HasItem(ModContent.ItemType<CompletedCollectorsBag>()) && ZuiQuestSystem.QuestsCompleted != 29 && ZuiQuestSystem.QuestsCompleted != 19 && ZuiQuestSystem.QuestsCompleted != 9 && ZuiQuestSystem.QuestsCompleted != 5 && ZuiQuestSystem.QuestsCompleted != 2  && ZuiQuestSystem.QuestsCompleted >= 10)
+			{
+				Quest_16Complete();
 				return true;
 			}
 

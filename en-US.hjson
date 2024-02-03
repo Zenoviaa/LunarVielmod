@@ -5322,6 +5322,11 @@ Mods: {
 					'It's icky, sticky, and it gets everywhere'
 					'''
 			}
+
+			CompletedCollectorsBag: {
+				DisplayName: Completed Collectors Bag
+				Tooltip: Take this to Zui for some rewards!
+			}
 		}
 
 		JungleRuneI: {
