@@ -5272,6 +5272,11 @@ Mods: {
 					Execution - An Orange laser comes out of the gun taking wide spread and less damage...
 					'''
 			}
+
+			TheTraumatizer: {
+				DisplayName: The Traumatizer
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6042,6 +6047,8 @@ Mods: {
 			EckasectExecutorHold.DisplayName: Eckasect Executor Hold
 			ExecutionRay.DisplayName: Execution Ray
 			CinderFireball2.DisplayName: Cinder Fireball2
+			TheTraumatizerHold.DisplayName: The Traumatizer Hold
+			TraumatizingRay.DisplayName: Traumatizing Ray
 		}
 
 		NPCs: {

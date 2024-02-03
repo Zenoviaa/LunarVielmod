@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
             Projectile.height = 16;
             Projectile.width = 16;
             Projectile.hostile = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 120;
         }
 
