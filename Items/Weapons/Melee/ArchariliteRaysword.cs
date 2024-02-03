@@ -82,8 +82,26 @@ namespace Stellamod.Items.Weapons.Melee
 
             }
             AttackCounter = -AttackCounter;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWave>(), damage * 2, knockback, player.whoAmI, 1, dir);
+
+            if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
+            {
+                Item.shootSpeed = 38f;
+                Item.useTime = 19;
+                Item.useAnimation = 19;
+                Item.damage = 25;
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWaveSC>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            }
+            else
+            {
+                Item.shootSpeed = 30f;
+                Item.useTime = 25;
+                Item.useAnimation = 25;
+                Item.damage = 19;
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWave>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            }
+
             return false;
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)

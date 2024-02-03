@@ -28,7 +28,7 @@ namespace Stellamod.Tiles
             Main.tileNoAttach[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = false;
-            TileObjectData.newTile.Height = 3;
+            TileObjectData.newTile.Height = 2;
             TileObjectData.newTile.Width = 2;
             TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16 };
             TileObjectData.newTile.CoordinateWidth = 16;

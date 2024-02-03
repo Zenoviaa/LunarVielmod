@@ -2,8 +2,10 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -316,25 +318,49 @@ namespace Stellamod.Items.Weapons.Summon
                     direction.Normalize();
                     Flydirection.Normalize();
                     Projectile.ai[1]++;
-
-					if(Projectile.ai[1] >= 90)
+                    if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
                     {
-                        int Sound = Main.rand.Next(1, 3);
-                        if (Sound == 1)
+                        if (Projectile.ai[1] >= 40)
                         {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1"), Projectile.position);
+                            int Sound = Main.rand.Next(1, 3);
+                            if (Sound == 1)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1"), Projectile.position);
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2"), Projectile.position);
+                            }
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                            Projectile.velocity.Y -= 10;
+                            var EntitySource = Projectile.GetSource_Death();
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 65, direction.Y * 65, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+                            Projectile.ai[1] = 0;
                         }
-                        else
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2"), Projectile.position);
-                        }
-                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-                        Projectile.velocity.Y -= 10;
-                        var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-                        Projectile.ai[1] = 0;
                     }
+                    else
+                    {
+                        if (Projectile.ai[1] >= 70)
+                        {
+                            int Sound = Main.rand.Next(1, 3);
+                            if (Sound == 1)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone1"), Projectile.position);
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone2"), Projectile.position);
+                            }
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                            Projectile.velocity.Y -= 10;
+                            var EntitySource = Projectile.GetSource_Death();
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 45, direction.Y * 45, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                            Projectile.ai[1] = 0;
+                        }
+                    }
+
                     // Minion has a target: attack (here, fly towards the enemy)
                     if (distanceFromTarget > 90f)
 					{

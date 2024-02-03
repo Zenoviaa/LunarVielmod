@@ -189,7 +189,9 @@ namespace Stellamod
 		public int GovheillBCooldown = 1;
 		public bool BroochBurningG;
 		public int BurningGBCooldown = 1;
-		//---------------------------------------------------------------------------------------------------------------
+        public bool ArchariliteSC;
+
+        //---------------------------------------------------------------------------------------------------------------
 
 
 
@@ -198,7 +200,7 @@ namespace Stellamod
 
 
 
-		public float screenFlash;
+        public float screenFlash;
         //private float screenFlashSpeed = 0.05f;
         //private Vector2? screenFlashCenter;
         private float shakeDrama;
@@ -498,8 +500,9 @@ namespace Stellamod
 		{
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
 			Teric = false;
-            TAuraSpawn = false;
-			HikersBSpawn = false;
+			TAuraSpawn = false;
+            ArchariliteSC = false;
+            HikersBSpawn = false;
 			Player.lifeRegen += increasedLifeRegen;
 			increasedLifeRegen = 0;
 			ArcaneM = false;

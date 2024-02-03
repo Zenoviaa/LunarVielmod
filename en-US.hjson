@@ -5257,6 +5257,11 @@ Mods: {
 				DisplayName: Veil Scripture I
 				Tooltip: ""
 			}
+
+			ArncharSuperCharger: {
+				Tooltip: ""
+				DisplayName: Arnchar Super Charger
+			}
 		}
 
 		JungleRuneI: {
@@ -6008,6 +6013,10 @@ Mods: {
 			VeiizalBullet.DisplayName: Veiizal Bullet
 			VehementMinion.DisplayName: Vehement Minion
 			VeiizalBeam.DisplayName: Veiizal Beam
+			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
+			ArchariliteArrowSC.DisplayName: Archarilite Arrow S C
+			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
+			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 		}
 
 		NPCs: {

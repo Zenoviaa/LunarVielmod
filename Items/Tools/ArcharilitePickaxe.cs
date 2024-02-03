@@ -1,5 +1,10 @@
+using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Bow;
+using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -37,6 +42,23 @@ namespace Stellamod.Items.Tools
             recipe.AddIngredient(ItemType<ArnchaliteBar>(), 12);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-		}
-	}
+        }
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
+            {
+                Item.useTime = 5;
+                Item.useAnimation = 5;
+                Item.pick = 35;
+            }
+            else
+            {
+                Item.useTime = 10;
+                Item.useAnimation = 10;
+                Item.pick = 30;
+            }
+            return false;
+        }
+
+    }
 }

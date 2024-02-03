@@ -20,8 +20,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 1, 29);
             Item.rare = ItemRarityID.Blue;
-
-            Item.shootSpeed = 15;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Ranged;
             Item.shoot = ProjectileID.PurificationPowder;
@@ -58,15 +56,38 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArchariliteEnergyShot2"));
             }
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrow>(), damage, knockback, player.whoAmI);
-            float numberProjectiles = 2;
-            float rotation = MathHelper.ToRadians(15);
-            position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
-            for (int i = 0; i < numberProjectiles; i++)
+
+            if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
             {
-                Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<ArchariliteArrowSmall>(), damage, knockback, player.whoAmI);
+                Item.damage = 21;
+                Item.useTime = 25;
+                Item.shootSpeed = 55f;
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrowSC>(), damage, knockback, player.whoAmI);
+                float numberProjectiles = 2;
+                float rotation = MathHelper.ToRadians(10);
+                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
+                for (int i = 0; i < numberProjectiles; i++)
+                {
+                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
+                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), damage, knockback, player.whoAmI);
+                }
             }
+            else
+            {
+                Item.damage = 14;
+                Item.useTime = 31;
+                Item.shootSpeed = 40f;
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrow>(), damage, knockback, player.whoAmI);
+                float numberProjectiles = 2;
+                float rotation = MathHelper.ToRadians(15);
+                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;
+                for (int i = 0; i < numberProjectiles; i++)
+                {
+                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
+                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<ArchariliteArrowSmall>(), damage, knockback, player.whoAmI);
+                }
+            }
+
             return false;
         }
 

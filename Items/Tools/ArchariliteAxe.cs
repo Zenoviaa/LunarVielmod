@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -29,7 +30,23 @@ namespace Stellamod.Items.Tools
 			Item.autoReuse = true;
             Item.axe = 9;
 
-		}
+        }
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
+			{
+				Item.useTime = 5;
+				Item.useAnimation = 5;
+				Item.axe = 12;
+			}
+			else
+			{
+				Item.useTime = 10;
+				Item.useAnimation = 10;
+				Item.axe = 9;
+			}
+       
+        }
 
 		public override void AddRecipes()
 		{

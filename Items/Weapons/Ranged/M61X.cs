@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Mono.Cecil;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Swords;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,8 +29,6 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 1, 29);
             Item.rare = ItemRarityID.Green;
-
-            Item.shootSpeed = 10;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<ArchariliteHeatBlast>();
@@ -54,7 +55,28 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.Register();
         }
 
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
+            {
+                Item.damage = 15;
+                Item.knockBack = 4;
+                Item.useAnimation = 5;
+                Item.useTime = 5;
+                Item.shootSpeed = 50f;
+                type = ModContent.ProjectileType<ArchariliteHeatBlastSC>();
+            }
+            else
+            {
+                Item.damage = 9;
+                Item.knockBack = 14;
+                Item.useAnimation = 10;
+                Item.useTime = 10;
+                Item.shootSpeed = 40f;
+                type = ModContent.ProjectileType<ArchariliteHeatBlast>();
+            }
 
+        }
 
 
     }
