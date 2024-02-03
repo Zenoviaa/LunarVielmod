@@ -5275,7 +5275,34 @@ Mods: {
 
 			TheTraumatizer: {
 				DisplayName: The Traumatizer
-				Tooltip: ""
+				Tooltip: It will shoot a fan like laser and will kill things, and traumatize them.
+			}
+
+			FloweredCard: {
+				DisplayName: Flowered Card Igniter
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			MetallianCard: {
+				DisplayName: Metallian Card Igniter
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
+			}
+
+			ZuiCard: {
+				DisplayName: Zui Card Igniter
+				Tooltip: '''
+					An igniter for dusts and powders!
+					Reaching from the depths of the galaxy!
+					Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+					'''
 			}
 		}
 
