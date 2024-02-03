@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Cinderspark
                 ai_Counter++;
                 Player target = Main.player[NPC.target];
                 float targetRotation = NPC.DirectionTo(target.Center).ToRotation();
-                NPC.rotation = MathHelper.WrapAngle(MathHelper.Lerp(NPC.rotation, targetRotation, 0.33f));
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.33f);
 
                 int chaseTicks = 300;
                 int attackTicks = 600;
@@ -86,8 +86,17 @@ namespace Stellamod.NPCs.Cinderspark
                 else
                 {
                     //Slowly move towards player
-                    float speed = 2;
+                    float speed = ai_Counter > chaseTicks ? 2 : 4;
                     float accel = 0.2f;
+                    float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
+                    if(distanceToTarget < 300)
+                    {
+                        speed = 0.5f;
+                    } else if (distanceToTarget > 700)
+                    {
+                        speed = 5;
+                    }
+
                     Vector2 targetVelocity = direction * speed;
                     Vector2 diffVelocity = NPC.velocity.DirectionTo(targetVelocity);
 
@@ -101,8 +110,6 @@ namespace Stellamod.NPCs.Cinderspark
 
                 if (ai_Counter > chaseTicks)
                 {
-                    //Move slower
-                    NPC.velocity *= 0.8f;
                     //Charging
                     Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.InfernoFork);
                     dust.velocity *= -1f;
