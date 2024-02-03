@@ -5310,7 +5310,7 @@ Mods: {
 
 			CinderedQuiver: {
 				DisplayName: Cindered Quiver
-				Tooltip: ""
+				Tooltip: Turns wooden arrows into hellfire ones with 7 more damage!
 			}
 		}
 
