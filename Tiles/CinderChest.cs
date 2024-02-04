@@ -229,47 +229,6 @@ namespace Stellamod.Tiles
 			return true;
 		}
 
-		public override void MouseOver(int i, int j)
-		{
-			Player player = Main.LocalPlayer;
-			Tile tile = Main.tile[i, j];
-			int left = i;
-			int top = j;
-			if (tile.TileFrameX % 36 != 0)
-			{
-				left--;
-			}
-
-			if (tile.TileFrameY != 0)
-			{
-				top--;
-			}
-
-			int chest = Chest.FindChest(left, top);
-			player.cursorItemIconID = -1;
-			if (chest < 0)
-			{
-				player.cursorItemIconText = Language.GetTextValue("LegacyChestType.0");
-			}
-			else
-			{
-				string defaultName = TileLoader.DefaultContainerName(tile.TileType, tile.TileFrameX, tile.TileFrameY);/* tModPorter Note: new method takes in FrameX and FrameY */; // This gets the ContainerName text for the currently selected language
-				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
-				if (player.cursorItemIconText == defaultName)
-				{
-					player.cursorItemIconID = ModContent.ItemType<MorrowChesti>();
-					if (Main.tile[left, top].TileFrameX / 36 == 1)
-					{
-						player.cursorItemIconID = ModContent.ItemType<MorrowChestKey>();
-					}
-
-					player.cursorItemIconText = "";
-				}
-			}
-
-			player.noThrow = 2;
-			player.cursorItemIconEnabled = true;
-		}
 
 		public override void MouseOverFar(int i, int j)
 		{
