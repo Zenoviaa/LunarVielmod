@@ -5352,6 +5352,11 @@ Mods: {
 				DisplayName: Drakonic Sile I
 				Tooltip: ""
 			}
+
+			DrakonicBlock: {
+				DisplayName: Drakonic Block
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
