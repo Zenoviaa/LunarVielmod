@@ -5332,6 +5332,16 @@ Mods: {
 				DisplayName: Arnchar Super Charger
 				Tooltip: ""
 			}
+
+			CinderChesti: {
+				DisplayName: Cinder Chesti
+				Tooltip: ""
+			}
+
+			DrakonicHallI: {
+				DisplayName: Drakonic Hall I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7526,6 +7536,8 @@ Mods: {
 			CatacombsSummon.MapEntry: Catacombs Summon
 			Rallad.MapEntry: Rallad
 			VeilScripture.MapEntry: Veil Scripture
+			CinderChest.MapEntry: Cinder Chest
+			DrakonHallS.MapEntry: Drakon Hall S
 		}
 
 		Buffs: {
