@@ -5332,6 +5332,20 @@ Mods: {
 				DisplayName: Arnchar Super Charger
 				Tooltip: ""
 			}
+
+			CinderChesti: {
+				DisplayName: Cinder Chesti
+				Tooltip: ""
+			}
+
+			FlameBuster: {
+				DisplayName: Flame Buster
+				Tooltip:
+					'''
+					Fires a spread of bullets
+					The weapon also speeds up over time and will shoot fireballs instead!
+					'''
+			}
 		}
 
 		JungleRuneI: {
@@ -6116,6 +6130,7 @@ Mods: {
 			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
 			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
+			CinderFlameball.DisplayName: Cinder Flameball
 		}
 
 		NPCs: {
@@ -7526,6 +7541,7 @@ Mods: {
 			CatacombsSummon.MapEntry: Catacombs Summon
 			Rallad.MapEntry: Rallad
 			VeilScripture.MapEntry: Veil Scripture
+			CinderChest.MapEntry: Cinder Chest
 		}
 
 		Buffs: {
