@@ -5351,6 +5351,21 @@ Mods: {
 				DisplayName: Drakonic Block
 				Tooltip: ""
 			}
+
+			DrakonicCageI: {
+				DisplayName: Drakonic Cage I
+				Tooltip: ""
+			}
+
+			DrakonicHallI: {
+				DisplayName: Drakonic Hall I
+				Tooltip: ""
+			}
+
+			DrakonicSileI: {
+				DisplayName: Drakonic Sile I
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7547,6 +7562,9 @@ Mods: {
 			Rallad.MapEntry: Rallad
 			VeilScripture.MapEntry: Veil Scripture
 			CinderChest.MapEntry: Cinder Chest
+			DrakonSileS.MapEntry: Drakon Sile S
+			DrakonHallS.MapEntry: Drakon Hall S
+			DrakonCageS.MapEntry: Drakon Cage S
 		}
 
 		Buffs: {
