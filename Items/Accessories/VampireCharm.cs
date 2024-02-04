@@ -54,6 +54,17 @@ namespace Stellamod.Items.Accessories
 
                     Dust.QuickDustLine(Player.Center, target.Center, 100f, Color.Red);
                     SoundEngine.PlaySound(SoundID.NPCHit18);
+
+                    SoundEngine.PlaySound(SoundID.Item171);
+                    int projectilSpawnCount = Main.rand.Next(2, 5);
+                    for (int d = 0; d < projectilSpawnCount; d++)
+                    {
+                        float speedX = Main.rand.Next(-15, 15);
+                        float speedY = Main.rand.Next(-15, 15);
+                        Vector2 speed = new Vector2(speedX, speedY);
+                        Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y,
+                            ModContent.ProjectileType<BloodWaterProj>(), 20, 1f, Player.whoAmI);
+                    }
                 }
 
                 for (int i = 0; i < 32; i++)
@@ -63,16 +74,6 @@ namespace Stellamod.Items.Accessories
                     d.noGravity = true;
                 }
 
-                SoundEngine.PlaySound(SoundID.Item171);
-                int projectilSpawnCount = Main.rand.Next(2, 5);
-                for (int d = 0; d < projectilSpawnCount; d++)
-                {
-                    float speedX = Main.rand.Next(-15, 15);
-                    float speedY = Main.rand.Next(-15, 15);
-                    Vector2 speed = new Vector2(speedX, speedY);
-                    Projectile.NewProjectile(Player.GetSource_OnHit(target), (int)target.Center.X, (int)target.Center.Y, speed.X, speed.Y, 
-                        ModContent.ProjectileType<BloodWaterProj>(), 20, 1f, Player.whoAmI);
-                }
             }
         }
     }
