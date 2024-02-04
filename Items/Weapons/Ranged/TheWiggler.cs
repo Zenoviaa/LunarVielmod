@@ -27,6 +27,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.autoReuse = true;
             Item.shootSpeed = 20f;
             Item.shoot = ModContent.ProjectileType<WigglerShot>();
+            Item.value = Item.sellPrice(0, 5, 0, 0);
         }
 
         public override bool AltFunctionUse(Player player)
