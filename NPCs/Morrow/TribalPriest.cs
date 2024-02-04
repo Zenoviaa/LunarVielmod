@@ -194,6 +194,7 @@ namespace Stellamod.NPCs.Morrow
 						NPC.velocity = new Vector2(NPC.direction * 4, -0.1f);
 						break;
 				}
+				NPC.netUpdate = true;
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Slapin"));
 				ShakeModSystem.Shake = 4;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
