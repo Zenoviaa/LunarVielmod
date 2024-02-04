@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Mono.Cecil;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Bow;
@@ -60,11 +61,12 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
             {
+                Item.useTime = 5;
                 Item.damage = 15;
                 Item.knockBack = 4;
                 Item.useAnimation = 5;
-                Item.useTime = 5;
-                Item.shootSpeed = 50f;
+                Item.mana = 7;
+                Item.shootSpeed = 30f;
                 type = ModContent.ProjectileType<ArchariliteHeatBlastSC>();
             }
             else
