@@ -48,6 +48,9 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Item.useTime--;
                 Item.useAnimation--;
+                float recoilStrength = 7;
+                Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
+                player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 16f);
                 int numProjectiles = Main.rand.Next(4, 9);
                 velocity *= 2.5f;
