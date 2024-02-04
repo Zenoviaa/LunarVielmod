@@ -5338,19 +5338,13 @@ Mods: {
 				Tooltip: ""
 			}
 
-			DrakonicHallI: {
-				DisplayName: Drakonic Hall I
-				Tooltip: ""
-			}
-
-			DrakonicCageI: {
-				Tooltip: ""
-				DisplayName: Drakonic Cage I
-			}
-
-			DrakonicSileI: {
-				DisplayName: Drakonic Sile I
-				Tooltip: ""
+			FlameBuster: {
+				DisplayName: Flame Buster
+				Tooltip:
+					'''
+					Fires a spread of bullets
+					The weapon also speeds up over time and will shoot fireballs instead!
+					'''
 			}
 
 			DrakonicBlock: {
@@ -6141,6 +6135,7 @@ Mods: {
 			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
 			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
+			CinderFlameball.DisplayName: Cinder Flameball
 		}
 
 		NPCs: {
@@ -7552,9 +7547,6 @@ Mods: {
 			Rallad.MapEntry: Rallad
 			VeilScripture.MapEntry: Veil Scripture
 			CinderChest.MapEntry: Cinder Chest
-			DrakonHallS.MapEntry: Drakon Hall S
-			DrakonSileS.MapEntry: Drakon Sile S
-			DrakonCageS.MapEntry: Drakon Cage S
 		}
 
 		Buffs: {
