@@ -1922,6 +1922,7 @@ namespace Stellamod
 			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneCinder)
 			{
 				Main.windPhysicsStrength = 50;
+				Main.UseHeatDistortion = true;
 				GoldenRingCooldown++;
 				GoldenSparkleCooldown++;
 				RayCooldown++;
