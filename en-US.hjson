@@ -5375,6 +5375,16 @@ Mods: {
 					Speeds up over time
 					'''
 			}
+
+			SnowWalkerItem: {
+				Tooltip: ""
+				DisplayName: Snow Walker
+			}
+
+			SandWalkerItem: {
+				Tooltip: ""
+				DisplayName: Sand Walker
+			}
 		}
 
 		JungleRuneI: {
@@ -7358,6 +7368,8 @@ Mods: {
 			FloweredWhiteLight.DisplayName: Flowered White Light
 			RedFlower.DisplayName: Red Flower
 			WhiteFlower.DisplayName: White Flower
+			SnowWalkerNPC.DisplayName: Snow Walker
+			SandWalkerNPC.DisplayName: Sand Walker
 		}
 
 		Biomes: {
