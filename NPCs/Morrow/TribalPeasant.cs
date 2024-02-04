@@ -204,7 +204,7 @@ namespace Stellamod.NPCs.Morrow
 						NPC.velocity = new Vector2(NPC.direction * 3, -9f);
 						break;
 				}
-
+				NPC.netUpdate = true;
 				// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
 				
 				
