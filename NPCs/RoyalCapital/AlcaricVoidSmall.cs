@@ -123,12 +123,6 @@ namespace Stellamod.NPCs.RoyalCapital
 		{
 			Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
 			SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
 			Vector2 frameOrigin = NPC.frame.Size();
@@ -183,26 +177,22 @@ namespace Stellamod.NPCs.RoyalCapital
 		public void Speed()
 		{
 			timer++;
-
-
 			if (timer > 50)
 			{
-
 				NPC.velocity.X *= 5f;
 				NPC.velocity.Y *= 0.5f;
 				for (int k = 0; k < 5; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
-					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
-					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3, 25, 0f, 0, 0f, 0f);
+					if (StellaMultiplayer.IsHost)
+					{
+                        float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
+                        float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY,
+                            ProjectileID.GreekFire3, 25, 0f, 0, 0f, 0f);
+                    }
 				}
-
-
-
-
-
 			}
 
 			if (timer == 100)

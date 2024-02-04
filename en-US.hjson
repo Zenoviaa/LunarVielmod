@@ -5333,9 +5333,57 @@ Mods: {
 				Tooltip: ""
 			}
 
-			Vulcanius: {
-				DisplayName: Vulcanius
+			CinderChesti: {
+				DisplayName: Cinder Chesti
 				Tooltip: ""
+			}
+
+			FlameBuster: {
+				DisplayName: Flame Buster
+				Tooltip:
+					'''
+					Fires a spread of bullets
+					The weapon also speeds up over time and will shoot fireballs instead!
+					'''
+			}
+
+			DrakonicBlock: {
+				DisplayName: Drakonic Block
+				Tooltip: ""
+			}
+
+			DrakonicCageI: {
+				DisplayName: Drakonic Cage I
+				Tooltip: ""
+			}
+
+			DrakonicHallI: {
+				DisplayName: Drakonic Hall I
+				Tooltip: ""
+			}
+
+			DrakonicSileI: {
+				DisplayName: Drakonic Sile I
+				Tooltip: ""
+			}
+
+			MiniPistol: {
+				DisplayName: Mini Pistol
+				Tooltip:
+					'''
+					Fires two bullets! 
+					Speeds up over time
+					'''
+			}
+
+			SnowWalkerItem: {
+				Tooltip: ""
+				DisplayName: Snow Walker
+			}
+
+			SandWalkerItem: {
+				Tooltip: ""
+				DisplayName: Sand Walker
 			}
 		}
 
@@ -6121,7 +6169,7 @@ Mods: {
 			ArchariliteArrowSmallSC.DisplayName: Archarilite Arrow Small S C
 			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
-			Vulcanius2.DisplayName: Vulcanius2
+			CinderFlameball.DisplayName: Cinder Flameball
 		}
 
 		NPCs: {
@@ -7320,6 +7368,8 @@ Mods: {
 			FloweredWhiteLight.DisplayName: Flowered White Light
 			RedFlower.DisplayName: Red Flower
 			WhiteFlower.DisplayName: White Flower
+			SnowWalkerNPC.DisplayName: Snow Walker
+			SandWalkerNPC.DisplayName: Sand Walker
 		}
 
 		Biomes: {
@@ -7532,6 +7582,10 @@ Mods: {
 			CatacombsSummon.MapEntry: Catacombs Summon
 			Rallad.MapEntry: Rallad
 			VeilScripture.MapEntry: Veil Scripture
+			CinderChest.MapEntry: Cinder Chest
+			DrakonSileS.MapEntry: Drakon Sile S
+			DrakonHallS.MapEntry: Drakon Hall S
+			DrakonCageS.MapEntry: Drakon Cage S
 		}
 
 		Buffs: {

@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shoot = ModContent.ProjectileType<TheTraumatizerHold>();
             Item.scale = 0.8f;
             Item.noMelee = true; // The projectile will do the damage and not the item
-            Item.value = Item.buyPrice(silver: 12);
+            Item.value = Item.sellPrice(0, 5, 0, 0);
             Item.noUseGraphic = true;
             Item.channel = true;
         }

@@ -792,6 +792,7 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.SuspiciousLookingEye) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add(new Item(ItemID.SlimeCrown) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add(new Item(ItemID.GuideVoodooDoll) { shopCustomPrice = Item.buyPrice(gold: 10) })
+			.Add(new Item(ItemID.GoblinBattleStandard) { shopCustomPrice = Item.buyPrice(gold: 10) })
 				;
 				
 				

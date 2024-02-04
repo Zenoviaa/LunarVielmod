@@ -137,14 +137,20 @@ namespace Stellamod.NPCs.RoyalCapital
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3, ProjectileID.DD2SquireSonicBoom, 60, 0, Main.myPlayer);
-					Main.projectile[projectile].timeLeft = 300;
-					Projectile ichor = Main.projectile[projectile];
-					ichor.hostile = true;
-					ichor.friendly = false;
+					if (StellaMultiplayer.IsHost)
+                    {
+                        int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
+                        ProjectileID.DD2SquireSonicBoom, 60, 0, Main.myPlayer);
+                        Main.projectile[projectile].timeLeft = 300;
+                        Projectile ichor = Main.projectile[projectile];
+                        ichor.hostile = true;
+                        ichor.friendly = false;
+						NetMessage.SendData(MessageID.SyncProjectile);
 
 
-					attackCounter = 300;
+                    }
+
+                    attackCounter = 300;
 					NPC.netUpdate = true;
 				}
 			}

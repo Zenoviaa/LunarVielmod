@@ -53,9 +53,13 @@ namespace Stellamod.NPCs.RoyalCapital
             NPC.rotation = NPC.velocity.X * 0.03f;
             if(ai_Counter == 400)
             {
-                Vector2 direction = NPC.DirectionTo(player.Center);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 9,
-                    ModContent.ProjectileType<CarianKnightProj>(), 40, 1);
+                if (StellaMultiplayer.IsHost)
+                {
+                    Vector2 direction = NPC.DirectionTo(player.Center);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 9,
+                        ModContent.ProjectileType<CarianKnightProj>(), 40, 1);
+                }
+  
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1"));
                 for (int i = 0; i < 16; i++)
                 {
