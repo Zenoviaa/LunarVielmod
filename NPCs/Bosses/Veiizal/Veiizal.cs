@@ -79,6 +79,12 @@ namespace Stellamod.NPCs.Bosses.Veiizal
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.BossBar = GetInstance<VerliaBossBar>();
             NPC.aiStyle = 0;
+
+
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/VampireDance");
+            }
         }
         int FrameSpeed = 10;
         int frame = 0;
