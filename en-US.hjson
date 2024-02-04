@@ -5366,6 +5366,15 @@ Mods: {
 				DisplayName: Drakonic Sile I
 				Tooltip: ""
 			}
+
+			MiniPistol: {
+				DisplayName: Mini Pistol
+				Tooltip:
+					'''
+					Fires two bullets! 
+					Speeds up over time
+					'''
+			}
 		}
 
 		JungleRuneI: {
