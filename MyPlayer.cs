@@ -235,6 +235,8 @@ namespace Stellamod
 		public bool ZoneCatacombsWater;
 		public bool ZoneVillage;
 		public bool ZoneCinder;
+		public bool ZoneDrakonic;
+
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
