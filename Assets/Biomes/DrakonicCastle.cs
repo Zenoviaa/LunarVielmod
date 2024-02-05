@@ -16,7 +16,7 @@ namespace Stellamod.Assets.Biomes
         public override Color? BackgroundColor => base.BackgroundColor;
 
 
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InCinder;
+        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InManor;
         public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneDrakonic = true;
         public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneDrakonic = false;
     }
