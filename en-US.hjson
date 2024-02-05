@@ -5387,8 +5387,8 @@ Mods: {
 			}
 
 			Vulcanius: {
-				DisplayName: Vulcanius
 				Tooltip: ""
+				DisplayName: Vulcanius
 			}
 		}
 

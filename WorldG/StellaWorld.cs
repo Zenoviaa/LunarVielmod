@@ -101,7 +101,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Rallad", WorldGenRallad));
 				tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
 				tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-				
+				tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Manor", WorldGenManor));
 			}
 
 
@@ -375,6 +375,110 @@ namespace Stellamod.WorldG
 		}
 
 
+
+		private void WorldGenManor(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "Making astolfo your wife";
+
+
+			int[] tileBlend = new int[]
+			{
+				TileID.RubyGemspark
+			};
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 10000000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 2) - 200, (Main.maxTilesX / 2) + 50); // from 50 since there's a unaccessible area at the world's borders
+																										  // 50% of choosing the last 6th of the world
+																										  // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int smy = ((int)(Main.UnderworldLayer - 400));
+
+				// We go down until we hit a solid tile or go under the world's surface
+				Tile tile = Main.tile[smx, smy];
+
+				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer && (!(tile.TileType == ModContent.TileType<CindersparkDirt>())))
+				{
+					smy++;
+					tile = Main.tile[smx, smy];
+				}
+
+				// If we went under the world's surface, try again
+				if (smy > Main.UnderworldLayer - 20)
+				{
+					continue;
+				}
+				
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+
+
+
+				// place the Rogue
+				//	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+				//Main.npc[num].homeTileX = -1;
+				//	Main.npc[num].homeTileY = -1;
+				//	Main.npc[num].direction = 1;
+				//	Main.npc[num].homeless = true;
+
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(smx, smy + 350);
+
+					//This code just places
+					ShapeData shapeData = new ShapeData();
+
+					StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+
+					Point Loc2 = new Point(smx + 10, smy + 380);
+					//
+
+					Point Loc22 = new Point(smx + 10, smy - 33);
+					//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
+				
+					Point Loc4 = new Point(smx + 233, smy + 45);
+					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
+					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
+
+					Point Loc5 = new Point(smx + 10, smy + 45);
+					//	WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
+
+
+
+					Point Loc3 = new Point(smx + 455, smy + 30);
+					//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
+					Point Loc6 = new Point(smx + 455, smy + 40);
+					//	WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
+					//	Point resultPoint;
+					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
+					//	{
+					//new Conditions.IsSolid().AreaAnd(10, 10),
+					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
+					//	}), out resultPoint);
+					//		if (searchSuccessful)
+					//		{
+					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
+					//		}
+					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+					//WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
+					//WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+					placed = true;
+				}
+
+
+			}
+
+		}
 
 
 
