@@ -1921,7 +1921,7 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneCinder)
+			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneCinder || ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneDrakonic)
 			{
 				Main.windPhysicsStrength = 50;
 				Main.UseHeatDistortion = true;
