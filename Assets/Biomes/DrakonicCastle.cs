@@ -17,7 +17,7 @@ namespace Stellamod.Assets.Biomes
 
 
         public override bool IsBiomeActive(Player player) => BiomeTileCounts.InCinder;
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneCinder = true && player.GetModPlayer<MyPlayer>().ZoneDrakonic = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneCinder = false && player.GetModPlayer<MyPlayer>().ZoneDrakonic = false;
+        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneDrakonic = true;
+        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneDrakonic = false;
     }
 }
