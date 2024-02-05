@@ -669,6 +669,9 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
 
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", EventWorld.ChaosT && Player.ZoneDungeon);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosP", EventWorld.ChaosT && Player.ZoneUnderworldHeight);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
