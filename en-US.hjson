@@ -5385,6 +5385,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Sand Walker
 			}
+
+			Vulcanius: {
+				Tooltip: ""
+				DisplayName: Vulcanius
+			}
 		}
 
 		JungleRuneI: {
@@ -6170,6 +6175,7 @@ Mods: {
 			ArchariliteHeatBlastSC.DisplayName: Archarilite Heat Blast S C
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 			CinderFlameball.DisplayName: Cinder Flameball
+			Vulcanius2.DisplayName: Vulcanius2
 		}
 
 		NPCs: {
