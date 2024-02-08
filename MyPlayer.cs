@@ -414,7 +414,7 @@ namespace Stellamod
                 if (Main.rand.NextBool(5))
                 {
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
 
                 }
             }
@@ -423,7 +423,7 @@ namespace Stellamod
                 if (Main.rand.NextBool(7))
                 {
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
 
                 }
             }
@@ -438,7 +438,7 @@ namespace Stellamod
 				if (Main.rand.NextBool(4))
 				{
 					var EntitySource = Player.GetSource_FromThis();
-					Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+					Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
 					Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 400);
 					WindRuneOn = true;
@@ -671,6 +671,9 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
 
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", EventWorld.ChaosT && Player.ZoneDungeon);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosP", EventWorld.ChaosT && Player.ZoneUnderworldHeight);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean);
@@ -759,7 +762,7 @@ namespace Stellamod
                         GHEVector.X = Main.rand.NextFloat(GHETarget.Center.X - 130, GHETarget.Center.X + 130);
                         GHEVector.Y = Main.rand.NextFloat(GHETarget.Center.Y - 130, GHETarget.Center.Y + 130);
                         var EntitySource = GHETarget.GetSource_FromThis();
-                        Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(EntitySource, GHEVector.X, GHEVector.Y, direction.X, direction.Y, ModContent.ProjectileType<GhostExcaliburProj>(), 42, 1, Player.whoAmI, 0, 0);
                     }
                 }
             }
@@ -873,8 +876,8 @@ namespace Stellamod
                     var EntitySource = AssassinsSlashnpc.GetSource_FromThis();
 
 
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSpawnEffect>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, AssassinsSlashnpc.Center.X, AssassinsSlashnpc.Center.Y, 0, 0, ModContent.ProjectileType<AssassinsSlashProj>(), 0, 1, Player.whoAmI, 0, 0);
                 }
             }
 
@@ -891,8 +894,8 @@ namespace Stellamod
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
 
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }
 
@@ -913,7 +916,7 @@ namespace Stellamod
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
 
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Main.myPlayer, 0, 0);
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Player.whoAmI, 0, 0);
 				
 					player.AddBuff(ModContent.BuffType<CameraMinBuff>(), 99999);
 				}
@@ -933,7 +936,7 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
                     player.AddBuff(ModContent.BuffType<FCBuff>(), 99999);
                 }
 

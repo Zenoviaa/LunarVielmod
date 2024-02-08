@@ -62,8 +62,7 @@ namespace Stellamod.Projectiles.Spears
                 var EntitySource = Projectile.GetSource_FromThis();
                 if (Main.rand.NextBool(8))
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<HolmbergScytheMirageProjBlue>(), 60, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<HolmbergScytheMirageProjBlue>(), 60, 1, Projectile.owner, 0, 0);
 
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Scything2"), Projectile.position);
                 }
@@ -78,8 +77,7 @@ namespace Stellamod.Projectiles.Spears
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Scything1"), Projectile.position);
                     }
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<HolmbergScytheMirageProj>(), 20, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<HolmbergScytheMirageProj>(), 20, 1, Projectile.owner, 0, 0);
                 }
             }
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)

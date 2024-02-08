@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Melee
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj3"));
             }
 
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, attackType);
             attackType = (attackType + 1) % 2;
             return false; // return false to prevent original projectile from being shot
         }

@@ -288,7 +288,7 @@ namespace Stellamod.Items.Weapons.Summon
 					//If we're here, then we have the thing that we want	
 					Vector2 shadowMinionSpawnPosition = Projectile.Center + new Vector2(0, -32);
 					Projectile shadowMinion = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), shadowMinionSpawnPosition, Vector2.Zero,
-						projectileToClone.type,	Projectile.damage, projectileToClone.knockBack);
+						projectileToClone.type,	Projectile.damage, projectileToClone.knockBack, Projectile.owner);
 
 					shadowMinion.minionSlots = 0;
 

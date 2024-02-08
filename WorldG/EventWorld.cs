@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.OS.Windows;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
@@ -220,7 +222,7 @@ namespace Stellamod.WorldG
         private void TryForceBloodmoon()
         {
             if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
-            {               
+            {
                 HasHadBloodMoon = true;
                 string message = "The Moon has turned red for tonight!";
                 if (Main.netMode == NetmodeID.Server)
@@ -232,11 +234,16 @@ namespace Stellamod.WorldG
                 {
                     Main.NewText(message, 234, 16, 50);
                 }
- 
+
                 Main.bloodMoon = true;
                 NetMessage.SendData(MessageID.WorldData);
             }
         }
+
+        public static bool ChaosD;
+        public static bool ChaosP;
+        public static bool ChaosT;
+
 
         public override void PostUpdateWorld()
         {
@@ -244,6 +251,43 @@ namespace Stellamod.WorldG
             TrySpawnAuroreanStarfall();
             TryForceBloodmoon();
             SpawnAuroreanStars();
+
+
+
+            if (!ChaosD)
+            {
+                string message = "Chaos has plaged the ocean...";
+                if (NPC.downedMechBoss1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
+                    NetworkText txt = NetworkText.FromLiteral(message);
+                    ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+                    ChaosD = true;
+                }
+            }
+            if (!ChaosT)
+            {
+                string message = "Chaos has plaged the dungeon...";
+                if (NPC.downedMechBoss2)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
+                    NetworkText txt = NetworkText.FromLiteral(message);
+                    ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+                    ChaosT = true;
+                }
+            }
+            if (!ChaosP)
+            {
+                string message = "Chaos has plaged the hell...";
+                if (NPC.downedMechBoss3)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
+                    NetworkText txt = NetworkText.FromLiteral(message);
+                    ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+                    ChaosP = true;
+                }
+            }
+
         }
 
 

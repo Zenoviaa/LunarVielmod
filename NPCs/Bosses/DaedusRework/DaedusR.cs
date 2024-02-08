@@ -275,7 +275,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     {
                         NPC.NewNPC(NPC.GetSource_FromThis(), (int)DaedusPos.X, (int)NPC.Center.Y, 
                             ModContent.NPCType<SolarSingularity>());
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, 10 / 9, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), GPos, new Vector2(0, 0), Mod.Find<ModProjectile>("JackSpawnEffect").Type, 10 / 9, 0, Main.myPlayer);
                     }
                   
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(GPos, 1212f, 62f);
@@ -373,7 +373,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             if (StellaMultiplayer.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + 140, NPC.position.Y + 65, 0, 0, 
-                                    ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f);
+                                    ModContent.ProjectileType<FlameTornado>(), (int)(NPC.damage * 0f), 0f, Main.myPlayer);
                             }
                             
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
@@ -397,7 +397,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                             if (StellaMultiplayer.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, 0, 0, 
-                                    ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f);
+                                    ModContent.ProjectileType<BouncySword>(), (int)(40 * 1f), 0f, Main.myPlayer);
                             }
                            
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);

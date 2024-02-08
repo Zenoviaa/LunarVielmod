@@ -75,10 +75,14 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             if (NPC.ai[0] == 100)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 1212f, 62f);
-                float speedXa = -NPC.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                float speedYa = -NPC.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + -10, NPC.position.Y + -30, speedXa * 0, speedYa * 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(27 * 1.5f), 0f);
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<DLantern>(), (int)(27 * 1.5f), 0f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXa = -NPC.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                    float speedYa = -NPC.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + -10, NPC.position.Y + -30, speedXa * 0, speedYa * 0, ModContent.ProjectileType<DaedusBombExplosion>(), (int)(27 * 1.5f), 0f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<DLantern>(), (int)(27 * 1.5f), 0f, Main.myPlayer);
+                }
+            
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
             }
 

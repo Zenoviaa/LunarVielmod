@@ -63,15 +63,13 @@ namespace Stellamod.Projectiles.Magic
             for (int i = 0; i < 3; i++)
             {
                 Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<WinterStormFragProg>(), 5, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-4, 5), Main.rand.Next(-4, 5), ModContent.ProjectileType<WinterStormFragProg>(), 5, 1, Projectile.owner);
             }
             for (int i = 0; i < 4; i++)
             {
 
                 Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Projectile.owner);
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);

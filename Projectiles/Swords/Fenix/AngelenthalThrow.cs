@@ -56,11 +56,6 @@ namespace Stellamod.Projectiles.Swords.Fenix
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
-
-
-
-
-
             if (Projectile.spriteDirection != 1)
             {
                 DrawOffset.X = Projectile.Center.X - 18;
@@ -235,33 +230,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Projectile.spriteDirection = Projectile.direction;
         }
 
-
-        /*
-        public override bool PreAI()
-        {
-            Projectile.tileCollide = false;
-            if (++Projectile.frameCounter >= 2)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 30)
-                {
-                    Projectile.frame = 0;
-                }
-            }
-            return true;
-
-
-        }
-
-        */
-        private static Asset<Texture2D> VorTexture;
-
         Vector2 BombOffset;
-        Vector2 BombOffseta;
-        Vector2 BombOffsetaa;
-        Vector2 BombOffsetaaa;
-        Vector2 BombOffsetaaaa;
-        Vector2 BombOffsetaaaaa;
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
@@ -269,7 +238,7 @@ namespace Stellamod.Projectiles.Swords.Fenix
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
-            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage * 2, 1, Projectile.owner);
             Projectile ichor = Main.projectile[fireball];
             ichor.hostile = false;
             ichor.friendly = true;
@@ -278,32 +247,42 @@ namespace Stellamod.Projectiles.Swords.Fenix
             {
                 BombOffset.X = Projectile.Center.X - 50;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 70;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X - 150;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 170;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X - 250;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
                 BombOffset.X = Projectile.Center.X + 270;
                 BombOffset.Y = Projectile.Center.Y;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, 
+                    ModContent.ProjectileType<KaBoomSigil>(), Projectile.damage, 1, Projectile.owner);
 
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity, 
+                    ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
 
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity, ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 0.5f, ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 1.5f, ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 0.5f,
+                    ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
+
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, -Projectile.velocity * 1.5f, 
+                    ProjectileID.LostSoulFriendly, Projectile.damage * 1, 0f, Projectile.owner);
             }
 
 

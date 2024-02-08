@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Summon
 			//Spawn at the mouse cursor position
 			position = Main.MouseWorld;
 
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
 
 			player.UpdateMaxTurrets();

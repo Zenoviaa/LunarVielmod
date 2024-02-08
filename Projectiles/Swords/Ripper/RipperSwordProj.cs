@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -13,7 +14,20 @@ namespace Stellamod.Projectiles.Swords.Ripper
         private Vector2 _targetCenter;
         private Vector2 _velocity;
         private const int Freeze = 45;
-        private const int Fire = 80; 
+        private const int Fire = 80;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.WriteVector2(_targetCenter);
+            writer.WriteVector2(_velocity);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            _targetCenter = reader.ReadVector2();
+            _velocity = reader.ReadVector2();
+        }
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
@@ -69,19 +83,25 @@ namespace Stellamod.Projectiles.Swords.Ripper
         public override void AI()
         {
             ref float ai_Counter = ref Projectile.ai[0];
-            if(ai_Counter == 0)
+            if(ai_Counter == 0 && Main.myPlayer == Projectile.owner)
             {
                 float radius = 384;
                 _targetCenter = Projectile.Center + new Vector2(
                     Main.rand.NextFloat(-radius, radius),
                     Main.rand.NextFloat(-radius, radius));
+                Projectile.netUpdate = true;
             }
 
             ai_Counter++;
         
             if(ai_Counter >= Fire)
             {
-                AI_Movement(Main.MouseWorld, 25, 5);
+                if(Main.myPlayer == Projectile.owner)
+                {
+                    AI_Movement(Main.MouseWorld, 25, 5);
+                    Projectile.netUpdate = true;
+                }
+            
                 float targetRotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
             } 
@@ -94,7 +114,11 @@ namespace Stellamod.Projectiles.Swords.Ripper
             {
                 //I made the projectile just move super slow when it spawned, so gotta do this to return to normal speed.
                 Projectile.velocity = Vector2.Zero;
-                _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 45;
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    _velocity = Projectile.Center.DirectionTo(Main.MouseWorld) * 45;
+                    Projectile.netUpdate = true;
+                }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
             }
             else if (ai_Counter < Freeze)

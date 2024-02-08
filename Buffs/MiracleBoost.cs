@@ -68,7 +68,7 @@ namespace Stellamod.Buffs
                 _miracleSoulCooldown = Miracle_Soul_Cooldown;
                 Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, -8f));
                 Projectile.NewProjectile(Player.GetSource_FromThis(),
-                    target.Center, velocity, ModContent.ProjectileType<MiracleSoulCollectibleProj>(), 0, 0);
+                    target.Center, velocity, ModContent.ProjectileType<MiracleSoulCollectibleProj>(), 0, 0, Player.whoAmI);
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcaneExplode"), target.position);
             }
