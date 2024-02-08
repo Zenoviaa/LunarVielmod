@@ -7468,6 +7468,11 @@ Mods: {
 				DisplayName: Cinderspark Biome
 				TownNPCDialogueName: the Cinderspark Biome
 			}
+
+			DrakonicManor: {
+				DisplayName: Drakonic Manor
+				TownNPCDialogueName: the Drakonic Manor
+			}
 		}
 
 		Tiles: {
