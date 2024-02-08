@@ -14,7 +14,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-    internal class BonePicklerCard : ModItem
+	internal class CinderedCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			/* Tooltip.SetDefault("Use with a combination of dusts to make spells :)" +
 				"\n Use a powder or dust and then use this type of weapon!"); */
 		}
-	
+
 		public override void SetDefaults()
 		{
 			Item.damage = 5;
@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Item.crit = 50;
 			Item.shootSpeed = 20;
 		}
-		
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 
@@ -54,25 +54,12 @@ namespace Stellamod.Items.Weapons.Igniters
 				if (npc.active && npc.HasBuff<Dusted>())
 				{
 					Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity, type, damage, knockback, player.whoAmI);
-					
+
 				}
-				
-				
+
+
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-		}
-
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
-			recipe.AddIngredient(ItemID.Bone, 50);
-			recipe.AddIngredient(ItemID.Silk, 10);
-			recipe.AddIngredient(ItemID.Leather, 9);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
 		}
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
