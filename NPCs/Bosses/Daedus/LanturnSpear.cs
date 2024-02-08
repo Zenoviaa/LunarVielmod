@@ -89,7 +89,7 @@ namespace Stellamod.NPCs.Bosses.Daedus
                     float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                     float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2,
-                        ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, 0, 0f, 0f);
+                        ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, Main.myPlayer, 0f, 0f);
                 }
             }
 

@@ -190,7 +190,7 @@ namespace Stellamod.NPCs.RoyalCapital
                         float speedXB = NPC.velocity.X * Main.rand.NextFloat(-0.5f, 0.5f);
                         float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY,
-                            ProjectileID.GreekFire3, 25, 0f, 0, 0f, 0f);
+                            ProjectileID.GreekFire3, 25, 0f, Main.myPlayer);
                     }
 				}
 			}

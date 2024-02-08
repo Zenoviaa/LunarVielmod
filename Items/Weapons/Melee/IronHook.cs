@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false; // return false to prevent original projectile from being shot
         }
 

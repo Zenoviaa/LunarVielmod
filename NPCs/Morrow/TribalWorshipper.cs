@@ -197,7 +197,7 @@ namespace Stellamod.NPCs.Morrow
 						if (StellaMultiplayer.IsHost)
 						{
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY, ProjectileID.GreekFire3,
-                                        15, 0f, 0, 0f, 0f);
+                                        15, 0f, Main.myPlayer);
                         }
 		
 					}

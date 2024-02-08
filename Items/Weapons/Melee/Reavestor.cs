@@ -94,7 +94,8 @@ namespace Stellamod.Items.Weapons.Melee
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ReavBig>(), damage * 2, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, 
+                ModContent.ProjectileType<ReavBig>(), damage * 2, knockback, player.whoAmI, 1, dir);
             return false;
         }
 

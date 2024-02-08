@@ -95,33 +95,33 @@ namespace Stellamod.Projectiles.Spears
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
-            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT3Explosion, Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT3Explosion, Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
             if(Projectile.ai[1] >= 70)
             {
                 BombOffset.X = Projectile.Center.X - 50;
                 BombOffset.Y = Projectile.Center.Y - 100;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                 BombOffset.X = Projectile.Center.X + 70;
                 BombOffset.Y = Projectile.Center.Y - 100;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                 BombOffset.X = Projectile.Center.X - 150;
                 BombOffset.Y = Projectile.Center.Y - 400;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                 BombOffset.X = Projectile.Center.X + 170;
                 BombOffset.Y = Projectile.Center.Y - 400;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                 BombOffset.X = Projectile.Center.X - 250;
                 BombOffset.Y = Projectile.Center.Y - 700;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
 
                 BombOffset.X = Projectile.Center.X + 270;
                 BombOffset.Y = Projectile.Center.Y - 700;
-                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, BombOffset.X, BombOffset.Y, 0, 0, ModContent.ProjectileType<InfernisBomb>(), Projectile.damage, 1, Projectile.owner, 0, 0);
             }
         }
 
