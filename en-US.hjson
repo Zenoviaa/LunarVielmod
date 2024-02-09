@@ -5401,20 +5401,36 @@ Mods: {
 				Tooltip: ""
 			}
 
-			AzaleanHat: {
-				DisplayName: Azalean Hat
+			AzaleanChestplate: {
+				DisplayName: Azalean Chestplate
 				Tooltip: ""
 			}
 
-			AzaleanChestplate: {
+			AzaleanHat: {
+				DisplayName: Azalean Hat
 				Tooltip: ""
-				DisplayName: Azalean Chestplate
 			}
 
 			AzaleanLeggings: {
 				DisplayName: Azalean Leggings
 				Tooltip: ""
 			}
+
+			SolarianChestplate: {
+				DisplayName: Solarian Chestplate
+				Tooltip: ""
+			}
+
+			SolarianHat: {
+				DisplayName: Solarian Hat
+				Tooltip: ""
+			}
+
+			SolarianPants: {
+				DisplayName: Solarian Pants
+				Tooltip: ""
+			}
+		}
 
 			SolarianChestplate: {
 				DisplayName: Solarian Chestplate
