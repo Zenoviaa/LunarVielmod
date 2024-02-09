@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.Spears
             Vector2 vector154 = Projectile.position + ((side == -1) ? new Vector2(0f, Projectile.height) : Vector2.Zero);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 50f);
             var EntitySource = Projectile.GetSource_FromThis();
-            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT2Explosion, Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ProjectileID.DD2ExplosiveTrapT2Explosion, Projectile.damage * 2, 1, Projectile.owner, 0, 0);
             for (int i = 0; i < 60; i++)
             {
                 if (Main.rand.Next(3) < 2)

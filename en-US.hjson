@@ -5390,6 +5390,16 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Vulcanius
 			}
+
+			CinderedCard: {
+				DisplayName: Cindered Card
+				Tooltip: ""
+			}
+
+			VeroshotBow: {
+				DisplayName: Veroshot Bow
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -7471,8 +7481,8 @@ Mods: {
 			}
 
 			DrakonicManor: {
-				TownNPCDialogueName: the Drakonic Manor
 				DisplayName: Drakonic Manor
+				TownNPCDialogueName: the Drakonic Manor
 			}
 		}
 

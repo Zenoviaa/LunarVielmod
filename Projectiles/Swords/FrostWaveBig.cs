@@ -74,8 +74,7 @@ namespace Stellamod.Projectiles.Swords
             {
 
                 Projectile.timeLeft = 2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<WinterboundArrowFlake>(), 5, 1, Projectile.owner, 0, 0);
             }
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
             for (int i = 0; i < 20; i++)

@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.RoyalCapital
                 {
                     Vector2 direction = NPC.DirectionTo(player.Center);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 9,
-                        ModContent.ProjectileType<CarianKnightProj>(), 40, 1);
+                        ModContent.ProjectileType<CarianKnightProj>(), 40, 1, Main.myPlayer);
                 }
   
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1"));

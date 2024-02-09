@@ -56,17 +56,15 @@ namespace Stellamod.Projectiles.Swords.Altride
                 if (Main.rand.NextBool(8))
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride2>(), Projectile.damage * 4, 1, Projectile.owner, 0, 0);
 
                    
                 }
 
                 if (Main.rand.NextBool(3))
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride3>(), Projectile.damage * 2 , 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
-                   
                 }
                 else
                 {
@@ -79,8 +77,7 @@ namespace Stellamod.Projectiles.Swords.Altride
                     {
                        
                     }
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride1>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Projectile.Center.X + Main.rand.Next(-50, 50), Projectile.Center.Y + Main.rand.Next(-50, 50), StartVelocity.X, StartVelocity.Y, ModContent.ProjectileType<Altride1>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                 }
             }
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)

@@ -57,7 +57,8 @@ namespace Stellamod.Projectiles.Magic
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                 var EntitySource = Projectile.GetSource_FromThis();
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelotcity.X, OldVelotcity.Y, ModContent.ProjectileType<VoidHand>(), 40, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, OldVelotcity.X, OldVelotcity.Y, 
+                    ModContent.ProjectileType<VoidHand>(), 40, 1, Projectile.owner, 0, 0);
                 Projectile.timeLeft = 2;
                 int Sound = Main.rand.Next(1, 3);
                 if (Sound == 1)

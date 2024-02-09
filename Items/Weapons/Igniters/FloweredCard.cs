@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Igniters
 
 		public override void SetDefaults()
 		{
-			Item.damage = 4;
+			Item.damage = 3;
 			Item.mana = 1;
 			Item.width = 40;
 			Item.height = 40;
@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.Igniters
 				NPC npc = Main.npc[i];
 				if (npc.active && npc.HasBuff<Dusted>())
 				{
-					Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity, type, damage, knockback);
+					Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity, type, damage, knockback, player.whoAmI);
 
 				}
 

@@ -106,9 +106,9 @@ namespace Stellamod.Items.Accessories
 
 				//X Slash Visuals
 				var xSlashPart1 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f);
+					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0, owner: Player.whoAmI);
 				var xSlashPart2 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f);
+					ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0, owner: Player.whoAmI);
 
 				xSlashPart1.timeLeft = 1500;
 				xSlashPart2.timeLeft = 1500;
@@ -118,13 +118,13 @@ namespace Stellamod.Items.Accessories
 
 				//Actual Attack Here
 				var voidRiftProjectile1 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<VoidRift>(), 120, 1);
+					ModContent.ProjectileType<VoidRift>(), 120, 1, owner: Player.whoAmI);
 
 				voidRiftProjectile1.timeLeft = 180;
 				voidRiftProjectile1.rotation = MathHelper.ToRadians(-45);
 
 				var voidRiftProjectile2 = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-					ModContent.ProjectileType<VoidRift>(), 120, 1);
+					ModContent.ProjectileType<VoidRift>(), 120, 1, owner: Player.whoAmI);
 
 				voidRiftProjectile2.timeLeft = 180;
 				voidRiftProjectile2.rotation = MathHelper.ToRadians(45);
@@ -155,11 +155,11 @@ namespace Stellamod.Items.Accessories
 			{
 				Vector2 velocity = new Vector2(Main.rand.NextFloat(-4f, 4f), Main.rand.NextFloat(-4f, 4f));
 				var proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), Player.Center, velocity,
-					ModContent.ProjectileType<LittleScissorVoidBolt>(), 70, 1);
+					ModContent.ProjectileType<LittleScissorVoidBolt>(), 54, 1, owner: Player.whoAmI);
 
 				//Scale with all damage classe
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
-				_riftCounter = 5;
+				_riftCounter = 10;
 			}
 		}
 

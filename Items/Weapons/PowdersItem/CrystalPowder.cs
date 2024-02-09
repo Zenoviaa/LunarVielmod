@@ -55,7 +55,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 
 			int dir = player.direction;
 
-			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback);
+			Projectile.NewProjectile(source, position, velocity *= player.GetModPlayer<MyPlayer>().IgniterVelocity, type, damage, knockback, player.whoAmI);
 			return false;
 		}
 

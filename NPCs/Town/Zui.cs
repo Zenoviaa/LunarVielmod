@@ -20,6 +20,8 @@ using Terraria.Utilities;
 using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Armors.Vanity.Solarian;
+using Stellamod.Items.Armors.Vanity.Azalean;
 
 namespace Stellamod.NPCs.Town
 {
@@ -476,12 +478,19 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.JungleRose) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add<IceClimbers>()
 			.Add<FloweredCard>()
+			.Add<SolarianHat>()
+			.Add<SolarianChestplate>()
+			.Add<SolarianPants>()
+			.Add<AzaleanHat>()
+			.Add<AzaleanChestplate>()
+			.Add<AzaleanLeggings>()
 
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<Morrowshroom>(ZuiQuestSystem.ShopCondition3)
 			.Add<SunClaw>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
+
 
 
 			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))

@@ -334,8 +334,7 @@ namespace Stellamod.Items.Weapons.Summon
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                             Projectile.velocity.Y -= 10;
                             var EntitySource = Projectile.GetSource_Death();
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 65, direction.Y * 65, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 65, direction.Y * 65, ModContent.ProjectileType<ArchariliteArrowSmallSC>(), Projectile.damage * 2, 1,Projectile.owner, 0, 0);
                             Projectile.ai[1] = 0;
                         }
                     }
@@ -355,8 +354,7 @@ namespace Stellamod.Items.Weapons.Summon
                             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
                             Projectile.velocity.Y -= 10;
                             var EntitySource = Projectile.GetSource_Death();
-                            if (Main.netMode != NetmodeID.MultiplayerClient)
-                                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 45, direction.Y * 45, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 45, direction.Y * 45, ModContent.ProjectileType<ArchariliteArrowSmall>(), Projectile.damage, 1, Projectile.owner, 0, 0);
                             Projectile.ai[1] = 0;
                         }
                     }
