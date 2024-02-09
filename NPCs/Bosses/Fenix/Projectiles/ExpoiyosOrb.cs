@@ -54,8 +54,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
 		{
-			NPC.width = 304;
-			NPC.height = 248;
+			NPC.width = 304 / 2;
+			NPC.height = 248 / 2;
 			NPC.damage = 100;
 			NPC.defense = 30;
 			NPC.lifeMax = 9000;
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 		
-			NPC.scale = 0.2f;
+			NPC.scale = 0.4f;
 		}
 
 		int invisibilityTimer;
@@ -108,8 +108,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 		float trueFrame = 0;
 		public override void FindFrame(int frameHeight)
 		{
-			NPC.frame.Width = 609;
-			NPC.frame.Height = 497;
+			NPC.frame.Width = 609 / 2;
+			NPC.frame.Height = 497 / 2;
 			NPC.frame.X = ((int)trueFrame % 5) * NPC.frame.Width;
 			NPC.frame.Y = (((int)trueFrame - ((int)trueFrame % 5)) / 5) * NPC.frame.Height;
 		}
