@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 38;
+            Item.damage = 22;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -66,7 +66,7 @@ namespace Stellamod.Items.Weapons.Ranged
          
                 Item.useTime = 25;
                 Item.shootSpeed = 30f;
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage * 4, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage * 2, knockback, player.whoAmI);
                 float numberProjectiles = 4;
                 float rotation = MathHelper.ToRadians(15);
                 position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;

@@ -5440,6 +5440,16 @@ Mods: {
 				DisplayName: Poisoned Angel
 				Tooltip: Not a burning angel but a poisoned one! Can move to cursor.
 			}
+
+			YuriFury: {
+				DisplayName: Yuri Fury
+				Tooltip: ""
+			}
+
+			ToxicHornetStaff: {
+				DisplayName: Toxic Hornet Staff
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6230,6 +6240,8 @@ Mods: {
 			PoisonedAngelProj.DisplayName: Poisoned Angel Proj
 			IxyProj1.DisplayName: Ixy Proj1
 			IxyProj2.DisplayName: Ixy Proj2
+			ToxicHornetMinion.DisplayName: Toxic Hornet Minion
+			ToxicMissileFriendly.DisplayName: Toxic Missile Friendly
 		}
 
 		NPCs: {
@@ -8203,6 +8215,11 @@ Mods: {
 			Sected: {
 				DisplayName: Sected
 				Description: Mods.Stellamod.Buffs.Sected.Description
+			}
+
+			ToxicHornetMinionBuff: {
+				DisplayName: Toxic Hornet Minion Buff
+				Description: Mods.Stellamod.Buffs.ToxicHornetMinionBuff.Description
 			}
 		}
 
