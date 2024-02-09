@@ -5433,12 +5433,12 @@ Mods: {
 
 			IyxTheInfamous: {
 				DisplayName: Iyx The Infamous
-				Tooltip: ""
+				Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
 			}
 
 			PoisonedAngel: {
 				DisplayName: Poisoned Angel
-				Tooltip: ""
+				Tooltip: Not a burning angel but a poisoned one! Can move to cursor.
 			}
 		}
 
