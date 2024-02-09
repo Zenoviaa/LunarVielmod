@@ -5400,6 +5400,36 @@ Mods: {
 				DisplayName: Veroshot Bow
 				Tooltip: ""
 			}
+
+			AzaleanHat: {
+				DisplayName: Azalean Hat
+				Tooltip: ""
+			}
+
+			AzaleanChestplate: {
+				Tooltip: ""
+				DisplayName: Azalean Chestplate
+			}
+
+			AzaleanLeggings: {
+				DisplayName: Azalean Leggings
+				Tooltip: ""
+			}
+
+			SolarianChestplate: {
+				DisplayName: Solarian Chestplate
+				Tooltip: ""
+			}
+
+			SolarianHat: {
+				DisplayName: Solarian Hat
+				Tooltip: ""
+			}
+
+			SolarianPants: {
+				DisplayName: Solarian Pants
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
