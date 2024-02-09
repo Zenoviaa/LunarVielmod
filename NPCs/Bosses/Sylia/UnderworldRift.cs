@@ -205,7 +205,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             int frameCount = 60;
             spriteBatch.Draw(tex, drawPosition,
                 tex.AnimationFrame(ref _portalFrameCounter, ref _portalFrameTick, frameSpeed, frameCount, true),
-                drawColor, 0f, origin, 2f, SpriteEffects.None, 0f);
+                Color.White, 0f, origin, 2f, SpriteEffects.None, 0f);
             return true;
 		}
 
