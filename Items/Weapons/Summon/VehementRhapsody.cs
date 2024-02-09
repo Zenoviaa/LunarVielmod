@@ -135,7 +135,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<SingulariumBar>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 5);
 			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
 		}

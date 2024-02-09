@@ -5431,10 +5431,26 @@ Mods: {
 				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
 
-			SkyRuneI: {
-				DisplayName: Sky Rune I
+			IyxTheInfamous: {
+				DisplayName: Iyx The Infamous
+				Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
+			}
+
+			PoisonedAngel: {
+				DisplayName: Poisoned Angel
+				Tooltip: Not a burning angel but a poisoned one! Can move to cursor.
+			}
+
+			YuriFury: {
+				DisplayName: Yuri Fury
+				Tooltip: Shoot the phoenix of all time!
+			}
+
+			ToxicHornetStaff: {
+				DisplayName: Toxic Hornet Staff
 				Tooltip: ""
 			}
+		}
 
 			TheAurora: {
 				DisplayName: The Aurora
@@ -6226,7 +6242,12 @@ Mods: {
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 			CinderFlameball.DisplayName: Cinder Flameball
 			Vulcanius2.DisplayName: Vulcanius2
-			AuroraStar.DisplayName: Aurora Star
+			HeatedShot.DisplayName: Heated Shot
+			PoisonedAngelProj.DisplayName: Poisoned Angel Proj
+			IxyProj1.DisplayName: Ixy Proj1
+			IxyProj2.DisplayName: Ixy Proj2
+			ToxicHornetMinion.DisplayName: Toxic Hornet Minion
+			ToxicMissileFriendly.DisplayName: Toxic Missile Friendly
 		}
 
 		NPCs: {
@@ -8201,6 +8222,11 @@ Mods: {
 			Sected: {
 				DisplayName: Sected
 				Description: Mods.Stellamod.Buffs.Sected.Description
+			}
+
+			ToxicHornetMinionBuff: {
+				DisplayName: Toxic Hornet Minion Buff
+				Description: Mods.Stellamod.Buffs.ToxicHornetMinionBuff.Description
 			}
 		}
 

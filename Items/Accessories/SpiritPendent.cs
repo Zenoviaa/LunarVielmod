@@ -26,7 +26,7 @@ namespace Stellamod.Items.Accessories
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SingulariumBar>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
