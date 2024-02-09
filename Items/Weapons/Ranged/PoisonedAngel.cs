@@ -87,7 +87,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 50);
+			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
