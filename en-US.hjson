@@ -5403,32 +5403,32 @@ Mods: {
 
 			AzaleanChestplate: {
 				DisplayName: Azalean Chestplate
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Azza)
 			}
 
 			AzaleanHat: {
 				DisplayName: Azalean Hat
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Azza)
 			}
 
 			AzaleanLeggings: {
 				DisplayName: Azalean Leggings
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Azza)
 			}
 
 			SolarianChestplate: {
 				DisplayName: Solarian Chestplate
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
 
 			SolarianHat: {
 				DisplayName: Solarian Hat
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
 
 			SolarianPants: {
 				DisplayName: Solarian Pants
-				Tooltip: ""
+				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
 		}
 
