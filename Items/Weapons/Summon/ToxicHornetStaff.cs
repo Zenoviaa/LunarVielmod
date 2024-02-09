@@ -180,7 +180,7 @@ namespace Stellamod.Items.Weapons.Summon
             float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
             float num106 = 0f;
             Color color1 = Color.DarkSeaGreen * num107 * .8f;
-            var effects = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            var effects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             int projFrames = Main.projFrames[Projectile.type];
