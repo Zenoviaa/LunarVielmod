@@ -85,7 +85,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		private void PreDrawTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-            Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 

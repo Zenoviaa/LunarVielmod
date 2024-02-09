@@ -159,7 +159,7 @@ namespace Stellamod.Items.Accessories
 
 				//Scale with all damage classe
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
-				_riftCounter = 3;
+				_riftCounter = 10;
 			}
 		}
 
