@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.Utilis;
@@ -188,6 +189,7 @@ namespace Stellamod.NPCs.Acidic
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
             }
             npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
+            npcLoot.Add(ItemDropRule.Common(ItemType<ToxicHornetStaff>(), chanceDenominator: 20));
         }
 
 
