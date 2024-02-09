@@ -85,10 +85,10 @@ namespace Stellamod.Items.Weapons.Summon
 		private int _newShadowMinionSpawnTimer;
 		private float _rotation;
 
-		private const int Max_Shadow_Minion_Count = 10;
-		private const int Shadow_Minion_Lifetime = 900;
+		private const int Max_Shadow_Minion_Count = 7;
+		private const int Shadow_Minion_Lifetime = 120;
 		private const int Time_Between_Shadow_Minions = 10;
-		private const float Shadow_Minion_Summon_Radius = 128;
+		private const float Shadow_Minion_Summon_Radius = 196;
 
 		//Visuals 
 		private const float Body_Radius = 64;
@@ -113,8 +113,8 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public sealed override void SetDefaults()
 		{
-			Projectile.width = 54;
-			Projectile.height = 34;
+			Projectile.width = 84;
+			Projectile.height = 80;
 
 			// Makes the minion go through tiles freely
 			Projectile.tileCollide = false;
@@ -179,6 +179,7 @@ namespace Stellamod.Items.Weapons.Summon
             }
 			return false;
         }
+
 
 		private int GetNextShadowMinionIndex()
         {
@@ -311,7 +312,17 @@ namespace Stellamod.Items.Weapons.Summon
 					//Break out of this loop so we don't spawn more on accident
 					break;
 				}
-			}
+            }
+
+            Player player = Main.player[Main.myPlayer];
+			bool isWithin = player.Distance(Projectile.position) < Shadow_Minion_Summon_Radius;
+			if (isWithin)
+			{
+                for (int i = 0; i < _shadowMinionLifeTime.Length; i++)
+                {
+                    _shadowMinionLifeTime[i] = Shadow_Minion_Lifetime;
+                }
+            }
 		}
 
 
