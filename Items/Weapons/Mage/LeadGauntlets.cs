@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;
@@ -41,8 +42,8 @@ namespace Stellamod.Items.Weapons.Mage
 		{
             Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 6);
-            recipe.AddIngredient(ItemType<ConvulgingMater>(), 15);
-			recipe.AddTile(TileID.Furnaces);
+			recipe.AddIngredient(ItemType<ConvulgingMater>(), 15);
+            recipe.AddTile(TileID.Furnaces);
 			recipe.Register();
 		}
 

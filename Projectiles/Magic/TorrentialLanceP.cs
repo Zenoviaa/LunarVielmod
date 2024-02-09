@@ -89,7 +89,7 @@ namespace Stellamod.Projectiles.Magic
 		public override void PostDraw(Color lightColor)
 		{
 			Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, (Projectile.height / Main.projFrames[Projectile.type]) * 0.5f);
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Projectiles/Weapons/Magic/TorrentialLanceP").Value;
+            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Projectiles/Magic/TorrentialLanceP").Value;
             float num108 = 4;
 			float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 2.4f / 2.4f * 6.28318548f)) / 2f + 0.5f;
 			float num106 = 0f; SpriteEffects spriteEffects3 = (Projectile.spriteDirection == 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;

@@ -5430,7 +5430,16 @@ Mods: {
 				DisplayName: Solarian Pants
 				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
-		
+
+			SkyRuneI: {
+				DisplayName: Sky Rune I
+				Tooltip: ""
+			}
+
+			TheAurora: {
+				DisplayName: The Aurora
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6217,6 +6226,7 @@ Mods: {
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 			CinderFlameball.DisplayName: Cinder Flameball
 			Vulcanius2.DisplayName: Vulcanius2
+			AuroraStar.DisplayName: Aurora Star
 		}
 
 		NPCs: {
@@ -7418,6 +7428,7 @@ Mods: {
 			SnowWalkerNPC.DisplayName: Snow Walker
 			SandWalkerNPC.DisplayName: Sand Walker
 			ToxicHornet.DisplayName: Toxic Hornet
+			SkyRune.DisplayName: Sky Rune
 		}
 
 		Biomes: {
