@@ -5432,6 +5432,22 @@ Mods: {
 			}
 		}
 
+			SolarianChestplate: {
+				DisplayName: Solarian Chestplate
+				Tooltip: ""
+			}
+
+			SolarianHat: {
+				DisplayName: Solarian Hat
+				Tooltip: ""
+			}
+
+			SolarianPants: {
+				DisplayName: Solarian Pants
+				Tooltip: ""
+			}
+		}
+
 		JungleRuneI: {
 			DisplayName: Ancient Artifact
 			Tooltip: A scientist might be interested in this..
@@ -7416,6 +7432,7 @@ Mods: {
 			WhiteFlower.DisplayName: White Flower
 			SnowWalkerNPC.DisplayName: Snow Walker
 			SandWalkerNPC.DisplayName: Sand Walker
+			ToxicHornet.DisplayName: Toxic Hornet
 		}
 
 		Biomes: {
