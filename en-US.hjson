@@ -5430,6 +5430,16 @@ Mods: {
 				DisplayName: Solarian Pants
 				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
+
+			IyxTheInfamous: {
+				DisplayName: Iyx The Infamous
+				Tooltip: ""
+			}
+
+			PoisonedAngel: {
+				DisplayName: Poisoned Angel
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6216,6 +6226,10 @@ Mods: {
 			ArchariliteRaysWaveSC.DisplayName: Archarilite Rays Wave S C
 			CinderFlameball.DisplayName: Cinder Flameball
 			Vulcanius2.DisplayName: Vulcanius2
+			HeatedShot.DisplayName: Heated Shot
+			PoisonedAngelProj.DisplayName: Poisoned Angel Proj
+			IxyProj1.DisplayName: Ixy Proj1
+			IxyProj2.DisplayName: Ixy Proj2
 		}
 
 		NPCs: {

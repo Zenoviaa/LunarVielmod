@@ -4,7 +4,9 @@ using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Slashers;
 using Stellamod.Projectiles.Slashers.Ixy;
 using Terraria;
@@ -15,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class IxyTheInfamous : ModItem
+    public class IyxTheInfamous : ModItem
     {
         public int AttackCounter = 1;
         public int combowombo = 0;
@@ -30,20 +32,20 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 30;
+            Item.damage = 23;
             Item.DamageType = DamageClass.Magic;
             Item.width = 0;
             Item.height = 0;
-            Item.useTime = 100;
-            Item.useAnimation = 100;
+            Item.useTime = 80;
+            Item.useAnimation = 80;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
             Item.value = 10000;
             Item.noMelee = true;
-
+            Item.mana = 5;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.shoot = ModContent.ProjectileType<IxyProj1>();
+            Item.shoot = ModContent.ProjectileType<IxyProj2>();
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
@@ -54,7 +56,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
             {
-                type = ModContent.ProjectileType<IxyProj1>();
+                type = ModContent.ProjectileType<IxyProj2>();
 
             }
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
@@ -79,19 +81,59 @@ namespace Stellamod.Items.Weapons.Mage
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage * 2, knockback, player.whoAmI, 1, dir);
+
+
+
+            float recoilStrength = 1;
+            Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
+            player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
+
+            //Funny Screenshake
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
+            int numProjectiles = Main.rand.Next(8, 12);
+            for (int p = 0; p < numProjectiles; p++)
+            {
+                // Rotate the velocity randomly by 30 degrees at max.
+                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                Projectile.NewProjectile(source, position, newVelocity, ModContent.ProjectileType<LampShot>(), damage * 1, knockback, player.whoAmI, 1, dir);
+            }
+
+            //Dust Burst Towards Mouse
+            int count = 48;
+            for (int k = 0; k < count; k++)
+            {
+                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                Dust.NewDust(position, 0, 0, DustID.CopperCoin, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
+            }
+
+            //Dust Burst in Circle at Muzzle
+            float degreesPer = 360 / (float)count;
+            for (int k = 0; k < count; k++)
+            {
+                float degrees = k * degreesPer;
+                Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
+                Vector2 vel = direction * 8;
+                Dust.NewDust(position, 0, 0, DustID.Torch, vel.X * 0.5f, vel.Y * 0.5f);
+            }
+
+
+
+
             return false;
         }
 
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
+            recipe.AddTile(TileID.MythrilAnvil);
 
-            recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 22);
-            recipe.AddIngredient(ItemID.FallenStar, 9);
+            recipe.AddIngredient(ModContent.ItemType<Gallasis>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CinderedLantern>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
+            recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 22);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
             recipe.Register();
         }
     }
