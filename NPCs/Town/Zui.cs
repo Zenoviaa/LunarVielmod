@@ -21,6 +21,7 @@ using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Armors.Vanity.Solarian;
+using Stellamod.Items.Armors.Vanity.Azalean;
 
 namespace Stellamod.NPCs.Town
 {
@@ -480,6 +481,9 @@ namespace Stellamod.NPCs.Town
 			.Add<SolarianHat>()
 			.Add<SolarianChestplate>()
 			.Add<SolarianPants>()
+			.Add<AzaleanHat>()
+			.Add<AzaleanChestplate>()
+			.Add<AzaleanLeggings>()
 
 			.Add<PerfectionStaff>(ZuiQuestSystem.ShopCondition3)
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
