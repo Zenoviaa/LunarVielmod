@@ -5430,22 +5430,7 @@ Mods: {
 				DisplayName: Solarian Pants
 				Tooltip: Use this piece from one of the developers! (Scolon)
 			}
-		}
-
-			SolarianChestplate: {
-				DisplayName: Solarian Chestplate
-				Tooltip: ""
-			}
-
-			SolarianHat: {
-				DisplayName: Solarian Hat
-				Tooltip: ""
-			}
-
-			SolarianPants: {
-				DisplayName: Solarian Pants
-				Tooltip: ""
-			}
+		
 		}
 
 		JungleRuneI: {
