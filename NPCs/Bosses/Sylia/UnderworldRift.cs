@@ -85,7 +85,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		private void PreDrawTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-            Lighting.AddLight(NPC.Center, Color.GreenYellow.ToVector3() * 1.25f * Main.essScale);
             SpriteEffects Effects = ((base.NPC.spriteDirection != -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
@@ -205,7 +204,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             int frameCount = 60;
             spriteBatch.Draw(tex, drawPosition,
                 tex.AnimationFrame(ref _portalFrameCounter, ref _portalFrameTick, frameSpeed, frameCount, true),
-                Color.White, 0f, origin, 2f, SpriteEffects.None, 0f);
+                drawColor, 0f, origin, 2f, SpriteEffects.None, 0f);
             return true;
 		}
 
