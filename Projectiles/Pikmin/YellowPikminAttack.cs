@@ -19,26 +19,49 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override void SetDefaults()
         {
-            Projectile.width = 42;
-            Projectile.height = 40;
+            Projectile.width = 20;
+            Projectile.height = 19;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 70 * 10;
+            Projectile.timeLeft = 400;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 25;
+
         }
-        private int _targetNpc = -1;
-        private Vector2 _targetOffset;
         int Attacktime = 0;
+        private bool _setOffset;
+        private Vector2 _offset;
         public override void AI()
         {
 
-            Projectile.velocity = Vector2.Zero;
+
+            int targetNpc = (int)Projectile.ai[0];
+            NPC target = Main.npc[targetNpc];
+            if (target.active && !_setOffset)
+            {
+                _offset = (target.position - Projectile.position);
+                _setOffset = true;
+            }
+            else if (!target.active)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+                    ModContent.ProjectileType<RedPikminThrow>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                Projectile.Kill();
+            }
+            else
+            {
+                Vector2 targetPos = target.position - _offset;
+                Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
+                float dist = Vector2.Distance(Projectile.position, targetPos);
+                Projectile.velocity = directionToTarget * dist;
+            }
+
+
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Attacktime++;
 
-            if (Attacktime >= 15)
+            if (Attacktime >= 20)
             {
                 int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), Projectile.damage, 0, Projectile.owner);
@@ -49,7 +72,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         private void Visuals()
         {
-            DrawHelper.AnimateTopToBottom(Projectile, 5);
+            DrawHelper.AnimateTopToBottom(Projectile, 3);
             if (Main.rand.NextBool(60))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);

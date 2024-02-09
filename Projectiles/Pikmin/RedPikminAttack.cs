@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Pikmin
             Projectile.height = 19;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 60 * 10;
+            Projectile.timeLeft = 600;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 25;
 
