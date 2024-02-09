@@ -5450,6 +5450,11 @@ Mods: {
 				DisplayName: Toxic Hornet Staff
 				Tooltip: ""
 			}
+
+			ZenoviasPikpikGlove: {
+				DisplayName: Zenovias Pikpik Glove
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6242,6 +6247,10 @@ Mods: {
 			IxyProj2.DisplayName: Ixy Proj2
 			ToxicHornetMinion.DisplayName: Toxic Hornet Minion
 			ToxicMissileFriendly.DisplayName: Toxic Missile Friendly
+			BluePikminAttack.DisplayName: Blue Pikmin Attack
+			RedPikminAttack.DisplayName: Red Pikmin Attack
+			RedPikminThrow.DisplayName: Red Pikmin Throw
+			YellowPikminAttack.DisplayName: Yellow Pikmin Attack
 		}
 
 		NPCs: {

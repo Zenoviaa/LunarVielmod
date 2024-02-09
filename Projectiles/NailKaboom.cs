@@ -22,6 +22,8 @@ namespace Stellamod.Projectiles
 			Projectile.height = 90;
 			Projectile.timeLeft = 16;
 			Projectile.tileCollide = false;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
 		}
 
 		public override bool PreAI()
