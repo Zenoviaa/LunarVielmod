@@ -22,6 +22,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Vanity.Azalean;
+using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.NPCs.Town
 {
