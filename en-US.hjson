@@ -5453,7 +5453,10 @@ Mods: {
 
 			ZenoviasPikpikGlove: {
 				DisplayName: Zenovias Pikpik Glove
-				Tooltip: Toss the pikpiks across the land (Viable throughout the whole mod btw)
+				Tooltip: '''
+					Toss the pikpiks across the land (Viable throughout the whole mod btw)
+					You can add Onions as accessories to gain more damage and become super strong!
+					'''
 			}
 
 			OnionOfUselessness: {
