@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
             Item.width = 90;
             Item.height = 98;
-            Item.damage = 150;
+            Item.damage = 71;
             Item.DamageType = DamageClass.Summon;
             Item.mana = 5;
             Item.useAnimation = 8;
@@ -58,11 +58,32 @@ namespace Stellamod.Items.Weapons.Summon
         }
 
 
+        public override bool CanUseItem(Player player)
+        {
+            if (player.altFunctionUse != 2)
+            {
+                bool minionSlots = true;
+                for (int i = 0; i < Main.maxProjectiles; ++i)
+                {
+                    if (Main.projectile[i].active && Main.projectile[i].owner == Main.myPlayer && Main.projectile[i].type == ModContent.ProjectileType<ChromaCutterMinion>())
+                    {
+                        if (minionSlots)
+                        {
+                            Main.projectile[i].minionSlots += 1f;
+                            minionSlots = false;
+                        }
+         
+                        Main.projectile[i].originalDamage = Item.damage + (int)(30 * Main.projectile[i].minionSlots);
+                    }
+                }
+            }
+            return true;
+        }
+
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            int remainingSlots = player.maxMinions - (int)player.slotsMinions;
-            bool doSummonMinions = remainingSlots >= 7 && player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinion>()] == 0;
-
+            bool doSummonMinions = player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinion>()] == 0;
             if (doSummonMinions)
             {
                 player.AddBuff(Item.buffType, 2);
@@ -230,7 +251,7 @@ namespace Stellamod.Items.Weapons.Summon
             Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.minion = true; // Declares this as a minion (has many effects)
             Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-            Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
+            Projectile.minionSlots = 0f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
