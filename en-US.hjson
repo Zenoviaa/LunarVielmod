@@ -5514,6 +5514,21 @@ Mods: {
 					'''
 				DisplayName: Weapon Drive
 			}
+
+			MechanicI: {
+				DisplayName: Mechanic I
+				Tooltip: ""
+			}
+
+			ScrapToken: {
+				Tooltip: ""
+				DisplayName: Scrap Token
+			}
+
+			ElectricCrystal: {
+				Tooltip: Gives 6% damage to all classes! Electrifying!!!
+				DisplayName: Electric Crystal
+			}
 		}
 
 		JungleRuneI: {
@@ -7521,6 +7536,7 @@ Mods: {
 			SandWalkerNPC.DisplayName: Sand Walker
 			ToxicHornet.DisplayName: Toxic Hornet
 			Delgrim.DisplayName: Delgrim
+			CellConverter.DisplayName: Cell Converter
 		}
 
 		Biomes: {
@@ -7617,6 +7633,11 @@ Mods: {
 			DrakonicManor: {
 				DisplayName: Drakonic Manor
 				TownNPCDialogueName: the Drakonic Manor
+			}
+
+			EngineerShop: {
+				TownNPCDialogueName: the Engineer Shop
+				DisplayName: Engineer Shop
 			}
 		}
 
@@ -7742,6 +7763,7 @@ Mods: {
 			DrakonSileS.MapEntry: Drakon Sile S
 			DrakonHallS.MapEntry: Drakon Hall S
 			DrakonCageS.MapEntry: Drakon Cage S
+			MechanicS.MapEntry: Mechanic S
 		}
 
 		Buffs: {

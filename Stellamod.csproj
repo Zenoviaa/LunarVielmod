@@ -146,6 +146,7 @@
     <None Remove="Items\Placeable\Manor\DrakonicCageI.png" />
     <None Remove="Items\Placeable\Manor\DrakonicHallI.png" />
     <None Remove="Items\Placeable\Manor\DrakonicSileI.png" />
+    <None Remove="Items\Placeable\Manor\MechanicI.png" />
     <None Remove="Items\Placeable\RalladI.png" />
     <None Remove="Items\Placeable\SunSall.png" />
     <None Remove="Items\Placeable\VeilScriptureI.png" />
