@@ -60,13 +60,13 @@ namespace Stellamod.Particles
             // spriteBatch.Draw(tex2, position - Main.screenPosition, new Rectangle(0, 0, tex2.Width, tex2.Height), color, ai[1].InRadians().AngleLerp((ai[1] * 180f).InRadians(), (120f - timeLeft) / 120f), new Vector2(tex2.Width / 2f, tex2.Height / 2f), 0.05f * Scale, SpriteEffects.None, 0f);
             if (Main.projectile[(int)ai[1]].direction == -1)
             {
-                spriteBatch.Draw(tex4, Center - Main.screenPosition, tex4.AnimationFrame(ref frameCount, ref frameTick, 2, 7, true), color, velocity.ToRotation() + 180, new Vector2(150f, 150f) * 0.5f, 3f * Scale, spriteEffects, 0f);
+                spriteBatch.Draw(tex4, Center - Main.screenPosition, tex4.AnimationFrame(ref frameCount, ref frameTick, 2, 7, true), color, velocity.ToRotation() + 180, new Vector2(150f, 150f) * 0.5f, 2f * Scale, spriteEffects, 0f);
 
 
             }
             else
             {
-                spriteBatch.Draw(tex3, Center - Main.screenPosition, tex3.AnimationFrame(ref frameCount, ref frameTick, 2, 7, true), color, velocity.ToRotation() + 180, new Vector2(150f, 150f) * 0.5f, 3f * Scale, spriteEffects, 0f);
+                spriteBatch.Draw(tex3, Center - Main.screenPosition, tex3.AnimationFrame(ref frameCount, ref frameTick, 2, 7, true), color, velocity.ToRotation() + 180, new Vector2(150f, 150f) * 0.5f, 2f * Scale, spriteEffects, 0f);
 
             }
 
