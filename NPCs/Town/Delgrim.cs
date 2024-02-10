@@ -95,7 +95,6 @@ namespace Stellamod.NPCs.Town
 			// Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 92;
-			NPC.boss = true;
 			NPC.height = 84;
 			NPC.aiStyle = -1;
 			NPC.damage = 90;
@@ -105,17 +104,9 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamage = true;
-
-
 			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
-
-
-			if (!Main.dedServ)
-			{
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Mechanics");
-			}
-
 		}
+
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.20f;
