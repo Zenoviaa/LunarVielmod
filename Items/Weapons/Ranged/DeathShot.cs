@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -56,6 +57,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ItemID.Bone, 25);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
 			recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 14);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
         }

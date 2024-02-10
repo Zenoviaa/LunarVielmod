@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
 using Stellamod.Projectiles.Swords;
 using Terraria;
@@ -51,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
-
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

@@ -60,7 +60,7 @@ namespace Stellamod.Projectiles.Gun
                 Vector2 targetPos = target.position - _targetOffset;
                 Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
                 float dist = Vector2.Distance(Projectile.position, targetPos);
-                Projectile.velocity = directionToTarget * dist;
+                Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
             }
             else
             {
@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles.Gun
             if(_targetNpc == -1)
             {
                 _targetNpc = target.whoAmI;
-                _targetOffset = (target.position - Projectile.position);
+                _targetOffset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f); 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NailKaboom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }

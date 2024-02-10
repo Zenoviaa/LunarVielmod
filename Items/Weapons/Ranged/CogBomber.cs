@@ -40,9 +40,10 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 8);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
-            recipe.AddIngredient(ItemID.Wire, 100);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddIngredient(ItemID.MolotovCocktail, 100);
             recipe.Register();
         }

@@ -15,21 +15,30 @@ namespace Stellamod.NPCs.Town
         public static Point AlcadTile;
         public static Point UnderworldRuinsTile;
         public static Point LittleWitchTownTile;
+        public static Point MechanicsTownTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
         public static Point ZuiSpawnTileOffset => new Point(15, -15);
+
+        public static Point CellConverterSpawnTileOffset => new Point(83, -8);
+        public static Point DelgrimSpawnTileOffset => new Point(39, -7);
+
 
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
         public static Vector2 UnderworldRiftSpawnWorld => UnderworldRuinsTile.ToWorldCoordinates() + UnderworldRiftTileOffset.ToWorldCoordinates();
         public static Vector2 LittleWitchSpawnWorld => LittleWitchTownTile.ToWorldCoordinates() + ZuiSpawnTileOffset.ToWorldCoordinates();
+
+        public static Vector2 DelgrimSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + DelgrimSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 CellConverterSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + CellConverterSpawnTileOffset.ToWorldCoordinates();
         public override void NetSend(BinaryWriter writer)
         {
             writer.WriteVector2(AlcadTile.ToVector2());
             writer.WriteVector2(UnderworldRuinsTile.ToVector2());
             writer.WriteVector2(LittleWitchTownTile.ToVector2());
+            writer.WriteVector2(MechanicsTownTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -37,6 +46,7 @@ namespace Stellamod.NPCs.Town
             AlcadTile = reader.ReadVector2().ToPoint();
             UnderworldRuinsTile = reader.ReadVector2().ToPoint();
             LittleWitchTownTile = reader.ReadVector2().ToPoint();
+            MechanicsTownTile = reader.ReadVector2().ToPoint();
         }
 
         public override void PostUpdateWorld()
@@ -83,6 +93,28 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<UnderworldRift>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Delgrim>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)DelgrimSpawnWorld.X, (int)DelgrimSpawnWorld.Y,
+                        ModContent.NPCType<Delgrim>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+
+                else if (myPlayer.ZoneMechanics)
+                {
+                   
+
+                    if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
+                    {
+                        NPC.NewNPC(player.GetSource_FromThis(),
+                            (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
+                            ModContent.NPCType<CellConverter>());
+                        NetMessage.SendData(MessageID.SyncNPC);
+                    }
+                }
             }
         }
 
@@ -92,6 +124,7 @@ namespace Stellamod.NPCs.Town
             tag["AlcadTile"] = AlcadTile;
             tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
             tag["LittleWitchTownTile"] = LittleWitchTownTile;
+            tag["MechanicsTownTile"] = MechanicsTownTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -100,6 +133,7 @@ namespace Stellamod.NPCs.Town
             AlcadTile = tag.Get<Point>("AlcadTile");
             UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
             LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
+            MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
         }
     }
 }

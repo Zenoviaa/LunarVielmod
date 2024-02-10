@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Terraria;
@@ -53,6 +54,7 @@ namespace Stellamod.Items.Weapons.Summon
 				.AddIngredient(ItemID.WaterBucket, 1)
 				.AddIngredient(ItemID.LavaBucket, 1)
 				.AddIngredient(ItemID.HoneyBucket, 1)
+				.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

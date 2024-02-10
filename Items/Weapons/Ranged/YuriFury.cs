@@ -46,7 +46,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<ArchariliteEnergyShot>(), 1);
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
             recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
-      //      recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 30);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
             recipe.AddIngredient(ModContent.ItemType<VeroshotBow>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

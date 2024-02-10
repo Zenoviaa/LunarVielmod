@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons;
 using Terraria;
@@ -68,7 +69,8 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
-			recipe.AddIngredient(ItemID.FallenStar, 30);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+			recipe.AddIngredient(ItemID.FallenStar, 10);
 		
 
 			recipe.Register();

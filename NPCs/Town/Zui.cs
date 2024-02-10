@@ -22,6 +22,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Vanity.Azalean;
+using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.NPCs.Town
 {
@@ -478,6 +479,7 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.JungleRose) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add<IceClimbers>()
 			.Add<FloweredCard>()
+			.Add<ZenoviasPikpikGlove>()
 			.Add<SolarianHat>()
 			.Add<SolarianChestplate>()
 			.Add<SolarianPants>()
@@ -489,25 +491,27 @@ namespace Stellamod.NPCs.Town
 			.Add<AquaCrystal>(ZuiQuestSystem.ShopCondition3)
 			.Add<Morrowshroom>(ZuiQuestSystem.ShopCondition3)
 			.Add<SunClaw>(ZuiQuestSystem.ShopCondition3)
+			.Add<OnionOfHeight>(ZuiQuestSystem.ShopCondition3)
 			.Add(new Item(ItemID.NaturesGift) { shopCustomPrice = Item.buyPrice(gold: 1) }, (ZuiQuestSystem.ShopCondition3))
 
 
-
+			.Add<DriveConstruct>(ZuiQuestSystem.ShopCondition6)
 			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
-			.Add(new Item(ItemID.Gladius) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
+			.Add(new Item(ItemID.Gladius) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
+			//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 
-
+			.Add<OnionOfUselessness>(ZuiQuestSystem.ShopCondition10)
 			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition10))
 			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 40) }, (ZuiQuestSystem.ShopCondition10))
 
-
+			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition10)
 			.Add<WitchenHat>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenRobe>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
 			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
 
-
+			.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
 			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
 			;
 			npcShop.Register(); // Name of this shop tab		

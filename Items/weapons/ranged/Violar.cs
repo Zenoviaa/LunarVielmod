@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
@@ -90,7 +91,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
 			recipe.AddIngredient(ItemID.Silk, 5);
 

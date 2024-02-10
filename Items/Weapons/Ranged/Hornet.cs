@@ -80,8 +80,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.Anvils);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 16);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 4);
 			recipe.AddIngredient(ItemID.Minishark, 1);
 
 			recipe.Register();

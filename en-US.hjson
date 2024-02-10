@@ -2417,12 +2417,12 @@ Mods: {
 
 			BrokenTech: {
 				DisplayName: Broken Tech
-				Tooltip: ""
+				Tooltip: Inbuned with sparkles of magic, this piece of tech remains dormant from enemies and can be refurnished into something better.
 			}
 
 			DriveConstruct: {
 				DisplayName: Drive Construct
-				Tooltip: ""
+				Tooltip: A rare find amongst travellers, and contains essence of the mechanical old world.
 			}
 
 			MagicDrive: {
@@ -2437,7 +2437,7 @@ Mods: {
 
 			MetallicOmniSource: {
 				DisplayName: Metallic Omni Source
-				Tooltip: ""
+				Tooltip: A source of electronics that make everything work! From revived relics to power, this piece of hardware contains magical energy too!
 			}
 
 			RangerDrive: {
@@ -2457,7 +2457,7 @@ Mods: {
 
 			UnknownCircuitry: {
 				DisplayName: Unknown Circuitry
-				Tooltip: ""
+				Tooltip: Circuitry lost to time, from a fallen kingdom of tech, collecting dust over millenia after the Royal Capital appeared.
 			}
 
 			TerrorFragments: {
@@ -4105,7 +4105,7 @@ Mods: {
 			}
 
 			BridgetII: {
-				DisplayName: Bridget II
+				DisplayName: No Longer Bridget
 				Tooltip: Why didn't you revive her :(
 			}
 
@@ -5450,11 +5450,90 @@ Mods: {
 				DisplayName: Toxic Hornet Staff
 				Tooltip: ""
 			}
-		}
+
+			ZenoviasPikpikGlove: {
+				DisplayName: Zenovias Pikpik Jar
+				Tooltip:
+					'''
+					Toss the pikpiks across the land (Viable throughout the whole mod btw)
+					You can add Onions as accessories to gain more damage and become super strong!
+					'''
+			}
+
+			OnionOfUselessness: {
+				Tooltip:
+					'''
+					Adds Yellow and Blue pikmin to your pikpik glove!
+					+11 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Uselessness
+			}
+
+			OnionOfStrength: {
+				Tooltip:
+					'''
+					Adds Yellow, Blue, White and Purple pikmin to your pikpik glove!
+					+70 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Strength
+			}
+
+			OnionOfSight: {
+				Tooltip:
+					'''
+					Adds Yellow, Blue, White pikmin to your pikpik glove!
+					+30 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Sight
+			}
+
+			OnionOfHeight: {
+				Tooltip:
+					'''
+					Adds Yellow pikmin to your pikpik glove!
+					+5 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Height
+			}
 
 			TheAurora: {
 				DisplayName: The Aurora
 				Tooltip: ""
+			}
+		}
+
+			ChromaCutter: {
+				DisplayName: Chroma Cutter
+				Tooltip:
+					'''
+					Summons 7 Chromatic Blades to fight for you! Consumes all remaining minion slots upon use.
+					After summoning the blades, swing the sword to slash them towards your cursor.
+					Each blade has a different effect!
+					'''
+			}
+
+			WeaponDrive: {
+				Tooltip:
+					'''
+					A drive constructed by the smartest of engineers 
+					Contains some high quality electronics and a bit of magical essence of the new world!
+					'''
+				DisplayName: Weapon Drive
+			}
+
+			MechanicI: {
+				DisplayName: Mechanic I
+				Tooltip: ""
+			}
+
+			ScrapToken: {
+				Tooltip: Put inside a cell converter with Delgrim.
+				DisplayName: Scrap Token
+			}
+
+			ElectricCrystal: {
+				Tooltip: Gives 6% damage to all classes! Electrifying!!!
+				DisplayName: Electric Crystal
 			}
 		}
 
@@ -6248,6 +6327,19 @@ Mods: {
 			IxyProj2.DisplayName: Ixy Proj2
 			ToxicHornetMinion.DisplayName: Toxic Hornet Minion
 			ToxicMissileFriendly.DisplayName: Toxic Missile Friendly
+			BluePikminAttack.DisplayName: Blue Pikmin Attack
+			RedPikminAttack.DisplayName: Red Pikmin Attack
+			RedPikminThrow.DisplayName: Red Pikmin Throw
+			YellowPikminAttack.DisplayName: Yellow Pikmin Attack
+			PurplePikminAttack.DisplayName: Purple Pikmin Attack
+			BluePikminThrow.DisplayName: Blue Pikmin Throw
+			PurplePikminThrow.DisplayName: Purple Pikmin Throw
+			WhitePikminAttack.DisplayName: White Pikmin Attack
+			WhitePikminThrow.DisplayName: White Pikmin Throw
+			YellowPikminThrow.DisplayName: Yellow Pikmin Throw
+			ChromaCutterMinion.DisplayName: Chroma Cutter Minion
+			ChromaCutterProj.DisplayName: Chroma Cutter Proj
+			ChromaCutterPurpleSwordProj.DisplayName: Chroma Cutter Purple Sword Proj
 		}
 
 		NPCs: {
@@ -7450,6 +7542,8 @@ Mods: {
 			SandWalkerNPC.DisplayName: Sand Walker
 			ToxicHornet.DisplayName: Toxic Hornet
 			SkyRune.DisplayName: Sky Rune
+			Delgrim.DisplayName: Delgrim
+			CellConverter.DisplayName: Cell Converter
 		}
 
 		Biomes: {
@@ -7546,6 +7640,11 @@ Mods: {
 			DrakonicManor: {
 				DisplayName: Drakonic Manor
 				TownNPCDialogueName: the Drakonic Manor
+			}
+
+			EngineerShop: {
+				TownNPCDialogueName: the Engineer Shop
+				DisplayName: Engineer Shop
 			}
 		}
 
@@ -7671,6 +7770,7 @@ Mods: {
 			DrakonSileS.MapEntry: Drakon Sile S
 			DrakonHallS.MapEntry: Drakon Hall S
 			DrakonCageS.MapEntry: Drakon Cage S
+			MechanicS.MapEntry: Mechanic S
 		}
 
 		Buffs: {
@@ -8227,6 +8327,11 @@ Mods: {
 			ToxicHornetMinionBuff: {
 				DisplayName: Toxic Hornet Minion Buff
 				Description: Mods.Stellamod.Buffs.ToxicHornetMinionBuff.Description
+			}
+
+			ChromaCutterMinionBuff: {
+				DisplayName: Chroma Cutter Minion Buff
+				Description: Chromatic Blades surround you!
 			}
 		}
 

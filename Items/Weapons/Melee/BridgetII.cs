@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
@@ -46,9 +47,9 @@ namespace Stellamod.Items.Weapons.Melee
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.BorealWood, 6);
             recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 4);
             recipe.AddIngredient(ModContent.ItemType<Bridget>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 40);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

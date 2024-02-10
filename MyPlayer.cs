@@ -122,6 +122,13 @@ namespace Stellamod
 		public int PPFrameTime = 0;
 		public bool Cameraaa = false;
 		public float CameraaaTime;
+		//----------------------------------------- Pikmin stuff
+
+		public int OnionDamage = 0;
+		public bool Onion1 = false;
+		public bool Onion2 = false;
+		public bool Onion3 = false;
+		public bool Onion4 = false;
 
 
 
@@ -236,6 +243,7 @@ namespace Stellamod
 		public bool ZoneVillage;
 		public bool ZoneCinder;
 		public bool ZoneDrakonic;
+		public bool ZoneMechanics;
 
 
 		public float AssassinsSlashes;
@@ -628,7 +636,10 @@ namespace Stellamod
 			PPFrameTime = 0;
 			Cameraaa = false;
 
-
+			 Onion1 = false;
+			 Onion2 = false;
+			 Onion3 = false;
+			 Onion4 = false;
 
 
 
@@ -685,7 +696,8 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
-        }
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
+		}
 
 		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
@@ -1252,11 +1264,17 @@ namespace Stellamod
 
 			}
 
-		
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<FableBiome>() || Player.InModBiome<MorrowUndergroundBiome>())
+			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneMechanics)
+			{
+				Main.GraveyardVisualIntensity = 0.6f;
+
+
+			}
+
+				if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<FableBiome>() || Player.InModBiome<MorrowUndergroundBiome>())
 			{
 				Main.GraveyardVisualIntensity = 0.4f;
 				Main.windPhysicsStrength = 50;
