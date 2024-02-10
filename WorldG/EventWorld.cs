@@ -268,7 +268,7 @@ namespace Stellamod.WorldG
             if (!ChaosT)
             {
                 string message = "Chaos has plaged the dungeon...";
-                if (NPC.downedMechBoss2)
+                if (NPC.downedMechBoss3)
                 {
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
                     NetworkText txt = NetworkText.FromLiteral(message);
@@ -279,7 +279,7 @@ namespace Stellamod.WorldG
             if (!ChaosP)
             {
                 string message = "Chaos has plaged the hell...";
-                if (NPC.downedMechBoss3)
+                if (NPC.downedMechBoss2)
                 {
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
                     NetworkText txt = NetworkText.FromLiteral(message);
