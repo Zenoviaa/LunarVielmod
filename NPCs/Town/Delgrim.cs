@@ -109,10 +109,12 @@ namespace Stellamod.NPCs.Town
 
 			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
 
+
 			if (!Main.dedServ)
 			{
-				Music = -1;
+				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Mechanics");
 			}
+
 		}
 		public override void FindFrame(int frameHeight)
 		{

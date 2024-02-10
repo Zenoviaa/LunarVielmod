@@ -8,7 +8,7 @@ namespace Stellamod.Assets.Biomes
     public class EngineerShop : ModBiome
     {
 
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/AurelusTemple");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Mechanics");
         public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
