@@ -2417,12 +2417,12 @@ Mods: {
 
 			BrokenTech: {
 				DisplayName: Broken Tech
-				Tooltip: ""
+				Tooltip: Inbuned with sparkles of magic, this piece of tech remains dormant from enemies and can be refurnished into something better.
 			}
 
 			DriveConstruct: {
 				DisplayName: Drive Construct
-				Tooltip: ""
+				Tooltip: A rare find amongst travellers, and contains essence of the mechanical old world.
 			}
 
 			MagicDrive: {
@@ -2437,7 +2437,7 @@ Mods: {
 
 			MetallicOmniSource: {
 				DisplayName: Metallic Omni Source
-				Tooltip: ""
+				Tooltip: A source of electronics that make everything work! From revived relics to power, this piece of hardware contains magical energy too!
 			}
 
 			RangerDrive: {
@@ -2457,7 +2457,7 @@ Mods: {
 
 			UnknownCircuitry: {
 				DisplayName: Unknown Circuitry
-				Tooltip: ""
+				Tooltip: Circuitry lost to time, from a fallen kingdom of tech, collecting dust over millenia after the Royal Capital appeared.
 			}
 
 			TerrorFragments: {
@@ -5499,6 +5499,11 @@ Mods: {
 			ChromaCutter: {
 				DisplayName: Chroma Cutter
 				Tooltip: ""
+			}
+
+			WeaponDrive: {
+				Tooltip: A drive constructed by the smartest of engineers, contains some high quality electronics and a bit of magical essence of the new world!
+				DisplayName: Weapon Drive
 			}
 		}
 
