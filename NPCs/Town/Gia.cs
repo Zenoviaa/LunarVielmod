@@ -617,6 +617,7 @@ namespace Stellamod.NPCs.Town
 						case 10:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BlackInk, 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TorrentialLance>(), 1);
 
 							break;
 
