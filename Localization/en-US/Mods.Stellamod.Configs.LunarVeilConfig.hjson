@@ -1,0 +1,22 @@
+VanillaTexturesToggle: {
+	Tooltip: ""
+	Label: Vanilla Textures Toggle
+}
+
+Headers: {
+	ReplaceVanillaTextures: Replace Vanilla Textures
+	BiomeParticles: Biome Particles
+	ModdedBiomeParticles: Modded Biome Particles
+}
+
+DisplayName: Lunar Veil Config
+
+VanillaParticlesToggle: {
+	Label: Vanilla Particles Toggle
+	Tooltip: ""
+}
+
+ParticlesToggle: {
+	Label: Particles Toggle
+	Tooltip: ""
+}
