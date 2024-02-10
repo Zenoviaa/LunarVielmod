@@ -23,7 +23,7 @@ namespace Stellamod.Items.Accessories
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.sellPrice(gold: 7);
+			Item.value = Item.buyPrice(gold: 7);
 			Item.rare = ItemRarityID.LightPurple;
 			Item.accessory = true;
 

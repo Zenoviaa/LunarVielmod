@@ -5453,14 +5453,16 @@ Mods: {
 
 			ZenoviasPikpikGlove: {
 				DisplayName: Zenovias Pikpik Glove
-				Tooltip: '''
+				Tooltip:
+					'''
 					Toss the pikpiks across the land (Viable throughout the whole mod btw)
 					You can add Onions as accessories to gain more damage and become super strong!
 					'''
 			}
 
 			OnionOfUselessness: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					Adds Yellow and Blue pikmin to your pikpik glove!
 					+15 More damage to your pikmin
 					'''
@@ -5468,7 +5470,8 @@ Mods: {
 			}
 
 			OnionOfStrength: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					Adds Yellow, Blue, White and Purple pikmin to your pikpik glove!
 					+70 More damage to your pikmin
 					'''
@@ -5476,7 +5479,8 @@ Mods: {
 			}
 
 			OnionOfSight: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					Adds Yellow, Blue, White pikmin to your pikpik glove!
 					+30 More damage to your pikmin
 					'''
@@ -5484,7 +5488,8 @@ Mods: {
 			}
 
 			OnionOfHeight: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					Adds Yellow pikmin to your pikpik glove!
 					+5 More damage to your pikmin
 					'''
