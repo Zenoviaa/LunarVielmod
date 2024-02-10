@@ -45,6 +45,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 18);
             recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 12);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
             recipe.AddIngredient(ItemID.Lens, 7);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

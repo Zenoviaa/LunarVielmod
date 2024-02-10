@@ -22,14 +22,7 @@ namespace Stellamod.Items.Materials.Tech
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Swing;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe(1);
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 4);
-            recipe.AddIngredient(ItemType<LostScrap>(), 2);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+
 
     }
 
