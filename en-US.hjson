@@ -5498,7 +5498,12 @@ Mods: {
 
 			ChromaCutter: {
 				DisplayName: Chroma Cutter
-				Tooltip: ""
+				Tooltip:
+					'''
+					Summons 7 Chromatic Blades to fight for you! Consumes all remaining minion slots upon use.
+					After summoning the blades, swing the sword to slash them towards your cursor.
+					Each blade has a different effect!
+					'''
 			}
 
 			WeaponDrive: {
@@ -8292,7 +8297,7 @@ Mods: {
 
 			ChromaCutterMinionBuff: {
 				DisplayName: Chroma Cutter Minion Buff
-				Description: Mods.Stellamod.Buffs.ChromaCutterMinionBuff.Description
+				Description: Chromatic Blades surround you!
 			}
 		}
 

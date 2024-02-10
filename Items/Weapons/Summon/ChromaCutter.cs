@@ -9,6 +9,7 @@ using Stellamod.Projectiles.Swords;
 using Stellamod.Projectiles.Swords.Ripper;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -41,122 +42,159 @@ namespace Stellamod.Items.Weapons.Summon
             Item.buffType = ModContent.BuffType<ChromaCutterMinionBuff>();
             Item.shoot = ModContent.ProjectileType<ChromaCutterProj>();
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+            var line = new TooltipLine(Mod, "", "");
 
+            line = new TooltipLine(Mod, "R", "Red - No Effect")
+            {
+                OverrideColor = Color.DarkRed
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "O", "Orange - Explodes")
+            {
+                OverrideColor = Color.Orange
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "Y", "Yellow - Teleports after hitting an enemy")
+            {
+                OverrideColor = Color.Yellow
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "G", "Green - High damage")
+            {
+                OverrideColor = Color.Green
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "C", "Cyan - Causes several debuffs")
+            {
+                OverrideColor = Color.Cyan
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "B", "Blue - Homing")
+            {
+                OverrideColor = Color.Blue
+            };
+
+            tooltips.Add(line);
+
+            line = new TooltipLine(Mod, "V", "Purple - Summons powerful blades upon hitting an enemy")
+            {
+                OverrideColor = Color.Purple
+            };
+
+            tooltips.Add(line);
+
+        }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
             {
                 type = ModContent.ProjectileType<ChromaCutterProj>();
-
-            }
-            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
-            {
-                type = ModContent.ProjectileType<ChromaCutterProj>();
-
             }
         }
-
-
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse != 2)
-            {
-                bool minionSlots = true;
-                for (int i = 0; i < Main.maxProjectiles; ++i)
-                {
-                    if (Main.projectile[i].active && Main.projectile[i].owner == Main.myPlayer && Main.projectile[i].type == ModContent.ProjectileType<ChromaCutterMinion>())
-                    {
-                        if (minionSlots)
-                        {
-                            Main.projectile[i].minionSlots += 1f;
-                            minionSlots = false;
-                        }
-         
-                        Main.projectile[i].originalDamage = Item.damage + (int)(30 * Main.projectile[i].minionSlots);
-                    }
-                }
-            }
-            return true;
-        }
-
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            bool doSummonMinions = player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinion>()] == 0;
-            if (doSummonMinions)
+            if (player.altFunctionUse != 2)
             {
-                player.AddBuff(Item.buffType, 2);
-                // Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
-                // 7 Minions
-                position = Main.MouseWorld;
-                for (int i = 0; i < 7; i++)
+                bool doSummonMinions = player.ownedProjectileCounts[ModContent.ProjectileType<ChromaCutterMinion>()] == 0;
+                if (doSummonMinions)
                 {
-                    var projectile = Projectile.NewProjectileDirect(source, position, velocity, 
-                        ModContent.ProjectileType<ChromaCutterMinion>(), damage, knockback, player.whoAmI, ai0: i);
-                    projectile.originalDamage = Item.damage;
-                }
+                    player.AddBuff(Item.buffType, 2);
+                    // Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+                    // 7 Minions
+                    position = Main.MouseWorld;
 
-                return false;
-            }  
-            else
-            {
-                int dir = AttackCounter;
-                if (player.direction == 1)
-                {
-                    player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
+                    float remainingSlots = player.maxMinions - player.slotsMinions;
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        var projectile = Projectile.NewProjectileDirect(source, position, velocity,
+                            ModContent.ProjectileType<ChromaCutterMinion>(), damage, knockback, player.whoAmI, ai0: i);
+                        if(i == 0)
+                        {
+                            projectile.minionSlots = remainingSlots;
+                        }
+
+                        projectile.originalDamage = Item.damage + (int)(15 * remainingSlots);
+                    }
+
+                    return false;
                 }
                 else
                 {
-                    player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
-
-                }
-                AttackCounter = -AttackCounter;
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-
-                int chromaCount=0;
-                for(int i = 0; i < Main.maxProjectiles; i++)
-                {
-                    Projectile proj = Main.projectile[i];
-                    if(proj.owner == player.whoAmI && proj.type == ModContent.ProjectileType<ChromaCutterMinion>())
+                    int dir = AttackCounter;
+                    if (player.direction == 1)
                     {
-                        if(_chromaCounter == chromaCount)
-                        {
-                            if(Vector2.Distance(player.Center, proj.Center) > 128)
-                            {
-                                _chromaCounter++;
-                                chromaCount++;
-                                continue;
-                            }
+                        player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
+                    }
+                    else
+                    {
+                        player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
 
-                            //Make it attack
-                            proj.ai[1] = 1;
-                            proj.netUpdate = true;
-                            _chromaCounter++;
-                            break;
-                        } 
-                        else
+                    }
+                    AttackCounter = -AttackCounter;
+                    Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+
+                    int chromaCount = 0;
+                    for (int i = 0; i < Main.maxProjectiles; i++)
+                    {
+                        Projectile proj = Main.projectile[i];
+                        if (proj.owner == player.whoAmI && proj.type == ModContent.ProjectileType<ChromaCutterMinion>())
                         {
-                            chromaCount++;
+                            if (_chromaCounter == chromaCount)
+                            {
+                                if (Vector2.Distance(player.Center, proj.Center) > 128)
+                                {
+                                    _chromaCounter++;
+                                    chromaCount++;
+                                    continue;
+                                }
+
+                                //Make it attack
+                                proj.ai[1] = 1;
+                                proj.netUpdate = true;
+                                _chromaCounter++;
+                                break;
+                            }
+                            else
+                            {
+                                chromaCount++;
+                            }
                         }
                     }
-                }
 
-                if (_chromaCounter >= 7)
-                    _chromaCounter = 0;
+                    if (_chromaCounter >= 7)
+                        _chromaCounter = 0;
 
-                switch(Main.rand.Next(0, 2))
-                {
-                    case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), player.position);
-                        break;
-                    case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), player.position);
-                        break;
+                    switch (Main.rand.Next(0, 2))
+                    {
+                        case 0:
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), player.position);
+                            break;
+                        case 1:
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), player.position);
+                            break;
+                    }
+
+                    return false;
                 }
-  
-                return false;
             }
+
+            return false;
         }
     }
 
@@ -239,7 +277,6 @@ namespace Stellamod.Items.Weapons.Summon
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 
             Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
         }
 
@@ -329,7 +366,6 @@ namespace Stellamod.Items.Weapons.Summon
             Player owner = Main.player[Projectile.owner];
             if (!SummonHelper.CheckMinionActive<ChromaCutterMinionBuff>(owner, Projectile))
                 return;
-
 
             if (Attack)
             {
