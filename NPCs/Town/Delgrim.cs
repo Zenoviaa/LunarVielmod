@@ -301,7 +301,7 @@ namespace Stellamod.NPCs.Town
 						break;
 
 					case 5:
-						Main.npcChatText = $"Verlia always would be training the army, the gintze army wasn't exactly the most reliable mainly because of Verlia's idiocity and lack of care for danger. The army would always charge head first without a care for defense. I wonder where the army was when we were defending against the corruption of the Virulent.";
+						Main.npcChatText = $"Verlia always would be training the army, the gintze army wasn't exactly the most reliable mainly because of Verlia's idiocity and lack of care for danger. The army would always charge head first without a care for defense. I wonder where the army was when we were defending against the Carian warriors and knights";
 
 						break;
 
