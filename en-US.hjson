@@ -5507,7 +5507,10 @@ Mods: {
 			}
 
 			WeaponDrive: {
-				Tooltip: A drive constructed by the smartest of engineers, contains some high quality electronics and a bit of magical essence of the new world!
+				Tooltip: '''
+					A drive constructed by the smartest of engineers 
+					Contains some high quality electronics and a bit of magical essence of the new world!
+					'''
 				DisplayName: Weapon Drive
 			}
 		}
