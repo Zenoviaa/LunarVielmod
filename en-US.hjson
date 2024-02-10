@@ -5521,7 +5521,7 @@ Mods: {
 			}
 
 			ScrapToken: {
-				Tooltip: ""
+				Tooltip: Put inside a cell converter with Delgrim.
 				DisplayName: Scrap Token
 			}
 
