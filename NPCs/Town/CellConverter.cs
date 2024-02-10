@@ -206,7 +206,7 @@ namespace Stellamod.NPCs.Town
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-			button = "Put in scrap token [i:ModContent.ItemType<Items.Consumables.ScrapToken>()]";
+			button = "Put in scrap token";
 
 		}
 
