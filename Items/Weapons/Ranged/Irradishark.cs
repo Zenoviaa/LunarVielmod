@@ -65,7 +65,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Megashark);
-            recipe.AddIngredient(ItemType<RangerDrive>(), 1);
             recipe.AddIngredient(ModContent.ItemType<TychineGun>());
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 25);
