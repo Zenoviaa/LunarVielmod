@@ -18,7 +18,7 @@ namespace Stellamod.Particles
             width = 1;
             height = 1;
             Scale = 1f;
-            timeLeft = 14;
+            timeLeft = 7;
 
         }
 
