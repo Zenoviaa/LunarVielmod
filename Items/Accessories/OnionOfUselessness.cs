@@ -36,7 +36,7 @@ namespace Stellamod.Items.Accessories
 		{
 
 			player.GetModPlayer<MyPlayer>().Onion2 = true;
-			player.GetModPlayer<MyPlayer>().OnionDamage = 15;
+			player.GetModPlayer<MyPlayer>().OnionDamage = 11;
 		}
 
 
