@@ -5507,7 +5507,8 @@ Mods: {
 			}
 
 			WeaponDrive: {
-				Tooltip: '''
+				Tooltip:
+					'''
 					A drive constructed by the smartest of engineers 
 					Contains some high quality electronics and a bit of magical essence of the new world!
 					'''
