@@ -328,6 +328,75 @@ namespace Stellamod.NPCs.Town
 
 				}
 
+
+
+				if (Main.LocalPlayer.HasItem(ModContent.ItemType<SkyRuneI>()))
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+
+					Main.npcChatText = $"I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!";
+
+					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<SkyRuneI>());
+					var entitySource = NPC.GetSource_GiftOrReward();
+
+					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					switch (Main.rand.Next(7))
+					{
+
+
+						case 0:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Feather, 10);
+							break;
+						case 1:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Feather, 15);
+							break;
+						case 2:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<DivineSniper>());
+
+							break;
+
+						case 3:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.AntlionMandible, 25);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
+
+							break;
+
+						case 4:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SkyrageShasher>());
+
+							break;
+
+						case 5:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CloudBow>());
+
+							break;
+
+						case 6:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.CloudinaBalloon, 1);
+
+							break;
+					}
+
+
+
+					return;
+
+
+
+				}
+
+
+
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<OverworldRuneI>()))
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
