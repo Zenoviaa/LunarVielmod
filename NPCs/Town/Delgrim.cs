@@ -38,6 +38,7 @@ namespace Stellamod.NPCs.Town
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
+	[AutoloadBossHead]
 	public class Delgrim : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -94,17 +95,19 @@ namespace Stellamod.NPCs.Town
 			// Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 92;
+			NPC.boss = true;
 			NPC.height = 84;
 			NPC.aiStyle = -1;
 			NPC.damage = 90;
 			NPC.defense = 42;
-			NPC.lifeMax = 20000;
+			NPC.lifeMax = 1;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
-			NPC.dontTakeDamageFromHostiles = true;
+			NPC.dontTakeDamage = true;
 
 
+			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
 		}
 		public override void FindFrame(int frameHeight)
 		{
@@ -151,7 +154,7 @@ namespace Stellamod.NPCs.Town
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
 				new FlavorTextBestiaryInfoElement("A magical engineer huh?"),
@@ -170,7 +173,7 @@ namespace Stellamod.NPCs.Town
 			// (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
 			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
 			{
-				drawModifiers.Rotation += 0.001f;
+				
 
 				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
 				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);

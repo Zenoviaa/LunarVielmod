@@ -145,6 +145,8 @@ namespace Stellamod.NPCs.Town
 
 			return false;
 		}
+
+	
 		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
 		// Returning false will allow you to manually draw your NPC
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
