@@ -256,6 +256,7 @@
     <None Remove="Items\Weapons\Summon\SwarmerMinion.png" />
     <None Remove="Items\Weapons\Summon\SwarmerMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\SwarmerStaff.png" />
+    <None Remove="Items\Weapons\Summon\ToxicHornetMinionBuff.png" />
     <None Remove="Items\Weapons\Summon\VampireScepter.png" />
     <None Remove="Items\Weapons\Summon\VampireTorchMinion.png" />
     <None Remove="Items\Weapons\Summon\VampireTorchMinionBuff.png" />
@@ -414,6 +415,7 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />
+    <None Remove="Projectiles\Summons\ToxicMissileFriendly.png" />
     <None Remove="Projectiles\Summons\VoidMonsters\VoidEater.png" />
     <None Remove="Projectiles\Summons\VoidMonsters\VoidHostileRift.png" />
     <None Remove="Projectiles\Swords\Altride\AltrideProj.png" />

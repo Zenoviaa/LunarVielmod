@@ -37,7 +37,7 @@ namespace Stellamod.Projectiles.Gun
             NPC target = Main.npc[targetNpc];
             if (target.active && !_setOffset)
             {
-                _offset = (target.position - Projectile.position);
+                _offset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f); 
                 _setOffset = true;
             } 
             else if (!target.active)
@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Gun
             } 
             else
             {
-                Vector2 targetPos = target.position - _offset;
+                Vector2 targetPos = target.position - _offset + new Vector2(0.001f, 0.001f); 
                 Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
                 float dist = Vector2.Distance(Projectile.position, targetPos);
                 Projectile.velocity = directionToTarget * dist;
