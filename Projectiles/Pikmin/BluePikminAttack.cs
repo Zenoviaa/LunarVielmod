@@ -19,38 +19,87 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override void SetDefaults()
         {
-            Projectile.width = 34;
-            Projectile.height = 40;
+            Projectile.width = 20;
+            Projectile.height = 19;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 60 * 10;
+            Projectile.timeLeft = 1000;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 25;
+
         }
         int Attacktime = 0;
+        private bool _setOffset;
+        private Vector2 _offset;
         public override void AI()
         {
 
-            Projectile.velocity = Vector2.Zero;
+
+            int targetNpc = (int)Projectile.ai[0];
+            NPC target = Main.npc[targetNpc];
+            if (target.active && !_setOffset)
+            {
+                _offset = (target.position - Projectile.position);
+                _setOffset = true;
+            }
+            else if (!target.active)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+                    ModContent.ProjectileType<BluePikminThrow>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                Projectile.Kill();
+            }
+            else
+            {
+                Vector2 targetPos = target.position - _offset;
+                Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
+                float dist = Vector2.Distance(Projectile.position, targetPos);
+                Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
+            }
+
+
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Attacktime++;
 
-            if (Attacktime >= 15)
+            if (Attacktime >= 20)
             {
                 int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), Projectile.damage, 0, Projectile.owner);
 
                 Attacktime = 0;
+
+                switch (Main.rand.Next(5))
+                {
+                    case 0:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit1"));
+                        break;
+
+                    case 1:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit2"));
+                        break;
+
+                    case 2:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit3"));
+                        break;
+
+                    case 3:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit4"));
+                        break;
+
+                    case 4:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit5"));
+                        break;
+
+                }
             }
         }
 
         private void Visuals()
         {
-            DrawHelper.AnimateTopToBottom(Projectile, 5);
+            DrawHelper.AnimateTopToBottom(Projectile, 3);
             if (Main.rand.NextBool(60))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BlueTorch);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.IceTorch);
             }
         }
 
@@ -61,7 +110,7 @@ namespace Stellamod.Projectiles.Pikmin
             for (int i = 0; i < 8; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.BlueTorch, speed * 4);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.IceTorch, speed * 4);
                 d.noGravity = true;
             }
         }

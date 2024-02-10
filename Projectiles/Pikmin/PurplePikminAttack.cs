@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Pikmin
 {
-    internal class RedPikminAttack : ModProjectile
+    internal class PurplePikminAttack : ModProjectile
     {
         private float _lighting;
         public override void SetStaticDefaults()
@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Pikmin
             Projectile.height = 19;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 500;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 25;
 
@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Pikmin
         public override void AI()
         {
 
-           
+
             int targetNpc = (int)Projectile.ai[0];
             NPC target = Main.npc[targetNpc];
             if (target.active && !_setOffset)
@@ -45,7 +45,7 @@ namespace Stellamod.Projectiles.Pikmin
             else if (!target.active)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
-                    ModContent.ProjectileType<RedPikminThrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<PurplePikminThrow>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
                 Projectile.Kill();
             }
             else
@@ -56,15 +56,15 @@ namespace Stellamod.Projectiles.Pikmin
                 Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
             }
 
-          
+
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Attacktime++;
 
-            if (Attacktime >= 20)
+            if (Attacktime >= 40)
             {
                 int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<NailKaboom>(), Projectile.damage, 0, Projectile.owner);
+                ModContent.ProjectileType<AivanKaboom>(), Projectile.damage * 3, 0, Projectile.owner);
                 switch (Main.rand.Next(5))
                 {
                     case 0:
@@ -89,6 +89,7 @@ namespace Stellamod.Projectiles.Pikmin
 
                 }
                 Attacktime = 0;
+
             }
         }
 
@@ -97,7 +98,7 @@ namespace Stellamod.Projectiles.Pikmin
             DrawHelper.AnimateTopToBottom(Projectile, 3);
             if (Main.rand.NextBool(60))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
             }
         }
 
@@ -108,7 +109,7 @@ namespace Stellamod.Projectiles.Pikmin
             for (int i = 0; i < 8; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, speed * 4);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 4);
                 d.noGravity = true;
             }
         }

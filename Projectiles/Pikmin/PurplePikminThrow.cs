@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Pikmin
 {
-    internal class RedPikminThrow : ModProjectile
+    internal class PurplePikminThrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override void AI()
         {
-            Projectile.velocity.Y += 0.4f;
+            Projectile.velocity.Y += 0.7f;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Projectile.tileCollide = true;
@@ -35,10 +35,10 @@ namespace Stellamod.Projectiles.Pikmin
 
         private void Visuals()
         {
-            
+
             if (Main.rand.NextBool(60))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BoneTorch);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Red * 0.1f, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.Purple * 0.1f, Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -63,20 +63,20 @@ namespace Stellamod.Projectiles.Pikmin
         {
             int targetNpc = target.whoAmI;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity + new Vector2(0.001f, 0.001f),
-                ModContent.ProjectileType<RedPikminAttack>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: targetNpc);
+                ModContent.ProjectileType<PurplePikminAttack>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: targetNpc);
         }
 
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0,
-              ModContent.ProjectileType<NailKaboom>(), Projectile.damage * 0, Projectile.knockBack, Projectile.owner);
+              ModContent.ProjectileType<AivanKaboom>(), Projectile.damage * 0, Projectile.knockBack, Projectile.owner);
             return base.OnTileCollide(oldVelocity);
         }
 
         public override bool PreAI()
         {
-           
+
             if (++Projectile.frameCounter >= 3)
             {
                 Projectile.frameCounter = 0;
@@ -95,7 +95,7 @@ namespace Stellamod.Projectiles.Pikmin
             for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, speed * 4);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 4);
                 d.noGravity = true;
             }
         }

@@ -4105,7 +4105,7 @@ Mods: {
 			}
 
 			BridgetII: {
-				DisplayName: Bridget II
+				DisplayName: No Longer Bridget
 				Tooltip: Why didn't you revive her :(
 			}
 
@@ -5453,7 +5453,39 @@ Mods: {
 
 			ZenoviasPikpikGlove: {
 				DisplayName: Zenovias Pikpik Glove
-				Tooltip: ""
+				Tooltip: Toss the pikpiks across the land (Viable throughout the whole mod btw)
+			}
+
+			OnionOfUselessness: {
+				Tooltip: '''
+					Adds Yellow and Blue pikmin to your pikpik glove!
+					+15 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Uselessness
+			}
+
+			OnionOfStrength: {
+				Tooltip: '''
+					Adds Yellow, Blue, White and Purple pikmin to your pikpik glove!
+					+70 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Strength
+			}
+
+			OnionOfSight: {
+				Tooltip: '''
+					Adds Yellow, Blue, White pikmin to your pikpik glove!
+					+30 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Sight
+			}
+
+			OnionOfHeight: {
+				Tooltip: '''
+					Adds Yellow pikmin to your pikpik glove!
+					+5 More damage to your pikmin
+					'''
+				DisplayName: Onion Of Height
 			}
 		}
 
@@ -6251,6 +6283,12 @@ Mods: {
 			RedPikminAttack.DisplayName: Red Pikmin Attack
 			RedPikminThrow.DisplayName: Red Pikmin Throw
 			YellowPikminAttack.DisplayName: Yellow Pikmin Attack
+			PurplePikminAttack.DisplayName: Purple Pikmin Attack
+			BluePikminThrow.DisplayName: Blue Pikmin Throw
+			PurplePikminThrow.DisplayName: Purple Pikmin Throw
+			WhitePikminAttack.DisplayName: White Pikmin Attack
+			WhitePikminThrow.DisplayName: White Pikmin Throw
+			YellowPikminThrow.DisplayName: Yellow Pikmin Throw
 		}
 
 		NPCs: {

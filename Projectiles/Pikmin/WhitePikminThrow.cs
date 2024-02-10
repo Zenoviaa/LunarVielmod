@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Pikmin
 {
-    internal class RedPikminThrow : ModProjectile
+    internal class WhitePikminThrow : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -27,7 +27,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override void AI()
         {
-            Projectile.velocity.Y += 0.4f;
+            Projectile.velocity.Y += 0.5f;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
             Projectile.tileCollide = true;
@@ -35,10 +35,10 @@ namespace Stellamod.Projectiles.Pikmin
 
         private void Visuals()
         {
-            
+
             if (Main.rand.NextBool(60))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.WhiteTorch);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Red * 0.1f, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.White * 0.1f, Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.Pikmin
         {
             int targetNpc = target.whoAmI;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity + new Vector2(0.001f, 0.001f),
-                ModContent.ProjectileType<RedPikminAttack>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: targetNpc);
+                ModContent.ProjectileType<WhitePikminAttack>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: targetNpc);
         }
 
 
@@ -76,7 +76,7 @@ namespace Stellamod.Projectiles.Pikmin
 
         public override bool PreAI()
         {
-           
+
             if (++Projectile.frameCounter >= 3)
             {
                 Projectile.frameCounter = 0;
@@ -95,7 +95,7 @@ namespace Stellamod.Projectiles.Pikmin
             for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, speed * 4);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch, speed * 4);
                 d.noGravity = true;
             }
         }
