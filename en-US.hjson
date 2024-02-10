@@ -8879,7 +8879,7 @@ Mods: {
 		Card3.DisplayName: Card3
 		Card4.DisplayName: Card4
 	}
-}
+
 
 ShadegraveStaff: {
 	DisplayName: Shadegrave Staff
@@ -10148,7 +10148,7 @@ Biomes: {
 FurihaMKIII: {
 	DisplayName: Furiha M K I I I
 	Tooltip: ""
-}
+
 
 VoidKey: {
 	DisplayName: Void Key
