@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Nails;
 using Terraria;
@@ -29,7 +30,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 80;
+			Item.damage = 90;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 0;
 			Item.height = 0;
@@ -85,6 +86,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddIngredient(ItemID.Bone, 22);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
 			recipe.AddIngredient(ItemID.HallowedBar, 5);
 
 

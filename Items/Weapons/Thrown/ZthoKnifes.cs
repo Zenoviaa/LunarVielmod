@@ -42,8 +42,9 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ModContent.ItemType<FableKnives>(), 50);
+            Recipe recipe = CreateRecipe(300);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<FableKnives>(), 100);
             recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();

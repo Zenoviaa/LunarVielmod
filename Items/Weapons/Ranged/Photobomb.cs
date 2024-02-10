@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Crossbows.Lead;
 using Stellamod.Projectiles.Paint;
@@ -55,6 +56,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
             recipe.AddIngredient(ItemID.PainterPaintballGun, 1);
             recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

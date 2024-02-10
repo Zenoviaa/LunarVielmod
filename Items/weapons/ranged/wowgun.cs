@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 19;
+			Item.damage = 25;
 			Item.knockBack = 3f;
 			Item.noMelee = true;
 
@@ -59,6 +59,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 	}

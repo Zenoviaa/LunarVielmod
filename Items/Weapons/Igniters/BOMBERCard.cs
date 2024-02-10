@@ -13,8 +13,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Helpers;
-
-
+using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
@@ -71,6 +70,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
 			recipe.AddIngredient(ItemID.Leather, 9);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

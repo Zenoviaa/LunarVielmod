@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using System.Collections.Generic;
@@ -76,7 +77,7 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 9);
 			recipe.AddIngredient(ItemID.LifeCrystal, 1);

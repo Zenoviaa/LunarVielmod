@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
@@ -87,6 +88,7 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddIngredient(ModContent.ItemType<Stick>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 
 			recipe.Register();
 		}

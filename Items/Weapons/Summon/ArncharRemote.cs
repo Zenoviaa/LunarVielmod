@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trails;
@@ -93,6 +94,7 @@ namespace Stellamod.Items.Weapons.Summon
 		{
             Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemType<ArnchaliteBar>(), 11);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
 			recipe.AddTile(TileID.Furnaces);
 			recipe.Register();
 		}

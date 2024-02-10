@@ -77,6 +77,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 35);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.Register();
 		}
 	}

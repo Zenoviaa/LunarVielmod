@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemType<VirulentPlating>(), 30);
             recipe.AddIngredient(ItemType<DreadFoil>(), 10);
             recipe.AddIngredient(ItemType<VerianBar>(), 5);
-            recipe.AddTile(TileID.Furnaces);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
 

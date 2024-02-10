@@ -61,7 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 10);
             recipe.AddIngredient(ItemID.PhoenixBlaster, 1);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 20);
-            recipe.AddIngredient(ItemID.Wire, 100);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.Register();
         }
     }

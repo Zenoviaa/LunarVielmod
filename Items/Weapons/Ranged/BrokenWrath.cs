@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
@@ -89,6 +90,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemType<ArnchaliteBar>(), 20);
 			recipe.AddIngredient(ItemType<Cinderscrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 2);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
