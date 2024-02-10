@@ -381,13 +381,13 @@ namespace Stellamod.Items.Weapons.Summon
             switch(Main.rand.Next(0, 3))
             {
                 case 0:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MoonBlow") with { PitchVariance = 0.1f }, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Chroma3") with { PitchVariance = 0.1f }, Projectile.position);
                     break;
                 case 1:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MoonBlow") with { PitchVariance = 0.1f }, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Chroma2") with { PitchVariance = 0.1f }, Projectile.position);
                     break;
                 case 2:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MoonBlow") with { PitchVariance = 0.1f }, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Chroma1") with { PitchVariance = 0.1f }, Projectile.position);
                     break;
             }
         }

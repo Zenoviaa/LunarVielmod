@@ -83,7 +83,7 @@ namespace Stellamod.Items.Weapons.Summon
                 int dir = (int)Projectile.ai[1];
                 if (!ParticleSpawned)
                 {
-                    ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<IxySlash>(), Color.Black, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
+                    ParticleManager.NewParticle(player.Center, player.DirectionTo(Main.MouseWorld), ParticleManager.NewInstance<ChromaSlash>(), Color.Black, 0.7f, Projectile.whoAmI, Projectile.whoAmI);
                     ParticleSpawned = true;
                 }
                 player.statDefense -= 10;

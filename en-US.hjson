@@ -5495,6 +5495,11 @@ Mods: {
 					'''
 				DisplayName: Onion Of Height
 			}
+
+			ChromaCutter: {
+				DisplayName: Chroma Cutter
+				Tooltip: ""
+			}
 		}
 
 		JungleRuneI: {
@@ -6297,6 +6302,9 @@ Mods: {
 			WhitePikminAttack.DisplayName: White Pikmin Attack
 			WhitePikminThrow.DisplayName: White Pikmin Throw
 			YellowPikminThrow.DisplayName: Yellow Pikmin Throw
+			ChromaCutterMinion.DisplayName: Chroma Cutter Minion
+			ChromaCutterProj.DisplayName: Chroma Cutter Proj
+			ChromaCutterPurpleSwordProj.DisplayName: Chroma Cutter Purple Sword Proj
 		}
 
 		NPCs: {
@@ -8275,6 +8283,11 @@ Mods: {
 			ToxicHornetMinionBuff: {
 				DisplayName: Toxic Hornet Minion Buff
 				Description: Mods.Stellamod.Buffs.ToxicHornetMinionBuff.Description
+			}
+
+			ChromaCutterMinionBuff: {
+				DisplayName: Chroma Cutter Minion Buff
+				Description: Mods.Stellamod.Buffs.ChromaCutterMinionBuff.Description
 			}
 		}
 
