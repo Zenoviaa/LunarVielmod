@@ -61,14 +61,51 @@ namespace Stellamod.NPCs.Underground
 			NPC.knockBackResist = 0.4f;
 
 		}
+		public float ty = 0;
+		public float Spawner = 0;
+		private int attackCounter;
 		public override void AI()
 		{
-			
+			Spawner++;
 			NPC.rotation += 0.3f;
 
 			if (NPC.collideX)
 			{
 				Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+				
+			}
+
+			ty++;
+
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				if (attackCounter > 0)
+				{
+					attackCounter--; // tick down the attack counter.
+				}
+
+				Player target = Main.player[NPC.target];
+
+				
+				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
+				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 300 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1))
+				{
+					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
+					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
+
+					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
+						ProjectileID.SpikyBall, 60, 0, Main.myPlayer);
+					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2,
+						ProjectileID.SpikyBall, 60, 0, Main.myPlayer);
+					Main.projectile[projectile].timeLeft = 300;
+					Projectile ichor = Main.projectile[projectile];
+					ichor.hostile = true;
+					ichor.friendly = false;
+
+
+					attackCounter = 500;
+					NPC.netUpdate = true;
+				}
 			}
 		}
 
