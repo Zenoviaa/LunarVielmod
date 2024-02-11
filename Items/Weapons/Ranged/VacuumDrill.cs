@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.Projectiles;
@@ -53,6 +54,16 @@ namespace Stellamod.Items.Weapons.Ranged
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(2f, -2f);
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
+            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
         }
     }
 }
