@@ -43,8 +43,8 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe(3);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 3);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 5);
             recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
