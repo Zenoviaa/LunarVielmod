@@ -65,6 +65,11 @@ namespace Stellamod.NPCs.Underground
 		{
 			
 			NPC.rotation += 0.3f;
+
+			if (NPC.collideX)
+			{
+				Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+			}
 		}
 
 
