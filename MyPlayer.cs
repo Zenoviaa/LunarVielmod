@@ -640,12 +640,12 @@ namespace Stellamod
 			 Onion2 = false;
 			 Onion3 = false;
 			 Onion4 = false;
+			 OnionDamage = 0;
 
 
 
 
-
-			IgniterVelocity = 1f;
+		IgniterVelocity = 1f;
 			IgniterDamage = 0;
 			IgniterStrike = 0;
 			LuckyW = false;
