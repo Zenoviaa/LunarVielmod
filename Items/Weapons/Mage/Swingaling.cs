@@ -134,7 +134,7 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.Anvils);
 
-            recipe.AddIngredient(ItemID.Book, 25);
+            recipe.AddIngredient(ItemID.Book, 5);
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
             recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 25);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);

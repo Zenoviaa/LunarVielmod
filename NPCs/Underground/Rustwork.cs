@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Underground
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
 					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
-						ProjectileID.ChainGuillotine, 40, 0, Main.myPlayer);
+						ProjectileID.BoneGloveProj, 40, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					Projectile ichor = Main.projectile[projectile];
 					ichor.hostile = true;
