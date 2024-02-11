@@ -163,7 +163,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 		{
 			NPC.Size = new Vector2(24, 42);
 			NPC.damage = 1;
-			NPC.defense = 10;
+			NPC.defense = 15;
 			NPC.lifeMax = 6750;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
