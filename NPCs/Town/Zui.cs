@@ -23,6 +23,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Vanity.Azalean;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Weapons.Summon;
 
 namespace Stellamod.NPCs.Town
 {
@@ -517,6 +518,8 @@ namespace Stellamod.NPCs.Town
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
 			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
 
+
+			.Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
 			.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
 			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
 			;
