@@ -109,7 +109,7 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
                     Dust dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0, 0, 100, Color.Violet, 1f);
                     dust.noGravity = true;
                     dust.velocity *= 2f;
-                    dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.Electric, 0f, 0f, 1000, Color.Violet, 1f);
+                    dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 1000, Color.Violet, 1f);
                 }
                 player.statDefense -= 10;
 

@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.UseSound = SoundID.DD2_LightningAuraZap;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SwingalingProj1>();
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 7f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.rare = ItemRarityID.Blue;
@@ -92,13 +92,13 @@ namespace Stellamod.Items.Weapons.Mage
 
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
-            int numProjectiles = Main.rand.Next(1, 3);
+            int numProjectiles = Main.rand.Next(2, 7);
             for (int p = 0; p < numProjectiles; p++)
             {
                 // Rotate the velocity randomly by 30 degrees at max.
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectile(source, position, newVelocity, ModContent.ProjectileType<SwingingBolt>(), damage * 1, knockback, player.whoAmI, 1, dir);
+                Projectile.NewProjectile(source, position, newVelocity, ModContent.ProjectileType<SwingingBolt>(), damage * 2, knockback, player.whoAmI, 1, dir);
             }
 
             //Dust Burst Towards Mouse

@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
                 //Randomly teleport to make the jagged effect
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 direction = direction.RotatedByRandom(MathHelper.ToRadians(60));
-                float distance = Main.rand.NextFloat(102, 140);
+                float distance = Main.rand.NextFloat(40, 140);
                 Projectile.Center = Projectile.Center + direction * distance;
                 Projectile.netUpdate = true;
             }
