@@ -1,5 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Nails;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -7,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class HornedNail : ModItem
+	public class PointedEdge : ModItem
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;
@@ -15,20 +19,11 @@ namespace Stellamod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Doorlauncher"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			// Tooltip.SetDefault("Purge under funny nail :0");
-		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-		{
-			Vector2 Offset = Vector2.Normalize(velocity) * 1f;
-
-			if (Collision.CanHit(position, 0, 0, position + Offset, 0, 0))
-			{
-				position += Offset;
-			}
+			// Tooltip.SetDefault("Electrical nail, thats weird");
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 16;
+			Item.damage = 50;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 0;
 			Item.height = 0;
@@ -41,10 +36,19 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<HornedNailProj>();
+			Item.shoot = ModContent.ProjectileType<PointedProj1>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
-			Item.crit = 20;
+			Item.crit = 46;
+		}
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			Vector2 Offset = Vector2.Normalize(velocity) * 1f;
+
+			if (Collision.CanHit(position, 0, 0, position + Offset, 0, 0))
+			{
+				position += Offset;
+			}
 		}
 		public override Vector2? HoldoutOffset()
 		{
@@ -56,6 +60,7 @@ namespace Stellamod.Items.Weapons.Melee
 			int dir = AttackCounter;
 			AttackCounter = -AttackCounter;
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+
 			if (combowombo == 3 || combowombo == 4)
 			{
 				Item.knockBack = 9;
@@ -64,17 +69,27 @@ namespace Stellamod.Items.Weapons.Melee
 			{
 				Item.knockBack = 4;
 			}
+
 			if (combowombo == 4)
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj>();
+				Item.shoot = ModContent.ProjectileType<PointedProj1>();
 				combowombo = 0;
 			}
 			else
 			{
-				Item.shoot = ModContent.ProjectileType<HornedNailProj2>();
+				Item.shoot = ModContent.ProjectileType<PointedProj2>();
 			}
 			return false;
+		}
+		public override void AddRecipes()
+		{
+			Recipe recipe = CreateRecipe();
+			recipe.AddTile(TileID.Anvils);
 
+			recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
+
+			recipe.Register();
 		}
 	}
 }
