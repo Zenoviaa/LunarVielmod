@@ -14,9 +14,9 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 72;
-            Item.width = 60;
-            Item.height = 30;
+            Item.damage = 54;
+            Item.width = 94;
+            Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 12;
             Item.value = Item.sellPrice(0, 1, 1, 29);
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2f, 0f);
+            return new Vector2(-16f, 0f);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

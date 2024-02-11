@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -7,74 +9,88 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles
 {
-    public class FireflyBomb : ModProjectile
+    public class FireflyBomb : ModProjectile, IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
         {
             // Total count animation frames
-            Main.projFrames[Projectile.type] = 4;
+            Main.projFrames[Projectile.type] = 1;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 32;
-            Projectile.height = 32;
+            Projectile.width = 18;
+            Projectile.height = 20;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.light = 0.5f;
+            Projectile.penetrate = 2;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 8;
         }
 
-        public override Color? GetAlpha(Color lightColor)
+        private void AI_Movement(Vector2 targetCenter, float moveSpeed, float accel = 1f)
         {
-            return new Color(255, 255, 255, 0) * Projectile.Opacity;
-        }
+            //This code should give quite interesting movement
+            //Accelerate to being on top of the player
 
-
-        public void FadeInAndOut()
-        {
-            // If last less than 50 ticks — fade in, than more — fade out
-            if (Projectile.ai[0] <= 50f)
+            float distX = targetCenter.X - Projectile.Center.X;
+            if (Projectile.Center.X < targetCenter.X && Projectile.velocity.X < moveSpeed)
             {
-                // Fade in
-                Projectile.alpha -= 25;
-                // Cap alpha before timer reaches 50 ticks
-                if (Projectile.alpha < 100)
-                    Projectile.alpha = 100;
-
-                return;
+                Projectile.velocity.X += accel;
+            }
+            else if (Projectile.Center.X > targetCenter.X && Projectile.velocity.X > -moveSpeed)
+            {
+                Projectile.velocity.X -= accel;
             }
 
-            // Fade out
-            Projectile.alpha += 25;
-            if (Projectile.alpha > 255)
-                Projectile.alpha = 255;
+            //Accelerate to being above the player.
+            float distY = targetCenter.Y - Projectile.Center.Y;
+            if (Projectile.Center.Y < targetCenter.Y && Projectile.velocity.Y < moveSpeed)
+            {
+                Projectile.velocity.Y += accel;
+            }
+            else if (Projectile.Center.Y > targetCenter.Y && Projectile.velocity.Y > -moveSpeed)
+            {
+                Projectile.velocity.Y -= accel;
+            }
         }
 
-        public override bool PreAI()
+        public Vector3 HuntrianColorXyz;
+        public float HuntrianColorOffset;
+        public float Timer;
+        public override bool PreDraw(ref Color lightColor)
         {
-            int num1222 = 74;
-            if (Main.rand.NextBool(4))
-            {
-                for (int k = 0; k < 2; k++)
-                {
-                    int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CopperCoin, Scale: 0.95f);
-                    Main.dust[dust].position = Projectile.Center - Projectile.velocity / num1222 * k;
-                    Main.dust[dust].noGravity = true;
-                    Main.dust[dust].noLight = false;
-                }
-            }
-
-
-            return base.PreAI();
+            DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, Color.Yellow, lightColor, 0);
+            return base.PreDraw(ref lightColor);
         }
 
         public override void AI()
         {
             base.AI();
             Projectile.ai[0] += 1f;
-            FadeInAndOut();
-            Visuals();
+
+            HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                new Vector3(85, 45, 15),
+                new Vector3(15, 60, 60),
+                new Vector3(3, 3, 3), HuntrianColorOffset);
+
+            Timer++;
+            if (Timer <= 2)
+            {
+                HuntrianColorOffset = Main.rand.NextFloat(-1f, 1f);
+            }
+
+            SummonHelper.SearchForTargets(Main.player[Projectile.owner], Projectile,
+                out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+            if (foundTarget && distanceFromTarget < 384)
+            {
+                AI_Movement(targetCenter, 15);
+            }
+
             Projectile.velocity *= 0.98f;
 
             //Animate It
@@ -90,11 +106,6 @@ namespace Stellamod.Projectiles
                 Projectile.Kill();
         }
 
-        private void Visuals()
-        {
-            DrawHelper.AnimateTopToBottom(Projectile, 4);
-        }
-
         public override void OnKill(int timeLeft)
         {
             int count = 8;
@@ -108,6 +119,30 @@ namespace Stellamod.Projectiles
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starblast"), Projectile.position);
+        }
+
+        public float WidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(8f, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            Color startColor = Color.Yellow;
+            Color endColor = Color.Transparent;
+            return Color.Lerp(startColor, endColor, completionRatio);
+        }
+
+        internal PrimitiveTrail BeamDrawer;
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+
+            TrailRegistry.LaserShader.UseColor(Color.LightYellow);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
+
+            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }
