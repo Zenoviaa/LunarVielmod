@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Audio;
 using Stellamod.Projectiles;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -49,6 +51,20 @@ namespace Stellamod.Items.Weapons.Summon
             // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
             return false;
         }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.Wire, 100);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 20);
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
+        }
+
+
     }
 
 

@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.penetrate = 3;
+            Projectile.penetrate = 4;
             Projectile.width = 32;
             Projectile.height = 32;
             Projectile.penetrate = 5;
