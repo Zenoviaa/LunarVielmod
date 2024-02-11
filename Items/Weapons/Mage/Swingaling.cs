@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SwingalingProj1>();
-            Item.shootSpeed = 20f;
+            Item.shootSpeed = 10f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.rare = ItemRarityID.Blue;
