@@ -18,14 +18,15 @@ namespace Stellamod.Projectiles.Gun
 
         public override void SetDefaults()
         {
-            Projectile.width = 32;
-            Projectile.height = 32;
+            Projectile.width = 4;
+            Projectile.height = 4;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
+            Projectile.extraUpdates = 5;
         }
 
         private ref float AI_Timer => ref Projectile.ai[0];

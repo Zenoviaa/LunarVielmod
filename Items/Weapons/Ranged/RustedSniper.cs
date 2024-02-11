@@ -16,13 +16,13 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.width = 134;
             Item.height = 38;
             Item.rare = ItemRarityID.LightRed;
-            Item.damage = 100;
+            Item.damage = 162;
             Item.DamageType = DamageClass.Ranged;
             Item.useTime = 72;
             Item.useAnimation = 72;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<RustedSnipe>();
-            Item.shootSpeed = 50f;
+            Item.shootSpeed = 10f;
             Item.UseSound = SoundID.Item40;
         }
 
