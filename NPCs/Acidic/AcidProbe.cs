@@ -34,9 +34,9 @@ namespace Stellamod.NPCs.Acidic
         {
             NPC.width = 28;
             NPC.height = 28;
-            NPC.damage = 8;
+            NPC.damage = 30;
             NPC.defense = 14;
-            NPC.lifeMax = 90;
+            NPC.lifeMax = 130;
             NPC.HitSound = SoundID.NPCHit42;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/AcidProbeDeath") with { PitchVariance = 0.1f };
             NPC.value = 30f;
