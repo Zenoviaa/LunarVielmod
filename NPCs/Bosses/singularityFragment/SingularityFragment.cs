@@ -14,6 +14,7 @@ using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
+using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -300,15 +301,49 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                                 {
                                     if (StellaMultiplayer.IsHost)
                                     {
+                                         
                                         Attack = Main.rand.Next(1, MaxAttac);
-                                        if (Attack == PrevAttac)
+                                        if (MaxAttac == 7)
                                         {
-                                            Attack = Main.rand.Next(1, MaxAttac);
+                                            //Hi Azza
+                                            //You're probably looking at this and are confused at what is happening
+                                            //This code is just checking that the previous attack is one of the deathrays
+                                            //And constantly randomizing until it is not
+                                            //It runs the normal code otherwise
+                                            //:)
+                                            if (PrevAttac == 5 || PrevAttac == 6)
+                                            {
+                                                while (Attack == 5 || Attack == 6)
+                                                {
+                                                    Attack = Main.rand.Next(1, MaxAttac);
+                                                }
+
+                                                NPC.ai[1] = Attack;
+                                            }
+                                            else
+                                            {
+                                                if (Attack == PrevAttac)
+                                                {
+                                                    Attack = Main.rand.Next(1, MaxAttac);
+                                                }
+                                                else
+                                                {
+                                                    NPC.ai[1] = Attack;
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                            NPC.ai[1] = Attack;
+                                            if (Attack == PrevAttac)
+                                            {
+                                                Attack = Main.rand.Next(1, MaxAttac);
+                                            }
+                                            else
+                                            {
+                                                NPC.ai[1] = Attack;
+                                            }
                                         }
+                        
                                         NPC.netUpdate = true;
                                     }
                                 }
