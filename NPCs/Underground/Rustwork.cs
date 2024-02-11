@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
+using Stellamod.NPCs.Catacombs.Trap.Cogwork;
 using Stellamod.WorldG;
 using System;
 using Terraria;
@@ -94,7 +95,7 @@ namespace Stellamod.NPCs.Underground
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
 					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
-						ProjectileID.BoneGloveProj, 40, 0, Main.myPlayer);
+						ModContent.ProjectileType<SpikeBall>(), 40, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					Projectile ichor = Main.projectile[projectile];
 					ichor.hostile = true;
