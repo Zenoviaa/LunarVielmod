@@ -84,7 +84,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemID.Marble, 60);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 6);
             recipe.AddIngredient(ItemID.SoulofLight, 5);
             recipe.AddIngredient(ItemID.Firefly, 3);
             recipe.Register();
