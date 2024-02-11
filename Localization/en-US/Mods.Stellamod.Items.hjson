@@ -5526,3 +5526,8 @@ EelInfinite: {
 		Even more electrifying!!!!!!!
 		'''
 }
+
+RustedSniper: {
+	Tooltip: ""
+	DisplayName: Rusted Sniper
+}

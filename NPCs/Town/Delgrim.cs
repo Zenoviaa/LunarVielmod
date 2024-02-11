@@ -104,10 +104,16 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamage = true;
-			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
 		}
 
-		public override void FindFrame(int frameHeight)
+
+		//This prevents the NPC from despawning
+        public override bool CheckActive()
+        {
+			return false;
+        }
+
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.20f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
