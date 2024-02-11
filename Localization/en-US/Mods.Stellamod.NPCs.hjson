@@ -14,14 +14,14 @@ TopazBeetle.DisplayName: Topaz Beetle
 SapphireBeetle.DisplayName: Sapphire Beetle
 RubyBeetle.DisplayName: Ruby Beetle
 MossyZombie.DisplayName: Mossy Zombie
-MorrowedJellyFish.DisplayName: Morrowed Jelly Fish
+MorrowedJellyFish.DisplayName: Morrowed Jellyfish
 EmeraldBeetle.DisplayName: Emerald Beetle
 AmethystBeetle.DisplayName: Amethyst Beetle
 GoliathJellyfish.DisplayName: Goliath Jellyfish
 GoliathCryogenicJellyfish.DisplayName: Goliath Cryogenic Jellyfish
-WinterSoul3.DisplayName: Winter Soul3
-WinterSoul2.DisplayName: Winter Soul2
-WinterSoul1.DisplayName: Winter Soul1
+WinterSoul3.DisplayName: Winter Soul
+WinterSoul2.DisplayName: Winter Soul
+WinterSoul1.DisplayName: Winter Soul
 WinterBornSlime.DisplayName: Winter Born Slime
 WinterbornBat.DisplayName: Winterborn Bat
 HarvestVirulent.DisplayName: Harvest Virulent
@@ -52,12 +52,12 @@ GintzeSolider.DisplayName: Gintze Solider
 GintzeCaptain.DisplayName: Gintze Captain
 GintziaHand.DisplayName: Gintzia Hand
 StarSlime.DisplayName: Star Slime
-DiceinNPC.DisplayName: Dicein N P C
+DiceinNPC.DisplayName: Dicein 
 Shrewmet.DisplayName: Shrewmet
 Shrewder.DisplayName: Shrewder
-SnowWalkerNPC.DisplayName: Snow Walker N P C
-SandWalkerNPC.DisplayName: Sand Walker N P C
-THEGREATDEVOURER.DisplayName: T H E G R E A T D E V O U R E R
+SnowWalkerNPC.DisplayName: Snow Walker 
+SandWalkerNPC.DisplayName: Sand Walker 
+THEGREATDEVOURER.DisplayName: THE GREAT DEVOURER
 FlamingWitch.DisplayName: Flaming Witch
 CinderCrawlerTail.DisplayName: Cinder Crawler Tail
 CinderCrawlerHead.DisplayName: Cinder Crawler Head
@@ -78,14 +78,14 @@ PandorasGuard.DisplayName: Pandoras Guard
 BlazingSerpentTail.DisplayName: Blazing Serpent Tail
 BlazingSerpentBody.DisplayName: Blazing Serpent Body
 BlazeBeamWarn.DisplayName: Blaze Beam Warn
-CatacombsBossSpawn.DisplayName: Catacombs Boss Spawn
+CatacombsBossSpawn.DisplayName: Catacombs Boss Spawner
 Viola.DisplayName: Viola
 Sword3.DisplayName: Sword3
 Sword2.DisplayName: Sword2
 Sword1.DisplayName: Sword1
-StarteV.DisplayName: Starte V
+StarteV.DisplayName: Verlia
 GhostCharger.DisplayName: Ghost Charger
-CloneV.DisplayName: Clone V
+CloneV.DisplayName: Clone Verlia
 Zapwarn.DisplayName: Zapwarn
 Veiizal.DisplayName: Veiizal
 VoidWall.DisplayName: Void Wall
@@ -101,18 +101,18 @@ SunStalkerDeath.DisplayName: Sun Stalker Death
 SunStalker.DisplayName: Sun Stalker
 StoneDeath.DisplayName: Stone Death
 Flowerball.DisplayName: Flowerball
-STARBOMBERGUN.DisplayName: S T A R B O M B E R G U N
-STARLINGBIG.DisplayName: S T A R L I N G B I G
-STARLING.DisplayName: S T A R L I N G
-STARBOMBERLASERWARNBIG.DisplayName: S T A R B O M B E R L A S E R W A R N B I G
-STARBOMBERLASERWARN.DisplayName: S T A R B O M B E R L A S E R W A R N
-STARBOMBER.DisplayName: S T A R B O M B E R
+STARBOMBERGUN.DisplayName: STARBOMBER GUN
+STARLINGBIG.DisplayName: STARLING BIG
+STARLING.DisplayName: STARLING
+STARBOMBERLASERWARNBIG.DisplayName: STARBOMBER BIG LASER WARNING
+STARBOMBERLASERWARN.DisplayName: STARBOMBER LASER WARN
+STARBOMBER.DisplayName: STARBOMBER
 Voidling.DisplayName: Voidling
 SingularityOrb.DisplayName: Singularity Orb
-SingularitySparkBig.DisplayName: Singularity Spark Big
+SingularitySparkBig.DisplayName: Singularity Spark
 SingularitySpark.DisplayName: Singularity Spark
-SingularityLazer2.DisplayName: Singularity Lazer2
-SingularityLazer.DisplayName: Singularity Lazer
+SingularityLazer2.DisplayName: Singularity Deathray
+SingularityLazer.DisplayName: Singularity Deathray
 LazerOrb.DisplayName: Lazer Orb
 Jackoslime.DisplayName: Jackoslime
 JackDeath.DisplayName: Jack Death
@@ -125,9 +125,9 @@ IrradieagleSurvent.DisplayName: Irradieagle Survent
 Irradieagle.DisplayName: Irradieagle
 Train2.DisplayName: Train2
 Train1.DisplayName: Train1
-Rek.DisplayName: Rek
+Rek.DisplayName: Havoc
 Gothiviabb.DisplayName: Gothiviabb
-Gothiviab.DisplayName: Gothiviab
+Gothiviab.DisplayName: Irradia
 FenixWarn.DisplayName: Fenix Warn
 FenixSnipe.DisplayName: Fenix Snipe
 FenixSlash.DisplayName: Fenix Slash
@@ -136,7 +136,7 @@ ExpoiyosOrb.DisplayName: Expoiyos Orb
 AlcSpark.DisplayName: Alc Spark
 DrownOut.DisplayName: Drown Out
 ALCADSWIRL.DisplayName: A L C A D S W I R L
-ALCADHOLE.DisplayName: A L C A D H O L E
+ALCADHOLE.DisplayName: ALCADHOLE
 DreadMiresHeart.DisplayName: Dread Mires Heart
 DreadSurvent.DisplayName: Dread Survent
 DreadMireZapwarnBig.DisplayName: Dread Mire Zapwarn Big
@@ -167,19 +167,19 @@ AbyssalSlime.DisplayName: Abyssal Slime
 AbyssalSkull.DisplayName: Abyssal Skull
 AbyssalSeeker.DisplayName: Abyssal Seeker
 AbysmLunatic.DisplayName: Abysm Lunatic
-TericGramNPC2.DisplayName: Teric Gram N P C2
-TericGramNPC.DisplayName: Teric Gram N P C
+TericGramNPC2.DisplayName: Teric Gram 
+TericGramNPC.DisplayName: Teric Gram
 Sparn.DisplayName: Sparn
 WaterJellyfish.DisplayName: Water Jellyfish
-PandorasFlamebox.DisplayName: Pandoras Flamebox
+PandorasFlamebox.DisplayName: Pandora's Flamebox
 Cogwork.DisplayName: Cogwork
-BlazingSerpentHead.DisplayName: Blazing Serpent Head
+BlazingSerpentHead.DisplayName: Blazing Serpent
 StarrVeriplant.DisplayName: Starr Veriplant
 Sylia.DisplayName: Sylia
-VerliaB.DisplayName: Verlia B
+VerliaB.DisplayName: Verlia Of the Moon
 SingularityFragment.DisplayName: Singularity Fragment
 CommanderGintzia.DisplayName: Commander Gintzia
-DaedusR.DisplayName: Daedus R
+DaedusR.DisplayName: Daedus The Forgotten
 
 Aimacra: {
 	DisplayName: Aimacra
