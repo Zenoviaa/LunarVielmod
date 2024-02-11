@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.value = 10000;
             Item.noMelee = true;
             Item.mana = 5;
-            Item.UseSound = SoundID.Item1;
+            Item.UseSound = SoundID.DD2_LightningAuraZap;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SwingalingProj1>();
             Item.shootSpeed = 10f;
