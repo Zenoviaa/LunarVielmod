@@ -5528,16 +5528,21 @@ EelInfinite: {
 }
 
 RustedSniper: {
-	Tooltip: ""
+	Tooltip: Its a sniper thomas...
 	DisplayName: Rusted Sniper
 }
 
 BucketScrapper: {
 	DisplayName: Bucket Scrapper
-	Tooltip: ""
+	Tooltip: Minions go and bounce off of enemies doing high contact damage!
 }
 
 RazorBragett: {
 	DisplayName: Razor Bragett
-	Tooltip: ""
+	Tooltip: Hitting enemies activates the saw (the dog gets out)
+}
+
+PointedEdge: {
+	Tooltip: Ram into enemies with this powerful edge!
+	DisplayName: Pointed Edge
 }
