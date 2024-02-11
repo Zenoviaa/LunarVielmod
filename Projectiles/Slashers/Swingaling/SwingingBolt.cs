@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 22;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
