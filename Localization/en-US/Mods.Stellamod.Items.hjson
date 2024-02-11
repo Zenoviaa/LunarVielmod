@@ -5567,6 +5567,6 @@ Scatterbombs: {
 }
 
 VacuumDrill: {
-	Tooltip: ""
+	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beat me.
 	DisplayName: Vacuum Drill
 }
