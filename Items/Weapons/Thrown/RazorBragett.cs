@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<BrackettProj>();
-            Item.shootSpeed = 12f;
+            Item.shootSpeed = 8f;
         }
 
         public override void AddRecipes()

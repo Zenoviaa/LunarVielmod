@@ -22,9 +22,9 @@ namespace Stellamod.Projectiles
         public override void SetDefaults()
         {
             Projectile.penetrate = 4;
-            Projectile.width = 32;
-            Projectile.height = 32;
-            Projectile.penetrate = 5;
+            Projectile.width = 64;
+            Projectile.height = 64;
+            Projectile.penetrate = 8;
             Projectile.knockBack = 12.9f;
             Projectile.DamageType = DamageClass.Throwing;
             Projectile.friendly = true;
@@ -83,12 +83,12 @@ namespace Stellamod.Projectiles
                 if (A == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Zombie83, Projectile.position);
-                    SoundEngine.PlaySound(SoundID.Item104, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
                 }
                 else
                 {
                     SoundEngine.PlaySound(SoundID.Zombie82, Projectile.position);
-                    SoundEngine.PlaySound(SoundID.Item103, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
                 }
             }
 
@@ -178,7 +178,7 @@ namespace Stellamod.Projectiles
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(Color.Lerp(new Color(106, 255, 255), new Color(151, 46, 175), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                Color color = Projectile.GetAlpha(Color.Lerp(new Color(200, 105, 25), new Color(151, 146, 101), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 
@@ -189,7 +189,7 @@ namespace Stellamod.Projectiles
 
         public override void PostDraw(Color lightColor)
         {
-            Lighting.AddLight(Projectile.Center, Color.LightBlue.ToVector3() * 1.75f * Main.essScale);
+            Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 1.75f * Main.essScale);
             if (Main.rand.NextBool(5))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 150, Color.White, 1f);
