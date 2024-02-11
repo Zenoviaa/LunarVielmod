@@ -162,19 +162,19 @@ namespace Stellamod.Items.Weapons.Thrown
             switch (Main.rand.Next(4))
             {
                 case 0:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow1"));
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow1") with { Volume=0.5f});
                     break;
 
                 case 1:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow2"));
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow2") with { Volume = 0.4f });
                     break;
 
                 case 2:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow3"));
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow3") with { Volume = 0.4f });
                     break;
 
                 case 3:
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow4"));
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminthrow4") with { Volume = 0.4f });
                     break;
 
 
