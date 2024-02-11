@@ -5517,3 +5517,12 @@ SkyRuneI: {
 	DisplayName: Ancient Artifact
 	Tooltip: A scientist may want to look at this..
 }
+
+EelInfinite: {
+	DisplayName: Eel Infinite
+	Tooltip:
+		'''
+		Creates a storm of lightning bolts!
+		Even more electrifying!!!!!!!
+		'''
+}
