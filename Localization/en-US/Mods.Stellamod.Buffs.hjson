@@ -554,6 +554,6 @@ Alcadded: {
 }
 
 BucketScrapperMinionBuff: {
-	DisplayName: Bucket Scrapper Minion Buff
-	Description: Mods.Stellamod.Buffs.BucketScrapperMinionBuff.Description
+	DisplayName: Bucket Scrapping
+	Description: All geared up and ready to-
 }

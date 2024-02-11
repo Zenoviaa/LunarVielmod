@@ -22,6 +22,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.height = 56;
             Item.damage = 21;
             Item.DamageType = DamageClass.Summon;
+            Item.knockBack = 2;
             Item.useAnimation = 15;
             Item.useTime = 15;
             Item.useStyle = ItemUseStyleID.Swing;
