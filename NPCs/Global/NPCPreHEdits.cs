@@ -68,6 +68,26 @@ namespace Stellamod.NPCs.Global
 				}
 			}
 
+			if (npc.type == NPCID.SkeletronPrime)
+			{
+				if (Timerboss == 60)
+				{
+
+					float speedXb = npc.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+					float speedYb = npc.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+					float speedXnpc = npc.velocity.X;
+					float speedYnpc = npc.velocity.Y;
+
+					int fireball = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position.X, npc.position.Y, speedXnpc, speedYnpc, ProjectileID.Skull, 40, 0f, 0, 0f, 0f);
+
+					Projectile ichor = Main.projectile[fireball];
+					ichor.hostile = true;
+					ichor.friendly = false;
+					Timerboss = 0;
+				}
+			}
+
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
 				npc.velocity *= 1.01f;
@@ -114,6 +134,22 @@ namespace Stellamod.NPCs.Global
 				float lifeMax = npc.lifeMax;
 				lifeMax *= 1.7f;
 				npc.lifeMax = (int)lifeMax;
+			}
+
+			if (npc.type == NPCID.SkeletronPrime)
+			{
+				
+				if (Main.expertMode)
+				{
+					npc.damage = 90;
+				}
+
+				if (Main.masterMode)
+				{
+					npc.damage = 110;
+				}
+
+
 			}
 
 			if (npc.type == NPCID.WallofFlesh)
