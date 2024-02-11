@@ -5565,3 +5565,8 @@ Scatterbombs: {
 		'''
 	DisplayName: Scatterbombs
 }
+
+VacuumDrill: {
+	Tooltip: ""
+	DisplayName: Vacuum Drill
+}
