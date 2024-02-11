@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.UseSound = SoundID.DD2_LightningAuraZap;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SwingalingProj1>();
-            Item.shootSpeed = 7f;
+            Item.shootSpeed = 4f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
             Item.rare = ItemRarityID.Blue;
@@ -92,7 +92,7 @@ namespace Stellamod.Items.Weapons.Mage
 
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
-            int numProjectiles = Main.rand.Next(2, 7);
+            int numProjectiles = Main.rand.Next(5, 13);
             for (int p = 0; p < numProjectiles; p++)
             {
                 // Rotate the velocity randomly by 30 degrees at max.

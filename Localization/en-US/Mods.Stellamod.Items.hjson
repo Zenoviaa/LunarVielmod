@@ -5549,5 +5549,10 @@ PointedEdge: {
 
 Swingaling: {
 	DisplayName: Swingaling
+	Tooltip: Swing swing, Swingaling! Swihing
+}
+
+TornCarianPage: {
 	Tooltip: ""
+	DisplayName: Torn Carian Page
 }

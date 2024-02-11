@@ -26,6 +26,7 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 25;
+            Projectile.tileCollide = false;
         }
 
         private ref float AI_Timer => ref Projectile.ai[0];
@@ -37,8 +38,8 @@ namespace Stellamod.Projectiles.Slashers.Swingaling
             {
                 //Randomly teleport to make the jagged effect
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                direction = direction.RotatedByRandom(MathHelper.ToRadians(60));
-                float distance = Main.rand.NextFloat(40, 140);
+                direction = direction.RotatedByRandom(MathHelper.ToRadians(70));
+                float distance = Main.rand.NextFloat(40, 160);
                 Projectile.Center = Projectile.Center + direction * distance;
                 Projectile.netUpdate = true;
             }
