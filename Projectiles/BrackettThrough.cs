@@ -57,8 +57,23 @@ namespace Stellamod.Projectiles
             }
             return false;
         }
+
+
+        int yummers = 0;
         public override void AI()
         {
+
+            yummers++;
+
+            if (yummers < 20)
+            {
+                Projectile.tileCollide = false;
+            }
+
+            if (yummers > 20)
+            {
+                Projectile.tileCollide = true;
+            }
 
             Projectile.ai[1]++;
             Projectile.spriteDirection = Projectile.direction;

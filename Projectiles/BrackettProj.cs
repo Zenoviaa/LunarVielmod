@@ -21,17 +21,29 @@ namespace Stellamod.Projectiles
 
 		public override void SetDefaults()
 		{
-			Projectile.CloneDefaults(ProjectileID.FrostDaggerfish);
-			AIType = ProjectileID.FrostDaggerfish;
+			Projectile.CloneDefaults(ProjectileID.BoulderStaffOfEarth);
+			AIType = ProjectileID.BoulderStaffOfEarth;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Magic;
 			Projectile.penetrate = -1;
-			Projectile.width = 32;
+			Projectile.ignoreWater = true;
+			Projectile.scale = 1f;
 			Projectile.height = 32;
+			Projectile.width = 32;
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (Main.rand.NextBool(2))
 				target.AddBuff(BuffID.Poisoned, 180);
+
+			ShakeModSystem.Shake = 4;
+			float speedX = Projectile.velocity.X;
+			float speedY = Projectile.velocity.Y;
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<BrackettThrough>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
+			Projectile.Kill();
+
 		}
 
 		public override bool PreAI()
@@ -76,12 +88,7 @@ namespace Stellamod.Projectiles
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
 			}
 
-			ShakeModSystem.Shake = 4;
-			float speedX = Projectile.velocity.X;
-			float speedY = Projectile.velocity.Y;
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, -speedX, -speedY, ModContent.ProjectileType<BrackettThrough>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
-			Projectile.Kill();
+			
 		}
 	}
 }
