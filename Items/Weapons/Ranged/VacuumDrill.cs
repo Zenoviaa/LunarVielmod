@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.damage = 19;
             Item.knockBack = 0;
             Item.noMelee = true;
+            Item.noUseGraphic = true;
 
             // Gun Properties
             Item.shoot = ModContent.ProjectileType<VacuumDrillHold>();
