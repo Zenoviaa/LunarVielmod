@@ -22,6 +22,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<EelLightningBolt>();
             Item.shootSpeed = 1;
+            Item.value = Item.sellPrice(gold: 2);
             Item.UseSound = SoundID.DD2_LightningAuraZap;
         }
 

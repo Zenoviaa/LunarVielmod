@@ -38,6 +38,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.DD2_LightningAuraZap;
 
             // Weapon Properties
+            Item.value = Item.sellPrice(gold: 2);
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 19;
             Item.knockBack = 0;
