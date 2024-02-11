@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles
             Projectile.height = 32;
             Projectile.penetrate = 5;
             Projectile.knockBack = 12.9f;
-            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.friendly = true;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -52,8 +52,8 @@ namespace Stellamod.Projectiles
             SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
             for (int i = 0; i < 7; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.OasisCactus);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
             }
             return false;
         }
@@ -116,11 +116,11 @@ namespace Stellamod.Projectiles
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn1"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), Projectile.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_BoneSpawn2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             }
 
             for (int i = 0; i < 40; i++)
