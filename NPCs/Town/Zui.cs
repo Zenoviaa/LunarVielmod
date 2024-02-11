@@ -517,9 +517,9 @@ namespace Stellamod.NPCs.Town
 			.Add<WitchenRobe>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
 			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
+            .Add<TornCarianPage>(ZuiQuestSystem.ShopCondition20)
 
-
-			.Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
+            .Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
 			.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
 			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
 			;
