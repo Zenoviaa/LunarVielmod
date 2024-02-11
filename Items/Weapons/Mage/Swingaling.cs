@@ -66,6 +66,9 @@ namespace Stellamod.Items.Weapons.Mage
                 type = ModContent.ProjectileType<SwingalingProj1>();
                 SoundEngine.PlaySound(SoundID.Item34, player.position);
             }
+
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap"), player.position);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
