@@ -93,7 +93,6 @@ namespace Stellamod.NPCs.Global
                     if (npc.life < npc.lifeMax / 2)
                 {
 
-					npc.velocity *= 1.02f;
 					if (Timerboss == 30)
 					{
 
