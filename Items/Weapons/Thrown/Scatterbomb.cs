@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 75;
+            Item.damage = 150;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
@@ -42,9 +42,9 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            Recipe recipe = CreateRecipe(5);
+            Recipe recipe = CreateRecipe(3);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 2);
+            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
