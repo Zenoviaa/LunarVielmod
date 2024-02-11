@@ -5553,6 +5553,14 @@ Swingaling: {
 }
 
 TornCarianPage: {
-	Tooltip: ""
+	Tooltip: A page of a secret tome deep underground, helps with finding it.
 	DisplayName: Torn Carian Page
+}
+
+Scatterbombs: {
+	Tooltip:'''
+		Get some real damage! Doesn't really scatter
+		(Zemmie corporation is not responsible for injuries or side effects. Dont worry you wont live to tell us anyway.)
+		'''  
+	DisplayName: Scatterbombs
 }

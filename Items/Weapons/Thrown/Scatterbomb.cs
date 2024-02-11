@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useTurn = true;
             Item.DamageType = DamageClass.Throwing;
             Item.shoot = ModContent.ProjectileType<ScatterbombP>();
-            Item.shootSpeed = 35f;
+            Item.shootSpeed = 14f;
             Item.useAnimation = 20;
             Item.useTime = 20;
             Item.consumable = true;
