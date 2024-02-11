@@ -94,16 +94,14 @@ namespace Stellamod.NPCs.Underground
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
 					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
-						ProjectileID.SpikyBall, 60, 0, Main.myPlayer);
-					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2,
-						ProjectileID.SpikyBall, 60, 0, Main.myPlayer);
+						ProjectileID.ChainGuillotine, 40, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					Projectile ichor = Main.projectile[projectile];
 					ichor.hostile = true;
 					ichor.friendly = false;
 
 
-					attackCounter = 500;
+					attackCounter = 200;
 					NPC.netUpdate = true;
 				}
 			}
