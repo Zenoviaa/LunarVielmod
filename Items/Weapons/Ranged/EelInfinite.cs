@@ -57,7 +57,8 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>());
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 10);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
