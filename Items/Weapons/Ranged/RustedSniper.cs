@@ -53,6 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
             recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
             recipe.AddIngredient(ItemID.Musket, 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
@@ -60,6 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ModContent.ItemType<BasicGunParts>());
             recipe2.AddIngredient(ModContent.ItemType<BrokenTech>(), 20);
+            recipe2.AddIngredient(ModContent.ItemType<WeaponDrive>(), 2);
             recipe2.AddIngredient(ItemID.TheUndertaker, 1);
             recipe2.AddTile(TileID.Anvils);
             recipe2.Register();
