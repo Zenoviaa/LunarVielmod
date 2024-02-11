@@ -23,6 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<RustedSnipe>();
             Item.shootSpeed = 10f;
+            Item.noMelee = true;
             Item.UseSound = SoundID.Item40;
         }
 
