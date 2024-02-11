@@ -141,18 +141,7 @@ namespace Stellamod.NPCs.Global
 			}
 		}
 
-		public override void PostAI(NPC npc)
-		{
-			if (npc.type == NPCID.SkeletronPrime)
-			{
-
-
-				if (npc.life < npc.lifeMax / 2)
-				{
-					npc.velocity *= 1.01f;
-				}
-			}
-		}
+		
 
 		public override void SetDefaults(NPC npc)
         {
