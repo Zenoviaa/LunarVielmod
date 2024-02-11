@@ -552,3 +552,8 @@ Alcadded: {
 	Description: Mods.Stellamod.Buffs.Alcadded.Description
 	DisplayName: Alcadded
 }
+
+BucketScrapperMinionBuff: {
+	DisplayName: Bucket Scrapper Minion Buff
+	Description: Mods.Stellamod.Buffs.BucketScrapperMinionBuff.Description
+}

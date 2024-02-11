@@ -5531,3 +5531,8 @@ RustedSniper: {
 	Tooltip: ""
 	DisplayName: Rusted Sniper
 }
+
+BucketScrapper: {
+	DisplayName: Bucket Scrapper
+	Tooltip: ""
+}
