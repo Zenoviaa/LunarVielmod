@@ -13,6 +13,11 @@ namespace Stellamod
         private static bool _findTeleportTiles;
         public static Vector2[] DungeonAltarWorld;
         public static Vector2 StoneGolemAltarWorld;
+        public override void ClearWorld()
+        {
+            _findTeleportTiles = false;
+        }
+
         public override void PostUpdateWorld()
         {
             if (!_findTeleportTiles)
