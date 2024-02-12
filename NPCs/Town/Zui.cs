@@ -24,6 +24,7 @@ using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Vanity.Azalean;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Town
 {
@@ -201,8 +202,18 @@ namespace Stellamod.NPCs.Town
 
 		}
 
+        private void SendQuestPacket()
+        {
+			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteZuiQuest,
+				ZuiQuestSystem.ThreeQuestsCompleted,
+				ZuiQuestSystem.SixQuestsCompleted,
+				ZuiQuestSystem.TenQuestsCompleted,
+				ZuiQuestSystem.TwentyQuestsCompleted,
+				ZuiQuestSystem.ThirtyQuestsCompleted,
+				ZuiQuestSystem.QuestsCompleted).Send(-1);
+        }
 
-		private void Quest_NotCheckmarked()
+        private void Quest_NotCheckmarked()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Hi hii! Thanks for asking! Could you fetch me some plants, you can use this bag! Just fill it up with some different types of plants and I'll give you some stuff afterwards!";
@@ -292,10 +303,11 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-            NetMessage.SendData(MessageID.WorldData);
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+			SendQuestPacket();
+
+        }
 		private void Quest_6Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -306,10 +318,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-            NetMessage.SendData(MessageID.WorldData);
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 		private void Quest_10Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -321,10 +333,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-            NetMessage.SendData(MessageID.WorldData);
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 
 		private void Quest_20Complete()
 		{
@@ -338,10 +350,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-            NetMessage.SendData(MessageID.WorldData);
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 		private void Quest_30Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -356,8 +368,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			NetMessage.SendData(MessageID.WorldData);
-		}
+            SendQuestPacket();
+        }
 
 
 		private bool CompleteQuests()

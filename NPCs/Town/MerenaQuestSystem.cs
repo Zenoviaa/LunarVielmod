@@ -57,11 +57,22 @@ namespace Stellamod.NPCs.Town
 
         public override void NetReceive(BinaryReader reader)
         {
-            KillVerliaCompleted = reader.ReadBoolean();
-            ExploreMorrowedVillageCompleted = reader.ReadBoolean();
-            Give100DustBagsCompleted = reader.ReadBoolean();
-            MakeMagicPaperCompleted = reader.ReadBoolean();
-            MakeTomeOfInfiniteSorceryCompleted = reader.ReadBoolean();
+            bool con1 = reader.ReadBoolean(); 
+            bool con2 = reader.ReadBoolean();
+            bool con3 = reader.ReadBoolean();
+            bool con4 = reader.ReadBoolean();
+            bool con5 = reader.ReadBoolean();
+
+            if (!KillVerliaCompleted)
+                KillVerliaCompleted = con1;
+            if (!ExploreMorrowedVillageCompleted)
+                ExploreMorrowedVillageCompleted = con2;
+            if (!Give100DustBagsCompleted)
+                Give100DustBagsCompleted = con3;
+            if (!MakeMagicPaperCompleted)
+                MakeMagicPaperCompleted = con4;
+            if (!MakeTomeOfInfiniteSorceryCompleted)
+                MakeTomeOfInfiniteSorceryCompleted = con5;
         }
     }
 }

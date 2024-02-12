@@ -57,27 +57,35 @@ namespace Stellamod.NPCs.Town
 
         public override void NetSend(BinaryWriter writer)
         {
-            writer.Write(new BitsByte
-            {
-                [0] = ThreeQuestsCompleted,
-                [1] = SixQuestsCompleted,
-                [2] = TenQuestsCompleted,
-                [3] = TwentyQuestsCompleted,
-                [4] = ThirtyQuestsCompleted
-            });
-
+            writer.Write(ThreeQuestsCompleted);
+            writer.Write(SixQuestsCompleted);
+            writer.Write(TenQuestsCompleted);
+            writer.Write(TwentyQuestsCompleted);
+            writer.Write(ThirtyQuestsCompleted);
             writer.Write(QuestsCompleted);
         }
 
         public override void NetReceive(BinaryReader reader)
         {
-            BitsByte flags = reader.ReadByte();
-            ThreeQuestsCompleted = flags[0];
-            SixQuestsCompleted = flags[1];
-            TenQuestsCompleted = flags[2];
-            TwentyQuestsCompleted = flags[3];
-            ThirtyQuestsCompleted = flags[4];
-            QuestsCompleted = reader.ReadInt32();
+            bool con1 = reader.ReadBoolean();
+            bool con2 = reader.ReadBoolean();
+            bool con3 = reader.ReadBoolean();
+            bool con4 = reader.ReadBoolean();
+            bool con5 = reader.ReadBoolean();
+            int questsCompleted = reader.ReadInt32();
+
+            if (!ThreeQuestsCompleted)
+                ThreeQuestsCompleted = con1;
+            if (!SixQuestsCompleted)
+                SixQuestsCompleted = con2;
+            if(!TenQuestsCompleted)
+                TenQuestsCompleted = con3;
+            if(!TwentyQuestsCompleted)
+                TwentyQuestsCompleted = con4;
+            if(!ThirtyQuestsCompleted)
+                ThirtyQuestsCompleted = con5;
+            if (QuestsCompleted <= questsCompleted)
+                QuestsCompleted = questsCompleted;
         }
     }
 }

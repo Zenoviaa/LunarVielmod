@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
@@ -192,6 +193,17 @@ namespace Stellamod.NPCs.Town
 
 		}
 
+		private void SendQuestPacket()
+		{
+			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteMerenaQuest,
+				MerenaQuestSystem.KillVerliaCompleted,
+				MerenaQuestSystem.ExploreMorrowedVillageCompleted,
+				MerenaQuestSystem.Give100DustBagsCompleted,
+				MerenaQuestSystem.MakeMagicPaperCompleted,
+				MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted).Send(-1);
+
+        }
+
 		private void Quest_VerliaStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
@@ -215,7 +227,7 @@ namespace Stellamod.NPCs.Town
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-            NetMessage.SendData(MessageID.WorldData);
+			SendQuestPacket();
         }
 
 		private void Quest_MorrowStart()
@@ -224,6 +236,7 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
+
 		}
 
 		private void Quest_MorrowComplete()
@@ -241,7 +254,7 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-            NetMessage.SendData(MessageID.WorldData);
+			SendQuestPacket();
         }
 
 		private void Quest_DustBagsStart()
@@ -268,7 +281,7 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-            NetMessage.SendData(MessageID.WorldData);
+            SendQuestPacket();
         }
 
 		private void Quest_MagicPaperStart()
@@ -296,7 +309,7 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
-            NetMessage.SendData(MessageID.WorldData);
+            SendQuestPacket();
         }
 
 		private void Quest_TomeStart()
@@ -319,7 +332,7 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted, -1);
-            NetMessage.SendData(MessageID.WorldData);
+            SendQuestPacket();
         }
 
 
@@ -407,7 +420,7 @@ namespace Stellamod.NPCs.Town
 		{
 			if (!firstButton)
 			{
-				shop = ShopName;
+                shop = ShopName;
 			}
 
 			if (firstButton)
