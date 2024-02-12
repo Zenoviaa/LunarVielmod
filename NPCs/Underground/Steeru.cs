@@ -35,8 +35,8 @@ namespace Stellamod.NPCs.Underground
             for(int i = 0; i < Steeru_Gear_Count; i++)
             {
                 float f = (float)i;
-                float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
-                height += (int)(42 * scale);
+                float scale = MathHelper.Lerp(1f, 1 / 2f, f / Steeru_Gear_Count);
+                height += (int)(42 * scale * 0.5f);
             }
 
             NPC.height = height;
@@ -133,7 +133,7 @@ namespace Stellamod.NPCs.Underground
                 for(int i = Steeru_Gear_Count - 1; i > -1; i--)
                 {
                     float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
-                    float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);
+                    float xHovering = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3, offset: i * hoverOffset);
 
                     float f = (float)i;
                     float scale = MathHelper.Lerp(1, 1f/2f, f / Steeru_Gear_Count);
@@ -152,7 +152,7 @@ namespace Stellamod.NPCs.Underground
                 float scale = MathHelper.Lerp(1, 1f / 2f, f / Steeru_Gear_Count);
 
                 float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
-                float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);
+                float xHovering = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3, offset: i * hoverOffset);
 
 
                 Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
@@ -164,7 +164,7 @@ namespace Stellamod.NPCs.Underground
             texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Underground/SteeruEye").Value;
             drawOrigin = texture.Size() / 2;
             float yHoveringEye = VectorHelper.Osc(0, hoverRange, speed: 3);
-            float xHoveringEye = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3);
+            float xHoveringEye = VectorHelper.Osc(-hoverRange/2, hoverRange/2, speed: 3);
             Vector2 hoveringOffset = new Vector2(xHoveringEye, yHoveringEye);
             
             spriteBatch.Draw(texture, NPC.position - screenPos + hoveringOffset + new Vector2(29, 0), null, 
