@@ -180,7 +180,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 6, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
         }
     }
