@@ -796,6 +796,7 @@ namespace Stellamod
 			DoPandorasFireBoxIntegration();
 			DoWaterJellyfishIntegration();
 			DoSparnIntegration();
+			DoZuiIntegration();
 		}
 	}
 }
