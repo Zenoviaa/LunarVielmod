@@ -7,12 +7,6 @@ namespace Stellamod.NPCs.Town
 {
     internal class ZuiQuestSystem : ModSystem
     {
-        public static bool KillVerliaCompleted;
-        public static bool ExploreMorrowedVillageCompleted;
-        public static bool Give100DustBagsCompleted;
-        public static bool MakeMagicPaperCompleted;
-        public static bool MakeTomeOfInfiniteSorceryCompleted;
-
         public static bool ThreeQuestsCompleted;
         public static bool SixQuestsCompleted;
         public static bool TenQuestsCompleted;
@@ -58,28 +52,31 @@ namespace Stellamod.NPCs.Town
             TenQuestsCompleted = tag.GetBool("TenQuests");
             TwentyQuestsCompleted = tag.GetBool("TwentyQuests");
             ThirtyQuestsCompleted = tag.GetBool("ThirtyQuests");
-
-
             QuestsCompleted = tag.GetInt("QuestsCompleted");
         }
 
         public override void NetSend(BinaryWriter writer)
         {
-            writer.Write(ThreeQuestsCompleted);
-            writer.Write(SixQuestsCompleted);
-            writer.Write(TenQuestsCompleted);
-            writer.Write(TwentyQuestsCompleted);
-            writer.Write(ThirtyQuestsCompleted);
+            writer.Write(new BitsByte
+            {
+                [0] = ThreeQuestsCompleted,
+                [1] = SixQuestsCompleted,
+                [2] = TenQuestsCompleted,
+                [3] = TwentyQuestsCompleted,
+                [4] = ThirtyQuestsCompleted
+            });
+
             writer.Write(QuestsCompleted);
         }
 
         public override void NetReceive(BinaryReader reader)
         {
-            ThreeQuestsCompleted = reader.ReadBoolean();
-            SixQuestsCompleted = reader.ReadBoolean();
-            TenQuestsCompleted = reader.ReadBoolean();
-            TwentyQuestsCompleted = reader.ReadBoolean();
-            ThirtyQuestsCompleted = reader.ReadBoolean();
+            BitsByte flags = reader.ReadByte();
+            ThreeQuestsCompleted = flags[0];
+            SixQuestsCompleted = flags[1];
+            TenQuestsCompleted = flags[2];
+            TwentyQuestsCompleted = flags[3];
+            ThirtyQuestsCompleted = flags[4];
             QuestsCompleted = reader.ReadInt32();
         }
     }
