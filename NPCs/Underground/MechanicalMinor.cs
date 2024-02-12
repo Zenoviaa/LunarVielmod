@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Underground
                         //make them always throw a little up
                         velocity += new Vector2(0, -Main.rand.NextFloat(5, 10));
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                            ModContent.ProjectileType<RustedPickaxe>(), (int)(NPC.damage * 0.1f), 4, Main.myPlayer);
+                            ModContent.ProjectileType<RustedPickaxe>(), (int)(NPC.damage * 0.2f), 4, Main.myPlayer);
                     }
 
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));

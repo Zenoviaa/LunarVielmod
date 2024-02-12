@@ -16,6 +16,7 @@ using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.Zui;
 
 namespace Stellamod
 {
@@ -493,6 +494,43 @@ namespace Stellamod
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 			LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnItems"] = summonItem8,
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
+
+
+		private void DoZuiIntegration()
+		{
+
+			string internalName = nameof(ZuiTheTraveller);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<ZuiTheTraveller>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 12.9f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedZuiBoss;
+
+			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,

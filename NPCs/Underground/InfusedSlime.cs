@@ -24,7 +24,7 @@ namespace Stellamod.NPCs.Underground
         {
             NPC.width = 86;
             NPC.height = 48;
-            NPC.damage = 42;
+            NPC.damage = 72;
             NPC.defense = 8;
             NPC.lifeMax = 128;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
@@ -120,7 +120,7 @@ namespace Stellamod.NPCs.Underground
                     {
                         Vector2 velocity = NPC.DirectionTo(target.Center) * 10;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
-                                ModContent.ProjectileType<InfusedSlimeBolt>(), 15, 1, Owner: Main.myPlayer);
+                                ModContent.ProjectileType<InfusedSlimeBolt>(), 45, 1, Owner: Main.myPlayer);
                     }
 
                     SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
