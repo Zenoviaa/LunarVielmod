@@ -109,10 +109,7 @@ namespace Stellamod.NPCs.Cinderspark
          
                 if(ai_Counter == 120)
                 {
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        Dust.QuickDustLine(NPC.Center, NPC.Center + new Vector2(0, -700), 48, Color.OrangeRed);
-                    }
+                    Dust.QuickDustLine(NPC.Center, NPC.Center + new Vector2(0, -700), 48, Color.OrangeRed);
                     ai_Counter++;
                 }
 

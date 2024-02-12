@@ -215,7 +215,8 @@ namespace Stellamod.NPCs.Town
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-		}
+            NetMessage.SendData(MessageID.WorldData);
+        }
 
 		private void Quest_MorrowStart()
         {
@@ -240,7 +241,8 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-		}
+            NetMessage.SendData(MessageID.WorldData);
+        }
 
 		private void Quest_DustBagsStart()
         {
@@ -266,7 +268,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-		}
+            NetMessage.SendData(MessageID.WorldData);
+        }
 
 		private void Quest_MagicPaperStart()
         {
@@ -293,7 +296,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
-		}
+            NetMessage.SendData(MessageID.WorldData);
+        }
 
 		private void Quest_TomeStart()
         {
@@ -315,7 +319,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted, -1);
-		}
+            NetMessage.SendData(MessageID.WorldData);
+        }
 
 
 		private bool CompleteQuests()

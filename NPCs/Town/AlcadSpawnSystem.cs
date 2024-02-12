@@ -60,33 +60,30 @@ namespace Stellamod.NPCs.Town
 
                 MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
                 float distanceToUnderworldRuins = Vector2.Distance(player.Center, UnderworldRiftSpawnWorld);
-                if (myPlayer.ZoneAlcadzia)
+                if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
-                    if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(), 
-                            (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y, 
-                            ModContent.NPCType<Merena>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y,
+                        ModContent.NPCType<Merena>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
 
-                    if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
-                        !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(), 
-                            (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y, 
-                            ModContent.NPCType<LonelySorceress>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
-                } 
-                else if (myPlayer.ZoneVillage && !NPC.AnyNPCs(ModContent.NPCType<Zui>()))
+                if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
+                    !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y,
+                        ModContent.NPCType<LonelySorceress>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
                             ModContent.NPCType<Zui>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (distanceToUnderworldRuins < 600 && !NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(), 
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
@@ -101,19 +98,12 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Delgrim>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
-
-                else if (myPlayer.ZoneMechanics)
+                else if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
                 {
-                   
-
-                    if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(),
-                            (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
-                            ModContent.NPCType<CellConverter>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
+                        ModContent.NPCType<CellConverter>());
+                    NetMessage.SendData(MessageID.SyncNPC);
                 }
             }
         }

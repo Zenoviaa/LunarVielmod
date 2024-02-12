@@ -63,9 +63,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
-		}
+        }
+        public override bool CheckActive()
+        {
+            return false;
+        }
 
-		public override bool CanChat()
+        public override bool CanChat()
 		{
 			return true;
 		}

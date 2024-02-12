@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles
                 Projectile.timeLeft = 2;
             }
 
-            if (!_foundStatue)
+            if (!_foundStatue && Main.myPlayer == Projectile.owner)
             {
                 _found = Vector2.Zero;
                 for (int x = 0; x < Main.tile.Width; x++)

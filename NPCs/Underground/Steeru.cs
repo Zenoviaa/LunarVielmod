@@ -130,13 +130,13 @@ namespace Stellamod.NPCs.Underground
             {
                 Vector2 trailDrawPos = NPC.oldPos[k] - Main.screenPosition + size / 2 + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(new Color(191, 165, 160), new Color(191, 59, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                for(int i = 0; i < Steeru_Gear_Count; i++)
+                for(int i = Steeru_Gear_Count - 1; i > -1; i--)
                 {
                     float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
                     float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);
 
                     float f = (float)i;
-                    float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
+                    float scale = MathHelper.Lerp(1, 1f/2f, f / Steeru_Gear_Count);
                     Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
                     offset.Y += offsetY;
                     spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, trailDrawPos + offset*scale * 0.5f, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, scale, spriteEffects, 0f);
@@ -146,10 +146,10 @@ namespace Stellamod.NPCs.Underground
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            for (int i = 0; i < Steeru_Gear_Count; i++)
+            for (int i = Steeru_Gear_Count - 1; i > -1; i--)
             {
                 float f = (float)i;
-                float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
+                float scale = MathHelper.Lerp(1, 1f / 2f, f / Steeru_Gear_Count);
 
                 float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
                 float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);

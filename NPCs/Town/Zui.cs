@@ -292,7 +292,8 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            NetMessage.SendData(MessageID.WorldData);
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 		}
 		private void Quest_6Complete()
@@ -305,7 +306,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            NetMessage.SendData(MessageID.WorldData);
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 		}
 		private void Quest_10Complete()
@@ -319,7 +321,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            NetMessage.SendData(MessageID.WorldData);
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 		}
 
@@ -335,7 +338,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
+            NetMessage.SendData(MessageID.WorldData);
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 		}
 		private void Quest_30Complete()
@@ -352,6 +356,7 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
+			NetMessage.SendData(MessageID.WorldData);
 		}
 
 
