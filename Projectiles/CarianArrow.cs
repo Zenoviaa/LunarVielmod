@@ -10,9 +10,6 @@ namespace Stellamod.Projectiles
 {
     internal class CarianArrow : ModProjectile
     {
-        private bool _foundStatue;
-        private Vector2 _found;
-
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
@@ -39,30 +36,8 @@ namespace Stellamod.Projectiles
                 Projectile.timeLeft = 2;
             }
 
-            if (!_foundStatue && Main.myPlayer == Projectile.owner)
-            {
-                _found = Vector2.Zero;
-                for (int x = 0; x < Main.tile.Width; x++)
-                {
-                    for (int y = 0; y < Main.tile.Height; y++)
-                    {
-                        if (Main.tile[x, y].TileType == ModContent.TileType<Rallad>())
-                        {
-                            _found = new Vector2(x, y).ToWorldCoordinates();
-                            _foundStatue = true;
-                            break;
-                        }
-                    }
-
-                    if (_foundStatue)
-                    {
-                        break;
-                    }
-                }
-            }
-
             float offset = 80 + VectorHelper.Osc(-16, 16);
-            Vector2 directionToRallad = owner.Center.DirectionTo(_found);
+            Vector2 directionToRallad = owner.Center.DirectionTo(TeleportSystem.RalladWorld);
             Projectile.Center = owner.Center + directionToRallad * offset;
             Projectile.rotation = directionToRallad.ToRotation();
 

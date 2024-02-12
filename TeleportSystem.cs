@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Tiles;
+using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Catacombs;
 using System.Collections.Generic;
 using Terraria;
@@ -13,6 +14,7 @@ namespace Stellamod
         private static bool _findTeleportTiles;
         public static Vector2[] DungeonAltarWorld;
         public static Vector2 StoneGolemAltarWorld;
+        public static Vector2 RalladWorld;
         public override void ClearWorld()
         {
             _findTeleportTiles = false;
@@ -28,6 +30,13 @@ namespace Stellamod
                 {
                     StoneGolemAltarWorld = stoneGolemAltar[0];
                 }
+
+                FindTiles(ModContent.TileType<Rallad>(), out Vector2[] ralladWorld, out foundTile);
+                if (foundTile)
+                {
+                    RalladWorld = ralladWorld[0];
+                }
+
                 _findTeleportTiles = true;
             }
         }
