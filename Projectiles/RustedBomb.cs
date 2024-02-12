@@ -4,10 +4,9 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-
 namespace Stellamod.Projectiles
 {
-    internal class RustedPickaxe : ModProjectile
+    internal class RustedBomb : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -17,8 +16,8 @@ namespace Stellamod.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 42;
-            Projectile.height = 42;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
@@ -34,7 +33,7 @@ namespace Stellamod.Projectiles
             Projectile.velocity.Y += 0.15f;
 
             //This makes the rotation effect scale with the velocity
-            Projectile.rotation += Projectile.velocity.Length() * 0.02f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.5f;
             Visuals();
         }
 
@@ -42,7 +41,7 @@ namespace Stellamod.Projectiles
         {
             if (Main.rand.NextBool(8))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke);
             }
 
             Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f * Main.essScale);
@@ -50,19 +49,19 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Electric, speed);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Smoke, speed);
                 d.noGravity = true;
             }
 
-            SoundEngine.PlaySound(SoundID.Dig);   
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.Cyan, Color.Transparent, ref lightColor);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.OrangeRed * 0.6f, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
     }
