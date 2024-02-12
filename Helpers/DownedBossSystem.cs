@@ -79,7 +79,7 @@ namespace Stellamod.Helpers
 			tag["downedPandorasBox"] = downedPandorasBox;
 			tag["downedSparn"] = downedSparn;
 			tag["downedWaterJellyfish"] = downedWaterJellyfish;
-			tag["downedZui"] = downedZuiBoss;
+			tag["downedZuiBoss"] = downedZuiBoss;
 		}
 
 		public override void LoadWorldData(TagCompound tag)
