@@ -180,7 +180,7 @@ namespace Stellamod.NPCs.Acidic
                 if (Timer % 11 == 0)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3"), NPC.position);
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 4f);
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                     SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                     SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);

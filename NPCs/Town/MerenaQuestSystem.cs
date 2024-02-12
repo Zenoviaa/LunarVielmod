@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -43,6 +44,24 @@ namespace Stellamod.NPCs.Town
             Give100DustBagsCompleted = tag.GetBool("Give100DustBagsCompleted");
             MakeMagicPaperCompleted = tag.GetBool("MakeMagicPaperCompleted");
             MakeTomeOfInfiniteSorceryCompleted = tag.GetBool("MakeTomeOfInfiniteSorceryCompleted");
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.Write(KillVerliaCompleted);
+            writer.Write(ExploreMorrowedVillageCompleted);
+            writer.Write(Give100DustBagsCompleted);
+            writer.Write(MakeMagicPaperCompleted);
+            writer.Write(MakeTomeOfInfiniteSorceryCompleted);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            KillVerliaCompleted = reader.ReadBoolean();
+            ExploreMorrowedVillageCompleted = reader.ReadBoolean();
+            Give100DustBagsCompleted = reader.ReadBoolean();
+            MakeMagicPaperCompleted = reader.ReadBoolean();
+            MakeTomeOfInfiniteSorceryCompleted = reader.ReadBoolean();
         }
     }
 }
