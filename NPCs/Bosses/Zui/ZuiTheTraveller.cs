@@ -281,7 +281,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(2, -32);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(-16, -32);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
