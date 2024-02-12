@@ -33,7 +33,7 @@ namespace Stellamod.Projectiles
             Projectile.velocity.Y += 0.15f;
 
             //This makes the rotation effect scale with the velocity
-            Projectile.rotation += Projectile.velocity.Length() * 0.5f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.11f;
             Visuals();
         }
 

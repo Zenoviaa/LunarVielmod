@@ -9,6 +9,8 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Stellamod.Projectiles;
+using Stellamod.Items.Materials.Tech;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -87,6 +89,12 @@ namespace Stellamod.NPCs.Underground
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric);
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 6, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
         }
     }
 }

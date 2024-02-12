@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -164,6 +166,13 @@ namespace Stellamod.NPCs.Underground
             DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, Color.White, Color.WhiteSmoke, 0);
             Lighting.AddLight(screenPos, Color.White.ToVector3() * 1.0f * Main.essScale);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
+        }
+
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), 6, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ItemID.IronOre, 1, 1, 5));
         }
     }
 }
