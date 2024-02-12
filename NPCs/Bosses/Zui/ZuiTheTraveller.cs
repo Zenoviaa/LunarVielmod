@@ -162,7 +162,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			Main.npcFrameCount[Type] = 53;
 
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-			NPCID.Sets.TrailingMode[NPC.type] = 0;
+			NPCID.Sets.TrailingMode[NPC.type] = 2;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
 
             // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
@@ -281,7 +281,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			
 
 			Rectangle rect;
-			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(112, 0);
+			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(48, -16);
 
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
@@ -322,82 +322,82 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 
 				case ActionState.StartZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.IdleFloatZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.BeamsZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.HomingGoldZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.LightrayZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.SonicOutSpin:
-					rect = new(0, 1 * 70, 112, 12 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 12, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 12, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 1 * 70, 112, 11 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 11, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 11, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.SpinAroundPlayerZui:
-					rect = new(0, 1 * 70, 112, 12 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 12, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 12, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 1 * 70, 112, 11 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 11, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 11, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.ElectricityZui:
-					rect = new(0, 14 * 70, 112, 7 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 14 * 70, 112, 6 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 12, 6, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.SonicDashZui:
-					rect = new(0, 50 * 70, 112, 4 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 50 * 70, 112, 3 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.SonicDashZui2:
-					rect = new(0, 50 * 70, 112, 4 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 50 * 70, 112, 3 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.SonicGroundpound:
-					rect = new(0, 50 * 70, 112, 4 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 3, 4, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 50 * 70, 112, 3 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick,3, 3, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.RunZui:
-					rect = new(0, 21 * 70, 112, 9 * 70);
-					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 9, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 9, rect).Size() / 2, NPC.scale, effects, 0f);
+					rect = new(0, 21 * 70, 112, 8 * 70);
+					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.HomeRunZui:
-					rect = new(0, 38 * 70, 112, 12 * 70);
+					rect = new(0, 38 * 70, 112, 11 * 70);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 12, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 12, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.DashZui:
-					rect = new(0, 38 * 70, 112, 12 * 70);
+					rect = new(0, 38 * 70, 112, 11 * 70);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 12, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 12, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.AnticipateBigZui:
-					rect = new(0, 30 * 70, 112, 8 * 70);
+					rect = new(0, 30 * 70, 112, 7 * 70);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 8, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 8, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 
 				case ActionState.AnticipateDashZui:
-					rect = new(0, 30 * 70, 112, 8 * 70);
+					rect = new(0, 30 * 70, 112, 7 * 70);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 8, rect).Size() / 2, NPC.scale, effects, 0f);
 					break;
 				//----------------------------------------------------------- Verlia
