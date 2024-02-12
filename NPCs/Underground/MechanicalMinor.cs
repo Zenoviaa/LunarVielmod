@@ -50,17 +50,21 @@ namespace Stellamod.NPCs.Underground
                 }
                 else if (_attackTimer > 60 && _attackTimer < 120)
                 {
-                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.Electric);
-                    dust.velocity *= -1f;
-                    dust.scale *= 0.5f;
-                    dust.noGravity = true;
-                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                    vector2_1.Normalize();
-                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                    dust.velocity = vector2_2;
-                    vector2_2.Normalize();
-                    Vector2 vector2_3 = vector2_2 * 34f;
-                    dust.position = NPC.Center - vector2_3;
+                    if(_attackTimer % 2 == 0)
+                    {
+                        Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.Electric);
+                        dust.velocity *= -1f;
+                        dust.scale *= 0.5f;
+                        dust.noGravity = true;
+                        Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+                        vector2_1.Normalize();
+                        Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
+                        dust.velocity = vector2_2;
+                        vector2_2.Normalize();
+                        Vector2 vector2_3 = vector2_2 * 34f;
+                        dust.position = NPC.Center - vector2_3;
+                    }
+
 
                     //Telegraph
                     NPC.FaceTarget();
