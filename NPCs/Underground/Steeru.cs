@@ -85,7 +85,7 @@ namespace Stellamod.NPCs.Underground
             Player target = Main.player[NPC.target];
             if (NPC.HasValidTarget)
             {
-                AI_Movement(target.Center - new Vector2(NPC.height/2), 2, 0.02f);
+                AI_Movement(target.Center - new Vector2(0, NPC.height/2), 2, 0.02f);
             } else
             {
 
