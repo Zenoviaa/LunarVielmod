@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -60,6 +61,26 @@ namespace Stellamod.NPCs.Town
 
 
             QuestsCompleted = tag.GetInt("QuestsCompleted");
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.Write(ThreeQuestsCompleted);
+            writer.Write(SixQuestsCompleted);
+            writer.Write(TenQuestsCompleted);
+            writer.Write(TwentyQuestsCompleted);
+            writer.Write(ThirtyQuestsCompleted);
+            writer.Write(QuestsCompleted);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            ThreeQuestsCompleted = reader.ReadBoolean();
+            SixQuestsCompleted = reader.ReadBoolean();
+            TenQuestsCompleted = reader.ReadBoolean();
+            TwentyQuestsCompleted = reader.ReadBoolean();
+            ThirtyQuestsCompleted = reader.ReadBoolean();
+            QuestsCompleted = reader.ReadInt32();
         }
     }
 }

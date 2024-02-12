@@ -253,7 +253,7 @@ namespace Stellamod.WorldG
             SpawnAuroreanStars();
 
 
-
+            /*
             if (!ChaosD)
             {
                 string message = "Chaos has plaged the ocean...";
@@ -287,7 +287,7 @@ namespace Stellamod.WorldG
                     ChaosP = true;
                 }
             }
-
+            */
         }
 
 
