@@ -30,7 +30,16 @@ namespace Stellamod.NPCs.Underground
         public override void SetDefaults()
         {
             NPC.width = 54;
-            NPC.height = 42 * Steeru_Gear_Count;
+
+            int height = 0;
+            for(int i = 0; i < Steeru_Gear_Count; i++)
+            {
+                float f = (float)i;
+                float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
+                height += (int)(42 * scale);
+            }
+
+            NPC.height = height;
             NPC.damage = 51;
             NPC.defense = 12;
             NPC.lifeMax = 198;
@@ -125,9 +134,12 @@ namespace Stellamod.NPCs.Underground
                 {
                     float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
                     float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);
+
+                    float f = (float)i;
+                    float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
                     Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
                     offset.Y += offsetY;
-                    spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, trailDrawPos + offset, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, spriteEffects, 0f);
+                    spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, trailDrawPos + offset*scale * 0.5f, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, scale, spriteEffects, 0f);
                 }
             }
 
@@ -136,11 +148,16 @@ namespace Stellamod.NPCs.Underground
 
             for (int i = 0; i < Steeru_Gear_Count; i++)
             {
+                float f = (float)i;
+                float scale = MathHelper.Lerp(1 / 2f, 1f, f / Steeru_Gear_Count);
+
                 float yHovering = VectorHelper.Osc(0, hoverRange, speed: 3, offset: i * hoverOffset);
                 float xHovering = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3, offset: i * hoverOffset);
+
+
                 Vector2 offset = new Vector2(xHovering, i * offsetY + yHovering);
                 offset.Y += offsetY;
-                spriteBatch.Draw(texture, drawPos - screenPos + offset, NPC.frame, Color.White, NPC.rotation, drawOrigin, 1, spriteEffects, 0);
+                spriteBatch.Draw(texture, drawPos - screenPos + offset*scale*0.5f, NPC.frame, Color.White, NPC.rotation, drawOrigin, scale, spriteEffects, 0);
             }
 
             //Draw Eye
@@ -149,7 +166,10 @@ namespace Stellamod.NPCs.Underground
             float yHoveringEye = VectorHelper.Osc(0, hoverRange, speed: 3);
             float xHoveringEye = VectorHelper.Osc(-hoverRange, hoverRange, speed: 3);
             Vector2 hoveringOffset = new Vector2(xHoveringEye, yHoveringEye);
-            spriteBatch.Draw(texture, NPC.Center - screenPos + hoveringOffset, null, Color.White, NPC.rotation, drawOrigin, 1, spriteEffects, 0);
+            
+            spriteBatch.Draw(texture, NPC.position - screenPos + hoveringOffset + new Vector2(29, 0), null, 
+                Color.White, NPC.rotation, drawOrigin, 1, spriteEffects, 0);
+            
             return false;
         }
 
