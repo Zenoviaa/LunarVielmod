@@ -13,6 +13,7 @@ using Stellamod.Items.Materials.Tech;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Underground
 {
@@ -150,6 +151,11 @@ namespace Stellamod.NPCs.Underground
             Vector2 hoveringOffset = new Vector2(xHoveringEye, yHoveringEye);
             spriteBatch.Draw(texture, NPC.Center - screenPos + hoveringOffset, null, Color.White, NPC.rotation, drawOrigin, 1, spriteEffects, 0);
             return false;
+        }
+
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return (SpawnCondition.Cavern.Chance * 0.3f);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
