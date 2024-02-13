@@ -3600,7 +3600,7 @@ namespace Stellamod.WorldG
 								break;
 
 							case 5:
-								itemsToAdd.Add((ModContent.ItemType<GovhenShield>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
