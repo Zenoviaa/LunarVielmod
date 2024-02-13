@@ -143,6 +143,7 @@
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
     <None Remove="Items\Placeable\Govheil\GovheilHallI.png" />
     <None Remove="Items\Placeable\Govheil\GovheilWallsI.png" />
+    <None Remove="Items\Placeable\Laboratory\GLabCrystal.png" />
     <None Remove="Items\Placeable\Manor\DrakonicCageI.png" />
     <None Remove="Items\Placeable\Manor\DrakonicHallI.png" />
     <None Remove="Items\Placeable\Manor\DrakonicSileI.png" />
