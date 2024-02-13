@@ -21,27 +21,8 @@ namespace Stellamod.Items.Special
 
         public override bool? UseItem(Player player)
         {
-            bool foundTile = false;
-            for (int x = 0; x < Main.tile.Width; x++)
-            {
-                for (int y = 0; y < Main.tile.Height; y++)
-                {
-                    if (Main.tile[x, y].TileType == ModContent.TileType<FlowerSummon>())
-                    {
-                        player.Center = new Vector2(x, y).ToWorldCoordinates();
-                        foundTile = true;
-
-                        //Break the loop we don't need to search anymore
-                        SoundEngine.PlaySound(SoundID.Item6);
-                        break;
-                    }
-                }
-
-                if (foundTile)
-                    break;
-            }
-
-
+            player.Center = TeleportSystem.StoneGolemAltarWorld;
+            SoundEngine.PlaySound(SoundID.Item6);
             return true;
         }
     }

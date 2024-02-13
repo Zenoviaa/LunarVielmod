@@ -332,11 +332,13 @@
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\RedLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
+    <None Remove="NPCs\Underground\RustedBomberSummon.png" />
     <None Remove="Particles\ArcanalParticle2.png" />
     <None Remove="Particles\AVoidParticle.png" />
     <None Remove="Particles\BurnParticle4.png" />
@@ -372,6 +374,7 @@
     <None Remove="Projectiles\HallowRain.png" />
     <None Remove="Projectiles\IgniterExplosions\CombustionBoomMini.png" />
     <None Remove="Projectiles\IgniterExplosions\FireBoom.png" />
+    <None Remove="Projectiles\InfusedSlimeBolt.png" />
     <None Remove="Projectiles\Magic\CandleShotProj1.png" />
     <None Remove="Projectiles\Magic\CandleShotProj2.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
@@ -430,8 +433,10 @@
     <None Remove="Projectiles\Swords\GoldsSlashProj.png" />
     <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
+    <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\VoidRain.png" />
+    <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Textures\Backglow.png" />
