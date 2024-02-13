@@ -5615,8 +5615,5 @@ FocalCrystalWater: {
 
 FocusingCrystal: {
 	DisplayName: Focusing Crystal
-	Tooltip:
-		'''
-		A key ingredient in crafting Focal Crystals, which let you teleport to special places...
-		'''
+	Tooltip: A key ingredient in crafting Focal Crystals, which let you teleport to special places...
 }

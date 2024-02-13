@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Stellamod.Helpers;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
+using Terraria.ID;
+using Stellamod.Projectiles.IgniterExplosions;
 
 namespace Stellamod.Projectiles
 {
     internal class FocalPortal : ModProjectile
     {
+        private int _frameCounter;
+        private int _frameTick;
+        private int _teleportTimer;
+        private bool _flash;
+        private float _scale;
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 60;
+        }
+
         public override void SetDefaults()
         {
-            Projectile.width = 64;
-            Projectile.height = 64;
+            Projectile.width = 75;
+            Projectile.height = 95;
             Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.timeLeft = int.MaxValue;
@@ -22,6 +32,19 @@ namespace Stellamod.Projectiles
 
         public override void AI()
         {
+            if (!_flash)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), Projectile.position);
+                _flash = true;
+            }
+            _teleportTimer++;
+            _scale += 2/30f;
+            if (_scale >= 2f)
+                _scale = 2f;
+
+            if (_teleportTimer < 30)
+                return;
+
             Rectangle myRect = Projectile.getRect();
             for (int i = 0; i < Main.maxPlayers; i++)
             {
@@ -49,6 +72,42 @@ namespace Stellamod.Projectiles
             int x = (int)Projectile.ai[0];
             int y = (int)Projectile.ai[1];
             player.Center = new Vector2(x, y);
+            SoundEngine.PlaySound(SoundID.Item115);
+            Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+                ModContent.ProjectileType<KaBoomMagic2>(), 0, 1, player.whoAmI);
+        }
+
+
+
+        public override bool PreAI()
+        {
+            if (++_frameTick >= 1)
+            {
+                _frameTick = 0;
+                if (++_frameCounter >= 60)
+                {
+                    _frameCounter = 0;
+                }
+            }
+            return true;
+        }
+
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+
+            float width = 75;
+            float height = 95;
+            Vector2 origin = new Vector2(width / 2, height / 2);
+            int frameSpeed = 1;
+            int frameCount = 60;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture, drawPosition,
+                texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
+                Color.White, 0f, origin, _scale, SpriteEffects.None, 0f);
+            return false;
         }
     }
 }

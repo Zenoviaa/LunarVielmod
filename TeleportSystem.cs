@@ -30,6 +30,7 @@ namespace Stellamod
         {
             FocalPortals = new Dictionary<Point, Vector2>();
             _findTeleportTiles = false;
+            _refreshPortals = false;
         }
 
         public override void SaveWorldData(TagCompound tag)
@@ -225,9 +226,8 @@ namespace Stellamod
             //Spawn all the portals again
             foreach (var kvp in FocalPortals)
             {
-                Console.WriteLine($"Portal Key: {kvp.Key}");
                 altarTile = kvp.Key;
-                Vector2 portalPosition = new Vector2((altarTile.X + 1 )* 16, (altarTile.Y - 1) * 16);
+                Vector2 portalPosition = new Vector2((altarTile.X + 1 )* 16, (altarTile.Y - 6) * 16);
                 Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), portalPosition, Vector2.Zero,
                    ModContent.ProjectileType<FocalPortal>(), 0, 0, Main.myPlayer,
                    ai0: kvp.Value.X,
@@ -240,6 +240,17 @@ namespace Stellamod
         {
             //Save it
             Point altarTile = new Point(altarTileX, altarTileY);
+            foreach(var kvp in FocalPortals)
+            {
+                Point otherPortal = kvp.Key;
+                float dist = Vector2.Distance(new Vector2(altarTileX, altarTileY), new Vector2(otherPortal.X, otherPortal.Y));
+                if(dist <= 6)
+                {
+                    altarTile = otherPortal;
+                    break;
+                }
+            }
+
             if (!FocalPortals.ContainsKey(altarTile))
                 FocalPortals.Add(altarTile, catacombsAltar);
             else

@@ -8,8 +8,10 @@ using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Town;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.IgniterExplosions;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
@@ -141,6 +143,22 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
                         top).Send(-1);
                 }
 
+ 
+                Vector2 portalPosition = new Vector2((left+ 1) * 16, (top - 6) * 16);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn2"), player.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_PreSpawn"), player.position);
+                Projectile.NewProjectile(player.GetSource_FromThis(), portalPosition, Vector2.Zero,
+					ModContent.ProjectileType<KaBoomMagic2>(), 0, 1, player.whoAmI);
+				player.GetModPlayer<MyPlayer>().ShakeAtPosition(player.position, 1024, 32);
+
+                for (int h = 0; h < 48; h++)
+                {
+                    Vector2 speed = Main.rand.NextVector2Circular(4f, 4f);
+                    Dust.NewDustPerfect(portalPosition, DustID.Electric, speed);
+                }
+
+                player.velocity.X = -player.direction * 6f;
+                player.velocity.Y = -9f;
                 player.HeldItem.TurnToAir();
             }
 
@@ -154,8 +172,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			int left = i;
 			int top = j;
 
-			Main.LocalPlayer.cursorItemIconEnabled = true;
-			Main.LocalPlayer.cursorItemIconID = Main.LocalPlayer.HeldItem.type;
+            player.cursorItemIconEnabled = true;
 			if (tile.TileFrameX % 36 != 0)
 			{
 				left--;
@@ -171,6 +188,12 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			if (chest < 0)
 			{
 				player.cursorItemIconText = Language.GetTextValue("Insert a Focal Crystal");
+				if(player.HeldItem.type == ModContent.ItemType<FocalCrystalFire>() ||
+                    player.HeldItem.type == ModContent.ItemType<FocalCrystalTrap>() ||
+                    player.HeldItem.type == ModContent.ItemType<FocalCrystalWater>())
+				{
+					player.cursorItemIconID = player.HeldItem.type;
+				} 
 			}
 			else
 			{
