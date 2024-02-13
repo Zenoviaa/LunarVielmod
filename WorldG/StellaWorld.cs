@@ -499,7 +499,7 @@ namespace Stellamod.WorldG
 
 								break;
 							case 4:
-								itemsToAdd.Add((ModContent.ItemType<CinderedCard>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.JackOLanternMask, Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
 								itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
 								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
