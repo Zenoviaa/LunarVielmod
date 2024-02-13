@@ -5570,3 +5570,13 @@ VacuumDrill: {
 	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beat me.
 	DisplayName: Vacuum Drill
 }
+
+GLabCrystal: {
+	Tooltip: ""
+	DisplayName: G Lab Crystal
+}
+
+LabHall: {
+	DisplayName: Lab Hall
+	Tooltip: ""
+}
