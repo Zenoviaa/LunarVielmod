@@ -10,7 +10,8 @@
 		SpawnExplosiveBarrel,
 		BoonData,
 		CompleteMerenaQuest,
-		CompleteZuiQuest
+		CompleteZuiQuest,
+		CreatePortal
 	}
 
 	public enum QuestMessageType : byte

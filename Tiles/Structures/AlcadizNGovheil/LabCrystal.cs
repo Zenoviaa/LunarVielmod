@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.Jack;
+using Stellamod.NPCs.Town;
+using Stellamod.Projectiles;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -75,13 +78,10 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			TileID.Sets.DisableSmartCursor[Type] = true;
 		}
 
-
-
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
 		{
 			return true;
 		}
-
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
@@ -89,88 +89,64 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 		}
 
 		public override bool CanExplode(int i, int j) => false;
-		public bool Checked = false;
-
-
 		public override bool RightClick(int i, int j)
 		{
-
-			
-
 			Player player = Main.LocalPlayer;
+			Vector2[] altarPositions = null;
 
-		
+            Tile tile = Main.tile[i, j];
+            int left = i;
+            int top = j;
+            if (tile.TileFrameX != 0)
+            {
+                left--;
+            }
 
+            if (tile.TileFrameY != 0)
+            {
+                top--;
+            }
 
-
-			return true;
-
-		}
-
-
-		/*	public override bool RightClick(int i, int j)
+            bool makePortal = false;
+            if (player.HeldItem.type == ModContent.ItemType<FocalCrystalFire>())
 			{
-				Player player = Main.LocalPlayer;
+				altarPositions = TeleportSystem.FireDungeonAltarWorld;
+				makePortal = true;
+            } 
+			else if(player.HeldItem.type == ModContent.ItemType<FocalCrystalWater>())
+			{
+                altarPositions = TeleportSystem.WaterDungeonAltarWorld;
+                makePortal = true;
+            } 
+			else if(player.HeldItem.type == ModContent.ItemType<FocalCrystalTrap>())
+			{
+				altarPositions = TeleportSystem.TrapDungeonAltarWorld;
+                makePortal = true;
+            }
 
-				int key = ModContent.ItemType<WanderingEssence>();
-
-
-
-
-
-
-
-
-				if (player.HasItem(key) && !Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()) && !NPC.AnyNPCs(ModContent.NPCType<JackDeath>()))
-				{
-
-
-					NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Jack>());
-					// SoundEngine.PlaySound(SoundID.Roar);
-					return true;
-				}
-				if (NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-				{
-
-					Main.NewText("...", Color.Gold);
-
-
-
-				}
+			if (makePortal)
+			{
+                Vector2 altar = altarPositions[Main.rand.Next(0, altarPositions.Length)];
+                if (StellaMultiplayer.IsHost)
+				{   
+                    TeleportSystem.CreatePortal(altar, left, top);
+					TeleportSystem.RefreshPortals();
+                } 
 				else
 				{
-					if (player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-					{
+                    Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CreatePortal,
+                        altar.X,
+						altar.Y,
+                        left,
+                        top).Send(-1);
+                }
 
-						Main.NewText("In the purest of Gothivia's light will I shine, see me in the moonlight!", Color.Gold);
+                player.HeldItem.TurnToAir();
+            }
 
-
-
-					}
-
-					else
-					{
-						Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-
-
-					}
-					if (!player.HasItem(key) && Main.dayTime && !NPC.AnyNPCs(ModContent.NPCType<Jack>()))
-					{
-						Main.NewText("Only a wandering essence can allude my precense, only for you Gothivia! :)", Color.Gold);
-					}
-				}
-
-
-
-
-
-				return true;
-			}
-		*/
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
-
+            return true;
 		}
+
 		public override void MouseOver(int i, int j)
 		{
 			Player player = Main.LocalPlayer;
@@ -179,7 +155,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			int top = j;
 
 			Main.LocalPlayer.cursorItemIconEnabled = true;
-			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<CursedShard>();
+			Main.LocalPlayer.cursorItemIconID = Main.LocalPlayer.HeldItem.type;
 			if (tile.TileFrameX % 36 != 0)
 			{
 				left--;
@@ -194,7 +170,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 			player.cursorItemIconID = -1;
 			if (chest < 0)
 			{
-				player.cursorItemIconText = Language.GetTextValue("Unstable Crystal");
+				player.cursorItemIconText = Language.GetTextValue("Insert a Focal Crystal");
 			}
 			else
 			{
@@ -202,11 +178,11 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
 				if (player.cursorItemIconText == defaultName)
 				{
-					player.cursorItemIconID = ModContent.ItemType<CursedShard>();
-					if (Main.tile[left, top].TileFrameX / 36 == 1)
+					player.cursorItemIconID = Main.LocalPlayer.HeldItem.type;
+                    if (Main.tile[left, top].TileFrameX / 36 == 1)
 					{
-						player.cursorItemIconID = ModContent.ItemType<CursedShard>();
-					}
+						player.cursorItemIconID = Main.LocalPlayer.HeldItem.type;
+                    }
 
 					player.cursorItemIconText = "";
 				}
@@ -246,7 +222,7 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
-			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
+			Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(-6, -100f + 16f);
 			Color color = new Color(0.02f, 0.03f, 0.01f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
 
 			Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);

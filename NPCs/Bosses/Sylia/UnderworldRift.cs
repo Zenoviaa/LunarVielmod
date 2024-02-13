@@ -225,7 +225,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (invisTimer == 0)
             {
                 NPC.alpha = 255;
-                SoundEngine.PlaySound(SoundID.Item119);
+                SoundEngine.PlaySound(SoundID.Item119, NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048, 32f);
                 //Charged Sound thingy
                 for (int i = 0; i < 48; i++)

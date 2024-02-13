@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Town;
 using System;
 using System.Collections.Generic;
@@ -156,6 +157,17 @@ namespace Stellamod
                         ZuiQuestSystem.ThirtyQuestsCompleted = ccon5;
                     if (ZuiQuestSystem.QuestsCompleted <= questsCompleted)
                         ZuiQuestSystem.QuestsCompleted = questsCompleted;
+                    break;
+				case MessageType.CreatePortal:
+					float altarX = reader.ReadSingle();
+					float altarY = reader.ReadSingle();
+                    int left = reader.ReadInt32();
+                    int top = reader.ReadInt32();
+                    TeleportSystem.CreatePortal(new Vector2(altarX, altarY), left, top);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        TeleportSystem.RefreshPortals();
+					}
                     break;
 			}
 		}
