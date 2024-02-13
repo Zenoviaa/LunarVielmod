@@ -5580,3 +5580,8 @@ LabHall: {
 	DisplayName: Lab Hall
 	Tooltip: ""
 }
+
+LaboratoryBlock: {
+	Tooltip: ""
+	DisplayName: Laboratory Block
+}

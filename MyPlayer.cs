@@ -244,7 +244,7 @@ namespace Stellamod
 		public bool ZoneCinder;
 		public bool ZoneDrakonic;
 		public bool ZoneMechanics;
-
+		public bool ZoneLab;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -300,7 +300,7 @@ namespace Stellamod
         public override void CatchFish(FishingAttempt attempt, 
 			ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-			int chance = 75;
+			int chance = 35;
 			string jellyfishWarning = "You feel threatened...";
 			if (Player.ZoneBeach && Main.rand.NextBool(chance))
 			{
@@ -689,6 +689,7 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
@@ -957,7 +958,7 @@ namespace Stellamod
                 player.ClearBuff(ModContent.BuffType<FCBuff>());
                 FCArmorTime = 0;
             }
-            if (ZoneAcid)
+            if (ZoneAcid　|| ZoneLab)
             {
                 if (player.wet)
                 {
@@ -1403,7 +1404,7 @@ namespace Stellamod
 
 			}
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>() || Player.InModBiome<VeriplantUndergroundBiome>() && !Player.InModBiome<MorrowUndergroundBiome>())
+			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>() || Player.InModBiome<VeriplantUndergroundBiome>() && !Player.InModBiome<MorrowUndergroundBiome>() || ZoneLab)
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
