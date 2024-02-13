@@ -2999,6 +2999,8 @@ namespace Stellamod.WorldG
 						Point ponta = new Point(pointL.X, pointL.Y + 300);
 						int[] ChestIndexs = StructureLoader.ReadStruct(ponta, "Struct/Acid/Lab");
 						structures.AddProtectedStructure(rectangle);
+						NPCs.Town.AlcadSpawnSystem.LabTile = ponta;
+
 						foreach (int chestIndex in ChestIndexs)
 						{
 							var chest = Main.chest[chestIndex];

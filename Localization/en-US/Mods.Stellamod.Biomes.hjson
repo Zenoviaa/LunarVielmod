@@ -97,3 +97,8 @@ AbyssBiome: {
 	TownNPCDialogueName: the Abyss Biome
 	DisplayName: Abyss Biome
 }
+
+Laboratory: {
+	DisplayName: Laboratory
+	TownNPCDialogueName: the Laboratory
+}
