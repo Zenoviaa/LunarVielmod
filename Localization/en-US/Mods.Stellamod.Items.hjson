@@ -5587,7 +5587,7 @@ LaboratoryBlock: {
 }
 
 FocalCrystalFire: {
-	DisplayName: Focal Crystal Fire
+	DisplayName: Charred Focal Crystal
 	Tooltip:
 		'''
 		Insert into the Lab Crystal to create a portal to the Fire Catacombs!
@@ -5596,7 +5596,7 @@ FocalCrystalFire: {
 }
 
 FocalCrystalTrap: {
-	DisplayName: Focal Crystal Trap
+	DisplayName: Pointy Focal Crystal
 	Tooltip:
 		'''
 		Insert into the Lab Crystal to create a portal to the Trap Catacombs!
@@ -5605,7 +5605,7 @@ FocalCrystalTrap: {
 }
 
 FocalCrystalWater: {
-	DisplayName: Focal Crystal Water
+	DisplayName: Soaked Focal Crystal
 	Tooltip:
 		'''
 		Insert into the Lab Crystal to create a portal to the Water Catacombs!
