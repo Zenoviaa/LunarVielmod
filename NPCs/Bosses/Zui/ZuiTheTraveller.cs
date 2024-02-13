@@ -263,7 +263,8 @@ namespace Stellamod.NPCs.Bosses.Zui
 			frameTick = reader.ReadInt32();
 			counter = reader.ReadInt32();
         }
-
+		private int _wingFrameCounter;
+		private int _wingFrameTick;
 		Vector2 dashDirection = Vector2.Zero;
 		float dashDistance = 0f;
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -282,7 +283,18 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 			Rectangle rect;
 			originalHitbox = new Vector2(NPC.width / 100, NPC.height / 2) + new Vector2(-16, -32);
+			
+			
+				Vector2 drawPosition = NPC.Center - screenPos;
+				Vector2 origin = new Vector2(45, 40);
+				Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Zui/ZuiElement").Value;
+				int wingFrameSpeed = 1;
+				int wingFrameCount = 60;
+				spriteBatch.Draw(syliaWingsTexture, drawPosition,
+				syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
+				drawColor, 0f, origin, 2f, effects, 0f);
 
+			
 			///Animation Stuff for Verlia
 			/// 1 - 2 Summon Start
 			/// 3 - 7 Summon Idle / Idle
@@ -533,7 +545,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 		{
 			Spawner++;
 			NPC.TargetClosest();
-			NPC.velocity *= 0.97f;
+			NPC.velocity *= 0.98f;
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
@@ -562,7 +574,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(2);
+				NPC.EncourageDespawn(4);
 			}
 			switch (State)
 			{
