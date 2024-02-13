@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials.Tech;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -56,9 +57,7 @@ namespace Stellamod.Items.Consumables
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<FocusingCrystal>(), 1);
-            recipe.AddIngredient(ItemID.Hellstone, 3);
-            recipe.AddIngredient(ItemID.Obsidian, 1);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddCondition(Condition.NearLava);
             recipe.Register();
         }
     }

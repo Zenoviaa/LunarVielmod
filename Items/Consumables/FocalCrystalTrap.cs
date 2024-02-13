@@ -56,8 +56,7 @@ namespace Stellamod.Items.Consumables
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<FocusingCrystal>(), 1);
-            recipe.AddIngredient(ItemID.Spike, 30);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddCondition(Condition.InDungeon);
             recipe.Register();
         }
     }

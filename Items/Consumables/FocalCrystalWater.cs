@@ -60,8 +60,7 @@ namespace Stellamod.Items.Consumables
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<FocusingCrystal>(), 1);
-            recipe.AddIngredient(ItemID.Coral, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddCondition(Condition.NearWater);
             recipe.Register();
         }
     }
