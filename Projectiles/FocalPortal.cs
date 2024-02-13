@@ -28,6 +28,7 @@ namespace Stellamod.Projectiles
             Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.timeLeft = int.MaxValue;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()
@@ -71,7 +72,9 @@ namespace Stellamod.Projectiles
         {
             int x = (int)Projectile.ai[0];
             int y = (int)Projectile.ai[1];
-            player.Center = new Vector2(x, y);
+            Vector2 direction = player.velocity.SafeNormalize(Vector2.Zero);
+            player.Center = new Vector2(x, y) + direction * 128;
+         
             SoundEngine.PlaySound(SoundID.Item115);
             Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                 ModContent.ProjectileType<KaBoomMagic2>(), 0, 1, player.whoAmI);

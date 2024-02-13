@@ -228,10 +228,18 @@ namespace Stellamod
             {
                 altarTile = kvp.Key;
                 Vector2 portalPosition = new Vector2((altarTile.X + 1 )* 16, (altarTile.Y - 6) * 16);
+                Vector2 catacombsPortalPosition = new Vector2(kvp.Value.X, kvp.Value.Y) + new Vector2(0, -16 * 160);
+
                 Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), portalPosition, Vector2.Zero,
                    ModContent.ProjectileType<FocalPortal>(), 0, 0, Main.myPlayer,
-                   ai0: kvp.Value.X,
-                   ai1: kvp.Value.Y);
+                   ai0: catacombsPortalPosition.X,
+                   ai1: catacombsPortalPosition.Y);
+
+                Vector2 portalPosition2 = new Vector2(kvp.Value.X, kvp.Value.Y);
+                Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), catacombsPortalPosition, Vector2.Zero,
+                   ModContent.ProjectileType<FocalPortal>(), 0, 0, Main.myPlayer,
+                   ai0: portalPosition.X,
+                   ai1: portalPosition.Y);
                 NetMessage.SendData(MessageID.SyncProjectile);
             }
         }
