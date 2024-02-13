@@ -122,8 +122,7 @@ namespace Stellamod.NPCs.Town
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-
-
+	
 		public override ITownNPCProfile TownNPCProfile()
 		{
 			return new UnknownSignalPersonProfile();
@@ -152,6 +151,24 @@ namespace Stellamod.NPCs.Town
 		{
 			return true;
 		}
+		public override string GetChat()
+		{
+			WeightedRandom<string> chat = new WeightedRandom<string>();
+
+			
+			// These are things that the NPC has a chance of telling you when you talk to it.
+			chat.Add(Language.GetTextValue("A static voice confirms the identity of the user, you are in the right place."));
+			chat.Add(Language.GetTextValue("A static voice confirms the identity of the user, you are in the right place."));
+			NumberOfTimesTalkedTo++;
+			if (NumberOfTimesTalkedTo >= 10)
+			{
+				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				chat.Add(Language.GetTextValue("..."));
+			}
+
+			return chat; // chat is implicitly cast to a string.
+		}
+
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
