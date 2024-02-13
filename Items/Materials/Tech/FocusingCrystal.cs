@@ -11,6 +11,7 @@ namespace Stellamod.Items.Materials.Tech
             Item.width = 22;
             Item.height = 22;
             Item.rare = ItemRarityID.LightRed;
+            Item.value = Item.sellPrice(0, 5, 0, 0);
         }
 
         public override void AddRecipes()

@@ -539,6 +539,7 @@ namespace Stellamod.NPCs.Town
             .Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
 			.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
 			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
+			.Add<FocusingCrystal>(ZuiQuestSystem.ShopCondition30)
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}
