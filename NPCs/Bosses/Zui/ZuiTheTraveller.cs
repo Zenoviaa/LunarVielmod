@@ -744,6 +744,12 @@ namespace Stellamod.NPCs.Bosses.Zui
 					counter++;
 					BeamsZui();
 					break;
+
+				case ActionState.HomingGoldZui:
+					NPC.damage = 0;
+					counter++;
+					GoldenBoltsZui();
+					break;
 			}
 		}
 
@@ -797,16 +803,16 @@ namespace Stellamod.NPCs.Bosses.Zui
 					switch (Main.rand.Next(4))
 					{
 						case 0:
-							State = ActionState.BeamsZui;
+							State = ActionState.HomingGoldZui;// BeamsZui;
 							break;
 						case 1:
-							State = ActionState.BeamsZui;// ElectricityZui;
+							State = ActionState.HomingGoldZui;// ElectricityZui;
 							break;
 						case 2:
-							State = ActionState.BeamsZui;//HomingGoldZui;
+							State = ActionState.HomingGoldZui;//HomingGoldZui;
 							break;
 						case 3:
-							State = ActionState.BeamsZui;//LightrayZui;
+							State = ActionState.HomingGoldZui;//LightrayZui;
 							break;
 					}
 				}
@@ -922,7 +928,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 			}
 
-			if (timer == 180)
+			if (timer == 300)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				ResetTimers();
@@ -944,8 +950,100 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 		}
 
+		int yum = 0;
+		private void GoldenBoltsZui()
+		{
+
+			float ai1 = NPC.whoAmI;
+			timer++;
+			yum++;
+			Player player = Main.player[NPC.target];
 
 
+			Player target = Main.player[NPC.target];
+			Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
+			if (timer == 1)
+			{
+				if (StellaMultiplayer.IsHost)
+				{
+					// Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+					//   ModContent.ProjectileType<ZuiRay>(), 70, 10, Main.myPlayer, ai0: NPC.whoAmI);
+
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+					ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+
+
+
+
+
+
+			}
+			if (timer < 200)
+            {
+				if (yum == 8)
+				{
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity * Main.rand.Next(-2, 2),
+					ModContent.ProjectileType<GoldenHoe>(), 40, 10, Main.myPlayer, ai0: NPC.whoAmI);
+
+
+
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity * 0,
+					ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
+					yum = 0;
+				}
+			}
+			
+
+
+			if (timer == 100)
+			{
+				if (StellaMultiplayer.IsHost)
+				{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+				ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+			}
+
+
+			
+
+			//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+			//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+
+
+
+			if (timer < 50)
+			{
+				NPC.velocity.Y -= 0.01f;
+
+
+
+			}
+
+			if (timer == 300)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				ResetTimers();
+				if (StellaMultiplayer.IsHost)
+				{
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							State = ActionState.SpinAroundPlayerZui;
+							break;
+						case 1:
+							State = ActionState.RunZui;
+							break;
+
+					}
+				}
+
+
+			}
+		}
 
 
 
