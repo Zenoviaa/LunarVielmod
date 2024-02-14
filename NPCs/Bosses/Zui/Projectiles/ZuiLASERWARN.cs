@@ -118,15 +118,15 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     int Sound = Main.rand.Next(1, 4);
                     if (Sound == 1)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain1"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain1"));
                     }
                     if (Sound == 2)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain2"));
                     }
                     if (Sound == 3)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"), NPC.position);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain3"));
 
                     }
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 32f);
