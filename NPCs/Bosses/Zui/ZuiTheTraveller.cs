@@ -862,8 +862,8 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 
 			if (timer == 1)
-				{
-
+			{
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenAura"));
 				if (StellaMultiplayer.IsHost)
 				{
 					Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
@@ -1164,7 +1164,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 					gruber1 += 20;
 					gruber2 -= 20;
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold1"));
 
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold2"));
+							break;
+						case 2:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold3"));
+							break;
+
+					}
 					rayer = 0;
 				}
 			}
@@ -1534,7 +1547,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(150, 150), velocity * 0,
 					ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
 
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice1"));
 
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice2"));
+							break;
+						case 2:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice3"));
+							break;
+
+					}
 
 					Holdr Holdr = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
 					 ModContent.ProjectileType<Holdr>(), 1, 1, target.whoAmI).ModProjectile as Holdr;
@@ -1636,7 +1662,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + new Vector2(150, 150), velocity * 0,
 					ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 10, Main.myPlayer, ai0: NPC.whoAmI);
 
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice1"));
 
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice2"));
+							break;
+						case 2:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice3"));
+							break;
+
+					}
 
 					Holdr Holdr = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
 					 ModContent.ProjectileType<Holdr>(), 1, 1, target.whoAmI).ModProjectile as Holdr;
@@ -1740,10 +1779,10 @@ namespace Stellamod.NPCs.Bosses.Zui
 					Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
 						ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
 				}
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Zoee"));
 
-				
 
-			
+
 
 				//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
 				//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
@@ -1761,6 +1800,13 @@ namespace Stellamod.NPCs.Bosses.Zui
 					Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
 						ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
 				}
+				
+					
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteSwing"));
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Hyuh"));
+
+
+
 
 				for (int i = 0; i < 150; i++)
 				{
@@ -1812,7 +1858,22 @@ namespace Stellamod.NPCs.Bosses.Zui
 				{
 					Projectile.NewProjectile(entitySource, NPC.Center + new Vector2(150, 150), Vector2.Zero,
 					ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+					
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice1"));
 
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice2"));
+							break;
+						case 2:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice3"));
+							break;
+
+					}
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_PreSpawn"));
 
 					Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
 					int numProjectiles = Main.rand.Next(12, 24);
@@ -1910,6 +1971,21 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 				}
 
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice1"));
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice2"));
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice3"));
+						break;
+
+				}
+
 				//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
 				//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
 			}
@@ -1955,10 +2031,23 @@ namespace Stellamod.NPCs.Bosses.Zui
 					;
 					d.noGravity = true;
 				}
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenSlice1"));
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenSlice2"));
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenSlice3"));
+						break;
+
+				}
 
 
 
-			
 
 				for (int i = 0; i < 50; i++)
 				{
@@ -2008,6 +2097,21 @@ namespace Stellamod.NPCs.Bosses.Zui
 						newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 						Projectile.NewProjectile(entitySource, NPC.Center, -newVelocity, ModContent.ProjectileType<GoldenChildren>(), 50, 0, Owner: Main.myPlayer);
 					}
+
+				}
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold1"));
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold2"));
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold3"));
+						break;
 
 				}
 
@@ -2130,9 +2234,22 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 
 						}
-						
 
-				
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Charge"));
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Charge"));
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SunStalker_Charge"));
+						break;
+
+				}
+
 
 				if (StellaMultiplayer.IsHost)
 				{
@@ -2256,6 +2373,8 @@ namespace Stellamod.NPCs.Bosses.Zui
 					NPC.noTileCollide = true;
 					if (yud >= 10)
 					{
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenFall"));
+
 						if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 						{
 							Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
@@ -2366,7 +2485,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					ModContent.NPCType<GoldBeamWarn>());
 
 
+					switch (Main.rand.Next(3))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold1"));
 
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold2"));
+							break;
+						case 2:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold3"));
+							break;
+
+					}
 				}
 				
 
