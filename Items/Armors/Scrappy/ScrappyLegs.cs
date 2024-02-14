@@ -27,7 +27,7 @@ namespace Stellamod.Items.Armors.Scrappy
         {
             player.maxRunSpeed += 0.04f;
             player.runAcceleration += 0.12f;
-            player.slotsMinions += 1;
+            player.maxMinions += 1;
             player.GetDamage(DamageClass.Summon) += 0.08f;
             player.GetDamage(DamageClass.Magic) += 0.08f;
         }

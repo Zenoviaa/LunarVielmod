@@ -27,7 +27,7 @@ namespace Stellamod.Items.Armors.Scrappy
         {
             player.lifeRegen += 3;
             player.endurance += 0.08f;
-            player.slotsMinions += 2;
+            player.maxMinions += 2;
             player.GetDamage(DamageClass.Summon) += 0.12f;
             player.GetDamage(DamageClass.Magic) += 0.12f;
         }
