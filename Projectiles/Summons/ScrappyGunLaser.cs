@@ -9,16 +9,17 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Gun
+namespace Stellamod.Projectiles.Summons
 {
-    internal class VacuumLightningBolt : ModProjectile, IPixelPrimitiveDrawer
+    internal class ScrappyGunLaser : ModProjectile, IPixelPrimitiveDrawer
     {
-        private Vector2[] _lightningArcPos = new Vector2[1]; 
-        public const int Trail_Width = 24;
+        private Vector2[] _lightningArcPos = new Vector2[1];
+        public const int Trail_Width = 12;
+
         public override void SetStaticDefaults()
         {
             // Sets the amount of frames this minion has on its spritesheet
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 48;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 24;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -27,7 +28,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.friendly = true;
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.timeLeft = int.MaxValue;
+            Projectile.timeLeft = 30;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
@@ -36,27 +37,13 @@ namespace Stellamod.Projectiles.Gun
 
         public override void AI()
         {
-   
-            Player player = Main.player[Projectile.owner];
-            if (Main.myPlayer == Projectile.owner)
-            {
-                if (!player.channel)
-                    Projectile.Kill();
-            }
+            float ai = Projectile.ai[0];
+            int projectileId = (int)ai;
+            Projectile proj = Main.projectile[projectileId];
 
-            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
-            if (Main.myPlayer == Projectile.owner)
-            {
-                player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-                if (!player.channel)
-                    Projectile.Kill();
-            }
 
             alphaCounter = VectorHelper.Osc(0.5f, 1.00f, 3);
-            Projectile.velocity = swordRotation.ToRotationVector2();
-            Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+            Projectile.Center = proj.Center + Projectile.velocity * 1f;// customization of the hitbox position
             //Dunno if this is needed but whatever
             Projectile.rotation = Projectile.velocity.ToRotation();
 
@@ -96,10 +83,10 @@ namespace Stellamod.Projectiles.Gun
             Vector2 currentPosition = Projectile.position;
             List<Vector2> positions = new List<Vector2>();
             positions.Add(currentPosition);
-            for (int i = 0; i < 48; i++)
+            for (int i = 0; i < 24; i++)
             {
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                direction = direction.RotatedByRandom(MathHelper.ToRadians(60));
+                direction = direction.RotatedByRandom(MathHelper.ToRadians(2));
                 float distance = Main.rand.NextFloat(20, 45);
                 Vector2 newPosition = currentPosition + direction * distance;
                 currentPosition = newPosition;
@@ -137,7 +124,8 @@ namespace Stellamod.Projectiles.Gun
                         positions.Add(Main.MouseWorld);
                         break;
                     }
-                }else if (foundTarget && distanceFromTarget < teleportDistance)
+                }
+                else if (foundTarget && distanceFromTarget < teleportDistance)
                 {
                     positions.Add(targetCenter);
                     positions.Add(targetCenter);
@@ -172,10 +160,10 @@ namespace Stellamod.Projectiles.Gun
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
             Vector2 drawPos = _lightningArcPos[_lightningArcPos.Length - 1];
             Vector2 drawOrigin = new Vector2(32, 32);
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Main.spriteBatch.Draw(texture2D4, drawPos - Main.screenPosition, null, new Color((int)(255f * alphaCounter), (int)(255f * alphaCounter), (int)(255f * alphaCounter), 0), Projectile.rotation,
-                    drawOrigin, 1.4f, SpriteEffects.None, 0f);
+                    drawOrigin, 1f, SpriteEffects.None, 0f);
             }
 
             return base.PreDraw(ref lightColor);
