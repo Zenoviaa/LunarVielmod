@@ -4290,7 +4290,11 @@ namespace Stellamod.NPCs.Bosses.Zui
 			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
 			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
 			var entitySource = NPC.GetSource_FromThis();
-			NPC.NewNPC(entitySource, (int)NPC.Center.X , (int)NPC.Center.Y, ModContent.NPCType<ZuiDeath>());
+			if (StellaMultiplayer.IsHost)
+			{
+                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<ZuiDeath>());
+            }
+			
 
 
 

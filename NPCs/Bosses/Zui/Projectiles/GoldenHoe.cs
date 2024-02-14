@@ -94,6 +94,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 
                 Projectile.velocity.X += offsetX;
                 Projectile.velocity.Y += offsetY;
+       
                 int Sound = Main.rand.Next(1, 4);
                 if (Sound == 1)
                 {
@@ -110,6 +111,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                 }
                 Spin = Main.rand.Next(0, 2);
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+                Projectile.netUpdate = true;
             }
 
 
