@@ -5675,24 +5675,14 @@ RadianceStone: {
 ShopNote: {
 	DisplayName: Shop Note
 	Tooltip: Now that I've seen your talent, I'll allow you access to my whole shop!
-
-	FenixBossRel: {
-		DisplayName: Fenix Boss Relic
-		Tooltip: ""
-	}
-
-	IrradiaBossRel: {
-		DisplayName: Irradia Boss Relic
-		Tooltip: ""
-	}
-}
-
-IrradiaBossRel: {
-	Tooltip: ""
-	DisplayName: Irradia Boss Rel
 }
 
 FenixBossRel: {
+	DisplayName: Fenix Boss Relic
 	Tooltip: ""
-	DisplayName: Fenix Boss Rel
+}
+
+IrradiaBossRel: {
+	DisplayName: Irradia Boss Relic
+	Tooltip: ""
 }
