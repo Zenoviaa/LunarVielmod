@@ -5,12 +5,14 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Fenix;
+using Stellamod.Tiles.Furniture;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -66,6 +68,7 @@ namespace Stellamod.Items.Consumables
 
 			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Fenix>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 4, maximumDropped: 55));
+			itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<FenixBossRel>()));
 		}
 
 		// Below is code for the visuals
