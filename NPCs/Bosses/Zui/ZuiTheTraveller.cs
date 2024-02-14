@@ -971,7 +971,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 					}
 
-				switch (Main.rand.Next(2))
+					switch (Main.rand.Next(2))
 				{
 					case 0:
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
@@ -984,7 +984,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 				}
 
-
+				
 
 
 
@@ -1957,7 +1957,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 					switch (Main.rand.Next(3))
 					{
 						case 0:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice4"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice4"), NPC.position);
 
 							break;
 						case 1:
@@ -2069,7 +2069,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 				switch (Main.rand.Next(3))
 				{
 					case 0:
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice4"), NPC.position);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice4"), NPC.position);
 
 						break;
 					case 1:
