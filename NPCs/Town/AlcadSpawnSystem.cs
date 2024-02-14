@@ -8,6 +8,7 @@ using System.IO;
 using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
 using Stellamod.NPCs.Bosses.Zui;
+using Stellamod.NPCs.Bosses.INest;
 
 namespace Stellamod.NPCs.Town
 {
@@ -115,7 +116,8 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
-                else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode)
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode &&
+                    !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)LabSpawnWorld.X, (int)LabSpawnWorld.Y,
