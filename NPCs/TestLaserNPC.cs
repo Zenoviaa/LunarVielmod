@@ -14,6 +14,7 @@ namespace Stellamod.NPCs
     internal class TestLaserNPC : ModNPC
     {
         private int _timer = 600;
+        private float _circleDegrees;
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 60;
@@ -36,6 +37,23 @@ namespace Stellamod.NPCs
             NPC.TargetClosest();
             Player target = Main.player[NPC.target];
             Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
+
+            //Circling Code
+            float circleSpeed = 2;
+
+            //How far from the player the NPC will be
+            float circleDistance = 128;
+
+            _circleDegrees += circleSpeed;
+            float circleRadians = MathHelper.ToRadians(_circleDegrees);
+            Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+            Vector2 circlePosition = target.Center + offsetFromPlayer;
+
+            //This is just how quickly the NPC will move to the circle position
+            //This number should be higher than the circle speed
+            float movementSpeed = 15;
+            NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
+
             _timer--;
             if(_timer <= 0)
             {
