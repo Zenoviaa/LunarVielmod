@@ -25,6 +25,7 @@ using Stellamod.Items.Armors.Vanity.Azalean;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Zui;
 
 namespace Stellamod.NPCs.Town
 {
@@ -437,6 +438,28 @@ namespace Stellamod.NPCs.Town
 				Main.npcChatText = $"Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!";
 			}
 		}
+		public override void AI()
+		{
+			timer++;
+			NPC.CheckActive();
+			NPC.spriteDirection = NPC.direction;
+
+
+
+			if (NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
+			{
+
+				NPC.Kill();
+			}
+
+
+			
+		}
+
+		
+
+		
+
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
@@ -545,11 +568,6 @@ namespace Stellamod.NPCs.Town
 			npcShop.Register(); // Name of this shop tab		
 		}
 
-		public override void AI()
-		{
-			timer++;
-            NPC.CheckActive();
-            NPC.spriteDirection = NPC.direction;
-		}
+		
 	}
 }

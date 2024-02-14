@@ -26,7 +26,9 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.LightRed;
             Item.maxStack = 1;
             Item.value = Item.buyPrice(gold: 10);
-
+            Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.useAnimation = 10;
+            Item.useTime = 10;
         }
 
         public override void PostUpdate()

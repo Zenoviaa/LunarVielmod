@@ -7,6 +7,7 @@ using Stellamod.NPCs.Bosses.Fenix;
 using System.IO;
 using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
+using Stellamod.NPCs.Bosses.Zui;
 
 namespace Stellamod.NPCs.Town
 {
@@ -84,7 +85,7 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<LonelySorceress>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()) && !NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
