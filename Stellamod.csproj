@@ -317,7 +317,10 @@
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
+    <None Remove="NPCs\Bosses\Zui\Projectiles\GoldenChildren.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\GoldenHoe.png" />
+    <None Remove="NPCs\Bosses\Zui\Projectiles\Holdr.png" />
+    <None Remove="NPCs\Bosses\Zui\Projectiles\Holdr_Chain.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\ZuiLASERWARN.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\ZuiSpawnEffect.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazeBeamWarn.png" />

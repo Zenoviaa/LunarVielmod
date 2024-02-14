@@ -88,8 +88,8 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {
-                float offsetX = Main.rand.Next(-200, 200) * 0.05f;
-                float offsetY = Main.rand.Next(-200, 200) * 0.05f;
+                float offsetX = Main.rand.Next(-200, 200) * 0.03f;
+                float offsetY = Main.rand.Next(-200, 200) * 0.03f;
 
 
                 Projectile.velocity.X += offsetX;
