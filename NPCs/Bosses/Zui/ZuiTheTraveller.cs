@@ -600,7 +600,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			if (player.dead)
 			{
 				// If the targeted player is dead, flee
-				NPC.velocity.Y -= 0.5f;
+				NPC.velocity.Y -= 0.8f;
 				NPC.noTileCollide = true;
 				NPC.noGravity = false;
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
