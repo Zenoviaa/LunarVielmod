@@ -557,3 +557,8 @@ BucketScrapperMinionBuff: {
 	DisplayName: Bucket Scrapping
 	Description: All geared up and ready to-
 }
+
+Zuid: {
+	Description: Mods.Stellamod.Buffs.Zuid.Description
+	DisplayName: Zuid
+}

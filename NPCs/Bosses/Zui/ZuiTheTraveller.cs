@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
@@ -13,7 +14,9 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
+using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.NPCs.Projectiles;
+using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -545,7 +548,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 		{
 			Spawner++;
 			NPC.TargetClosest();
-			NPC.velocity *= 0.98f;
+			NPC.velocity *= 0.96f;
 			bee--;
 			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 
@@ -562,8 +565,8 @@ namespace Stellamod.NPCs.Bosses.Zui
 			Lighting.AddLight(NPC.Center, RGB.X, RGB.Y, RGB.Z);
 			
 			Player player = Main.player[NPC.target];
+			player.AddBuff(ModContent.BuffType<Zuid>(), 30);
 
-			
 
 
 
@@ -727,8 +730,268 @@ namespace Stellamod.NPCs.Bosses.Zui
 					counter++;
 					HoldUPVerliadie();
 					break;
+
+
+				case ActionState.StartZui:
+					NPC.damage = 0;
+					counter++;
+					StartZui();
+					break;
+
+
+				case ActionState.BeamsZui:
+					NPC.damage = 0;
+					counter++;
+					BeamsZui();
+					break;
 			}
 		}
+
+
+
+
+		private void StartZui()
+		{
+			
+			float ai1 = NPC.whoAmI;
+			timer++;
+			Player player = Main.player[NPC.target];
+			var entitySource = NPC.GetSource_FromThis();
+
+			if (timer == 1)
+				{
+
+				if (StellaMultiplayer.IsHost)
+				{
+					Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
+						ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+				}
+
+
+				if (StellaMultiplayer.IsHost)
+					{
+						float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+						float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2,
+							ModContent.ProjectileType<InfiniteHalo>(), 0, 0f, Main.myPlayer, 0f, ai1);
+					}
+
+					//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+					//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+				}
+
+
+			if (timer < 50) {
+
+				NPC.velocity.Y -= 0.05f;
+
+
+			}
+			
+			if (timer == 55)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				ResetTimers();
+				if (StellaMultiplayer.IsHost)
+				{
+					switch (Main.rand.Next(4))
+					{
+						case 0:
+							State = ActionState.BeamsZui;
+							break;
+						case 1:
+							State = ActionState.BeamsZui;// ElectricityZui;
+							break;
+						case 2:
+							State = ActionState.BeamsZui;//HomingGoldZui;
+							break;
+						case 3:
+							State = ActionState.BeamsZui;//LightrayZui;
+							break;
+					}
+				}
+
+
+			}
+		}
+
+
+		private void BeamsZui()
+		{
+
+			float ai1 = NPC.whoAmI;
+			timer++;
+			Player player = Main.player[NPC.target];
+
+
+                Player target = Main.player[NPC.target];
+                Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
+                if (timer == 1)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                       // Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                         //   ModContent.ProjectileType<ZuiRay>(), 70, 10, Main.myPlayer, ai0: NPC.whoAmI);
+
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+					ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+
+
+				
+
+
+
+			}
+
+
+                if (timer == 20)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+				ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+                }
+
+
+				if (timer == 40)
+				{
+					if (StellaMultiplayer.IsHost)
+					{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+				ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+				}
+
+
+				if (timer == 60)
+				{
+					if (StellaMultiplayer.IsHost)
+					{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+				ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+				}
+
+
+			if (timer == 80)
+			{
+				if (StellaMultiplayer.IsHost)
+				{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+					ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+			}
+
+			if (timer == 100)
+			{
+				if (StellaMultiplayer.IsHost)
+				{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+					ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+			}
+
+			if (timer == 120)
+			{
+				if (StellaMultiplayer.IsHost)
+				{
+					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
+					ModContent.NPCType<ZuiLASERWARN>());
+				}
+
+			}
+
+			//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));
+			//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
+
+
+
+			if (timer < 50)
+			{
+
+				
+
+
+			}
+
+			if (timer == 180)
+			{
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
+				ResetTimers();
+				if (StellaMultiplayer.IsHost)
+				{
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							State = ActionState.SpinAroundPlayerZui;
+							break;
+						case 1:
+							State = ActionState.RunZui;
+							break;
+
+					}
+				}
+
+
+			}
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		private void StartVerlia()

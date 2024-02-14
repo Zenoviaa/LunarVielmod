@@ -317,6 +317,8 @@
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
+    <None Remove="NPCs\Bosses\Zui\Projectiles\ZuiLASERWARN.png" />
+    <None Remove="NPCs\Bosses\Zui\Projectiles\ZuiSpawnEffect.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazeBeamWarn.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\BlazingSerpentHead_Head_Boss.png" />
     <None Remove="NPCs\Catacombs\Fire\BlazingSerpent\HeatBeam.png" />
@@ -440,6 +442,7 @@
     <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
+    <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="Textures\Backglow.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />
