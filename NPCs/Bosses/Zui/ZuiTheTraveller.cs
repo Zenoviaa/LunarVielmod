@@ -2434,13 +2434,13 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 
 
-			if (timer == 64 && ZuiSonic < 7)
+			if (timer == 64 && ZuiSonic < 6)
 			{
 				ResetTimers();
 				State = ActionState.SonicDashZui;
 				timer = 0;
 			}
-			if (timer == 64 && ZuiSonic >= 7)
+			if (timer == 64 && ZuiSonic >= 6)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
