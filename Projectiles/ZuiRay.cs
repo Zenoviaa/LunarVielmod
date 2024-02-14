@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 120;
             Projectile.alpha = 255;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -37,7 +37,7 @@ namespace Stellamod.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(_degrees);
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 150f * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Time / 120f * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
@@ -95,7 +95,7 @@ namespace Stellamod.Projectiles
 
             Color middleColor = Color.Lerp(Color.White, Color.LightYellow, 0.6f);
             Color middleColor2 = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 150);
+            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
             TrailRegistry.LaserShader.UseColor(Color.LightYellow);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SpikyTrail2);

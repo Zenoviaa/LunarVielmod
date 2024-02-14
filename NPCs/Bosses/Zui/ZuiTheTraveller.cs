@@ -1146,7 +1146,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 			if (timer < 150)
             {
-				if (rayer == 7)
+				if (rayer == 9)
 				{
 					if (StellaMultiplayer.IsHost)
 					{
@@ -2357,7 +2357,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 			rayer++;
 
-			if (rayer == 7)
+			if (rayer == 9)
 			{
 				if (StellaMultiplayer.IsHost)
 				{
