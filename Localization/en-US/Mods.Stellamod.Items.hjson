@@ -5649,7 +5649,8 @@ ScrappyBody: {
 
 MagiciansCodeHat: {
 	DisplayName: Magicians Code Hat
-	Tooltip: '''
+	Tooltip:
+		'''
 		30% Increased Damage for Magicians and Summoners
 		+3 Max Minions
 		Mana cost is no more!
@@ -5661,7 +5662,8 @@ MagiciansCodeHat: {
 
 RadianceStone: {
 	DisplayName: Radiance Stone
-	Tooltip: '''
+	Tooltip:
+		'''
 		Use in the Witch Town near Zui to ask her to fight you!
 		HIGHLY RECOMMENDED TO HAVE STEALI OR HIGHER!!
 		Also a very long platform may help. - Zui :)
@@ -5670,17 +5672,25 @@ RadianceStone: {
 
 ShopNote: {
 	DisplayName: Shop Note
-	Tooltip: '''
-		Now that I've seen your talent, I'll allow you access to my whole shop!
-		'''
+	Tooltip: Now that I've seen your talent, I'll allow you access to my whole shop!
 
-FenixBossRel: {
-	DisplayName: Fenix Boss Relic
-	Tooltip: ""
+	FenixBossRel: {
+		DisplayName: Fenix Boss Relic
+		Tooltip: ""
+	}
+
+	IrradiaBossRel: {
+		DisplayName: Irradia Boss Relic
+		Tooltip: ""
+	}
 }
 
 IrradiaBossRel: {
-	DisplayName: Irradia Boss Relic
 	Tooltip: ""
+	DisplayName: Irradia Boss Rel
 }
+
+FenixBossRel: {
+	Tooltip: ""
+	DisplayName: Fenix Boss Rel
 }

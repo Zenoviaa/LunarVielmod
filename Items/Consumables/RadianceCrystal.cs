@@ -62,67 +62,87 @@ namespace Stellamod.Items.Consumables
 
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
-            if (player.GetModPlayer<MyPlayer>().ZoneVillage)
+
+
+
+            if (!player.GetModPlayer<MyPlayer>().ZoneVillage)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                return false;
+            }
+
+            else if (player.GetModPlayer<MyPlayer>().ZoneVillage)
+            {
+
+                if (NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
-                    Main.NewText("Zui has come to have some fun!", Color.Gold);
-                    int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<ZuiTheTraveller>());
-                    Main.npc[npcID].netUpdate2 = true;
+                    return false;
                 }
-                else
+                if (!NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         Main.NewText("Zui has come to have some fun!", Color.Gold);
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
+                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<ZuiTheTraveller>());
+                        Main.npc[npcID].netUpdate2 = true;
+                    }
+                    else
+                    {
+                        if (Main.netMode == NetmodeID.SinglePlayer)
+                        {
+                            Main.NewText("Zui has come to have some fun!", Color.Gold);
+                            StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
+
+                        }
+
 
                     }
 
+                    int TextToSpawn = Main.rand.Next(1, 8 + 1);
+                    if (TextToSpawn == 1)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets get started!");
+                    }
+                    if (TextToSpawn == 2)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets have some fun shall we?");
+                    }
+                    if (TextToSpawn == 3)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Zui is coming to party!");
+                    }
+                    if (TextToSpawn == 4)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You wanna fight today??");
+                    }
+                    if (TextToSpawn == 5)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Here I come :)");
+                    }
+                    if (TextToSpawn == 6)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "I don't wanna fight right now :(");
+                    }
+                    if (TextToSpawn == 7)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Prepare to get rekted");
+                    }
+                    if (TextToSpawn == 8)
+                    {
+                        CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You're gonna have a good time");
+                    }
 
                 }
+                else
+                {
 
+                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Womp womp you used the item :)");
+                }
 
-                int TextToSpawn = Main.rand.Next(1, 8 + 1);
-                if (TextToSpawn == 1)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets get started!");
-                }
-                if (TextToSpawn == 2)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Lets have some fun shall we?");
-                }
-                if (TextToSpawn == 3)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Zui is coming to party!");
-                }
-                if (TextToSpawn == 4)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You wanna fight today??");
-                }
-                if (TextToSpawn == 5)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Here I come :)");
-                }
-                if (TextToSpawn == 6)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "I don't wanna fight right now :(");
-                }
-                if (TextToSpawn == 7)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Prepare to get rekted");
-                }
-                if (TextToSpawn == 8)
-                {
-                    CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "You're gonna have a good time");
-                }
-               
             }
-            else
-            {
-                
-                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(252, 208, 113, 44), "Womp womp you used the item :)");
-            }
+
+
+
+            
 
 
             return true;
