@@ -15,8 +15,8 @@ namespace Stellamod.Items.Armors.Scrappy
     {
         public override void SetDefaults()
         {
-            Item.width = 18; // Width of the item
-            Item.height = 18; // Height of the item
+            Item.width = 34; // Width of the item
+            Item.height = 20; // Height of the item
             Item.value = Item.sellPrice(gold: 6); // How many coins the item is worth
             Item.rare = ItemRarityID.Lime; // The rarity of the item
             Item.defense = 18; // The amount of defense the item will give when equipped

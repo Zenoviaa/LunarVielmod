@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.Summons
                 }
             
                 float targetRotation = Projectile.DirectionTo(targetCenter).ToRotation();
-                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.04f);
+                Projectile.rotation = MathHelper.WrapAngle(MathHelper.Lerp(Projectile.rotation, targetRotation, 0.04f));
                 if (targetCenter.X < Projectile.Center.X)
                     _flip = true;
                 else
@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Summons
             {
                 ai_Kill = 1;
                 float targetRotation = player.velocity.ToRotation();
-                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.04f);
+                Projectile.rotation = MathHelper.WrapAngle(MathHelper.Lerp(Projectile.rotation, targetRotation, 0.04f));
                 if (targetCenter.X < player.velocity.X)
                     _flip = true;
                 else
