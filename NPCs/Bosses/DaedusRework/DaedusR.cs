@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
     {
 
         public int PrevAtack;
-        int moveSpeed = 0;
+        float moveSpeed = 0;
         int moveSpeedY = 0;
         float DaedusDrug = 8;
         float HomeY = 330f;
@@ -198,12 +198,48 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Player player = Main.player[NPC.target];
             NPC.damage = 0;
 
+            bool lineOfSight = Collision.CanHitLine(NPC.position, NPC.width, NPC.height, player.position, player.width, player.height);
             if (Flying)
             {
-                if (NPC.Center.X >= player.Center.X && moveSpeed >= -120) // flies to players x position
-                    moveSpeed--;
-                else if (NPC.Center.X <= player.Center.X && moveSpeed <= 120)
-                    moveSpeed++;
+                float acceleration = 0.4f;
+                float deceleration = 0.2f;
+                float outOfSightAcceleration = 4;
+                float maxSpeed = 20;
+                if (NPC.Center.X >= player.Center.X && moveSpeed >= -maxSpeed)
+                {
+                    if(moveSpeed >= -maxSpeed)
+                    {
+                        if (lineOfSight)
+                        {
+                            moveSpeed -= acceleration;
+                        }
+                        else
+                        {
+                            moveSpeed -= outOfSightAcceleration;
+                        }
+                    } else if(moveSpeed < -maxSpeed)
+                    {
+                        moveSpeed+= deceleration;
+                    }
+                }           
+                else if (NPC.Center.X <= player.Center.X)
+                {
+                    if (moveSpeed <= maxSpeed)
+                    {
+                        if (lineOfSight)
+                        {
+                            moveSpeed+= acceleration;
+                        }
+                        else
+                        {
+                            moveSpeed += outOfSightAcceleration;
+                        }
+                    }
+                    else if (moveSpeed > maxSpeed)
+                    {
+                        moveSpeed-= deceleration;
+                    }
+                }
 
                 NPC.velocity.X = moveSpeed * 0.18f;
 
@@ -288,7 +324,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                 switch (NPC.ai[1])
                 {
                     case 0:
- 
+
                         NPC.ai[0]++;
                         if (NPC.ai[0] > 20)
                         {
@@ -301,27 +337,32 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                         }
                         break;
                     case 1:
-                        NPC.ai[0]++;
-                        if (NPC.ai[0] >= 100)
+                        //Check that there is a line to attack before attacking
+                        if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, playerT.position, playerT.width, playerT.height))
                         {
-                            if (StellaMultiplayer.IsHost)
+                            NPC.ai[0]++;
+                            if (NPC.ai[0] >= 100)
                             {
-                                int attack = Main.rand.Next(2, 5);
-                                if (attack == PrevAtack)
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    NPC.ai[0] = 1;
-                                }
-                                else
-                                {
-                                    NPC.ai[0] = 0;
-                                    NPC.ai[1] = attack;
-                                }
 
-                                Flying = true;
-                                NPC.netUpdate = true;
+                                    int attack = Main.rand.Next(2, 5);
+                                    if (attack == PrevAtack)
+                                    {
+                                        NPC.ai[0] = 1;
+                                    }
+                                    else
+                                    {
+                                        NPC.ai[0] = 0;
+                                        NPC.ai[1] = attack;
+                                    }
+
+                                    Flying = true;
+                                    NPC.netUpdate = true;
+                                }
                             }
                         }
-
+                
                         break;
                     case 2:
               
@@ -443,6 +484,11 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             }
 
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
+            if (StellaMultiplayer.IsHost)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    ModContent.ProjectileType<DaedusDeath>(), 0, 0, Main.myPlayer,  ai0: -NPC.direction);
+            }
         }
     }
 }
