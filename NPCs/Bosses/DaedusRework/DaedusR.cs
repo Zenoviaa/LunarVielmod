@@ -488,7 +488,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
             for(int i = 0; i < 48; i++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(12, 3122);
+                Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
                 Dust.NewDustPerfect(NPC.Center, DustID.Hay, velocity);
             }
 
