@@ -886,7 +886,7 @@ StandN: {
 }
 
 VeriBossRel: {
-	DisplayName: Irradia N Havoc Boss Relic
+	DisplayName: Stone Guardian Relic
 	Tooltip: Boss relic of a relic boss, good job
 }
 
@@ -3432,32 +3432,32 @@ SunSall: {
 
 DaedusBossRel: {
 	DisplayName: Daedus Relic
-	Tooltip: ""
+	Tooltip: A puppet manifested from the rotten core of Gothivia's singularity, what a shame.
 }
 
 DreadBossRel: {
 	DisplayName: Dreadmire Relic
-	Tooltip: ""
+	Tooltip: Sometimes people lose themselves, she was one of a kind.
 }
 
 GintzeBossRel: {
 	DisplayName: Commander Ginztia Relic
-	Tooltip: ""
+	Tooltip: Once apart of Gothivia's ranks, betrayed and went on their own to create an army.
 }
 
 JackBossRel: {
 	DisplayName: Jack Relic
-	Tooltip: ""
+	Tooltip: Stood alone in the most calm places, truly nice for a scarecrow.
 }
 
 SOMBossRel: {
 	DisplayName: Singularity of the Moon Relic
-	Tooltip: ""
+	Tooltip: Second Singularity and your biggest challenge yet!
 }
 
 SunsBossRel: {
 	DisplayName: Sunstalker Relic
-	Tooltip: ""
+	Tooltip: Forgotten like the wind yet still a creature of infamy.
 }
 
 VerliBossRel: {
@@ -5679,10 +5679,15 @@ ShopNote: {
 
 FenixBossRel: {
 	DisplayName: Fenix Boss Relic
-	Tooltip: ""
+	Tooltip: A commander of a carian army, made the world worse overall.
 }
 
 IrradiaBossRel: {
-	DisplayName: Irradia Boss Relic
-	Tooltip: ""
+	DisplayName: Irradia N Havoc Boss Relic
+	Tooltip: A Guardian huh? Well not anymore.
+}
+
+ZuiBossRel: {
+	Tooltip: Who really are they?
+	DisplayName: Zui Boss Relic
 }
