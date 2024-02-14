@@ -1144,7 +1144,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 
 			}
-			if (timer < 200)
+			if (timer < 150)
             {
 				if (rayer == 7)
 				{
@@ -1193,26 +1193,10 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 
 
-			if (timer == 150)
-			{
-				if (StellaMultiplayer.IsHost)
-				{
-					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-				ModContent.NPCType<ZuiLASERWARN>());
-				}
-
-			}
 
 
-			if (timer == 200)
-			{
-				if (StellaMultiplayer.IsHost)
-				{
-					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-					ModContent.NPCType<ZuiLASERWARN>());
-				}
 
-			}
+
 
 			
 
@@ -1930,7 +1914,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 				//SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"));
 			}
 			NPC.velocity *= 0.96f;
-			float speed = 23f;
+			float speed = 20f;
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			if (timer > 32)
