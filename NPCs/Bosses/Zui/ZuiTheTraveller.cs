@@ -967,11 +967,24 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 					ModContent.NPCType<ZuiLASERWARN>());
+
+
+					}
+
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+						break;
+
+
 				}
 
 
-
-				
 
 
 
@@ -983,10 +996,22 @@ namespace Stellamod.NPCs.Bosses.Zui
                     if (StellaMultiplayer.IsHost)
                     {
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
-				ModContent.NPCType<ZuiLASERWARN>());
+					ModContent.NPCType<ZuiLASERWARN>());
+					}
+				switch (Main.rand.Next(2))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+						break;
+
+
 				}
 
-                }
+			}
 
 
 				if (timer == 40)
@@ -995,6 +1020,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 				ModContent.NPCType<ZuiLASERWARN>());
+
+
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+							break;
+
+
+					}
 				}
 
 				}
@@ -1006,6 +1045,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 				ModContent.NPCType<ZuiLASERWARN>());
+
+
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+							break;
+
+
+					}
 				}
 
 				}
@@ -1017,6 +1070,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 				{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 					ModContent.NPCType<ZuiLASERWARN>());
+
+
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+							break;
+
+
+					}
 				}
 
 			}
@@ -1027,6 +1094,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 				{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 					ModContent.NPCType<ZuiLASERWARN>());
+
+
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+							break;
+
+
+					}
 				}
 
 			}
@@ -1037,6 +1118,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 				{
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 					ModContent.NPCType<ZuiLASERWARN>());
+
+
+					switch (Main.rand.Next(2))
+					{
+						case 0:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+
+							break;
+						case 1:
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+							break;
+
+
+					}
 				}
 
 			}
@@ -1303,7 +1398,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					ModContent.NPCType<ZuiLASERWARN>());
 				}
 
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
 
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
+						break;
+
+				}
 
 
 
@@ -1334,7 +1442,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y,
 				ModContent.NPCType<ZuiLASERWARN>());
 				}
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock"), NPC.position);
 
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Laserlock2"), NPC.position);
+						break;
+
+				}
 			}
 
 
@@ -1836,14 +1957,14 @@ namespace Stellamod.NPCs.Bosses.Zui
 					switch (Main.rand.Next(3))
 					{
 						case 0:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice4"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice4"), NPC.position);
 
 							break;
 						case 1:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice5"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice5"), NPC.position);
 							break;
 						case 2:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice6"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice6"), NPC.position);
 							break;
 
 					}
@@ -1948,14 +2069,14 @@ namespace Stellamod.NPCs.Bosses.Zui
 				switch (Main.rand.Next(3))
 				{
 					case 0:
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice4"), NPC.position);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice4"), NPC.position);
 
 						break;
 					case 1:
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice5"), NPC.position);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice5"), NPC.position);
 						break;
 					case 2:
-						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldPrice6"), NPC.position);
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GoldenPrice6"), NPC.position);
 						break;
 
 				}
