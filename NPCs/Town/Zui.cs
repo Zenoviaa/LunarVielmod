@@ -87,7 +87,8 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
-		}
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+        }
 
 		public override void FindFrame(int frameHeight)
 		{
