@@ -2558,6 +2558,20 @@ namespace Stellamod.NPCs.Bosses.Zui
 					d.noGravity = true;
 				}
 				NPC.velocity.X -= 17f;
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW1"), NPC.position);
+
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW2"), NPC.position);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW3"), NPC.position);
+						break;
+
+				}
 			}
 			if (timer == 2)
             {
@@ -2581,20 +2595,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 					ModContent.NPCType<GoldBeamWarn>());
 
 
-					switch (Main.rand.Next(3))
-					{
-						case 0:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW1"), NPC.position);
-
-							break;
-						case 1:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW2"), NPC.position);
-							break;
-						case 2:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW3"), NPC.position);
-							break;
-
-					}
+					
 				}
 				
 
