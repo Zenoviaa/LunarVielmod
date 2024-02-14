@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
+using Stellamod.Items.Materials.Tech;
 
 namespace Stellamod.Items.Armors.Scrappy
 {
@@ -36,6 +37,13 @@ namespace Stellamod.Items.Armors.Scrappy
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<ArmorDrive>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<UnknownCircuitry>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 20);
+            recipe.AddIngredient(ItemID.Ectoplasm, 5);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
+
             recipe.Register();
         }
     }

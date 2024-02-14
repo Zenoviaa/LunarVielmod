@@ -7,6 +7,7 @@ using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Quest.Zui;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
@@ -17,6 +18,7 @@ using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
 using Stellamod.NPCs.Projectiles;
+using Stellamod.NPCs.Town;
 using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
 using System;
@@ -4260,21 +4262,12 @@ namespace Stellamod.NPCs.Bosses.Zui
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Consumables.Gambit>(), 1, 5, 10));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MagiciansCodeHat>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<VerliaBossBag>()));
-
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-				 ModContent.ItemType<VerliaHat>(),
-				 ModContent.ItemType<SwordsOfRevengence>(),
-				 ModContent.ItemType<SupernovaSitar>(),
-				 ModContent.ItemType<HarmonicBlasphemy>(),
-				 ModContent.ItemType<Curlistine>()));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Starrdew>(), minimumDropped: 3, maximumDropped: 25));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 3, maximumDropped: 25));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
+			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CompletedFlowerBag>(), minimumDropped: 1, maximumDropped: 3));
 			npcLoot.Add(notExpertRule);
 		}
 
@@ -4288,12 +4281,27 @@ namespace Stellamod.NPCs.Bosses.Zui
 			gruber1 = 0;
 			gruber2 = 0;
 			rayer = 0;
-	}
+		}
 
-
+	
 		public override void OnKill()
 		{
+
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
+			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
+			var entitySource = NPC.GetSource_FromThis();
+			NPC.NewNPC(entitySource, (int)NPC.Center.X , (int)NPC.Center.Y, ModContent.NPCType<ZuiDeath>());
+
+
+
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedZuiBoss, -1);
+
+			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
+			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
+			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
+			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
+			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
+			
 		}
 	}
 }

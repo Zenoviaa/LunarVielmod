@@ -499,6 +499,7 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
+			.Add<RadianceStone>(Condition.DownedPlantera)
 			.Add(new Item(ItemID.Bottle) { shopCustomPrice = Item.buyPrice(copper: 50) })
 			.Add(new Item(ItemID.JungleRose) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add<IceClimbers>()
