@@ -23,7 +23,7 @@ namespace Stellamod.Items.Consumables
             Item.width = 18;
             Item.height = 28;
             Item.rare = ItemRarityID.Green;
-            Item.value = Item.sellPrice(0, 0, 0, 0);
+            Item.value = Item.buyPrice(0, 5, 0, 0);
             Item.useAnimation = 45;
             Item.useTime = 45;
             Item.useStyle = ItemUseStyleID.HoldUp;
@@ -45,9 +45,34 @@ namespace Stellamod.Items.Consumables
         {
             if (player.ZoneAcid())
             {
+                
 
-                int TextToSpawn = Main.rand.Next(1, 8 + 1);
-                NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<IrradiatedNest>());
+                
+                if (NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
+                {
+                        return false;
+                }
+                if (!NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
+                {
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Main.NewText("A disruption has occured!", Color.SpringGreen);
+                        int npcID = NPC.NewNPC(player.GetSource_FromThis(), (int)player.position.X, (int)player.position.Y, ModContent.NPCType<IrradiatedNest>());
+                        Main.npc[npcID].netUpdate2 = true;
+                    }
+                    else
+                    {
+                        if (Main.netMode == NetmodeID.SinglePlayer)
+                        {
+                            Main.NewText("A disruption has occured!", Color.SpringGreen);
+                            StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<IrradiatedNest>(), (int)player.position.X, (int)player.position.Y);
+
+                        }
+
+
+                    }
+                }
+                 int TextToSpawn = Main.rand.Next(1, 8 + 1);
                 if (TextToSpawn == 1)
                 {
                     CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Initiate death protocol");
@@ -86,6 +111,8 @@ namespace Stellamod.Items.Consumables
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Usage outside of contamination detacted!");
+
+                return false;
             }
 
 

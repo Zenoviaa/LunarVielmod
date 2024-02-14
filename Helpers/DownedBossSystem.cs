@@ -25,6 +25,7 @@ namespace Stellamod.Helpers
 		public static bool downedStoneGolemBoss = false;
 		public static bool downedSTARBoss = false;
 		public static bool downedFenixBoss = false;
+		public static bool downedNESTBoss = false;
 		public static bool downedPandorasBox = false;
 		public static bool downedBlazingSerpent = false;
 		public static bool downedWaterJellyfish = false;
@@ -51,7 +52,8 @@ namespace Stellamod.Helpers
             downedWaterJellyfish = false;
             downedSparn = false;
             downedCogwork = false;
-        }
+			downedNESTBoss = false;
+		}
 
         public override void ClearWorld()
         {
@@ -80,12 +82,14 @@ namespace Stellamod.Helpers
 			tag["downedSparn"] = downedSparn;
 			tag["downedWaterJellyfish"] = downedWaterJellyfish;
 			tag["downedZuiBoss"] = downedZuiBoss;
+			tag["downedNESTBoss"] = downedNESTBoss;
 		}
 
 		public override void LoadWorldData(TagCompound tag)
 		{
 
 			downedZuiBoss = tag.GetBool("downedZuiBoss");
+			downedNESTBoss = tag.GetBool("downedNESTBoss");
 			downedVeriBoss = tag.GetBool("downedVeriBoss");
 			downedDreadBoss = tag.GetBool("downedDreadBoss");
 			downedSOMBoss = tag.GetBool("downedSOMBoss");
@@ -136,8 +140,8 @@ namespace Stellamod.Helpers
             writer.Write(new BitsByte
             {
                 [0] = downedPandorasBox,
-				[1] = downedZuiBoss
-
+				[1] = downedZuiBoss,
+				[2] = downedNESTBoss
 			});	
 		}
 
@@ -167,6 +171,7 @@ namespace Stellamod.Helpers
 			flags = reader.ReadByte();
 			downedPandorasBox = flags[0];
 			downedZuiBoss = flags[1];
+			downedNESTBoss = flags[2];
 		}
 	}
 }

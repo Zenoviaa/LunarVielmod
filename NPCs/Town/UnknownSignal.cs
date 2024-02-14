@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
@@ -21,6 +22,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
+using Stellamod.NPCs.Bosses.INest;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -167,6 +169,41 @@ namespace Stellamod.NPCs.Town
 			}
 
 			return chat; // chat is implicitly cast to a string.
+		}
+		public override void AI()
+		{
+			NPC.TargetClosest();
+			NPC.spriteDirection = NPC.direction;
+			Player target = Main.player[NPC.target];
+		}
+
+		public override void SetChatButtons(ref string button, ref string button2)
+		{ // What the chat buttons are when you open up the chat UI
+
+			button = "Touch Unknown Circuitry";
+
+		}
+		public override void OnChatButtonClicked(bool firstButton, ref string shop)
+		{
+			if (firstButton)
+			{
+				Player target = Main.player[NPC.target];
+				NPC.alpha = 255;
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)target.Center.X, (int)target.Center.Y - 5,
+						ModContent.NPCType<IrradiatedNest>());
+				}
+				else
+				{
+					if (Main.netMode == NetmodeID.SinglePlayer)
+						return;
+
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+						ModContent.NPCType<IrradiatedNest>(), (int)target.Center.X, (int)target.Center.Y - 5);
+				}
+				NPC.Kill();
+			}
 		}
 
 
