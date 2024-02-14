@@ -5646,3 +5646,31 @@ ScrappyBody: {
 		Increases max minions by 2
 		'''
 }
+
+MagiciansCodeHat: {
+	DisplayName: Magicians Code Hat
+	Tooltip: '''
+		30% Increased Damage for Magicians and Summoners
+		+3 Max Minions
+		Mana cost is no more!
+		You take 20% less damage!
+		Increased life regeneration.
+		+100 Life.
+		'''
+}
+
+RadianceStone: {
+	DisplayName: Radiance Stone
+	Tooltip: '''
+		Use in the Witch Town near Zui to ask her to fight you!
+		HIGHLY RECOMMENDED TO HAVE STEALI OR HIGHER!!
+		Also a very long platform may help. - Zui :)
+		'''
+}
+
+ShopNote: {
+	DisplayName: Shop Note
+	Tooltip: '''
+		Now that I've seen your talent, I'll allow you access to my whole shop!
+		'''
+}

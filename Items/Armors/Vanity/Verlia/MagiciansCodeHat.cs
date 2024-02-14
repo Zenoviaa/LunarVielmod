@@ -40,11 +40,11 @@ namespace Stellamod.Items.Armors.Vanity.Verlia
 		{
 			player.statLifeMax2 += 100;
 			player.GetDamage(DamageClass.Magic) *= 1.30f;
-			player.GetDamage(DamageClass.Summon) *= 1.20f;
+			player.GetDamage(DamageClass.Summon) *= 1.30f;
 			player.maxMinions += 3;
-			player.lifeRegen += 2;
+			player.lifeRegen += 1;
 			player.manaCost *= 0;
-			player.endurance += 0.3f;
+			player.endurance += 0.2f;
 			
 
 
