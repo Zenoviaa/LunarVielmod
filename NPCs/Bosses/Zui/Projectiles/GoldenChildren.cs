@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,6 +32,14 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
         }
 
         private ref float AI_Timer => ref Projectile.ai[0];
+        public override void OnSpawn(IEntitySource source)
+        {
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                Projectile.oldPos[i] = Projectile.position;
+            }
+        }
+
         public override void AI()
         {
             AI_Timer++;
