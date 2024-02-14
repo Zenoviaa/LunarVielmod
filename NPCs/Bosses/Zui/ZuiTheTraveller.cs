@@ -2584,14 +2584,14 @@ namespace Stellamod.NPCs.Bosses.Zui
 					switch (Main.rand.Next(3))
 					{
 						case 0:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold1"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW1"), NPC.position);
 
 							break;
 						case 1:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold2"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW2"), NPC.position);
 							break;
 						case 2:
-							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Gold3"), NPC.position);
+							SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/GW3"), NPC.position);
 							break;
 
 					}
