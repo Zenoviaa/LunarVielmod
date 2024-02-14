@@ -5617,3 +5617,18 @@ FocusingCrystal: {
 	DisplayName: Focusing Crystal
 	Tooltip: A key ingredient in crafting Focal Crystals, which let you teleport to special places...
 }
+
+ScrappyLegs: {
+	Tooltip: ""
+	DisplayName: Scrappy Legs
+}
+
+ScrappyHead: {
+	Tooltip: ""
+	DisplayName: Scrappy Head
+}
+
+ScrappyBody: {
+	Tooltip: ""
+	DisplayName: Scrappy Body
+}
