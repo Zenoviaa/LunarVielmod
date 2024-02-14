@@ -13,6 +13,7 @@ using Stellamod.NPCs.Bosses.Daedus;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -42,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             // DisplayName.SetDefault("Jack");
             Main.npcFrameCount[NPC.type] = 46;
-
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
@@ -103,7 +104,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.defense = 10;
             NPC.lifeMax = 2600;
             NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -111,7 +112,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+
             NPC.aiStyle = 0;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
@@ -484,6 +485,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             }
 
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
+
+            for(int i = 0; i < 48; i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(12, 3122);
+                Dust.NewDustPerfect(NPC.Center, DustID.Hay, velocity);
+            }
+
             if (StellaMultiplayer.IsHost)
             {
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
