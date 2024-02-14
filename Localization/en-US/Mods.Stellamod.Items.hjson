@@ -5619,16 +5619,30 @@ FocusingCrystal: {
 }
 
 ScrappyLegs: {
-	Tooltip: ""
 	DisplayName: Scrappy Legs
+	Tooltip:
+		'''
+		Increased movement speed
+		Increases max minions by 1
+		'''
 }
 
 ScrappyHead: {
-	Tooltip: ""
 	DisplayName: Scrappy Head
+	Tooltip:
+		'''
+		8% increased summon and magic damage
+		4% increased damage reduction
+		Increases max minions by 1
+		'''
 }
 
 ScrappyBody: {
-	Tooltip: ""
 	DisplayName: Scrappy Body
+	Tooltip:
+		'''
+		12% increased summon and magic damage
+		8% increased damage reduction
+		Increases max minions by 2
+		'''
 }

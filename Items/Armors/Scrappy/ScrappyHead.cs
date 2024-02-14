@@ -51,8 +51,9 @@ namespace Stellamod.Items.Armors.Scrappy
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Increases max life if you are under 200 health!" +
-                "\nIncreased endurance and speed!";
+            player.setBonus = "Summons a turret over your head to shoot a laser at nearby enemies!\n8% increased magic and summon damage";
+            player.GetDamage(DamageClass.Summon) += 0.08f;
+            player.GetDamage(DamageClass.Magic) += 0.08f;
             player.GetModPlayer<ScrappyPlayer>().hasSetBonus = true;
             if (player.ownedProjectileCounts[ModContent.ProjectileType<ScrappyGunProj>()] == 0)
             {

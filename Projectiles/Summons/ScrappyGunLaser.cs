@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.Summons
             Projectile.friendly = true;
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = int.MaxValue;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
@@ -40,12 +40,15 @@ namespace Stellamod.Projectiles.Summons
             float ai = Projectile.ai[0];
             int projectileId = (int)ai;
             Projectile proj = Main.projectile[projectileId];
-
+            if (proj.ai[1] == 1f)
+            {
+                Projectile.Kill();
+            }
 
             alphaCounter = VectorHelper.Osc(0.5f, 1.00f, 3);
             Projectile.Center = proj.Center + Projectile.velocity * 1f;// customization of the hitbox position
             //Dunno if this is needed but whatever
-            Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = proj.rotation;
 
             _lightningArcPos = CalculateLightningArc();
         }
@@ -85,9 +88,9 @@ namespace Stellamod.Projectiles.Summons
             positions.Add(currentPosition);
             for (int i = 0; i < 24; i++)
             {
-                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                Vector2 direction = Projectile.rotation.ToRotationVector2().SafeNormalize(Vector2.Zero);
                 direction = direction.RotatedByRandom(MathHelper.ToRadians(2));
-                float distance = Main.rand.NextFloat(20, 45);
+                float distance = Main.rand.NextFloat(20, 24);
                 Vector2 newPosition = currentPosition + direction * distance;
                 currentPosition = newPosition;
                 positions.Add(currentPosition);
@@ -115,17 +118,7 @@ namespace Stellamod.Projectiles.Summons
                     }
                 }
 
-                if (!foundTarget)
-                {
-                    float distanceToMouse = Vector2.Distance(currentPosition, Main.MouseWorld);
-                    if (distanceToMouse < teleportDistance)
-                    {
-                        positions.Add(Main.MouseWorld);
-                        positions.Add(Main.MouseWorld);
-                        break;
-                    }
-                }
-                else if (foundTarget && distanceFromTarget < teleportDistance)
+                if (foundTarget && distanceFromTarget < teleportDistance)
                 {
                     positions.Add(targetCenter);
                     positions.Add(targetCenter);
@@ -173,7 +166,7 @@ namespace Stellamod.Projectiles.Summons
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            TrailRegistry.LaserShader.UseColor(Color.LightCyan);
+            TrailRegistry.LaserShader.UseColor(Color.OrangeRed);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
             BeamDrawer.DrawPixelated(_lightningArcPos, -Main.screenPosition, _lightningArcPos.Length);
