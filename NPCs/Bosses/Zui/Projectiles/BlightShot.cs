@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 
 
 			float maxDetectRadius = 3f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 14f; // The speed at which the projectile moves towards the target
+			float projSpeed = 11f; // The speed at which the projectile moves towards the target
 
 			
 
