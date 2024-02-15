@@ -222,7 +222,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             if (NPC.ai[0] % 8 == 0)
                             {
                                 DrugRidus = 20;
-                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Npc/AcidProbe3"), NPC.position);
+                                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Custom/Npc/AcidProbe3"), NPC.position);
                                 targetPos = player.Center;
                                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
                                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
