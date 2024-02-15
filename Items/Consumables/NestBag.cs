@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
@@ -62,7 +63,12 @@ namespace Stellamod.Items.Consumables
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedCreeperStaff>());
             }
-
+            if (Main.rand.NextBool(2))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenTech>(), 10);
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<UnknownCircuitry>(), 10);
+            }
+            
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
