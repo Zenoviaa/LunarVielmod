@@ -87,14 +87,8 @@ namespace Stellamod.Items.Consumables
                     }
                     else
                     {
-                        if (Main.netMode == NetmodeID.SinglePlayer)
-                        {
-                            Main.NewText("Zui has come to have some fun!", Color.Gold);
-                            StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
-
-                        }
-
-
+                        Main.NewText("Zui has come to have some fun!", Color.Gold);
+                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<ZuiTheTraveller>(), (int)player.position.X, (int)player.position.Y);
                     }
 
                     int TextToSpawn = Main.rand.Next(1, 8 + 1);
