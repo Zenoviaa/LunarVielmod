@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.alpha = 255;
             NPC.width = 150;
             NPC.height = 60;
-            NPC.damage = 60;
+            NPC.damage = 80;
             NPC.defense = 35;
             NPC.lifeMax = 9050;
             NPC.HitSound = SoundID.NPCHit42;
@@ -117,11 +117,7 @@ namespace Stellamod.NPCs.Bosses.INest
         bool CutScene2;
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NestBag>()));
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
