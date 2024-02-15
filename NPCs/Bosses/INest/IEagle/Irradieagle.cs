@@ -178,7 +178,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 int damage = expertMode ? 12 : 21;
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
-                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, damage, 0);
+                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
                                 }
 
                             }
@@ -201,7 +201,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 bloodproj = Main.rand.Next(new int[] { Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type });
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
-                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, damage, 0);
+                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
                                 }
                             }
                         }
@@ -233,7 +233,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                                 int damage = expertMode ? 12 : 21;
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<ToxicMissile>(), damage, 1, Main.myPlayer, 0, 0);
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<ToxicMissile>(), 30, 1, Main.myPlayer, 0, 0);
                             }
                         }
                         if (NPC.ai[0] == 100)
@@ -296,7 +296,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 float offsetY = Main.rand.Next(-250, 250) * 0.01f;
                                 int damage = expertMode ? 12 : 21;
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<AcidFlame>(), damage, 1, Main.myPlayer, 0, 0);
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<AcidFlame>(), 40, 1, Main.myPlayer, 0, 0);
                             }
 
                         }
