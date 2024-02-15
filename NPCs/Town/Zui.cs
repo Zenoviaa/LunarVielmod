@@ -26,6 +26,7 @@ using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Zui;
+using Stellamod.Items.Armors.Vanity.Nyxia;
 
 namespace Stellamod.NPCs.Town
 {
@@ -529,6 +530,9 @@ namespace Stellamod.NPCs.Town
 			.Add<IceClimbers>()
 			.Add<FloweredCard>()
 			.Add<ZenoviasPikpikGlove>()
+			.Add<NyxiaHat>()
+			.Add<NyxiaRobe>()
+			.Add<NyxiaThighs>()
 			.Add<SolarianHat>()
 			.Add<SolarianChestplate>()
 			.Add<SolarianPants>()

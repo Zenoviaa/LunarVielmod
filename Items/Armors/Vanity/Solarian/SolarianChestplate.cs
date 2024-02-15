@@ -30,9 +30,15 @@ namespace Stellamod.Items.Armors.Vanity.Solarian
 			Item.defense = 3; // The amount of defense the item will give when equipped
 		}
 
-	
+		public override void UpdateEquip(Player player)
+		{
+			player.maxMinions += 1;
+		}
+
+
+
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	
+
 	}
 }

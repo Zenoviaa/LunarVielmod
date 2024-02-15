@@ -5381,7 +5381,7 @@ VeroshotBow: {
 
 AzaleanChestplate: {
 	DisplayName: Azalean Chestplate
-	Tooltip: Use this piece from one of the developers! (Azza)
+	Tooltip: Use this piece from one of the developers! (Azza)... Also gives +12% Ranged Damage!
 }
 
 AzaleanHat: {
@@ -5396,7 +5396,7 @@ AzaleanLeggings: {
 
 SolarianChestplate: {
 	DisplayName: Solarian Chestplate
-	Tooltip: Use this piece from one of the developers! (Scolon)
+	Tooltip: Use this piece from one of the developers! (Scolon)... Also +1 Summon!
 }
 
 SolarianHat: {
@@ -5426,7 +5426,7 @@ YuriFury: {
 
 ToxicHornetStaff: {
 	DisplayName: Toxic Hornet Staff
-	Tooltip: ""
+	Tooltip: Summons a toxic hornet after enemies!
 }
 
 ZenoviasPikpikGlove: {
@@ -5690,4 +5690,19 @@ IrradiaBossRel: {
 ZuiBossRel: {
 	Tooltip: Who really are they?
 	DisplayName: Zui Boss Relic
+}
+
+NyxiaHat: {
+	DisplayName: Nyxia Hat
+	Tooltip: From the lead developer Zenovia! Go play Diari please :(
+}
+
+NyxiaRobe: {
+	DisplayName: Nyxia Robe
+	Tooltip: From the lead developer Zenovia! Gives 5% damage reduction, 6% more magic damage and some life regeneration!
+}
+
+NyxiaThighs: {
+	DisplayName: Nyxia Thighs
+	Tooltip: I love you all and thanks for playing my mod! - Zenovia
 }

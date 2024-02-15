@@ -3,12 +3,12 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.Vanity.Azalean
+namespace Stellamod.Items.Armors.Vanity.Nyxia
 {
     // The AutoloadEquip attribute automatically attaches an equip texture to this item.
     // Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
     [AutoloadEquip(EquipType.Body)]
-	public class AzaleanChestplate : ModItem
+	public class NyxiaRobe : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -31,8 +31,9 @@ namespace Stellamod.Items.Armors.Vanity.Azalean
 		}
 		public override void UpdateEquip(Player player)
 		{
-
-			player.GetDamage(DamageClass.Ranged) += 0.12f;
+			player.lifeRegen += 1;
+			player.endurance += 0.05f;
+			player.GetDamage(DamageClass.Magic) += 0.06f;
 		}
 
 
