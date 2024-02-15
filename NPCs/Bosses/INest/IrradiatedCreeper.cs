@@ -24,9 +24,9 @@ namespace Stellamod.NPCs.Bosses.INest
 
             NPC.width = 24;
             NPC.height = 24;
-            NPC.damage = 19;
+            NPC.damage = 22;
             NPC.defense = 0;
-            NPC.lifeMax = 45;
+            NPC.lifeMax = 75;
             NPC.HitSound = SoundID.NPCHit29;
             NPC.DeathSound = SoundID.NPCDeath32;
             NPC.value = 60f;
