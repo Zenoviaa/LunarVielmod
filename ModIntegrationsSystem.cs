@@ -267,13 +267,13 @@ namespace Stellamod
 
 		private void DoNESTIntegration()
 		{
-			string internalName5 = "Nest of the Acidic";
+			string internalName5 = "NestoftheAcidic";
 
 			// The NPC type of the boss
 			int bossType5 = ModContent.NPCType<NPCs.Bosses.INest.IrradiatedNest>();
 
 			// Value inferred from boss progression, see the wiki for details
-			float weight5 = 10.1f;
+			float weight5 = 10.2f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed5 = () => DownedBossSystem.downedNESTBoss;

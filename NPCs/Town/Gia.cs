@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Armors.Vanity.Gia;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -851,7 +852,7 @@ namespace Stellamod.NPCs.Town
 			var npcShop = new NPCShop(Type, ShopName)
 
 
-
+			.Add<EDR>(Condition.DownedMechBossAny)
 			.Add(new Item(ModContent.ItemType<GiaWig>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaSuit>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaPants>()) { shopCustomPrice = Item.buyPrice(gold: 10) })

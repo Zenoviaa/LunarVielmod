@@ -35,13 +35,13 @@ namespace Stellamod.NPCs.Bosses.INest
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
         }
-
+       
         public override void SetDefaults()
         {
             NPC.alpha = 255;
             NPC.width = 150;
             NPC.height = 60;
-            NPC.damage = 150;
+            NPC.damage = 1;
             NPC.defense = 35;
             NPC.lifeMax = 9050;
             NPC.HitSound = SoundID.NPCHit42;
@@ -57,6 +57,7 @@ namespace Stellamod.NPCs.Bosses.INest
         }
 
         int frame = 0;
+        int starter = 0;
         public override void FindFrame(int frameHeight)
         {
             //bool expertMode = Main.expertMode;
@@ -211,6 +212,13 @@ namespace Stellamod.NPCs.Bosses.INest
         }
         public override void AI()
         {
+
+            starter++;
+
+            if (starter > 60)
+            {
+                NPC.damage = 150;
+            }
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
