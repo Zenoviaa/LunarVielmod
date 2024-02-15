@@ -29,6 +29,7 @@ namespace Stellamod.NPCs.Bosses.INest
         bool Nukes;
         public override void SetStaticDefaults()
         {
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 14;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             // DisplayName.SetDefault("Irradiated Nest");
@@ -44,6 +45,7 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.defense = 15;
             NPC.lifeMax = 3650;
             NPC.HitSound = SoundID.NPCHit42;
+            NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
@@ -223,7 +225,7 @@ namespace Stellamod.NPCs.Bosses.INest
             }
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
-            if (distance > 3000f || playerT.dead || !playerT.ZoneAcid())
+            if (distance > 3000f || playerT.dead)
             {
                 player.GetModPlayer<MyPlayer>().IrradiatedKilled = 0;
                 NPC.ai[0] = 0;
@@ -304,7 +306,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     CutScene = true;
                     NPC.life = 300;
                     NPC.netUpdate = true;
-
                 }
             }
             if (!Spawned)

@@ -105,11 +105,11 @@ namespace Stellamod.Items.Consumables
                 {
                     CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "You’re going to have a bad time…");
                 }
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
+               // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
+               // SoundEngine.PlaySound(new SoundStyle("Stellamod/Sounds/Button"));
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y, player.width, player.height), new Color(152, 208, 113, 44), "Usage outside of contamination detacted!");
 
                 return false;
