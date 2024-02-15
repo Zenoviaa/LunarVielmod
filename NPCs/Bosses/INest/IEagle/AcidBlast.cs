@@ -13,8 +13,8 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Acid Blast");
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 14;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
 
 		public override void SetDefaults()
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             for (int i = 0; i < 8; i++)
             {
                 Vector2 drawOffset = (MathHelper.TwoPi * i / 8f).ToRotationVector2() * 4f;
-                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.GreenYellow with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
+                Main.EntitySpriteDraw(texture, drawPosition + drawOffset, null, Color.SpringGreen with { A = 160 } * Projectile.Opacity, Projectile.rotation, texture.Size() * 0.5f, scale, 0, 0);
             }
             for (int i = 0; i < 7; i++)
             {

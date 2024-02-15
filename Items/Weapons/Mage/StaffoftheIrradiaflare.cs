@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 11;
+            Item.damage = 61;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -44,14 +44,6 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-5f, 0f);
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
-
+       
     }
 }

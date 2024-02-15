@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetDefaults()
         {
-            Item.damage = 25;
+            Item.damage = 45;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
@@ -94,14 +94,7 @@ namespace Stellamod.Items.Weapons.Summon
 			return true;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 
 		/*
 		 * This minion shows a few mandatory things that make it behave properly. 
