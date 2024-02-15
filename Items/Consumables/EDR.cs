@@ -43,7 +43,7 @@ namespace Stellamod.Items.Consumables
 */
         public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */
         {
-            if (player.ZoneAcid())
+            if (player.ZoneAcid() || player.GetModPlayer<MyPlayer>().ZoneLab)
             {
                 
 
