@@ -45,9 +45,7 @@ namespace Stellamod.Items.Consumables
         {
             if (player.ZoneAcid() || player.GetModPlayer<MyPlayer>().ZoneLab)
             {
-                
-
-                
+                             
                 if (NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
                 {
                         return false;

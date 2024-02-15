@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = 0;
-            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
+
         }
 
         public override void FindFrame(int frameHeight)
@@ -62,9 +62,8 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             base.NPC.velocity.Y += 0.5f;
             if (Vector2.Distance(obj.position, base.NPC.position) > 1000f)
             {
-
+                NPC.active = false;
             }
-            NPC.netUpdate = true;
         }
 
         public int previousAttack;
@@ -88,9 +87,8 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                 }
             }
 
-            Player playerT = Main.player[NPC.target];
-            int distance = (int)(NPC.Center - playerT.Center).Length();
-            if (distance > 3000f || playerT.dead)
+            int distance = (int)(NPC.Center - player.Center).Length();
+            if (distance > 3000f || player.dead)
             {
                 NPC.ai[2] = 2;
                 Disappear();
@@ -128,6 +126,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             NPC.ai[0] = 0;
                             while (NPC.ai[1] == previousAttack)
                                 NPC.ai[1] = Main.rand.Next(1, 1 + 1);
+                            NPC.netUpdate = true;
                         }
                         break;
                     case 1:
@@ -135,7 +134,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                         if (NPC.ai[0] == 100)
                         {
                             PlayerPastPost = player.position;
-                            NPC.netUpdate = true;
                         }
                         if (NPC.ai[0] >= 100)
                         {
@@ -175,10 +173,10 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 SoundEngine.PlaySound(SoundID.DD2_DarkMageAttack, NPC.position);
                                 int bloodproj;
                                 bloodproj = Main.rand.Next(new int[] { Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type });
-                                int damage = expertMode ? 12 : 21;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+         
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
+                                     Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
                                 }
 
                             }
@@ -197,17 +195,17 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, NPC.position);
                                 SoundEngine.PlaySound(SoundID.DD2_DarkMageAttack, NPC.position);
                                 int bloodproj;
-                                int damage = expertMode ? 12 : 21;
+    
                                 bloodproj = Main.rand.Next(new int[] { Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type, Mod.Find<ModProjectile>("AcidBlast").Type });
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    int p = Terraria.Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
+                                    Projectile.NewProjectile(entitySource, NPC.Center.X + (7 * NPC.direction), NPC.Center.Y - 10, -(NPC.position.X - player.position.X) / distance * 8, -(NPC.position.Y - player.position.Y + Main.rand.Next(-50, 50)) / distance * 8, bloodproj, 25, 0);
                                 }
                             }
                         }
+
                         if (NPC.ai[0] == 100)
                         {
-
                             NPC.ai[0] = 0;
                             previousAttack = 1;
                             NPC.ai[1] = 10;
@@ -229,11 +227,11 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                                 SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                                 Movement(targetPos, (direction.X * 30) * -1, (direction.Y * 30) * -1, 0.05f);
-                                float offsetX = Main.rand.Next(-50, 50) * 0.01f;
-                                float offsetY = Main.rand.Next(-50, 50) * 0.01f;
-                                int damage = expertMode ? 12 : 21;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+
+                                if (StellaMultiplayer.IsHost)
+                                {
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<ToxicMissile>(), 30, 1, Main.myPlayer, 0, 0);
+                                }
                             }
                         }
                         if (NPC.ai[0] == 100)
@@ -254,7 +252,10 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             {
                                 DrugRidus = 30;
                                 var entitySource = NPC.GetSource_FromThis();
-                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<IrradieagleSurvent>());
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<IrradieagleSurvent>());
+                                }
                             }
                         }
                         if (NPC.ai[0] == 20)
@@ -292,17 +293,15 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                                 SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                                 Movement(targetPos, (direction.X * 30) * -1, (direction.Y * 30) * -1, 0.05f);
-                                float offsetX = Main.rand.Next(-250, 250) * 0.01f;
-                                float offsetY = Main.rand.Next(-250, 250) * 0.01f;
-                                int damage = expertMode ? 12 : 21;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+
+
+                                if (StellaMultiplayer.IsHost)
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 2, direction.Y * 2, ModContent.ProjectileType<AcidFlame>(), 40, 1, Main.myPlayer, 0, 0);
                             }
-
                         }
+
                         if (NPC.ai[0] == 160)
-                        {
-           
+                        {         
                             NPC.ai[0] = 0;
                             previousAttack = 2;
                             NPC.ai[1] = 10;
@@ -317,45 +316,35 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             int Chance2 = Main.rand.Next(1, 3 + 1);
                             if (Chance2 == 1)
                             {
-                                DashSpeed = 9f;
-                  
+                                DashSpeed = 9f;              
                                 NPC.ai[0] = 0;
                                 previousAttack = 1;
                                 NPC.ai[1] = 1;
-                                NPC.netUpdate = true;
                             }
-                            else
-                            {
-                                NPC.netUpdate = true;
-                            }
+
+                            NPC.netUpdate = true;
                             NPC.spriteDirection = -NPC.direction;
                             if (NPC.position.X >= player.position.X)
                             {
                                 Dir = true;
-                                NPC.netUpdate = true;
                             }
                             else
                             {
                                 Dir = false;
-                                NPC.netUpdate = true;
                             }
                         }
  
                         if (NPC.ai[0] == 10)
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Dash"));
-                            NPC.netUpdate = true;
                         }
 
                         if (NPC.ai[0] >= 10)
                         {
-
-
                             if (Dir)
                             {
                                 NPC.velocity.X = -DashSpeed;
                                 DashSpeed *= 1.02f;
-
                             }
                             else
                             {
@@ -363,23 +352,16 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                                 DashSpeed *= 1.02f;
 
                             }
-
-
                         }
                         if (NPC.ai[0] >= 100)
                         {
                             NPC.Center = player.Center - Vector2.UnitY * (1000f - 300f);
-                            DashSpeed = 9f;
-                    
+                            DashSpeed = 9f;                  
                             NPC.ai[0] = 0;
                             previousAttack = 1;
                             NPC.ai[1] = 1;
-                            NPC.netUpdate = true;
                         }
                         break;
-
-
-
                 }
         }
         public override void HitEffect(NPC.HitInfo hit)

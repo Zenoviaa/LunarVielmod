@@ -49,6 +49,11 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
+            NPC.boss = true;
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
+            }
         }
 
         int frame = 0;
@@ -206,7 +211,6 @@ namespace Stellamod.NPCs.Bosses.INest
         }
         public override void AI()
         {
-
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
@@ -287,10 +291,13 @@ namespace Stellamod.NPCs.Bosses.INest
                 {
                     player.GetModPlayer<MyPlayer>().IrradiatedKilled = 0;
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Irradieagle>());
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Irradieagle>());
+                    }
+          
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Transmission successful!");
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
-                    NPC.netUpdate = true;
                 }
                 if (NPC.ai[3] == 1250 - 150)
                 {
@@ -301,7 +308,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.ai[0] = 0;
                     CutScene = true;
                     NPC.life = 300;
-                    NPC.netUpdate = true;
                 }
             }
             if (!Spawned)
@@ -310,7 +316,6 @@ namespace Stellamod.NPCs.Bosses.INest
                 NPC.ai[2] = 1;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
-                NPC.netUpdate = true;
                 NPC.alpha = 0;
             }
 
@@ -338,7 +343,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.dontCountMe = true;
                     Nukeing = true;
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Proceed with D. S. D. P!");
-                    NPC.netUpdate = true;
                 }
 
                 if (NPC.ai[3] == 200)
@@ -352,7 +356,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.ai[0] = 0;
                     CutScene2 = true;
                     NPC.life = 1000;
-                    NPC.netUpdate = true;
                 }
             }
             if (NPC.ai[2] == 1)
@@ -364,11 +367,8 @@ namespace Stellamod.NPCs.Bosses.INest
                         NPC.ai[0]++;
                         if (NPC.ai[0] > 20)
                         {
-
                             NPC.ai[0] = 0;
                             NPC.ai[1] = 1;
-
-
                         }
                         break;
                     case 1:
@@ -378,14 +378,15 @@ namespace Stellamod.NPCs.Bosses.INest
                             if (NPC.ai[0] % 100 == 0)
                             {
                                 DrugRidus = 50;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                var entitySource = NPC.GetSource_FromThis();
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                                int EggForce = Main.rand.Next(-10, 10 + 1);
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot"));
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    var entitySource = NPC.GetSource_FromThis();
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
-                                    int EggForce = Main.rand.Next(-10, 10 + 1);
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot"));
                                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(EggForce, -5), Mod.Find<ModProjectile>("AEgg").Type, NPC.damage / 9, 0);
                                 }
+
                             }
                         }
                         if (NPC.ai[0] == 480)
@@ -414,17 +415,17 @@ namespace Stellamod.NPCs.Bosses.INest
                             if (NPC.ai[0] % 3 == 0)
                             {
                                 DrugRidus = 20;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
-                                {
-                                    var entitySource = NPC.GetSource_FromThis();
+                                var entitySource = NPC.GetSource_FromThis();
 
 
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
-                                    int OffSet = Main.rand.Next(-40, 40 + 1);
-                                    Vector2 NukePos;
-                                    NukePos.X = NPC.Center.X + OffSet;
-                                    NukePos.Y = NPC.Center.Y;
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                                int OffSet = Main.rand.Next(-40, 40 + 1);
+                                Vector2 NukePos;
+                                NukePos.X = NPC.Center.X + OffSet;
+                                NukePos.Y = NPC.Center.Y;
 
+                                if (StellaMultiplayer.IsHost)
+                                { 
                                     Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, -50), Mod.Find<ModProjectile>("ToxicNuke").Type, 26, 0);
                                 }
                             }
