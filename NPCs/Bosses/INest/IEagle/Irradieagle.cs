@@ -42,6 +42,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.boss = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            NPC.aiStyle = 0;
             Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
         }
 
@@ -61,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             base.NPC.velocity.Y += 0.5f;
             if (Vector2.Distance(obj.position, base.NPC.position) > 1000f)
             {
-                base.NPC.active = false;
+
             }
             NPC.netUpdate = true;
         }
@@ -83,20 +84,18 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
                 if (!NPC.HasPlayerTarget || NPC.Distance(player1.Center) > 3000f)
                 {
-                    NPC.velocity.Y -= 1f;
-                    if (NPC.timeLeft > 30)
-                        NPC.timeLeft = 30;
                     return;
                 }
             }
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
-            if (distance > 3000f || playerT.dead && !playerT.ZoneAcid())
-
+            if (distance > 3000f || playerT.dead)
             {
                 NPC.ai[2] = 2;
                 Disappear();
             }
+
             NPC.rotation = NPC.velocity.X * 0.01f;
             Lighting.AddLight((int)(NPC.Center.X / 16), (int)(NPC.Center.Y / 16), 0.46f, 0.32f, .1f);
             if (NPC.ai[2] == 0)
@@ -109,6 +108,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                     NPC.ai[2] = 1;
                 }
             }
+
             if (DrugRidus >= 0)
             {
                 DrugRidus -= 1.5f;
