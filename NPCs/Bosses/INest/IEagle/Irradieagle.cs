@@ -43,10 +43,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = 0;
-            if (!Main.dedServ)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
-            }
+
         }
 
         public override void FindFrame(int frameHeight)

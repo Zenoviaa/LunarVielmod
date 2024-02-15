@@ -49,6 +49,11 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
+            NPC.boss = true;
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
+            }
         }
 
         int frame = 0;
