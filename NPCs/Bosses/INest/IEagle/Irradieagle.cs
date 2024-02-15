@@ -23,7 +23,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
             // DisplayName.SetDefault("Irradieagle");
             NPCID.Sets.TrailCacheLength[NPC.type] = 14;
             Main.npcFrameCount[NPC.type] = 8;
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
+            NPCID.Sets.TrailingMode[NPC.type] = 2;
         }
 
         public override void SetDefaults()
@@ -31,9 +31,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
             NPC.width = 200;
             NPC.height = 200;
-            NPC.damage = 28;
+            NPC.damage = 69;
             NPC.defense = 21;
-            NPC.lifeMax = 4000;
+            NPC.lifeMax = 7000;
             NPC.HitSound = SoundID.NPCHit51;
             NPC.DeathSound = SoundID.NPCHit53;
             NPC.value = 60f;

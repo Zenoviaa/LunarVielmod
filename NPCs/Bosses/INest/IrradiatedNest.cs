@@ -31,7 +31,7 @@ namespace Stellamod.NPCs.Bosses.INest
         {
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 14;
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
+            NPCID.Sets.TrailingMode[NPC.type] = 2;
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
         }
@@ -41,9 +41,9 @@ namespace Stellamod.NPCs.Bosses.INest
             NPC.alpha = 255;
             NPC.width = 150;
             NPC.height = 60;
-            NPC.damage = 30;
-            NPC.defense = 15;
-            NPC.lifeMax = 3650;
+            NPC.damage = 60;
+            NPC.defense = 35;
+            NPC.lifeMax = 9050;
             NPC.HitSound = SoundID.NPCHit42;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 60f;
