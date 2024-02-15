@@ -42,7 +42,6 @@ namespace Stellamod.Items.Consumables
         {
             var entitySource = player.GetSource_OpenItem(Type);
             player.QuickSpawnItem(entitySource, ModContent.ItemType<EaglesGrace>());
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedBar>(), Main.rand.Next(20, 65));
             if (Main.rand.NextBool(2))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedGreatBlade>());
