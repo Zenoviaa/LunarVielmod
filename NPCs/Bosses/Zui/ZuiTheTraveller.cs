@@ -804,13 +804,13 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.AnticipateDashZui:
-					NPC.damage = 120;
+					NPC.damage = 150;
 					counter++;
 					SlasherZui();
 					break;
 
 				case ActionState.LightrayZui:
-					NPC.damage = 120;
+					NPC.damage = 150;
 					counter++;
 					RaysZui();
 					break;
@@ -822,7 +822,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.SonicDashZui:
-					NPC.damage = 210;
+					NPC.damage = 230;
 					counter++;
 					SonicZui();
 					break;
