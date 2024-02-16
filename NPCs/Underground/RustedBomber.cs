@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.3f;
+            NPC.frameCounter += 0.22f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
