@@ -36,7 +36,7 @@ namespace Stellamod.Buffs.Whipfx
 			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
 			if (markedByWhip && !projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type]))
 			{
-				projectile.damage += 30;
+				projectile.damage += 6;
 			}
 		}
 
