@@ -26,26 +26,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class Fenix : ModNPC
 	{
-		public Vector2 FirstStageDestination
-		{
-			get => new Vector2(NPC.ai[1], NPC.ai[2]);
-			set
-			{
-				NPC.ai[1] = value.X;
-				NPC.ai[2] = value.Y;
-			}
-		}
-
-		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
-		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
-
-		// This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		// Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
-		public bool SpawnedHelpers
-		{
-			get => NPC.localAI[0] == 1f;
-			set => NPC.localAI[0] = value ? 1f : 0f;
-		}
 		public static Vector2 FenixPos;
 		public enum ActionState
 		{
@@ -78,6 +58,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		}
 
 		// Current state
+		private bool _resetTimers;
 		private ActionState _state = ActionState.StartFen;
 		public ActionState State
 		{
@@ -204,10 +185,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			writer.Write(dashDistance);
 			writer.Write((float)State);
 			writer.Write(Spawner);
-			writer.Write(timer);
-            writer.Write(frameCounter);
-            writer.Write(frameTick);
-            writer.Write(counter);
+			writer.Write(_resetTimers);
+
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
@@ -216,10 +195,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			dashDistance = reader.ReadSingle();
 			State = (ActionState)reader.ReadSingle();
 			Spawner = reader.ReadSingle();
-			timer = reader.ReadSingle();
-            frameCounter = reader.ReadInt32();
-            frameTick = reader.ReadInt32();
-            counter = reader.ReadInt32();
+			_resetTimers = reader.ReadBoolean();
         }
 
 		Vector2 dashDirection = Vector2.Zero;
@@ -482,12 +458,12 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			}
 
 
-			
+			FinishResetTimers();
 			switch (State)
 			{
 				case ActionState.StartFen:
 					NPC.damage = 0;
-					counter++;
+					
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					StartFen();
@@ -495,7 +471,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				
 				case ActionState.Startset:
 					NPC.damage = 0;
-					counter++;
+					
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					StartSet();
@@ -504,7 +480,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.ReadySwordsDance:
 					NPC.damage = 0;
-					counter++;
+					
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					Readyswords();
@@ -513,7 +489,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordsDanceFen:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordsDance();
@@ -522,7 +497,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordsDanceFen2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordsDance2();
@@ -531,7 +505,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordsDanceFen3:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordsDance3();
@@ -540,7 +513,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.Pause1:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					Pause1();
@@ -548,7 +520,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.Pause2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					Pause2();
@@ -556,7 +527,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.OutSD:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					OutSD();
@@ -565,7 +535,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.OutSD2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					OutSD2();
@@ -574,7 +543,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.OutSD3:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					OutSD3();
@@ -583,7 +551,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.PreOrderingChildren:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					PreSwords();
@@ -591,7 +558,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.LaughFen:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					LaughingIdle();
@@ -600,7 +566,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordsSwirlPhase2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordSwirlThree();
@@ -609,7 +574,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.IdleFloating:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					IdleFloating();
@@ -617,7 +581,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordSlashHalf:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordHalf();
@@ -625,7 +588,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordSlashHalf2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordHalf2();
@@ -633,7 +595,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordSlash1st:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordSlashFull();
@@ -641,7 +602,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.Backdown:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					DownSwirl();
@@ -650,7 +610,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.IdleFen:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					PostSummon();
@@ -658,7 +617,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwirlSwordArku:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordSwirlGrav();
@@ -668,7 +626,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwirlSwordYumi:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordSwirlYumi();
@@ -677,7 +634,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwirlSwordNeko:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordSwirlNeko();
@@ -686,7 +642,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.LaughingCircle:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					NPC.velocity *= 0.98f;
@@ -695,7 +650,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 				case ActionState.SwordSlashPhase2:
 					NPC.damage = 0;
-					counter++;
 					NPC.noTileCollide = true;
 					NPC.noGravity = true;
 					SwordsFull2();
@@ -2490,13 +2444,25 @@ namespace Stellamod.NPCs.Bosses.Fenix
             }
 		}
 
-		public void ResetTimers()
-		{
-			timer = 0;
-            NPC.netUpdate2 = true;
-            frameCounter = 0;
-			frameTick = 0;
-		}
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                timer = 0;
+                frameCounter = 0;
+                frameTick = 0;
+                _resetTimers = false;
+            }
+        }
+
+        public void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
 
 		public override void OnKill()
 		{

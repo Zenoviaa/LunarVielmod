@@ -25,33 +25,14 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static ParticleLibrary.Particle;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class VerliaB : ModNPC
 	{
-		public Vector2 FirstStageDestination
-		{
-			get => new Vector2(NPC.ai[1], NPC.ai[2]);
-			set
-			{
-				NPC.ai[1] = value.X;
-				NPC.ai[2] = value.Y;
-			}
-		}
-
-		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
-		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
-
-		// This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		// Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
-		public bool SpawnedHelpers
-		{
-			get => NPC.localAI[0] == 1f;
-			set => NPC.localAI[0] = value ? 1f : 0f;
-		}
-
+		private bool _resetTimers;
 		public enum ActionState
 		{
 			StartVerlia,
@@ -216,9 +197,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			writer.Write((float)_state);
 			writer.WriteVector2(dashDirection);
 			writer.Write(dashDistance);
-			writer.Write(frameCounter);
-			writer.Write(frameTick);
-			writer.Write(counter);
+			writer.Write(_resetTimers);
+			//writer.Write(frameCounter);
+			//writer.Write(frameTick);
+			//writer.Write(counter);
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader)
@@ -226,9 +208,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			_state = (ActionState)reader.ReadSingle();
 			dashDirection = reader.ReadVector2();
 			dashDistance = reader.ReadSingle();
-			frameCounter = reader.ReadInt32();
-			frameTick = reader.ReadInt32();
-			counter = reader.ReadInt32();
+			_resetTimers = reader.ReadBoolean();
+			//frameCounter = reader.ReadInt32();
+			//frameTick = reader.ReadInt32();
+			//counter = reader.ReadInt32();
         }
 
 		Vector2 dashDirection = Vector2.Zero;
@@ -441,12 +424,10 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
 			}
+
+			FinishResetTimers();
 			switch (State)
 			{
-
-
-
-
 				case ActionState.StartVerlia:
 					NPC.damage = 0;
 					counter++;
@@ -2028,15 +2009,27 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			npcLoot.Add(notExpertRule);
 		}
 
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                timer = 0;
+                frameCounter = 0;
+                frameTick = 0;
+                _resetTimers = false;
+            }
+        }
 
+        public void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
 
-		public override void OnKill()
+        public override void OnKill()
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedVeriBoss, -1);
 		}
