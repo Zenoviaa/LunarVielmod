@@ -73,8 +73,10 @@ namespace Stellamod.Projectiles
             int x = (int)Projectile.ai[0];
             int y = (int)Projectile.ai[1];
             Vector2 direction = player.velocity.SafeNormalize(Vector2.Zero);
-            player.Center = new Vector2(x, y) + direction * 128;
-         
+            Vector2 teleportPos = new Vector2(x, y) + direction * 128;
+            player.Teleport(teleportPos);
+            NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPos.X, teleportPos.Y, 1);
+
             SoundEngine.PlaySound(SoundID.Item115);
             Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                 ModContent.ProjectileType<KaBoomMagic2>(), 0, 1, player.whoAmI);
