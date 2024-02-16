@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.UI.Systems;
 using System;
@@ -1260,6 +1261,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<VeriBossRel>(), 1));
 		}
 
 		public void ResetTimers()

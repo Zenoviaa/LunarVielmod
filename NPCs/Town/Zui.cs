@@ -31,7 +31,7 @@ using Stellamod.Items.Armors.Vanity.Nyxia;
 namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    [AutoloadHead]
+    // [AutoloadHead]
 	public class Zui : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;

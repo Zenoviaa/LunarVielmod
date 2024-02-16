@@ -39,7 +39,6 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.RoyalCapital
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	
 	public class LonelySorceress : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
