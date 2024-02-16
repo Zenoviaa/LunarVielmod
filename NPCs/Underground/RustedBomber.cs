@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.22f;
+            NPC.frameCounter += 0.28f;
             NPC.frameCounter %= Main.npcFrameCount[NPC.type];
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Underground
                 if (StellaMultiplayer.IsHost)
                 {
           
-                    for(int i = 0; i < Main.rand.Next(2, 5); i++)
+                    for(int i = 0; i < Main.rand.Next(2, 4); i++)
                     {
                         Vector2 velocity = new Vector2(0, -10);
                         velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));

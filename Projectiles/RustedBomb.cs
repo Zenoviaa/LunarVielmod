@@ -21,7 +21,7 @@ namespace Stellamod.Projectiles
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 190;
         }
 
         public override void AI()
