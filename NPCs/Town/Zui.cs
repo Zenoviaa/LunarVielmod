@@ -557,8 +557,9 @@ namespace Stellamod.NPCs.Town
 			.Add<OnionOfUselessness>(ZuiQuestSystem.ShopCondition10)
 			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition10))
 			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 40) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.Obsidian) { shopCustomPrice = Item.buyPrice(silver: 4) }, (ZuiQuestSystem.ShopCondition10))
 
-			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition10)
+			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenHat>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenRobe>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
