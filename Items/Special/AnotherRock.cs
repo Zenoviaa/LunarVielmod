@@ -21,7 +21,7 @@ namespace Stellamod.Items.Special
 
         public override bool? UseItem(Player player)
         {
-            player.Center = TeleportSystem.StoneGolemAltarWorld;
+            player.position = TeleportSystem.StoneGolemAltarWorld;
             SoundEngine.PlaySound(SoundID.Item6);
             return true;
         }
