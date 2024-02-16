@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetDefaults()
         {
-            Item.damage = 3;
+            Item.damage = 5;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
@@ -81,6 +81,7 @@ namespace Stellamod.Items.Weapons.Summon
             // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
             Item.shoot = ProjectileType<Ivyaken>();
         }
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
