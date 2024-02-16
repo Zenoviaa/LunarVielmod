@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Cinderspark
             NPC.height = 84;
             NPC.aiStyle = -1;
             NPC.damage = 60;
-            NPC.defense = 42;
+            NPC.defense = 8;
             NPC.lifeMax = 600;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 2;
