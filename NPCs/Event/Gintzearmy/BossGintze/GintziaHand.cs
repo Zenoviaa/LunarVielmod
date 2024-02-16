@@ -229,6 +229,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
                         {
                             NPC.ai[0] = 0;
                             NPC.ai[1] = Main.rand.Next(2, 5);
+                            NPC.netUpdate = true;
                         }
 
                         break;
