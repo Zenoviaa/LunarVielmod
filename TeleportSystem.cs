@@ -68,6 +68,8 @@ namespace Stellamod
             {
                 writer.WriteVector2(TrapDungeonAltarWorld[i]);
             }
+
+            writer.WriteVector2(StoneGolemAltarWorld);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -92,6 +94,8 @@ namespace Stellamod
             {
                 TrapDungeonAltarWorld[i] = reader.ReadVector2();
             }
+
+            StoneGolemAltarWorld = reader.ReadVector2();
         }
 
         public override void PostUpdateWorld()

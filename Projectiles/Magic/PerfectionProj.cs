@@ -92,19 +92,6 @@ namespace Stellamod.Projectiles.Magic
             endPoint = endPoint.MoveTowards(wantedEndPoint, 16);
             if (t > 1)
             {
-                for (int i = 0; i < Main.maxNPCs; i++)
-                {
-                    NPC npc = Main.npc[i];
-                    if (npc.Center.DistanceSQ(Projectile.Center) < AoERadiusSquared && !npc.dontTakeDamage && !hitByThisStardustExplosion[npc.whoAmI])
-                    {
-                        hitByThisStardustExplosion[npc.whoAmI] = true;
-                        NPC.HitInfo hitInfo = new();
-                        hitInfo.Damage = Projectile.damage;
-                        //(int)Main.player[Projectile.owner].GetDamage(DamageClass.Summon).ApplyTo(Projectile.damage)
-                        hitInfo.DamageType = DamageClass.Melee;
-                        npc.StrikeNPC(hitInfo);
-                    }
-                }
                 afterImgCancelDrawCount++;
             }
             else if (target != null)
