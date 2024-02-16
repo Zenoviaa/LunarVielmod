@@ -1483,8 +1483,19 @@ namespace Stellamod.NPCs.Bosses.Zui
 			NPC.TargetClosest();
 			Player target = Main.player[NPC.target];
 			Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
-		
-			if (timer == 1)
+
+            //Teleporting Code
+            if (_teleportX != 0 || _teleportY != 0)
+            {
+                NPC.position.X = _teleportX;
+                NPC.position.Y = _teleportY;
+                NPC.velocity.X = 0f;
+                NPC.velocity.Y = 0f;
+                _teleportX = 0f;
+                _teleportY = 0f;
+            }
+
+            if (timer == 1)
 			{
 				int distanceY;
 				int distanceYa;
@@ -1509,8 +1520,6 @@ namespace Stellamod.NPCs.Bosses.Zui
 					_teleportX = target.Center.X + distanceYa;
 					_teleportY = target.Center.Y + distanceY;
                     teleportPos = new Vector2(_teleportX, _teleportY);
-                    NPC.position.X = _teleportX;
-                    NPC.position.Y = _teleportY;
                     NPC.netUpdate = true;
                 }
 
@@ -1540,16 +1549,6 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 
 
-            //Teleporting Code
-            if (_teleportX != 0 || _teleportY != 0)
-            {
-                NPC.position.X = _teleportX;
-                NPC.position.Y = _teleportY;
-                NPC.velocity.X = 0f;
-                NPC.velocity.Y = 0f;
-                _teleportX = 0f;
-                _teleportY = 0f;
-            }
 
             NPC.velocity *= 0.96f;
 			float speed = 20f;
