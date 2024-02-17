@@ -152,10 +152,10 @@ namespace Stellamod.NPCs.Town
 		{
 			return true;
 		}
+
 		public override string GetChat()
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
-
 			
 			// These are things that the NPC has a chance of telling you when you talk to it.
 			chat.Add(Language.GetTextValue("A static voice confirms the identity of the user, you are in the right place."));
@@ -169,19 +169,18 @@ namespace Stellamod.NPCs.Town
 
 			return chat; // chat is implicitly cast to a string.
 		}
+
 		public override void AI()
 		{
 			NPC.TargetClosest();
 			NPC.spriteDirection = NPC.direction;
-			Player target = Main.player[NPC.target];
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
-
 			button = "Touch Unknown Circuitry";
-
 		}
+
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
@@ -204,7 +203,6 @@ namespace Stellamod.NPCs.Town
 				NPC.Kill();
 			}
 		}
-
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -239,23 +237,16 @@ namespace Stellamod.NPCs.Town
 			}
 
 			return true;
-
 		}
 		
 		public override void HitEffect(NPC.HitInfo hit)
 		{
 			int num = NPC.life > 0 ? 1 : 5;
-
 			for (int k = 0; k < num; k++)
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch);
 			}
 		}
-
-
-
-
-
 
 		public override List<string> SetNPCNameList()
 		{
@@ -265,79 +256,5 @@ namespace Stellamod.NPCs.Town
 
 			};
 		}
-
-
-
-
-	
-
-
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
-
-
-
-
-
-
-
-
-
-
-
-		
-
-
-
-
-
-
-
-
-
-
-
-		//	else if (Main.moonPhase < 4) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-		//		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-		//	}
-		//	else if (Main.moonPhase < 6) {
-		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-		// 	}
-		//
-		// 	// todo: Here is an example of how your npc can sell items from other mods.
-		// 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-		// 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-		// 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-		// 	// 	nextSlot++;
-		// 	// }
-		//
-		// 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-		// 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-		// 	// 		if (Item.IsUnloaded) continue;
-		// 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-		// 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-		// 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-		// 	// 		nextSlot++;
-		// 	// 		//TODO: Have tModLoader handle index issues.
-		// 	// 	}
-		// 	// }
-		// }
-
-
-
-
-
-
-
 	}
-
-
-
-
-
 }
