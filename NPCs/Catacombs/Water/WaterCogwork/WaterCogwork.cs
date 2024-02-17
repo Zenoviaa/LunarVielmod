@@ -59,19 +59,31 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             }
         }
 
-        //AI Stuffs
-        private NPC _gun;
-
         private float ai_State;
         private float ai_Counter;
         private float ai_last_State;
+        private bool _resetState;
+
+        private void FinishResetState()
+        {
+            if (_resetState)
+            {
+                ai_Counter = 0;
+                _frameCounter = 0;
+                _frameTick = 0;
+                _resetState = false;
+            }
+        }
 
         private void SwitchState(AttackState attackState)
         {
-            ai_Counter = 0;
-            ai_last_State = ai_State;
-            ai_State = (float)attackState;
-
+            if (StellaMultiplayer.IsHost)
+            {
+                ai_last_State = ai_State;
+                ai_State = (float)attackState;
+                _resetState = true;
+                NPC.netUpdate = true;
+            }
         }
 
         private void WheelSparks(Vector2 sparksOffset)
@@ -85,6 +97,20 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 Vector2 vel = direction * 4;
                 Dust.NewDust(NPC.Center + sparksOffset, 0, 0, DustID.Iron, vel.X, vel.Y);
             }
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(ai_State);
+            writer.Write(ai_last_State);
+            writer.Write(_resetState);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            ai_State = reader.ReadSingle();
+            ai_last_State = reader.ReadSingle();
+            _resetState = reader.ReadBoolean();
         }
 
         private int _frameCounter;
@@ -146,27 +172,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
             return false;
         }
 
-
-        public float Spawner = 0;
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(ai_State);
-            writer.Write(ai_Counter);
-            writer.Write(ai_last_State);
-            writer.Write(_frameCounter);
-            writer.Write(_frameTick);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            ai_State = reader.ReadSingle();
-            ai_Counter = reader.ReadSingle();
-            ai_last_State = reader.ReadSingle();
-            _frameCounter = reader.ReadInt32();
-            _frameTick = reader.ReadInt32();
-        }
-
         public override void AI()
         {
             if (!NPC.HasValidTarget)
@@ -184,12 +189,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
             AttackState attackState = (AttackState)ai_State;
             AttackState attackLastState = (AttackState)ai_last_State;
-
+            FinishResetState();
             switch (attackState)
             {
                 case AttackState.Idle:
                     ai_Counter++;
-                    if(ai_Counter > 100 && _frameCounter == 0)
+                    if(ai_Counter > 240 && _frameCounter == 0 && StellaMultiplayer.IsHost)
                     {
                         //Determine the Attack
                         if(attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
@@ -206,19 +211,10 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                                     SwitchState(AttackState.Rifle);
                                     break;
                             }
-                            NPC.netUpdate = true;
                         }
                         else
                         {
-                            if (Main.rand.NextBool(5))
-                            {
-                                SwitchState(AttackState.Spin_Fast);
-                            }
-                            else
-                            {
-                                SwitchState(AttackState.Spin_Slow);
-                            }
-                            NPC.netUpdate = true;
+                            SwitchState(AttackState.Spin_Slow);
                         }      
                     }
 
@@ -226,56 +222,18 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
                 case AttackState.Spin_Slow:
 
-                    //Slowly moving around with movement similar to blazing wheels
-                    //Bouncing movements
-                 
                     ai_Counter++;
-
-                    if(ai_Counter > 120 && _frameCounter == 0)
-                    {
-                        SwitchState(AttackState.Idle);
-                    }
-                    
-                    if (_frameCounter < 11 || _frameCounter > 19)
-                    {
-                        NPC.velocity *= 0.5f;
-                    }
-                    else if (_frameCounter == 11)
+                    NPC.velocity *= (ai_Counter % 26) / 11;
+                    if (ai_Counter % 26 == 11)
                     {
                         WheelSparks(Vector2.Zero);
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
                     }
-                    else
-                    {
-                        NPC.velocity *= 2f;
-                    }
-                    break;
-                
-                case AttackState.Spin_Fast:
-             
-                    ai_Counter++;
-
-                    if (ai_Counter > 120 && _frameCounter == 0)
+                    if (ai_Counter > 52)
                     {
                         SwitchState(AttackState.Idle);
                     }
-
-                    if (_frameCounter < 11 || _frameCounter > 19)
-                    {
-                        NPC.velocity *= 0.5f;
-                    }
-                    else if (_frameCounter == 11)
-                    {
-                        WheelSparks(Vector2.Zero);
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
-                    }
-                    else
-                    {
-                        NPC.velocity *= 2f;
-                    }
-
                     break;
-                
                 case AttackState.Bolt:
                     if (ai_Counter == 0)
                     {

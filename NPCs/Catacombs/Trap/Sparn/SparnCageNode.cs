@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,10 +11,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 {
     internal class SparnCageNode : ModProjectile
     {
-        public Projectile targetProjectile;
-        public Vector2 targetCenter;
-        public float distanceFromTargetCenter;
-
+        private float _distance = 16*24*2;
+        private bool _setTargetCenter;
+        private Vector2 _targetCenter;
+        private ref float ai_Target_Direction => ref Projectile.ai[0];
+        private ref float ai_Target_X => ref Projectile.ai[1];
+        private ref float ai_Target_Y => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -31,18 +34,41 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             Projectile.light = 0.25f;
         }
 
+        private Vector2 GetTargetCenter()
+        {
+            switch ((int)ai_Target_Direction)
+            {
+                default:
+                case 0:
+                    return Projectile.Center + new Vector2(_distance, 0);
+                case 1:
+                    return Projectile.Center + new Vector2(0, _distance);
+                case 2:
+                    return Projectile.Center + new Vector2(-_distance, 0);
+                case 3:
+                    return Projectile.Center + new Vector2(0, -_distance);
+            }
+        }
+
         public override void AI()
         {
-            distanceFromTargetCenter -= 0.25f;
-            Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 0.7f);
+            if (!_setTargetCenter)
+            {
+                _targetCenter = GetTargetCenter();
+                _setTargetCenter = true;
+            }
+
+            Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, new Vector2(ai_Target_X, ai_Target_Y), 0.7f);
+            _targetCenter += Projectile.velocity;
         }
 
         private void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, Color lightColor, out Vector2[] chainPositions)
         {
+
             Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
             Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
 
-            Curvature curve = new Curvature(new Vector2[] { targetProjectile.Center, projBottom });
+            Curvature curve = new Curvature(new Vector2[] { _targetCenter, projBottom });
             int numPoints = 30;
             chainPositions = curve.GetPoints(numPoints).ToArray();
 
@@ -78,16 +104,14 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if(targetProjectile != null && targetProjectile.active)
-                DrawChainCurve(Main.spriteBatch, Projectile.Center, lightColor, out Vector2[] chainPositions);
-
+            DrawChainCurve(Main.spriteBatch, Projectile.Center, lightColor, out Vector2[] chainPositions);
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.Gray, Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            Curvature curve = new Curvature(new Vector2[] { Projectile.Center, targetProjectile.Center });
+            Curvature curve = new Curvature(new Vector2[] { Projectile.Center, _targetCenter });
             int numPoints = 32;
             Vector2[] chainPositions = curve.GetPoints(numPoints).ToArray();
             float collisionPoint = 0;
@@ -108,7 +132,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             for (int i = 0; i < 16; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(targetCenter, DustID.Iron, speed, Scale: 1.5f);
+                var d = Dust.NewDustPerfect(new Vector2(ai_Target_X, ai_Target_Y), DustID.Iron, speed, Scale: 1.5f);
                 d.noGravity = true;
             }
         }

@@ -40,7 +40,7 @@ namespace Stellamod.Projectiles.Summons
             float ai = Projectile.ai[0];
             int projectileId = (int)ai;
             Projectile proj = Main.projectile[projectileId];
-            if (proj.ai[1] == 1f)
+            if (proj.ai[1] == 1f || proj.type != ModContent.ProjectileType<ScrappyGunProj>())
             {
                 Projectile.Kill();
             }
