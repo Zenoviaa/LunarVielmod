@@ -63,7 +63,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
 	{
 		private bool _spawned;
 		private bool _doAuraVisuals;
-		private float _quickSlashRotation;
+		private bool _resetAI;
+        private bool _telegraphXScissor;
+        private float _telegraphQuickSlash = -1;
+		private float _attackQuickSlash;
+        private float _teleportX;
+		private float _teleportY;
+
 
 		private AttackState _lastAttack;
 		private AttackState _attack = AttackState.Idle;
@@ -151,23 +157,123 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{
-			writer.Write(_quickSlashRotation);
+			writer.Write(_telegraphQuickSlash);
+			writer.Write(_attackQuickSlash);
+
 			writer.Write((float)_lastAttack);
-			writer.WriteVector2(_slashCenter);
+            writer.Write((float)_attack);
+            writer.Write((float)_attackPhase);
+
+            writer.WriteVector2(_slashCenter);
+			writer.Write(_resetAI);
+
+			writer.Write(_teleportX);
+			writer.Write(_teleportY);
+			writer.Write(_telegraphXScissor);
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
-			_quickSlashRotation = reader.ReadSingle();
-			_lastAttack = (AttackState)reader.ReadSingle();
-			_slashCenter = reader.ReadVector2();
+            _telegraphQuickSlash = reader.ReadSingle();
+			_attackQuickSlash = reader.ReadSingle();
+
+            _lastAttack = (AttackState)reader.ReadSingle();
+            _attack = (AttackState)reader.ReadSingle();
+            _attackPhase = (Phase)reader.ReadSingle();
+
+            _slashCenter = reader.ReadVector2();
+			_resetAI = reader.ReadBoolean();
+
+            _teleportX = reader.ReadSingle();
+			_teleportY = reader.ReadSingle();
+			_telegraphXScissor = reader.ReadBoolean();
+        }
+
+		private void FinishQuickSlashTelegraph()
+		{
+			if(_telegraphQuickSlash != -1)
+			{
+                Particle telegraphPart1 = ParticleManager.NewParticle(_slashCenter, Vector2.Zero,
+					ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
+                if (StellaMultiplayer.IsHost)
+                {
+                    var scissorTelegraphPart1 = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<SyliaScissorSmall>(), 0, 0, owner: Main.myPlayer);
+
+                    var syliaScissor1 = scissorTelegraphPart1.ModProjectile as SyliaScissorSmall;
+                    syliaScissor1.startCenter = _slashCenter + new Vector2(256, 0).RotatedBy(_telegraphQuickSlash);
+                    syliaScissor1.targetCenter = _slashCenter;
+                    syliaScissor1.delay = Phase1_Quick_Slash_Telegraph_Time - 8;
+                }
+
+                telegraphPart1.rotation = _telegraphQuickSlash;
+                _telegraphQuickSlash = -1;
+			}
 		}
 
-		private void ResetAI()
+		private void FinishXScissorTelegraph()
 		{
-			ai_Counter = 0;
-			ai_Telegraph_Counter = 0;
-			ai_Cycle = 0;
+			if (_telegraphXScissor)
+			{
+				AI_XScissorTelegraph(_slashCenter);
+				_telegraphXScissor = false;
+			}
+		}
+
+		private void FinishResetAI()
+		{
+			if (_resetAI)
+            {
+                ai_Counter = 0;
+                ai_Telegraph_Counter = 0;
+                _resetAI = false;
+			}
+		}
+
+        private void FinishTeleport()
+        {
+			if(_teleportX != 0 || _teleportY != 0)
+			{
+                NPC.position.X = _teleportX;
+				NPC.position.Y = _teleportY;
+                _teleportX = 0;
+                _teleportY = 0;
+
+                //Visuals on the teleport
+                Dust.QuickDustLine(NPC.position, NPC.oldPosition, 100f, Color.Violet);
+                for (int i = 0; i < 64; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    Particle p = ParticleManager.NewParticle(NPC.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
+                        default(Color), 1 / 3f);
+                    p.layer = Particle.Layer.BeforeProjectiles;
+                }
+
+                SoundEngine.PlaySound(SoundID.Item165);
+            }
+        }
+
+        private void ResetAI()
+		{
+			if (StellaMultiplayer.IsHost)
+			{
+				_resetAI = true;
+				NPC.netUpdate = true;
+			}
+		}
+
+
+
+		private void Teleport(float x, float y)
+		{
+			if (StellaMultiplayer.IsHost)
+			{
+				_teleportX = x;
+				_teleportY = y;
+				NPC.netUpdate = true;
+			}
 		}
 
 		private float _spawnAlpha;
@@ -220,8 +326,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			ai_Counter++;
 		}
 
-		public float Spawner = 0;
 		public float Random360Degrees => MathHelper.ToRadians(Main.rand.Next(0, 360));
+
 
 		public override void AI()
 		{
@@ -233,8 +339,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				return;
 			}
 
-			//Determine Attack Phase
-			float lifeMax = NPC.lifeMax;
+            //Determine Attack Phase
+            float lifeMax = NPC.lifeMax;
 			float partOfLifeMax = lifeMax / 3;
 			if (NPC.life < lifeMax - partOfLifeMax && _attackPhase < Phase.Phase_2)
 			{
@@ -253,8 +359,16 @@ namespace Stellamod.NPCs.Bosses.Sylia
 				_attack = AttackState.Transition;
 			}
 
-			//No Contact Damage SmH
-			switch (_attackPhase)
+            //No Contact Damage SmH
+            
+
+			//We do everything the frame after so that it smoothly spawns on the client
+			FinishResetAI();
+			FinishTeleport();
+			FinishXScissorTelegraph();
+			FinishQuickSlashTelegraph();
+
+            switch (_attackPhase)
 			{
 				case Phase.Phase_1:
 					AI_Phase1();
@@ -405,11 +519,19 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 			return false;
 		}
-		#endregion
+        #endregion
 
-		#region Attack Cycle
+        #region Attack Cycle
+        private void AI_SwitchState(AttackState attackState)
+        {
+			ResetAI();
+			_attack = attackState;
+			if(_attack != AttackState.Idle)
+				_lastAttack = _attack;
+			NPC.netUpdate = true;
+        }
 
-		private void AI_DetermineAttack()
+        private void AI_DetermineAttack()
 		{
 			//Just on a pattern for now
 			//Might change it to have some randomized parts.
@@ -421,7 +543,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						switch (_lastAttack)
 						{
 							default:
-								_attack = AttackState.X_Slash;
+                                AI_SwitchState(AttackState.X_Slash);
 								break;
 							case AttackState.X_Slash:
 								switch (Main.rand.Next(2))
@@ -429,16 +551,16 @@ namespace Stellamod.NPCs.Bosses.Sylia
 									case 0:
 										if (Main.rand.NextBool(2))
 										{
-											_attack = AttackState.Void_Bolts;
+                                            AI_SwitchState(AttackState.Void_Bolts);
 										}
 										else
 										{
-											_attack = AttackState.Void_Bomb;
+                                            AI_SwitchState(AttackState.Void_Bomb);
 										}
 
 										break;
 									case 1:
-										_attack = AttackState.Quick_Slash;
+                                        AI_SwitchState(AttackState.Quick_Slash);
 										break;
 								}
 								break;
@@ -446,18 +568,18 @@ namespace Stellamod.NPCs.Bosses.Sylia
 								switch (Main.rand.Next(2))
 								{
 									case 0:
-										_attack = AttackState.Void_Bolts;
+                                        AI_SwitchState(AttackState.Void_Bolts);
 										break;
 									case 1:
-										_attack = AttackState.X_Slash;
+                                        AI_SwitchState(AttackState.X_Slash);
 										break;
 								}
 								break;
 							case AttackState.Quick_Slash_V2:
-								_attack = AttackState.X_Slash;
+                                AI_SwitchState(AttackState.X_Slash);
 								break;
 							case AttackState.Void_Bolts:
-								_attack = AttackState.Quick_Slash_V2;
+                                AI_SwitchState(AttackState.Quick_Slash_V2);
 								break;
 						}
 						break;
@@ -466,16 +588,16 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						switch (_lastAttack)
 						{
 							default:
-								_attack = AttackState.X_Slash;
+                                AI_SwitchState(AttackState.X_Slash);
 								break;
 							case AttackState.X_Slash:
 								switch (Main.rand.Next(2))
 								{
 									case 0:
-										_attack = AttackState.Void_Bomb;
+                                        AI_SwitchState(AttackState.Void_Bomb);
 										break;
 									case 1:
-										_attack = AttackState.Quick_Slash;
+                                        AI_SwitchState(AttackState.Quick_Slash);
 										break;
 								}
 								break;
@@ -484,10 +606,10 @@ namespace Stellamod.NPCs.Bosses.Sylia
 								switch (Main.rand.Next(2))
 								{
 									case 0:
-										_attack = AttackState.Horizontal_Slash;
+                                        AI_SwitchState(AttackState.Horizontal_Slash);
 										break;
 									case 1:
-										_attack = AttackState.Dash_Slash;
+                                        AI_SwitchState(AttackState.Dash_Slash);
 										break;
 								}
 
@@ -495,9 +617,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						}
 						break;
 				}
-
-				_lastAttack = _attack;
-				NPC.netUpdate = true;
 			}
 		}
 		#endregion
@@ -516,12 +635,6 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		private ref float ai_Telegraph_Counter => ref NPC.ai[0];
 		private ref float ai_Counter => ref NPC.ai[1];
-		private ref float ai_Cycle => ref NPC.ai[2];
-
-		private void AI_XScissor()
-		{
-
-		}
 
 		private void AI_Movement(Vector2 targetCenter, float moveSpeed, float accel =1f)
 		{
@@ -672,39 +785,17 @@ namespace Stellamod.NPCs.Bosses.Sylia
             }
         }
 
-		private void AI_QuickSlashV2Telegraph(Vector2 targetCenter)
-		{
-            Particle telegraphPart1 = ParticleManager.NewParticle(targetCenter, Vector2.Zero,
-				ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), Color.White, 1f);
-
-            if (StellaMultiplayer.IsHost)
-            {
-                _quickSlashRotation = MathHelper.ToRadians(Main.rand.Next(0, 360));
-                NPC.netUpdate = true;
-                var scissorTelegraphPart1 = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                    ModContent.ProjectileType<SyliaScissorSmall2>(), 0, 0, owner: Main.myPlayer);
-
-                var syliaScissor1 = scissorTelegraphPart1.ModProjectile as SyliaScissorSmall2;
-                syliaScissor1.startCenter = targetCenter + new Vector2(256, 0).RotatedBy(_quickSlashRotation);
-                syliaScissor1.targetCenter = targetCenter;
-                syliaScissor1.delay = (Phase1_Quick_Slash_Telegraph_Time / 2) - 8;   
-            }
-
-            telegraphPart1.rotation = _quickSlashRotation;
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
-        }
-
 		private void AI_QuickSlashV2Attack(Vector2 targetCenter)
 		{
             if (StellaMultiplayer.IsHost)
             {
                 var xSlashPart1 = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), targetCenter, Vector2.Zero,
-                    ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, owner: Main.myPlayer, ai1: _quickSlashRotation + MathHelper.ToRadians(45));
+                    ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, owner: Main.myPlayer, ai1: _attackQuickSlash + MathHelper.ToRadians(45));
                 xSlashPart1.timeLeft = 900;
 
                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), targetCenter, Vector2.Zero,
                     ModContent.ProjectileType<VoidSlash>(), 60, 1, owner: Main.myPlayer);
-                proj.rotation = _quickSlashRotation;
+                proj.rotation = _attackQuickSlash;
             }
         }
 
@@ -767,29 +858,20 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					if(ai_Counter > Phase1_Idle_Time)
                     {
 						//Determine Attack
-						ai_Counter = 0;
-						ai_Telegraph_Counter = 0;
-
-						//For now let's just always go into x slash
-						//Ok we need to determine what attacks to do
-						//Determien next attack
-						//ermm
-						//Let's do cycle for now?
 						AI_DetermineAttack();
 					}
 
 					break;
 
 				case AttackState.X_Slash:		
-					AI_XScissor();
-
 					//Telegraph
-					if (ai_Telegraph_Counter == 0)
+					if (ai_Telegraph_Counter == 0 && StellaMultiplayer.IsHost)
                     {
 						Vector2 targetVelocity = target.velocity;
 						Vector2 targetOffset = targetVelocity.SafeNormalize(Vector2.Zero) * 16*24;
 						_slashCenter = targetCenter + targetOffset;
-						AI_XScissorTelegraph(_slashCenter);
+						_telegraphXScissor = true;
+						NPC.netUpdate = true;
                     }
 
                     AI_Movement(_slashCenter, 12);
@@ -805,8 +887,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						ai_Counter++;
 						if (ai_Counter > 3)
                         {
-							ai_Counter = 0;
-							_attack = AttackState.Idle;
+                            //Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Idle);
 						}
                     }
 
@@ -818,26 +900,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 					if (ai_Telegraph_Counter == 0)
 					{
-						_slashCenter = targetCenter;
-						Particle telegraphPart1 = ParticleManager.NewParticle(_slashCenter, Vector2.Zero,
-							ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
-
-						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
 						if (StellaMultiplayer.IsHost)
                         {
-                            _quickSlashRotation = MathHelper.ToRadians(Main.rand.Next(0, 360));
+                            _slashCenter = targetCenter;
+                            _attackQuickSlash = _telegraphQuickSlash = MathHelper.ToRadians(Main.rand.Next(0, 360));
 							NPC.netUpdate = true;
-
-                            var scissorTelegraphPart1 = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), npc.Center, Vector2.Zero,
-								ModContent.ProjectileType<SyliaScissorSmall>(), 0, 0, owner: Main.myPlayer);
-
-                            var syliaScissor1 = scissorTelegraphPart1.ModProjectile as SyliaScissorSmall;
-                            syliaScissor1.startCenter = _slashCenter + new Vector2(256, 0).RotatedBy(_quickSlashRotation);
-                            syliaScissor1.targetCenter = _slashCenter;
-                            syliaScissor1.delay = Phase1_Quick_Slash_Telegraph_Time - 8;
                         }
-
-                        telegraphPart1.rotation = _quickSlashRotation;
                     }
 
 					ai_Telegraph_Counter++;
@@ -848,21 +916,21 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						{
                             var xSlashPart1 = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), _slashCenter, Vector2.Zero,
                                     ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, owner: Main.myPlayer, 
-									ai1: _quickSlashRotation + MathHelper.ToRadians(45));
+									ai1: _attackQuickSlash + MathHelper.ToRadians(45));
   
                             var proj = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), _slashCenter, Vector2.Zero,
                                 ModContent.ProjectileType<VoidSlash>(), 60, 1, owner: Main.myPlayer);
 
                             xSlashPart1.timeLeft = 900;
-                            proj.rotation = _quickSlashRotation;
+                            proj.rotation = _attackQuickSlash;
                         }
 
 						ai_Counter++;
 						if (ai_Counter > 9)
 						{
-							ai_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+                            //Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 
 					break;
@@ -874,8 +942,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     if (ai_Telegraph_Counter == 0)
 					{						
 						_slashCenter = targetCenter;
-						AI_QuickSlashV2Telegraph(_slashCenter);
-					}
+                        _attackQuickSlash = _telegraphQuickSlash = MathHelper.ToRadians(Main.rand.Next(0, 360));
+                    }
 
 					ai_Telegraph_Counter++;
 					if (ai_Telegraph_Counter > Phase1_Quick_Slash_Telegraph_Time / 2)
@@ -892,29 +960,14 @@ namespace Stellamod.NPCs.Bosses.Sylia
                                 Vector2 teleportPosition = new Vector2(
 									targetCenter.X + Main.rand.NextFloat(-teleportRadius, teleportRadius),
 									targetCenter.Y + Main.rand.NextFloat(-teleportRadius, teleportRadius));
-                                npc.Center = teleportPosition;
-                                npc.netUpdate = true;
+								Teleport(teleportPosition.X, teleportPosition.Y);
                             }
-  
-                            //Visuals on the teleport
-                            Dust.QuickDustLine(npc.Center, npc.oldPosition, 100f, Color.Violet);
-							for (int i = 0; i < 64; i++)
-							{
-								Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-								Particle p = ParticleManager.NewParticle(npc.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-									default(Color), 1 / 3f);
-								p.layer = Particle.Layer.BeforeProjectiles;
-							}
-
-							SoundEngine.PlaySound(SoundID.Item165);
 						}
 
 						if (ai_Counter > 15)
 						{
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Vertical_Slash;
-							NPC.netUpdate = true;
+                            //Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Vertical_Slash);
 						}
 					}
 
@@ -969,8 +1022,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						ai_Telegraph_Counter = 0;
 						Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(position, 512f, 32f);
 						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1"), position);
-						_attack = AttackState.Idle;
-					}
+                        AI_SwitchState(AttackState.Idle);
+                    }
 	
 					break;
 
@@ -1032,10 +1085,9 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						npc.velocity = Vector2.Lerp(npc.velocity, dashVelocity, lerpAmount);
 						if (ai_Telegraph_Counter > 60)
 						{
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+							//Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 
 					break;
@@ -1055,11 +1107,10 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					ai_Telegraph_Counter++;
 					if (ai_Telegraph_Counter > Phase1_Void_Bolts_Telegraph_Time)
 					{
-						ai_Telegraph_Counter = 0;
-						ai_Counter = 0;
-						AI_VoidBoltCircle(targetCenter);
-						_attack = AttackState.Idle;
-					}
+                        //Switch State automatically resets the AI
+                        AI_VoidBoltCircle(targetCenter);
+                        AI_SwitchState(AttackState.Idle);
+                    }
 
 					break;
             }
@@ -1181,9 +1232,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         _p2TransitionAlpha = halfTransition;
 						if (halfTransition >= 1f)
 						{
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Summon_Void_Wall;
+                            //Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Summon_Void_Wall);
 						}
 					}
 
@@ -1230,9 +1280,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						ai_Telegraph_Counter++;
 						if(ai_Telegraph_Counter > 60)
                         {
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Idle;
+							//Switch State automatically resets the AI
+                            AI_SwitchState(AttackState.Idle);
                         }
 					}
 
@@ -1281,9 +1330,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
                         ai_Counter++;
 						if (ai_Counter > 6)
 						{
-							ai_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 
 					break;
@@ -1293,28 +1341,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
 					npc.velocity = VectorHelper.VelocityDirectTo(npc.Center, targetCenter, 8 * quickSpeedMultiplier);
 
 					if (ai_Telegraph_Counter == 0)
-					{
-						_slashCenter = targetCenter;
-
-						Particle telegraphPart1 = ParticleManager.NewParticle(_slashCenter, Vector2.Zero,
-							ParticleManager.NewInstance<RipperSlashTelegraphParticle>(), default(Color), 1f);
-	
-						SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph"));
+					{ 			
 						if (StellaMultiplayer.IsHost)
                         {
-                            _quickSlashRotation = MathHelper.ToRadians(Main.rand.Next(0, 360));
+                            _slashCenter = targetCenter;
+                            _attackQuickSlash = _telegraphQuickSlash = MathHelper.ToRadians(Main.rand.Next(0, 360));
 							npc.netUpdate = true;
-
-                            var scissorTelegraphPart1 = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), npc.Center, Vector2.Zero,
-							ModContent.ProjectileType<SyliaScissorSmall>(), 0, 0, owner: Main.myPlayer);
-
-							var syliaScissor1 = scissorTelegraphPart1.ModProjectile as SyliaScissorSmall;
-							syliaScissor1.startCenter = _slashCenter + new Vector2(256, 0).RotatedBy(_quickSlashRotation);
-							syliaScissor1.targetCenter = _slashCenter;
-							syliaScissor1.delay = Phase2_Quick_Slash_Telegraph_Time - 8;
                         }
-
-                        telegraphPart1.rotation = _quickSlashRotation;
                     }
 
 					ai_Telegraph_Counter++;
@@ -1325,21 +1358,20 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						{
                             var xSlashPart1 = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), _slashCenter, Vector2.Zero,
                                 ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0f, owner: Main.myPlayer, 
-								ai1: _quickSlashRotation + MathHelper.ToRadians(45));
+								ai1: _attackQuickSlash + MathHelper.ToRadians(45));
     
                             var proj = Projectile.NewProjectileDirect(npc.GetSource_FromThis(), _slashCenter, Vector2.Zero,
                                 ModContent.ProjectileType<VoidSlash>(), 60, 1, owner: Main.myPlayer);
 
                             xSlashPart1.timeLeft = 900;
-                            proj.rotation = _quickSlashRotation;
+                            proj.rotation = _attackQuickSlash;
                         }
 
 						ai_Counter++;
 						if (ai_Counter > 11)
 						{
-							ai_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 					break;
 				case AttackState.Void_Bomb:
@@ -1384,8 +1416,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
                                 ModContent.ProjectileType<VoidBall>(), 20, 1, Owner: Main.myPlayer);
                         }
 
-						_attack = AttackState.Idle;
-					}
+                        AI_SwitchState(AttackState.Idle);
+                    }
 					break;
 				case AttackState.Dash_Slash:
 					ai_Telegraph_Counter++;
@@ -1422,10 +1454,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 						if (ai_Telegraph_Counter > 30)
 						{
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 
 					break;
@@ -1440,7 +1470,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 						float yOffset = -512;
 
 						Vector2 verticalHoverTarget = _slashCenter + new Vector2(xOffset, yOffset);
-						npc.Center = Vector2.Lerp(npc.Center, verticalHoverTarget, 0.023f);
+						npc.velocity = VectorHelper.VelocitySlowdownTo(npc.position, verticalHoverTarget, 10 * (ai_Telegraph_Counter / 60));
 
 						//Delay before she slashes
 						if (ai_Telegraph_Counter > 60)
@@ -1474,10 +1504,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 						if (ai_Telegraph_Counter > 75)
 						{
-							ai_Counter = 0;
-							ai_Telegraph_Counter = 0;
-							_attack = AttackState.Idle;
-						}
+                            AI_SwitchState(AttackState.Idle);
+                        }
 					}
 
 					break;
