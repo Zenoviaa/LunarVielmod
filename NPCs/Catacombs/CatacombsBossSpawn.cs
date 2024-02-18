@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
+using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Trap.Cogwork;
+using Stellamod.NPCs.Catacombs.Trap.Sparn;
+using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
@@ -15,8 +21,6 @@ namespace Stellamod.NPCs.Catacombs
         private float _centerSparkleSize = 0.1f;
 
         private ref float ai_Timer => ref NPC.ai[0];
-        private ref float ai_Boss_Spawn => ref NPC.ai[1];
-
         public override void SetDefaults()
         {
             NPC.lifeMax = 1;
@@ -95,17 +99,52 @@ namespace Stellamod.NPCs.Catacombs
 
                 //oh wait i need net code
                 // NPC.NewNPC(, (int)ai_Boss_Spawn);
+
+
+                int[] fireBosses = new int[]
+                {
+                    ModContent.NPCType<BlazingSerpentHead>(),
+                    ModContent.NPCType<PandorasFlamebox>()
+                };
+
+                int[] waterBosses = new int[]
+                {
+                    ModContent.NPCType<WaterCogwork>(),
+                    ModContent.NPCType<WaterJellyfish>()
+                };
+
+                int[] trapBosses = new int[]
+                {
+                    ModContent.NPCType<Cogwork>(),
+                    ModContent.NPCType<Sparn>()
+                };
+
+                int[] bosses = fireBosses;
+                if (BiomeTileCounts.InCatafire)
+                {
+                    bosses = fireBosses;
+
+                } else if (BiomeTileCounts.InCatatrap)
+                {
+                    bosses = trapBosses;
+                }
+                else if (BiomeTileCounts.InCatawater)
+                {
+                    bosses = waterBosses;
+                }
+
+                int bossType = bosses[Main.rand.Next(0, bosses.Length)];
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     //Main.NewText("Jack has awoken!", Color.Gold);
-                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, (int)ai_Boss_Spawn);
+                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
                     Main.npc[npcID].netUpdate2 = true;
                 }
                 else
                 {
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return;
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, (int)ai_Boss_Spawn, (int)NPC.Center.X, (int)NPC.Center.Y);
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, bossType, (int)NPC.Center.X, (int)NPC.Center.Y);
                 }
 
                 NPC.Kill();

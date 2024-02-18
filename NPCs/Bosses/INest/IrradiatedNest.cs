@@ -2,11 +2,17 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.INest.IEagle;
 using Stellamod.Utilis;
 using System.IO;
@@ -140,7 +146,18 @@ namespace Stellamod.NPCs.Bosses.INest
         bool CutScene2;
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NestBag>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
+
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), minimumDropped: 3, maximumDropped: 25));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
+
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NestBossRel>()));
         }
 

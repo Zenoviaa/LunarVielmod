@@ -71,6 +71,7 @@ namespace Stellamod
             }
 
             writer.WriteVector2(StoneGolemAltarWorld);
+            writer.WriteVector2(RalladWorld);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -97,6 +98,7 @@ namespace Stellamod
             }
 
             StoneGolemAltarWorld = reader.ReadVector2();
+            RalladWorld = reader.ReadVector2();
         }
 
         public override void PostUpdateWorld()

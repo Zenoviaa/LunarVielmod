@@ -12,6 +12,7 @@ using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -39,36 +40,15 @@ namespace Stellamod.Items.Consumables
             return true;
         }
 
-        public override void RightClick(Player player)
+        public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            var entitySource = player.GetSource_OpenItem(Type);
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<EaglesGrace>());
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedGreatBlade>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradieagleWrath>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<TheIrradiaspear>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<StaffoftheIrradiaflare>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedCreeperStaff>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenTech>(), 10);
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<UnknownCircuitry>(), 10);
-            }
-            
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), minimumDropped: 3, maximumDropped: 25));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
