@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
@@ -140,6 +141,7 @@ namespace Stellamod.NPCs.Bosses.INest
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NestBag>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NestBossRel>()));
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
@@ -236,9 +238,19 @@ namespace Stellamod.NPCs.Bosses.INest
             {
                 NPC.damage = 150;
             }
+
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                return;
+            }
+
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
-            if (!NPC.HasPlayerTarget)
+            
+          
+            /*if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
                 Player player1 = Main.player[NPC.target];
@@ -247,7 +259,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 {
                     return;
                 }
-            }
+            }*/
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -339,6 +351,7 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.life = 300;
                 }
             }
+
             if (!Spawned)
             {
                 Spawned = true;
@@ -348,7 +361,7 @@ namespace Stellamod.NPCs.Bosses.INest
                 NPC.alpha = 0;
             }
 
-            if (playerT.GetModPlayer<MyPlayer>().IrradiatedKilled == 1 && !CutScene2)
+            if (!NPC.AnyNPCs(ModContent.NPCType<Irradieagle>()) && CutScene && !CutScene2)
             {
                 NPC.alpha -= 30;
                 NPC.ai[0] = 0;

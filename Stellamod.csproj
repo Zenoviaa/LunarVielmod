@@ -454,6 +454,7 @@
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="Textures\Backglow.png" />
+    <None Remove="Tiles\Furniture\NestBossRelic.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineAlcaPowderC.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineBUAN.png" />
     <None Remove="Tiles\ShrineBreakers\Govheil\ShrineGardenWreckerC.png" />

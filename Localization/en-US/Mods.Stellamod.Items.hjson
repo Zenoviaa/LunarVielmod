@@ -3378,7 +3378,7 @@ Twirlers: {
 }
 
 GothiviaBag: {
-	DisplayName: Treasure Bag (Gothivia)
+	DisplayName: Treasure Bag (Irradia and Havoc)
 	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 }
 
@@ -5705,4 +5705,9 @@ NyxiaRobe: {
 NyxiaThighs: {
 	DisplayName: Nyxia Thighs
 	Tooltip: I love you all and thanks for playing my mod! - Zenovia
+}
+
+NestBossRel: {
+	Tooltip: ""
+	DisplayName: Nest Boss Rel
 }

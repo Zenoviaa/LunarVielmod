@@ -83,11 +83,6 @@ namespace Stellamod.Projectiles.Whips
 				Projectile.Kill();
 				return;
 			}
-			
-			if (Projectile.active)
-				player.AddBuff(ModContent.BuffType<Whipdeath>(), 600);
-			if (!Projectile.active)
-				player.ClearBuff(ModContent.BuffType<Whipdeath>());
 
 			owner.heldProj = Projectile.whoAmI;
 
@@ -102,7 +97,6 @@ namespace Stellamod.Projectiles.Whips
 				Projectile.FillWhipControlPoints(Projectile, points);
 				SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
 			}
-
 		}
 
 		// This method handles a charging mechanic.

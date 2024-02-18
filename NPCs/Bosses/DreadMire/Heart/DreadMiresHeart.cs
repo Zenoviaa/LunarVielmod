@@ -476,10 +476,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                     NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
                 }
 
-                player.GetModPlayer<MyPlayer>().heartDead += 1;
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
-
             }
             else
             {
@@ -489,6 +487,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
                 }
             }
+        }
+
+        public override void OnKill()
+        {
+            DreadMire.HeartKillCount++;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

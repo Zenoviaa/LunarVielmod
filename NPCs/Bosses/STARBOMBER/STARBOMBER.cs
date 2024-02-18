@@ -56,6 +56,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		}
 		// Current state
 		private bool _resetTimers;
+		private float _teleportX;
+		private float _teleportY;
 		private ActionState _state = ActionState.StartStar;
 		public ActionState State
 		{
@@ -211,12 +213,16 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		{
 			writer.Write((float)State);
 			writer.Write(_resetTimers);
+            writer.Write(_teleportX);
+            writer.Write(_teleportY);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
 			_resetTimers = reader.ReadBoolean();
+            _teleportX = reader.ReadSingle();
+            _teleportY = reader.ReadSingle();
         }
 
 		public float squish = 0f;
@@ -346,8 +352,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         int bee = 220;
 		private Vector2 originalHitbox;
+        private void FinishTeleport()
+        {
+            if (_teleportX != 0 || _teleportY != 0)
+            {
+                NPC.position.X = _teleportX;
+                NPC.position.Y = _teleportY;
+                _teleportX = 0;
+                _teleportY = 0;
+            }
+        }
 
-		public override void AI()
+
+        private void Teleport(float x, float y)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _teleportX = x;
+                _teleportY = y;
+                NPC.netUpdate = true;
+            }
+        }
+
+
+        public override void AI()
 		{
 			NPC.velocity *= 0.97f;
 			bee--;
@@ -360,16 +388,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(NPC.Center, RGB.X, RGB.Y, RGB.Z);
 			
-			Player player = Main.player[NPC.target];
-
 			NPC.TargetClosest();
-
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-			{
-				NPC.TargetClosest();
-			}
-
-			if (player.dead)
+			if (!NPC.HasValidTarget)
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y += 0.5f;
@@ -386,6 +406,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 			FinishResetTimers();
+			FinishTeleport();
 			switch (State)
 			{
 				case ActionState.BomberStar:
@@ -536,11 +557,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 2)
 			{
 				int distanceY = Main.rand.Next(-150, -150);
-				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + distanceY;
-
-
-				if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+                Teleport(player.Center.X, player.Center.Y + distanceY);
+                if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 				{
 					Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 				}
@@ -789,8 +807,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 2)
 			{
 				int distanceY = Main.rand.Next(-150, -150);
-				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + distanceY;
+                Teleport(player.Center.X, player.Center.Y + distanceY);
             }
 
 
@@ -891,8 +908,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer == 2)
 			{
 				int distanceY = Main.rand.Next(-600, -600);
-				NPC.position.X = player.Center.X;
-				NPC.position.Y = player.Center.Y + distanceY;
+				Teleport(player.Center.X, player.Center.Y + distanceY);
 			}
 
 			if (Voiden == 5)
@@ -1293,6 +1309,5 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 			}
 		}
-
 	}
 }

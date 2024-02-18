@@ -129,9 +129,13 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                         if (NPC.ai[0] > 0)
                         {
                             NPC.ai[0] = 0;
-                            while (NPC.ai[1] == previousAttack)
-                                NPC.ai[1] = Main.rand.Next(1, 1 + 1);
-                            NPC.netUpdate = true;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                while (NPC.ai[1] == previousAttack)
+                                    NPC.ai[1] = Main.rand.Next(1, 1 + 1);
+                                NPC.netUpdate = true;
+                            }
+         
                         }
                         break;
                     case 1:
@@ -157,8 +161,11 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
                             NPC.ai[0] = 0;
                             previousAttack = 1;
-                            NPC.ai[1] = Main.rand.Next(2, 6);
-                            NPC.netUpdate = true;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.ai[1] = Main.rand.Next(2, 6);
+                                NPC.netUpdate = true;
+                            }
                         }
                         break;
                     case 2:
@@ -318,16 +325,20 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
                         if(NPC.ai[0] == 2)
                         {
-                            int Chance2 = Main.rand.Next(1, 3 + 1);
-                            if (Chance2 == 1)
+                            if (StellaMultiplayer.IsHost)
                             {
-                                DashSpeed = 9f;              
-                                NPC.ai[0] = 0;
-                                previousAttack = 1;
-                                NPC.ai[1] = 1;
+                                int Chance2 = Main.rand.Next(1, 3 + 1);
+                                if (Chance2 == 1)
+                                {
+                                    DashSpeed = 9f;
+                                    NPC.ai[0] = 0;
+                                    previousAttack = 1;
+                                    NPC.ai[1] = 1;
+                                }
+                                NPC.netUpdate = true;
                             }
 
-                            NPC.netUpdate = true;
+                 
                             NPC.spriteDirection = -NPC.direction;
                             if (NPC.position.X >= player.position.X)
                             {

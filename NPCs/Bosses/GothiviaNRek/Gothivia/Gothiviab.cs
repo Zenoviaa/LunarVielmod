@@ -399,20 +399,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
                 }
 			}  
 
-
-            Player player = Main.player[NPC.target];
-
-
-
-			//	if (player.dead)
-			//	{
-			// If the targeted player is dead, flee
-			//		NPC.velocity.Y -= 0.5f;
-			//		NPC.noTileCollide = true;
-			//		NPC.noGravity = false;
-			// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-			//		NPC.EncourageDespawn(2);
-			//	}
 			FinishResetTimers();
 			switch (State)
 			{
@@ -1107,10 +1093,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
 			//npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-		
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VeriBossRel>()));
 
-		
 		// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
