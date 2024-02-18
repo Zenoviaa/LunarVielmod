@@ -70,8 +70,13 @@ namespace Stellamod.NPCs.Catacombs.Fire
 			NPC.BossBar = ModContent.GetInstance<BossBarTest2>();
 		}
 
-	
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			// Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
 			SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;

@@ -58,6 +58,11 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             }
         }
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         private float ai_State;
         private float ai_Counter;
         private float ai_last_State;

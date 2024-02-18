@@ -58,6 +58,11 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/CatacombsBoss");
             }
         }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
 
         private float ai_State;
         private float ai_Counter;

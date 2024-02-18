@@ -57,7 +57,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 			}
 		}
 
-		public override void HitEffect(NPC.HitInfo hit)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 11; k++)
 			{

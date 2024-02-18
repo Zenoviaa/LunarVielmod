@@ -57,10 +57,15 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			}
 		}
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         //Trailing
         #region Draw Code
 
-		private int _frameCounter;
+        private int _frameCounter;
 		private int _frameTick;
 		private void PreDrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
