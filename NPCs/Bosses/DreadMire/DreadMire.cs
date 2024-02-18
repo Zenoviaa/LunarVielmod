@@ -64,6 +64,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.aiStyle = 0;
         }
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+
         private void Disappear()
         {
             Player obj = Main.player[NPC.target];

@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
     [AutoloadBossHead]
     public class SingularityFragment : ModNPC
     {
-        private const int TELEPORT_DISTANCE = 400;
+        private bool _invincible;
         public bool PH2 = false;
         public bool Spawned = false;
         public bool TP = false;
@@ -70,6 +70,10 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.BossBar = ModContent.GetInstance<VerliaBossBar>();
             NPC.aiStyle = 0;
+        }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
         int frame = 0;
@@ -128,11 +132,13 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             writer.Write(Attack);
             writer.Write(LazerType);
+            writer.Write(_invincible);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             Attack = reader.ReadInt32();
             LazerType = reader.ReadInt32();
+            _invincible = reader.ReadBoolean();
         }
 
         public override void AI()
@@ -182,27 +188,38 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                 NPC.ai[2] = 1;
             }
             SingularityPos = NPC.Center;
+
+            NPC.dontTakeDamage = _invincible;
+            NPC.dontCountMe = _invincible;
             if (Spawned)
             {
                 if (NPC.ai[1] >= 5)
                 {
                     NPC.damage = 0;
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
                 }
                 else
                 {
                     if (SingularityOrbs > 0)
                     {
                         SparkCountMax = 3;
-                        NPC.dontTakeDamage = true;
-                        NPC.dontCountMe = true;
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            _invincible = true;
+                            NPC.netUpdate = true;
+                        }
                     }
                     else
                     {
-                        SparkCountMax = 1;
-                        NPC.dontTakeDamage = false;
-                        NPC.dontCountMe = false;
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            _invincible = false;
+                            NPC.netUpdate = true;
+                        }
                     }
                     NPC.damage = 9999;
                 }
@@ -210,8 +227,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             else
             {
                 NPC.damage = 0;
-                NPC.dontTakeDamage = true;
-                NPC.dontCountMe = true;
+                if (StellaMultiplayer.IsHost)
+                {
+                    _invincible = true;
+                    NPC.netUpdate = true;
+                }
             }
 
             if (NPC.ai[2] == 1)

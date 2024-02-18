@@ -154,8 +154,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			}
 		}
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
-		public override void SendExtraAI(BinaryWriter writer)
+        public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write(_telegraphQuickSlash);
 			writer.Write(_attackQuickSlash);

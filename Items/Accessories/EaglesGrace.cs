@@ -24,8 +24,8 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.wingTimeMax = 55;
-			if (Main.rand.NextBool(4))
+			player.wingTimeMax = 130;
+			if (Main.rand.NextBool(4) && !hideVisual)
 			{
 				Dust.NewDust(player.position, player.width, player.height, DustID.GreenFairy);
 			}

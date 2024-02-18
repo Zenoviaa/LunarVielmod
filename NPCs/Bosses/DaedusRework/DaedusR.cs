@@ -117,6 +117,12 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {

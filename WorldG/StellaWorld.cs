@@ -1499,7 +1499,7 @@ namespace Stellamod.WorldG
 									break;
 
 								case 6:
-									itemsToAdd.Add((ModContent.ItemType<EaglesGrace>(), Main.rand.Next(1, 1)));
+									//itemsToAdd.Add((ModContent.ItemType<EaglesGrace>(), Main.rand.Next(1, 1)));
 									itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
 									itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
 									itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 3)));
