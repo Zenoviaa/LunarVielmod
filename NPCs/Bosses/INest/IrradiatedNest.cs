@@ -8,6 +8,7 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.NPCs.Bosses.INest.IEagle;
 using Stellamod.Utilis;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -21,6 +22,7 @@ namespace Stellamod.NPCs.Bosses.INest
     [AutoloadBossHead]
     public class IrradiatedNest : ModNPC
     {
+        private bool _invincible;
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
         private bool Spawned = false;
@@ -54,6 +56,20 @@ namespace Stellamod.NPCs.Bosses.INest
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
             }
+        }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(_invincible);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            _invincible = reader.ReadBoolean();
         }
 
         int frame = 0;
@@ -214,7 +230,8 @@ namespace Stellamod.NPCs.Bosses.INest
         {
 
             starter++;
-
+            NPC.dontTakeDamage = _invincible;
+            NPC.dontCountMe = _invincible;
             if (starter > 60)
             {
                 NPC.damage = 150;
@@ -256,8 +273,12 @@ namespace Stellamod.NPCs.Bosses.INest
             if (p2 && !CutScene)
             {
                 NPC.alpha -= 30;
-                NPC.dontTakeDamage = true;
-                NPC.dontCountMe = true;
+                if (StellaMultiplayer.IsHost)
+                {
+                    _invincible = true;
+                    NPC.netUpdate = true;
+                }
+
                 NPC.ai[0] = 0;
                 NPC.ai[3]++;
                 if (NPC.ai[3] == 420 - 150)
@@ -334,29 +355,45 @@ namespace Stellamod.NPCs.Bosses.INest
                 NPC.ai[3]++;
                 if (NPC.ai[3] == 20)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+               
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Back up vessel destroyed...");
-                    NPC.netUpdate = true;
+               
                 }
                 if (NPC.ai[3] == 1)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+
                     Nukeing = false;
                 }
                 if (NPC.ai[3] == 160)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+
                     Nukeing = true;
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Proceed with D. S. D. P!");
                 }
 
                 if (NPC.ai[3] == 200)
                 {
-                    NPC.dontTakeDamage = false;
-                    NPC.dontCountMe = false;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = false;
+                        NPC.netUpdate = true;
+                    }
+
                     Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
                     NPC.defense = 30;
                     NPC.ai[3] = 0;

@@ -29,6 +29,7 @@ namespace Stellamod.Projectiles
             Projectile.hostile = false;
             Projectile.timeLeft = int.MaxValue;
             Projectile.tileCollide = false;
+            Projectile.netImportant = true;
         }
 
         public override void AI()
@@ -38,6 +39,18 @@ namespace Stellamod.Projectiles
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), Projectile.position);
                 _flash = true;
             }
+
+            float range = 0.25f;
+            float hover = VectorHelper.Osc(-range, range);
+            Vector2 targetCenter = Projectile.Center + new Vector2(0, hover);
+            Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 5);
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
+
+            if (NPC.AnyDanger())
+            {
+                return;
+            }
+
             _teleportTimer++;
             _scale += 2/30f;
             if (_scale >= 2f)
@@ -45,6 +58,8 @@ namespace Stellamod.Projectiles
 
             if (_teleportTimer < 30)
                 return;
+
+        
 
             Rectangle myRect = Projectile.getRect();
             for (int i = 0; i < Main.maxPlayers; i++)
@@ -60,12 +75,6 @@ namespace Stellamod.Projectiles
                     Teleport(player);
                 }
             }
-
-            float range = 0.25f;
-            float hover = VectorHelper.Osc(-range, range);
-            Vector2 targetCenter = Projectile.Center + new Vector2(0, hover);
-            Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter, 5);
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
         }
 
         private void Teleport(Player player)
@@ -108,10 +117,13 @@ namespace Stellamod.Projectiles
             Vector2 origin = new Vector2(width / 2, height / 2);
             int frameSpeed = 1;
             int frameCount = 60;
+
+            float scale = NPC.AnyDanger() ? 1f : _scale;
+            Color color = NPC.AnyDanger() ? Color.Gray : Color.White;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                Color.White, 0f, origin, _scale, SpriteEffects.None, 0f);
+                color, 0f, origin, scale, SpriteEffects.None, 0f);
             return false;
         }
     }

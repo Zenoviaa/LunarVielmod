@@ -19,6 +19,7 @@ namespace Stellamod
     {
         private static bool _findTeleportTiles;
         private static bool _refreshPortals;
+        private static int _refreshPortalsCounter;
         public static Vector2[] FireDungeonAltarWorld;
         public static Vector2[] WaterDungeonAltarWorld;
         public static Vector2[] TrapDungeonAltarWorld;
@@ -123,15 +124,27 @@ namespace Stellamod
 
             if (!_refreshPortals)
             {
+                bool count = false;
                 for (int i = 0; i < Main.maxPlayers; i++)
                 {
                     Player player = Main.player[i];
-                    if (player.active)
+                    if (player.active && !player.dead)
+                    {
+                        count = true;
+                        break;
+                    }
+                }
+
+                if (count)
+                {
+                    _refreshPortalsCounter++;
+                    if (_refreshPortalsCounter >= 60)
                     {
                         RefreshPortals();
                         _refreshPortals = true;
                     }
                 }
+
             }
         }
 
@@ -234,17 +247,18 @@ namespace Stellamod
                 Vector2 portalPosition = new Vector2((altarTile.X + 1 )* 16, (altarTile.Y - 6) * 16);
                 Vector2 catacombsPortalPosition = new Vector2(kvp.Value.X, kvp.Value.Y) + new Vector2(0, -16 * 160);
 
-                Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), portalPosition, Vector2.Zero,
+                int p = Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), portalPosition, Vector2.Zero,
                    ModContent.ProjectileType<FocalPortal>(), 0, 0, Main.myPlayer,
                    ai0: catacombsPortalPosition.X,
                    ai1: catacombsPortalPosition.Y);
 
                 Vector2 portalPosition2 = new Vector2(kvp.Value.X, kvp.Value.Y);
-                Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), catacombsPortalPosition, Vector2.Zero,
+                int p2 = Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), catacombsPortalPosition, Vector2.Zero,
                    ModContent.ProjectileType<FocalPortal>(), 0, 0, Main.myPlayer,
                    ai0: portalPosition.X,
                    ai1: portalPosition.Y);
-                NetMessage.SendData(MessageID.SyncProjectile);
+                NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, p);
+                NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, p2);
             }
         }
 
