@@ -409,8 +409,12 @@ namespace Stellamod.NPCs.Bosses.Zui
 			Player player = Main.player[NPC.target];
 			player.AddBuff(ModContent.BuffType<Zuid>(), 30);
 
+			if (!NPC.HasValidTarget)
+			{
+				NPC.TargetClosest();
+			}
 
-			if (player.dead)
+			if (!NPC.HasValidTarget)
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y -= 0.8f;

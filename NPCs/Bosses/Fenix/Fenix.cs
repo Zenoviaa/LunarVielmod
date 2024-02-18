@@ -447,7 +447,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
 			Player player = Main.player[NPC.target];
 			NPC.TargetClosest();
-			if (player.dead)
+			if (!NPC.HasValidTarget)
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y += 0.5f;

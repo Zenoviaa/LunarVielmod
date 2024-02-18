@@ -181,11 +181,14 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
         {
             if (!NPC.HasValidTarget)
             {
-                //WheelMovement(2);
-                NPC.noTileCollide = true;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
-                NPC.EncourageDespawn(120);
-                return;
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.noTileCollide = true;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
+                    NPC.EncourageDespawn(120);
+                    return;
+                }
             }
             else
             {

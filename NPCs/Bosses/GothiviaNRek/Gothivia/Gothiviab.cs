@@ -385,26 +385,23 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 			NPC.spriteDirection = NPC.direction;
-			Player player = Main.player[NPC.target];
 
-			NPC.TargetClosest();
-
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+			if (!NPC.HasValidTarget)
 			{
 				NPC.TargetClosest();
-			}
+				if (!NPC.HasValidTarget)
+                {               // If the targeted player is dead, flee
+                    NPC.velocity.Y += 0.5f;
+                    NPC.noTileCollide = true;
+                    NPC.noGravity = true;
+                    // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
+                    NPC.EncourageDespawn(2);
+                }
+			}  
 
 
+            Player player = Main.player[NPC.target];
 
-			if (player.dead)
-			{
-				// If the targeted player is dead, flee
-				NPC.velocity.Y += 0.5f;
-				NPC.noTileCollide = true;
-				NPC.noGravity = true;
-				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-				NPC.EncourageDespawn(2);
-			}
 
 
 			//	if (player.dead)

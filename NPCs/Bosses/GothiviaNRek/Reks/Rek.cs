@@ -270,19 +270,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 			
-	
-			Player player = Main.player[NPC.target];
-
 			NPC.TargetClosest();
-
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
 			{
 				NPC.TargetClosest();
 			}
 
-			
-
-			if (player.dead)
+            Player player = Main.player[NPC.target];
+            if (player.dead)
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y += 0.5f;
