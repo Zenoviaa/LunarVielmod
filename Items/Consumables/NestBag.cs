@@ -22,7 +22,13 @@ namespace Stellamod.Items.Consumables
     {
 
         public override void SetStaticDefaults()
-        {
+        {           
+            //Research Counts
+            Item.ResearchUnlockCount = 3;
+
+            //Behave like a boss bag, this will make it also show up on the minimap
+            ItemID.Sets.BossBag[Type] = true;
+
             // DisplayName.SetDefault("Treasure Bag");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
         }
@@ -34,7 +40,10 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.Expert;
             Item.maxStack = Item.CommonMaxStack; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.consumable = true;
+            Item.expert = true;
         }
+
         public override bool CanRightClick() //this make so you can right click this item
         {
             return true;

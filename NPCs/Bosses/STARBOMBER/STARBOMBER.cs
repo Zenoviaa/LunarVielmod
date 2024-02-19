@@ -127,15 +127,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));	
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
 			npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
 					ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 3, 1),
-					ItemDropRule.Common(ModContent.ItemType<Gambit>(), 3, 1, 3),
-					ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 3, 1, 40)
-					.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5)
-			)));
+					ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 3, 1, 40),
+					ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 3, 2, 5)
+			));
 		}
 
 		public override void SetDefaults()

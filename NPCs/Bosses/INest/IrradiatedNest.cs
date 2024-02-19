@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
@@ -157,7 +158,6 @@ namespace Stellamod.NPCs.Bosses.INest
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
 
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NestBossRel>()));
         }
 
@@ -561,5 +561,12 @@ namespace Stellamod.NPCs.Bosses.INest
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
+
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNESTBoss, -1);
+        }
+
     }
 }

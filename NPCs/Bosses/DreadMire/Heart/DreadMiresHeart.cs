@@ -489,11 +489,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             }
         }
 
-        public override void OnKill()
-        {
-            DreadMire.HeartKillCount++;
-        }
-
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
