@@ -8,11 +8,6 @@ namespace Stellamod.Items.Tools
 {
     public class AcidicHamacxe : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Irradia Hamaxe"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
-
 		public override void SetDefaults()
 		{
 			Item.damage = 8;
@@ -27,9 +22,10 @@ namespace Stellamod.Items.Tools
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.axe = 100;
-			Item.hammer = 150;
+            Item.axe = 20;
+			Item.hammer = 70;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
