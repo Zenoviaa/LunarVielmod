@@ -221,7 +221,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             NPC.ai[0] = 0;
                             previousAttack = 1;
                             NPC.ai[1] = 10;
-                            NPC.netUpdate = true;
                         }
                         break;
                     case 3:
@@ -248,11 +247,10 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                         }
                         if (NPC.ai[0] == 100)
                         {
-                  
+               
                             NPC.ai[0] = 0;
                             previousAttack = 2;
                             NPC.ai[1] = 10;
-                            NPC.netUpdate = true;
                         }
                         break;
                     case 4:
@@ -280,7 +278,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             NPC.ai[0] = 0;
                             previousAttack = 2;
                             NPC.ai[1] = 10;
-                            NPC.netUpdate = true;
                         }
                         break;
                     case 5:
@@ -317,7 +314,6 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                             NPC.ai[0] = 0;
                             previousAttack = 2;
                             NPC.ai[1] = 10;
-                            NPC.netUpdate = true;
                         }
                         break;
                     case 10:
@@ -380,6 +376,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
                         break;
                 }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             int d = 74;
