@@ -110,24 +110,10 @@ namespace Stellamod.NPCs.Town
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs)
-		{ // Requirements for the town NPC to spawn.
-			for (int k = 0; k < Main.maxPlayers; k++)
-			{
-				Player player = Main.player[k];
-				if (!player.active)
-				{
-					continue;
-				}
-
-				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-				if (ModContent.GetInstance<MyPlayer>().Towned == true)
-				{
-					return true;
-				}
-			}
-
-			return false;
+		{
+			return AlcadSpawnSystem.TownedGia;
 		}
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once

@@ -41,6 +41,7 @@ namespace Stellamod.NPCs.Town
 
 
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
+        public static bool TownedGia;
         public override void NetSend(BinaryWriter writer)
         {
             writer.WriteVector2(AlcadTile.ToVector2());
@@ -48,6 +49,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(LittleWitchTownTile.ToVector2());
             writer.WriteVector2(MechanicsTownTile.ToVector2());
             writer.WriteVector2(LabTile.ToVector2());
+            writer.Write(TownedGia);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -57,6 +59,7 @@ namespace Stellamod.NPCs.Town
             LittleWitchTownTile = reader.ReadVector2().ToPoint();
             MechanicsTownTile = reader.ReadVector2().ToPoint();
             LabTile = reader.ReadVector2().ToPoint();
+            TownedGia = reader.ReadBoolean();
         }
 
         public override void PostUpdateWorld()
@@ -128,6 +131,14 @@ namespace Stellamod.NPCs.Town
             }
         }
 
+        public override void PostUpdateNPCs()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
+            {
+                TownedGia = true;
+            }
+        }
+
         public override void SaveWorldData(TagCompound tag)
         {
             base.SaveWorldData(tag);
@@ -136,6 +147,7 @@ namespace Stellamod.NPCs.Town
             tag["LittleWitchTownTile"] = LittleWitchTownTile;
             tag["MechanicsTownTile"] = MechanicsTownTile;
             tag["LabTile"] = LabTile;
+            tag["TownedGia"] = TownedGia;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -146,6 +158,7 @@ namespace Stellamod.NPCs.Town
             LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
             MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
             LabTile = tag.Get<Point>("LabTile");
+            TownedGia = tag.GetBool("TownedGia");
         }
     }
 }
