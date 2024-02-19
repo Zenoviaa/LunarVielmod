@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Buffs;
+using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -129,28 +130,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));	
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
-
-			switch (Main.rand.Next(3))
-			{
-				case 0:
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 1, 1));
-					break;
-
-				case 1:
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
-					break;
-
-
-				case 2:
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 1, 1, 40));
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5));
-					break;
-
-
-			}
-
-			
-			
+			npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
+					ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 3, 1),
+					ItemDropRule.Common(ModContent.ItemType<Gambit>(), 3, 1, 3),
+					ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 3, 1, 40)
+					.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 1, 2, 5)
+			)));
 		}
 
 		public override void SetDefaults()
