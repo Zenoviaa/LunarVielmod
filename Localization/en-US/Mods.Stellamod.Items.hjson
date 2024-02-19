@@ -2204,7 +2204,7 @@ JackoBag: {
 }
 
 NestBag: {
-	DisplayName: Treasure Bag (Nest)
+	DisplayName: Treasure Bag (Irradiated Nest)
 	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 }
 
@@ -5709,5 +5709,5 @@ NyxiaThighs: {
 
 NestBossRel: {
 	Tooltip: ""
-	DisplayName: Nest Boss Rel
+	DisplayName: Irradiated Nest Relic
 }
