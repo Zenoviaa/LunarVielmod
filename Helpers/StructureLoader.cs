@@ -32,12 +32,20 @@ namespace Stellamod.Helpers
             }
         }
 
-        public static bool TryPlaceAndProtectStructure(Point location, string path)
+        public static void ProtectStructure(Point location, string path)
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
             rectangle.Location = location;
-            if (!structures.CanPlace(rectangle))
+            structures.AddProtectedStructure(rectangle);
+        }
+
+        public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
+        {
+            StructureMap structures = GenVars.structures;
+            Rectangle rectangle = StructureLoader.ReadRectangle(path);
+            rectangle.Location = location;
+            if (!ignoreStructures &!structures.CanPlace(rectangle))
                 return false;
             structures.AddProtectedStructure(rectangle);
             return true;

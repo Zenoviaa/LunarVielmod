@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -29,6 +30,7 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -77,12 +79,11 @@ namespace Stellamod.WorldG
 			if (CathedralGen2 != -1)
 			{
 
-				//tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
-				//	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+                //tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+                //	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
 
-	
-				tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
-				tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenAbandonedMineshafts));
+                tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Abandoned Mineshafts", WorldGenAbandonedMineshafts));
+                tasks.Insert(CathedralGen2 + 2, new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
 				tasks.Insert(CathedralGen2 + 3, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
 				tasks.Insert(CathedralGen2 + 4, new PassLegacy("World Gen Morrowed Structures", WorldGenMorrowedStructures));
 				tasks.Insert(CathedralGen2 + 5, new PassLegacy("World Gen More skies", WorldGenBig));
@@ -436,13 +437,12 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx, smy + 350);
-
-					//This code just places
-					ShapeData shapeData = new ShapeData();
-
 					//StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-					foreach (int chestIndex in ChestIndexs)
+					string path = "Struct/Underground/Manor";
+
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+                    StructureLoader.ProtectStructure(Loc, path);
+                    foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
 						// etc
@@ -780,8 +780,11 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(smx, smy + 18);
 
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/XixVillage");
-					NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
+					string path = "Struct/Overworld/XixVillage";
+
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
+					StructureLoader.ProtectStructure(Loc, path);
+                    NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -2564,9 +2567,11 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(abysmx, abysmy + 100);
+					string path = "Struct/Underground/MechanicShop";
 
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/MechanicShop");
-					NPCs.Town.AlcadSpawnSystem.MechanicsTownTile = Loc;
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
+                    StructureLoader.ProtectStructure(Loc, path);
+                    NPCs.Town.AlcadSpawnSystem.MechanicsTownTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
