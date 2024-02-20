@@ -700,7 +700,6 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
 		}
 
-		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
 		{
 
