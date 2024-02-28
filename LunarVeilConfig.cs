@@ -21,18 +21,20 @@ namespace Stellamod
 
 
 
-		[Header("BiomeParticles")]
-
-		[DefaultValue(true)] // This sets the configs default value.
-		[ReloadRequired] // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
-		public bool VanillaParticlesToggle;
-
-		[Header("ModdedBiomeParticles")]
-
-		[DefaultValue(true)] // This sets the configs default value.
-		[ReloadRequired] // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
-		public bool ParticlesToggle;
 	}
 
+	public class LunarVeilClientConfig : ModConfig
+	{
+        public override ConfigScope Mode => ConfigScope.ClientSide;
+
+        [Header("BiomeParticles")]
+        [DefaultValue(true)] // This sets the configs default value. // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
+        public bool VanillaParticlesToggle;
+
+        [Header("ModdedBiomeParticles")]
+
+        [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
+        public bool ParticlesToggle;
+    }
 
 }

@@ -1,0 +1,24 @@
+Mods: {
+	Stellamod: {
+		Configs: {
+			LunarVeilClientConfig: {
+				DisplayName: Lunar Veil Client Config
+
+				Headers: {
+					BiomeParticles: Biome Particles Header
+					ModdedBiomeParticles: Modded Biome Particles Header
+				}
+
+				VanillaParticlesToggle: {
+					Label: Vanilla Particles Toggle
+					Tooltip: ""
+				}
+
+				ParticlesToggle: {
+					Label: Particles Toggle
+					Tooltip: ""
+				}
+			}
+		}
+	}
+}
