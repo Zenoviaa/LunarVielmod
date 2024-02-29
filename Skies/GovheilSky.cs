@@ -141,6 +141,7 @@ namespace Stellamod.Skies
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {
+            /*
             // Only draw at night time.
         
 
@@ -150,7 +151,7 @@ namespace Stellamod.Skies
                 spriteBatch.Draw(skyTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White with { A = 0 } * intensity * 0.2f);
 
                 // Draw underwater rays over the screen.
-                DrawWaterRays(spriteBatch);
+                //DrawWaterRays(spriteBatch);
 
                 // Draw the light rays.
                 DrawRays(spriteBatch);
@@ -158,9 +159,9 @@ namespace Stellamod.Skies
                 DrawMoon(spriteBatch);
             
             
-            DrawCinders(spriteBatch, minDepth, maxDepth);
+            DrawCinders(spriteBatch, minDepth, maxDepth);*/
         }
-
+        /*
         private void DrawWaterRays(SpriteBatch spriteBatch)
         {
             Texture2D noise = ModContent.Request<Texture2D>("Stellamod/Textures/BlurryPerlinNoise", AssetRequestMode.ImmediateLoad).Value;
@@ -182,7 +183,7 @@ namespace Stellamod.Skies
             spriteBatch.Draw(noise, new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f), null, Color.White, 0f, noise.Size() * 0.5f, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Utilities.GetCustomSkyBackgroundMatrix());
-        }
+        }*/
 
         private void DrawRays(SpriteBatch spriteBatch)
         {

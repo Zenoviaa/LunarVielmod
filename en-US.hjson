@@ -7,6 +7,7 @@ Mods: {
 				Headers: {
 					BiomeParticles: Biome Particles Header
 					ModdedBiomeParticles: Modded Biome Particles Header
+					ReplaceVanillaTextures: Replace Vanilla Textures Header
 				}
 
 				VanillaParticlesToggle: {
@@ -18,7 +19,14 @@ Mods: {
 					Label: Particles Toggle
 					Tooltip: ""
 				}
+
+				VanillaTexturesToggle: {
+					Tooltip: ""
+					Label: Vanilla Textures Toggle
+				}
 			}
+
+			LunarVeilServerConfig.DisplayName: Lunar Veil Server Config
 		}
 	}
 }

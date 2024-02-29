@@ -184,10 +184,8 @@ namespace Stellamod
 
 
 
-            if (!Main.dedServ && ModContent.GetInstance<LunarVeilConfig>().VanillaTexturesToggle == true)
+            if (!Main.dedServ && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
             {
-
-
                 Main.instance.LoadTiles(TileID.Dirt);
                 TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
 
@@ -271,24 +269,14 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.Pearlsand);
                 TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
-
-               
-           
-
             }
+
             Instance = this;
-
-
-
         }
 
         public override void Unload()
         {
-
-
-
             StellaMultiplayer.Unload();
-
             if (!Main.dedServ)
             {
                 /*  Main.tileFrame[TileID.Dirt] = 0;
