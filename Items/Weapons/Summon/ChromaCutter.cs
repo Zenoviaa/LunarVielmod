@@ -129,7 +129,7 @@ namespace Stellamod.Items.Weapons.Summon
                             projectile.minionSlots = remainingSlots;
                         }
 
-                        projectile.originalDamage = Item.damage + (int)(15 * remainingSlots);
+                        projectile.originalDamage = Item.damage + (int)(9 * remainingSlots);
                     }
 
                     return false;

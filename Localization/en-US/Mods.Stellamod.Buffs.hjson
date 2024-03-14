@@ -529,7 +529,7 @@ LuckyB: {
 }
 
 JellyB: {
-	Description: "You can jelly me up ;)"
+	Description: You can jelly me up ;)
 	DisplayName: Jelly Brooch
 }
 
