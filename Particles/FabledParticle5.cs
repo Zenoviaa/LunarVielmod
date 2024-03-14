@@ -15,15 +15,11 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 30f;
 			timeLeft = 300;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
-
-
-
 			scale *= 0.99f;
 			rotation += Utils.Clamp(velocity.X * 0f, -ai[0], ai[0]);
 			velocity *= 1.01f;
@@ -32,6 +28,7 @@ namespace Stellamod.Particles
 			if (Scale <= 0f)
 				active = false;
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
 			Texture2D tex = Request<Texture2D>("Stellamod/Particles/Goldenblaster").Value;

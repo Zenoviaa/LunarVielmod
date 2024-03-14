@@ -15,10 +15,9 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 40f;
 			timeLeft = 400;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
 			
@@ -33,7 +32,7 @@ namespace Stellamod.Particles
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D tex = Request<Texture2D>("Stellamod/Particles/GoldSparkleParticle").Value;
+			Texture2D tex = texture;
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 
 			if (alpha < 0f)

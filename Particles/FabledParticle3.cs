@@ -15,10 +15,9 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 15f;
 			timeLeft = 300;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
 

@@ -25,7 +25,7 @@ namespace Stellamod.Particles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D tex3 = Request<Texture2D>("Stellamod/Particles/WaterParticle").Value;
+            Texture2D tex3 = texture;
             Vector2 origin = this.OriginCenter();
 
             float totalTime = Frame_Count * Frame_Duration;
