@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
-using Stellamod.Items.Materials;
+using Stellamod.Items.Harvesting;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
-	public class SandyBroochA : ModItem
+	public class AmberBroochA : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -22,49 +22,42 @@ namespace Stellamod.Items.Accessories.Brooches
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
+
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
-
-			line = new TooltipLine(Mod, "Brooch of AVt", "Simple Brooch!")
+			line = new TooltipLine(Mod, "Brooch of Amber", "Simple Brooch!")
 			{
 				OverrideColor = new Color(198, 124, 225)
 
 			};
 			tooltips.Add(line);
-
-
-
 		}
 
 		public override void SetDefaults()
 		{
 			Item.width = 24;
 			Item.height = 28;
-			Item.value = Item.buyPrice(0, 0, 90);
+			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.Blue;
 			Item.accessory = true;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
+			broochPlayer.KeepBroochAlive<AmberBrooch, AmberB>(ref broochPlayer.hasAmberBrooch);
 		}
 
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
-			recipe.AddIngredient(ItemID.AntlionMandible, 5);
-			recipe.AddIngredient(ItemID.Cactus, 10);
-			recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 200);
+			recipe.AddIngredient(ItemID.Amber, 15);
+			recipe.AddIngredient(ItemID.SoulofFright, 5);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();
-		}
-
-
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.KeepBroochAlive<SandyBrooch, SandyB>(ref broochPlayer.hasSandyBrooch);
-			
 		}
 	}
 }

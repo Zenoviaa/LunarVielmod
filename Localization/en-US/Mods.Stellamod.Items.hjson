@@ -3207,7 +3207,7 @@ DaedussSunSheid: {
 
 BearBroochA: {
 	DisplayName: Bear of The Wild Brooch
-	Tooltip: Heavily increased mana regeneration!
+	Tooltip: Heavily increased mana regeneration and 4 defense!
 }
 
 DreadBroochA: {
@@ -4289,7 +4289,7 @@ OceanicExtenderPowder: {
 
 MorrowedJelliesBroochA: {
 	DisplayName: Morrowed Jellies Brooch
-	Tooltip: Its really good if you're running a defensive build.
+	Tooltip: Its really good if you're running a defensive build, +40 defense.
 }
 
 BonedExtenderPowder: {
@@ -5710,4 +5710,93 @@ NyxiaThighs: {
 NestBossRel: {
 	Tooltip: ""
 	DisplayName: Irradiated Nest Relic
+}
+
+RadiatedBroochesBackpack: {
+	Tooltip: ""
+	DisplayName: Radiated Brooches Backpack
+}
+
+HeatedVerliaBroochA: {
+	Tooltip: When hitting enemies, frost icings and golden showers will rain upon your enemies doing great damage!
+	DisplayName: Radiated Sun and Moon Brooch
+}
+
+AmberBroochA: {
+	Tooltip: Increased speed by 40%, 5 more defense and faster pickaxe mining speeds! Have fun :)
+	DisplayName: Amber Brooch
+}
+
+VillagersBroochA: {
+	DisplayName: Villagers Brooch
+	Tooltip: Had enough social time? Why dont you use the extra 12% this give you?
+}
+
+RadianuiBar: {
+	DisplayName: Radianui Bar
+	Tooltip: Bursting with Zui's happiness and Radiance!
+}
+
+RadianuiWings: {
+	DisplayName: Radianui Wings
+	Tooltip: These wings embody a straight piercing light blessed from the goddess Zui.
+}
+
+AurockBroochA: {
+	DisplayName: Radiated Aurock Brooch
+	Tooltip: '''
+		Gives bright blue light!
+		Extreme increase to pickaxe speed
+		+7 Defesnse!
+		'''
+}
+
+DefensiveGraditudeBroochA: {
+	DisplayName: Radianted Defensive Graditude Brooch
+	Tooltip: '''
+		+50 Defense!
+		Woaaaa, you dont need this...
+		-30% Damage
+		'''
+}
+
+GovheilWarriorBroochA: {
+	DisplayName: Radiated Govheil Warrior Brooch
+	Tooltip: '''
+		Halves the mana cost of any magic weapon!
+		+15% Magic damage
+		+6 Defense too!
+		+12% Damage!
+		Auto-Swing!
+		'''
+}
+
+SandyBearBroochA: {
+	DisplayName: Radiated Sandy Bear Brooch
+	Tooltip: '''
+		Gain the effects of a true sand warrior!
+		Get forbidden armor set bonus!
+		+2 Summons
+		Heavily Increased Mana regeneration!
+		'''
+}
+
+StoningFlyBroochA: {
+	DisplayName: Radiated Stoning Fly Brooch
+	Tooltip: '''
+		Jump extra high and fast acceleration!
+		No fall damage!
+		+10% Damage
+		30% Increased Movement speed!
+		'''
+}
+
+KilliaBroochA: {
+	DisplayName: Radiated Dreadrose Brooch
+	Tooltip: '''
+		Summons a rose shield that rotates around you and blocks projectiles!
+		+80 Health
+		We walking out of here good this time :p
+		+5% Damage
+		'''
 }

@@ -15,7 +15,8 @@ namespace Stellamod.Buffs.Charms
 		}
 		public override void Update(Player player, ref int buffIndex)
 		{
-
+			player.armorEffectDrawOutlinesForbidden = true;
+			player.setForbidden = true;
 			player.statDefense += 2;
 
 		}

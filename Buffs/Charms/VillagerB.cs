@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Charms
 {
-    public class BearB : ModBuff
+	public class VillagersB : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
@@ -15,8 +15,8 @@ namespace Stellamod.Buffs.Charms
 		}
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.manaRegen += 2;
-			player.statDefense += 4;
+
+			
 
 		}
 	}

@@ -529,7 +529,7 @@ LuckyB: {
 }
 
 JellyB: {
-	Description: "You can jelly me up ;)"
+	Description: You can jelly me up ;)
 	DisplayName: Jelly Brooch
 }
 
@@ -561,4 +561,14 @@ BucketScrapperMinionBuff: {
 Zuid: {
 	Description: Mods.Stellamod.Buffs.Zuid.Description
 	DisplayName: Zuid
+}
+
+VillagersB: {
+	Description: Mods.Stellamod.Buffs.VillagersB.Description
+	DisplayName: Villagers B
+}
+
+AmberB: {
+	Description: Mods.Stellamod.Buffs.AmberB.Description
+	DisplayName: Amber B
 }

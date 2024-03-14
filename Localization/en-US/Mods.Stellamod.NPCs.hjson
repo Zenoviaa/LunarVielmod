@@ -228,15 +228,15 @@ Gambit: {
 
 	TownNPCMood: {
 		Content: "{$Mods.Stellamod.TownNPCMood.Gambit.Content}"
-		NoHome: "I really dont have a house"
-		FarFromHome: "Spiderman far from home"
-		LoveSpace: "I really like this space"
-		DislikeCrowded: "I dont like being crowded, get me out babe"
-		HateCrowded: "PLEASE LET ME HAVE A SPACE WITH YOU"
-		LoveBiome: "THIS IS AMAZEBALLS"
-		LikeBiome: "This is cool"
-		DislikeBiome: "I dont like this biome"
-		LoveNPC: "I loveeee you"
+		NoHome: I really dont have a house
+		FarFromHome: Spiderman far from home
+		LoveSpace: I really like this space
+		DislikeCrowded: I dont like being crowded, get me out babe
+		HateCrowded: PLEASE LET ME HAVE A SPACE WITH YOU
+		LoveBiome: THIS IS AMAZEBALLS
+		LikeBiome: This is cool
+		DislikeBiome: I dont like this biome
+		LoveNPC: I loveeee you
 		LikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.LikeNPC}"
 		DislikeNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.DislikeNPC}"
 		HateNPC: "{$Mods.Stellamod.TownNPCMood.Gambit.HateNPC}"

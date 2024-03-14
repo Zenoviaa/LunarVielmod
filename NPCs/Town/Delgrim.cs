@@ -492,6 +492,7 @@ namespace Stellamod.NPCs.Town
 			.Add<DriveConstruct>()
 			.Add<ArmorDrive>()
 			.Add<WeaponDrive>()
+			.Add<VillagersBroochA>()
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}

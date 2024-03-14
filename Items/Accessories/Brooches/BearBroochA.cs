@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
 			broochPlayer.KeepBroochAlive<BearBrooch, BearB>(ref broochPlayer.hasBearBrooch);
-			player.manaRegen += 2;
+			
 		}
 	}
 }

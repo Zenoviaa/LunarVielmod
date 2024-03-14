@@ -43,8 +43,29 @@ namespace Stellamod.Brooches
         public bool hasCelestia;
         public bool hasRoseBrooch;
         public bool hasMagicalBrooch;
+        public bool hasRadiantBrooches;
         public bool hasAdvancedBrooches;
         public bool hasIgniteron;
+        public bool hasVillagersBrooch;
+        public bool hasAmberBrooch;
+
+
+
+        public bool hasHeatVer;
+
+        public bool hasDaedDredRose;
+
+        public bool hasSandyBear;
+
+        public bool hasGinzteling;
+
+        public bool hasStonefly;
+
+        public bool hasAurock;
+
+        public bool hasDefensiveJS;
+
+
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -75,13 +96,27 @@ namespace Stellamod.Brooches
             hasMagicalBrooch = false;
             hasAdvancedBrooches = false;
             hasIgniteron = false;
+            hasVillagersBrooch = false;
+            hasAmberBrooch = false;
+
+
+
+            hasHeatVer = false;
+            hasGinzteling = false;
+            hasAurock = false;
+            hasSandyBear = false;
+            hasDefensiveJS = false;
+            hasStonefly = false;
+            hasDaedDredRose = false;
+            hasRadiantBrooches = false;
+
         }
 
 
         private void AdvancedBroochEffects()
         {
             //Advanced Brooch Effects
-            if (hasAdvancedBrooches)
+            if (hasAdvancedBrooches && !hasRadiantBrooches)
             {
                 MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();//.LuckyW = true;
                 //Lucky Winner Brooch
@@ -116,7 +151,159 @@ namespace Stellamod.Brooches
                     KeepBroochAlive<MagicalBrooch, MagicalBroo>(ref hasMagicalBrooch);
                     Player.GetDamage(DamageClass.Magic) *= 1.2f;
                 }
+
+                if (hasVillagersBrooch)
+                {
+                    KeepBroochAlive<VillagersBrooch, VillagersB>(ref hasVillagersBrooch);
+                    Player.GetDamage(DamageClass.Generic) *= 1.12f;
+                }
+
+
+
             }
+
+
+
+
+
+
+
+          if (hasRadiantBrooches)
+           {
+                MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
+
+
+
+
+                if (hasLuckyWBrooch)
+                {
+                    KeepBroochAlive<LuckyWinnerBrooch, LuckyB>(ref hasLuckyWBrooch);
+                    myPlayer.LuckyW = true;
+                }
+
+                //Boned Throw Brooch
+                if (hasBonedBrooch)
+                {
+                    KeepBroochAlive<BonedBrooch, BonedB>(ref hasBonedBrooch);
+                    Player.GetDamage(DamageClass.Throwing) *= 1.2f;
+                    Player.ThrownVelocity += 5;
+                }
+
+                //Burning GB Brooch
+                if (hasBurningGBrooch)
+                {
+                    KeepBroochAlive<BurningGBrooch, BurningGB>(ref hasBurningGBrooch);
+                    burningGBCooldown--;
+                }
+
+                if (hasGovheilHolsterBrooch)
+                {
+                    KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref hasGovheilHolsterBrooch);
+                }
+
+                if (hasMagicalBrooch)
+                {
+                    KeepBroochAlive<MagicalBrooch, MagicalBroo>(ref hasMagicalBrooch);
+                    Player.GetDamage(DamageClass.Magic) *= 1.2f;
+                }
+
+                if (hasVillagersBrooch)
+                {
+                    KeepBroochAlive<VillagersBrooch, VillagersB>(ref hasVillagersBrooch);
+                    Player.GetDamage(DamageClass.Generic) *= 1.12f;
+                }
+
+                //___------------------------------------------- RADIANT BROOCHES
+
+             
+                          //Lucky Winner Brooch
+                    if (hasHeatVer)
+                    {
+                        KeepBroochAlive<BurningGBrooch, BurningGB>(ref hasBurningGBrooch);
+                        burningGBCooldown--;
+                        KeepBroochAlive<VerliaBrooch, VerliaBroo>(ref hasVerliaBrooch);
+                        verliaBroochCooldown--;
+
+
+                    }
+
+
+                    if (hasStonefly)
+                    {
+                        KeepBroochAlive<FlyfishBrooch, Flyfish>(ref hasFlyfishBrooch);
+                        KeepBroochAlive<SlimeBrooch, Slimee>(ref hasSlimeBrooch);
+                        KeepBroochAlive<StoneBrooch, StoneB>(ref hasStoneBrooch);
+
+
+                          Player.GetDamage(DamageClass.Generic) *= 1.25f;
+                     }
+
+
+                if (hasAurock)
+                {
+                    KeepBroochAlive<AmberBrooch, AmberB>(ref hasAmberBrooch);
+                    KeepBroochAlive<AmethystBrooch, AmethystBroo>(ref hasAmethystBrooch);
+                    KeepBroochAlive<AurelusBlightBrooch, AurelusB>(ref hasAurelusBlightBrooch);
+
+
+                }
+
+
+                if (hasSandyBear)
+                    {
+                    KeepBroochAlive<SandyBrooch, SandyB>(ref hasSandyBrooch);
+                    KeepBroochAlive<BearBrooch, BearB>(ref hasBearBrooch);
+
+                    Player.maxMinions += 2;
+
+                    Player.GetDamage(DamageClass.Summon) *= 1.20f;
+                }
+
+
+                if (hasDefensiveJS)
+                {
+                    KeepBroochAlive<JellyBrooch, JellyB>(ref hasJellyBrooch);
+                    KeepBroochAlive<SpragaldBrooch, Spragald>(ref hasSpragaldBrooch);
+
+                    Player.GetDamage(DamageClass.Generic) *= 0.70f;
+                }
+
+
+                if (hasDaedDredRose)
+                   {
+                    KeepBroochAlive<VixedBrooch, VixedB>(ref hasVixedBrooch);
+                    KeepBroochAlive<RoseBrooch, RoseB>(ref hasRoseBrooch);
+                    KeepBroochAlive<DreadBrooch, DreadB>(ref hasDreadBrooch);
+                   
+                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<RoseShield>()] == 0)
+                    {
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f,
+                            ModContent.ProjectileType<RoseShield>(), 0, 1f, Player.whoAmI);
+                    }
+
+                }
+
+                if (hasGinzteling)
+                {
+                    KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref hasGovheilHolsterBrooch);
+                    KeepBroochAlive<GintzlBrooch, GintBroo>(ref hasGintzlBrooch);
+                    KeepBroochAlive<VillagersBrooch, VillagersB>(ref hasVillagersBrooch);
+                    Player.GetDamage(DamageClass.Generic) *= 1.15f;
+
+                }
+
+
+
+
+
+
+
+
+            }
+
+            
+
+           
         }
 
         public override void PostUpdateEquips()

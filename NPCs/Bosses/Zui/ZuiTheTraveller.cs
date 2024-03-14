@@ -4,6 +4,7 @@ using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Zui;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.NPCs.Town;
@@ -2167,6 +2168,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Consumables.Gambit>(), 1, 5, 10));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MagiciansCodeHat>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RadianuiBar>(), 1, 10, 40));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.ZuiBossRel>()));
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
