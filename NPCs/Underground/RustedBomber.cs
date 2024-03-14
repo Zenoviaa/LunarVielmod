@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Underground
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = SoundID.NPCDeath14;
             NPC.value = 563f;
-            NPC.knockBackResist = .45f;
+            NPC.knockBackResist = 0f;
         }
 
         public override void FindFrame(int frameHeight)

@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Underground
             NPC.height = height;
             NPC.damage = 60;
             NPC.defense = 12;
-            NPC.lifeMax = 200;
+            NPC.lifeMax = 190;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = SoundID.NPCDeath14;
             NPC.value = 563f;
@@ -175,7 +175,7 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (SpawnCondition.Cavern.Chance * 0.3f);
+            return (SpawnCondition.Cavern.Chance * 0.25f);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
