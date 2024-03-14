@@ -27,13 +27,13 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             Projectile.width = 120;
             Projectile.height = 74;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 120;
             Projectile.scale = 1f;
         }
 
         public override bool PreAI()
         {
-            if (++_frameTick >= 1)
+            if (++_frameTick >= 2)
             {
                 _frameTick = 0;
                 if (++_frameCounter >= 60)

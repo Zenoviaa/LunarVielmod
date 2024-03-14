@@ -17,8 +17,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.LightRed;
             Item.damage = 42;
             Item.DamageType = DamageClass.Ranged;
-            Item.useAnimation = 6;
-            Item.useTime = 6;
+            Item.useAnimation = 9;
+            Item.useTime = 9;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.shoot = ModContent.ProjectileType<EelLightningBolt>();
             Item.shootSpeed = 1;

@@ -15,8 +15,6 @@ namespace Stellamod.Particles
             height = 68;
             Scale = 0.5f;
             timeLeft = 40;
-            oldPos = new Vector2[10];
-            oldRot = new float[1];
             SpawnAction = Spawn;
         }
 
@@ -34,7 +32,7 @@ namespace Stellamod.Particles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D tex = Request<Texture2D>("Stellamod/Particles/DashParticle").Value;
+            Texture2D tex = texture;
             float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
             if (alpha < 0f)
             {
