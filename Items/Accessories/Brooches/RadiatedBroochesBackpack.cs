@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Brooches
 {
+	[AutoloadEquip(EquipType.Waist)]
 	public class RadiatedBroochesBackpack : ModItem
 	{
 		public override void SetStaticDefaults()

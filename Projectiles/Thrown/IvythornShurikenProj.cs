@@ -15,7 +15,7 @@ namespace Stellamod.Projectiles.Thrown
         float Timer;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailingMode[Type] = 1;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
         }
 
@@ -23,6 +23,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Projectile.CloneDefaults(ProjectileID.Shuriken);
             AIType = ProjectileID.Shuriken;
+            Projectile.scale = 1.2f;
         }
 
         public override bool PreAI()
