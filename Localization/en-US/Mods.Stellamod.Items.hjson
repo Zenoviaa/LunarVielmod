@@ -5756,7 +5756,7 @@ AurockBroochA: {
 }
 
 DefensiveGraditudeBroochA: {
-	DisplayName: Radianted Defensive Graditude Brooch
+	DisplayName: Radiated Defensive Graditude Brooch
 	Tooltip:
 		'''
 		+50 Defense!
