@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Swords.Ripper
 
         public override void SetDefaults()
         {
-            Projectile.width = 62;
+            Projectile.width = 66;
             Projectile.height = 54;
             Projectile.tileCollide = false;
             Projectile.friendly = true;

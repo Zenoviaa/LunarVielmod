@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -1526,7 +1527,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), minimumDropped: 30, maximumDropped: 40));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MiracleWings>(), chanceDenominator: 4));
-			npcLoot.Add(notExpertRule);
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SewingKit>(), chanceDenominator: 1));
+            npcLoot.Add(notExpertRule);
 		}
 
         public override void OnKill()

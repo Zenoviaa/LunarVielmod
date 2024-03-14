@@ -40,6 +40,7 @@ namespace Stellamod.Items.Consumables
         {
             base.ModifyItemLoot(itemLoot);
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<LittleScissor>(), 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SewingKit>(), 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), minimumDropped: 30, maximumDropped: 40));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleWings>(), chanceDenominator: 4));
         }

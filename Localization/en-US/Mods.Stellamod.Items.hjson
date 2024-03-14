@@ -4174,11 +4174,7 @@ PotOfGreed: {
 
 Ripper: {
 	DisplayName: Ripper
-	Tooltip:
-		'''
-		Summons a storm of swords around your cursor
-		Right click to perform a special attack
-		'''
+	Tooltip: Summons a storm of swords towards your cursor!
 }
 
 XScissor: {
@@ -5819,4 +5815,9 @@ KilliaBroochA: {
 IvythornShuriken: {
 	DisplayName: Ivythorn Shuriken
 	Tooltip: ""
+}
+
+SewingKit: {
+	DisplayName: Sewing Kit
+	Tooltip: Allows the crafting and use of Miracle weapons!
 }
