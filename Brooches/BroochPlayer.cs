@@ -224,8 +224,9 @@ namespace Stellamod.Brooches
                         KeepBroochAlive<VerliaBrooch, VerliaBroo>(ref hasVerliaBrooch);
                         verliaBroochCooldown--;
 
-
-                    }
+                         Player.GetDamage(DamageClass.Ranged) *= 1.25f;
+                         Player.GetDamage(DamageClass.Throwing) *= 1.25f;
+                }
 
 
                     if (hasStonefly)

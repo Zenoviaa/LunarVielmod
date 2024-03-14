@@ -5713,12 +5713,15 @@ NestBossRel: {
 }
 
 RadiatedBroochesBackpack: {
-	Tooltip: ""
+	Tooltip: The infinite light of good shines through you!
 	DisplayName: Radiated Brooches Backpack
 }
 
 HeatedVerliaBroochA: {
-	Tooltip: When hitting enemies, frost icings and golden showers will rain upon your enemies doing great damage!
+	Tooltip: '''
+	When hitting enemies, frost icings and golden showers will rain upon your enemies doing great damage!
+	+25% Damage to throwing and Ranged Weapons!
+	'''
 	DisplayName: Radiated Sun and Moon Brooch
 }
 
@@ -5744,7 +5747,8 @@ RadianuiWings: {
 
 AurockBroochA: {
 	DisplayName: Radiated Aurock Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		Gives bright blue light!
 		Extreme increase to pickaxe speed
 		+7 Defesnse!
@@ -5753,7 +5757,8 @@ AurockBroochA: {
 
 DefensiveGraditudeBroochA: {
 	DisplayName: Radianted Defensive Graditude Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		+50 Defense!
 		Woaaaa, you dont need this...
 		-30% Damage
@@ -5762,7 +5767,8 @@ DefensiveGraditudeBroochA: {
 
 GovheilWarriorBroochA: {
 	DisplayName: Radiated Govheil Warrior Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		Halves the mana cost of any magic weapon!
 		+15% Magic damage
 		+6 Defense too!
@@ -5773,7 +5779,8 @@ GovheilWarriorBroochA: {
 
 SandyBearBroochA: {
 	DisplayName: Radiated Sandy Bear Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		Gain the effects of a true sand warrior!
 		Get forbidden armor set bonus!
 		+2 Summons
@@ -5783,7 +5790,8 @@ SandyBearBroochA: {
 
 StoningFlyBroochA: {
 	DisplayName: Radiated Stoning Fly Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		Jump extra high and fast acceleration!
 		No fall damage!
 		+10% Damage
@@ -5793,10 +5801,16 @@ StoningFlyBroochA: {
 
 KilliaBroochA: {
 	DisplayName: Radiated Dreadrose Brooch
-	Tooltip: '''
+	Tooltip:
+		'''
 		Summons a rose shield that rotates around you and blocks projectiles!
 		+80 Health
 		We walking out of here good this time :p
 		+5% Damage
 		'''
+}
+
+IvythornShuriken: {
+	DisplayName: Ivythorn Shuriken
+	Tooltip: ""
 }
