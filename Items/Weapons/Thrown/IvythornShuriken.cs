@@ -40,8 +40,8 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.shootSpeed = 20f;
             Item.useAnimation = 18;
             Item.useTime = 19;
-            Item.consumable = false;
-
+            Item.consumable = true;
+            Item.maxStack = Item.CommonMaxStack;
         }
 
         public override Vector2? HoldoutOffset()
@@ -52,9 +52,9 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             base.AddRecipes();
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 12);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 7);
+            Recipe recipe = CreateRecipe(50);
+            recipe.AddIngredient(ItemID.Wood, 2);
+            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

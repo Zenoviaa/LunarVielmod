@@ -5713,11 +5713,12 @@ NestBossRel: {
 }
 
 RadiatedBroochesBackpack: {
-	Tooltip:'''
-	The infinite light of good shines through you!
-	Allows you to use both Advanced and Radiant brooches!
-	+8% Damage!
-	'''
+	Tooltip:
+		'''
+		The infinite light of good shines through you!
+		Allows you to use both Advanced and Radiant brooches!
+		+8% Damage!
+		'''
 	DisplayName: Radiant Brooches Backpack
 }
 
