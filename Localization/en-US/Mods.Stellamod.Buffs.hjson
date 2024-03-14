@@ -89,13 +89,13 @@ Wounded: {
 }
 
 Whipdeath: {
-	Description: Mods.Stellamod.Buffs.Whipdeath.Description
-	DisplayName: Whipdeath
+	Description: Getting whipped
+	DisplayName: Whip me master :<
 }
 
 MorrowWhipDebuff: {
-	Description: Mods.Stellamod.Buffs.MorrowWhipDebuff.Description
-	DisplayName: Morrow Whip Debuff
+	Description: Morrowed whip
+	DisplayName: Debuffs you while whipping.
 }
 
 Morrow: {
@@ -104,17 +104,17 @@ Morrow: {
 }
 
 SnowFlame: {
-	Description: Mods.Stellamod.Buffs.SnowFlame.Description
+	Description: Snowing Flames
 	DisplayName: Snow Flame
 }
 
 Rekin: {
-	Description: Mods.Stellamod.Buffs.Rekin.Description
+	Description: Reka
 	DisplayName: Rekin
 }
 
 PocketSandBuff: {
-	Description: Mods.Stellamod.Buffs.PocketSandBuff.Description
+	Description: Sneaky sand
 	DisplayName: Pocket Sand Buff
 }
 
@@ -129,7 +129,7 @@ Irradiation: {
 }
 
 Harvester: {
-	Description: Mods.Stellamod.Buffs.Harvester.Description
+	Description: Harvest spots
 	DisplayName: Harvester
 }
 
@@ -379,112 +379,112 @@ VehementBuff: {
 }
 
 VampireTorchMinionBuff: {
-	Description: Mods.Stellamod.Buffs.VampireTorchMinionBuff.Description
+	Description: Getting surrounded by such a cool effect right?
 	DisplayName: Vampire Torch Minion Buff
 }
 
 ToxicHornetMinionBuff: {
-	Description: Mods.Stellamod.Buffs.ToxicHornetMinionBuff.Description
+	Description: This minion is eager to miss.
 	DisplayName: Toxic Hornet Minion Buff
 }
 
 HallowWandMinionBuff: {
-	Description: Mods.Stellamod.Buffs.HallowWandMinionBuff.Description
+	Description: A lil potion that does nothing
 	DisplayName: Hallow Wand Minion Buff
 }
 
 FireflyMinionBuff: {
-	Description: Mods.Stellamod.Buffs.FireflyMinionBuff.Description
+	Description: ITS ON FIRE
 	DisplayName: Firefly Minion Buff
 }
 
 CloudMinionBuff: {
-	Description: Mods.Stellamod.Buffs.CloudMinionBuff.Description
+	Description: No more cloud
 	DisplayName: Cloud Minion Buff
 }
 
 ChromaCutterMinionBuff: {
-	Description: Mods.Stellamod.Buffs.ChromaCutterMinionBuff.Description
+	Description: Slice and dice into terralora!
 	DisplayName: Chroma Cutter Minion Buff
 }
 
 AlcadWandMinionBuff: {
-	Description: Mods.Stellamod.Buffs.AlcadWandMinionBuff.Description
+	Description: Sprinkle a bit of Fenix's bath water.
 	DisplayName: Alcad Wand Minion Buff
 }
 
 CameraMinBuff: {
-	Description: Mods.Stellamod.Buffs.CameraMinBuff.Description
+	Description: Lookin snazzy!
 	DisplayName: Camera Min Buff
 }
 
 LaceratorDebuff: {
-	Description: Mods.Stellamod.Buffs.LaceratorDebuff.Description
+	Description: Laced up
 	DisplayName: Lacerator Debuff
 }
 
 DarkWhipDebuff: {
-	Description: Mods.Stellamod.Buffs.DarkWhipDebuff.Description
+	Description: Darkwhipped. Truly the sentence of all time
 	DisplayName: Dark Whip Debuff
 }
 
 VialedUp: {
-	Description: Mods.Stellamod.Buffs.VialedUp.Description
+	Description: I'm all juiced up on this poisonous punch
 	DisplayName: Vialed Up
 }
 
 Starbombin: {
-	Description: Mods.Stellamod.Buffs.Starbombin.Description
+	Description: Are you really the star?
 	DisplayName: Starbombin
 }
 
 ShadowBoost: {
-	Description: Mods.Stellamod.Buffs.ShadowBoost.Description
+	Description: Boosting through the shadows of the night
 	DisplayName: Shadow Boost
 }
 
 Sected: {
-	Description: Mods.Stellamod.Buffs.Sected.Description
+	Description: I mean sexted
 	DisplayName: Sected
 }
 
 MiracleBoost: {
-	Description: Mods.Stellamod.Buffs.MiracleBoost.Description
+	Description: Boooooooo
 	DisplayName: Miracle Boost
 }
 
 MasteryMagic: {
-	Description: Mods.Stellamod.Buffs.MasteryMagic.Description
+	Description: Master of all things magic this lil guy is gonna follow you!
 	DisplayName: Mastery Magic
 }
 
 Liberator: {
-	Description: Mods.Stellamod.Buffs.Liberator.Description
+	Description: Pulsing beams!
 	DisplayName: Liberator
 }
 
 Lacerated: {
-	Description: Mods.Stellamod.Buffs.Lacerated.Description
+	Description: lacing
 	DisplayName: Lacerated
 }
 
 Genesis: {
-	Description: Mods.Stellamod.Buffs.Genesis.Description
+	Description: Small bomb mode
 	DisplayName: Genesis
 }
 
 Friendzied: {
-	Description: Mods.Stellamod.Buffs.Friendzied.Description
+	Description: Im SOOOO happy
 	DisplayName: Friendzied
 }
 
 Executor: {
-	Description: Mods.Stellamod.Buffs.Executor.Description
+	Description: LASER their balls
 	DisplayName: Executor
 }
 
 UseIgniter: {
-	Description: Mods.Stellamod.Buffs.UseIgniter.Description
+	Description: Hold and Use your igniter right now!
 	DisplayName: Use Igniter
 }
 
@@ -509,47 +509,47 @@ AgreviDust: {
 }
 
 SandyB: {
-	Description: Mods.Stellamod.Buffs.SandyB.Description
-	DisplayName: Sandy B
+	Description: Not sandy cheecks
+	DisplayName: Sandy Brooch
 }
 
 RoseB: {
-	Description: Mods.Stellamod.Buffs.RoseB.Description
-	DisplayName: Rose B
+	Description: A little rose shield floats around
+	DisplayName: Rose Brooch
 }
 
 MagicalBroo: {
-	Description: Mods.Stellamod.Buffs.MagicalBroo.Description
-	DisplayName: Magical Broo
+	Description: Its not magical you lied
+	DisplayName: Magical Brooch
 }
 
 LuckyB: {
-	Description: Mods.Stellamod.Buffs.LuckyB.Description
-	DisplayName: Lucky B
+	Description: A lucky bitch
+	DisplayName: Lucky Brooch
 }
 
 JellyB: {
-	Description: Mods.Stellamod.Buffs.JellyB.Description
-	DisplayName: Jelly B
+	Description: "You can jelly me up ;)"
+	DisplayName: Jelly Brooch
 }
 
 BonedB: {
-	Description: Mods.Stellamod.Buffs.BonedB.Description
-	DisplayName: Boned B
+	Description: You're so boned
+	DisplayName: Boned up
 }
 
 Chained: {
-	Description: Mods.Stellamod.Buffs.Chained.Description
+	Description: Got me chained up like a slave
 	DisplayName: Chained
 }
 
 CannotUseFlask: {
-	Description: Mods.Stellamod.Buffs.CannotUseFlask.Description
+	Description: You can't use your flask right now
 	DisplayName: Cannot Use Flask
 }
 
 Alcadded: {
-	Description: Mods.Stellamod.Buffs.Alcadded.Description
+	Description: Alcad
 	DisplayName: Alcadded
 }
 
