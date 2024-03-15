@@ -5814,10 +5814,15 @@ KilliaBroochA: {
 
 IvythornShuriken: {
 	DisplayName: Ivythorn Shuriken
-	Tooltip: ""
+	Tooltip: Will hit enemies! Crazy
 }
 
 SewingKit: {
 	DisplayName: Sewing Kit
 	Tooltip: Allows the crafting and use of Miracle weapons!
+}
+
+Hitme: {
+	DisplayName: Hit me
+	Tooltip: Don't abuse the poor weapon :(
 }
