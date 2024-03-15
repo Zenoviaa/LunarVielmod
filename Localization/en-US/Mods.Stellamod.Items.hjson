@@ -5826,3 +5826,8 @@ Hitme: {
 	DisplayName: Hit me
 	Tooltip: Don't abuse the poor weapon :(
 }
+
+Shredder: {
+	DisplayName: Shredder
+	Tooltip: ""
+}
