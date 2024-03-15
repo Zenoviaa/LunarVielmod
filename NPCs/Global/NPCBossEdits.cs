@@ -1,6 +1,7 @@
 ﻿using Stellamod.Items.Accessories;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Melee;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -89,7 +90,10 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.WallofFlesh)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 5));
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>(), 1, 1, 1));// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
+
+                LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>(), chanceDenominator: 1));
+                npcLoot.Add(notExpertRule);// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
 			if (npc.type == NPCID.QueenBee)

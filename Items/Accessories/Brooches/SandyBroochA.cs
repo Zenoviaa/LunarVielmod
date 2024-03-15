@@ -64,8 +64,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
 			broochPlayer.KeepBroochAlive<SandyBrooch, SandyB>(ref broochPlayer.hasSandyBrooch);
-			player.armorEffectDrawOutlinesForbidden = true;
-			player.setForbidden = true;
+			
 		}
 	}
 }

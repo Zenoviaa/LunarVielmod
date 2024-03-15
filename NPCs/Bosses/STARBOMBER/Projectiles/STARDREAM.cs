@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
-			float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+			float baseWidth = Projectile.scale * Projectile.width * 1.0f;
 			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
 		}
 		public Color ColorFunction(float completionRatio)

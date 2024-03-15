@@ -26,6 +26,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
     [AutoloadBossHead]
     public class DreadMire : ModNPC
     {
+        private bool _invincible;
+        private bool _spawnHeart;
+        private int _heartKillCount;
+
         bool p3;
         bool p2;
         Vector2 Light;
@@ -34,6 +38,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public int PrevAtack;
         public float DR = 0;
         int Att = 0;
+
         public override void SetStaticDefaults()
         {
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -64,6 +69,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.aiStyle = 0;
         }
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         private void Disappear()
         {
             Player obj = Main.player[NPC.target];
@@ -72,7 +82,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 NPC.active = false;
             }
-            NPC.netUpdate = true;
         }
 
         public int previousAttack;
@@ -101,23 +110,26 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadBoss, -1);
         }
 
-        public float Spawner = 0;
-
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(Att);
+            writer.Write(AtackNum);
+            writer.Write(_invincible);
+            writer.Write(_heartKillCount);
+            writer.Write(_spawnHeart);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             Att = reader.ReadInt32();
+            AtackNum = reader.ReadInt32();
+            _invincible = reader.ReadBoolean();
+            _heartKillCount = reader.ReadInt32();
+            _spawnHeart = reader.ReadBoolean();
         }
 
-        public override void AI()
+        private bool TryDespawn()
         {
-            NPC.damage = 0;
-            Player player = Main.player[NPC.target];
-            bool expertMode = Main.expertMode;
             if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
@@ -128,9 +140,101 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     NPC.velocity.Y -= 1f;
                     if (NPC.timeLeft > 30)
                         NPC.timeLeft = 30;
-                    return;
+                    return true;
                 }
             }
+
+            return false;
+        }
+
+        private void AI_HeartPhaseSwitch()
+        {
+            Player player = Main.player[NPC.target];
+            int dreadMiresHeartType = ModContent.NPCType<DreadMiresHeart>();
+            if (p2 && !_spawnHeart && _heartKillCount == 0)
+            {
+                var entitySource = NPC.GetSource_FromThis();
+                if (StellaMultiplayer.IsHost)
+                {
+                    _spawnHeart = true;
+                    _invincible = true;
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, dreadMiresHeartType);
+                }
+
+                NPC.ai[0] = 0;
+                NPC.ai[2] = 5;
+                NPC.netUpdate = true;
+            } 
+            else if (p2 && _spawnHeart && _heartKillCount == 0 && !NPC.AnyNPCs(dreadMiresHeartType) && NPC.ai[2] == 5)
+            {
+                AtackNum = 6;
+                if (StellaMultiplayer.IsHost)
+                {
+                    _spawnHeart = false;
+                    _invincible = false;
+                    _heartKillCount++;
+                }
+
+                NPC.ai[2] = 1;
+                NPC.ai[0] = 0;
+                NPC.ai[1] = 0;
+                NPC.ai[3] = 1;  
+                NPC.netUpdate = true;
+            }
+
+            if (p3 && !_spawnHeart && _heartKillCount == 1)
+            {
+                var entitySource = NPC.GetSource_FromThis();
+                if (StellaMultiplayer.IsHost)
+                {
+                    _spawnHeart = true;
+                    _invincible = true;
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, dreadMiresHeartType);
+                }
+
+                NPC.ai[0] = 0;
+                NPC.ai[2] = 5;
+          
+                NPC.netUpdate = true;
+            }
+            else if (p3 && _spawnHeart && _heartKillCount == 1 && !NPC.AnyNPCs(dreadMiresHeartType) && NPC.ai[2] == 5)
+            {
+                AtackNum = 7; 
+                if (StellaMultiplayer.IsHost)
+                {
+                    _spawnHeart = false;
+                    _invincible = false;
+                    _heartKillCount++;
+                }
+
+                NPC.ai[2] = 1;
+                NPC.ai[0] = 0;
+                NPC.ai[1] = 0;
+                NPC.ai[3] = 1;
+                NPC.netUpdate = true;
+            }
+
+            if (_spawnHeart)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadHeart");
+                NPC.Center = player.Center - Vector2.UnitY * (-200);
+                NPC.alpha = 255;
+            }
+            else
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadmireV2");
+            }
+        }
+
+        public override void AI()
+        {
+            NPC.damage = 0;
+            Player player = Main.player[NPC.target];
+            bool expertMode = Main.expertMode;
+
+            if (TryDespawn())
+                return;
+
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
             if (distance > 3000f || playerT.dead)
@@ -138,6 +242,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.ai[2] = 2;
                 Disappear();
             }
+
+
             NPC.rotation = NPC.velocity.X * 0.05f;
             Lighting.AddLight((int)(NPC.Center.X / 16), (int)(NPC.Center.Y / 16), 0.46f, 0.32f, .1f);
             if (NPC.ai[2] == 0)
@@ -146,15 +252,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.ai[0]++;
                 if (NPC.ai[0] >= 1)
                 {
-                    player.GetModPlayer<MyPlayer>().heartDead = 0;
-                    player.GetModPlayer<MyPlayer>().heart = false;
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_Spawn1"), NPC.position);
                     NPC.velocity.Y -= 10f;
                     NPC.alpha = 255;
                     NPC.ai[0] = 0;
                     NPC.ai[2] = 1;
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
                 }
             }
 
@@ -168,67 +275,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 p2 = NPC.life < NPC.lifeMax * 0.6f;
             }
 
-            if (p2 && !player.GetModPlayer<MyPlayer>().heart && player.GetModPlayer<MyPlayer>().heartDead == 0)
-            {
-                var entitySource = NPC.GetSource_FromThis();
-                if (StellaMultiplayer.IsHost)
-                {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMiresHeart>());
-                }
-               
-                player.GetModPlayer<MyPlayer>().heart = true;
-                NPC.ai[0] = 0;
-                NPC.ai[2] = 5;
-                NPC.alpha = 255;
-                NPC.dontTakeDamage = true;
-                NPC.dontCountMe = true;
-            }
-            if (p2 && player.GetModPlayer<MyPlayer>().heartDead == 1 && NPC.ai[2] == 5)
-            {
-                AtackNum = 6;
-                player.GetModPlayer<MyPlayer>().heart = false;
-                NPC.ai[2] = 1;
-                NPC.ai[0] = 0;
-                NPC.ai[1] = 0;
-                NPC.ai[3] = 1;
-                NPC.dontTakeDamage = false;
-                NPC.dontCountMe = false;
-            }
-
-            if (p3 && !player.GetModPlayer<MyPlayer>().heart && player.GetModPlayer<MyPlayer>().heartDead == 1)
-            {
-                var entitySource = NPC.GetSource_FromThis(); 
-                if (StellaMultiplayer.IsHost)
-                {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMiresHeart>());
-                }
-                player.GetModPlayer<MyPlayer>().heart = true;
-                NPC.ai[0] = 0;
-                NPC.ai[2] = 5;
-                NPC.alpha = 255;
-                NPC.dontTakeDamage = true;
-                NPC.dontCountMe = true;
-            }
-            if (p3 && player.GetModPlayer<MyPlayer>().heartDead == 2 && NPC.ai[2] == 5)
-            {
-                AtackNum = 7;
-                player.GetModPlayer<MyPlayer>().heart = false;
-                NPC.ai[2] = 1;
-                NPC.ai[0] = 0;
-                NPC.ai[1] = 0;
-                NPC.ai[3] = 1;
-                NPC.dontTakeDamage = false;
-                NPC.dontCountMe = false;
-            }
-            if (player.GetModPlayer<MyPlayer>().heart)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadHeart");
-                NPC.Center = player.Center - Vector2.UnitY * (-200);
-            }
-            else
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/DreadmireV2");
-            }
+            NPC.dontTakeDamage = _invincible;
+            NPC.dontCountMe = _invincible;
+            AI_HeartPhaseSwitch();
             Vector2 targetPos;
             if (NPC.ai[2] == 1)
             {
@@ -271,8 +320,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                             }
                             if (NPC.ai[0] == 230)
                             {
-                                NPC.dontTakeDamage = false;
-                                NPC.dontCountMe = false;
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    _invincible = false;
+                                    NPC.netUpdate = true;
+                                }
+                   
                                 NPC.ai[0] = 0;
                                 NPC.ai[1] = 0;
                                 NPC.ai[3] = 1;
@@ -296,8 +349,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                         {
                             if (NPC.ai[0] == 0)
                             {
-                                NPC.dontTakeDamage = true;
-                                NPC.dontCountMe = true;
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    _invincible = true;
+                                    NPC.netUpdate = true;
+                                }
                                 if (NPC.alpha <= 255)
                                 {
 
@@ -390,12 +446,14 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                                 NPC.velocity.Y *= 0.96f;
                                 if (NPC.alpha >= 0)
                                 {
-                                    NPC.dontTakeDamage = false;
-                                    NPC.dontCountMe = false;
+                                    if (StellaMultiplayer.IsHost)
+                                    {
+                                        _invincible = false;
+                                        NPC.netUpdate = true;
+                                    }
                                     NPC.alpha -= 10;
                                 }
                             }
-
                         }
                         break;
                     case 1:

@@ -39,6 +39,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 180;
             AIType = ProjectileID.Bullet;
         }
 

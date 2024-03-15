@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Acidic
         {
             NPC.width = 32;
             NPC.height = 24;
-            NPC.damage = 13;
+            NPC.damage = 24;
             NPC.defense = 14;
             NPC.lifeMax = 166;
             NPC.HitSound = SoundID.NPCHit1;
@@ -113,7 +113,7 @@ namespace Stellamod.NPCs.Acidic
             Player player = spawnInfo.Player;
             if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
             {
-                return spawnInfo.Player.ZoneAcid() ? 5.0f : 0f;
+                return spawnInfo.Player.ZoneAcid() ? 0.8f : 0f;
             }
             return 0f;
         }

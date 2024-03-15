@@ -50,10 +50,13 @@ This update focuses on improving curent mechanics and adding an overall better v
 1.4.2.2 - Fixed a lot of bugs and some item issues!
 -----
 Prismatic love Update: 1.5 has been released!
-See the new improvements across the mod containing 3 new bosses, MULTIPLAYER COMPATIBILITY and a bunch of new edits to make this mod feel super special! World generation differences and 
+See the new improvements across the mod containing 2 new bosses, MULTIPLAYER COMPATIBILITY and a bunch of new edits to make this mod feel super special! World generation differences and 
 small little parts, quests and remakes to make everything up to standard! Much balancing and new ways to pay, including many weapons and accessories to fill out other classes!
 (Melee doesn't get much so go suck it). Cinderspark, Royal Capital overhaul, Veriplant overhaul, Xixian village and many underground structures were added! Harvesting now feels good as well!
-
+----
+1.5.1 - Some multiplayer fixes
+1.5.2.5 - A lot of bug fixes and config option fixes 
+-----
 
 
 

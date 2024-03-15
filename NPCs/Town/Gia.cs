@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Armors.Vanity.Gia;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -109,24 +110,10 @@ namespace Stellamod.NPCs.Town
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs)
-		{ // Requirements for the town NPC to spawn.
-			for (int k = 0; k < Main.maxPlayers; k++)
-			{
-				Player player = Main.player[k];
-				if (!player.active)
-				{
-					continue;
-				}
-
-				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-				if (ModContent.GetInstance<MyPlayer>().Towned == true)
-				{
-					return true;
-				}
-			}
-
-			return false;
+		{
+			return AlcadSpawnSystem.TownedGia;
 		}
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -327,6 +314,75 @@ namespace Stellamod.NPCs.Town
 
 
 				}
+
+
+
+				if (Main.LocalPlayer.HasItem(ModContent.ItemType<SkyRuneI>()))
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+
+					Main.npcChatText = $"I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!";
+
+					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<SkyRuneI>());
+					var entitySource = NPC.GetSource_GiftOrReward();
+
+					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					switch (Main.rand.Next(7))
+					{
+
+
+						case 0:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Feather, 10);
+							break;
+						case 1:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Feather, 15);
+							break;
+						case 2:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<DivineSniper>());
+
+							break;
+
+						case 3:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.AntlionMandible, 25);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
+
+							break;
+
+						case 4:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SkyrageShasher>());
+
+							break;
+
+						case 5:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CloudBow>());
+
+							break;
+
+						case 6:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.CloudinaBalloon, 1);
+
+							break;
+					}
+
+
+
+					return;
+
+
+
+				}
+
+
 
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<OverworldRuneI>()))
 				{
@@ -548,6 +604,7 @@ namespace Stellamod.NPCs.Town
 						case 10:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BlackInk, 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TorrentialLance>(), 1);
 
 							break;
 
@@ -781,7 +838,7 @@ namespace Stellamod.NPCs.Town
 			var npcShop = new NPCShop(Type, ShopName)
 
 
-
+			.Add<EDR>(Condition.DownedMechBossAny)
 			.Add(new Item(ModContent.ItemType<GiaWig>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaSuit>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
 			.Add(new Item(ModContent.ItemType<GiaPants>()) { shopCustomPrice = Item.buyPrice(gold: 10) })

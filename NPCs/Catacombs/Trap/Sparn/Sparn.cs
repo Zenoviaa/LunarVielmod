@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -56,10 +57,15 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 			}
 		}
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         //Trailing
         #region Draw Code
 
-		private int _frameCounter;
+        private int _frameCounter;
 		private int _frameTick;
 		private void PreDrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
@@ -137,46 +143,43 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 		#endregion
 
 		private Vector2 _targetCenter;
-        private ref float ai_Counter => ref NPC.ai[0];
-		private ref float ai_State => ref NPC.ai[1];
+		private float ai_Counter;
+		private float ai_State;
+		private bool _resetState;
 
-		private void SwitchState(AttackState attackState)
+        public override void SendExtraAI(BinaryWriter writer)
         {
-			ai_Counter = 0;
-			if (StellaMultiplayer.IsHost)
-			{
+            writer.Write(ai_State);
+            writer.Write(_resetState);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            ai_State = reader.ReadSingle();
+            _resetState = reader.ReadBoolean();
+        }
+
+        private void FinishResetState()
+        {
+            if (_resetState)
+            {
+                ai_Counter = 0;
+                _resetState = false;
+            }
+        }
+
+        private void SwitchState(AttackState attackState)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
                 ai_State = (float)attackState;
+                _resetState = true;
                 NPC.netUpdate = true;
             }
-		}
+        }
 
-		public float Spawner = 0;
-		public override void AI()
+        public override void AI()
 		{
-			Spawner++;
-			/*
-			Player players = Main.player[NPC.target];
-			if (Spawner == 2)
-
-			{
-
-
-
-				int distanceY = Main.rand.Next(-250, -250);
-				NPC.position.X = players.Center.X;
-				NPC.position.Y = players.Center.Y + distanceY;
-
-			}*/
-			//Sparn AI Time
-			//3 Attacks
-			//1. Summons homing, exploding gren skulls!
-			//2. Throws a cage at you, you need to stay within the cage, for a period of time cause they connect to each other
-			//3. Spike Shockwave along the ground
-
-			//Movement
-			//Should hover around/above you :P 
-
-			//No contact damage
 			NPC.damage = 0;
 			NPC.TargetClosest();
             if (!NPC.HasValidTarget)
@@ -187,6 +190,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
             }
 
 			AttackState attackState = (AttackState)ai_State;
+            FinishResetState();
             switch (attackState)
             {
 				case AttackState.Idle:
@@ -246,7 +250,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
                             break;
                     }
                 }
-
 			}
 		}
 
@@ -286,33 +289,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 
 			if (StellaMultiplayer.IsHost)
 			{
+                float x = target.Center.X;
+                float y = target.Center.Y;
                 var source = NPC.GetSource_FromThis();
-                SparnCageNode sparnCageNode1 = Projectile.NewProjectileDirect(source, nodeSpawnPosition1, Vector2.Zero,
-                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
-                sparnCageNode1.targetCenter = target.Center;
-                sparnCageNode1.distanceFromTargetCenter = distance;
-
-                SparnCageNode sparnCageNode2 = Projectile.NewProjectileDirect(source, nodeSpawnPosition2, Vector2.Zero,
-                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
-                sparnCageNode2.targetCenter = target.Center;
-                sparnCageNode2.distanceFromTargetCenter = distance;
-
-                SparnCageNode sparnCageNode3 = Projectile.NewProjectileDirect(source, nodeSpawnPosition3, Vector2.Zero,
-                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
-                sparnCageNode3.targetCenter = target.Center;
-                sparnCageNode3.distanceFromTargetCenter = distance;
-
-                SparnCageNode sparnCageNode4 = Projectile.NewProjectileDirect(source, nodeSpawnPosition4, Vector2.Zero,
-                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer).ModProjectile as SparnCageNode;
-                sparnCageNode4.targetCenter = target.Center;
-                sparnCageNode4.distanceFromTargetCenter = distance;
-
-                sparnCageNode1.targetProjectile = sparnCageNode2.Projectile;
-                sparnCageNode2.targetProjectile = sparnCageNode3.Projectile;
-                sparnCageNode3.targetProjectile = sparnCageNode4.Projectile;
-                sparnCageNode4.targetProjectile = sparnCageNode1.Projectile;
-                NetMessage.SendData(MessageID.SyncProjectile);
-         
+				Projectile node1 = Projectile.NewProjectileDirect(source, nodeSpawnPosition1, Vector2.Zero,
+					ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer, 0, x, y);
+                Projectile node2 = Projectile.NewProjectileDirect(source, nodeSpawnPosition2, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer, 1, x, y);
+                Projectile node3 = Projectile.NewProjectileDirect(source, nodeSpawnPosition3, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer, 2, x, y);
+                Projectile node4 = Projectile.NewProjectileDirect(source, nodeSpawnPosition4, Vector2.Zero,
+                    ModContent.ProjectileType<SparnCageNode>(), 40, 1, owner: Main.myPlayer, 3, x, y);
             }
 
             SwitchState(AttackState.Idle);
@@ -390,7 +377,6 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
 
 		private void AttackShockwave()
         {
-			Player target = Main.player[NPC.target];
 			SwitchState(AttackState.Idle);
 		}
 

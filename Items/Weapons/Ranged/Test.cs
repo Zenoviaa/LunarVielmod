@@ -2,6 +2,7 @@
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -32,7 +33,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.autoReuse = true;
+			Item.autoReuse = false;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Balls");
 
 			// Weapon Properties
@@ -42,7 +43,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<TestProj>();
+			Item.shoot = ModContent.ProjectileType<VacuumLightningBolt>();
 			Item.shootSpeed = 15f;
 			Item.channel = true;
 		}

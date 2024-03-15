@@ -7,6 +7,8 @@ using Stellamod.NPCs.Bosses.Fenix;
 using System.IO;
 using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
+using Stellamod.NPCs.Bosses.Zui;
+using Stellamod.NPCs.Bosses.INest;
 
 namespace Stellamod.NPCs.Town
 {
@@ -16,6 +18,7 @@ namespace Stellamod.NPCs.Town
         public static Point UnderworldRuinsTile;
         public static Point LittleWitchTownTile;
         public static Point MechanicsTownTile;
+        public static Point LabTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -25,6 +28,8 @@ namespace Stellamod.NPCs.Town
         public static Point DelgrimSpawnTileOffset => new Point(39, -7);
 
 
+        public static Point LabSpawnTileOffset => new Point(39, -20);
+
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -33,12 +38,18 @@ namespace Stellamod.NPCs.Town
 
         public static Vector2 DelgrimSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + DelgrimSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 CellConverterSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + CellConverterSpawnTileOffset.ToWorldCoordinates();
+
+
+        public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
+        public static bool TownedGia;
         public override void NetSend(BinaryWriter writer)
         {
             writer.WriteVector2(AlcadTile.ToVector2());
             writer.WriteVector2(UnderworldRuinsTile.ToVector2());
             writer.WriteVector2(LittleWitchTownTile.ToVector2());
             writer.WriteVector2(MechanicsTownTile.ToVector2());
+            writer.WriteVector2(LabTile.ToVector2());
+            writer.Write(TownedGia);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -47,6 +58,8 @@ namespace Stellamod.NPCs.Town
             UnderworldRuinsTile = reader.ReadVector2().ToPoint();
             LittleWitchTownTile = reader.ReadVector2().ToPoint();
             MechanicsTownTile = reader.ReadVector2().ToPoint();
+            LabTile = reader.ReadVector2().ToPoint();
+            TownedGia = reader.ReadBoolean();
         }
 
         public override void PostUpdateWorld()
@@ -60,33 +73,30 @@ namespace Stellamod.NPCs.Town
 
                 MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
                 float distanceToUnderworldRuins = Vector2.Distance(player.Center, UnderworldRiftSpawnWorld);
-                if (myPlayer.ZoneAlcadzia)
+                if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
-                    if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(), 
-                            (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y, 
-                            ModContent.NPCType<Merena>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)MerenaSpawnWorld.X, (int)MerenaSpawnWorld.Y,
+                        ModContent.NPCType<Merena>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
 
-                    if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
-                        !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(), 
-                            (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y, 
-                            ModContent.NPCType<LonelySorceress>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
-                } 
-                else if (myPlayer.ZoneVillage && !NPC.AnyNPCs(ModContent.NPCType<Zui>()))
+                if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
+                    !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)LonelySorceressSpawnWorld.X, (int)LonelySorceressSpawnWorld.Y,
+                        ModContent.NPCType<LonelySorceress>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Zui>()) && !NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
                             ModContent.NPCType<Zui>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (distanceToUnderworldRuins < 600 && !NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(), 
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
@@ -101,20 +111,31 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Delgrim>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
-
-                else if (myPlayer.ZoneMechanics)
+                else if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
                 {
-                   
-
-                    if (!NPC.AnyNPCs(ModContent.NPCType<CellConverter>()))
-                    {
-                        NPC.NewNPC(player.GetSource_FromThis(),
-                            (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
-                            ModContent.NPCType<CellConverter>());
-                        NetMessage.SendData(MessageID.SyncNPC);
-                    }
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)CellConverterSpawnWorld.X, (int)CellConverterSpawnWorld.Y,
+                        ModContent.NPCType<CellConverter>());
+                    NetMessage.SendData(MessageID.SyncNPC);
                 }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode &&
+                    !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)LabSpawnWorld.X, (int)LabSpawnWorld.Y,
+                        ModContent.NPCType<UnknownSignal>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+            }
+        }
+
+        public override void PostUpdateNPCs()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
+            {
+                TownedGia = true;
             }
         }
 
@@ -125,6 +146,8 @@ namespace Stellamod.NPCs.Town
             tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
             tag["LittleWitchTownTile"] = LittleWitchTownTile;
             tag["MechanicsTownTile"] = MechanicsTownTile;
+            tag["LabTile"] = LabTile;
+            tag["TownedGia"] = TownedGia;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -134,6 +157,8 @@ namespace Stellamod.NPCs.Town
             UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
             LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
             MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
+            LabTile = tag.Get<Point>("LabTile");
+            TownedGia = tag.GetBool("TownedGia");
         }
     }
 }

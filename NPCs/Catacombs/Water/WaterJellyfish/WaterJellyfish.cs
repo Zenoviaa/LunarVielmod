@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.StarrVeriplant;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -22,18 +23,6 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 			Lightning_Attack_2,
 			Lightning_Attack_3
 		}
-
-		// Current state
-		public int frameTick;
-
-		// Current state's timer
-		public float timer;
-
-		// Current frame
-		public int frameCounter;
-
-		// AI counter
-		public int counter;
 
 		public override void SetStaticDefaults()
 		{
@@ -68,7 +57,12 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 			}
 		}
 
-		public override void HitEffect(NPC.HitInfo hit)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
 		{
 			for (int k = 0; k < 11; k++)
 			{
@@ -89,30 +83,64 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 		private float ai_Counter;
 		private float ai_State;
 		private float ai_Attack_Counter;
-
-		private void SwitchState(AttackState attackState)
+		private float _telegraphLightningX;
+		private float _telegraphLightningY;
+		private bool _resetState;
+        public override void SendExtraAI(BinaryWriter writer)
         {
-			ai_Counter = 0;
-            ai_State = (float)attackState;
+            writer.Write(ai_State);
+			writer.Write(ai_Attack_Counter);
+			writer.Write(_telegraphLightningX);
+            writer.Write(_telegraphLightningY);
+            writer.Write(_resetState);
         }
 
-		public float Spawner = 0;
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            ai_State = reader.ReadSingle();
+			ai_Attack_Counter = reader.ReadSingle();
+            _telegraphLightningX = reader.ReadSingle();
+			_telegraphLightningY = reader.ReadSingle();
+            _resetState = reader.ReadBoolean();
+        }
+
+		private void FinishLightningTelegraph()
+		{
+			if(_telegraphLightningX != 0 || _telegraphLightningY != 0)
+			{
+                for (int i = 0; i < 16; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(1, 1);
+                    var d = Dust.NewDustPerfect(new Vector2(_telegraphLightningX, _telegraphLightningY), DustID.Electric, speed, Scale: 1.5f);
+                    d.noGravity = true;
+                }
+				_telegraphLightningX = 0;
+				_telegraphLightningY = 0;
+                SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+            }
+		}
+
+        private void FinishResetState()
+        {
+            if (_resetState)
+            {
+                ai_Counter = 0;
+                _resetState = false;
+            }
+        }
+
+        private void SwitchState(AttackState attackState)
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                ai_State = (float)attackState;
+                _resetState = true;
+                NPC.netUpdate = true;
+            }
+        }
+
 		public override void AI()
 		{
-			Spawner++;
-			/*
-			Player players = Main.player[NPC.target];
-			if (Spawner == 2)
-
-			{
-
-
-
-				int distanceY = Main.rand.Next(-250, -250);
-				NPC.position.X = players.Center.X;
-				NPC.position.Y = players.Center.Y + distanceY;
-
-			}*/
 			//No contact damage
 			NPC.damage = 0;
 			NPC.spriteDirection = NPC.direction;
@@ -134,7 +162,10 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 				d2.noGravity = true;
 			}
 
-			switch (attackState)
+			FinishResetState();
+			FinishLightningTelegraph();
+
+            switch (attackState)
             {
 				case AttackState.Idle:
 					ai_Counter++;
@@ -150,22 +181,25 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
                 case AttackState.Anger:
 					ai_Counter++;
 					NPC.velocity *= 0.5f;
-					if (ai_Counter > 30)
+					if (ai_Counter > 30 && StellaMultiplayer.IsHost)
                     {
                         switch (ai_Attack_Counter)
                         {
 							case 0:
 								SwitchState(AttackState.Lightning_Attack_1);
 								ai_Attack_Counter = 1;
+								NPC.netUpdate = true;
 								break;
                             case 1:
 								SwitchState(AttackState.Lightning_Attack_2);
 								ai_Attack_Counter = 2;
-								break;
+                                NPC.netUpdate = true;
+                                break;
 							case 2:
 								SwitchState(AttackState.Lightning_Attack_3);
 								ai_Attack_Counter = 0;
-								break;
+                                NPC.netUpdate = true;
+                                break;
                         }
                     }
                     break;
@@ -188,29 +222,23 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 							Main.projectile[index].tileCollide = false;
 							Main.projectile[index].timeLeft = 60;
 							NetMessage.SendData(MessageID.SyncProjectile, number: index);
-						}
-						for (int i = 0; i < 16; i++)
-						{
-							Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-							var d = Dust.NewDustPerfect(_nextLightningPosition, DustID.Electric, speed, Scale: 1.5f);
-							d.noGravity = true;
-						}
 
-						SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+                            _telegraphLightningX = _nextLightningPosition.X;
+                            _telegraphLightningY = _nextLightningPosition.Y;
+                            NPC.netUpdate = true;
+                        }
 					}
 					else if (ai_Counter % 5 == 0)
 					{
-						Vector2 circleOffset = Main.rand.NextVector2CircularEdge(256, 256);
-						_nextLightningPosition = target.Center + circleOffset;
-
-						for (int i = 0; i < 16; i++)
+						if (StellaMultiplayer.IsHost)
 						{
-							Vector2 speed = Main.rand.NextVector2CircularEdge(1, 1);
-							var d = Dust.NewDustPerfect(_nextLightningPosition, DustID.Electric, speed, Scale: 1.5f);
-							d.noGravity = true;
-						}
-
-						SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+                            Vector2 circleOffset = Main.rand.NextVector2CircularEdge(256, 256);
+                            Vector2 lightningPos = target.Center + circleOffset;
+                            _telegraphLightningX = lightningPos.X;
+                            _telegraphLightningY = lightningPos.Y;
+							_nextLightningPosition = new Vector2(_telegraphLightningX, _telegraphLightningY);
+							NPC.netUpdate = true;
+                        }
 					}
 					else if (ai_Counter > 180)
                     {
@@ -252,30 +280,22 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 							Main.projectile[index].tileCollide = false;
 							Main.projectile[index].timeLeft = 60;
                             NetMessage.SendData(MessageID.SyncProjectile, number: index);
-                        }
-		
-						for (int i = 0; i < 16; i++)
-						{
-							Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-							var d = Dust.NewDustPerfect(_nextLightningPosition, DustID.Electric, speed, Scale: 1.5f);
-							d.noGravity = true;
-						}
 
-						SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+							_telegraphLightningX = _nextLightningPosition.X;
+							_telegraphLightningY = _nextLightningPosition.Y;
+							NPC.netUpdate = true;
+                        }
 					}
 					else if (ai_Counter % 5 == 0)
 					{
-						_nextLightningPosition = target.Center + new Vector2(0, -256);
-
-						for (int i = 0; i < 16; i++)
-						{
-							Vector2 speed = Main.rand.NextVector2CircularEdge(1, 1);
-							var d = Dust.NewDustPerfect(_nextLightningPosition, DustID.Electric, speed, Scale: 1.5f);
-							d.noGravity = true;
-						}
-
-						SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
-					}
+						if (StellaMultiplayer.IsHost)
+                        {
+                            _nextLightningPosition = target.Center + new Vector2(0, -256);
+                            _telegraphLightningX = _nextLightningPosition.X;
+                            _telegraphLightningY = _nextLightningPosition.Y;
+                            NPC.netUpdate = true;
+                        }
+                    }
 					else if (ai_Counter > 180)
 					{
 						SwitchState(AttackState.Idle);

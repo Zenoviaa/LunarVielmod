@@ -244,7 +244,7 @@ namespace Stellamod
 		public bool ZoneCinder;
 		public bool ZoneDrakonic;
 		public bool ZoneMechanics;
-
+		public bool ZoneLab;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -300,7 +300,7 @@ namespace Stellamod
         public override void CatchFish(FishingAttempt attempt, 
 			ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-			int chance = 75;
+			int chance = 35;
 			string jellyfishWarning = "You feel threatened...";
 			if (Player.ZoneBeach && Main.rand.NextBool(chance))
 			{
@@ -640,12 +640,12 @@ namespace Stellamod
 			 Onion2 = false;
 			 Onion3 = false;
 			 Onion4 = false;
+			 OnionDamage = 0;
 
 
 
 
-
-			IgniterVelocity = 1f;
+		IgniterVelocity = 1f;
 			IgniterDamage = 0;
 			IgniterStrike = 0;
 			LuckyW = false;
@@ -689,6 +689,7 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
@@ -699,7 +700,6 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
 		}
 
-		public static SpriteBatch spriteBatch = new SpriteBatch(Main.graphics.GraphicsDevice);
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
 		{
 
@@ -957,7 +957,7 @@ namespace Stellamod
                 player.ClearBuff(ModContent.BuffType<FCBuff>());
                 FCArmorTime = 0;
             }
-            if (ZoneAcid)
+            if (ZoneAcid　|| ZoneLab)
             {
                 if (player.wet)
                 {
@@ -1241,7 +1241,7 @@ namespace Stellamod
 
 			if (Player.HasBuff<Gintzingwinds>()) 
             {
-				if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true)
+				if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true)
                 {
 					for (int j = 0; j < 1; j++)
 					{
@@ -1267,14 +1267,14 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneMechanics)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneMechanics)
 			{
 				Main.GraveyardVisualIntensity = 0.6f;
 
 
 			}
 
-				if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<FableBiome>() || Player.InModBiome<MorrowUndergroundBiome>())
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneFable || ZoneMorrow))
 			{
 				Main.GraveyardVisualIntensity = 0.4f;
 				Main.windPhysicsStrength = 50;
@@ -1362,7 +1362,7 @@ namespace Stellamod
 
 
 
-				if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<FableBiome>())
+				if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneFable)
 				{
 
 
@@ -1398,12 +1398,9 @@ namespace Stellamod
 						}
 					}
 				}
-	
-					
-
 			}
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<AcidBiome>() || Player.InModBiome<GovheilCastle>() || Player.InModBiome<VeriplantUndergroundBiome>() && !Player.InModBiome<MorrowUndergroundBiome>())
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAcid || ZoneGovheil || ZoneVeri) && !ZoneLab)
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
@@ -1426,7 +1423,7 @@ namespace Stellamod
 			}
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneVillage)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneVillage)
 			{
 				Main.GraveyardVisualIntensity = 0.1f;
 				Main.windPhysicsStrength = 50;
@@ -1448,7 +1445,7 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().VanillaParticlesToggle == true && Player.ZoneHallow)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().VanillaParticlesToggle == true && Player.ZoneHallow)
 			{
 				Main.GraveyardVisualIntensity = 0.4f;
 				Main.windPhysicsStrength = 50;
@@ -1681,7 +1678,7 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<AlcadziaBiome>())
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneAlcadzia)
 			{
 				Main.windPhysicsStrength = 90;
 				Main.GraveyardVisualIntensity = 0.4f;
@@ -1732,7 +1729,7 @@ namespace Stellamod
 			
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && Player.InModBiome<AbyssBiome>() || Player.InModBiome<AurelusBiome>())
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAbyss || ZoneAurelus))
 			{
 			
 				Main.windPhysicsStrength = 50;
@@ -1818,7 +1815,7 @@ namespace Stellamod
 			}
 
 			bool spawnAuroreanParticles = EventWorld.Aurorean && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && spawnAuroreanParticles)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && spawnAuroreanParticles)
             {
                 Main.windPhysicsStrength = 50;
                 GoldenRingCooldown++;
@@ -1941,7 +1938,7 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneCinder || ModContent.GetInstance<LunarVeilConfig>().ParticlesToggle == true && ZoneDrakonic)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneCinder || ZoneDrakonic))
 			{
 				Main.windPhysicsStrength = 50;
 				Main.UseHeatDistortion = true;
@@ -2009,7 +2006,7 @@ namespace Stellamod
 
 
 
-			if (ModContent.GetInstance<LunarVeilConfig>().VanillaParticlesToggle == true && Player.ZoneUnderworldHeight)
+			if (ModContent.GetInstance<LunarVeilClientConfig>().VanillaParticlesToggle == true && Player.ZoneUnderworldHeight)
 			{
 				Main.windPhysicsStrength = 50;
 				GoldenRingCooldown++;

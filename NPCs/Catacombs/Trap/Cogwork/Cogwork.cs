@@ -58,34 +58,50 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             }
         }
 
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
         private float ai_State;
         private float ai_Counter;
         private float ai_last_State;
+        private bool _resetState;
+
+        private void FinishResetState()
+        {
+            if (_resetState)
+            {
+                ai_Counter = 0;
+                _frameCounter = 0;
+                _frameTick = 0;
+                _resetState = false;
+            }
+        }
 
         private void SwitchState(AttackState attackState)
         {
-            ai_Counter = 0;
-            ai_last_State = ai_State;
-            ai_State = (float)attackState;
+            if (StellaMultiplayer.IsHost)
+            {
+                ai_last_State = ai_State;
+                ai_State = (float)attackState;
+                _resetState = true;
+                NPC.netUpdate = true;
+            }
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(ai_State);
-            writer.Write(ai_Counter);
             writer.Write(ai_last_State);
-            writer.Write(_frameCounter);
-            writer.Write(_frameTick);
+            writer.Write(_resetState);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             ai_State = reader.ReadSingle();
-            ai_Counter = reader.ReadSingle();
             ai_last_State = reader.ReadSingle();
-            _frameCounter = reader.ReadInt32();
-            _frameTick = reader.ReadInt32();
-           
+            _resetState = reader.ReadBoolean();
         }
 
         private void WheelSparks(Vector2 sparksOffset)
@@ -173,11 +189,14 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             //So 4 attacks
             if (!NPC.HasValidTarget)
             {
-                //WheelMovement(2);
-                NPC.noTileCollide = true;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
-                NPC.EncourageDespawn(120);
-                return;
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.noTileCollide = true;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, 8), 0.025f);
+                    NPC.EncourageDespawn(120);
+                    return;
+                }
             }
             else
             {
@@ -186,12 +205,12 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 
             AttackState attackState = (AttackState)ai_State;
             AttackState attackLastState = (AttackState)ai_last_State;
-
+            FinishResetState();
             switch (attackState)
             {
                 case AttackState.Idle:
                     ai_Counter++;
-                    if (ai_Counter > 100 && _frameCounter == 0)
+                    if (ai_Counter > 240 && _frameCounter == 0 && StellaMultiplayer.IsHost)
                     {
                         //Determine the Attack
                         if (attackLastState == AttackState.Spin_Slow || attackLastState == AttackState.Spin_Fast)
@@ -208,19 +227,10 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                                     SwitchState(AttackState.Rifle);
                                     break;
                             }
-                            NPC.netUpdate = true;
                         }
                         else
                         {
-                            if (Main.rand.NextBool(5))
-                            {
-                                SwitchState(AttackState.Spin_Fast);
-                            }
-                            else
-                            {
-                                SwitchState(AttackState.Spin_Slow);
-                            }
-                            NPC.netUpdate = true;
+                            SwitchState(AttackState.Spin_Slow);
                         }
                     }
 
@@ -231,51 +241,17 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                     //Bouncing movements
       
                     ai_Counter++;
-                    if (ai_Counter > 120 && _frameCounter == 0)
-                    {
-                        SwitchState(AttackState.Idle);
-                    }
-
-                    if (_frameCounter < 11 || _frameCounter > 19)
-                    {
-                        NPC.velocity *= 0.5f;
-                    }
-                    else if (_frameCounter == 11)
+                    NPC.velocity *= (ai_Counter % 26) / 11;
+                    if(ai_Counter % 26 == 11)
                     {
                         WheelSparks(Vector2.Zero);
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
                     }
-                    else
-                    {
-                        NPC.velocity *= 2f;
-                    }
-                    break;
-
-                case AttackState.Spin_Fast:
-                   
-                    //Fastly
-                  //  WheelMovement(15);
-                    ai_Counter++;
-                    if (ai_Counter > 120 && _frameCounter == 0)
+                    if(ai_Counter > 52)
                     {
                         SwitchState(AttackState.Idle);
                     }
-
-                    if (_frameCounter < 11 || _frameCounter > 19)
-                    {
-                        NPC.velocity *= 0.5f;
-                    }
-                    else if (_frameCounter == 11)
-                    {
-                        WheelSparks(Vector2.Zero);
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SkyrageShasher"));
-                    }
-                    else
-                    {
-                        NPC.velocity *= 2f;
-                    }
                     break;
-
                 case AttackState.Bolt:
                     if (ai_Counter == 0)
                     {

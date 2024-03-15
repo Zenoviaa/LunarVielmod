@@ -71,23 +71,23 @@ namespace Stellamod.Projectiles.Pikmin
                 switch (Main.rand.Next(5))
                 {
                     case 0:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit1"));
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit1") with { Volume = 0.4f });
                         break;
 
                     case 1:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit2"));
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit2") with { Volume = 0.4f });
                         break;
 
                     case 2:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit3"));
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit3") with { Volume = 0.4f });
                         break;
 
                     case 3:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit4"));
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit4") with { Volume = 0.4f });
                         break;
 
                     case 4:
-                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit5"));
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Pikminhit5") with { Volume = 0.4f });
                         break;
 
                 }

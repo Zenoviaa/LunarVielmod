@@ -64,22 +64,8 @@ namespace Stellamod.NPCs.Town
 		
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			bool npcAlreadyExists = false;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if(npc.type == ModContent.NPCType<BoundGia>() || npc.type == ModContent.NPCType<Gia>())
-                {
-					npcAlreadyExists = true;
-					break;
-                }
-			}
-
-			//Don't spawn the npc if it already exists
-			if (npcAlreadyExists)
-            {
+			if (AlcadSpawnSystem.TownedGia || NPC.AnyNPCs(ModContent.NPCType<BoundGia>()) || NPC.AnyNPCs(ModContent.NPCType<Gia>()))
 				return 0f;
-			}
 
 			if (spawnInfo.Player.ZoneRockLayerHeight)
 			{
@@ -146,13 +132,6 @@ namespace Stellamod.NPCs.Town
 		{
 			NPC.Transform(ModContent.NPCType<Gia>());
 			NPC.dontTakeDamage = false;
-			ModContent.GetInstance<MyPlayer>().Towned = true;
 		}
-
-
-
 	}
-
-
-
 }

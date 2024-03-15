@@ -16,6 +16,7 @@ using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.Zui;
 
 namespace Stellamod
 {
@@ -262,6 +263,58 @@ namespace Stellamod
 			);
 		}
 
+
+
+		private void DoNESTIntegration()
+		{
+			string internalName5 = "NestoftheAcidic";
+
+			// The NPC type of the boss
+			int bossType5 = ModContent.NPCType<NPCs.Bosses.INest.IrradiatedNest>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight5 = 10.2f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed5 = () => DownedBossSystem.downedNESTBoss;
+
+			// If the boss should show up on the checklist in the first place and when (here, always)
+			Func<bool> available5 = () => true;
+
+			// "collectibles" like relic, trophy, mask, pet
+			List<int> collection5 = new List<int>()
+			{
+				ModContent.ItemType<Items.Placeable.SunsBossRel>(),
+
+			};
+
+			// The item used to summon the boss with (if available)
+			int summonItem5 = ModContent.ItemType<Items.Consumables.EDR>();
+
+			// Information for the player so he knows how to encounter the boss
+
+			// The boss does not have a custom despawn message, so we omit it
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"Buy a [i:{summonItem5}] from Gia and use it in the virulent acid or find an Unknown Signal.");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName5,
+				weight5,
+				downed5,
+				bossType5,
+				new Dictionary<string, object>()
+				{
+					["spawnItems"] = summonItem5,
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
+
 		private void DoSingularityFragmentIntegration()
         {
 			string internalName6 = "SingularityoftheMoon";
@@ -282,7 +335,7 @@ namespace Stellamod
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection6 = new List<int>()
 			{
-				ModContent.ItemType<Items.Placeable.SunsBossRel>(),
+				ModContent.ItemType<Items.Placeable.SOMBossRel>(),
 
 			};
 
@@ -375,7 +428,7 @@ namespace Stellamod
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection8 = new List<int>()
 			{
-				ModContent.ItemType<Items.Placeable.VeriBossRel>(),
+				ModContent.ItemType<Items.Placeable.IrradiaBossRel>(),
 
 			};
 
@@ -493,6 +546,43 @@ namespace Stellamod
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
 			LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
+			bossChecklistMod.Call(
+				"LogBoss",
+				Mod,
+				internalName,
+				weight,
+				downed,
+				bossType,
+				new Dictionary<string, object>()
+				{
+					["spawnItems"] = summonItem8,
+					["spawnInfo"] = spawnConditionText
+					// Other optional arguments as needed are inferred from the wiki
+				}
+			);
+		}
+
+
+
+		private void DoZuiIntegration()
+		{
+
+			string internalName = nameof(ZuiTheTraveller);
+
+			// The NPC type of the boss
+			int bossType = ModContent.NPCType<ZuiTheTraveller>();
+
+			// Value inferred from boss progression, see the wiki for details
+			float weight = 12.9f;
+
+			// Used for tracking checklist progress
+			Func<bool> downed = () => DownedBossSystem.downedZuiBoss;
+
+			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+
+			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
+			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+			LocalizedText spawnConditionText = Language.GetText($"After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -758,6 +848,8 @@ namespace Stellamod
 			DoPandorasFireBoxIntegration();
 			DoWaterJellyfishIntegration();
 			DoSparnIntegration();
+			DoZuiIntegration();
+			DoNESTIntegration();
 		}
 	}
 }

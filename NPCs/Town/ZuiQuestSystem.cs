@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.IO;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -6,12 +7,6 @@ namespace Stellamod.NPCs.Town
 {
     internal class ZuiQuestSystem : ModSystem
     {
-        public static bool KillVerliaCompleted;
-        public static bool ExploreMorrowedVillageCompleted;
-        public static bool Give100DustBagsCompleted;
-        public static bool MakeMagicPaperCompleted;
-        public static bool MakeTomeOfInfiniteSorceryCompleted;
-
         public static bool ThreeQuestsCompleted;
         public static bool SixQuestsCompleted;
         public static bool TenQuestsCompleted;
@@ -57,9 +52,40 @@ namespace Stellamod.NPCs.Town
             TenQuestsCompleted = tag.GetBool("TenQuests");
             TwentyQuestsCompleted = tag.GetBool("TwentyQuests");
             ThirtyQuestsCompleted = tag.GetBool("ThirtyQuests");
-
-
             QuestsCompleted = tag.GetInt("QuestsCompleted");
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.Write(ThreeQuestsCompleted);
+            writer.Write(SixQuestsCompleted);
+            writer.Write(TenQuestsCompleted);
+            writer.Write(TwentyQuestsCompleted);
+            writer.Write(ThirtyQuestsCompleted);
+            writer.Write(QuestsCompleted);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            bool con1 = reader.ReadBoolean();
+            bool con2 = reader.ReadBoolean();
+            bool con3 = reader.ReadBoolean();
+            bool con4 = reader.ReadBoolean();
+            bool con5 = reader.ReadBoolean();
+            int questsCompleted = reader.ReadInt32();
+
+            if (!ThreeQuestsCompleted)
+                ThreeQuestsCompleted = con1;
+            if (!SixQuestsCompleted)
+                SixQuestsCompleted = con2;
+            if(!TenQuestsCompleted)
+                TenQuestsCompleted = con3;
+            if(!TwentyQuestsCompleted)
+                TwentyQuestsCompleted = con4;
+            if(!ThirtyQuestsCompleted)
+                ThirtyQuestsCompleted = con5;
+            if (QuestsCompleted <= questsCompleted)
+                QuestsCompleted = questsCompleted;
         }
     }
 }

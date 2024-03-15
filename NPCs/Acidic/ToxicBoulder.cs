@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Acidic
             Player player = spawnInfo.Player;
             if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
             {
-                return spawnInfo.Player.ZoneAcid() ? 5.0f : 0f;
+                return spawnInfo.Player.ZoneAcid() ? 0.7f : 0f;
             }
             return 0f;
         }

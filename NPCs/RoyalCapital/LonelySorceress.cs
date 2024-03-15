@@ -39,7 +39,6 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.RoyalCapital
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	
 	public class LonelySorceress : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -117,9 +116,15 @@ namespace Stellamod.NPCs.RoyalCapital
 		public override bool CanChat()
 		{
 			return true;
-		}
+        }
+        //This prevents the NPC from despawning
+        public override bool CheckActive()
+        {
+            return false;
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {

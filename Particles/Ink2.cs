@@ -15,27 +15,23 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 1.5f;
 			timeLeft = 40;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
-			
-
 			scale *= 0.97f;
 
 			rotation += Utils.Clamp(velocity.X * 0f, -ai[0], ai[0]);
 			velocity *= 1.02f;
 			
-			
-
 			if (Scale <= 0f)
 				active = false;
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D tex = Request<Texture2D>("Stellamod/Particles/Ink2").Value;
+			Texture2D tex = texture;
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 
 			if (alpha < 0f)

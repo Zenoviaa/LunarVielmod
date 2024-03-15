@@ -26,27 +26,6 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class CommanderGintzia : ModNPC
 	{
-		public Vector2 FirstStageDestination
-		{
-			get => new Vector2(NPC.ai[1], NPC.ai[2]);
-			set
-			{
-				NPC.ai[1] = value.X;
-				NPC.ai[2] = value.Y;
-			}
-		}
-
-		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
-		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
-
-		// This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		// Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
-		public bool SpawnedHelpers
-		{
-			get => NPC.localAI[0] == 1f;
-			set => NPC.localAI[0] = value ? 1f : 0f;
-		}
-
 		public enum ActionState
 		{
 			Unsummon,
@@ -60,6 +39,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			Fallin,
 		}
 		// Current state
+		private bool _resetTimers;
 		private ActionState _state = ActionState.Jumpstartup;
 		public ActionState State
 		{
@@ -159,8 +139,12 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gintzicane");
 			}
 		}
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
@@ -172,17 +156,13 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 		public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write((float)_state);
-            writer.Write(timer);
-            writer.Write(frameCounter);
-            writer.Write(frameTick);
+			writer.Write(_resetTimers);
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
-            timer = reader.ReadSingle();
-            frameCounter = reader.ReadInt32();
-            frameTick = reader.ReadInt32();
+			_resetTimers = reader.ReadBoolean();
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -362,23 +342,9 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 				NPC.TargetClosest();
 			}
 
-
-
-		//	if (player.dead)
-		//	{
-				// If the targeted player is dead, flee
-		//		NPC.velocity.Y -= 0.5f;
-		//		NPC.noTileCollide = true;
-		//		NPC.noGravity = false;
-				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-		//		NPC.EncourageDespawn(2);
-		//	}
+			FinishResetTimers();
 			switch (State)
 			{
-
-
-
-
 				case ActionState.StartGintze:
 					NPC.damage = 0;
 					counter++;
@@ -735,14 +701,27 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 			npcLoot.Add(notExpertRule);
 		}
 
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                timer = 0;
+                frameCounter = 0;
+                frameTick = 0;
+                _resetTimers = false;
+            }
+        }
 
-		public override void OnKill()
+        public void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override void OnKill()
 		{
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedGintzlBoss, -1);
 			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())

@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 13;
+            Item.damage = 14;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAmmo = AmmoID.Arrow;
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 31;
-            Item.scale = 0.7f;
+            Item.scale = 1f;
             Item.useTime = 31;
             Item.consumeAmmoOnLastShotOnly = true;
         }
@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(2))
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HeatFeather"), player.position);
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeatArrow>(), damage, knockback, player.whoAmI);

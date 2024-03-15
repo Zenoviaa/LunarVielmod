@@ -29,10 +29,15 @@ namespace Stellamod.Items.Armors.Vanity.Azalean
 			Item.rare = ItemRarityID.Green; // The rarity of the item
 			Item.defense = 2; // The amount of defense the item will give when equipped
 		}
+		public override void UpdateEquip(Player player)
+		{
 
-	
+			player.GetDamage(DamageClass.Ranged) += 0.12f;
+		}
+
+
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-	
+
 	}
 }

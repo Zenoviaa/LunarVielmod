@@ -129,7 +129,7 @@ namespace Stellamod.Items.Weapons.Summon
                             projectile.minionSlots = remainingSlots;
                         }
 
-                        projectile.originalDamage = Item.damage + (int)(15 * remainingSlots);
+                        projectile.originalDamage = Item.damage + (int)(9 * remainingSlots);
                     }
 
                     return false;
@@ -292,6 +292,7 @@ namespace Stellamod.Items.Weapons.Summon
             Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
+            Projectile.timeLeft = 2;
             switch (State)
             {
                 case ActionState.Red:
@@ -367,6 +368,14 @@ namespace Stellamod.Items.Weapons.Summon
             if (!SummonHelper.CheckMinionActive<ChromaCutterMinionBuff>(owner, Projectile))
                 return;
 
+
+            int offset = 64;
+            Vector2 world = new Vector2(Main.maxTilesX - 16, Main.maxTilesY - 16).ToWorldCoordinates();
+            if (Projectile.position.X < offset || Projectile.position.Y < offset || Projectile.position.X > world.X || Projectile.position.Y > world.Y)
+            {
+                AI_Reset();
+                Idle();
+            }
             if (Attack)
             {
                 AI_Attack();
@@ -375,9 +384,9 @@ namespace Stellamod.Items.Weapons.Summon
             {
                 Idle();
             }
+
             Visuals();
         }
-
 
         private void AI_Reset()
         {

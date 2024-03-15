@@ -19,6 +19,7 @@ namespace Stellamod.Buffs.Charms
 		{
 			player.maxFallSpeed *= 2;
 			player.jumpBoost = true;
+			player.frogLegJumpBoost = true;
 			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SlimeBunny, Vector2.Zero);
 
 		}

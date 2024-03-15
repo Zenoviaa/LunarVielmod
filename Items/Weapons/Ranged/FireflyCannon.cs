@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Brooches;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
@@ -14,9 +17,9 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 72;
-            Item.width = 60;
-            Item.height = 30;
+            Item.damage = 54;
+            Item.width = 94;
+            Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 12;
             Item.value = Item.sellPrice(0, 1, 1, 29);
@@ -33,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2f, 0f);
+            return new Vector2(-16f, 0f);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -77,6 +80,15 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
+        
+        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Texture2D iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Summoner").Value;
+            Vector2 drawOrigin = new Vector2(8, 12);
+            Vector2 drawPosition = position + drawOrigin;
+            spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
+        }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -84,7 +96,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemID.Marble, 60);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 6);
             recipe.AddIngredient(ItemID.SoulofLight, 5);
             recipe.AddIngredient(ItemID.Firefly, 3);
             recipe.Register();

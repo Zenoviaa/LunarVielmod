@@ -351,8 +351,13 @@ namespace Stellamod.NPCs.Town
 
 
 			var npcShop = new NPCShop(Type, ShopName)
+            .Add(new Item(ModContent.ItemType<RippedFabric>())
+            {
+                shopCustomPrice = Item.buyPrice(silver: 10)
+            })
 
-			.Add(new Item(ItemID.ArcheryPotion)
+
+            .Add(new Item(ItemID.ArcheryPotion)
 			{
 				shopCustomPrice = 1,
 				shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.

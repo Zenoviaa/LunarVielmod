@@ -56,7 +56,8 @@ namespace Stellamod.Items.Consumables
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 			itemLoot.Add(ItemDropRule.Common(ItemID.TitaniumBar, minimumDropped: 4, maximumDropped: 25));
 			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Gothiviab>()));
-		}
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<IrradiaBossRel>()));
+        }
 
 		// Below is code for the visuals
 

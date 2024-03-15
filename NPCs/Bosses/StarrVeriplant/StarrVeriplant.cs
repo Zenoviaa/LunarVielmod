@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.UI.Systems;
 using System;
@@ -22,26 +23,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
     public class StarrVeriplant : ModNPC
     {
-		public Vector2 FirstStageDestination
-		{
-			get => new Vector2(NPC.ai[1], NPC.ai[2]);
-			set
-			{
-				NPC.ai[1] = value.X;
-				NPC.ai[2] = value.Y;
-			}
-		}
-
-		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
-		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
-
-		// This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		// Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
-		public bool SpawnedHelpers
-		{
-			get => NPC.localAI[0] == 1f;
-			set => NPC.localAI[0] = value ? 1f : 0f;
-		}
 
 		public enum ActionState
 		{
@@ -68,7 +49,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			TeleportStartSlam
 		}
 
-
+		private bool _resetTimers;
 		private ActionState _state = ActionState.Start;
 		// Current state
 
@@ -155,9 +136,14 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			{
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Veriplant");
 			}
-		}
+        }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
@@ -169,17 +155,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write((float)State);
-            writer.Write(timer);
-            writer.Write(frameCounter);
-            writer.Write(frameTick);
+			writer.Write(_resetTimers);
         }
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			_state = (ActionState)reader.ReadSingle();
-            timer = reader.ReadSingle();
-            frameCounter = reader.ReadInt32();
-            frameTick = reader.ReadInt32();
+			_resetTimers = reader.ReadBoolean();
         }
 		
 
@@ -382,7 +364,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 				Falling();
 				
 			}
-				
+
+			FinishResetTimers();
 			switch (State)
 			{
 				case ActionState.Pulse:
@@ -1260,13 +1243,28 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 10, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<VeriBossRel>()));
 		}
 
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                timer = 0;
+                frameCounter = 0;
+                frameTick = 0;
+                _resetTimers = false;
+            }
+        }
+
+        public void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
+
     }
 }

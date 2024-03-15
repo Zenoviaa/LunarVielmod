@@ -27,6 +27,12 @@ namespace Stellamod.NPCs.Underground
         public override void HitEffect(NPC.HitInfo hit)
         {
             Hit = true;
+            if (NPC.life <= 0)
+            {
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
+                CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Flower destroyed", true, false);
+            }
         }
 
         public override void AI()
@@ -121,7 +127,7 @@ namespace Stellamod.NPCs.Underground
         {
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Underground.Chance * 0.075f);
+            return (SpawnCondition.Cavern.Chance * 0.075f);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -133,13 +139,7 @@ namespace Stellamod.NPCs.Underground
             npcLoot.Add(ItemDropRule.Common(ItemID.JungleSpores, 2, 1, 15));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FlowerBatch>(), 1, 1, 3));
         }
-        public override void OnKill()
-        {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
-            CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Flower destroyed", true, false);
-            base.OnKill();
-        }
+
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0 + new Vector2(0, -30);
         public virtual string GlowTexturePath => Texture + "_Glow";
         private Asset<Texture2D> _glowTexture;

@@ -21,31 +21,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
     [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
 	public class Rek : ModNPC
 	{
-		public Vector2 FirstStageDestination
-		{
-			get => new Vector2(NPC.ai[1], NPC.ai[2]);
-			set
-			{
-				NPC.ai[1] = value.X;
-				NPC.ai[2] = value.Y;
-			}
-		}
-
-		// Auto-implemented property, acts exactly like a variable by using a hidden backing field
-		public Vector2 LastFirstStageDestination { get; set; } = Vector2.Zero;
-
-		// This property uses NPC.localAI[] instead which doesn't get synced, but because SpawnedMinions is only used on spawn as a flag, this will get set by all parties to true.
-		// Knowing what side (client, server, all) is in charge of a variable is important as NPC.ai[] only has four entries, so choose wisely which things you need synced and not synced
-		public bool SpawnedHelpers
-		{
-			get => NPC.localAI[0] == 1f;
-			set => NPC.localAI[0] = value ? 1f : 0f;
-		}
-
 		public enum ActionState
 		{
-
-
 			Idle,
 			StartGothivia,
 			StartRollLeft,
@@ -61,9 +38,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			Land,
 			FallToMiddle,
 			LandToMiddle,
-
-
-
 			Fallslowly,
 			Fallslowly2,
 			Dashright,
@@ -75,12 +49,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			StopRight,
 			StopLeft,
 			Acrossfinish,
-
-
-
-
 		}
+
 		// Current state
+		private bool _resetTimers;
 		private ActionState _state = ActionState.Fallslowly;
 		public ActionState State
 		{
@@ -165,8 +137,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
 			// The following code assigns a music track to the boss in a simple way.			
 		}
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
@@ -182,10 +158,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			writer.Write(timeBetweenAttacks);
 			writer.WriteVector2(dashDirection);
 			writer.Write(dashDistance);
-            writer.Write(frameCounter);
-            writer.Write(frameTick);
-            writer.Write(counter);
 
+			writer.Write(_resetTimers);
         }
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
@@ -194,9 +168,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			timeBetweenAttacks = reader.ReadInt32();
 			dashDirection = reader.ReadVector2();
 			dashDistance = reader.ReadSingle();
-            timer = reader.ReadSingle();
-            frameCounter = reader.ReadInt32();
-            frameTick = reader.ReadInt32();
+			_resetTimers = reader.ReadBoolean();
         }
 
 		int attackCounter;
@@ -298,19 +270,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			Vector3 RGB = new(2.30f, 0.21f, 0.72f);
 			Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
 			
-	
-			Player player = Main.player[NPC.target];
-
 			NPC.TargetClosest();
-
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
 			{
 				NPC.TargetClosest();
 			}
 
-			
-
-			if (player.dead)
+            Player player = Main.player[NPC.target];
+            if (player.dead)
 			{
 				// If the targeted player is dead, flee
 				NPC.velocity.Y += 0.5f;
@@ -319,7 +286,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 				// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 				NPC.EncourageDespawn(2);
 			}
-			
+
 
 			//	if (player.dead)
 			//	{
@@ -330,6 +297,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 			// This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
 			//		NPC.EncourageDespawn(2);
 			//	}
+			FinishResetTimers();
 			switch (State)
 			{
 				case ActionState.Fallslowly:
@@ -778,17 +746,27 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
             }
 		}
 
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                timer = 0;
+                frameCounter = 0;
+                frameTick = 0;
+                _resetTimers = false;
+            }
+        }
 
-		
-		public void ResetTimers()
-		{
-			timer = 0;
-			frameCounter = 0;
-			frameTick = 0;
-		}
+        public void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
 
-
-		public override void OnKill()
+        public override void OnKill()
 		{	
 			if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
 			{

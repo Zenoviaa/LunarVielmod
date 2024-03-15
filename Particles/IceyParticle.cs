@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Terraria;
-using static Terraria.ModLoader.ModContent;
 
 
 namespace Stellamod.Particles
@@ -15,14 +14,11 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 0.5f;
 			timeLeft = 60;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
-			
-
 			scale *= 1.01f;
 
 			rotation += Utils.Clamp(velocity.X * 0f, -ai[0], ai[0]);
@@ -32,9 +28,10 @@ namespace Stellamod.Particles
 			if (Scale <= 0f)
 				active = false;
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Texture2D tex = Request<Texture2D>("Stellamod/Particles/IceyParticle").Value;
+			Texture2D tex = texture;
 			float alpha = timeLeft <= 20 ? 1f - 1f / 20f * (20 - timeLeft) : 1f;
 
 			if (alpha < 0f)
@@ -44,6 +41,7 @@ namespace Stellamod.Particles
 			spriteBatch.Draw(tex, position - Main.screenPosition, new Rectangle(0, 0, tex.Width, tex.Height), color, MathHelper.ToRadians(ai[0]).AngleLerp(MathHelper.ToRadians((ai[0] * 180f)), (120f - timeLeft) / 120f), new Vector2(tex.Width / 2f, tex.Height / 2f), 0.1f * scale, SpriteEffects.None, 0f);
 			return false;
 		}
+
 		public void Spawn()
 		{
 			ai[1] = Main.rand.NextFloat(4f, 10f) / 1f;

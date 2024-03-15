@@ -16,7 +16,7 @@ namespace Stellamod.Helpers.Separate
             internal set;
         }
 
-        public static MiscShaderData UnderwaterRayShader => GameShaders.Misc["Stellamod:UnderwaterRays"];
+       // public static MiscShaderData UnderwaterRayShader => GameShaders.Misc["Stellamod:UnderwaterRays"];
              #endregion
 
         #region Screen Shaders

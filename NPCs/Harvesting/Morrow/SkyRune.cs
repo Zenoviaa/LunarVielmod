@@ -27,6 +27,12 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         public override void HitEffect(NPC.HitInfo hit)
         {
             Hit = true;
+            if(NPC.life <= 0)
+            {
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
+                CombatText.NewText(NPC.getRect(), Color.LightBlue, "Sky Harvest Collected!", true, false);
+            }
         }
 
         public override void AI()
@@ -124,13 +130,6 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SkyRuneI>(), 1, 1));
-        }
-        public override void OnKill()
-        {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
-            CombatText.NewText(NPC.getRect(), Color.LightBlue, "Sky Harvest Collected!", true, false);
-            base.OnKill();
         }
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";

@@ -58,8 +58,6 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				{
                     Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center - new Vector2(100, 0), Projectile.velocity * 0,
                         ModContent.ProjectileType<STARSHOTT>(), Projectile.damage * 0, 0f, Projectile.owner);
-                    p.rotation = direction.ToRotation();
-					p.netUpdate = true;
                 }
 
 				Timer = 0;

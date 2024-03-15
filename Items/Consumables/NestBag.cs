@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
@@ -11,6 +12,7 @@ using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,7 +22,13 @@ namespace Stellamod.Items.Consumables
     {
 
         public override void SetStaticDefaults()
-        {
+        {           
+            //Research Counts
+            Item.ResearchUnlockCount = 3;
+
+            //Behave like a boss bag, this will make it also show up on the minimap
+            ItemID.Sets.BossBag[Type] = true;
+
             // DisplayName.SetDefault("Treasure Bag");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.gamepedia.com/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
         }
@@ -32,38 +40,24 @@ namespace Stellamod.Items.Consumables
             Item.rare = ItemRarityID.Expert;
             Item.maxStack = Item.CommonMaxStack; // The item's max stack value
             Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
+            Item.consumable = true;
+            Item.expert = true;
         }
+
         public override bool CanRightClick() //this make so you can right click this item
         {
             return true;
         }
 
-        public override void RightClick(Player player)
+        public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            var entitySource = player.GetSource_OpenItem(Type);
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<EaglesGrace>());
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedBar>(), Main.rand.Next(20, 65));
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedGreatBlade>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradieagleWrath>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<TheIrradiaspear>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<StaffoftheIrradiaflare>());
-            }
-            if (Main.rand.NextBool(2))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<IrradiatedCreeperStaff>());
-            }
-
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), minimumDropped: 3, maximumDropped: 25));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
@@ -24,7 +25,7 @@ namespace Stellamod.Items.Accessories.Catacombs
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             //Infinite Flight but only when you run out
-            if(player.wingTime <= 2 && player.controlJump)
+            if(player.wingTime <= 2 && player.controlJump && !player.HasBuff<Zuid>())
             {
                 player.AddBuff(BuffID.OnFire, 2);
                 player.wingTime = 2;

@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 		public override void SetDefaults()
 		{
-			Item.damage = 13;
+			Item.damage = 53;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
@@ -52,13 +52,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			return false;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
-			recipe.AddTile(TileID.Anvils);
-			recipe.Register();
-		}
+		
 	}
 }

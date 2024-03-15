@@ -21,6 +21,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
     [AutoloadBossHead]
     public class SunStalker : ModNPC
     {
+        private bool _invincible;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Stalker");
@@ -72,6 +73,10 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SunStalker");
         }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
         Vector2 targetPos;
         public override void OnKill()
@@ -84,12 +89,14 @@ namespace Stellamod.NPCs.Bosses.SunStalker
         {
             writer.Write(TPChance);
             writer.Write(Attack);
+            writer.Write(_invincible);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             TPChance = reader.ReadBoolean();
             Attack = reader.ReadInt32();
+            _invincible = reader.ReadBoolean();
         }
 
         public override void AI()
@@ -105,6 +112,8 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             }
 
             Player player = Main.player[NPC.target];
+            NPC.dontTakeDamage = _invincible;
+            NPC.dontCountMe = _invincible;
             if (Attack == 0)
             {
 
@@ -146,8 +155,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 }
                 if (NPC.ai[0] == 2)
                 {
-                    NPC.dontCountMe = true;
-                    NPC.dontTakeDamage = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Charge"), NPC.position);
                 }
                 if (NPC.alpha <= 5 && NPC.ai[1] == 0)
@@ -172,8 +184,13 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                             Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
                         }
                     }
-                    NPC.dontTakeDamage = false;
-                    NPC.dontCountMe = false;
+
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = false;
+                        NPC.netUpdate = true;
+                    }
+
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
                     NPC.velocity.Y = 0f;
                     Glow = true;
@@ -192,7 +209,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                 {
 
                     Intro = true;
-                    NPC.dontTakeDamage = false;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = false;
+                        NPC.netUpdate = true;
+                    }
+
                     NPC.ai[0] = 0;
                     Attack = 5;
                     NPC.ai[2] = 1;
@@ -633,8 +655,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         }
                         if (NPC.ai[0] <= 50)
                         {
-                            NPC.dontTakeDamage = true;
-                            NPC.dontCountMe = true;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                _invincible = true;
+                                NPC.netUpdate = true;
+                            }
+
                             NPC.rotation = NPC.velocity.X * 0.07f;
                             Glow = false;
                             if (NPC.alpha <= 255)
@@ -710,8 +736,12 @@ namespace Stellamod.NPCs.Bosses.SunStalker
 
                         if (NPC.ai[0] == 90)
                         {
-                            NPC.dontTakeDamage = false;
-                            NPC.dontCountMe = false;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                _invincible = false;
+                                NPC.netUpdate = true;
+                            }
+    
                             Glow = true;
                             NPC.alpha = 0;
                             PrevAttack = 4;
@@ -745,12 +775,21 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                         }
                         if (NPC.ai[0] == 20)
                         {
-                            NPC.dontTakeDamage = true;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                _invincible = true;
+                                NPC.netUpdate = true;
+                            }
+                      
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Start"), NPC.position);
                         }
                         if (NPC.ai[0] == 250)
                         {
-                            NPC.dontTakeDamage = false;
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                _invincible = false;
+                                NPC.netUpdate = true;
+                            }
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_End"), NPC.position);
                         }
                         if (NPC.ai[0] >= 240)
@@ -863,8 +902,13 @@ namespace Stellamod.NPCs.Bosses.SunStalker
                     NPC.ai[0] = 0;
                     NPC.ai[2]++;
                     Attack = -1;
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+
                     if (NPC.ai[2] <= 30)
                     {
                         NPC.rotation = NPC.velocity.X * 0.07f;

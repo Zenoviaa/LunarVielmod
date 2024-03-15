@@ -76,6 +76,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ItemID.HallowedBar, 12);
 			recipe.AddRecipeGroup(nameof(ItemID.GoldBar), 10);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 8);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
         }

@@ -2,6 +2,7 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Catacombs;
 using Stellamod.NPCs.Catacombs.Fire;
@@ -79,63 +80,24 @@ namespace Stellamod.Tiles.Catacombs
 		{
 			Player player = Main.LocalPlayer;
 			int key = ModContent.ItemType<CursedShard>();
-			int[] fireBosses = new int[] 
-			{
-				ModContent.NPCType<BlazingSerpentHead>(),
-				ModContent.NPCType<PandorasFlamebox>()
-			};
-
-			int[] waterBosses = new int[] 
-			{ 
-				ModContent.NPCType<WaterCogwork>(),
-				ModContent.NPCType<WaterJellyfish>()
-			};
-
-			int[] trapBosses = new int[]
-			{
-				ModContent.NPCType<Cogwork>(),
-				ModContent.NPCType<Sparn>()
-			};
 
 			if (player.HasItem(key))
 			{
-				MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
 
-				//Now we need to get the biome type...
-				//uhh
-				int[] bosses;
-				if (myPlayer.ZoneCatacombsTrap)
+				player.RemoveItem(key);
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-					bosses = trapBosses;
-				} 
-				else if (myPlayer.ZoneCatacombsFire)
-                {
-					bosses = fireBosses;
-				} 
-				else if (myPlayer.ZoneCatacombsWater)
-                {
-					bosses = waterBosses;
+                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>());
+                    Main.npc[npcID].netUpdate2 = true;
                 }
                 else
                 {
-					return true;
+                    if (Main.netMode == NetmodeID.SinglePlayer)
+                        return false;
+
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<CatacombsBossSpawn>(), i * 16, (j * 16) - 5);
                 }
-
-				player.RemoveItem(key);
-				int npcType = bosses[Main.rand.Next(0, bosses.Length)];
-				if (Main.netMode != NetmodeID.MultiplayerClient)
-				{
-					NPC.NewNPC(player.GetSource_FromThis(), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
-				}
-				else
-				{
-					if (Main.netMode == NetmodeID.SinglePlayer)
-						return false;
-                    NPC.NewNPC(player.GetSource_FromThis(), i * 16, j * 16, ModContent.NPCType<CatacombsBossSpawn>(), ai1: npcType);
-					NetMessage.SendData(MessageID.SyncNPC);   
-				}
-
-				return true;
+                return true;
 			}
 
 

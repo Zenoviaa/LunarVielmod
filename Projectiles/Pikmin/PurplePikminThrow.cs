@@ -82,7 +82,7 @@ namespace Stellamod.Projectiles.Pikmin
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= 20)
                 {
-                    Projectile.frame = 20;
+                    Projectile.frame = 19;
                 }
             }
             return true;

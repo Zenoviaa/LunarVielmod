@@ -1,22 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Catacombs.Fire.BlazingSerpent;
+using Stellamod.NPCs.Catacombs.Fire;
+using Stellamod.NPCs.Catacombs.Trap.Cogwork;
+using Stellamod.NPCs.Catacombs.Trap.Sparn;
+using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System;
+using Stellamod.Tiles.Catacombs;
 
 namespace Stellamod.NPCs.Catacombs
 {
     internal class CatacombsBossSpawn : ModNPC
     {
+        private int _bossType = -1;
         private float _centerSparkleSize = 0.1f;
-
         private ref float ai_Timer => ref NPC.ai[0];
-        private ref float ai_Boss_Spawn => ref NPC.ai[1];
-
         public override void SetDefaults()
         {
             NPC.lifeMax = 1;
@@ -29,8 +35,38 @@ namespace Stellamod.NPCs.Catacombs
             NPC.height = 1;
         }
 
+        private bool InBiome(int tileType)
+        {
+            int searchRange = 50;
+            Point start = NPC.position.ToTileCoordinates();
+            for(int i = start.X; i < start.X + searchRange && i < Main.maxTilesX; i++)
+            {
+                for(int j = start.Y; j < start.Y + searchRange && j < Main.maxTilesY; j++)
+                {
+                    if (Main.tile[i, j].TileType == tileType)
+                        return true;
+                }
+            }
+            return false;
+        }
         public override void AI()
         {
+            if(_bossType == -1)
+            {
+                if (InBiome(ModContent.TileType<CatacombStoneFire>()))
+                {
+                    _bossType = 0;
+                }
+                else if (InBiome(ModContent.TileType<CatacombStoneTrap>()))
+                {
+                    _bossType = 1;
+                }
+                else if (InBiome(ModContent.TileType<CatacombStoneWater>()))
+                {
+                    _bossType = 2;
+                }
+            }
+
             _centerSparkleSize += 0.02f;
             if(ai_Timer == 0)
             {
@@ -83,6 +119,7 @@ namespace Stellamod.NPCs.Catacombs
             } 
             else if(ai_Timer > duration)
             {
+
                 for (int i = 0; i < 64; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
@@ -95,18 +132,50 @@ namespace Stellamod.NPCs.Catacombs
 
                 //oh wait i need net code
                 // NPC.NewNPC(, (int)ai_Boss_Spawn);
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+
+
+                int[] fireBosses = new int[]
+                {
+                    ModContent.NPCType<BlazingSerpentHead>(),
+                    ModContent.NPCType<PandorasFlamebox>()
+                };
+
+                int[] waterBosses = new int[]
+                {
+                    ModContent.NPCType<WaterCogwork>(),
+                    ModContent.NPCType<WaterJellyfish>()
+                };
+
+                int[] trapBosses = new int[]
+                {
+                    ModContent.NPCType<Cogwork>(),
+                    ModContent.NPCType<Sparn>()
+                };
+
+                int[] bosses;
+                switch (_bossType)
+                {
+                    default:
+                    case 0:
+                        bosses = fireBosses;
+                        break;
+                    case 1:
+                        bosses = trapBosses;
+                        break;
+                    case 2:
+                        bosses = waterBosses;
+                        break;
+                }
+
+
+                int bossType = bosses[Main.rand.Next(0, bosses.Length)];
+                if (StellaMultiplayer.IsHost)
                 {
                     //Main.NewText("Jack has awoken!", Color.Gold);
-                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, (int)ai_Boss_Spawn);
+                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
                     Main.npc[npcID].netUpdate2 = true;
                 }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return;
-                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, (int)ai_Boss_Spawn, (int)NPC.Center.X, (int)NPC.Center.Y);
-                }
+
 
                 NPC.Kill();
                 ai_Timer = 0;

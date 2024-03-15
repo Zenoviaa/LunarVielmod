@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
@@ -19,7 +20,7 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    [AutoloadHead]
+    //[AutoloadHead]
 	public class Merena : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -91,7 +92,13 @@ namespace Stellamod.NPCs.Town
 			return true;
 		}
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        //This prevents the NPC from despawning
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -186,6 +193,17 @@ namespace Stellamod.NPCs.Town
 
 		}
 
+		private void SendQuestPacket()
+		{
+			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteMerenaQuest,
+				MerenaQuestSystem.KillVerliaCompleted,
+				MerenaQuestSystem.ExploreMorrowedVillageCompleted,
+				MerenaQuestSystem.Give100DustBagsCompleted,
+				MerenaQuestSystem.MakeMagicPaperCompleted,
+				MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted).Send(-1);
+
+        }
+
 		private void Quest_VerliaStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
@@ -209,7 +227,8 @@ namespace Stellamod.NPCs.Town
 
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
-		}
+			SendQuestPacket();
+        }
 
 		private void Quest_MorrowStart()
         {
@@ -217,6 +236,7 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"Oh damn thanks! Next on the list I need you to steal an orb from a village in an underground morrowed village, the orb contains a magic unlike any other. I have no idea how it was manifested but it's needed for this tome.";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
+
 		}
 
 		private void Quest_MorrowComplete()
@@ -234,7 +254,8 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
-		}
+			SendQuestPacket();
+        }
 
 		private void Quest_DustBagsStart()
         {
@@ -260,7 +281,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
-		}
+            SendQuestPacket();
+        }
 
 		private void Quest_MagicPaperStart()
         {
@@ -287,7 +309,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
-		}
+            SendQuestPacket();
+        }
 
 		private void Quest_TomeStart()
         {
@@ -309,7 +332,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.Give100DustBagsCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeMagicPaperCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.MakeTomeOfInfiniteSorceryCompleted, -1);
-		}
+            SendQuestPacket();
+        }
 
 
 		private bool CompleteQuests()
@@ -396,7 +420,7 @@ namespace Stellamod.NPCs.Town
 		{
 			if (!firstButton)
 			{
-				shop = ShopName;
+                shop = ShopName;
 			}
 
 			if (firstButton)
@@ -454,7 +478,8 @@ namespace Stellamod.NPCs.Town
 		{
 			var npcShop = new NPCShop(Type, ShopName)
 			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
-			.Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
+            .Add(new Item(ItemID.FallenStar) { shopCustomPrice = Item.buyPrice(silver: 5) })
+            .Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add(new Item(ModContent.ItemType<BurnedCarianTome>()))
 			.Add<WickofSorcery>(MerenaQuestSystem.ShopConditionTome)
 			.Add<WickofSorcery>(Condition.PlayerCarriesItem(ModContent.ItemType<AlcadzianCard>()))//{ shopCustomPrice = Item.buyPrice(platinum: 1) })

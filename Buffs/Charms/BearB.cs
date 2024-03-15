@@ -15,8 +15,8 @@ namespace Stellamod.Buffs.Charms
 		}
 		public override void Update(Player player, ref int buffIndex)
 		{
-			
-			player.statDefense += 2;
+			player.manaRegen += 2;
+			player.statDefense += 4;
 
 		}
 	}

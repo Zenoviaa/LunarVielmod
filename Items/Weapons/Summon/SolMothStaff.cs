@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Items.Materials;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -89,13 +90,20 @@ namespace Stellamod.Items.Weapons.Summon
 			return true;
 		}
 
-		/*
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
+            recipe.Register();
+        }
+        /*
 		 * This minion shows a few mandatory things that make it behave properly. 
 		 * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
 		 * If the player targets a certain NPC with right-click, it will fly through tiles to it
 		 * If it isn't attacking, it will float near the player with minimal movement
 		 */
-		public class SolMothMinion : ModProjectile
+        public class SolMothMinion : ModProjectile
 		{
 			public override void SetStaticDefaults()
 			{

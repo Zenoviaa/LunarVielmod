@@ -115,10 +115,14 @@ namespace Stellamod.NPCs.Town
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-		
 
 
-		public override bool CanChat()
+        public override bool CheckActive()
+        {
+			return false;
+        }
+
+        public override bool CanChat()
 		{
 			return true;
 		}

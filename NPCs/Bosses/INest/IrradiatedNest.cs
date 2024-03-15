@@ -2,12 +2,21 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Spears;
+using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.INest.IEagle;
 using Stellamod.Utilis;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -21,6 +30,7 @@ namespace Stellamod.NPCs.Bosses.INest
     [AutoloadBossHead]
     public class IrradiatedNest : ModNPC
     {
+        private bool _invincible;
         public float DrugRidus = 0;
         public int DrugAlpha = 0;
         private bool Spawned = false;
@@ -29,27 +39,49 @@ namespace Stellamod.NPCs.Bosses.INest
         bool Nukes;
         public override void SetStaticDefaults()
         {
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 14;
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
+            NPCID.Sets.TrailingMode[NPC.type] = 2;
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
         }
-
+       
         public override void SetDefaults()
         {
             NPC.alpha = 255;
             NPC.width = 150;
             NPC.height = 60;
-            NPC.damage = 30;
-            NPC.defense = 15;
-            NPC.lifeMax = 3650;
+            NPC.damage = 1;
+            NPC.defense = 35;
+            NPC.lifeMax = 10050;
             NPC.HitSound = SoundID.NPCHit42;
+            NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
+            NPC.boss = true;
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradiated_Nest");
+            }
+        }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(_invincible);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            _invincible = reader.ReadBoolean();
         }
 
         int frame = 0;
+        int starter = 0;
         public override void FindFrame(int frameHeight)
         {
             //bool expertMode = Main.expertMode;
@@ -115,11 +147,18 @@ namespace Stellamod.NPCs.Bosses.INest
         bool CutScene2;
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StaffOFlame>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), 2, 1, 3));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), 2, 1, 3));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NestBag>()));
+
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedGreatBlade>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), minimumDropped: 3, maximumDropped: 25));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
+
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NestBossRel>()));
         }
 
         public virtual string GlowTexturePath => Texture + "_Glow";
@@ -209,9 +248,26 @@ namespace Stellamod.NPCs.Bosses.INest
         public override void AI()
         {
 
+            starter++;
+            NPC.dontTakeDamage = _invincible;
+            NPC.dontCountMe = _invincible;
+            if (starter > 60)
+            {
+                NPC.damage = 150;
+            }
+
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                return;
+            }
+
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
-            if (!NPC.HasPlayerTarget)
+            
+          
+            /*if (!NPC.HasPlayerTarget)
             {
                 NPC.TargetClosest(false);
                 Player player1 = Main.player[NPC.target];
@@ -220,10 +276,10 @@ namespace Stellamod.NPCs.Bosses.INest
                 {
                     return;
                 }
-            }
+            }*/
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
-            if (distance > 3000f || playerT.dead || !playerT.ZoneAcid())
+            if (distance > 3000f || playerT.dead)
             {
                 player.GetModPlayer<MyPlayer>().IrradiatedKilled = 0;
                 NPC.ai[0] = 0;
@@ -246,8 +302,12 @@ namespace Stellamod.NPCs.Bosses.INest
             if (p2 && !CutScene)
             {
                 NPC.alpha -= 30;
-                NPC.dontTakeDamage = true;
-                NPC.dontCountMe = true;
+                if (StellaMultiplayer.IsHost)
+                {
+                    _invincible = true;
+                    NPC.netUpdate = true;
+                }
+
                 NPC.ai[0] = 0;
                 NPC.ai[3]++;
                 if (NPC.ai[3] == 420 - 150)
@@ -289,10 +349,13 @@ namespace Stellamod.NPCs.Bosses.INest
                 {
                     player.GetModPlayer<MyPlayer>().IrradiatedKilled = 0;
                     var entitySource = NPC.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Irradieagle>());
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Irradieagle>());
+                    }
+          
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Transmission successful!");
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
-                    NPC.netUpdate = true;
                 }
                 if (NPC.ai[3] == 1250 - 150)
                 {
@@ -303,51 +366,64 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.ai[0] = 0;
                     CutScene = true;
                     NPC.life = 300;
-                    NPC.netUpdate = true;
-
                 }
             }
+
             if (!Spawned)
             {
                 Spawned = true;
                 NPC.ai[2] = 1;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Land"));
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 512f);
-                NPC.netUpdate = true;
                 NPC.alpha = 0;
             }
 
-            if (playerT.GetModPlayer<MyPlayer>().IrradiatedKilled == 1 && !CutScene2)
+            if (!NPC.AnyNPCs(ModContent.NPCType<Irradieagle>()) && CutScene && !CutScene2)
             {
                 NPC.alpha -= 30;
                 NPC.ai[0] = 0;
                 NPC.ai[3]++;
                 if (NPC.ai[3] == 20)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+               
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Back up vessel destroyed...");
-                    NPC.netUpdate = true;
+               
                 }
                 if (NPC.ai[3] == 1)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+
                     Nukeing = false;
                 }
                 if (NPC.ai[3] == 160)
                 {
-                    NPC.dontTakeDamage = true;
-                    NPC.dontCountMe = true;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = true;
+                        NPC.netUpdate = true;
+                    }
+
                     Nukeing = true;
                     CombatText.NewText(new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height), new Color(152, 208, 113, 44), "Proceed with D. S. D. P!");
-                    NPC.netUpdate = true;
                 }
 
                 if (NPC.ai[3] == 200)
                 {
-                    NPC.dontTakeDamage = false;
-                    NPC.dontCountMe = false;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        _invincible = false;
+                        NPC.netUpdate = true;
+                    }
+
                     Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Irradieagle_Wrath");
                     NPC.defense = 30;
                     NPC.ai[3] = 0;
@@ -355,7 +431,6 @@ namespace Stellamod.NPCs.Bosses.INest
                     NPC.ai[0] = 0;
                     CutScene2 = true;
                     NPC.life = 1000;
-                    NPC.netUpdate = true;
                 }
             }
             if (NPC.ai[2] == 1)
@@ -367,11 +442,8 @@ namespace Stellamod.NPCs.Bosses.INest
                         NPC.ai[0]++;
                         if (NPC.ai[0] > 20)
                         {
-
                             NPC.ai[0] = 0;
                             NPC.ai[1] = 1;
-
-
                         }
                         break;
                     case 1:
@@ -381,14 +453,15 @@ namespace Stellamod.NPCs.Bosses.INest
                             if (NPC.ai[0] % 100 == 0)
                             {
                                 DrugRidus = 50;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                var entitySource = NPC.GetSource_FromThis();
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                                int EggForce = Main.rand.Next(-10, 10 + 1);
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot"));
+                                if (StellaMultiplayer.IsHost)
                                 {
-                                    var entitySource = NPC.GetSource_FromThis();
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
-                                    int EggForce = Main.rand.Next(-10, 10 + 1);
-                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Egg_Shot"));
                                     Projectile.NewProjectile(entitySource, NPC.Center, new Vector2(EggForce, -5), Mod.Find<ModProjectile>("AEgg").Type, NPC.damage / 9, 0);
                                 }
+
                             }
                         }
                         if (NPC.ai[0] == 480)
@@ -417,17 +490,17 @@ namespace Stellamod.NPCs.Bosses.INest
                             if (NPC.ai[0] % 3 == 0)
                             {
                                 DrugRidus = 20;
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
-                                {
-                                    var entitySource = NPC.GetSource_FromThis();
+                                var entitySource = NPC.GetSource_FromThis();
 
 
-                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
-                                    int OffSet = Main.rand.Next(-40, 40 + 1);
-                                    Vector2 NukePos;
-                                    NukePos.X = NPC.Center.X + OffSet;
-                                    NukePos.Y = NPC.Center.Y;
+                                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                                int OffSet = Main.rand.Next(-40, 40 + 1);
+                                Vector2 NukePos;
+                                NukePos.X = NPC.Center.X + OffSet;
+                                NukePos.Y = NPC.Center.Y;
 
+                                if (StellaMultiplayer.IsHost)
+                                { 
                                     Projectile.NewProjectile(entitySource, NukePos, new Vector2(0, -50), Mod.Find<ModProjectile>("ToxicNuke").Type, 26, 0);
                                 }
                             }
@@ -488,5 +561,12 @@ namespace Stellamod.NPCs.Bosses.INest
             Vector2 target = Player2 + new Vector2(PosX, PosY);
             base.NPC.velocity = Vector2.Lerp(base.NPC.velocity, VectorHelper.MovemontVelocity(base.NPC.Center, Vector2.Lerp(base.NPC.Center, target, 0.5f), base.NPC.Center.Distance(target) * Speed), 0.1f);
         }
+
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNESTBoss, -1);
+        }
+
     }
 }

@@ -224,7 +224,7 @@ namespace Stellamod.WorldG
             if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
             {
                 HasHadBloodMoon = true;
-                string message = "The Moon has turned red for tonight!";
+                string message = "The Moon has turned red for tonight! The Govheil Castle calls you...";
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetworkText txt = NetworkText.FromLiteral(message);
@@ -253,7 +253,7 @@ namespace Stellamod.WorldG
             SpawnAuroreanStars();
 
 
-
+            /*
             if (!ChaosD)
             {
                 string message = "Chaos has plaged the ocean...";
@@ -287,7 +287,7 @@ namespace Stellamod.WorldG
                     ChaosP = true;
                 }
             }
-
+            */
         }
 
 

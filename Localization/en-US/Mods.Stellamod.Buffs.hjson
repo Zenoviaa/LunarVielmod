@@ -1,0 +1,574 @@
+VoidMinionBuff: {
+	Description: OAJSIODJASIODJISA
+	DisplayName: Void Minion Buff
+}
+
+TheBurningRodBuff: {
+	Description: It burns with passion
+	DisplayName: The Burning Rod Buff
+}
+
+SwarmerMinionBuff: {
+	Description: Getting swarmed
+	DisplayName: Swarmer Minion Buff
+}
+
+SolMothBuff: {
+	Description: Ooo a moth!~
+	DisplayName: Sol Moth Buff
+}
+
+ProbeBuff: {
+	Description: Getting probed might be actually really hot.
+	DisplayName: Probe Buff
+}
+
+MushroomStaveBuff: {
+	Description: Im not on shrooms I promise officer!
+	DisplayName: Mushroom Stave Buff
+}
+
+ManaWandMinionBuff: {
+	Description: Mana!
+	DisplayName: Mana Wand Minion Buff
+}
+
+LifeWandMinionBuff: {
+	Description: Life!
+	DisplayName: Life Wand Minion Buff
+}
+
+JellyMinionBuff: {
+	Description: I love sticky stuff~
+	DisplayName: Jelly Minion Buff
+}
+
+IvyakenBuff: {
+	Description: Really powerful bow!
+	DisplayName: Ivyaken Buff
+}
+
+IrradiatedCreeperBuff: {
+	Description: Its a creeper what did you think?
+	DisplayName: Irradiated Creeper Buff
+}
+
+IceboundMinionBuff: {
+	Description: Become frozen.
+	DisplayName: Icebound Minion Buff
+}
+
+HMMinionBuff: {
+	Description: You're so dead.
+	DisplayName: H M Minion Buff
+}
+
+FCBuff: {
+	Description: Getting powerful now aren't we?
+	DisplayName: F C Buff
+}
+
+DripperBuff: {
+	Description: Drippin out.
+	DisplayName: Dripper Buff
+}
+
+AuroranSeekerMinionBuff: {
+	Description: It does mix up its spells.
+	DisplayName: Auroran Seeker Minion Buff
+}
+
+ArncharMinionBuff: {
+	Description: Its remote controlled!
+	DisplayName: Arnchar Minion Buff
+}
+
+Wounded: {
+	Description: Getting wounded
+	DisplayName: Wounded
+}
+
+Whipdeath: {
+	Description: Getting whipped
+	DisplayName: Whip me master :<
+}
+
+MorrowWhipDebuff: {
+	Description: Morrowed whip
+	DisplayName: Debuffs you while whipping.
+}
+
+Morrow: {
+	Description: Morrowed bitch
+	DisplayName: Morrow
+}
+
+SnowFlame: {
+	Description: Snowing Flames
+	DisplayName: Snow Flame
+}
+
+Rekin: {
+	Description: Reka
+	DisplayName: Rekin
+}
+
+PocketSandBuff: {
+	Description: Sneaky sand
+	DisplayName: Pocket Sand Buff
+}
+
+Love: {
+	Description: Sometimes the gambit supports you with speed!
+	DisplayName: Love
+}
+
+Irradiation: {
+	Description: You are growing new limbs.
+	DisplayName: Irradiation
+}
+
+Harvester: {
+	Description: Harvest spots
+	DisplayName: Harvester
+}
+
+Gintzingwinds: {
+	Description: A wonderous event
+	DisplayName: Gintzingwinds
+}
+
+GintzeSeen: {
+	Description: You are being seen.
+	DisplayName: Gintze Seen
+}
+
+GintzelSheildCD: {
+	Description: This sheild is reallly helping
+	DisplayName: Gintzel Sheild C D
+}
+
+GintzelSheild: {
+	Description: A good shield
+	DisplayName: Gintzel Shield
+}
+
+Elegance: {
+	Description: You float with elegance.
+	DisplayName: Elegance
+}
+
+VoiddDust: {
+	Description: Mods.Stellamod.Buffs.VoiddDust.Description
+	DisplayName: Voidd Dust
+}
+
+TrickDust: {
+	Description: Mods.Stellamod.Buffs.TrickDust.Description
+	DisplayName: Trick Dust
+}
+
+SongDust: {
+	Description: Mods.Stellamod.Buffs.SongDust.Description
+	DisplayName: Song Dust
+}
+
+ShadeDust: {
+	Description: Mods.Stellamod.Buffs.ShadeDust.Description
+	DisplayName: Shade Dust
+}
+
+KaevDust: {
+	Description: Mods.Stellamod.Buffs.KaevDust.Description
+	DisplayName: Kaev Dust
+}
+
+IceDust: {
+	Description: Mods.Stellamod.Buffs.IceDust.Description
+	DisplayName: Ice Dust
+}
+
+GrassBuff: {
+	Description: Mods.Stellamod.Buffs.GrassBuff.Description
+	DisplayName: Grass Buff
+}
+
+GovheilDust: {
+	Description: Mods.Stellamod.Buffs.GovheilDust.Description
+	DisplayName: Govheil Dust
+}
+
+FlowerBuff: {
+	Description: Mods.Stellamod.Buffs.FlowerBuff.Description
+	DisplayName: Flower Buff
+}
+
+FlameDust: {
+	Description: Mods.Stellamod.Buffs.FlameDust.Description
+	DisplayName: Flame Dust
+}
+
+EXPtime4: {
+	Description: Mods.Stellamod.Buffs.EXPtime4.Description
+	DisplayName: E X Ptime4
+}
+
+EXPtime3: {
+	Description: Mods.Stellamod.Buffs.EXPtime3.Description
+	DisplayName: E X Ptime3
+}
+
+EXPtime2: {
+	Description: Mods.Stellamod.Buffs.EXPtime2.Description
+	DisplayName: E X Ptime2
+}
+
+EXPtime: {
+	Description: Mods.Stellamod.Buffs.EXPtime.Description
+	DisplayName: E X Ptime
+}
+
+CrystalDust: {
+	Description: Mods.Stellamod.Buffs.CrystalDust.Description
+	DisplayName: Crystal Dust
+}
+
+CoalBuff: {
+	Description: Mods.Stellamod.Buffs.CoalBuff.Description
+	DisplayName: Coal Buff
+}
+
+AlcadDust: {
+	Description: Mods.Stellamod.Buffs.AlcadDust.Description
+	DisplayName: Alcad Dust
+}
+
+AivanDust: {
+	Description: Mods.Stellamod.Buffs.AivanDust.Description
+	DisplayName: Aivan Dust
+}
+
+Dusted: {
+	Description: Mods.Stellamod.Buffs.Dusted.Description
+	DisplayName: Dusted
+}
+
+DeathMultiplierBloodLamp: {
+	Description: Hit with blood lamp
+	DisplayName: Death Multiplier Blood Lamp
+}
+
+DeathMultiplier: {
+	Description: You are multiplying damage
+	DisplayName: Death Multiplier
+}
+
+DarkHold: {
+	Description: Something has a grasp on your eyes.
+	DisplayName: Dark Hold
+}
+
+VixedB: {
+	Description: Something feels warm inside you.
+	DisplayName: Vixed!
+}
+
+VerliaBroo: {
+	Description: Her soul still stares at you while you have this on.
+	DisplayName: Verlias Brooch
+}
+
+StoneB: {
+	Description: I'm high rn
+	DisplayName: Your stoned.
+}
+
+Spragald: {
+	Description: Look at this, so much defense!
+	DisplayName: Spragald
+}
+
+Slimee: {
+	Description: I wish I could have this title right now.
+	DisplayName: Slimed!
+}
+
+MalB: {
+	Description: Something evil is brewing
+	DisplayName: Malicous Brooch
+}
+
+IceBrooch: {
+	Description: Its colder the more you see it.
+	DisplayName: Ice Brooch
+}
+
+GovheilB: {
+	Description: Very useful!
+	DisplayName: Govheil Brooch
+}
+
+Goldren: {
+	Description: Feeling gold yet?
+	DisplayName: Goldren
+}
+
+GintBroo: {
+	Description: Very not useful
+	DisplayName: Gintze Brooch
+}
+
+Flyfish: {
+	Description: You feel faster!
+	DisplayName: Flyfish Brooch
+}
+
+DreadB: {
+	Description: Some health goes a long way
+	DisplayName: Dreaded Brooch
+}
+
+Diarii: {
+	Description: Thanks for playing!
+	DisplayName: Diarii
+}
+
+BurningGB: {
+	Description: I meant the name.
+	DisplayName: Burning roach
+}
+
+BearB: {
+	Description: Its a bear
+	DisplayName: Bear Brooch
+}
+
+AurelusB: {
+	Description: Can you even tell?
+	DisplayName: Aurelus Brooch
+}
+
+AmethystBroo: {
+	Description: I love amethyst!
+	DisplayName: Amethyst Brooch
+}
+
+AssassinsSlashBuff: {
+	Description: Its buffing you
+	DisplayName: Assassins Slash Buff
+}
+
+ArcaneDust: {
+	Description: Mods.Stellamod.Buffs.ArcaneDust.Description
+	DisplayName: Arcane Dust
+}
+
+AcidFlame: {
+	Description: You feel like your limbs have new appendages.
+	DisplayName: Acid Flame
+}
+
+AbyssalFlame: {
+	Description: The night burns you with this.
+	DisplayName: Abyssal Flame
+}
+
+VehementBuff: {
+	Description: Mods.Stellamod.Buffs.VehementBuff.Description
+	DisplayName: Vehement Buff
+}
+
+VampireTorchMinionBuff: {
+	Description: Getting surrounded by such a cool effect right?
+	DisplayName: Vampire Torch Minion Buff
+}
+
+ToxicHornetMinionBuff: {
+	Description: This minion is eager to miss.
+	DisplayName: Toxic Hornet Minion Buff
+}
+
+HallowWandMinionBuff: {
+	Description: A lil potion that does nothing
+	DisplayName: Hallow Wand Minion Buff
+}
+
+FireflyMinionBuff: {
+	Description: ITS ON FIRE
+	DisplayName: Firefly Minion Buff
+}
+
+CloudMinionBuff: {
+	Description: No more cloud
+	DisplayName: Cloud Minion Buff
+}
+
+ChromaCutterMinionBuff: {
+	Description: Slice and dice into terralora!
+	DisplayName: Chroma Cutter Minion Buff
+}
+
+AlcadWandMinionBuff: {
+	Description: Sprinkle a bit of Fenix's bath water.
+	DisplayName: Alcad Wand Minion Buff
+}
+
+CameraMinBuff: {
+	Description: Lookin snazzy!
+	DisplayName: Camera Min Buff
+}
+
+LaceratorDebuff: {
+	Description: Laced up
+	DisplayName: Lacerator Debuff
+}
+
+DarkWhipDebuff: {
+	Description: Darkwhipped. Truly the sentence of all time
+	DisplayName: Dark Whip Debuff
+}
+
+VialedUp: {
+	Description: I'm all juiced up on this poisonous punch
+	DisplayName: Vialed Up
+}
+
+Starbombin: {
+	Description: Are you really the star?
+	DisplayName: Starbombin
+}
+
+ShadowBoost: {
+	Description: Boosting through the shadows of the night
+	DisplayName: Shadow Boost
+}
+
+Sected: {
+	Description: I mean sexted
+	DisplayName: Sected
+}
+
+MiracleBoost: {
+	Description: Boooooooo
+	DisplayName: Miracle Boost
+}
+
+MasteryMagic: {
+	Description: Master of all things magic this lil guy is gonna follow you!
+	DisplayName: Mastery Magic
+}
+
+Liberator: {
+	Description: Pulsing beams!
+	DisplayName: Liberator
+}
+
+Lacerated: {
+	Description: lacing
+	DisplayName: Lacerated
+}
+
+Genesis: {
+	Description: Small bomb mode
+	DisplayName: Genesis
+}
+
+Friendzied: {
+	Description: Im SOOOO happy
+	DisplayName: Friendzied
+}
+
+Executor: {
+	Description: LASER their balls
+	DisplayName: Executor
+}
+
+UseIgniter: {
+	Description: Hold and Use your igniter right now!
+	DisplayName: Use Igniter
+}
+
+SpiritDust: {
+	Description: Mods.Stellamod.Buffs.SpiritDust.Description
+	DisplayName: Spirit Dust
+}
+
+JungleDust: {
+	Description: Mods.Stellamod.Buffs.JungleDust.Description
+	DisplayName: Jungle Dust
+}
+
+EldritchDust: {
+	Description: Mods.Stellamod.Buffs.EldritchDust.Description
+	DisplayName: Eldritch Dust
+}
+
+AgreviDust: {
+	Description: Mods.Stellamod.Buffs.AgreviDust.Description
+	DisplayName: Agrevi Dust
+}
+
+SandyB: {
+	Description: Not sandy cheecks
+	DisplayName: Sandy Brooch
+}
+
+RoseB: {
+	Description: A little rose shield floats around
+	DisplayName: Rose Brooch
+}
+
+MagicalBroo: {
+	Description: Its not magical you lied
+	DisplayName: Magical Brooch
+}
+
+LuckyB: {
+	Description: A lucky bitch
+	DisplayName: Lucky Brooch
+}
+
+JellyB: {
+	Description: You can jelly me up ;)
+	DisplayName: Jelly Brooch
+}
+
+BonedB: {
+	Description: You're so boned
+	DisplayName: Boned up
+}
+
+Chained: {
+	Description: Got me chained up like a slave
+	DisplayName: Chained
+}
+
+CannotUseFlask: {
+	Description: You can't use your flask right now
+	DisplayName: Cannot Use Flask
+}
+
+Alcadded: {
+	Description: Alcad
+	DisplayName: Alcadded
+}
+
+BucketScrapperMinionBuff: {
+	DisplayName: Bucket Scrapping
+	Description: All geared up and ready to-
+}
+
+Zuid: {
+	Description: Mods.Stellamod.Buffs.Zuid.Description
+	DisplayName: Zuid
+}
+
+VillagersB: {
+	Description: Mods.Stellamod.Buffs.VillagersB.Description
+	DisplayName: Villagers B
+}
+
+AmberB: {
+	Description: Mods.Stellamod.Buffs.AmberB.Description
+	DisplayName: Amber B
+}

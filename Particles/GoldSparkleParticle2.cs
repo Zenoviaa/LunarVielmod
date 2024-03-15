@@ -15,14 +15,11 @@ namespace Stellamod.Particles
 			height = 34;
 			Scale = 20f;
 			timeLeft = 400;
-			oldPos = new Vector2[10];
-			oldRot = new float[1];
 			SpawnAction = Spawn;
 		}
+
 		public override void AI()
 		{
-			
-
 			Scale *= 0.99f;
 
 			velocity *= 0.98f;
@@ -31,6 +28,7 @@ namespace Stellamod.Particles
 			if (Scale <= 0f)
 				active = false;
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
 			Texture2D tex = Request<Texture2D>("Stellamod/Particles/IceswirlParticle").Value;

@@ -63,9 +63,13 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
 			int frame = (int)NPC.frameCounter;
 			NPC.frame.Y = frame * frameHeight;
-		}
+        }
+        public override bool CheckActive()
+        {
+            return false;
+        }
 
-		public override bool CanChat()
+        public override bool CanChat()
 		{
 			return true;
 		}
@@ -221,7 +225,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (invisTimer == 0)
             {
                 NPC.alpha = 255;
-                SoundEngine.PlaySound(SoundID.Item119);
+                SoundEngine.PlaySound(SoundID.Item119, NPC.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048, 32f);
                 //Charged Sound thingy
                 for (int i = 0; i < 48; i++)

@@ -27,7 +27,6 @@ namespace Stellamod.NPCs.Catacombs.Fire.BlazingSerpent
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
             Projectile.alpha = 255;
-            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()

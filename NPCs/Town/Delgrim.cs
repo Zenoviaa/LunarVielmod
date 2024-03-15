@@ -37,7 +37,7 @@ using Terraria.Utilities;
 namespace Stellamod.NPCs.Town
 {
 	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-	[AutoloadHead]
+	//[AutoloadHead]
 	[AutoloadBossHead]
 	public class Delgrim : ModNPC
 	{
@@ -95,7 +95,6 @@ namespace Stellamod.NPCs.Town
 			// Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 92;
-			NPC.boss = true;
 			NPC.height = 84;
 			NPC.aiStyle = -1;
 			NPC.damage = 90;
@@ -105,16 +104,17 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamage = true;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+        }
 
 
-			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+		//This prevents the NPC from despawning
+        public override bool CheckActive()
+        {
+			return false;
+        }
 
-			if (!Main.dedServ)
-			{
-				Music = -1;
-			}
-		}
-		public override void FindFrame(int frameHeight)
+        public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.20f;
 			NPC.frameCounter %= Main.npcFrameCount[NPC.type];
@@ -487,11 +487,13 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
-			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 5) })
+			.Add<Hitme>()
+			.Add<VillagersBroochA>()
 			.Add<DriveConstruct>()
 			.Add<ArmorDrive>()
 			.Add<WeaponDrive>()
+			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}

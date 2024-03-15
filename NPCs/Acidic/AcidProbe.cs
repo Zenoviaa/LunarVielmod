@@ -34,9 +34,9 @@ namespace Stellamod.NPCs.Acidic
         {
             NPC.width = 28;
             NPC.height = 28;
-            NPC.damage = 8;
+            NPC.damage = 30;
             NPC.defense = 14;
-            NPC.lifeMax = 90;
+            NPC.lifeMax = 130;
             NPC.HitSound = SoundID.NPCHit42;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/AcidProbeDeath") with { PitchVariance = 0.1f };
             NPC.value = 30f;
@@ -135,7 +135,7 @@ namespace Stellamod.NPCs.Acidic
             Player player = spawnInfo.Player;
             if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
             {
-                return spawnInfo.Player.ZoneAcid() ? 4.0f : 0f;
+                return spawnInfo.Player.ZoneAcid() ? 0.8f : 0f;
             }
 
             return 0f;
@@ -180,7 +180,7 @@ namespace Stellamod.NPCs.Acidic
                 if (Timer % 11 == 0)
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3"), NPC.position);
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 32f);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 4f);
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
                     SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                     SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);

@@ -201,6 +201,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
             if (!_spawned)
             {
                 ai_Counter += Idle_Time;
+                /*if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<VoidTrailProj>(), 0, 0, Main.myPlayer, ai1: NPC.whoAmI);
+                }*/
+
                 _spawned = true;
             }
 

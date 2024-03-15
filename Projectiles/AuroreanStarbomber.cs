@@ -69,6 +69,7 @@ namespace Stellamod.Projectiles
                 Projectile.velocity.Y = 10;
                 Projectile.spriteDirection = Projectile.direction;
                 Projectile.alpha = 255;
+                Projectile.netUpdate = true;
                 Moved = true;
             }
 
@@ -105,18 +106,12 @@ namespace Stellamod.Projectiles
 
         private void SpawnStarBomber()
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if(Main.myPlayer == Projectile.owner)
             {
                 Main.NewText("STARBOMBER crashes down!", Color.Pink);
-                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBER>());
-            }
-            else
-            {
-                if (Main.netMode == NetmodeID.SinglePlayer)
-                    return;
-
-                StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<STARBOMBER>(), 
-                    (int)Projectile.Center.X, (int)Projectile.Center.Y);
+                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, 
+                    ModContent.NPCType<STARBOMBER>());
+                NetMessage.SendData(MessageID.SyncNPC);
             }
         }
 

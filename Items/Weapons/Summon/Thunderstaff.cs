@@ -181,7 +181,7 @@ namespace Stellamod.Items.Weapons.Summon
 							
 							projectile.DamageType = DamageClass.Summon;
 							_attackCounter = 0;
-							SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"));
+							SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer1"), Projectile.position);
 						}
                     }
 
@@ -228,7 +228,7 @@ namespace Stellamod.Items.Weapons.Summon
 							projectile.hostile = false;
 							projectile.DamageType = DamageClass.Summon;
 							_attackCounter = 0;
-							SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+							SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, Projectile.position);
 						}
 					}
 						

@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.rotation = -direction.ToRotation();
             if (!Lazer)
             {
-                LazerAdd += .006f;
+                LazerAdd += .010f;
                 if (SingularityFragment.LazerType == 1)
                 {
                     Timer = -179f;
@@ -68,8 +68,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 250, 0f, -1, 0, NPC.whoAmI);
-                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 250, 0f, -1, 0, NPC.whoAmI);
+                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeam>(), 350, 0f, -1, 0, NPC.whoAmI);
+                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<VoidBeamIN>(), 350, 0f, -1, 0, NPC.whoAmI);
                 }
               
                 Lazer = true;

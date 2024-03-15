@@ -9,7 +9,9 @@
 		BossSpawnFromClient,
 		SpawnExplosiveBarrel,
 		BoonData,
-
+		CompleteMerenaQuest,
+		CompleteZuiQuest,
+		CreatePortal
 	}
 
 	public enum QuestMessageType : byte

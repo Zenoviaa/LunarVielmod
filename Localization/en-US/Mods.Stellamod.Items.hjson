@@ -1,0 +1,5833 @@
+Accessories: {
+	HikersBackpack: {
+		DisplayName: Hiker's Backpack
+		Description:
+			'''
+			Increased Regeneration!
+			+3% damage 
+			Drops stumps on the ground as you walk!
+			'''
+	}
+}
+
+PlaceItem: {
+	DisplayName: Place Item
+	Tooltip: ""
+}
+
+SaveItem: {
+	DisplayName: Save Item
+	Tooltip: ""
+}
+
+AdvancedBroochesBackpack: {
+	DisplayName: Advanced Brooches Backpack
+	Tooltip:
+		'''
+		Increased Regeneration! 
+		+4% damage
+		Allows you to equip advanced brooches! Very useful 
+		Allows the effects of the Hiker's Backpack!
+		'''
+}
+
+DiariBroochA: {
+	DisplayName: Diari Brooch
+	Tooltip:
+		'''
+		+2 Defense!
+		Flame walking? 
+		Always Well Fed!
+		+10 Health and Mana
+		+5% Damage!
+		'''
+}
+
+FlyingFishBroochA: {
+	DisplayName: Brooch of the Flying Fish
+	Tooltip:
+		'''
+		Increases Speed and + 2 Defense!
+		Use the power of the speedy fish that fly???
+		'''
+}
+
+FrileBroochA: {
+	DisplayName: Brooch of The Friled Ice
+	Tooltip:
+		'''
+		Enemies now are frosted with icy glazes when hit!
+		Use the power of the Ice biome :P
+		'''
+}
+
+MorrowedBroochA: {
+	DisplayName: Brooch of The Huntria Fable
+	Tooltip:
+		'''
+		Heavy increased damage to your arrows
+		+2 Defense and increased ranged damage
+		Use the power of the deep dark fable..
+		'''
+}
+
+SlimeBroochA: {
+	DisplayName: Brooch of The cute slimes
+	Tooltip:
+		'''
+		Jump Higher!
+		Bouncy and fast fall
+		Awww so cute :P
+		'''
+}
+
+SpragaldBroochA: {
+	DisplayName: Brooch of The Spragald
+	Tooltip:
+		'''
+		Effect = +10 Defense
+		Use the power of the Spragald Spiders!
+		'''
+}
+
+HikersBackpack: {
+	DisplayName: Hiker's Backpack
+	Tooltip:
+		'''
+		Increased Regeneration!
+		+3% damage 
+		Drops stumps on the ground as you walk!
+		'''
+}
+
+IllusionistBook: {
+	DisplayName: Book of Wooden Illusion
+	Tooltip:
+		'''
+		Increased Regeneration!
+		+3% damage"
+		Increases crit strike change by 5% 
+		'''
+}
+
+JellyfishTissue: {
+	DisplayName: Jellyfish Tissue
+	Tooltip:
+		'''
+		Woa really cool!
+		+40 Defense
+		But at the cost of 40% damage 
+		'''
+}
+
+MOTT: {
+	DisplayName: M.O.T.T
+	Tooltip:
+		'''
+		Every 10 seconds drop high damage spiky balls on the ground
+		+5% Ranged damage...
+		'''
+}
+
+PaperPaws: {
+	DisplayName: Paper Paws
+	Tooltip:
+		'''
+		Why don't you give your summons more credit?
+		+1 summon
+		'''
+}
+
+Paper: {
+	DisplayName: Paper
+	Tooltip: It's paper idk what you expected
+}
+
+PlantH: {
+	DisplayName: Plant Heritage
+	Tooltip:
+		'''
+		Gain the power of plants!
+		+40 life and +15 increased defense
+		But you have decreased speed 0v0
+		'''
+}
+
+SapContainer: {
+	DisplayName: Sap Container
+	Tooltip:
+		'''
+		Every 10 seconds eat stardew and MAJORLY increase your magic damage"
+		+7% Magic damage...
+		'''
+}
+
+WoodenShield: {
+	DisplayName: Wooden Shield
+	Tooltip:
+		'''
+		Super cool right??? A wooden shield?
+		What are you gonna block, a bow and arrow?
+		Literally no blocking features smh
+		+1 Defense and life regen increased!
+		'''
+}
+
+Steali: {
+	DisplayName: Steali
+	Tooltip:
+		'''
+		A small fast dash that provides invincibility as you dash
+		Increased regeneration
+		You may not attack while this is in use
+		Hollow Knight inspiried!
+		'''
+}
+
+ThornedBook: {
+	DisplayName: Thorned Book
+	Tooltip:
+		'''
+		When enemies hit you deal big amounts of damage back
+		+3% Melee damage...
+		-5 defense
+		'''
+}
+
+CelestiaMoonBreastplate: {
+	DisplayName: Celestia Moon Breastplate
+	Tooltip:
+		'''
+		Magical essence of an empress!
+		+60 max mana and +1 minion slot
+		+20 Health
+		'''
+}
+
+CelestiaMoonHelmet: {
+	DisplayName: Celestia Moon Helmet
+	Tooltip:
+		'''
+		Magical essence of an Emperor
+		+2% increased ranged and melee damage
+		+35 Health
+		'''
+}
+
+CelestiaMoonLegs: {
+	DisplayName: Celestia Moon Leggings
+	Tooltip:
+		'''
+		Magical essence of an empress!
+		3% increased movement speed
+		+20 Health
+		'''
+}
+
+CelestiaMoonMask: {
+	DisplayName: Celestia Moon Mask
+	Tooltip:
+		'''
+		Magical essence of an empress!
+		+20 Max mana and +1 Minion Slot
+		'''
+}
+
+HuntrianBoots: {
+	DisplayName: Huntrian Boots
+	Tooltip:
+		'''
+		Corroded Woods
+		+5% Damage!
+		+10 Health
+		+7 Critical Strike Chance!
+		'''
+}
+
+HuntrianChestplate: {
+	DisplayName: Huntrian Chestplate
+	Tooltip:
+		'''
+		Corroded Woods
+		+5% Damage!" 
+		+10 Health" 
+		+10 Critical Strike Chance!
+		'''
+}
+
+HuntrianHelmet: {
+	DisplayName: Huntrian Helmet
+	Tooltip:
+		'''
+		Corroded Woods
+		+5% Damage!
+		+20 Health
+		'''
+}
+
+LovestruckBreastplate: {
+	DisplayName: Lovestruck Breastplate
+	Tooltip:
+		'''
+		Feel the love!
+		+60 Health and +1 minion slot
+		'''
+}
+
+LovestruckLegs: {
+	DisplayName: Lovestruck Thighs
+	Tooltip:
+		'''
+		Sexy!
+		10% increased movement speed
+		+60 Health
+		'''
+}
+
+LovestruckMask: {
+	DisplayName: Lovestruck Mask
+	Tooltip:
+		'''
+		Magical essence of an Lusting Goddess
+		+7% increased damage
+		+40 Health
+		'''
+}
+
+GintzeMask: {
+	DisplayName: Gintzi Mask
+	Tooltip:
+		'''
+		Rare Iron Mask!
+		+2 summons!
+		+50 Health
+		'''
+}
+
+StoniaBoots: {
+	DisplayName: Stonia Boots
+	Tooltip:
+		'''
+		Rizzy Stone
+		+2% Damage!
+		Heavily Increased Falling!
+		Woa rocks!
+		'''
+}
+
+StoniaChestplate: {
+	DisplayName: Stonia Chestplate
+	Tooltip:
+		'''
+		Weak Stone?
+		+1% Damage!
+		+2 Penetration
+		+2 Critical Strike Chance!
+		'''
+}
+
+StoniaHat: {
+	DisplayName: Stonia Hat
+	Tooltip:
+		'''
+		Happy Stone?
+		+3% Damage
+		+5 Penetration
+		+5 Critical Strike Chance!
+		'''
+}
+
+AstolfoBody: {
+	DisplayName: Astolfo Breasts
+	Tooltip:
+		'''
+		Nya~
+		Yummy!
+		+20 Health
+		'''
+}
+
+AstolfoMask: {
+	DisplayName: Astolfo Wig
+	Tooltip:
+		'''
+		Yummy kummy :3
+		+2% increased damage
+		+35 Health
+		Increased Pickaxe Speed!
+		'''
+}
+
+AstolfoSkirt: {
+	DisplayName: Astolfo Skirt
+	Tooltip:
+		'''
+		Woa it even smells like water!
+		5% increased movement speed
+		Rizz Thighs
+		'''
+}
+
+VerlBreastplate: {
+	DisplayName: Verl Breastplate
+	Tooltip:
+		'''
+		Shines with a blooming moon
+		+10% Ranged and Magic Damage!
+		+12 Penetration 
+		+5 Critical Strike Chance!
+		+20 Max Life
+		'''
+}
+
+VerlHat: {
+	DisplayName: Verl Hat
+	Tooltip:
+		'''
+		You feel prettier dont you?
+		+7% Magic Damage!
+		+Fast mana regeneration!
+		+100 Max Mana
+		+40 Max Life
+		'''
+}
+
+VerlLeggings: {
+	DisplayName: Verl Leggings
+	Tooltip:
+		'''
+		Look at them thighs go!
+		+7% Magic and Ranged Damage!
+		+Increased Movement speed
+		+40 Max Life
+		'''
+}
+
+VerlMask: {
+	DisplayName: Verl Mask
+	Tooltip:
+		'''
+		You feel prettier dont you?
+		+7% Ranged Damage!
+		+15 Critical Strike Chance!
+		+20 Max Life
+		'''
+}
+
+VextinBoots: {
+	DisplayName: Vextin Boots
+	Tooltip:
+		'''
+		Hide in the sands
+		+5% Damage
+		+20 Health
+		'''
+}
+
+VextinMask: {
+	DisplayName: Vextin Mask
+	Tooltip:
+		'''
+		You feel the hidden sands flow in you
+		+7% increased damage
+		+20 Health
+		'''
+}
+
+VextinRobe: {
+	DisplayName: Vextin Robe
+	Tooltip:
+		'''
+		Roam the wonderous sands	
+		+40 Health
+		'''
+}
+
+Gambit: {
+	DisplayName: Gambit
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		Gamble away your soul after battle for great rewards!
+		'''
+}
+
+GambitToken: {
+	DisplayName: Gambit Token
+	Tooltip: Use this while gambling to actually, gamble..
+}
+
+GildedBag1: {
+	DisplayName: Gilded Bag
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+MoonflameLantern: {
+	DisplayName: Moonflame Lantern
+	Tooltip:
+		'''
+		I thank you for your contribution, return to me, I await your arrival
+		at the top of my palace, we will dance soon <3
+		'''
+}
+
+SirestiasStarterBag: {
+	DisplayName: Sirestias Starter Bag
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+VeribossBag: {
+	DisplayName: Veriboss Bag
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+AlcadizMetal: {
+	DisplayName: Alcadiz Metal
+	Tooltip:
+		'''
+		Woa this is super hard and magical..
+		Where does this ore come from?
+		Best used for metalic weapons and magical items!
+		'''
+}
+
+Bagitem: {
+	DisplayName: Dust Bag
+	Tooltip:
+		'''
+		A bag made for igniter dusts!
+		Where does this come from?
+		Used in every dust recipe, bring it to the dust bench!
+		'''
+}
+
+Bouque: {
+	DisplayName: Bouque
+	Tooltip:
+		'''
+		A bag of flowers for the dear
+		Used in various recipes
+		'''
+}
+
+Candle: {
+	DisplayName: Candle
+	Tooltip:
+		'''
+		A candle but you cant place it :(
+		Why does it exist?
+		Used in many recipes
+		'''
+}
+
+Cinderscrap: {
+	DisplayName: Scrap of Cinder
+	Tooltip:
+		'''
+		Cinder scrap
+		Burned to infinity
+		Used in plants
+		'''
+}
+
+CondensedDirt: {
+	DisplayName: Condensed Dirt
+	Tooltip:
+		'''
+		Ew! Its sticky! Why??
+		A sticky dirt-like substance that comes from the ground!
+		Best use for fertilizer and dirt-like items!
+		'''
+}
+
+DreasFlower: {
+	DisplayName: Sky Blue Dreas Flower
+	Tooltip:
+		'''
+		All the way from the Fabled temples..
+		Used for planting and harvesting
+		Best use for magical items and plants!
+		'''
+}
+
+Fabric: {
+	DisplayName: Alcadiz Fabric
+	Tooltip:
+		'''
+		All the way from the Alcadiz temples..
+		Strong as steel yet so fabric like, its pouring energy!
+		Best use for magical items!
+		'''
+}
+
+FlowerBatch: {
+	DisplayName: Flower Batch
+	Tooltip:
+		'''
+		These flowers are very pretty..
+		An object from harvesting
+		Best use for plants and some items!
+		'''
+}
+
+Hlos: {
+	DisplayName: Scrapped Handle
+	Tooltip: Used for making various weapons
+}
+
+MorrowRocks: {
+	DisplayName: Fabled Rocks
+	Tooltip: Rocks from the deep fable
+}
+
+Morrowshroom: {
+	DisplayName: Fableshroom
+	Tooltip: Shroomster
+}
+
+MorrowVine: {
+	DisplayName: Fabled Vine
+	Tooltip:
+		'''
+		A useful piece of string!
+		From some Fabled warriors of the morrow
+		Used in many recipes for weapons, bags and such
+		'''
+}
+
+Mushroom: {
+	DisplayName: Mushroomer
+	Tooltip: Ew a mushroom, for planting probably?
+}
+
+Stick: {
+	DisplayName: Stick
+	Tooltip: Welp it's a stick
+}
+
+ViolinStick: {
+	DisplayName: Violin Stick
+	Tooltip:
+		'''
+		Hmph, what is this used for?
+		Best use for weapons and musical items!
+		'''
+}
+
+EmptyMoonflameLantern: {
+	DisplayName: Empty Moonflame Lantern
+	Tooltip:
+		'''
+		Take it to the depths of hell,
+		Freeze the flame
+		The dance at the Cathedral awaits at the top of the moonlight!
+		'''
+}
+
+FleshClot: {
+	DisplayName: Kaev Clot
+	Tooltip: Flesh-like substance obtained from blood enemies
+}
+
+HuntiacBlock: {
+	DisplayName: Huntiac Block
+	Tooltip: Dangerous
+}
+
+HuntiacwallBlock: {
+	DisplayName: Huntiac Wall
+	Tooltip: Even more dangerous
+}
+
+Medal: {
+	DisplayName: Ruin Medal
+	Tooltip:
+		'''
+		An old ancient medal..
+		Keep this in your inventory, can be sold and may attract someone, romantically...
+		'''
+}
+
+OvermorrowDirt: {
+	DisplayName: Fable Dirt
+	Tooltip: ""
+}
+
+OvermorrowdirtwallBlock: {
+	DisplayName: Fable wall
+	Tooltip: ""
+}
+
+OvermorrowWall: {
+	DisplayName: Fabled Wall
+	Tooltip: ""
+}
+
+OvermorrowWood: {
+	DisplayName: Fabled Wood
+	Tooltip: Yummy wood am I right?
+}
+
+PearlescentScrap: {
+	DisplayName: Pearlescent Scrap
+	Tooltip:
+		'''
+		True fragments of the moon
+		A strong resonance with sound and the stars...
+		'''
+}
+
+RippedFabric: {
+	DisplayName: Ripped Fabric
+	Tooltip:
+		'''
+		From the knowledge of the Gilded to robes on enemies, it's wonderous!
+		A very magical material, although...
+		I feel like the item calls my name...
+		'''
+}
+
+Starrdew: {
+	DisplayName: Starr dew
+	Tooltip:
+		'''
+		Ew! It's sticky! I wonder what else is sticky...
+		A sticky substance that resonates with the stars and the fable!
+		'''
+}
+
+Stelleanbrick: {
+	DisplayName: Stellean brick
+	Tooltip: ""
+}
+
+VerianRuneBlock: {
+	DisplayName: Verian Rune Block
+	Tooltip: ""
+}
+
+VerianWood: {
+	DisplayName: Verian Wood
+	Tooltip: ""
+}
+
+FrileBar: {
+	DisplayName: Frile Bar
+	Tooltip: Frozen to the core, an essence of the moon and ice
+}
+
+FrileOre: {
+	DisplayName: Frile Ore
+	Tooltip: An ore too cold to place, used for many items with ice!
+}
+
+VerianBar: {
+	DisplayName: Verian Bar
+	Tooltip:
+		'''
+		Hot to the touch, filled with the gild and glory of tribal warriors
+		its so hot you can't even touch it, gotta use heated fabric...
+		'''
+}
+
+VerianOre: {
+	DisplayName: Verian Ore
+	Tooltip: An ore merged and fused with gild, its scorching hot
+}
+
+AlcaologyI: {
+	DisplayName: Alcaology Station
+	Tooltip: This table is used for dusts and useful Materials!
+}
+
+Bar: {
+	DisplayName: Bar
+	Tooltip: ""
+}
+
+Bench: {
+	DisplayName: Bench
+	Tooltip: ""
+}
+
+BroochesTableI: {
+	DisplayName: Brooches Jewelry Station
+	Tooltip: This bench allows you to craft exquisite brooches and combine them!
+}
+
+CathediteBlock: {
+	DisplayName: Cathedite Block
+	Tooltip: ""
+}
+
+CathediteGrassBlock: {
+	DisplayName: Cathedite Grass Block
+	Tooltip: ""
+}
+
+CathediteGrassWall: {
+	DisplayName: Cathedite Grass Wall
+	Tooltip: ""
+}
+
+CathediteWall: {
+	DisplayName: Cathedite Wall
+	Tooltip: ""
+}
+
+CathedralChestI: {
+	DisplayName: Cathedral Chest
+	Tooltip: ""
+}
+
+Crystal1I: {
+	DisplayName: Crystal1
+	Tooltip: You arent meant to collect this :(
+}
+
+Crystal2I: {
+	DisplayName: Crystal2
+	Tooltip: You arent meant to collect this :(
+}
+
+FlowerMultiI: {
+	DisplayName: Flower Multi
+	Tooltip: You arent meant to collect this :(
+}
+
+Orb1I: {
+	DisplayName: Orb1 I
+	Tooltip: You arent meant to collect this :(
+}
+
+ShrineI: {
+	DisplayName: Shrine
+	Tooltip: ""
+}
+
+Flowersummon: {
+	DisplayName: Flowersummon
+	Tooltip: You arent meant to collect this :(
+}
+
+GrassBig: {
+	DisplayName: Grass Big
+	Tooltip: You arent meant to collect this :(
+}
+
+GrassMoss: {
+	DisplayName: Grass Moss
+	Tooltip: You arent meant to collect this :(
+}
+
+CurtainLeftI: {
+	DisplayName: Curtain Left I
+	Tooltip: You arent meant to collect this :(
+}
+
+CurtainRightI: {
+	DisplayName: Curtain Right I
+	Tooltip: You arent meant to collect this :(
+}
+
+Log: {
+	DisplayName: Log
+	Tooltip: You arent meant to collect this :(
+}
+
+MediumPot: {
+	DisplayName: Medium Pot
+	Tooltip: You arent meant to collect this :(
+}
+
+MorrowChesti: {
+	DisplayName: Fable Chest
+	Tooltip: ""
+}
+
+MorrowChestKey: {
+	DisplayName: Fabled Chest Key
+	Tooltip: ""
+}
+
+MorrowDeath: {
+	DisplayName: Fable Death
+	Tooltip: You arent meant to collect this :(
+}
+
+MorrowDeath2: {
+	DisplayName: Morrow Death2
+	Tooltip: You arent meant to collect this :(
+}
+
+MorrowSpike: {
+	DisplayName: Fabled Spike
+	Tooltip: ""
+}
+
+MorrowStone: {
+	DisplayName: Fable Stone
+	Tooltip: You arent meant to collect this :(
+}
+
+MushroomBig: {
+	DisplayName: Mushroom Big
+	Tooltip: Shrooms
+}
+
+SmallShroom: {
+	DisplayName: Small Shroom
+	Tooltip: Do drugs
+}
+
+StandN: {
+	DisplayName: Stand N
+	Tooltip: You arent meant to collect this :(
+}
+
+VeriBossRel: {
+	DisplayName: Stone Guardian Relic
+	Tooltip: Boss relic of a relic boss, good job
+}
+
+walla: {
+	DisplayName: walla
+	Tooltip: ""
+}
+
+wallb: {
+	DisplayName: wallb
+	Tooltip: ""
+}
+
+wallc: {
+	DisplayName: wallc
+	Tooltip: ""
+}
+
+walld: {
+	DisplayName: walld
+	Tooltip: ""
+}
+
+walle: {
+	DisplayName: walle
+	Tooltip: ""
+}
+
+wallf: {
+	DisplayName: wallf
+	Tooltip: ""
+}
+
+wallg: {
+	DisplayName: wallg
+	Tooltip: ""
+}
+
+BonePicklerCard: {
+	DisplayName: Bone Pickler Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+DaedCard: {
+	DisplayName: Daed Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+EYIgniter: {
+	DisplayName: Eye Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+FrostCard: {
+	DisplayName: Frost Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+GothivCard: {
+	DisplayName: Gothiv Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+LovestruckCard: {
+	DisplayName: Lovestruck Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+ScorcheCard: {
+	DisplayName: Scorche Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+StarrCard: {
+	DisplayName: Starr Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+StarterCard: {
+	DisplayName: Starter Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+WCIgniter: {
+	DisplayName: Wild Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+Bongos: {
+	DisplayName: Star-Gilded Bongo
+	Tooltip: Boom bong boom at cursor
+}
+
+CocoSpark: {
+	DisplayName: Coconut Tome
+	Tooltip: Look master, I can summon, coconuts!
+}
+
+EvasiveBalls: {
+	DisplayName: Pearlescent Ice Balls
+	Tooltip: Shoots fast homing sparks of light!
+}
+
+FlameburstBalls: {
+	DisplayName: Molted Crust Balls
+	Tooltip: Shoots fast homing sparks of fire!
+}
+
+GildedStaff: {
+	DisplayName: Gilded Staff
+	Tooltip: Shoots two spinning pieces of spiritual magic at your foes
+}
+
+PrismaticBalls: {
+	DisplayName: Prismatic Cryadia Balls
+	Tooltip: Shoots fast homing sparks of everlasting crystal light!
+}
+
+Splitflame: {
+	DisplayName: Split-flame candle
+	Tooltip: Totally not the candle from split, totally.
+}
+
+Antaciz: {
+	DisplayName: Antaciz
+	Tooltip: Spinny winny damage the binny
+}
+
+Auroran: {
+	DisplayName: Auroran
+	Tooltip:
+		'''
+		Sends shockwaves through the air
+			Hitting enemies with the blade will increase your attack speed!
+			Divergency Inspired!
+		'''
+}
+
+EnergizedNail: {
+	DisplayName: Energized Nail
+	Tooltip: Electrical nail, thats weird
+}
+
+FrostSwing: {
+	DisplayName: Frost Swing
+	Tooltip:
+		'''
+		Shoots one bone bolt to swirl and kill your enemies after attacking!
+		Hitting foes with the melee swing builds damage towards the swing of the weapon
+		'''
+}
+
+Gutinier: {
+	DisplayName: Gutinier
+	Tooltip:
+		'''
+		Classful weapon!
+			Divergency Inspired!
+		'''
+}
+
+HornedNail: {
+	DisplayName: Horned Nail
+	Tooltip: Purge under funny nail :0
+}
+
+MorrowRapier: {
+	DisplayName: Fabled Rapier
+	Tooltip: Poke poke-dont get the wrong idea of the weapon function-poke
+}
+
+MorrowSword: {
+	DisplayName: Fabled Sword
+	Tooltip: This sword feels warm, what is this Materials?
+}
+
+MorrowValswa: {
+	DisplayName: Fabled Valswa
+	Tooltip: Very bad sword don't use it, I warned you
+}
+
+PalmThrower: {
+	DisplayName: Palm Tomahawks
+	Tooltip: Throw around tomahawks forged from palm, sounds boring :(
+}
+
+Halhurish: {
+	DisplayName: Halhurish The Flamed
+	Tooltip:
+		'''
+		Whip your opponents in the air
+		Hitting enemies will explode
+		'''
+}
+
+Verstibloom: {
+	DisplayName: Thorner
+	Tooltip:
+		'''
+		Shoots a swirling red bloom to swirl and kill your enemies after attacking!
+		Hitting foes with the melee swing builds damage towards the swing of the weapon
+		Does trenourmous damage!
+		'''
+}
+
+VerstiDance: {
+	DisplayName: Verstidance
+	Tooltip:
+		'''
+		Swirl!
+		A petal dance that increases your movement speed and defense, but be wary of high risk 
+		'''
+}
+
+PocketSand: {
+	DisplayName: Pocket Sand
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		Dust that can be used with and for combos in igniters
+		Can penetrate armored enemies like nothing!
+		'''
+}
+
+ArcanalPowder: {
+	DisplayName: Sepsis Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A sparkly star dust that does double damage as the igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+BloodPowder: {
+	DisplayName: Kaev Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		A blood dust that does high damage with igniters.
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+CoalDust: {
+	DisplayName: Coal Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		After hitting an enemy with this, use an igniter card weapon!
+		Forged from the gems you collect!
+		'''
+}
+
+FlamePowder: {
+	DisplayName: Flame Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A flamey dust that explodes with your igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+FrostedPowder: {
+	DisplayName: Frost Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		Dusty ice dust that does continuous damage with the igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+GrassDirtPowder: {
+	DisplayName: Dirt Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A dirty dust... that does damage???!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+LenaSongPowder: {
+	DisplayName: Lena Song Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A musical dust! that explodes with your igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+ShadowFlamePowder: {
+	DisplayName: ShadowFlame Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A shadow dust that explodes with your igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+TrickPowder: {
+	DisplayName: Trick Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A sparkly tricky dust that does a lot damage!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+Verstidust: {
+	DisplayName: Versti Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A musical dust that has calming flowers
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+BoneNail: {
+	DisplayName: Bone Nail
+	Tooltip: Burning with flowery rage
+}
+
+WoodenCrossbow: {
+	DisplayName: Wooden Crossbow
+	Tooltip: ""
+}
+
+Hornet: {
+	DisplayName: Hornet
+	Tooltip:
+		'''
+		Classy!
+		Totally has no reference to Hollow Knight
+		A weapon that shoots classy bomb and bullets.. A LOT
+		Dia Gun...
+		'''
+}
+
+MorrowSalface: {
+	DisplayName: Fabled Salface
+	Tooltip: Shoots three bolts and then a big arcanal bolt
+}
+
+SteamedNail: {
+	DisplayName: Steamed Nail
+	Tooltip: Ram em' hard (that's what I said)
+}
+
+Teraciz: {
+	DisplayName: Teraciz
+	Tooltip:
+		'''
+		Meatballs
+		Do not be worried, this mushes reality into bit bits and then shoots it!
+		You can never miss :P
+		'''
+}
+
+Violar: {
+	DisplayName: Violar
+	Tooltip:
+		'''
+		Let them burn in harmony!
+		Simple weapon forged from Stellean bricks and the heat from plants of the fable
+		Impractical but very rewarding...
+		'''
+}
+
+wowgun: {
+	DisplayName: Wowgun
+	Tooltip:
+		'''
+		You made a gun out of wood what did you expect..
+		For your efforts I commend you, now use my voice as a weapon :)
+		'''
+}
+
+AlcadizDagger: {
+	DisplayName: Fabled String n' Brooch
+	Tooltip:
+		'''
+		Your summons will target focused enemies
+		Summons will manifest out of your string shield
+		They will act as temporary summons to give your other minions company!
+		The Brooch above gives you 10+ Defense while active!
+		'''
+}
+
+BloodLamp: {
+	DisplayName: Blood Lamp
+	Tooltip:
+		'''
+		Enrages your summons by hitting enemies, shows a red mark on them!
+		Summons a red explosion crystal that hurts foes
+		Even makes a bloodthirst trail for the summon being empowered!
+		'''
+}
+
+CanOfLeaves: {
+	DisplayName: Box Of Leaves
+	Tooltip: Summon the leaves, don't bother picking them up, they are a bit aggressive, and magical...
+}
+
+StarCall: {
+	DisplayName: Starbomber
+	Tooltip:
+		'''
+		Your summons will explode into big stary bits!
+		Takes 2 slots to summon
+		They will act as temporary summons for big damage
+		Definitely gonna bring flashbacks after Diari releases
+		'''
+}
+
+StumpBuster: {
+	DisplayName: Stump Buster
+	Tooltip: I command thee, use the power of stumps!
+}
+
+MorrowWhipI: {
+	DisplayName: Fabled Morrowed Whip
+	Tooltip:
+		'''
+		Your summons will target focused enemies
+		Summons will act on a target and do tremendous more damage
+		But when you mark an enemy, you lower your defense :(
+		Don't dieee!
+		'''
+}
+
+GovheilBlock: {
+	DisplayName: Govheil Block
+	Tooltip: ""
+}
+
+GardenWrecker: {
+	Tooltip:
+		'''
+		Shoots out skull-bullets, if they hit, they do some serious damage!
+		It's true, they wrecked my garden! I'm only with the science team!
+		'''
+	DisplayName: Garden Wrecker
+}
+
+AlcadizScrap: {
+	DisplayName: Fabled Scrap
+	Tooltip:
+		'''
+		Essence of high Materials, used for making very neat weapons
+		Countains the power of Frile, Govheil and Fablia!
+		'''
+}
+
+BurningAngel: {
+	DisplayName: Burning Angel
+	Tooltip:
+		'''
+		Shoots out many axes, beware they explode on impact
+		Steerable for a while and consectutive hits speed up next throw!
+		Made from heavy fabled metal!
+		'''
+}
+
+GovheilBoreI: {
+	DisplayName: Govheil Bore I
+	Tooltip: ""
+}
+
+MasistLI: {
+	DisplayName: Masist L I
+	Tooltip: ""
+}
+
+MasistRI: {
+	DisplayName: Masist R I
+	Tooltip: ""
+}
+
+VheilCurtainLI: {
+	DisplayName: Vheil Curtain L I
+	Tooltip: ""
+}
+
+VheilCurtainRI: {
+	DisplayName: Vheil Curtain R I
+	Tooltip: ""
+}
+
+WeiI: {
+	DisplayName: Wei I
+	Tooltip: ""
+}
+
+ZebiI: {
+	DisplayName: Zebi I
+	Tooltip: ""
+}
+
+ShrineLifeCI: {
+	Tooltip: ""
+	DisplayName: Shrine Life C I
+}
+
+Curlistine: {
+	DisplayName: Curlistine
+	Tooltip:
+		'''
+		Only works if an enemy is nearby.
+		Shoots out many chained swords guided by the swirling stars..
+		Verlia's wish is granted upon you.
+		'''
+}
+
+AlcadizPowder: {
+	DisplayName: Fable Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A spark-like explosion dust that does a lot damage!
+		From the Fabled fallen remains..
+		'''
+}
+
+VerliaBossBag: {
+	DisplayName: Treasure Bag (Verlia)
+	Tooltip: ""
+}
+
+VerliaHat: {
+	Tooltip:
+		'''
+		Great for style!
+		Increased life by 50!
+		Increased Mana by 100!
+		I know you wanna wear it...
+		'''
+	DisplayName: Verlias Hat
+}
+
+VerliaBroochA: {
+	Tooltip:
+		'''
+		I love ya!
+		When hitting enemies, a bunch of heavy damaging snowflakes may come out on impact!
+		Increased mana by 50!
+		Increased Defense by 5!
+		'''
+	DisplayName: Brooch of Verlia's Charm
+}
+
+SwordsOfRevengence: {
+	Tooltip:
+		'''
+		I love ya!
+		Summons a Curlistine sword that brings Verlia's small swords to life!
+		Only works if an enemy is nearby!
+		Activates Verlia's Brooch effects! 
+		(Inc mana by 50, Def by 5, Heavy snowflakes on hit!) 
+		'''
+	DisplayName: Swords Of Revengence
+}
+
+HarmonicBlasphemy: {
+	DisplayName: Harmonic Blasphemy
+	Tooltip:
+		'''
+		I love ya!
+		Very powerful moon blaster!
+		Use small moons gifted from Verlia herself!
+		Also use the power of music!
+		'''
+}
+
+SupernovaSitar: {
+	DisplayName: Supernova Sitar
+	Tooltip:
+		'''
+		I love ya!
+		Absolute Distortion of Verlia's power of the moon and stars!
+		Her personal gift to you!
+		'''
+}
+
+Parendine: {
+	DisplayName: Parendine
+	Tooltip: Whip frosty!
+}
+
+AuroranSeeker: {
+	Tooltip:
+		'''
+		A super charged book of spells to cast!
+		Summons a book that puts a variety of 7 spells on its attacker!
+		'''
+	DisplayName: Auroran Seeker
+}
+
+GovheilMask: {
+	DisplayName: Govheil Mask
+	Tooltip:
+		'''
+		12% Increased Magic and Summon damage!
+		+50 Mana and increased Mana regeneration
+		+12% Crit strike change
+		I've heard rumors that the flower gives a special affection bonus..
+		'''
+}
+
+GovheilHelmet: {
+	Tooltip:
+		'''
+		12% Increased Ranged and Melee damage!
+		Autoswing capabilities
+		+10% Crit strike change
+		You wanna be cool huh?
+		'''
+	DisplayName: Govheil Helmet
+}
+
+GovheilChainplate: {
+	Tooltip:
+		'''
+		12% Increased Ranged and Melee damage!
+		+50 Life
+		Gain effects of a magic quiver!
+		'''
+	DisplayName: Govheil Chainplate
+}
+
+GovheilBreastplate: {
+	Tooltip:
+		'''
+		12% Increased Magic and Summon damage!
+		+50 Mana and increased Mana regeneration
+		+30 Life!
+		+1 Summon
+		'''
+	DisplayName: Govheil Breastplate
+}
+
+GovheilThighs: {
+	DisplayName: Govheil Thighs
+	Tooltip:
+		'''
+		7% Increased Movement speed
+		+30 Life!
+		+10% Damage
+		+15 Armor Penetration
+		Mega thicc!
+		'''
+}
+
+XexterianLeggings: {
+	Tooltip: +5% Damage
+	DisplayName: Xexterian Leggings
+}
+
+XexterianHat: {
+	DisplayName: Xexterian Hat
+	Tooltip:
+		'''
+		+5% Damage
+		+20 Life
+		You really want this knock off Forbidden armor?
+		'''
+}
+
+XexterianHeatplate: {
+	DisplayName: Xexterian Heatplate
+	Tooltip:
+		'''
+		+10 Armor Penetration
+		+20 Life!
+		+6% Damage
+		+5 Critical Strike Chance
+		'''
+}
+
+DaediaThighs: {
+	Tooltip:
+		'''
+		+40 Life!
+		30% Increased movement speed!
+		Walk like a flowery goddess with flower boots!
+		'''
+	DisplayName: Daedia Thighs
+}
+
+DaediaMask: {
+	Tooltip:
+		'''
+		+65 Life!
+		A little halo over a new spiritual goddess!
+		'''
+	DisplayName: Daedia Mask
+}
+
+DaediaBreastplate: {
+	Tooltip:
+		'''
+		+60 Life!
+		+2 Summons
+		'''
+	DisplayName: Daedia Breastplate
+}
+
+PotionOfLifeWand: {
+	DisplayName: Potion Of Life Wand
+	Tooltip: A sweet little potion summon that will give drop hearts occasionally!
+}
+
+PotionOfManaWand: {
+	Tooltip: A sweet little potion summon that will give drop mana occasionally!
+	DisplayName: Potion Of Mana Wand
+}
+
+Ebistar: {
+	DisplayName: Ebistar
+	Tooltip:
+		'''
+		This will not go the way you want it to...
+		Shoots many swirling star arrows!
+		'''
+}
+
+Hearstspire: {
+	DisplayName: Heartspire
+	Tooltip:
+		'''
+		Slash through the lovely night!
+		Dream upon a goddess of love, Daedia!
+		'''
+}
+
+Pearlinator: {
+	DisplayName: Pearlinator
+	Tooltip:
+		'''
+		Lovely flamethrower?
+		Dream upon a goddess of love, Daedia!
+		'''
+}
+
+MerchantCrossbow: {
+	DisplayName: The Merchants Crossbow
+	Tooltip:
+		'''
+		Who knew merchants could sell weapons!
+		Either way its a holding crossbow!
+		How generous :P
+		'''
+}
+
+LeadCrossbow: {
+	Tooltip: A simple crossbow that can be held down to shoot bolts
+	DisplayName: Lead Crossbow
+}
+
+IronCrossbow: {
+	Tooltip: A simple crossbow that can be held down to shoot bolts
+	DisplayName: Iron Crossbow
+}
+
+DungeonCrossbow: {
+	Tooltip:
+		'''
+		Woa spooky...
+		A simple crossbow that can be held down to shoot bolts
+		Bones come out from each hit!
+		'''
+	DisplayName: Bone and Rag Crossbow
+}
+
+GoldCrossbow: {
+	DisplayName: Gold Crossbow
+	Tooltip:
+		'''
+		A simple crossbow that can be held down to shoot bolts
+		This one even has ruby bolts inside!
+		'''
+}
+
+PlatinumCrossbow: {
+	DisplayName: Platinum Crossbow
+	Tooltip:
+		'''
+		A simple crossbow that can be held down to shoot bolts
+		This one even has ruby bolts inside!
+		'''
+}
+
+SilverCrossbow: {
+	DisplayName: Silver Crossbow
+	Tooltip:
+		'''
+		A simple crossbow that can be held down to shoot bolts
+		This one even has sapphire bolts inside!
+		'''
+}
+
+TungstenCrossbow: {
+	DisplayName: Tungsten Crossbow
+	Tooltip:
+		'''
+		A simple crossbow that can be held down to shoot bolts
+		This one even has sapphire bolts inside!
+		'''
+}
+
+MorrowedCrossbow: {
+	DisplayName: Fabled Crossbow
+	Tooltip:
+		'''
+		Sniper type crossbow that can be held down to shoot fast rail bolts!
+		The fable is coming inside of me!
+		'''
+}
+
+DustedSilk: {
+	DisplayName: Dusted Silk
+	Tooltip:
+		'''
+		Special Materials harvested from spiders
+		Useful for crafting certain string-like items!
+		'''
+}
+
+SpiderillaCrossbow: {
+	DisplayName: Spiderillas Crossbow
+	Tooltip:
+		'''
+		Sniper type crossbow that can be held down to shoot fast rail bolts!
+		Eggs pop out of this one so uh...
+		If you have arachniphobia, why use this?
+		'''
+}
+
+DesertCrossbow: {
+	Tooltip:
+		'''
+		Shotgun type crossbow that shoots bolts in many directions!
+		Hold down to shoot!
+		Rumors have it that they are faster than the wind..
+		'''
+	DisplayName: Winded Sands Crossbow
+}
+
+FrostyCrossbow: {
+	DisplayName: Auroran Ice Crossbow
+	Tooltip:
+		'''
+		Shotgun type crossbow that shoots bolts in many directions!
+		Hold down to shoot!
+		Frosty!
+		'''
+}
+
+CoralCrossbow: {
+	DisplayName: Night's Coral Crossbow
+	Tooltip:
+		'''
+		A speed type crossbow meant for hunters
+		Hold down to shoot!
+		The absolute, the enraged, the entropy, the finale!
+		'''
+}
+
+MoltenCrossbow: {
+	DisplayName: Molten Crossbow
+	Tooltip:
+		'''
+		A speed type crossbow meant for hunters
+		Hold down to shoot!
+		Sometimes, we want to watch the world burn...
+		'''
+}
+
+FabiliaCrossbow: {
+	DisplayName: Fabilia Wilds Crossbow
+	Tooltip:
+		'''
+		Shotgun type crossbow that shoots bolts in many directions!
+		Hold down to shoot!
+		Explode enemies with this favorable fabilia crossbow :P
+		'''
+}
+
+JadeJungleCrossbow: {
+	DisplayName: Jade Jungle Crossbow
+	Tooltip:
+		'''
+		Sniper type crossbow that can be held down to shoot fast rail bolts!
+		Little leaves come out of the bolts
+		Grass can sometimes taste yummy :)
+		'''
+}
+
+Heatspot: {
+	DisplayName: Heatspot
+	Tooltip:
+		'''
+		Are you burning yet?
+		+4% Magic damage :P
+		'''
+}
+
+Valtotude: {
+	DisplayName: Windatude
+	Tooltip:
+		'''
+		Create a swirl that keeps enemies inside a whirlwind
+		Great for getting your summons to attack enemies in one spot!
+		'''
+}
+
+DesertWhip: {
+	Tooltip: A small little whip
+	DisplayName: Desert Whip
+}
+
+Vinger: {
+	Tooltip: I dont remember the goblins using this...
+	DisplayName: Vinger
+}
+
+CharmofRot: {
+	Tooltip:
+		'''
+		Rotting with the webs
+		+8% Summon Damage
+		'''
+	DisplayName: Charm of Rot
+}
+
+Vheilatine: {
+	Tooltip: Forged straight from the masters of gothivia's worshippers!
+	DisplayName: Vheilatine
+}
+
+AcidStaketers: {
+	DisplayName: Acid Staketers
+	Tooltip: Makes the wearer run super fast!
+}
+
+AquaCrystal: {
+	DisplayName: Aqua Crystal
+	Tooltip: 15% Increased Ranged Critical Strike Chance!
+}
+
+AquaticHealingNecklace: {
+	DisplayName: Aquatic Healing Necklace
+	Tooltip: Increased regeneration and movement speed!
+}
+
+ArncharMagazine: {
+	DisplayName: Arnchar Magazine
+	Tooltip: Increases ranged critical strike chance by 10%
+}
+
+ClamsPearl: {
+	DisplayName: Clams Pearl
+	Tooltip: A small light will emit off you :)
+}
+
+CloudSkaters: {
+	DisplayName: Cloud Skaters
+	Tooltip: Stay airbourne for longer and defy gravity!
+}
+
+CoralBand: {
+	DisplayName: Coral Band
+	Tooltip: 5% increased Melee damage and Critical Strike Chance!
+}
+
+GintzlMetal: {
+	DisplayName: Gintzl Metal
+	Tooltip: A metal stolen from Gothivia's castle, and has rotted and turned into gintze metal.
+}
+
+EaglesGrace: {
+	DisplayName: Eagles Grace
+	Tooltip: A special eagle gives you flight from a sacred nest of the fable
+}
+
+GhostExcalibur: {
+	DisplayName: Ghost Excalibur
+	Tooltip: Summons an excalibur to fight for you!
+}
+
+GiftOfLife: {
+	DisplayName: Gift Of Life
+	Tooltip: ""
+}
+
+LeatherGlove: {
+	DisplayName: Leather Glove
+	Tooltip: Increases throwing damage and throwing velocity.
+}
+
+LunarBand: {
+	DisplayName: Lunar Band
+	Tooltip:
+		'''
+		Increases critical strike chance by 8%
+		During night, you have 12% more damage and give off some light
+		'''
+}
+
+OceanScroll: {
+	DisplayName: Ocean Scroll
+	Tooltip: Increased Magical Critical strike chance by 10%
+}
+
+OceansTrinket: {
+	DisplayName: Oceans Trinket
+	Tooltip: Increases max minions by 1 and 8% increased summon damage!
+}
+
+RuneOfCorsage: {
+	DisplayName: Rune Of Corsage
+	Tooltip: Has a chance to gift super healing, if you were hit while under the effects of super healing everything on screen will be poisoned.
+}
+
+RuneOfDetonation: {
+	DisplayName: Rune Of Detonation
+	Tooltip: Has a chance to explode enemies doing double damage
+}
+
+RuneOfReality: {
+	DisplayName: Rune Of Reality
+	Tooltip: When you hit an enemy, you will release homing magic bolts that summon mana stars when they hit
+}
+
+RuneOfShade: {
+	DisplayName: Rune Of Shade
+	Tooltip: +20 Max mana
+}
+
+RuneOfStealth: {
+	DisplayName: Rune Of Stealth
+	Tooltip: "You will slowly increase damage until you are hit You will glow a bright red when you are at your most powerful form "
+}
+
+ShadeCharm: {
+	DisplayName: Shade Charm
+	Tooltip: Decreases Mana Cost and lights up in the night
+}
+
+ShadeScarf: {
+	DisplayName: Shadei
+	Tooltip:
+		'''
+		Increased movement speed
+		+2% Damage
+		Gives effects of steali and adds +10 Health and +10% critical strike chance!
+		Increased life regeneration!
+		'''
+}
+
+ShellSheid: {
+	DisplayName: Shell Shield
+	Tooltip: Shelly!
+}
+
+SoulStrideres: {
+	DisplayName: Soul Strideres
+	Tooltip:
+		'''
+		Increased movement speed and airtime!
+		Effects of rocket boots!
+		I don't wanna have my soul turned into boots :(
+		'''
+}
+
+SpiritPendent: {
+	DisplayName: Spirit Pendent
+	Tooltip: Provides a small light
+}
+
+StarflareBand: {
+	DisplayName: Starflare Band
+	Tooltip:
+		'''
+		+20% Magic Damage
+		Increased Mana regeneration!
+		Reduced Mana cost :o
+		'''
+}
+
+SunGlyph: {
+	DisplayName: Sun Glyph
+	Tooltip: Greatly increases all damage in the daylight.
+}
+
+WoodShield: {
+	DisplayName: Wood Shield
+	Tooltip: The cooler daniel.
+}
+
+AcidBody: {
+	DisplayName: Virulent Body
+	Tooltip: Life regeneration is increased by a small amount.
+}
+
+AcidHelm: {
+	DisplayName: Virulent Helm
+	Tooltip: Slightly increased Melee damage and crit strike chance!
+}
+
+AcidLegs: {
+	DisplayName: Virulent Legs
+	Tooltip: Increased movement speed :P
+}
+
+AcidMask: {
+	DisplayName: Virulent Mask
+	Tooltip: Increased Ranged damage and crit chance!
+}
+
+AcidRobe: {
+	DisplayName: Virulent Robe
+	Tooltip: Increased Magic damage and crit chance!
+}
+
+AcidVisor: {
+	DisplayName: Virulent Visor
+	Tooltip: Increased Throwing damage and crit chance!
+}
+
+AstrasilkBody: {
+	DisplayName: Astrasilk Body
+	Tooltip: ""
+}
+
+AstrasilkHead: {
+	DisplayName: Astrasilk Head
+	Tooltip: Increases Mana Regen by 4%
+}
+
+AstrasilkLegs: {
+	DisplayName: Astrasilk Legs
+	Tooltip: Increases movement speed by 20%
+}
+
+ElagentBody: {
+	DisplayName: Elagent Body
+	Tooltip: +1 Minion
+}
+
+ElagentHead: {
+	DisplayName: Elagent Head
+	Tooltip: +20% Minion Damage
+}
+
+ElagentLegs: {
+	DisplayName: Elagent Legs
+	Tooltip:
+		'''
+		+10% Summon Damage
+		+2 Minions
+		Increased movement speed
+		'''
+}
+
+ForestCoreBody: {
+	DisplayName: Forest Core Body
+	Tooltip: Increases ranged crit chance by 2%
+}
+
+ForestCoreHead: {
+	DisplayName: Forest Core Head
+	Tooltip: Increases ranged damage by 2%
+}
+
+ForestCoreLegs: {
+	DisplayName: Forest Core Legs
+	Tooltip: Increases movement speed by 10%
+}
+
+HeavyMetalBody: {
+	DisplayName: Gintzl Body
+	Tooltip: Just gives defense smh.
+}
+
+HeavyMetalHead: {
+	DisplayName: Gintzl Head
+	Tooltip: It has a good summon set bonus, trust me.
+}
+
+HeavyMetalLegs: {
+	DisplayName: Gintzl Legs
+	Tooltip: +5% Movement speed
+}
+
+LeatherBody: {
+	DisplayName: Leather Body
+	Tooltip: " Increases throwing damage by 25%"
+}
+
+LeatherHead: {
+	DisplayName: Leather Head
+	Tooltip: Increases throwing critical strike chance by 4%
+}
+
+LeatherLegs: {
+	DisplayName: Leather Legs
+	Tooltip: Increases movement speed by 10%
+}
+
+ShadeWraithBody: {
+	DisplayName: Shade Wraith Body
+	Tooltip: Increased endurance and life by 20!
+}
+
+ShadeWraithHead: {
+	DisplayName: Shade Wraith Head
+	Tooltip: +2% Damage for all classes (except throwing)
+}
+
+ShadeWraithLegs: {
+	DisplayName: Shade Wraith Legs
+	Tooltip: Slightly increased movement speed.
+}
+
+TerricBody: {
+	DisplayName: Terric Body
+	Tooltip: +40 Health
+}
+
+TerricHead: {
+	DisplayName: Terric Head
+	Tooltip: +13% Increased Magic Damage
+}
+
+TerricLegs: {
+	DisplayName: Terric Legs
+	Tooltip: Increased movement speed!
+}
+
+WinterbornBody: {
+	DisplayName: Winterborn Body
+	Tooltip: +20 Health!
+}
+
+WinterbornHead: {
+	DisplayName: Winterborn Head
+	Tooltip: Increased Mana Regeneration
+}
+
+WinterbornLegs: {
+	DisplayName: Winterborn Legs
+	Tooltip: 10% Increased movement speed!
+}
+
+DreadmireBag: {
+	DisplayName: Treasure Bag (Dreadmire)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+EDR: {
+	DisplayName: E D R
+	Tooltip: that big red button probably will do something you'll regret... Your conscience advises you to press it and see what happens!
+}
+
+JackoBag: {
+	DisplayName: Treasure Bag (Jack)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+NestBag: {
+	DisplayName: Treasure Bag (Irradiated Nest)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+SingularityBag: {
+	DisplayName: Treasure Bag (Singularity)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+SunClaw: {
+	DisplayName: Sun Stone
+	Tooltip: Use at a sun alter to fight a retired general of Gothivia's ranks.
+}
+
+SunStalkerBag: {
+	DisplayName: Treasure Bag (Sun Stalker)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+VoidLantern: {
+	DisplayName: Void Lantern
+	Tooltip: ""
+}
+
+WanderingEssence: {
+	DisplayName: Wandering Essence
+	Tooltip: Strange item to represent love to Gothivia
+}
+
+ArnchaliteBar: {
+	DisplayName: Arnchalite Bar
+	Tooltip: Its scolding hot! But its not old enough to be verian yet.
+}
+
+ArncharChunk: {
+	DisplayName: Arnchar Chunk
+	Tooltip: Little pieces of a bigger substance
+}
+
+BlankRune: {
+	DisplayName: Blank Rune
+	Tooltip: This doesn't look like it will do anything by itself
+}
+
+ConvulgingMater: {
+	DisplayName: Convulging Matter
+	Tooltip: A dark matter that has corrupted the fallen.
+}
+
+DarkEssence: {
+	DisplayName: Dark Essence
+	Tooltip: Pure shadows conjured by the darkest of entities.
+}
+
+DreadFoil: {
+	DisplayName: Dread Foil
+	Tooltip: Foil captured from Dreadmire!
+}
+
+FlareGem: {
+	DisplayName: Flare Gem
+	Tooltip: ""
+}
+
+FloralFungus: {
+	DisplayName: Floral Fungus
+	Tooltip: ""
+}
+
+GelatinOzze: {
+	DisplayName: Gelatin Ozze
+	Tooltip: '''Jellyfish are scary...	 Trust me...'''
+}
+
+AncientLizardMetal: {
+	DisplayName: Ancient Lizard Metal
+	Tooltip: ""
+}
+
+BlazefuryShard: {
+	DisplayName: Blazefury Shard
+	Tooltip: ""
+}
+
+ContamintSoul: {
+	DisplayName: Contamint Soul
+	Tooltip: ""
+}
+
+DreamerBar: {
+	DisplayName: Dreamer Bar
+	Tooltip: ""
+}
+
+DuskBars: {
+	DisplayName: Dusk Bars
+	Tooltip: ""
+}
+
+EldritchSoul: {
+	DisplayName: Eldritch Soul
+	Tooltip: ""
+}
+
+LightEssence: {
+	DisplayName: Light Essence
+	Tooltip: ""
+}
+
+PixieSilk: {
+	DisplayName: Pixie Silk
+	Tooltip: ""
+}
+
+PrimalTech: {
+	DisplayName: Primal Tech
+	Tooltip: ""
+}
+
+SolaiumBar: {
+	DisplayName: Solaium Bar
+	Tooltip: ""
+}
+
+SolarMirrorShard: {
+	DisplayName: Solar Mirror Shard
+	Tooltip: ""
+}
+
+StarlightEssence: {
+	DisplayName: Starlight Essence
+	Tooltip: ""
+}
+
+SteampunkBar: {
+	DisplayName: Steampunk Bar
+	Tooltip: ""
+}
+
+IrradiatedBar: {
+	DisplayName: Irradiated Bar
+	Tooltip: Deadly to the core.
+}
+
+Ivythorn: {
+	DisplayName: Ivythorn
+	Tooltip: A poisonous plant which weaves its way into entities
+}
+
+LivingAlloy: {
+	DisplayName: Living Alloy
+	Tooltip: ""
+}
+
+LostScrap: {
+	DisplayName: Lost Scrap
+	Tooltip: A shadow of a former extreme technological advancement
+}
+
+SingulariumBar: {
+	DisplayName: Singularium Bar
+	Tooltip: ""
+}
+
+SpacialDistortionFragments: {
+	DisplayName: Spacial Distortion Fragments
+	Tooltip: ""
+}
+
+StarSilk: {
+	DisplayName: Star Silk
+	Tooltip: Divine silk made of pure astral energy.
+}
+
+StormEssence: {
+	DisplayName: Storm Essence
+	Tooltip: ""
+}
+
+StormPlating: {
+	DisplayName: Storm Plating
+	Tooltip: ""
+}
+
+ArmorDrive: {
+	DisplayName: Armor Drive
+	Tooltip: ""
+}
+
+BrokenTech: {
+	DisplayName: Broken Tech
+	Tooltip: Inbuned with sparkles of magic, this piece of tech remains dormant from enemies and can be refurnished into something better.
+}
+
+DriveConstruct: {
+	DisplayName: Drive Construct
+	Tooltip: A rare find amongst travellers, and contains essence of the mechanical old world.
+}
+
+MagicDrive: {
+	DisplayName: Magic Drive
+	Tooltip: ""
+}
+
+MeleeDrive: {
+	DisplayName: Melee Drive
+	Tooltip: ""
+}
+
+MetallicOmniSource: {
+	DisplayName: Metallic Omni Source
+	Tooltip: A source of electronics that make everything work! From revived relics to power, this piece of hardware contains magical energy too!
+}
+
+RangerDrive: {
+	DisplayName: Ranger Drive
+	Tooltip: ""
+}
+
+SummonerDrive: {
+	DisplayName: Summoner Drive
+	Tooltip: ""
+}
+
+ToolDrive: {
+	DisplayName: Tool Drive
+	Tooltip: ""
+}
+
+UnknownCircuitry: {
+	DisplayName: Unknown Circuitry
+	Tooltip: Circuitry lost to time, from a fallen kingdom of tech, collecting dust over millenia after the Royal Capital appeared.
+}
+
+TerrorFragments: {
+	DisplayName: Terror Fragments
+	Tooltip: Terror-fying!
+}
+
+VirulentPlating: {
+	DisplayName: Virulent Plating
+	Tooltip: Radiating within the acid of entities of the tocins
+}
+
+WanderingFlame: {
+	DisplayName: Wandering Flame
+	Tooltip: Burning with Jack's will!
+}
+
+WinterbornShard: {
+	DisplayName: Winterborn Shard
+	Tooltip: Frozen to the core :P
+}
+
+CellConverterI: {
+	DisplayName: Cell Converter
+	Tooltip: ""
+}
+
+RunicTablel: {
+	DisplayName: Runic Table
+	Tooltip: Craft runes!
+}
+
+AcidicHamacxe: {
+	DisplayName: Acidic Hamacxe
+	Tooltip: ""
+}
+
+AcidicPixaxe: {
+	DisplayName: Acidic Pixaxe
+	Tooltip: ""
+}
+
+ArchariliteAxe: {
+	DisplayName: Archarilite Axe
+	Tooltip: ""
+}
+
+ArcharilitePickaxe: {
+	DisplayName: Archarilite Pickaxe
+	Tooltip: ""
+}
+
+DirtAxe: {
+	DisplayName: Dirt Axe
+	Tooltip: ""
+}
+
+DirtHammer: {
+	DisplayName: Dirt Hammer
+	Tooltip: ""
+}
+
+DirtPickaxe: {
+	DisplayName: Dirt Pickaxe
+	Tooltip: ""
+}
+
+Aneuriliac: {
+	DisplayName: Aneuriliac
+	Tooltip: ""
+}
+
+Astalaiya: {
+	DisplayName: Astalaiya
+	Tooltip: ""
+}
+
+FungalFlace: {
+	DisplayName: Fungal Flace
+	Tooltip: ""
+}
+
+JellyTome: {
+	DisplayName: Jelly Tome
+	Tooltip: ""
+}
+
+LeadGauntlets: {
+	DisplayName: Lead Gauntlets
+	Tooltip: ""
+}
+
+Pericarditis: {
+	DisplayName: Pericarditis
+	Tooltip: ""
+}
+
+ShadeHandTome: {
+	DisplayName: Shade Hand Tome
+	Tooltip: ""
+}
+
+StaffOFlame: {
+	DisplayName: Staff O Flame
+	Tooltip: ""
+}
+
+StaffoftheIrradiaflare: {
+	DisplayName: Staff of the Irradiaflare
+	Tooltip: ""
+}
+
+StarFlowerStaff: {
+	DisplayName: Star Flower Staff
+	Tooltip: Shoot little balls of light
+}
+
+StormsWrath: {
+	DisplayName: Storms Wrath
+	Tooltip: ""
+}
+
+SunBlastStaff: {
+	DisplayName: Sun Blast Staff
+	Tooltip: Blastin with the sun
+}
+
+TheDeafen: {
+	DisplayName: The Deafen
+	Tooltip: Shriek the howls of a bat!
+}
+
+TheShrieker: {
+	DisplayName: The Shrieker
+	Tooltip: Ow, my ears
+}
+
+TomeOfTheSingularity: {
+	DisplayName: Tome Of The Singularity
+	Tooltip: ""
+}
+
+TorrentialLance: {
+	DisplayName: Torrential Lance
+	Tooltip: ""
+}
+
+VoidsGrasp: {
+	DisplayName: Voids Grasp
+	Tooltip: ""
+}
+
+WintersStom: {
+	DisplayName: Winters Stom
+	Tooltip: Every third shot will be a powerful winter shot today explodes into snowflakes that deal damage
+}
+
+ArchariliteRaysword: {
+	DisplayName: Archarilite Raysword
+	Tooltip: ""
+}
+
+AssassinsSlash: {
+	DisplayName: Assassins Slash
+	Tooltip: Once attacking enemies, a charge will build up and then right click for a slash!
+}
+
+CinderBraker: {
+	DisplayName: Cinder Braker
+	Tooltip: A volley of cinder
+}
+
+DragonWaveFury: {
+	DisplayName: Dragon Wave Fury
+	Tooltip: ""
+}
+
+EventHorizon: {
+	DisplayName: Event Horizon
+	Tooltip: Goodness gracious.
+}
+
+FrostBringer: {
+	DisplayName: Frost Bringer
+	Tooltip: Damage reduces the farther you are away from the target
+}
+
+IrradiatedGreatBlade: {
+	DisplayName: Irradiated Great Blade
+	Tooltip: ""
+}
+
+Myocardia: {
+	DisplayName: Myocardia
+	Tooltip: Mwahaha.. Im dracula!
+}
+
+ScarecrowSaber: {
+	DisplayName: Scarecrow Saber
+	Tooltip: ""
+}
+
+SkyrageShasher: {
+	DisplayName: Skyrage Shasher
+	Tooltip: ""
+}
+
+GladiatorSpear: {
+	DisplayName: Gladiator Spear
+	Tooltip: Tear through the bones of your fellow competitors.
+}
+
+Infernis: {
+	DisplayName: Infernis
+	Tooltip: ""
+}
+
+StalkersTallon: {
+	DisplayName: Stalkers Tallon
+	Tooltip: ""
+}
+
+TheIrradiaspear: {
+	DisplayName: The Irradiaspear
+	Tooltip: ""
+}
+
+TridentOfTheSeas: {
+	DisplayName: Trident Of The Seas
+	Tooltip: ""
+}
+
+VoidLance: {
+	DisplayName: Void Lance
+	Tooltip: ""
+}
+
+StarKeeper: {
+	DisplayName: Star Keeper
+	Tooltip: ""
+}
+
+SwordOfGlactia: {
+	DisplayName: Sword Of Glactia
+	Tooltip: ""
+}
+
+SwordOfTheJungleGoddess: {
+	DisplayName: Sword Of The Jungle Goddess
+	Tooltip: Don't craft this please.
+}
+
+WoodenSaber: {
+	DisplayName: Wooden Saber
+	Tooltip: ""
+}
+
+X3107: {
+	DisplayName: X3107
+	Tooltip: ""
+}
+
+ArchariliteEnergyShot: {
+	DisplayName: Archarilite Energy Shot
+	Tooltip: ""
+}
+
+AssassinsDischarge: {
+	DisplayName: Assassins Discharge
+	Tooltip: ""
+}
+
+BrokenWrath: {
+	DisplayName: Broken Wrath
+	Tooltip: ""
+}
+
+CloudBow: {
+	DisplayName: Cloud Bow
+	Tooltip: ""
+}
+
+Crysalizer: {
+	DisplayName: Crysalizer
+	Tooltip: Shoot enemies with a crystallized shot!
+}
+
+DeathShot: {
+	DisplayName: Death Shot
+	Tooltip: ""
+}
+
+DivineSniper: {
+	DisplayName: Divine Sniper
+	Tooltip: It really isnt all that divine
+}
+
+Dragoniper: {
+	DisplayName: Dragoniper
+	Tooltip: ""
+}
+
+GraniteMagmum: {
+	DisplayName: Granite Magmum
+	Tooltip: ""
+}
+
+IceWalker: {
+	DisplayName: Ice Walker
+	Tooltip: ""
+}
+
+IrradieagleWrath: {
+	DisplayName: Irradieagle Wrath
+	Tooltip: ""
+}
+
+Irradishark: {
+	DisplayName: Irradishark
+	Tooltip: ""
+}
+
+IvynShot: {
+	DisplayName: Ivyn Shot
+	Tooltip: ""
+}
+
+JackoShot: {
+	DisplayName: Jacko Shot
+	Tooltip: ""
+}
+
+JellyBow: {
+	DisplayName: Jelly Bow
+	Tooltip: ""
+}
+
+LAZER: {
+	DisplayName: L A Z E R
+	Tooltip: I'm a lasering
+}
+
+M38F30: {
+	DisplayName: M38 F30
+	Tooltip: ""
+}
+
+RustlockPistol: {
+	DisplayName: Rustlock Pistol
+	Tooltip: Great for shooting nothing!
+}
+
+Rustvolver: {
+	DisplayName: Rustvolver
+	Tooltip: ""
+}
+
+SolarSpiner: {
+	DisplayName: Solar Spiner
+	Tooltip: ""
+}
+
+TecnoBlaster: {
+	DisplayName: Tecno Blaster
+	Tooltip: ""
+}
+
+TheRedSkull: {
+	DisplayName: The Red Skull
+	Tooltip: ""
+}
+
+Tociflare: {
+	DisplayName: Tociflare
+	Tooltip: ""
+}
+
+TychineGun: {
+	DisplayName: Tychine Gun
+	Tooltip: Why would you kill sharks for this :(
+}
+
+VoidBlaster: {
+	DisplayName: Void Blaster
+	Tooltip: ""
+}
+
+VoidSkull: {
+	DisplayName: Void Skull
+	Tooltip: ""
+}
+
+WingedFury: {
+	DisplayName: Winged Fury
+	Tooltip: ""
+}
+
+Wingspand: {
+	DisplayName: Wingspand
+	Tooltip: ""
+}
+
+ArncharRemote: {
+	DisplayName: Arnchar Remote
+	Tooltip: ""
+}
+
+DripplerStaff: {
+	DisplayName: Drippler Staff
+	Tooltip: Drippy
+}
+
+IrradiatedCreeperStaff: {
+	DisplayName: Irradiated Creeper Staff
+	Tooltip: I see the resemblence..
+}
+
+IvyakenStaff: {
+	DisplayName: Ivyaken Staff
+	Tooltip: ""
+}
+
+JellyStaff: {
+	DisplayName: Jelly Staff
+	Tooltip: Summons a small jelly to fight for you!
+}
+
+SwarmerStaff: {
+	DisplayName: Swarmer Staff
+	Tooltip: Swarm them, now.
+}
+
+VoidStaff: {
+	DisplayName: Void Staff
+	Tooltip: ""
+}
+
+X3144: {
+	DisplayName: X3144
+	Tooltip: ""
+}
+
+AcidicLancher: {
+	DisplayName: Acidic Lancher
+	Tooltip: ""
+}
+
+Acidius: {
+	DisplayName: Acidius
+	Tooltip: Acid flamer!
+}
+
+AssassinsKnife: {
+	DisplayName: Assassins Knife
+	Tooltip: Can confuse foes!
+}
+
+AssassinsShuriken: {
+	DisplayName: Assassins Shuriken
+	Tooltip: Can also confuse foes!
+}
+
+Boralius: {
+	DisplayName: Boralius
+	Tooltip: Frostburner!
+}
+
+Bricks: {
+	DisplayName: Bricks
+	Tooltip: ""
+}
+
+Cactius: {
+	DisplayName: Cactius
+	Tooltip: ""
+}
+
+GreyBricks: {
+	DisplayName: Grey Bricks
+	Tooltip: ""
+}
+
+Plantius: {
+	DisplayName: Plantius
+	Tooltip: Poisoner!
+}
+
+ZthoKnifes: {
+	DisplayName: Ztho Knifes
+	Tooltip: ""
+}
+
+CyroBolt: {
+	DisplayName: Cyro Bolt
+	Tooltip: ""
+}
+
+LightSpand: {
+	DisplayName: Light Spand
+	Tooltip: Burning lights of Gothivia's Light
+}
+
+MoonMothStaff: {
+	DisplayName: Moon Moth Staff
+	Tooltip: Woa
+}
+
+SolMothStaff: {
+	DisplayName: Sol Moth Staff
+	Tooltip: Very good for clearing out small hordes!
+}
+
+HeatGlider: {
+	DisplayName: Heat Glider
+	Tooltip: Oh burn baby burn :)
+}
+
+JPost: {
+	DisplayName: Jack Post
+	Tooltip: ""
+}
+
+ShrineAI: {
+	DisplayName: Shrine A I
+	Tooltip: ""
+}
+
+ShrineBUANI: {
+	DisplayName: Shrine B U A N I
+	Tooltip: ""
+}
+
+ShrineGardenWreckerI: {
+	DisplayName: Shrine Garden Wrecker I
+	Tooltip: ""
+}
+
+ShrineHalhurishI: {
+	DisplayName: Shrine Halhurish I
+	Tooltip: ""
+}
+
+ShrineLightsI: {
+	DisplayName: Shrine Lights I
+	Tooltip: ""
+}
+
+ShrineSolMothI: {
+	DisplayName: Shrine Sol Moth I
+	Tooltip: ""
+}
+
+GothiviasSeal: {
+	DisplayName: Gothivias Seal
+	Tooltip:
+		'''
+		Take it to the depths of the Virulent.
+		There lies a castle awaiting your arrival...
+		'''
+}
+
+RestingGroundsI: {
+	DisplayName: Resting Grounds I
+	Tooltip: ""
+}
+
+ShinobiTome: {
+	DisplayName: Shinobi Tome
+	Tooltip: Excellent choice for no hand ninjas!
+}
+
+GintzlSpear: {
+	DisplayName: Gintzl Javelin
+	Tooltip: How do they even throw them?
+}
+
+RuneOfWind: {
+	DisplayName: Rune Of Wind
+	Tooltip:
+		'''
+		Sometimes when hit you generate a wind shield!
+		This shield gives 15 defense.
+		'''
+}
+
+GintzlsSteed: {
+	DisplayName: Gintzls Steed
+	Tooltip: I dont know how they are shooting arrows with no arms..
+}
+
+Gallasis: {
+	DisplayName: Galasis
+	Tooltip: The gintzl's legacy resides in this very useful item.
+}
+
+GintzlBroochA: {
+	DisplayName: Winded Gintze Brooch
+	Tooltip:
+		'''
+		Adds the power of wind!
+		+4 Defense
+		Auto-Swing on every item!
+		'''
+}
+
+GintzlShield: {
+	DisplayName: Gintzl Shield
+	Tooltip: Great for defense!
+}
+
+GintziaBossBag: {
+	DisplayName: Treasure Bag (Gintzia)
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		Special little secret inside
+		'''
+}
+
+GintzeCard: {
+	DisplayName: Gintze Card
+	Tooltip:
+		'''
+		Use a powder or dust and then use this!
+		Sometimes it takes a card to be a warrior.
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+AurelusTempleTile: {
+	DisplayName: Aurelus Temple Tile
+	Tooltip: Why do you have this?
+}
+
+AurelusChesti: {
+	Tooltip: ""
+	DisplayName: Aurelus Chest
+}
+
+AurelusBanneri: {
+	DisplayName: Aurelus Banner
+	Tooltip: ""
+}
+
+AurelusPosti: {
+	Tooltip: ""
+	DisplayName: Aurelus Post
+}
+
+AurelusBanner2i: {
+	Tooltip: ""
+	DisplayName: Aurelus Banner II
+}
+
+AurelusBorderI: {
+	DisplayName: Aurelus Border I
+	Tooltip: ""
+}
+
+TON618Crossbow: {
+	DisplayName: TON618 Crossbow
+	Tooltip: Expertly crafted by a special bowsman
+}
+
+Venatici: {
+	DisplayName: Venatici
+	Tooltip: I never knew there was a black hole this big :(
+}
+
+IceboundStaff: {
+	DisplayName: Icebound Staff
+	Tooltip: Frozen by the icebound and spirits!
+}
+
+AurelusDoor: {
+	DisplayName: Aurelus Door
+	Tooltip: You really shouldnt use this
+}
+
+AurelusSummoni: {
+	DisplayName: Aurelus Summoni
+	Tooltip: ""
+}
+
+MagnusMagnum: {
+	DisplayName: Magnus Magnum
+	Tooltip: You know Harry, I've never really cared for your two-shoe ass
+}
+
+VoidKey: {
+	DisplayName: Void Key
+	Tooltip: Use in the bottom of the Abysm under the ice, you might find something.
+}
+
+Neptune8Card: {
+	DisplayName: Neptune8 Card
+	Tooltip:
+		'''
+		An igniter for dusts and powders!
+		Reaching from the depths of the galaxy!
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+Gintelze: {
+	DisplayName: Gintelze
+	Tooltip: Why would you steal this :c
+}
+
+HolmbergScythe: {
+	DisplayName: Holmberg Scythe
+	Tooltip: Rip the universe in half!
+}
+
+Alcarish: {
+	DisplayName: Alcarish
+	Tooltip: The gintze were bold for stealing such a useful item from soliders.
+}
+
+AurelusBlightBroochA: {
+	DisplayName: Aurelus Blight Brooch
+	Tooltip: A brooch great for lighting!
+}
+
+AbyssalPowder: {
+	DisplayName: Abysmal Aurelus Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A void crystal-like dust!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+AivanPowder: {
+	DisplayName: Aivan Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		Stolen from gothivia's castle
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+GovheilPowder: {
+	DisplayName: Govheil Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		Pure sensation. :)
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+TheSunAndMoonCard: {
+	Tooltip: Burn with the power of the sun and moon...
+	DisplayName: The Sun And Moon Card
+}
+
+Kilvier: {
+	DisplayName: Kilvier
+	Tooltip: This isnt a weapon is it?
+}
+
+DaedussSunSheid: {
+	DisplayName: Sun Sheid
+	Tooltip: Burns brightly with Gothivia and Verlia's names
+}
+
+BearBroochA: {
+	DisplayName: Bear of The Wild Brooch
+	Tooltip: Heavily increased mana regeneration and 4 defense!
+}
+
+DreadBroochA: {
+	DisplayName: Dreaded Dreadmire Brooch
+	Tooltip:
+		'''
+		40 Health
+		You know maybe she wasn't all that bad.
+		'''
+}
+
+MalShieldBroochA: {
+	DisplayName: Malicious Shield Brooch
+	Tooltip:
+		'''
+		Something tells me this isnt right...
+		+7 Defense
+		+7% Melee Damage!
+		'''
+}
+
+VixedBroochA: {
+	DisplayName: Forgotten Guard's Brooch
+	Tooltip:
+		'''
+		This puppet was worn out.
+		+5% Damage
+		+40 Health
+		'''
+}
+
+DaedenChestplate: {
+	DisplayName: Daeden Chestplate
+	Tooltip:
+		'''
+		Absolutely Hideous.
+		+10% Ranged damage
+		+20 Armor penetration
+		+5 Crit
+		'''
+}
+
+DaedenLegs: {
+	DisplayName: Daeden Legs
+	Tooltip: Increased movement speed
+}
+
+DaedenMask: {
+	DisplayName: Daeden Mask
+	Tooltip:
+		'''
+		This is for all those masochists.
+		+20% Ranged damage
+		Heavy Increased mana regeneration!
+		+5 Crit
+		'''
+}
+
+DaedusBag: {
+	DisplayName: Treasure Bag (Daedus)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+Plate: {
+	DisplayName: Plate
+	Tooltip: I guess Daedus forgot to do the dishes.
+}
+
+GovheilCastleBlock: {
+	DisplayName: Govheil Castle Block
+	Tooltip: ""
+}
+
+GovheilHallI: {
+	DisplayName: Govheil Hall I
+	Tooltip: ""
+}
+
+GovheilWallsI: {
+	DisplayName: Govheil Walls I
+	Tooltip: ""
+}
+
+GothivA: {
+	DisplayName: Gothiv A
+	Tooltip: ""
+}
+
+GothWall: {
+	DisplayName: Goth Wall
+	Tooltip: ""
+}
+
+Alcanine: {
+	DisplayName: Alcanine
+	Tooltip:
+		'''
+		Perfect for mages!
+		+2 Max minions!
+		10% increased summon damage!
+		'''
+}
+
+GovheilHolsterBroochA: {
+	DisplayName: Gothivia's Holstering Brooch
+	Tooltip:
+		'''
+		Halves the mana cost of any magic weapon!
+		+15% Magic damage
+		+2 Defense too!
+		'''
+}
+
+GovhenShield: {
+	DisplayName: Govhen Shield
+	Tooltip: A very sturdy shield
+}
+
+GreekLantern: {
+	DisplayName: Greek Lantern
+	Tooltip: Gothivia is greek???
+}
+
+LanternOfAFallen: {
+	DisplayName: Lantern Of A Fallen
+	Tooltip: A great tool for clearing out one enemy.
+}
+
+Blackdot: {
+	DisplayName: Blackdot
+	Tooltip: Who named this?
+}
+
+Galvinie: {
+	DisplayName: Galvinie
+	Tooltip: Your mouse isn't gonna like this
+}
+
+TheBurningRod: {
+	DisplayName: The Burning Rod
+	Tooltip: They may be innacurate but they get the job done :P
+}
+
+AcidicalDirtBlock: {
+	DisplayName: Acidical Dirt Block
+	Tooltip: ""
+}
+
+BurningGBroochA: {
+	DisplayName: Brooch of the Sun and Ichor
+	Tooltip:
+		'''
+		When hitting enemies, ichor blasts and an explosion will come out.
+		+5% Melee Damage
+		'''
+}
+
+Twirlers: {
+	DisplayName: Twirlers
+	Tooltip:
+		'''
+		Wanna get flashy? Parraffin would be dissappointed.
+		Halves mana cost
+		Increased life regeneration
+		+20 Health
+		+30% Damage
+		'''
+}
+
+GothiviaBag: {
+	DisplayName: Treasure Bag (Irradia and Havoc)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+WeddingDay: {
+	DisplayName: Wedding Day
+	Tooltip: These two lovebugs are definitely for each other.
+}
+
+GothiviasCard: {
+	DisplayName: Gothivia's Flame Card
+	Tooltip:
+		'''
+		"Causes minor burns," thats at least the note she left.
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+Helios: {
+	DisplayName: Helios
+	Tooltip:
+		'''
+		Gothivia's masterpiece weapon
+		Will absolutely rek the mechanical bosses.
+		Forged from the inner core of the sun, and hard work this weapon exists.
+		'''
+}
+
+AmethystBroochA: {
+	DisplayName: Amethyst Brooch
+	Tooltip:
+		'''
+		+20 Pick speed!
+		+2 defense
+		'''
+}
+
+CrystalPowder: {
+	DisplayName: Crystal Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		It's what we've been working for Jesse
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+SunSall: {
+	DisplayName: Sun Sall
+	Tooltip: ""
+}
+
+DaedusBossRel: {
+	DisplayName: Daedus Relic
+	Tooltip: A puppet manifested from the rotten core of Gothivia's singularity, what a shame.
+}
+
+DreadBossRel: {
+	DisplayName: Dreadmire Relic
+	Tooltip: Sometimes people lose themselves, she was one of a kind.
+}
+
+GintzeBossRel: {
+	DisplayName: Commander Ginztia Relic
+	Tooltip: Once apart of Gothivia's ranks, betrayed and went on their own to create an army.
+}
+
+JackBossRel: {
+	DisplayName: Jack Relic
+	Tooltip: Stood alone in the most calm places, truly nice for a scarecrow.
+}
+
+SOMBossRel: {
+	DisplayName: Singularity of the Moon Relic
+	Tooltip: Second Singularity and your biggest challenge yet!
+}
+
+SunsBossRel: {
+	DisplayName: Sunstalker Relic
+	Tooltip: Forgotten like the wind yet still a creature of infamy.
+}
+
+VerliBossRel: {
+	DisplayName: Verlia of the Moon Relic
+	Tooltip: ""
+}
+
+StarbloomBlock: {
+	DisplayName: Starbloom Block
+	Tooltip: ""
+}
+
+StarbloomDirtBlock: {
+	DisplayName: Starbloom Dirt Block
+	Tooltip: ""
+}
+
+FurihaMKIII: {
+	DisplayName: Furiha MKIII
+	Tooltip: ""
+}
+
+M61X: {
+	DisplayName: M61 X
+	Tooltip: ""
+}
+
+MushroomStave: {
+	DisplayName: Mushroom Stave
+	Tooltip: Get off me!
+}
+
+StarbloomTempleBlock: {
+	DisplayName: Starbloom Temple Block
+	Tooltip: ""
+}
+
+ShadegraveStaff: {
+	Tooltip: ""
+	DisplayName: Shadegrave Staff
+}
+
+BasicGunParts: {
+	DisplayName: Basic Gun Parts
+	Tooltip: ""
+}
+
+AuroreanStarI: {
+	DisplayName: Aurorean Star
+	Tooltip: A star merged with the alcadizic air to form this superstar!
+}
+
+StoneKey: {
+	DisplayName: Stone Key
+	Tooltip: ""
+}
+
+NoxianWood: {
+	DisplayName: Noxian Wood
+	Tooltip: ""
+}
+
+StoneChesti: {
+	DisplayName: Stone Chest
+	Tooltip: ""
+}
+
+IgniterCards: {
+	DisplayName: Throwing Igniter Cards
+	Tooltip: Hitting enemies with this will act like an igniter card weapon!
+}
+
+ThrowingCards: {
+	DisplayName: Throwing Cards
+	Tooltip: ""
+}
+
+Bread: {
+	DisplayName: Bread
+	Tooltip: The gintze dropped this...
+}
+
+BowledCream: {
+	DisplayName: Bowled Cream
+	Tooltip:
+		'''
+		Eating gives you regeneration like honey!
+		Increased movement speed as an accessory!
+		'''
+}
+
+IgniterCardsMKII: {
+	DisplayName: Throwing Igniter Cards MKII
+	Tooltip: ""
+}
+
+DesertRuneI: {
+	DisplayName: Ancient Artifact
+	Tooltip: Maybe a scientist can look at this?
+}
+
+OverworldRuneI: {
+	DisplayName: Ancient Artifact
+	Tooltip: Maybe a scientist can look at this?
+}
+
+ThrowingCardsMKII: {
+	DisplayName: Throwing Cards MKII
+	Tooltip: ""
+}
+
+JungleRuneI: {
+	Tooltip: Maybe a scientist can look at this?
+	DisplayName: Ancient Artifact
+}
+
+AlcadzBlock: {
+	DisplayName: Alcadz Block
+	Tooltip: ""
+}
+
+CarianWood: {
+	DisplayName: Carian Wood
+	Tooltip: ""
+}
+
+CarianWoodWall: {
+	DisplayName: Carian Wood Wall
+	Tooltip: ""
+}
+
+AlciteI: {
+	DisplayName: Alcite I
+	Tooltip: ""
+}
+
+AowerBottomI: {
+	DisplayName: Aower Bottom I
+	Tooltip: ""
+}
+
+AowerTopI: {
+	DisplayName: Aower Top I
+	Tooltip: ""
+}
+
+CurtainLeftRCI: {
+	DisplayName: Curtain Left R C I
+	Tooltip: ""
+}
+
+CurtainRightRCI: {
+	DisplayName: Curtain Right R C I
+	Tooltip: ""
+}
+
+CurtainTopI: {
+	DisplayName: Curtain Top I
+	Tooltip: ""
+}
+
+RectiteI: {
+	DisplayName: Rectite I
+	Tooltip: ""
+}
+
+SkullpileI: {
+	DisplayName: Skullpile I
+	Tooltip: ""
+}
+
+GiaPants: {
+	DisplayName: Gia Pants
+	Tooltip: ""
+}
+
+GiaSuit: {
+	DisplayName: Gia Suit
+	Tooltip: ""
+}
+
+GiaWig: {
+	DisplayName: Gia Wig
+	Tooltip: I can't tell if you want to wear this...
+}
+
+BagOfCards: {
+	DisplayName: Bag Of Cards
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		Open for some cards! Gives more cards in Hardmode!
+		'''
+}
+
+FireflyCannon: {
+	DisplayName: Firefly Cannon
+	Tooltip:
+		'''
+		Fires a spread of powerful exploding fireflies!
+		...Several fireflies were harmed in the making of this weapon
+		'''
+}
+
+StoniaBroochA: {
+	DisplayName: Stonia Brooch
+	Tooltip:
+		'''
+		No fall damage and 2 defense!
+		Increased Pick speed and glow in the dark but loose 15% damage.
+		'''
+}
+
+AlcaricMush: {
+	DisplayName: Alcaric Mush
+	Tooltip: A strange magical mush that the Royal Capital was able to control.
+}
+
+Blackwhip: {
+	DisplayName: Blackwhip
+	Tooltip: Whip em' back to where they belong.
+}
+
+DarkWhip: {
+	DisplayName: Dark Whip
+	Tooltip: It's as bad as it sounds.
+}
+
+AlsisChestplate: {
+	DisplayName: Alsis Chestplate
+	Tooltip:
+		'''
+		+25 Health
+		+20% Magic Critical Strike Chance
+		+10% Magic Damage
+		'''
+}
+
+AlsisGreaves: {
+	DisplayName: Alsis Greaves
+	Tooltip:
+		'''
+		+10 Health
+		Supa Speed
+		'''
+}
+
+AlsisMask: {
+	DisplayName: Alsis Mask
+	Tooltip:
+		'''
+		+10 Health
+		+5% Magic Critical Strike Chance
+		+10% Magic Damage
+		'''
+}
+
+WickofSorcery: {
+	DisplayName: Wick of Sorcery
+	Tooltip: Truly the best stick of all time.
+}
+
+Voyager: {
+	DisplayName: Voyager
+	Tooltip: I love slashing and passing, wait wrong game.
+}
+
+Hyua: {
+	DisplayName: Hyua
+	Tooltip: Throw these weird circular magic hoops, or balls, I dont know.
+}
+
+Poya: {
+	DisplayName: Poya
+	Tooltip: Summons alcaric mush into reality and rip your enemies apart.
+}
+
+FireflyStaff: {
+	DisplayName: Firefly Staff
+	Tooltip:
+		'''
+		Summons a firefly to fight for you!
+		Right click to swap between attack mode and defense mode, gaining stats that scale with the number of fireflies
+		While in offense mode, you gain movement speed and flight mobility
+		While in defense mode, you gain defense and life regen, but your fireflies attack slower
+		'''
+}
+
+VampireScepter: {
+	DisplayName: Vampire Scepter
+	Tooltip:
+		'''
+		Summons a vampiric torch to aid you in battle
+		The torch completely negates life regen, however you have immense lifesteal while close to enemies
+		Greatly increases summon damage while active
+		There can only be one
+		'''
+}
+
+LunarianVoidBody: {
+	DisplayName: Lunarian Void Chestplate
+	Tooltip: +10% Throwing Damage
+}
+
+LunarianVoidHead: {
+	DisplayName: Lunarian Void Helmet
+	Tooltip:
+		'''
+		+10 Throwing Critical Strike Chance!
+		+20 Health
+		+25% Throwing Damage
+		'''
+}
+
+LunarianVoidLegs: {
+	DisplayName: Lunarian Void Legs
+	Tooltip:
+		'''
+		Increased movement speed 2%
+		+5% Throwing Damage
+		'''
+}
+
+SandStorm: {
+	DisplayName: Sand Storm
+	Tooltip: ""
+}
+
+ExploreMorrowedVillage: {
+	DisplayName: Explore Morrowed Village
+	Tooltip: ""
+}
+
+ExploreMorrowedVillageC: {
+	DisplayName: Explore Morrowed Village Completed
+	Tooltip: Turn this in to Merena for a reward!
+}
+
+Give100DustBags: {
+	DisplayName: Give 100 Dust Bags
+	Tooltip: ""
+}
+
+Give100DustBagsC: {
+	DisplayName: Give 100 Dust Bags Completed
+	Tooltip: Turn this in to Merena for a reward!
+}
+
+KillVerlia: {
+	DisplayName: Kill Verlia
+	Tooltip: Find her atop a cathedral!
+}
+
+KillVerliaC: {
+	DisplayName: Kill Verlia Completed
+	Tooltip: Turn this in to Merena for a reward!
+}
+
+MakeMagicPaper: {
+	DisplayName: Make Magic Paper
+	Tooltip: Many resources to gather, very difficult..
+}
+
+MakeMagicPaperC: {
+	DisplayName: Make Magic Paper Completed
+	Tooltip: Turn this in to Merena for a reward!
+}
+
+MakeUltimateScroll: {
+	DisplayName: Make Ultimate Scroll
+	Tooltip: The final test!
+}
+
+OldCarianTome: {
+	DisplayName: Old Carian Tome
+	Tooltip: Everlasting knowledge flows from within
+}
+
+OrbOfTheMorrow: {
+	DisplayName: Heart of The Morrow and Fable
+	Tooltip: The voices of Gothivia reek with this one.
+}
+
+StolenMagicTome: {
+	DisplayName: Stolen Magic Tome
+	Tooltip: Stolen from the Royal Capital
+}
+
+TomeOfInfiniteSorcery: {
+	DisplayName: Tome Of Infinite Sorcery
+	Tooltip: A complete mastery of knowledge!
+}
+
+AlcadThrowingCards: {
+	DisplayName: Alcadzian Throwing Cards
+	Tooltip: ""
+}
+
+OceanRuneI: {
+	DisplayName: Ancient Artifact
+	Tooltip: A scientist may want to look at this..
+}
+
+Starvast: {
+	DisplayName: Starvast
+	Tooltip: Hit enemies will explode with homing stars
+}
+
+SawtoothNecklace: {
+	DisplayName: Sawtooth Necklace
+	Tooltip:
+		'''
+		Increases armor penetration by 12
+		10% increased attack speed
+		I should have saw that coming!
+		'''
+}
+
+ShadowCloak: {
+	DisplayName: Shadow Cloak
+	Tooltip:
+		'''
+		8 defense
+		4% increased damage reduction
+		Reduced aggro and enemies that come near you are inflicted with a variety of debuffs
+		You are one with the shadows...
+		'''
+}
+
+VampireCharm: {
+	DisplayName: Vampire Charm
+	Tooltip:
+		'''
+		8% increased critical strike chance
+		Critical strikes have a chance to heal you
+		Critical strikes explode with damaging blood water
+		Critical...
+		'''
+}
+
+BlossomingScissor: {
+	Tooltip: Sadly a good traversal weapon
+	DisplayName: Blossoming Scissor
+}
+
+AltrideSlicer: {
+	Tooltip: Slice N Dice
+	DisplayName: Altride Slicer
+}
+
+MooningSlicer: {
+	Tooltip: Celestia would be proud
+	DisplayName: Mooning Slicer
+}
+
+EverneanSlicer: {
+	DisplayName: Evernean Slicer
+	Tooltip: Celestia would be even more proud.
+}
+
+ShrineBridgetI: {
+	DisplayName: Shrine Bridget I
+	Tooltip: ""
+}
+
+Bridget: {
+	DisplayName: Bridget
+	Tooltip: Bridget? Who is this really?
+}
+
+Reavestor: {
+	DisplayName: Reavestor
+	Tooltip: Soul eater numba 1
+}
+
+FableKnives: {
+	DisplayName: Fable Knives
+	Tooltip: Throw them fast
+}
+
+ZthoKnives: {
+	DisplayName: Ztho Knives
+	Tooltip: Throw them faster!
+}
+
+Climabaton: {
+	DisplayName: Climabaton
+	Tooltip: ""
+}
+
+Thunderstaff: {
+	DisplayName: Thunderstaff
+	Tooltip:
+		'''
+		Summons a lil' cloud to protect you!
+		The clouds perform different attacks based on the number that you have
+			Lvl 1 - Frost Bolts
+			Lvl 2 - Lightning Bolts
+			Lvl 3 - Vortexes
+		'''
+}
+
+LarveinScripute: {
+	DisplayName: Larvein Scripute
+	Tooltip: A little larva aww
+}
+
+ArtisanBreastplate: {
+	DisplayName: Artisan Breastplate
+	Tooltip:
+		'''
+		Woa, dont forget to cover yourself up, don't want paint on your skin right?
+		+5% Damage
+		+5% Critical Strike Chance
+		+15 Health
+		Great for working in the arts :)
+		'''
+}
+
+ArtisanMask: {
+	DisplayName: Artisan Mask
+	Tooltip:
+		'''
+		Jamming out while making sprites and art is one of the most fun activities ever.
+		+5% Damage
+		+5% Critical Strike Chance
+		+15 Health
+		You also look hot am I right?
+		'''
+}
+
+ArtisanThighs: {
+	DisplayName: Artisan Thighs
+	Tooltip:
+		'''
+		Shawty you better hide those thighs, someone is coming for you :(
+		+20% Increased Movement speed
+		+5% Damage
+		+15 Health
+		Skating on paint like splatoon!
+		'''
+}
+
+ArtisanBar: {
+	DisplayName: Artisan Bar
+	Tooltip: Made for only ture painters.
+}
+
+KaleidoscopicInk: {
+	DisplayName: Kaleidoscopic Ink
+	Tooltip: A magical yet explosive technical ink that is on some psychedelics..
+}
+
+ArtistsHeart: {
+	DisplayName: Artists Heartius
+	Tooltip: I love painting so much that I throw it at my enemies!
+}
+
+InkingSpire: {
+	DisplayName: Inking Spire
+	Tooltip: Dash through your enemies with invulnerability! Right click for antaciz combat!
+}
+
+PieceOfArt: {
+	DisplayName: Piece of Art
+	Tooltip: Drag your cursor and hit enemies with your paintbrush, be creative!
+}
+
+PicturePerfectI: {
+	DisplayName: Picture Perfect I
+	Tooltip:
+		'''
+		--Part I--
+		Upgrades the Artisan Armor 
+		Gain slightly more defense on Artisan Armor (5)
+		1 New highly damaging paint added to all paint weapons!
+		Artisan Armor set effect lasts slightly longer and the scales a bit more.
+		Shove that paint in their face!
+		Adds a little camera to help capture your best moments!
+		'''
+}
+
+PicturePerfectII: {
+	DisplayName: Picture Perfect II
+	Tooltip:
+		'''
+		--Part II--
+		Upgrades the Artisan Armor Greatly
+		Gain slightly more defense on Artisan Armor (10)
+		1 New highly damaging paint added to all paint weapons!
+		Artisan Armor set effect lasts moderately longer and the scales a decent bit more.
+		Damn, you look so nice in that outfit!
+		Adds a little camera to help capture your best moments!
+		'''
+}
+
+PicturePerfectIII: {
+	DisplayName: Picture Perfect III
+	Tooltip:
+		'''
+		--Part III--
+		Upgrades the Artisan Armor Extremely
+		Gain slightly more defense on Artisan Armor (25)
+		Artisan Armor set effect lasts a lot longer and the scales a LOT more.
+		You are finally picture perfect aren't you?
+		Adds a little camera to help capture your best moments!
+		'''
+}
+
+ShadeWraithWings: {
+	DisplayName: Shade Wraith Wings
+	Tooltip: Allows flight and slow fall
+}
+
+DirtWings: {
+	DisplayName: Dirt Wings
+	Tooltip:
+		'''
+		Allows flight and slow fall
+		W-wait... you made wings... out of dirt?
+		Are you ok?
+		'''
+}
+
+BridgetII: {
+	DisplayName: No Longer Bridget
+	Tooltip: Why didn't you revive her :(
+}
+
+BlackWallBlock: {
+	DisplayName: Black Men
+	Tooltip: Racist
+}
+
+MossyStones: {
+	DisplayName: Mossy Stones
+	Tooltip: ""
+}
+
+VeriplantGrassBlock: {
+	DisplayName: Veriplant Grass Block
+	Tooltip: ""
+}
+
+ChiseledStoneBlock: {
+	DisplayName: Chiseled Stone Block
+	Tooltip: ""
+}
+
+VeriplantDirtBlock: {
+	DisplayName: Veriplant Dirt Block
+	Tooltip: ""
+}
+
+VeriplantGrassWall: {
+	DisplayName: Veriplant Grass Wall
+	Tooltip: ""
+}
+
+MiracleBody: {
+	DisplayName: Miracle Cloak
+	Tooltip:
+		'''
+		Increases summon damage by 12%
+		Increases whip range by 20%
+		+1 Max Sentry
+		'''
+}
+
+MiracleHead: {
+	DisplayName: Miracle Hat
+	Tooltip:
+		'''
+		Increases summon damage by 12%
+		+1 Max Sentry
+		'''
+}
+
+MiracleThread: {
+	DisplayName: Miracle Thread
+	Tooltip: It weaves the fabric of reality...
+}
+
+MiracleWings: {
+	DisplayName: Miracle Wings
+	Tooltip:
+		'''
+		Allows flight and slow fall
+		Hold down to hover
+		Yeah... it's a miracle these things let you fly at all
+		'''
+}
+
+Lacerator: {
+	DisplayName: Lacerator
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Hit enemies will split in two, leaving them with half of their original HP and reduced defense
+		Slice n' dice!
+		'''
+}
+
+PotOfGreed: {
+	DisplayName: Pot Of Greed
+	Tooltip:
+		'''
+		Summons a laughing pot that creates up to 10 shadow clones of your minions when you go near it
+		The shadow clones linger for a short while and deal less damage than the real thing
+		There can only be one
+		'''
+}
+
+Ripper: {
+	DisplayName: Ripper
+	Tooltip: Summons a storm of swords towards your cursor!
+}
+
+XScissor: {
+	DisplayName: X-Scissor
+	Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
+}
+
+LittleScissor: {
+	DisplayName: Little Scissor
+	Tooltip:
+		'''
+		Double tap a direction to dash- but very quickly and on a short cooldown!
+		Leave behind homing void bolts as you dash
+		'''
+}
+
+SyliaBag: {
+	DisplayName: Treasure Bag (Sylia)
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+}
+
+SyliaBossRel: {
+	DisplayName: Sylia Relic
+	Tooltip: ""
+}
+
+SeavathanBlock: {
+	DisplayName: Seavathan Block
+	Tooltip: ""
+}
+
+OldWeddingRing: {
+	DisplayName: Old Wedding Ring
+	Tooltip: Someone would love this
+}
+
+GrailBar: {
+	DisplayName: Grail Bar
+	Tooltip: Built with all things golden
+}
+
+CelestiasWeddingRing: {
+	DisplayName: Celestias Wedding Ring
+	Tooltip:
+		'''
+		She loves me! She loves me not!
+		Effects of Hikers Backpack
+		No knockback and Immunity to lava!
+		+12% Damage
+		+12% Armor penetration!
+		'''
+}
+
+STARCORE: {
+	DisplayName: STARCORE
+	Tooltip: Dropped from the most destructive of bombers.
+}
+
+BottleOfGrail: {
+	DisplayName: Bottle Of Grail
+	Tooltip: +1 summon and a vortex shader
+}
+
+ReverieExtenderPowder: {
+	DisplayName: Reverie Extender Powder
+	Tooltip: Sets powder range to an increase of 130%
+}
+
+GrailedExtenderPowder: {
+	DisplayName: Grailed Extender Powder
+	Tooltip: Sets powder range to an increase of 250%
+}
+
+MidfortuneExtenderPowder: {
+	DisplayName: Midfortune Extender Powder
+	Tooltip: Sets powder range to an increase of 200%
+}
+
+BonedThrowBroochA: {
+	DisplayName: Boned Throw Brooch
+	Tooltip: Increases throwing speed and damage by 20%, increased speed!
+}
+
+LuckyWinnerBroochA: {
+	DisplayName: Lucky Winner Brooch
+	Tooltip: Igniters have a chance to do double damage on ignites with powders!
+}
+
+SandyBroochA: {
+	DisplayName: Sanded Winds Brooch
+	Tooltip: Be able to summon tornados by pressing down 2 times!
+}
+
+GrailHairpinYoyo: {
+	DisplayName: Grail Hairpin Yoyo
+	Tooltip: Wow, this is shit!
+}
+
+StarringGraft: {
+	DisplayName: Starring Graft
+	Tooltip: Get those stars off the ground :p
+}
+
+OceanicExtenderPowder: {
+	DisplayName: Oceanic Extender Powder
+	Tooltip: Sets powder range to an increase of 150%
+}
+
+MorrowedJelliesBroochA: {
+	DisplayName: Morrowed Jellies Brooch
+	Tooltip: Its really good if you're running a defensive build, +40 defense.
+}
+
+BonedExtenderPowder: {
+	DisplayName: Boned Extender Powder
+	Tooltip: Sets powder range to an increase of 160%
+}
+
+GremoryExtenderPowder: {
+	DisplayName: Gremory Extender Powder
+	Tooltip: Sets powder range to an increase of 150%
+}
+
+MushyExtenderPowder: {
+	DisplayName: Mushy Extender Powder
+	Tooltip: Sets powder range to an increase of 180%
+}
+
+TomedDustingFlames: {
+	DisplayName: Tomed Dusting Flames
+	Tooltip: ""
+}
+
+TomedDustingMagic: {
+	DisplayName: Tomed Dusting Magic
+	Tooltip: ""
+}
+
+JacksonPollock: {
+	DisplayName: Jackson Pollock
+	Tooltip: Summons a floating paint bucket sentry that spills paint everywhere
+}
+
+Rhamenthal: {
+	DisplayName: Rhamenthal the Grafted
+	Tooltip: A devastating magical bow that will wipe out every enemy!
+}
+
+Angelenthal: {
+	DisplayName: Angelenthal
+	Tooltip: ""
+}
+
+RoseBroochA: {
+	DisplayName: Rose Brooch
+	Tooltip: Summons a rose shield that rotates around you and blocks projectiles
+}
+
+Nekomara: {
+	DisplayName: Nekomara
+	Tooltip: ""
+}
+
+Yumiko: {
+	DisplayName: Yumiko
+	Tooltip: ""
+}
+
+FrostMonger: {
+	DisplayName: Frost Monger
+	Tooltip: ""
+}
+
+AlcadzianCard: {
+	DisplayName: Alcadzian Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+BOMBERCard: {
+	DisplayName: BOMBER Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+BurningCard: {
+	DisplayName: Burning Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+FenixxCard: {
+	DisplayName: Fenixx Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+GrailedCard: {
+	DisplayName: Grailed Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+LarvaedCard: {
+	DisplayName: Larveid Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+StyngerCard: {
+	DisplayName: Stynger Card
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+URift: {
+	DisplayName: U Rift
+	Tooltip: ""
+}
+
+GrailAxe: {
+	DisplayName: Grail Axe
+	Tooltip: ""
+}
+
+Rinavine: {
+	DisplayName: Rinavine
+	Tooltip: Lord of all things golden!
+}
+
+Jerry: {
+	DisplayName: Jerry
+	Tooltip: ""
+}
+
+LarvaedSpear: {
+	DisplayName: Larvein Spear
+	Tooltip: Kind of good ngl
+}
+
+DevilsPeak: {
+	DisplayName: Devils Peak
+	Tooltip: This is peak fiction
+}
+
+ClockworkCity: {
+	DisplayName: Clockwork City
+	Tooltip:
+		'''
+		Totally not one of the best areas in a game, cough cough
+		Sown in Chains
+		'''
+}
+
+PotionOfAlcadWand: {
+	DisplayName: Potion Of Alcad Wand
+	Tooltip: Get Jolly with it,
+}
+
+ScissorianChestplate: {
+	DisplayName: Scissorian Chestplate
+	Tooltip:
+		'''
+		+20 Throwing Critical Strike Chance!
+		+15 Health
+		+10% Throwing Damage
+		'''
+}
+
+ScissorianGreaves: {
+	DisplayName: Scissorian Greaves
+	Tooltip:
+		'''
+		Increased movement speed
+		+20 Health
+		+15% Throwing Damage
+		'''
+}
+
+ScissorianMask: {
+	DisplayName: Scissorian Mask
+	Tooltip: +20% Throwing Damage
+}
+
+DarkButcher: {
+	DisplayName: The Dark Butcher
+	Tooltip: The Butcher but darker.
+}
+
+TheButcher: {
+	DisplayName: The Butcher
+	Tooltip: ""
+}
+
+BookOfSkullsII: {
+	DisplayName: Book Of Skulls II
+	Tooltip: Woa mom its the second version!
+}
+
+DreadGauntlets: {
+	DisplayName: Dread Gauntlets
+	Tooltip: ""
+}
+
+ScytheOfSouls: {
+	DisplayName: Scythe Of Souls
+	Tooltip: Use these vengeful souls at will, they are quite quirky!
+}
+
+BubbleBlasher: {
+	DisplayName: Bubble Blasher
+	Tooltip: Send your enemies afar with this!
+}
+
+LarveinGreatbow: {
+	DisplayName: Larvein Greatbow
+	Tooltip: Pretty great huh?
+}
+
+AlcarianYoyo: {
+	DisplayName: Alcarian Yoyo
+	Tooltip: ""
+}
+
+Alcadius: {
+	DisplayName: Alcadius
+	Tooltip: Jinkies!
+}
+
+DungeonedRockCard: {
+	DisplayName: Dungeoned Rock Card
+	Tooltip:
+		'''
+		Get rocked, or Dwayne Johnsoned, whatever is funnier.
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+PunkedUpChops: {
+	DisplayName: Punked Up Chops
+	Tooltip: Pumped up kicks fr fr
+}
+
+Photobomb: {
+	DisplayName: Photobomb
+	Tooltip: I'll ruin your frames for you! I'll splatter paint all over you ;)
+}
+
+CatacombAquaStoneBlock: {
+	DisplayName: Catacomb Aqua Stone Block
+	Tooltip: ""
+}
+
+CatacombHeatStoneBlock: {
+	DisplayName: Catacomb Heat Stone Block
+	Tooltip: ""
+}
+
+CatacombTrapStoneBlock: {
+	DisplayName: Catacomb Trap Stone Block
+	Tooltip: ""
+}
+
+CatacombsKey: {
+	DisplayName: Catacombs Key
+	Tooltip: Use these to enter catacombs under the ocean, desert and underground!
+}
+
+CatacombsDoor: {
+	DisplayName: Catacombs Door
+	Tooltip: ""
+}
+
+CatacombsSummoni: {
+	DisplayName: Catacombs Summoni
+	Tooltip: ""
+}
+
+GraftedSoul: {
+	DisplayName: Contaminated Soul
+	Tooltip: An essense grafted of contamination..
+}
+
+GoldenHeartBalls: {
+	DisplayName: Golden Heart Balls
+	Tooltip: Would match the golden shower :)
+}
+
+Test: {
+	DisplayName: Test bitch
+	Tooltip: ""
+}
+
+StarringBalls: {
+	DisplayName: Starring Balls
+	Tooltip: Get starry
+}
+
+MagicalBroochA: {
+	DisplayName: The Royal Capital's Magical Brooch
+	Tooltip:
+		'''
+		You really wanna be a mage huh.
+		+100 Max Mana and +50 Health
+		Auto gain the Mana Cuffs and Magic flower
+		Cost of magic is reduced by 95%..
+		+20% Magic Damage
+		'''
+}
+
+PotionOfHallowWand: {
+	DisplayName: Potion Of Hallow Wand
+	Tooltip: ""
+}
+
+AppretienceBreastplate: {
+	DisplayName: Appretience Breastplate
+	Tooltip: +20% Crit strike chance and +5 Health!
+}
+
+AppretienceHat: {
+	DisplayName: Appretience Hood
+	Tooltip: +20% Crit strike chance and Health!
+}
+
+AppretiencePants: {
+	DisplayName: Appretience Pants
+	Tooltip: +20% Crit strike chance and Health!
+}
+
+UlvenChestplate: {
+	DisplayName: Ulven Chestplate
+	Tooltip: +15 Armor Penetration!
+}
+
+UlvenGreaves: {
+	DisplayName: Ulven Greaves
+	Tooltip: +25 Armor Penetration!
+}
+
+UlvenHelmet: {
+	DisplayName: Ulven Helmet
+	Tooltip: +20 Armor Penetration
+}
+
+RottenHeart: {
+	DisplayName: Rotten Heart
+	Tooltip: Destroyed and rotten to it's core, a task for someone to fulfill providing another barrier to Gothivia...
+}
+
+IronHook: {
+	DisplayName: Iron Hook
+	Tooltip: ""
+}
+
+Kaevine: {
+	DisplayName: Kaevine
+	Tooltip: ""
+}
+
+RalladI: {
+	DisplayName: Rallad I
+	Tooltip: ""
+}
+
+AgreviPowder: {
+	DisplayName: Agrevi Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		An exploding dust that works after a little while
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+IllusionistPowder: {
+	DisplayName: Illusionist Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		A dust that tells you to keep yourself safe.
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+PoisonedPowder: {
+	DisplayName: Poisoned Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		A constant dust that has posionous tendrils
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+SpiritPowder: {
+	DisplayName: Spirit Powder
+	Tooltip:
+		'''
+		Throw magical dust on them and ignite
+		Fenix would love you for this.
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+TreasureBoxFire: {
+	DisplayName: Smoldering Treasure Box
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		I bet ya burned yourself half to death to get this one!
+		'''
+}
+
+TreasureBoxTrap: {
+	DisplayName: Trapped Treasure Box
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		Ummm- it's totally not trapped ;)
+		'''
+}
+
+TreasureBoxWater: {
+	DisplayName: Drowned Treasure Box
+	Tooltip:
+		'''
+		{$CommonItemTooltip.RightClickToOpen}
+		There's... just too much water...
+		'''
+}
+
+AquaticEmblem: {
+	DisplayName: Aquatic Emblem
+	Tooltip:
+		'''
+		Adds a chance for hit enemies to become surrounded by bubbles!
+		These bubbles will slowly close in and linger for a long time
+		'''
+}
+
+Barry: {
+	DisplayName: Barry
+	Tooltip:
+		'''
+		Summons an orbiting shield of infected spikes to protect you!
+		Everyone loves Barry :)
+		'''
+}
+
+Bonfire: {
+	DisplayName: Bonfire
+	Tooltip:
+		'''
+		Summons a bonfire over your head, it increases your life regen and provides light
+		It grows stronger when you are not moving!
+		'''
+}
+
+Cleats: {
+	DisplayName: Cleats
+	Tooltip: Movement speed increase and acceleration, emits a small light too!
+}
+
+FireEmblem: {
+	DisplayName: Fire Emblem
+	Tooltip:
+		'''
+		Your attacks inflict random fire debuffs
+		Adds a chance for critical hits to explode and burn nearby enemies!
+		...were you expecting something else?
+		'''
+}
+
+FlamecrestShield: {
+	DisplayName: Flamecrest Shield
+	Tooltip:
+		'''
+		Immune to all fire-based debuffs!
+		You take 50% less damage from fire-based attacks!
+		Can't burn me now :P
+		'''
+}
+
+IcarusFeather: {
+	DisplayName: Icarus Feather
+	Tooltip:
+		'''
+		You can continue flying even after your flight time runs out!
+		...but your wings will burn, reducing your flight mobility
+		'''
+}
+
+OceancrestShield: {
+	DisplayName: Oceancrest Shield
+	Tooltip:
+		'''
+		Every little while, a bubble shield will follow you and absorb the next hit of damage!
+		Also, you have infinite breathing underwater!
+		'''
+}
+
+Panacea: {
+	DisplayName: Panacea
+	Tooltip: Immune to poison, venom and bleeding!
+}
+
+SpikedEmblem: {
+	DisplayName: Spiked Emblem
+	Tooltip:
+		'''
+		Increased damage by 8%
+		Hit enemies are inflicted with chained, which tethers them to you and deals damage over time!
+		'''
+}
+
+TyphoonInABottle: {
+	DisplayName: Typhoon In A Bottle
+	Tooltip:
+		'''
+		Allows the holder to perform a greatly improved double jump!
+		Slightly increased movement and jump speed
+		'''
+}
+
+WaterproofHeadphones: {
+	DisplayName: Waterproof Headphones
+	Tooltip: Increases life by 40 and gain 4% more resistance to attacks!
+}
+
+BurningFlask: {
+	DisplayName: Burning Flask
+	Tooltip: Please just don't set the house on fire..
+}
+
+ComicalTrident: {
+	DisplayName: Comical Trident
+	Tooltip: Truly the most comical weapon of all time.
+}
+
+MetalAlloy: {
+	DisplayName: Metal Alloy
+	Tooltip: I mean it isn't a material, but Germany says otherwise.
+}
+
+Ragsaw: {
+	DisplayName: Ragsaw
+	Tooltip: They bounce around, it even looks like they are dancing!
+}
+
+SpiritCapsule: {
+	DisplayName: Spirit Capsule
+	Tooltip: Somehow you've trapped every soul inside this..
+}
+
+Stonen: {
+	DisplayName: Stonen
+	Tooltip: Don't get stoned just yet.
+}
+
+Aquamare: {
+	DisplayName: Aquamare
+	Tooltip: May be inconsistent!
+}
+
+MagicalAxe: {
+	DisplayName: Magical Axe
+	Tooltip: It's so magical it turned itself into a "chad" axe :)
+}
+
+WaterSong: {
+	DisplayName: Flowing Song
+	Tooltip: Turn wooden arrows into icey bolts!
+}
+
+Dulahaun: {
+	DisplayName: Dulahaun
+	Tooltip:
+		'''
+		A weapon so magical and devious it may have killed it's previous owners.
+		Forged from the the haunting and bright, this sword is sentient and alive.
+		'''
+}
+
+CursedShard: {
+	DisplayName: Cursed Shard
+	Tooltip: Use at an altar in any of the Catacombs to summon a dangerous foe!
+}
+
+DucanblitzBreastplate: {
+	DisplayName: Ducanblitz Breastplate
+	Tooltip:
+		'''
+		+10 Max Health
+		+10% Melee Damage!
+		'''
+}
+
+DucanblitzCap: {
+	DisplayName: Ducanblitz Cap
+	Tooltip:
+		'''
+		+10 Critical Strike Chance
+		+12% Melee Damage!
+		'''
+}
+
+DucanblitzThighs: {
+	DisplayName: Ducanblitz Thighs
+	Tooltip:
+		'''
+		A hell of a lot of movement speed!
+		+10 Max Health
+		+15 Armor penetration
+		+2% Melee Damage!
+		'''
+}
+
+FenixBag: {
+	DisplayName: Fenix Bag
+	Tooltip: ""
+}
+
+EldritchianCloak: {
+	DisplayName: Eldritchian Cloak
+	Tooltip:
+		'''
+		+12% Throwing Attack Speed
+		+16% Throwing Damage
+		Slightly increased life regen
+		'''
+}
+
+EldritchianHood: {
+	DisplayName: Eldritchian Hood
+	Tooltip:
+		'''
+		+10% Throwing Attack Speed
+		+20% Throwing Damage
+		Slightly increased vision
+		'''
+}
+
+EldritchianLegs: {
+	DisplayName: Eldritchian Legs
+	Tooltip:
+		'''
+		+8% Throwing Attack Speed
+		+23% Throwing Damage
+		Slightly increased movement speed
+		'''
+}
+
+StickOfWisdom: {
+	DisplayName: Stick Of Wisdom
+	Tooltip:
+		'''
+		May be useful for mages and summoners!
+		Fills you with wisdom, I think?
+		'''
+}
+
+ChiseledSandstone: {
+	Tooltip: ""
+	DisplayName: Chiseled Sandstone
+}
+
+VeiizalsUmbrella: {
+	DisplayName: Veiizals Umbrella
+	Tooltip: ""
+}
+
+AnotherRock: {
+	DisplayName: Another Rock
+	Tooltip: Use it to descend to the Old Guardian's Shrine, deep underground
+}
+
+AlcaricQuiver: {
+	DisplayName: Alcaric Quiver
+	Tooltip:
+		'''
+		Converts wooden arrows into void arrows
+		Void arrows travel faster, deal more damage, and explode!
+		'''
+}
+
+BlackRose: {
+	DisplayName: Black Rose
+	Tooltip: Using a mana potion hurts you a little instead of sickening you
+}
+
+LittleWand: {
+	DisplayName: Little Wand
+	Tooltip:
+		'''
+		Use this to cast powerful magic!
+		Only used by the mightiest of wizards
+		'''
+}
+
+WindedQuiver: {
+	DisplayName: Winded Quiver
+	Tooltip: Turns wooden arrows into winded shots that pierce enemies!
+}
+
+AimacraWig: {
+	DisplayName: Aimacra's Wig
+	Tooltip: Great for impersonating Aimacra from Diari! Also gives 50 health!
+}
+
+WindmillionBoots: {
+	DisplayName: Windmillion Boots
+	Tooltip:
+		'''
+		10% increased movement speed
+		10% Increased throwing damage	
+		'''
+}
+
+WindmillionHat: {
+	DisplayName: Windmillion Hat
+	Tooltip:
+		'''
+		+10 Life!
+		+10 Throwing Critical Strike Chance
+		+10% Throwing Damage
+		'''
+}
+
+WindmillionRobe: {
+	DisplayName: Windmillion Robe
+	Tooltip:
+		'''
+		+2 Throwing Critical Strike Chance
+		Getting snazzy!
+		'''
+}
+
+VampiricVine: {
+	DisplayName: Vampiric Vine
+	Tooltip:
+		'''
+		Getting some bitches finally?
+		Randomly will shoot out vampire arrows that will heal you in a shot array!
+		'''
+}
+
+WindmillShuriken: {
+	DisplayName: Windmill Shuriken
+	Tooltip: Heyyyyy you can't just save the Ohio president!
+}
+
+PerfectionStaff: {
+	Tooltip: ""
+	DisplayName: Perfection Staff
+}
+
+XixianFlask: {
+	DisplayName: Xixian Flask
+	Tooltip: Passed down from the wonders of Zui and sacred special witches!
+}
+
+VitalityInsource: {
+	Tooltip:
+		'''
+		40 Seconds of duration on flask!
+		Heals 102 Health and Mana
+		Gives a honey buff as well!
+		'''
+	DisplayName: Vitality Insource
+}
+
+HealthyInsource: {
+	Tooltip:
+		'''
+		40 Seconds of duration on flask!
+		Heals 35 Health
+		'''
+	DisplayName: Healthy Insource
+}
+
+FloweredInsource: {
+	DisplayName: Flowered Insource
+	Tooltip:
+		'''
+		20 Seconds of duration on flask!
+		Gives 10 Defense while in use
+		Attack speed increased by 50% while active, 
+		A shadowy alcaric trail will lead behind!
+		'''
+}
+
+VialedInsource: {
+	DisplayName: Vialed Insource
+	Tooltip:
+		'''
+		20 Seconds of duration on flask!
+		300% Fall speed
+		No Fall damage
+		Jump boost!
+		Movement speed increased by 40%
+		A morrowed trail will follow behind you!
+		'''
+}
+
+EpsidonInsource: {
+	Tooltip:
+		'''
+		40 Seconds of duration on flask!
+		Honey, ironskin and swiftness buffs for 20 seconds!
+		+200 Heal on use!
+		'''
+	DisplayName: Epsidon Insource
+}
+
+CogBomber: {
+	DisplayName: Cog Bomber
+	Tooltip:
+		'''
+		Fires mini nukes that explode into several small fires
+		Boom :) 
+		'''
+}
+
+GearGutter: {
+	DisplayName: Gear Gutter
+	Tooltip: Shoots an extremely fast and long iron needle that pierces infinitely
+}
+
+TheTingler: {
+	DisplayName: The Tingler
+	Tooltip: Shoots small iron needles that lodge into targets and deal damage over time
+}
+
+KnivedQuiver: {
+	DisplayName: Knived Quiver
+	Tooltip: Turns wooden arrows into throwing knives that pierce and are fast!
+}
+
+LifeSeekingVial: {
+	DisplayName: Life Seeking Vial
+	Tooltip: Throw a bottle at an enemy to heal a small portion of health!
+}
+
+GraftedWaxMelter: {
+	DisplayName: Grafted Wax Melter
+	Tooltip: Make this shit feel like a firework party! I say let the children burn.
+}
+
+AlcadBomb: {
+	DisplayName: Alcad Bomb
+	Tooltip:
+		'''
+		Casts a controllable blackhole
+		Suck em' up!
+		'''
+}
+
+CompletedFlowerBag: {
+	DisplayName: Completed Flower Bag
+	Tooltip: Take this to Zui for some rewards!
+}
+
+EmptyFlowerBag: {
+	DisplayName: Empty Flower Bag
+	Tooltip: Whats wrong? Need some love to keep ya going? Fill up the damn bag
+}
+
+BurnedCarianTome: {
+	DisplayName: Burned Carian Tome
+	Tooltip: Casts black stars that aggressively home and assault enemies!
+}
+
+EmptyCollectorsBag: {
+	DisplayName: Empty Collectors Bag
+	Tooltip: Collecting up the dust of your remains after you're done with this.
+}
+
+CinderedLantern: {
+	DisplayName: Cindered Lantern
+	Tooltip: A volley of flamed missles
+}
+
+Combuster: {
+	DisplayName: Combuster
+	Tooltip: Creates fiery explosions around you cursor! Eventually forming a MASSIVE boom!
+}
+
+WitchenRobe: {
+	Tooltip:
+		'''
+		+5% Magical Critical Strike Chance and Health
+		+20% Magic damage
+		Suck em' up!
+		'''
+	DisplayName: Witchen Robe
+}
+
+WitchenPants: {
+	Tooltip:
+		'''
+		30% more movement speed!
+		+20 Health
+		'''
+	DisplayName: Witchen Pants
+}
+
+WitchenHat: {
+	Tooltip:
+		'''
+		+3% Magic damage
+		+10% Magical Critical Strike Chance
+		'''
+	DisplayName: Witchen Hat
+}
+
+IceClimbers: {
+	DisplayName: Ice Climbers
+	Tooltip: Get the ability to climb walls, skate on ice and get 10 Health!
+}
+
+MoltenScrap: {
+	DisplayName: Molten Scrap
+	Tooltip: Burning from the depths of the cinderspark
+}
+
+VehementRhapsody: {
+	DisplayName: Vehement Rhapsody
+	Tooltip: It's musically challenged.. Adding more summons makes this summon do more damage!
+}
+
+VeilScriptureI: {
+	DisplayName: Veil Scripture I
+	Tooltip: ""
+}
+
+EckasectSire: {
+	DisplayName: Eckasect Sire
+	Tooltip:
+		'''
+		A beloved weapon by Sirestias and Zenovia (creator)
+		Can switch modes for unique abilities for this one weapon! Uses 20 mana!!
+		Hitting an enemy will cause colored circles to appear on parts of an enemy!
+		The colors coordinate to one of the modes on the weapon, and when used correctly,
+		will do devastating damage!
+		Genesis - Green Version which shoots out bombs!
+		Liberator - Purple version which snipes out a high damage shot!
+		Execution - An Orange laser comes out of the gun taking wide spread and less damage...
+		'''
+}
+
+TheTraumatizer: {
+	DisplayName: The Traumatizer
+	Tooltip: It will shoot a fan like laser and will kill things, and traumatize them.
+}
+
+FloweredCard: {
+	DisplayName: Flowered Card
+	Tooltip:
+		'''
+		An igniter for dusts and powders!
+		Reaching from the depths of the galaxy!
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+MetallianCard: {
+	DisplayName: Metallian Card
+	Tooltip:
+		'''
+		An igniter for dusts and powders!
+		Reaching from the depths of the galaxy!
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+ZuiCard: {
+	DisplayName: Zui Card
+	Tooltip:
+		'''
+		An igniter for dusts and powders!
+		Reaching from the depths of the galaxy!
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+}
+
+CinderedQuiver: {
+	DisplayName: Cindered Quiver
+	Tooltip: Turns wooden arrows into hellfire ones with 7 more damage!
+}
+
+TheWiggler: {
+	DisplayName: The Wiggler
+	Tooltip:
+		'''
+		Shoots blobs that stick to tiles and enemies!
+		Right click to detonate blobs!
+		'It's icky, sticky, and it gets everywhere'
+		'''
+}
+
+CompletedCollectorsBag: {
+	DisplayName: Completed Collectors Bag
+	Tooltip: Take this to Zui for some rewards!
+}
+
+ArncharSuperCharger: {
+	DisplayName: Arnchar Super Charger
+	Tooltip: ""
+}
+
+CinderChesti: {
+	DisplayName: Cinder Chesti
+	Tooltip: ""
+}
+
+FlameBuster: {
+	DisplayName: Flame Buster
+	Tooltip:
+		'''
+		Fires a spread of bullets
+		The weapon also speeds up over time and will shoot fireballs instead!
+		'''
+}
+
+DrakonicBlock: {
+	DisplayName: Drakonic Block
+	Tooltip: ""
+}
+
+DrakonicCageI: {
+	DisplayName: Drakonic Cage I
+	Tooltip: ""
+}
+
+DrakonicHallI: {
+	DisplayName: Drakonic Hall I
+	Tooltip: ""
+}
+
+DrakonicSileI: {
+	DisplayName: Drakonic Sile I
+	Tooltip: ""
+}
+
+MiniPistol: {
+	DisplayName: Mini Pistol
+	Tooltip:
+		'''
+		Fires two bullets! 
+		Speeds up over time
+		'''
+}
+
+SnowWalkerItem: {
+	Tooltip: ""
+	DisplayName: Snow Walker
+}
+
+SandWalkerItem: {
+	Tooltip: ""
+	DisplayName: Sand Walker
+}
+
+Vulcanius: {
+	Tooltip: ""
+	DisplayName: Vulcanius
+}
+
+CinderedCard: {
+	DisplayName: Cindered Card
+	Tooltip: ""
+}
+
+VeroshotBow: {
+	DisplayName: Veroshot Bow
+	Tooltip: ""
+}
+
+AzaleanChestplate: {
+	DisplayName: Azalean Chestplate
+	Tooltip: Use this piece from one of the developers! (Azza)... Also gives +12% Ranged Damage!
+}
+
+AzaleanHat: {
+	DisplayName: Azalean Hat
+	Tooltip: Use this piece from one of the developers! (Azza)
+}
+
+AzaleanLeggings: {
+	DisplayName: Azalean Leggings
+	Tooltip: Use this piece from one of the developers! (Azza)
+}
+
+SolarianChestplate: {
+	DisplayName: Solarian Chestplate
+	Tooltip: Use this piece from one of the developers! (Scolon)... Also +1 Summon!
+}
+
+SolarianHat: {
+	DisplayName: Solarian Hat
+	Tooltip: Use this piece from one of the developers! (Scolon)
+}
+
+SolarianPants: {
+	DisplayName: Solarian Pants
+	Tooltip: Use this piece from one of the developers! (Scolon)
+}
+
+IyxTheInfamous: {
+	DisplayName: Iyx The Infamous
+	Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
+}
+
+PoisonedAngel: {
+	DisplayName: Poisoned Angel
+	Tooltip: Not a burning angel but a poisoned one! Can move to cursor.
+}
+
+YuriFury: {
+	DisplayName: Yuri Fury
+	Tooltip: Shoot the phoenix of all time!
+}
+
+ToxicHornetStaff: {
+	DisplayName: Toxic Hornet Staff
+	Tooltip: Summons a toxic hornet after enemies!
+}
+
+ZenoviasPikpikGlove: {
+	DisplayName: Zenovias Pikpik Jar
+	Tooltip:
+		'''
+		Toss the pikpiks across the land (Viable throughout the whole mod btw)
+		You can add Onions as accessories to gain more damage and become super strong!
+		'''
+}
+
+OnionOfUselessness: {
+	Tooltip:
+		'''
+		Adds Yellow and Blue pikmin to your pikpik glove!
+		+11 More damage to your pikmin
+		'''
+	DisplayName: Onion Of Uselessness
+}
+
+OnionOfStrength: {
+	Tooltip:
+		'''
+		Adds Yellow, Blue, White and Purple pikmin to your pikpik glove!
+		+70 More damage to your pikmin
+		'''
+	DisplayName: Onion Of Strength
+}
+
+OnionOfSight: {
+	Tooltip:
+		'''
+		Adds Yellow, Blue, White pikmin to your pikpik glove!
+		+30 More damage to your pikmin
+		'''
+	DisplayName: Onion Of Sight
+}
+
+OnionOfHeight: {
+	Tooltip:
+		'''
+		Adds Yellow pikmin to your pikpik glove!
+		+5 More damage to your pikmin
+		'''
+	DisplayName: Onion Of Height
+}
+
+TheAurora: {
+	DisplayName: The Aurora
+	Tooltip: ""
+}
+
+ChromaCutter: {
+	DisplayName: Chroma Cutter
+	Tooltip:
+		'''
+		Summons 7 Chromatic Blades to fight for you! Consumes all remaining minion slots upon use.
+		After summoning the blades, swing the sword to slash them towards your cursor.
+		Each blade has a different effect!
+		'''
+}
+
+WeaponDrive: {
+	Tooltip:
+		'''
+		A drive constructed by the smartest of engineers 
+		Contains some high quality electronics and a bit of magical essence of the new world!
+		'''
+	DisplayName: Weapon Drive
+}
+
+MechanicI: {
+	DisplayName: Mechanic I
+	Tooltip: ""
+}
+
+ScrapToken: {
+	Tooltip: Put inside a cell converter with Delgrim.
+	DisplayName: Scrap Token
+}
+
+ElectricCrystal: {
+	Tooltip: Gives 6% damage to all classes! Electrifying!!!
+	DisplayName: Electric Crystal
+}
+
+SkyRuneI: {
+	DisplayName: Ancient Artifact
+	Tooltip: A scientist may want to look at this..
+}
+
+EelInfinite: {
+	DisplayName: Eel Infinite
+	Tooltip:
+		'''
+		Creates a storm of lightning bolts!
+		Even more electrifying!!!!!!!
+		'''
+}
+
+RustedSniper: {
+	Tooltip: Its a sniper thomas...
+	DisplayName: Rusted Sniper
+}
+
+BucketScrapper: {
+	DisplayName: Bucket Scrapper
+	Tooltip: Minions go and bounce off of enemies doing high contact damage!
+}
+
+RazorBragett: {
+	DisplayName: Razor Bragett
+	Tooltip: Hitting enemies activates the saw (the dog gets out)
+}
+
+PointedEdge: {
+	Tooltip: Ram into enemies with this powerful edge!
+	DisplayName: Pointed Edge
+}
+
+Swingaling: {
+	DisplayName: Swingaling
+	Tooltip: Swing swing, Swingaling! Swihing
+}
+
+TornCarianPage: {
+	Tooltip: A page of a secret tome deep underground, helps with finding it.
+	DisplayName: Torn Carian Page
+}
+
+Scatterbombs: {
+	Tooltip:
+		'''
+		Get some real damage! Doesn't really scatter
+		(Zemmie corporation is not responsible for injuries or side effects. Dont worry you wont live to tell us anyway.)
+		'''
+	DisplayName: Scatterbombs
+}
+
+VacuumDrill: {
+	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beat me.
+	DisplayName: Vacuum Drill
+}
+
+GLabCrystal: {
+	Tooltip: ""
+	DisplayName: G Lab Crystal
+}
+
+LabHall: {
+	DisplayName: Lab Hall
+	Tooltip: ""
+}
+
+LaboratoryBlock: {
+	Tooltip: ""
+	DisplayName: Laboratory Block
+}
+
+FocalCrystalFire: {
+	DisplayName: Charred Focal Crystal
+	Tooltip:
+		'''
+		Insert into the Lab Crystal to create a portal to the Fire Catacombs!
+		Right click to insert
+		'''
+}
+
+FocalCrystalTrap: {
+	DisplayName: Pointy Focal Crystal
+	Tooltip:
+		'''
+		Insert into the Lab Crystal to create a portal to the Trap Catacombs!
+		Right click to insert
+		'''
+}
+
+FocalCrystalWater: {
+	DisplayName: Soaked Focal Crystal
+	Tooltip:
+		'''
+		Insert into the Lab Crystal to create a portal to the Water Catacombs!
+		Right click to insert
+		'''
+}
+
+FocusingCrystal: {
+	DisplayName: Focusing Crystal
+	Tooltip: A key ingredient in crafting Focal Crystals, which let you teleport to special places...
+}
+
+ScrappyLegs: {
+	DisplayName: Scrappy Legs
+	Tooltip:
+		'''
+		Increased movement speed
+		Increases max minions by 1
+		'''
+}
+
+ScrappyHead: {
+	DisplayName: Scrappy Head
+	Tooltip:
+		'''
+		8% increased summon and magic damage
+		4% increased damage reduction
+		Increases max minions by 1
+		'''
+}
+
+ScrappyBody: {
+	DisplayName: Scrappy Body
+	Tooltip:
+		'''
+		12% increased summon and magic damage
+		8% increased damage reduction
+		Increases max minions by 2
+		'''
+}
+
+MagiciansCodeHat: {
+	DisplayName: Magicians Code Hat
+	Tooltip:
+		'''
+		30% Increased Damage for Magicians and Summoners
+		+3 Max Minions
+		Mana cost is no more!
+		You take 20% less damage!
+		Increased life regeneration.
+		+100 Life.
+		'''
+}
+
+RadianceStone: {
+	DisplayName: Radiance Stone
+	Tooltip:
+		'''
+		Use in the Witch Town near Zui to ask her to fight you!
+		HIGHLY RECOMMENDED TO HAVE STEALI OR HIGHER!!
+		Also a very long platform may help. - Zui :)
+
+		You won't be able to fly during our fight...
+		'''
+}
+
+ShopNote: {
+	DisplayName: Shop Note
+	Tooltip: Now that I've seen your talent, I'll allow you access to my whole shop!
+}
+
+FenixBossRel: {
+	DisplayName: Fenix Boss Relic
+	Tooltip: A commander of a carian army, made the world worse overall.
+}
+
+IrradiaBossRel: {
+	DisplayName: Irradia N Havoc Boss Relic
+	Tooltip: A Guardian huh? Well not anymore.
+}
+
+ZuiBossRel: {
+	Tooltip: Who really are they?
+	DisplayName: Zui Boss Relic
+}
+
+NyxiaHat: {
+	DisplayName: Nyxia Hat
+	Tooltip: From the lead developer Zenovia! Go play Diari please :(
+}
+
+NyxiaRobe: {
+	DisplayName: Nyxia Robe
+	Tooltip: From the lead developer Zenovia! Gives 5% damage reduction, 6% more magic damage and some life regeneration!
+}
+
+NyxiaThighs: {
+	DisplayName: Nyxia Thighs
+	Tooltip: I love you all and thanks for playing my mod! - Zenovia
+}
+
+NestBossRel: {
+	Tooltip: ""
+	DisplayName: Irradiated Nest Relic
+}
+
+RadiatedBroochesBackpack: {
+	Tooltip:
+		'''
+		The infinite light of good shines through you!
+		Allows you to use both Advanced and Radiant brooches!
+		+8% Damage!
+		'''
+	DisplayName: Radiant Brooches Backpack
+}
+
+HeatedVerliaBroochA: {
+	Tooltip:
+		'''
+		When hitting enemies, frost icings and golden showers will rain upon your enemies doing great damage!
+		+25% Damage to throwing and Ranged Weapons!
+		'''
+	DisplayName: Radiated Sun and Moon Brooch
+}
+
+AmberBroochA: {
+	Tooltip: Increased speed by 40%, 5 more defense and faster pickaxe mining speeds! Have fun :)
+	DisplayName: Amber Brooch
+}
+
+VillagersBroochA: {
+	DisplayName: Villagers Brooch
+	Tooltip: Had enough social time? Why dont you use the extra 12% this give you?
+}
+
+RadianuiBar: {
+	DisplayName: Radianui Bar
+	Tooltip: Bursting with Zui's happiness and Radiance!
+}
+
+RadianuiWings: {
+	DisplayName: Radianui Wings
+	Tooltip: These wings embody a straight piercing light blessed from the goddess Zui.
+}
+
+AurockBroochA: {
+	DisplayName: Radiated Aurock Brooch
+	Tooltip:
+		'''
+		Gives bright blue light!
+		Extreme increase to pickaxe speed
+		+7 Defesnse!
+		'''
+}
+
+DefensiveGraditudeBroochA: {
+	DisplayName: Radiated Defensive Graditude Brooch
+	Tooltip:
+		'''
+		+50 Defense!
+		Woaaaa, you dont need this...
+		-30% Damage
+		'''
+}
+
+GovheilWarriorBroochA: {
+	DisplayName: Radiated Govheil Warrior Brooch
+	Tooltip:
+		'''
+		Halves the mana cost of any magic weapon!
+		+15% Magic damage
+		+6 Defense too!
+		+12% Damage!
+		Auto-Swing!
+		'''
+}
+
+SandyBearBroochA: {
+	DisplayName: Radiated Sandy Bear Brooch
+	Tooltip:
+		'''
+		Gain the effects of a true sand warrior!
+		Get forbidden armor set bonus!
+		+2 Summons
+		Heavily Increased Mana regeneration!
+		'''
+}
+
+StoningFlyBroochA: {
+	DisplayName: Radiated Stoning Fly Brooch
+	Tooltip:
+		'''
+		Jump extra high and fast acceleration!
+		No fall damage!
+		+10% Damage
+		30% Increased Movement speed!
+		'''
+}
+
+KilliaBroochA: {
+	DisplayName: Radiated Dreadrose Brooch
+	Tooltip:
+		'''
+		Summons a rose shield that rotates around you and blocks projectiles!
+		+80 Health
+		We walking out of here good this time :p
+		+5% Damage
+		'''
+}
+
+IvythornShuriken: {
+	DisplayName: Ivythorn Shuriken
+	Tooltip: Will hit enemies! Crazy
+}
+
+SewingKit: {
+	DisplayName: Sewing Kit
+	Tooltip: Allows the crafting and use of Miracle weapons!
+}
+
+Hitme: {
+	DisplayName: Hit me
+	Tooltip: Don't abuse the poor weapon :(
+}
+
+Shredder: {
+	DisplayName: Shredder
+	Tooltip: ""
+}

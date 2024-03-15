@@ -27,10 +27,9 @@ namespace Stellamod.Particles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D tex3 = Request<Texture2D>("Stellamod/Particles/VoidParticle").Value;
             Vector2 origin = this.OriginCenter();
-            spriteBatch.Draw(tex3, screenPos, 
-                tex3.AnimationFrame(ref frameCount, ref frameTick, Frame_Duration, Frame_Count, true), Color.White, 
+            spriteBatch.Draw(texture, screenPos, 
+                texture.AnimationFrame(ref frameCount, ref frameTick, Frame_Duration, Frame_Count, true), Color.White, 
                 velocity.ToRotation() + 180,
                origin, 
                 1.35f * scale, SpriteEffects.None, 0f);

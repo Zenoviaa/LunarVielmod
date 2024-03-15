@@ -65,6 +65,10 @@ namespace Stellamod.NPCs.Bosses.Jack
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
             NPC.aiStyle = 0;
         }
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+        }
 
         int frame = 0;
         public override void FindFrame(int frameHeight)

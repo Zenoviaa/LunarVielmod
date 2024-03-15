@@ -132,6 +132,7 @@ namespace Stellamod
             Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+            Filters.Scene["Stellamod:Lab"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
@@ -183,10 +184,8 @@ namespace Stellamod
 
 
 
-            if (!Main.dedServ && ModContent.GetInstance<LunarVeilConfig>().VanillaTexturesToggle == true)
+            if (!Main.dedServ && ModContent.GetInstance<LunarVeilClientConfig>().VanillaTexturesToggle == true)
             {
-
-
                 Main.instance.LoadTiles(TileID.Dirt);
                 TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/DirtRE");
 
@@ -270,24 +269,14 @@ namespace Stellamod
 
                 Main.instance.LoadTiles(TileID.Pearlsand);
                 TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
-
-               
-           
-
             }
+
             Instance = this;
-
-
-
         }
 
         public override void Unload()
         {
-
-
-
             StellaMultiplayer.Unload();
-
             if (!Main.dedServ)
             {
                 /*  Main.tileFrame[TileID.Dirt] = 0;

@@ -23,6 +23,16 @@ namespace Stellamod.Items.Materials
 			Item.value = Item.sellPrice(silver: 5);
 		}
 
+        public override void PostUpdate()
+        {
+            if (Main.dayTime)
+            {
+                Item.active = false;
+                NetMessage.SendData(MessageID.WorldData);
+                NetMessage.SendData(MessageID.SyncItem);
+            }
+        }
+
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
@@ -32,10 +42,7 @@ namespace Stellamod.Items.Materials
 
 
 
-            if (Main.dayTime)
-            {
-                Item.active = false;
-            }
+
             if (Main.rand.NextBool(3))
             {
                 int dustnumber = Dust.NewDust(Item.Center, Item.width, Item.height, DustID.SilverCoin, 0f, 0f, 150, Color.White, 1f);

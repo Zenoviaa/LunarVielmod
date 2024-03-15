@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults() 
 		{
-			Item.damage = 36;
+			Item.damage = 20;
 			Item.DamageType = DamageClass.Melee/* tModPorter Suggestion: Consider MeleeNoSpeed for no attack speed scaling */;
 			Item.width = 40;
 			Item.height = 40;
@@ -74,14 +74,6 @@ namespace Stellamod.Items.Weapons.Melee
 			proj.netUpdate = true;
 			return false;
 		}
-		public override void AddRecipes() 
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<StarSilk>(), 15);
-			recipe.AddIngredient(ItemID.Feather, 5);
-			recipe.AddIngredient(ItemType<GintzlMetal>(), 5);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
+		
 	}
 }

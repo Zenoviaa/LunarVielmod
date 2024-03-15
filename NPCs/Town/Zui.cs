@@ -23,11 +23,15 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Vanity.Azalean;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Weapons.Summon;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.Zui;
+using Stellamod.Items.Armors.Vanity.Nyxia;
 
 namespace Stellamod.NPCs.Town
 {
     // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    [AutoloadHead]
+    // [AutoloadHead]
 	public class Zui : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -84,7 +88,8 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			NPC.dontTakeDamageFromHostiles = true;
-		}
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+        }
 
 		public override void FindFrame(int frameHeight)
 		{
@@ -99,7 +104,13 @@ namespace Stellamod.NPCs.Town
 			return true;
 		}
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        //This prevents the NPC from despawning
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -194,8 +205,18 @@ namespace Stellamod.NPCs.Town
 
 		}
 
+        private void SendQuestPacket()
+        {
+			Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CompleteZuiQuest,
+				ZuiQuestSystem.ThreeQuestsCompleted,
+				ZuiQuestSystem.SixQuestsCompleted,
+				ZuiQuestSystem.TenQuestsCompleted,
+				ZuiQuestSystem.TwentyQuestsCompleted,
+				ZuiQuestSystem.ThirtyQuestsCompleted,
+				ZuiQuestSystem.QuestsCompleted).Send(-1);
+        }
 
-		private void Quest_NotCheckmarked()
+        private void Quest_NotCheckmarked()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Hi hii! Thanks for asking! Could you fetch me some plants, you can use this bag! Just fill it up with some different types of plants and I'll give you some stuff afterwards!";
@@ -285,9 +306,11 @@ namespace Stellamod.NPCs.Town
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+			SendQuestPacket();
+
+        }
 		private void Quest_6Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -298,9 +321,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 		private void Quest_10Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -312,9 +336,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 
 		private void Quest_20Complete()
 		{
@@ -328,9 +353,10 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
+            int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-		}
+            SendQuestPacket();
+        }
 		private void Quest_30Complete()
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
@@ -345,7 +371,8 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
-		}
+            SendQuestPacket();
+        }
 
 
 		private bool CompleteQuests()
@@ -413,6 +440,28 @@ namespace Stellamod.NPCs.Town
 				Main.npcChatText = $"Hiya! I think that's all the things I need, you can get some stuff in my shop but thanks babe!";
 			}
 		}
+		public override void AI()
+		{
+			timer++;
+			NPC.CheckActive();
+			NPC.spriteDirection = NPC.direction;
+
+
+
+			if (NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()))
+			{
+
+				NPC.Kill();
+			}
+
+
+			
+		}
+
+		
+
+		
+
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
@@ -475,11 +524,15 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
+			.Add<RadianceStone>(Condition.DownedPlantera)
 			.Add(new Item(ItemID.Bottle) { shopCustomPrice = Item.buyPrice(copper: 50) })
 			.Add(new Item(ItemID.JungleRose) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add<IceClimbers>()
 			.Add<FloweredCard>()
 			.Add<ZenoviasPikpikGlove>()
+			.Add<NyxiaHat>()
+			.Add<NyxiaRobe>()
+			.Add<NyxiaThighs>()
 			.Add<SolarianHat>()
 			.Add<SolarianChestplate>()
 			.Add<SolarianPants>()
@@ -504,24 +557,23 @@ namespace Stellamod.NPCs.Town
 			.Add<OnionOfUselessness>(ZuiQuestSystem.ShopCondition10)
 			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition10))
 			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 40) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.Obsidian) { shopCustomPrice = Item.buyPrice(silver: 4) }, (ZuiQuestSystem.ShopCondition10))
 
-			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition10)
+			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenHat>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenRobe>(ZuiQuestSystem.ShopCondition20)
 			.Add<WitchenPants>(ZuiQuestSystem.ShopCondition20)
 			.Add<EckasectSire>(ZuiQuestSystem.ShopCondition20)
+            .Add<TornCarianPage>(ZuiQuestSystem.ShopCondition20)
 
+            .Add<ChromaCutter>(ZuiQuestSystem.ShopCondition30)
 			.Add<OnionOfStrength>(ZuiQuestSystem.ShopCondition30)
 			.Add<ZuiCard>(ZuiQuestSystem.ShopCondition30)
+			.Add<FocusingCrystal>(ZuiQuestSystem.ShopCondition30)
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}
 
-		public override void AI()
-		{
-			timer++;
-            NPC.CheckActive();
-            NPC.spriteDirection = NPC.direction;
-		}
+		
 	}
 }
