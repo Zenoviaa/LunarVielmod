@@ -487,12 +487,13 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
-			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 5) })
+			.Add<Hitme>()
+			.Add<VillagersBroochA>()
 			.Add<DriveConstruct>()
 			.Add<ArmorDrive>()
 			.Add<WeaponDrive>()
-			.Add<VillagersBroochA>()
+			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}
