@@ -141,7 +141,7 @@ namespace Stellamod
 
             Filters.Scene["Stellamod:ChaosD"] = new Filter(new ChaosDScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.7f, 0.1f).UseOpacity(0.375f), EffectPriority.Medium);
             Filters.Scene["Stellamod:ChaosT"] = new Filter(new ChaosTScreenShaderData("FilterMiniTower").UseColor(0.6f, 0.2f, 0.75f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:ChaosP"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.5f, 0.1f).UseOpacity(0.375f), EffectPriority.VeryHigh);
+            Filters.Scene["Stellamod:ChaosP"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.375f), EffectPriority.VeryHigh);
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)

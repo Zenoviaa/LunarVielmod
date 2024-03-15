@@ -535,11 +535,12 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                             {
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Veiizal__USpawn2"), NPC.position);
                             }
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
-                            NPC.NewNPC(entitySource, (int)NPC.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-50, 50), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
+                            NPC.NewNPC(entitySource, (int)player.Center.X + Main.rand.Next(-600, 600), (int)NPC.Center.Y, ModContent.NPCType<Zapwarn>());
                             State = 5;
                         }
                         if (NPC.ai[0] == 130)

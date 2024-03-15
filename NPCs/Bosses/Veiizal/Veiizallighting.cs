@@ -89,11 +89,11 @@ namespace Stellamod.NPCs.Bosses.Veiizal
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            return MathHelper.SmoothStep(baseWidth, 0.1f, completionRatio);
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Red, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.PaleVioletRed, Color.DarkRed, completionRatio) * 0.7f;
         }
         public override bool PreDraw(ref Color lightColor)
         {
