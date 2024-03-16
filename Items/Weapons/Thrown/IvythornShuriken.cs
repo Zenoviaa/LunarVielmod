@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.useTime = 19;
             Item.consumable = true;
             Item.maxStack = Item.CommonMaxStack;
+            Item.UseSound = SoundID.Item1;
         }
 
         public override Vector2? HoldoutOffset()

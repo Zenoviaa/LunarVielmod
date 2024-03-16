@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -27,38 +28,10 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.scale = 1.2f;
         }
 
-        public override bool PreAI()
-        {
-            Timer++;
-            if (!Moved && Timer >= 0)
-            {
-                int Sound = Main.rand.Next(1, 3);
-                if (Sound == 1)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), Projectile.position);
-                }
-                else
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg2"), Projectile.position);
-                }
-
-                Projectile.spriteDirection = Projectile.direction;
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-                Moved = true;
-            }
-
-            if (Projectile.ai[1] >= 20)
-            {
-                Projectile.tileCollide = true;
-            }
-
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
-            return true;
-        }
 
         public override void OnKill(int timeLeft)
         {
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
             for (int i = 0; i < 5; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, DustID.JunglePlants, (Vector2.One).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
@@ -105,13 +78,8 @@ namespace Stellamod.Projectiles.Thrown
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StringTrail);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             return false;
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            Lighting.AddLight(Projectile.Center, Color.AntiqueWhite.ToVector3() * 0.75f * Main.essScale);
         }
     }
 }
