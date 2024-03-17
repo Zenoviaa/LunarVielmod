@@ -48,7 +48,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle4>(),
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(),
                         Color.OrangeRed, Vector2.One * scaleMult * 2f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;

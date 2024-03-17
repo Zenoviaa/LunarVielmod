@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.Magic
             if(ai_Timer == 1)
             {
                 Player owner = Main.player[Projectile.owner];
-                Dust.QuickDustLine(Projectile.Center, owner.Center, 32, Color.OrangeRed);
+                Dust.QuickDustLine(Projectile.Center, owner.Center, 32, Color.Orange);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterSnap") with { PitchVariance = 0.15f });
             }
 
@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
                 for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(1f, 1f);
-                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle3>(), 
+                    Particle p = ParticleManager.NewParticle(Projectile.Center, vel, ParticleManager.NewInstance<BurnParticle2>(), 
                         Color.OrangeRed, Vector2.One * scaleMult * 1.5f);
                     p.rotation = Projectile.rotation;
                     p.timeLeft = 8;

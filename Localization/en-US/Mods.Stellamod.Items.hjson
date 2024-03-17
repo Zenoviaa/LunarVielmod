@@ -5304,10 +5304,7 @@ CompletedCollectorsBag: {
 
 ArncharSuperCharger: {
 	DisplayName: Arnchar Super Charger
-	Tooltip:
-		'''
-		Greatly empowers the Archarilite weapons and tools!
-		'''
+	Tooltip: Greatly empowers the Archarilite weapons and tools!
 }
 
 CinderChesti: {
