@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override Vector2? HoldoutOffset()
         {
-            return base.HoldoutOffset();
+            return new Vector2(-24, 0);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -42,11 +42,11 @@ namespace Stellamod.Items.Weapons.Ranged
                 Dust.NewDust(position, 0, 0, DustID.Electric, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
             }
 
-            int numProjectiles = Main.rand.Next(1, 3);
+            int numProjectiles = Main.rand.Next(1, 2);
             for (int p = 0; p < numProjectiles; p++)
             {
                 // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));
+                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(6));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }

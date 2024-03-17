@@ -29,18 +29,31 @@ namespace Stellamod.Projectiles.Gun
         }
 
         private ref float AI_Timer => ref Projectile.ai[0];
+        private ref float AI_Pattern => ref Projectile.ai[1];
         public override void AI()
         {
             AI_Timer++;
             //This runs every other frame
             if(AI_Timer % 2 == 0)
             {
-                //Randomly teleport to make the jagged effect
-                Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                direction = direction.RotatedByRandom(MathHelper.ToRadians(60));
-                float distance = Main.rand.NextFloat(64, 80);
-                Projectile.Center = Projectile.Center + direction * distance; 
-                Projectile.netUpdate=true;
+                float degrees = 24;
+                if(AI_Pattern == 0)
+                {              //Randomly teleport to make the jagged effect
+                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
+                    float distance = Main.rand.NextFloat(16, 64);
+                    Projectile.Center = Projectile.Center + direction * distance;
+                    AI_Pattern++;
+                }
+                else if(AI_Pattern == 1)
+                {
+                    Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
+                    float distance = Main.rand.NextFloat(16, 64);
+                    Projectile.Center = Projectile.Center + direction * distance;
+                    AI_Pattern--;
+                }
+                Projectile.netUpdate = true;
             }
 
             //Dunno if this is needed but whatever
@@ -68,7 +81,7 @@ namespace Stellamod.Projectiles.Gun
 
         public Color ColorFunction(float completionRatio)
         {
-            Color startColor = Color.Cyan;
+            Color startColor = Color.Blue;
             Color endColor = Color.Transparent;
             return Color.Lerp(startColor, endColor, completionRatio);
         }
@@ -92,10 +105,6 @@ namespace Stellamod.Projectiles.Gun
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            Color middleColor = Color.Lerp(Color.White, Color.Cyan, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.DarkCyan, Color.DarkBlue, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, AI_Timer / 600);
 
             TrailRegistry.LaserShader.UseColor(Color.LightCyan);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
