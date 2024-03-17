@@ -36,12 +36,12 @@ namespace Stellamod.Projectiles.Gun
             //This runs every other frame
             if(AI_Timer % 2 == 0)
             {
-                float degrees = 24;
+                float degrees = 14;
                 if(AI_Pattern == 0)
                 {              //Randomly teleport to make the jagged effect
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     direction = direction.RotatedBy(MathHelper.ToRadians(degrees));
-                    float distance = Main.rand.NextFloat(16, 64);
+                    float distance = Main.rand.NextFloat(16, 180);
                     Projectile.Center = Projectile.Center + direction * distance;
                     AI_Pattern++;
                 }
@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Gun
                 {
                     Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                     direction = direction.RotatedBy(MathHelper.ToRadians(-degrees));
-                    float distance = Main.rand.NextFloat(16, 64);
+                    float distance = Main.rand.NextFloat(16, 180);
                     Projectile.Center = Projectile.Center + direction * distance;
                     AI_Pattern--;
                 }
