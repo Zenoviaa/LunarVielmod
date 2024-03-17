@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 12;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
-            Item.value = Item.sellPrice(0, 0, 20, 0);
+            Item.value = Item.buyPrice(0, 15, 0, 0);
             Item.rare = ItemRarityID.LightRed;
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock");
             Item.autoReuse = true;
@@ -34,6 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
             return new Vector2(-2, 0);
         }
 
+        /*
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -45,6 +46,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddIngredient(ItemID.Spike, 100);
             recipe.Register();
-        }
+        }*/
     }
 }
