@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void SetDefaults()
         {
             Item.noMelee = true;
-            Item.damage = 10;
+            Item.damage = 13;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
@@ -36,6 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAmmo = AmmoID.Bullet;
             Item.UseSound = SoundID.Item92;
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (type == ProjectileID.Bullet) type = ModContent.ProjectileType<StarBolt>();

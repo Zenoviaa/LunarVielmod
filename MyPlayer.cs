@@ -1129,7 +1129,8 @@ namespace Stellamod
 				for (int j = 0; j < 1; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Dulcans>(), 200, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, 
+						ModContent.ProjectileType<Dulcans>(), 120, 1f, Player.whoAmI);
 				}
 
 

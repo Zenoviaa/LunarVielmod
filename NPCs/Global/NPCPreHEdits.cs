@@ -341,18 +341,7 @@ namespace Stellamod.NPCs.Global
 
 			}
 
-			//------------------------------------------------------------------------ OVERWORLD + RAIN
-
-
-
-			if (npc.type == NPCID.AngryNimbus)
-			{
-
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CloudBow>(), 100, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-
-			}
+			//------------------------------------------------------------------------ OVERWORLD + RAI
 
 			if (npc.type == NPCID.PinkJellyfish)
 			{

@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
 
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
             recipe.AddIngredient(ItemID.ManaCrystal, 1);
-            recipe.AddTile(TileID.Bottles);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         public override Vector2? HoldoutOffset()

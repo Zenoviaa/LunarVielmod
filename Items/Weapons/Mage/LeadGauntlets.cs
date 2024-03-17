@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 6);
 			recipe.AddIngredient(ItemType<ConvulgingMater>(), 15);
-            recipe.AddTile(TileID.Furnaces);
+            recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
 

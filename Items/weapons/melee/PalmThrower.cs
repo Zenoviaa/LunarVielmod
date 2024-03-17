@@ -15,9 +15,10 @@ namespace Stellamod.Items.Weapons.Melee
 			// DisplayName.SetDefault("Palm Tomahawks");
 			// Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");
 		}
+
 		public override void SetDefaults()
 		{
-			Item.damage = 28;
+			Item.damage = 30;
 			Item.width = 20;
 			Item.height = 20;
 			Item.useTime = 22;
@@ -35,18 +36,6 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.crit = 15;
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.PalmWood, 5);
-			recipe.AddIngredient(ItemID.Seashell, 5);
-			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 25);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
 		}
 	}
 }

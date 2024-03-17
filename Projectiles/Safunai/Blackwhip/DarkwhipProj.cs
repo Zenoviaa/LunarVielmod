@@ -63,8 +63,8 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 		private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
 		private NPC hookNPC; //The npc the projectile is hooked into
 
-		public const float THROW_RANGE = 320; //Peak distance from player when thrown out, in pixels
-		public const float HOOK_MAXRANGE = 800; //Maximum distance between owner and hooked enemies before it automatically rips out
+		public const float THROW_RANGE = 360; //Peak distance from player when thrown out, in pixels
+		public const float HOOK_MAXRANGE = 840; //Maximum distance between owner and hooked enemies before it automatically rips out
 		public const int HOOK_HITTIME = 20; //Time between damage ticks while hooked in
 		public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
 
