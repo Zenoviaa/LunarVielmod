@@ -5471,8 +5471,8 @@ OnionOfHeight: {
 }
 
 TheAurora: {
-	DisplayName: The Aurora
-	Tooltip: ""
+	DisplayName: Astral Blast
+	Tooltip: Take the aurora with smart blasts!
 }
 
 ChromaCutter: {
