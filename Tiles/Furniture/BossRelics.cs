@@ -20,7 +20,7 @@
         public override string RelicTextureName => "Stellamod/Tiles/Furniture/DreadBossRelic";
 
         // All relics use the same pedestal texture, this one is copied from vanilla
-        public override string Texture => "Stellamod/Tiles/Furniture/RelicPedestal";
+        public override string Texture => "Stellamod/Tiles/Furniture/GodPedestal";
     }
 
     public class FenixBossRelic : BossRelicTile
@@ -111,7 +111,7 @@
         public override string RelicTextureName => "Stellamod/Tiles/Furniture/VerliBossRelic";
 
         // All relics use the same pedestal texture, this one is copied from vanilla
-        public override string Texture => "Stellamod/Tiles/Furniture/RelicPedestal";
+        public override string Texture => "Stellamod/Tiles/Furniture/GodPedestal";
     }
 
     public class ZuiBossRelic : BossRelicTile
@@ -121,7 +121,7 @@
         public override string RelicTextureName => "Stellamod/Tiles/Furniture/ZuiBossRelic";
 
         // All relics use the same pedestal texture, this one is copied from vanilla
-        public override string Texture => "Stellamod/Tiles/Furniture/RelicPedestal";
+        public override string Texture => "Stellamod/Tiles/Furniture/GodPedestal";
     }
 
     public class NestBossRelic : BossRelicTile
