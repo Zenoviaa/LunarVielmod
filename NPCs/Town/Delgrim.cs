@@ -493,7 +493,10 @@ namespace Stellamod.NPCs.Town
 			.Add<DriveConstruct>()
 			.Add<ArmorDrive>()
 			.Add<WeaponDrive>()
-			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
+            .Add<CogBomber>(Condition.Hardmode)
+            .Add<TheTingler>(Condition.Hardmode)
+            .Add<GearGutter>(Condition.Hardmode)
+            .Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			;
 			npcShop.Register(); // Name of this shop tab		
 		}
