@@ -16,17 +16,24 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.Paint
 {
-    public class POAProj5 : ModProjectile
+    public class POAProj5 : ModProjectile, IPixelPrimitiveDrawer
     {
 
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cactius2");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 70;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public byte Timer2;
+        public override void OnSpawn(IEntitySource source)
+        {
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                Projectile.oldPos[i] = Projectile.position;
+            }
+        }
         public override void SetDefaults()
         {
             Projectile.damage = 15;
@@ -158,31 +165,92 @@ namespace Stellamod.Projectiles.Paint
             return true;
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            //This damages everything in the trail
+            Vector2[] positions = Projectile.oldPos;
+            float collisionPoint = 0;
+            for (int i = 1; i < positions.Length; i++)
+            {
+                Vector2 position = positions[i];
+                Vector2 previousPosition = positions[i - 1];
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
+                    return true;
+            }
+            return base.Colliding(projHitbox, targetHitbox);
         }
+
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Black, Color.Transparent, completionRatio) * 0.7f;
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            if (Main.rand.NextBool(5))
+            if (completionRatio < 0.2f)
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<PaintBlob2>(), 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-                Main.dust[dustnumber].noGravity = true;
+                return Color.Red;
+                // return Color.Lerp(Color.Red, new Color(255, 145, 0), completionRatio / 0.25f);
+            }
+            else if (completionRatio < 0.4f)
+            {
+                return new Color(255, 145, 0);
+                // return Color.Lerp(new Color(255, 145, 0), new Color(1, 255, 149), (0.5f - completionRatio) / 0.25f);
+            }
+            else if (completionRatio < 0.6f)
+            {
+                return new Color(1, 255, 149);
+                // return Color.Lerp(new Color(1, 255, 149), new Color(0, 239, 255), (0.75f - completionRatio) / 0.25f);
+            }
+            else if (completionRatio < 0.8f)
+            {
+                return new Color(0, 239, 255);
+                //return Color.Lerp(new Color(0, 239, 255), new Color(255, 0, 252), (1f - completionRatio) / 0.25f);
+            }
+            else
+            {
+                return new Color(255, 0, 252);
+            }
+        }
+
+        public Color ColorFunction2(float completionRatio)
+        {
+            return Color.Black;
+        }
+
+
+        public float WidthFunction(float completionRatio)
+        {
+            if (completionRatio < 0.5f)
+            {
+                return MathHelper.Lerp(0f, 48, completionRatio / 0.5f);
+            }
+            else
+            {
+                return MathHelper.Lerp(0f, 48, (1f - completionRatio) / 0.5f);
             }
 
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-            return false;
+        }
+
+        public float WidthFunction2(float completionRatio)
+        {
+            if (completionRatio < 0.5f)
+            {
+                return MathHelper.Lerp(0f, 56, completionRatio / 0.5f);
+            }
+            else
+            {
+                return MathHelper.Lerp(0f, 56, (1f - completionRatio) / 0.5f);
+            }
+        }
+
+        internal PrimitiveTrail BeamDrawer;
+        internal PrimitiveTrail OutlineBeamDrawer;
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true);
+            OutlineBeamDrawer ??= new PrimitiveTrail(WidthFunction2, ColorFunction2, null, true);
+            //  TrailRegistry.LaserShader.UseColor(Color.Black);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.SimpleTrail);
+
+            OutlineBeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
+            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

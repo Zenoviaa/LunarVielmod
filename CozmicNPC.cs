@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Stellamod.Items.Weapons.Ranged;
 
 namespace Stellamod
 {
@@ -28,7 +29,11 @@ namespace Stellamod
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            
+            if(npc.type == NPCID.PirateShip)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Jerry>(), 2, 1, 1));
+            }
+
             if (npc.type == NPCID.Zombie || npc.type == NPCID.BigSlimedZombie || npc.type == NPCID.TorchZombie || npc.type == NPCID.ArmedTorchZombie || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieElfGirl || npc.type == NPCID.ArmedZombieSwamp || npc.type == NPCID.ArmedZombieEskimo || npc.type == NPCID.ZombieElfBeard || npc.type == NPCID.ZombieEskimo || npc.type == NPCID.ZombieDoctor || npc.type == NPCID.ZombieElf || npc.type == NPCID.ZombieMerman || npc.type == NPCID.ZombieRaincoat || npc.type == NPCID.BigZombie || npc.type == NPCID.BigFemaleZombie || npc.type == NPCID.BaldZombie || npc.type == NPCID.ArmedZombieTwiggy || npc.type == NPCID.ArmedZombieSlimed)
             {
                 if (Main.bloodMoon)

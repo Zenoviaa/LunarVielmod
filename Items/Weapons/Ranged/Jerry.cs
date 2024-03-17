@@ -53,7 +53,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 40;
+			Item.damage = 52;
 			Item.knockBack = 4;
 			Item.noMelee = true;
 
@@ -67,13 +67,15 @@ namespace Stellamod.Items.Weapons.Ranged
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
 		public override Vector2? HoldoutOffset()
 		{
-			return new Vector2(0f, -2f);
+			return new Vector2(0f, -8f);
 		}
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<RobedProjectile>(), ProjectileID.Grenade, ProjectileID.CannonballFriendly });
 		}
+
+		/*
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -83,9 +85,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 9);
-
 			recipe.Register();
-		}
-
+		}*/
 	}
 }
