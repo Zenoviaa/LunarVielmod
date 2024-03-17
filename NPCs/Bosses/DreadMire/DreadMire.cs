@@ -9,6 +9,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.NPCs.Event.Luminull;
 using Stellamod.Utilis;
 using System;
 using System.IO;
@@ -89,6 +90,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             if (NPC.life <= 0)
             {
+                var entitySource = NPC.GetSource_FromThis();
+                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, NPCType<LuminullSpiritCrystal>());
                 Player player = Main.player[NPC.target];
                 player.GetModPlayer<MyPlayer>().heartDead = 0;
                 player.GetModPlayer<MyPlayer>().heart = false;

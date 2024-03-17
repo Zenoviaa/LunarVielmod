@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable.Cathedral;
 using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.Jack;
@@ -22,7 +23,7 @@ using Terraria.ObjectData;
 namespace Stellamod.Tiles.Structures.AlcadizNGovheil
 {
 
-	public class LabCrystal : ModTile
+    public class LabCrystal : ModTile
 	{
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
 		{

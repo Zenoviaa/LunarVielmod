@@ -32,6 +32,7 @@ using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Event.Luminull;
 using Stellamod.NPCs.Minibosses;
 using Stellamod.Particles;
 using Stellamod.Projectiles;
@@ -683,7 +684,7 @@ namespace Stellamod
 
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", EventWorld.ChaosT && Player.ZoneDungeon);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", NPC.AnyNPCs(ModContent.NPCType<LuminullSpiritCrystal>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosP", EventWorld.ChaosT && Player.ZoneUnderworldHeight);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));

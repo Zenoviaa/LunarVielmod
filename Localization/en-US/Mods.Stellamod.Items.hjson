@@ -5831,3 +5831,8 @@ Shredder: {
 	DisplayName: Shredder
 	Tooltip: ""
 }
+
+LuminullSpiritFragments: {
+	Tooltip: ""
+	DisplayName: Luminull Spirit Fragments
+}
