@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.width = 114;
             Item.height = 36;
             Item.rare = ItemRarityID.LightRed;
-            Item.damage = 42;
+            Item.damage = 46;
             Item.DamageType = DamageClass.Ranged;
             Item.useAnimation = 9;
             Item.useTime = 9;
