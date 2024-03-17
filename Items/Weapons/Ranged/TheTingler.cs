@@ -34,6 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
             return new Vector2(-2, 0);
         }
 
+        /*
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -45,6 +46,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.AddIngredient(ItemID.Spike, 100);
             recipe.Register();
-        }
+        }*/
     }
 }

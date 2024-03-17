@@ -52,6 +52,7 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
+        /*
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -63,6 +64,6 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 20);
             recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
             recipe.Register();
-        }
+        }*/
     }
 }
