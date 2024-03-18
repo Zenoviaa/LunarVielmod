@@ -8,6 +8,7 @@ using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -179,6 +180,36 @@ namespace Stellamod.Projectiles.Ammo
 
     
             return base.PreDraw(ref lightColor);
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+            if(Homing_Timer < 45)
+            {
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+                Projectile projectile = Projectile;
+                Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+                int projFrames = Main.projFrames[projectile.type];
+                int frameHeight = texture.Height / projFrames;
+                int startY = frameHeight * projectile.frame;
+
+                Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+                Vector2 drawOrigin = sourceRectangle.Size() / 2f;
+  
+                //drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
+                for (int k = 0; k < projectile.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
+                    Color color = projectile.GetAlpha(Color.Lerp(Color.White, Color.White, (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer/45));
+                    Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+                }
+
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            }
         }
 
         internal PrimitiveTrail BeamDrawer;
