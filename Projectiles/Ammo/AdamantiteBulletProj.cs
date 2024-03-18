@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            int damage = (int)(Projectile.damage * 0.2f);
+            int damage = (int)((float)damageDone * 0.33f);
             target.SimpleStrikeNPC(damage, hit.HitDirection);
         }
 

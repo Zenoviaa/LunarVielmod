@@ -66,7 +66,7 @@ namespace Stellamod.Projectiles.Ammo
 
             if (Homing_Timer > 45)
             {
-                float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
+                float maxDetectRadius = 768; // The maximum radius at which a projectile can detect a target
                 float projSpeed = 30f; // The speed at which the projectile moves towards the target
 
                 // Trying to find NPC closest to the projectile
