@@ -5884,10 +5884,20 @@ STARBLOCKER: {
 
 Maelstrom: {
 	DisplayName: Maelstrom
-	Tooltip: ""
+	Tooltip: Sirestias really is kind isn't she?
 }
 
 TheFirstAurora: {
 	DisplayName: The First Aurora
+	Tooltip: A weapon of great renown and slicing!
+}
+
+ThePenetrator: {
+	DisplayName: The Penetrator
 	Tooltip: ""
+}
+
+SingularDive: {
+	DisplayName: Singular Dive
+	Tooltip: Right click to use little minions and a long spin to hit enemies!
 }
