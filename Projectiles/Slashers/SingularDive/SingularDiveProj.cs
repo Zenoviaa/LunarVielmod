@@ -22,24 +22,25 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
     {
         public static bool swung = false;
 
-        public float holdOffset = 60f;
-        public int combowombo;
         private bool _initialized;
         private int timer;
-        private bool ParticleSpawned;
+
+        //Swing Stats
+        public float SwingDistance;
+        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        public float holdOffset = 60f;
+
+        //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
+
+        //This is for smoothin the trail
+        public const int Swing_Speed_Multiplier = 8;
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
-
-        private Player Owner => Main.player[Projectile.owner];
-
-        //Swing Stats
-        public float SwingDistance;
-        public int SwingTime = 10 * Swing_Speed_Multiplier;
-        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
-        public const int Swing_Speed_Multiplier = 8;
 
         public override void SetDefaults()
         {
@@ -52,8 +53,14 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             Projectile.width = 100;
             Projectile.friendly = true;
             Projectile.scale = 1f;
+
+            //This extra updates thing basically lets us put more frames inside a single frame
+            //Updates multiple times per frame
+            //That's how the trail is smoother, it does affect other things though, so make sure to factor it in to timers
             Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
             Projectile.usesLocalNPCImmunity = true;
+
+            //Multiplying by the thing so it's still 10 ticks
             Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
         }
 
@@ -117,7 +124,7 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 float defRot = Projectile.velocity.ToRotation();
                 // starting rotation
 
-                //How wide is the swing
+                //How wide is the swing, in radians
                 float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
                 float start = defRot - swingRange;
 
@@ -125,7 +132,9 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 float end = (defRot + swingRange);
 
                 // current rotation obv
+                // angle lerp causes some weird things here, so just use a normal lerp
                 float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+               
                 // offsetted cuz sword sprite
                 Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
                 position += rotation.ToRotationVector2() * holdOffset;
@@ -138,20 +147,6 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
                 player.itemRotation = rotation * player.direction;
                 player.itemTime = 2;
                 player.itemAnimation = 2;
-
-                /*
-                for (int i = 0; i < Projectile.oldPos.Length; i++)
-                {
-                    Projectile.oldPos[i] += player.velocity  / (Swing_Speed_Multiplier+1);
-                }*/
-
-                if (!ParticleSpawned)
-                {
-
-
-                    ParticleSpawned = true;
-                }
-
             }
         }
 
