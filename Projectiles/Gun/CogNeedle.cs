@@ -57,6 +57,11 @@ namespace Stellamod.Projectiles.Gun
             if(_targetNpc != -1)
             {
                 NPC target = Main.npc[_targetNpc];
+                if (!target.active)
+                {
+                    Projectile.Kill();
+                }
+
                 Vector2 targetPos = target.position - _targetOffset;
                 Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
                 float dist = Vector2.Distance(Projectile.position, targetPos);
@@ -67,6 +72,8 @@ namespace Stellamod.Projectiles.Gun
                 Projectile.velocity *= 1.01f;
                 Projectile.rotation = Projectile.velocity.ToRotation();
             }
+
+           
       
             Vector3 RGB = new(1.00f, 0.37f, 0.30f);
             // The multiplication here wasn't doing anything
