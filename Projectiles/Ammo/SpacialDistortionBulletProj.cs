@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using ParticleLibrary;
+using Stellamod.Buffs;
 using Stellamod.Particles;
 using Stellamod.Trails;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    internal class EldritchBolt : ModProjectile,
+    internal class SpacialDistortionBulletProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         public override void SetStaticDefaults()
@@ -49,12 +45,18 @@ namespace Stellamod.Projectiles.Ammo
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+            return Color.Lerp(new Color(93, 203, 243), Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             return false;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            target.AddBuff(ModContent.BuffType<AbyssalFlame>(), 240);
         }
 
         public override void OnKill(int timeLeft)
@@ -69,7 +71,7 @@ namespace Stellamod.Projectiles.Ammo
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            TrailRegistry.LaserShader.UseColor(new Color(93, 203, 243));
+            TrailRegistry.LaserShader.UseColor(Color.Black);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
             BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
