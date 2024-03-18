@@ -5844,57 +5844,43 @@ IceRuneI: {
 
 TitaniumBullet: {
 	DisplayName: Titanium Bullet
-	Tooltip:
-		'''
-		Strikes twice, the 2nd hit is weaker but pierces armor
-		'''
+	Tooltip: Strikes twice, the 2nd hit is weaker but pierces armor
 }
 
 RadiantArrow: {
-
 	DisplayName: Radiant Arrow
-	Tooltip:
-		'''
-		Speeds up over time and homes into targets, ignoring all defense!
-		'''
+	Tooltip: Speeds up over time and homes into targets, ignoring all defense!
 }
 
 AdamantiteBullet: {
 	DisplayName: Adamantite Bullet
-	Tooltip:
-		'''
-		Strikes twice, the 2nd hit is weaker but pierces armor
-		'''
+	Tooltip: Strikes twice, the 2nd hit is weaker but pierces armor
 }
 
 EldritchArrow: {
 	DisplayName: Eldritch Arrow
-	Tooltip:
-		'''
-		Spawns planetoids that shoot a bolt at nearby enemies when hit again
-		'''
+	Tooltip: Spawns planetoids that shoot a bolt at nearby enemies when hit again
 }
 
 DriveRound: {
 	DisplayName: Drive Round
-	Tooltip:
-		'''
-		Infinitely pierces through all targets and explodes on each hit!
-		'''
+	Tooltip: Infinitely pierces through all targets and explodes on each hit!
 }
 
 SpacialDistortionBullet: {
 	DisplayName: Spacial Distortion Bullet
-	Tooltip:
-		'''
-		Inflicts Abyssal Flame
-		'''
+	Tooltip: Inflicts Abyssal Flame
 }
 
 IrradiatedArrow: {
 	DisplayName: Irradiated Arrow
+	Tooltip: Splits off into little robots that shoot irradiated lasers at enemies!
+}
+
+STARBLOCKER: {
+	DisplayName: STARBLOCKER
 	Tooltip:
 		'''
-		Splits off into little robots that shoot irradiated lasers at enemies!
+		Use this to reject a Aurorean Starfall :(
 		'''
 }
