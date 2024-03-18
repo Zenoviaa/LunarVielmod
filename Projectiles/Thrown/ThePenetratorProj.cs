@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Effects;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Crossbows.Gemmed;
 using Stellamod.Projectiles.Swords;
@@ -45,7 +46,7 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.DamageType = DamageClass.Throwing;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = 6;
+            Projectile.penetrate = -1;
             Projectile.ownerHitCheck = true;
             Projectile.timeLeft = int.MaxValue;
             Projectile.localNPCHitCooldown = 5;
@@ -91,8 +92,7 @@ namespace Stellamod.Projectiles.Thrown
 
         
                     Vector2 playerCenter = player.MountedCenter;
-             
-                    Projectile.spriteDirection = player.direction;
+            
                     Projectile.rotation += Speed;
                     Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
                     player.heldProj = Projectile.whoAmI;
@@ -109,6 +109,7 @@ namespace Stellamod.Projectiles.Thrown
                             float newDamage = Projectile.damage;
                             newDamage *= 20 * (Timer / Charge_Time);
                             player.heldProj = -1;
+                            Projectile.penetrate = 6;
                             Projectile.damage = (int)newDamage;
                             Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speed;
                             State = ActionState.Throw;
@@ -174,7 +175,7 @@ namespace Stellamod.Projectiles.Thrown
             if (Trail == null)
             {
                 Trail = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, 
-                    (p) => Vector2.Lerp(new Vector2(32), Vector2.Zero, p), 
+                    (p) => Vector2.Lerp(new Vector2(90), Vector2.Zero, p), 
                     (p) => new Color(60, 0, 118) * (1f - p));
                 Trail.drawOffset = Projectile.Size / 2f;
             }
@@ -204,7 +205,8 @@ namespace Stellamod.Projectiles.Thrown
         {
             Texture2D glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, 
+                null, Main.GameViewMatrix.TransformationMatrix);
 
             Projectile projectile = Projectile;
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
@@ -219,7 +221,7 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
                 Color color = projectile.GetAlpha(Color.Lerp(Color.Transparent, new Color(60, 0, 118), (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer / Charge_Time));
-                Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(glowTexture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
             }
 
 

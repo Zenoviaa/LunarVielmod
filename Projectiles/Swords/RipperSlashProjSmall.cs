@@ -17,8 +17,8 @@ namespace Stellamod.Projectiles.Swords
         }
         public override void SetDefaults()
         {
-            Projectile.width = 400;
-            Projectile.height = 400;
+            Projectile.width = 192;
+            Projectile.height = 192;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = 110;
