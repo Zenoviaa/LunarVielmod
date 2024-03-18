@@ -38,7 +38,6 @@ namespace Stellamod.Items.Accessories
 			
 			player.GetModPlayer<DashPlayer>().DashAccessoryEquipped = true;
 		//	player.GetDamage(DamageClass.Generic) *= 0.95f;
-			player.lifeRegen += 1;
 			
 		}
 

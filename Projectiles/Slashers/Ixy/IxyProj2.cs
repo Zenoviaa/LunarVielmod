@@ -103,16 +103,10 @@ namespace Stellamod.Projectiles.Slashers.Ixy
                     ParticleSpawned = true;
                 }
 
-
-                for (int i = 0; i < 5; i++)
+                if (Main.rand.NextBool(2))
                 {
-                    Dust dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.Torch, 0, 0, 100, Color.Violet, 1f);
-                    dust.noGravity = true;
-                    dust.velocity *= 2f;
-                    dust = Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 1000, Color.Violet, 1f);
+                    Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.Torch, 0, 0, 100, Color.Violet, 1f);
                 }
-                player.statDefense -= 10;
-
              
                 float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
                 // the actual rotation it should have
