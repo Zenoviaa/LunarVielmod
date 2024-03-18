@@ -166,6 +166,10 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
                     ParticleSpawned = true;
                 }
 
+                for(int i = 0; i < Projectile.oldPos.Length; i++)
+                {
+                    Projectile.oldPos[i] += player.velocity;
+                }
             }
         }
         private Vector2 GetSwingPosition(float progress)

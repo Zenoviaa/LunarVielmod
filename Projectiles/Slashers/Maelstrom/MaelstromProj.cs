@@ -159,7 +159,10 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 player.itemTime = 2;
                 player.itemAnimation = 2;
                 //Projectile.netUpdate = true;
-
+                for (int i = 0; i < Projectile.oldPos.Length; i++)
+                {
+                    Projectile.oldPos[i] += player.velocity;
+                }
 
                 if (!ParticleSpawned)
                 {

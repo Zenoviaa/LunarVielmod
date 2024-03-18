@@ -14,13 +14,14 @@ using Terraria.Graphics.Shaders;
 using Stellamod.Items.Accessories.Players;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Slashers.SingularDive
 {
     public class SingularDiveProj : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 10;
+
         public float holdOffset = 60f;
         public int combowombo;
         private bool _initialized;
@@ -28,31 +29,18 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 18;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
         private Player Owner => Main.player[Projectile.owner];
 
+        //Swing Stats
         public float SwingDistance;
-        public float Curvature;
+        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
+        public const int Swing_Speed_Multiplier = 8;
 
-        public ref float AiState => ref Projectile.ai[1];
-        private Vector2 returnPosOffset; //The position of the projectile when it starts returning to the player from being hooked
-        private Vector2 npcHookOffset = Vector2.Zero; //Used to determine the offset from the hooked npc's center
-        private float npcHookRotation; //Stores the projectile's rotation when hitting an npc
-        private NPC hookNPC; //The npc the projectile is hooked into
-
-        public const float THROW_RANGE = 320; //Peak distance from player when thrown out, in pixels
-        public const float HOOK_MAXRANGE = 800; //Maximum distance between owner and hooked enemies before it automatically rips out
-        public const int HOOK_HITTIME = 1; //Time between damage ticks while hooked in
-        public const int RETURN_TIME = 6; //Time it takes for the projectile to return to the owner after being ripped out
-
-        public bool Flip = false;
-        public bool Slam = false;
-        public bool PreSlam = false;
-
-        public Vector2 CurrentBase = Vector2.Zero;
         public override void SetDefaults()
         {
             Projectile.timeLeft = SwingTime;
@@ -64,6 +52,9 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             Projectile.width = 100;
             Projectile.friendly = true;
             Projectile.scale = 1f;
+            Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
         }
 
         public float Timer
@@ -77,26 +68,16 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             return val == 1f ? 1f : (val == 1f ? 1f : (float)Math.Pow(2, val * 10f - 10f) / 2f);
         }
 
-        int Timeddeath = 0;
         public override void AI()
         {
-            Timeddeath++;
-
-
-
-            //   if (Timeddeath >= 45)
-            // {
-            //       Projectile.Kill();
-            //  }
-
             Player player = Main.player[Projectile.owner];
             if (!_initialized && Main.myPlayer == Projectile.owner)
             {
                 timer++;
 
-                SwingTime = (int)(10 / player.GetAttackSpeed(DamageClass.Melee));
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
+                Projectile.timeLeft = SwingTime + EndSwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
@@ -117,48 +98,52 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
 
                     timer++;
                 }
+
                 Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
                 float multiplier = 0.2f;
-                float max = 2.25f;
-                float min = 1.0f;
                 RGB *= multiplier;
-                if (RGB.X > max)
-                {
-                    multiplier = 0.5f;
-                }
-                if (RGB.X < min)
-                {
-                    multiplier = 1.5f;
-                }
+
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-                Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 10;
 
                 int dir = (int)Projectile.ai[1];
-                float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
+
+                //Get the swing progress
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+
+                //Smooth it some more
+                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
+
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();
                 // starting rotation
-                float endSet = ((MathHelper.PiOver2) / 0.2f);
-                float start = defRot - endSet;
+
+                //How wide is the swing
+                float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
+                float start = defRot - swingRange;
 
                 // ending rotation
-                float end = (defRot + endSet);
+                float end = (defRot + swingRange);
+
                 // current rotation obv
-                float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
+                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
                 // offsetted cuz sword sprite
                 Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
                 position += rotation.ToRotationVector2() * holdOffset;
                 Projectile.Center = position;
                 Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
+
                 player.heldProj = Projectile.whoAmI;
                 player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
                 player.itemRotation = rotation * player.direction;
                 player.itemTime = 2;
                 player.itemAnimation = 2;
-                //Projectile.netUpdate = true;
 
+                /*
+                for (int i = 0; i < Projectile.oldPos.Length; i++)
+                {
+                    Projectile.oldPos[i] += player.velocity  / (Swing_Speed_Multiplier+1);
+                }*/
 
                 if (!ParticleSpawned)
                 {
@@ -169,21 +154,10 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
 
             }
         }
-        private Vector2 GetSwingPosition(float progress)
-        {
-            //Starts at owner center, goes to peak range, then returns to owner center
-            float distance = MathHelper.Clamp(SwingDistance, THROW_RANGE * 0.1f, THROW_RANGE) * MathHelper.Lerp((float)Math.Sin(progress * MathHelper.Pi), 1, 0.04f);
-            distance = Math.Max(distance, 100); //Dont be too close to player
-
-            float angleMaxDeviation = MathHelper.Pi / 1.2f;
-            float angleOffset = Owner.direction * (Flip ? -1 : 1) * MathHelper.Lerp(-angleMaxDeviation, angleMaxDeviation, progress); //Moves clockwise if player is facing right, counterclockwise if facing left
-            return Projectile.velocity.RotatedBy(angleOffset) * distance;
-        }
 
 
         public override bool ShouldUpdatePosition() => false;
         public bool bounced = false;
-
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -232,6 +206,12 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
 
 
 
+            /*
+            Texture2D Texture2 = TextureAssets.Projectile[Projectile.type].Value;
+            Main.spriteBatch.Draw(Texture2, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Texture2.Width / 2, Texture2.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(0, 2, 30, 50) * (1f - p));
@@ -264,6 +244,8 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
             {
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
+
+
             SwordSlash.Draw(Projectile.oldPos, rotation);
             SwordSlash2.Draw(Projectile.oldPos, rotation);
             SwordSlash3.Draw(Projectile.oldPos, rotation);
@@ -346,35 +328,12 @@ namespace Stellamod.Projectiles.Slashers.SingularDive
         {
             writer.Write(SwingTime);
             writer.Write(SwingDistance);
-            writer.WriteVector2(returnPosOffset);
-            writer.WriteVector2(npcHookOffset);
-            writer.Write(npcHookRotation);
-            writer.Write(Flip);
-            writer.Write(Slam);
-            writer.Write(Curvature);
-
-            if (hookNPC == default(NPC)) //Write a -1 instead if the npc isnt set
-                writer.Write(-1);
-            else
-                writer.Write(hookNPC.whoAmI);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             SwingTime = reader.ReadInt32();
             SwingDistance = reader.ReadSingle();
-            returnPosOffset = reader.ReadVector2();
-            npcHookOffset = reader.ReadVector2();
-            npcHookRotation = reader.ReadSingle();
-            Flip = reader.ReadBoolean();
-            Slam = reader.ReadBoolean();
-            Curvature = reader.ReadSingle();
-
-            int whoAmI = reader.ReadInt32(); //Read the whoami value sent
-            if (whoAmI == -1) //If its a -1, sync that the npc hasn't been set yet
-                hookNPC = default;
-            else
-                hookNPC = Main.npc[whoAmI];
         }
     }
 }
