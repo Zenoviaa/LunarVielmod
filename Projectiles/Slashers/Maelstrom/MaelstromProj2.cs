@@ -15,12 +15,12 @@ using Stellamod.Items.Accessories.Players;
 using ParticleLibrary;
 using Stellamod.Particles;
 
-namespace Stellamod.Projectiles.Slashers.ThefirstAurora
+namespace Stellamod.Projectiles.Slashers.Maelstrom
 {
-    public class AuroraSProj : ModProjectile
+    public class MaelstromProj2 : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 100;
+        public int SwingTime = 240;
         public float holdOffset = 60f;
         public int combowombo;
         private bool _initialized;
@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
@@ -83,18 +83,18 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
             Timeddeath++;
 
 
-            
-         //   if (Timeddeath >= 45)
-          // {
-         //       Projectile.Kill();
-         //  }
+
+            //   if (Timeddeath >= 45)
+            // {
+            //       Projectile.Kill();
+            //  }
 
             Player player = Main.player[Projectile.owner];
             if (!_initialized && Main.myPlayer == Projectile.owner)
             {
                 timer++;
 
-                SwingTime = (int)(100 / player.GetAttackSpeed(DamageClass.Melee));
+                SwingTime = (int)(240 / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
                 Projectile.timeLeft = SwingTime;
                 _initialized = true;
@@ -111,6 +111,8 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
                 Projectile.alpha = 0;
                 if (timer == 1)
                 {
+                    player.GetModPlayer<MyPlayer>().SwordCombo = 0;
+                    player.GetModPlayer<MyPlayer>().SwordComboR = 0;
                     Projectile.damage += 9999;
                     Projectile.damage *= 3;
 
@@ -131,14 +133,14 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
                 }
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
                 Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 25;
-              
+                Projectile.localNPCHitCooldown = 30;
+
                 int dir = (int)Projectile.ai[1];
                 float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();
                 // starting rotation
-                float endSet = ((MathHelper.Pi) / 0.2f);
+                float endSet = ((MathHelper.Pi) * 2 / 0.2f);
                 float start = defRot - endSet;
 
                 // ending rotation
@@ -181,31 +183,36 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
 
 
         public override bool ShouldUpdatePosition() => false;
-
         public bool bounced = false;
+
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
-
-
-            Vector2 oldMouseWorld = Main.MouseWorld;
-            if (!bounced)
+            if (Timer <= 120)
             {
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * -5f;
-                bounced = true;
-            }
+                Player player = Main.player[Projectile.owner];
 
-            if (target.lifeMax <= 300)
-            {
-                if (target.life < target.lifeMax / 2)
+                Vector2 oldMouseWorld = Main.MouseWorld;
+                if (!bounced)
                 {
-                    target.SimpleStrikeNPC(9999, 1, crit: false, 1);
+                    player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
+                    bounced = true;
                 }
-            }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
-            player.GetModPlayer<MyPlayer>().SwordCombo++;
-            player.GetModPlayer<MyPlayer>().SwordComboR = 480;
+                if (target.lifeMax <= 1000)
+                {
+                    if (target.life < target.lifeMax / 2)
+                    {
+                        target.SimpleStrikeNPC(9999, 1, crit: false, 1);
+                    }
+                }
+
+                
+
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+            }
+           
+
         }
 
 
@@ -231,26 +238,26 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
 
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
             var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
+            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
+            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
 
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(110, 15, 250, 90) * (1f - p));
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(110, 255, 150, 90) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(90f), (p) => new Color(10, 150, 250, 100) * (1f - p));
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(90f), (p) => new Color(250, 150, 200, 100) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
 
             }
             if (SwordSlash3 == null)
             {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(100f), (p) => new Color(10, 105, 250, 90) * (1f - p));
+                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(100f), (p) => new Color(10, 250, 25, 90) * (1f - p));
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
 
             }
@@ -311,7 +318,7 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
-           
+
             float mult = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft));
             float alpha = (float)Math.Sin(mult * Math.PI);
             Vector2 pos = player.Center + Projectile.velocity * (mult);

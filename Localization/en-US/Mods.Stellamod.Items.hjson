@@ -5879,8 +5879,15 @@ IrradiatedArrow: {
 
 STARBLOCKER: {
 	DisplayName: STARBLOCKER
-	Tooltip:
-		'''
-		Use this to reject a Aurorean Starfall :(
-		'''
+	Tooltip: Use this to reject a Aurorean Starfall :(
+}
+
+Maelstrom: {
+	DisplayName: Maelstrom
+	Tooltip: ""
+}
+
+TheFirstAurora: {
+	DisplayName: The First Aurora
+	Tooltip: ""
 }

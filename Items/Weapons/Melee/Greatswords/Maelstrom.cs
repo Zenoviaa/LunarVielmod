@@ -13,9 +13,15 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee
+using Stellamod.Projectiles.Safunai.Alcarish;
+using System.Collections.Generic;
+using System.IO;
+
+using Stellamod.Projectiles.Slashers.Maelstrom;
+
+namespace Stellamod.Items.Weapons.Melee.Greatswords
 {
-    public class TheFirstAurora : ModItem
+    public class Maelstrom : ModItem
     {
         public int AttackCounter = 1;
         public int combowombo = 0;
@@ -27,23 +33,38 @@ namespace Stellamod.Items.Weapons.Melee
                 "\nHitting enemies with sword will increase speed!" +
                 "\nDivergency Inspired!"); */
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
 
+            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+            var line = new TooltipLine(Mod, "", "");
+            line = new TooltipLine(Mod, "Alcarishasd", "Greatsword Weapon Type")
+            {
+                OverrideColor = new Color(308, 171, 299)
+
+            };
+            tooltips.Add(line);
+
+
+
+
+        }
         public override void SetDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 32;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;
-            Item.useTime = 100;
-            Item.useAnimation = 100;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 12;
+            Item.knockBack = 5;
             Item.value = 10000;
             Item.noMelee = true;
 
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.shoot = ModContent.ProjectileType<AuroraSProj>();
+            Item.shoot = ModContent.ProjectileType<MaelstromProj>();
             Item.shootSpeed = 1f;
             Item.noUseGraphic = true;
             Item.value = Item.sellPrice(0, 2, 50, 0);
@@ -54,12 +75,13 @@ namespace Stellamod.Items.Weapons.Melee
         {
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
             {
-                type = ModContent.ProjectileType<AuroraSProj>();
-
+                type = ModContent.ProjectileType<MaelstromProj>();
+                damage = Item.damage;
             }
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
             {
-                type = ModContent.ProjectileType<AuroraSProj>();
+                type = ModContent.ProjectileType<MaelstromProj2>();
+                damage = 60;
                 SoundEngine.PlaySound(SoundID.Item34, player.position);
             }
         }
@@ -79,12 +101,21 @@ namespace Stellamod.Items.Weapons.Melee
             }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
-           // Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);
-          //  Projectile.NewProjectile(source, position, velocity * 0.8f, ModContent.ProjectileType<AuroranBullet2>(), damage * 2, knockback, player.whoAmI, 1, dir);
-           // Projectile.NewProjectile(source, position, velocity * 1.2f, ModContent.ProjectileType<AuroranBullet3>(), damage * 2, knockback, player.whoAmI, 1, dir);
-            return false;
+
+            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
+            {
+                float numberProjectiles = 5;
+                float rotation = MathHelper.ToRadians(20);
+                position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
+                for (int i = 0; i < numberProjectiles; i++)
+                {
+                    Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
+                    Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<MaelstromShotProj>(), damage, Item.knockBack, player.whoAmI);
+                }
+            }
+                return false;
         }
 
-        
+
     }
 }
