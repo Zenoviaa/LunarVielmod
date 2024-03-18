@@ -104,7 +104,7 @@ namespace Stellamod.Items.Weapons.Mage
             for (int k = 0; k < count; k++)
             {
                 Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                newVelocity *= 1f - Main.rand.NextFloat(0.8f);
                 Dust.NewDust(position, 0, 0, DustID.CopperCoin, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
             }
 
