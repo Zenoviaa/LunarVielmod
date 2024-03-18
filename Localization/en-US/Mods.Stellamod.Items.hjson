@@ -5836,3 +5836,13 @@ LuminullSpiritFragments: {
 	Tooltip: ""
 	DisplayName: Luminull Spirit Fragments
 }
+
+TheFirstAurora: {
+	Tooltip: ""
+	DisplayName: The First Aurora
+}
+
+IceRuneI: {
+	Tooltip: ""
+	DisplayName: Ice Rune I
+}
