@@ -98,7 +98,7 @@ namespace Stellamod.Projectiles.Magic
                 if (npc.boss)
                     continue;
 
-                if (npc.active && npc.chaseable)
+                if (npc.active && npc.chaseable && npc.damage > 0 && !npc.friendly)
                 {
                     float distance = Vector2.Distance(Projectile.Center, npc.Center);
                     if (distance <= ai_suckDistance)
