@@ -19,6 +19,7 @@ namespace Stellamod.NPCs.Town
         public static Point LittleWitchTownTile;
         public static Point MechanicsTownTile;
         public static Point LabTile;
+        public static Point GiaTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -29,6 +30,8 @@ namespace Stellamod.NPCs.Town
 
 
         public static Point LabSpawnTileOffset => new Point(39, -20);
+
+        public static Point GiaSpawnTileOffset => new Point(14, -7);
 
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
@@ -41,6 +44,8 @@ namespace Stellamod.NPCs.Town
 
 
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
+
         public static bool TownedGia;
         public override void NetSend(BinaryWriter writer)
         {
@@ -50,6 +55,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(MechanicsTownTile.ToVector2());
             writer.WriteVector2(LabTile.ToVector2());
             writer.Write(TownedGia);
+            writer.WriteVector2(GiaTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -60,7 +66,10 @@ namespace Stellamod.NPCs.Town
             MechanicsTownTile = reader.ReadVector2().ToPoint();
             LabTile = reader.ReadVector2().ToPoint();
             TownedGia = reader.ReadBoolean();
+            GiaTile = reader.ReadVector2().ToPoint();
         }
+
+
 
         public override void PostUpdateWorld()
         {
@@ -128,6 +137,14 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
+                        ModContent.NPCType<Gia>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
             }
         }
 
@@ -147,6 +164,7 @@ namespace Stellamod.NPCs.Town
             tag["LittleWitchTownTile"] = LittleWitchTownTile;
             tag["MechanicsTownTile"] = MechanicsTownTile;
             tag["LabTile"] = LabTile;
+            tag["GiaTile"] = GiaTile;
             tag["TownedGia"] = TownedGia;
         }
 
@@ -158,6 +176,7 @@ namespace Stellamod.NPCs.Town
             LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
             MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
             LabTile = tag.Get<Point>("LabTile");
+            GiaTile = tag.Get<Point>("GiaTile");
             TownedGia = tag.GetBool("TownedGia");
         }
     }

@@ -104,6 +104,7 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
+			NPC.dontTakeDamage = true;
 
 			
 
