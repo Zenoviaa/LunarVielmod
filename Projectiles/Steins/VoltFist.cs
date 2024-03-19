@@ -121,28 +121,30 @@ namespace Stellamod.Projectiles.Steins
 				bounced = true;
 			}
 			//Wow, Amazing, So Hot, SEXY, Great
-			switch (Main.rand.Next(5))
+			switch (Main.rand.Next(2))
 			{
 				case 0:
-
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 					break;
 				case 1:
-			
-					break;
-				case 2:
-			
-					break;
-				case 3:
-			
-
-					break;
-				case 4:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Amazing>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 					break;
 
-			
-		
 			}
+			float rot = player.velocity.ToRotation();
+			float spread = 0.6f;
+
+			Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
+			for (int k = 0; k < 7; k++)
+			{
+				Vector2 direction = offset.RotatedByRandom(spread);
+				Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 180, 40), 1);
+				Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.LightGoldenrodYellow * 0.5f, Main.rand.NextFloat(0.5f, 1));
+
+			}
+
+
+
 
 			switch (Main.rand.Next(3))
 			{
@@ -150,21 +152,49 @@ namespace Stellamod.Projectiles.Steins
 					target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
+
+					for (int i = 0; i < 26; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+					}
+					for (int i = 0; i < 20; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+					}
+
+
+
 					break;
 				case 1:
 
 					target.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+					for (int i = 0; i < 26; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+					}
+					for (int i = 0; i < 20; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+					}
 					break;
 				case 2:
 					target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit3>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+					for (int i = 0; i < 26; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+					}
+					for (int i = 0; i < 20; i++)
+					{
+						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+					}
 					break;
 
 			}
 
 			target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, 1);
-			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
+			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
 		
 			
 			if (target.lifeMax <= 1000)

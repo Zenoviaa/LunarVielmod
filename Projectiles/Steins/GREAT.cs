@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.Steins
 {
 
 
-	public class AMAZING : ModProjectile
+	public class GREAT : ModProjectile
 	{
 		private static float _orbitCounter;
 		public enum AttackState
@@ -34,8 +34,8 @@ namespace Stellamod.Projectiles.Steins
 
 		public sealed override void SetDefaults()
 		{
-			Projectile.width = 132;
-			Projectile.height = 36;
+			Projectile.width = 103;
+			Projectile.height = 31;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 
 			// These below are needed for a minion weapon
@@ -65,25 +65,26 @@ namespace Stellamod.Projectiles.Steins
 			Explosion++;
 
 			if (Explosion > 119)
-            {
+			{
 				float speedX = Main.rand.Next(-9, 9);
-				float speedY =  Main.rand.Next(-9, 9);
+				float speedY = Main.rand.Next(-9, 9);
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
+
 				for (int i = 0; i < 5; i++)
 				{
-
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GunFlash>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+					
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<GreatShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.LightPink, 1f).noGravity = true;
 				}
 
 				Projectile.Kill();
 			}
 
-				Vector2 circlePosition = CalculateCirclePosition(owner);
-				float speed = 48;
-				Projectile.velocity = Vector2.Lerp(Projectile.velocity, VectorHelper.VelocitySlowdownTo(Projectile.Center, circlePosition, speed), 0.1f);
-			
-			
+			Vector2 circlePosition = CalculateCirclePosition(owner);
+			float speed = 48;
+			Projectile.velocity = Vector2.Lerp(Projectile.velocity, VectorHelper.VelocitySlowdownTo(Projectile.Center, circlePosition, speed), 0.1f);
+
+
 
 			Visuals();
 		}
