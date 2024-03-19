@@ -5918,7 +5918,8 @@ TwilitTome: {
 }
 
 Voltenstein: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		A shocking experience!
 		Tap to your cursor to dash into electrifying damage! 
 		Hitting enemies will give you bonus damage and immunity for reward! 

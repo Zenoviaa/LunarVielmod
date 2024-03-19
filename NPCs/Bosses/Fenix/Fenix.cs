@@ -113,8 +113,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
-		
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 12));
@@ -175,6 +174,10 @@ namespace Stellamod.NPCs.Bosses.Fenix
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+			return false;
+        }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

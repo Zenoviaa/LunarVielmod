@@ -117,7 +117,7 @@ namespace Stellamod.Projectiles.Summons
 		
 		public override bool PreDraw(ref Color lightColor)
 		{
-			DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Transparent, ref lightColor);
+			DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
 			return true;
 		}
 

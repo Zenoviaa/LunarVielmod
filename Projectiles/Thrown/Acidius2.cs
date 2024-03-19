@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -42,8 +43,9 @@ namespace Stellamod.Projectiles.Thrown
 			if (Main.rand.NextBool(3))
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GreenFairy);
-			}
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
+            }
 
 			return true;
 		}
@@ -73,7 +75,8 @@ namespace Stellamod.Projectiles.Thrown
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GreenFairy);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
             }
         }
     }

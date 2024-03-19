@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.INest;
@@ -50,13 +51,15 @@ namespace Stellamod.NPCs.Acidic
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = 74;
-            int d1 = DustID.CursedTorch;
-            for (int k = 0; k < 30; k++)
+            for (int k = 0; k < 3; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GlowDust>(), newColor: new Color(24, 142, 61));
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: new Color(24, 142, 61));
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
             }
+
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 20; i++)
@@ -179,9 +182,26 @@ namespace Stellamod.NPCs.Acidic
             {
                 if (Timer % 11 == 0)
                 {
+                    float rot = NPC.velocity.ToRotation();
+                    float spread = 0.4f;
+                         
+        
+                    Vector2 position = NPC.position;
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    Vector2 offset = new Vector2(1.5f, 0).RotatedBy(direction.ToRotation());
+                    for (int k = 0; k < 7; k++)
+                    {
+                        Vector2 direction2 = offset.RotatedByRandom(spread);
+
+
+                        Dust.NewDustPerfect(NPC.Center + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, ColorFunctions.AcidFlame, Main.rand.NextFloat(0.2f, 0.5f));
+                    }
+
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, ColorFunctions.AcidFlame * 0.5f, Main.rand.NextFloat(0.5f, 1));
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AcidProbe3"), NPC.position);
                     Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 512f, 4f);
-                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+        
                     SoundEngine.PlaySound(SoundID.Item8, NPC.position);
                     SoundEngine.PlaySound(SoundID.Zombie53, NPC.position);
                     float offsetX = Main.rand.Next(-350, 350) * 0.01f;

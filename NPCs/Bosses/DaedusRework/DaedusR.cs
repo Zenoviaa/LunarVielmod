@@ -122,6 +122,10 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
 
         int frame = 0;
         public override void FindFrame(int frameHeight)

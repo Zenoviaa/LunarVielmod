@@ -68,7 +68,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
                new Vector3(3, 3, 3), 0);
 
             DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
-            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 0);
+            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 0);
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightGreen, Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
         }

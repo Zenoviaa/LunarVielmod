@@ -69,6 +69,10 @@ namespace Stellamod.NPCs.Bosses.INest
         {
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return starter > 60;
+        }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -251,11 +255,6 @@ namespace Stellamod.NPCs.Bosses.INest
             starter++;
             NPC.dontTakeDamage = _invincible;
             NPC.dontCountMe = _invincible;
-            if (starter > 60)
-            {
-                NPC.damage = 150;
-            }
-
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {

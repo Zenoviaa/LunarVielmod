@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -40,9 +41,11 @@ namespace Stellamod.NPCs.Bosses.INest
 
             for (int i = 0; i < 15; i++)
 			{
-				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
-				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
-			}
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
+            }
 
 			for (int i = 0; i < 30; i++)
 			{

@@ -14,6 +14,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Crossbows.Eckasect
 {
@@ -42,8 +43,10 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, 0f);
-			Main.dust[dust].scale = 0.6f;
+			int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, 
+				DustID.GreenFairy, 0f, 0f);
+
+            Main.dust[dust].scale = 0.6f;
 			tima++;
 
 			if (tima < 10)

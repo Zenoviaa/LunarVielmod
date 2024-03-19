@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
 using Terraria;
@@ -63,13 +64,15 @@ namespace Stellamod.NPCs.Acidic
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = 74;
-            int d1 = DustID.CursedTorch;
-            for (int k = 0; k < 30; k++)
+            for (int k = 0; k < 3; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GlowDust>(), newColor: ColorFunctions.AcidFlame);
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
             }
+
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 20; i++)
@@ -88,10 +91,9 @@ namespace Stellamod.NPCs.Acidic
         {
             if (Main.rand.NextBool(6))
             {
-                int dust = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.GreenFairy);
-                int dust1 = Dust.NewDust(NPC.position + NPC.velocity, NPC.width, NPC.height, DustID.GreenFairy);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust1].noGravity = true;
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
             }
         }
 

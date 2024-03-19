@@ -224,5 +224,17 @@ namespace Stellamod.NPCs.Acidic
             int frame = (int)NPC.frameCounter;
             NPC.frame.Y = frame * frameHeight;
         }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GlowDust>(), newColor: new Color(24, 142, 61));
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: new Color(24, 142, 61));
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
+            }
+        }
     }
 }

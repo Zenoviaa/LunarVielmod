@@ -15,6 +15,7 @@ using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
@@ -36,6 +37,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         public int Timer = 0;
         public int PrevAttac = 0;
         public int MaxAttac = 0;
+        public int Starter;
         public static int LazerType = 0;
         public static int SingularityOrbs = 0;
         public static Vector2 SingularityPos;
@@ -44,6 +46,11 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             Main.npcFrameCount[NPC.type] = 30;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return Spawner > 30;
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
