@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.width = 96;
             Item.height = 96;
             Item.DamageType = DamageClass.Throwing;
-            Item.damage = 100;
+            Item.damage = 42;
             Item.useTime = 100;
             Item.useAnimation = 100;
             Item.useStyle = ItemUseStyleID.Shoot;
