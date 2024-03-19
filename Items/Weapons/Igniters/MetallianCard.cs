@@ -69,6 +69,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

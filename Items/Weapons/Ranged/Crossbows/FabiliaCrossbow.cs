@@ -49,10 +49,10 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Stinger, 10);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
+            recipe.AddIngredient(ItemID.Stinger, 4);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
             recipe.AddIngredient(ModContent.ItemType<MerchantCrossbow>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
 
             recipe.Register();
         }

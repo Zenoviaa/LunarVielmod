@@ -2,6 +2,7 @@
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -54,6 +55,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 200);
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ItemID.Amber, 15);
 			recipe.AddIngredient(ItemID.SoulofFright, 5);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());

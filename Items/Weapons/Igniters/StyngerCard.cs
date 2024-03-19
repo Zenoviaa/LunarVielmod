@@ -67,6 +67,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 5);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddIngredient(ItemID.Stinger, 5);
 			recipe.AddIngredient(ItemID.Stynger, 1);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 10);

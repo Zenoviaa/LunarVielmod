@@ -62,9 +62,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.FallenStar, 1);
-			recipe.AddIngredient(ItemID.Wood, 30);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.Register();
 		}
 

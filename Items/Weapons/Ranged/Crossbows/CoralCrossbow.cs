@@ -50,8 +50,8 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Coral, 10);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 15);
             recipe.AddIngredient(ModContent.ItemType<DesertCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<DungeonCrossbow>(), 1);

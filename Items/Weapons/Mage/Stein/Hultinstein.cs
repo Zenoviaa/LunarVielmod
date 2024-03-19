@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage.Stein
 {
-	public class Voltenstein : ModItem
+	public class Hultinstein : ModItem
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;
@@ -23,15 +23,15 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 62;
+			Item.damage = 12;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 0;
 			Item.height = 0;
 			Item.useTime = 100;
 			Item.useAnimation = 90;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 2;
-			Item.value = 10000;
+			Item.knockBack = 10;
+			Item.value = Item.buyPrice(0, 7, 50, 0);
 			Item.noMelee = true;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
 using System.Collections.Generic;
@@ -94,6 +95,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<SandyBroochA>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<BearBroochA>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 5);

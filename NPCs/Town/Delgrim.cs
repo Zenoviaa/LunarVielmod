@@ -14,6 +14,7 @@ using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Safunais;
@@ -490,11 +491,17 @@ namespace Stellamod.NPCs.Town
 			var npcShop = new NPCShop(Type, ShopName)
 			.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 5) })
 			.Add<Hitme>()
+			.Add<Hultinstein>()
 			.Add<VillagersBroochA>()
 			.Add<DriveConstruct>()
 			.Add<ArmorDrive>()
 			.Add<WeaponDrive>()
-            .Add<CogBomber>(Condition.Hardmode)
+			.Add<BlankCard>()
+			.Add<BlankCrossbow>()
+			.Add<BlankSafunai>()
+			.Add<BlankRune>()
+			.Add<BlankBrooch>()
+			.Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)
             .Add<DelgrimsHammer>(Condition.Hardmode)

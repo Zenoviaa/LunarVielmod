@@ -60,6 +60,7 @@ namespace Stellamod.Items.Accessories.Brooches
         public override void AddRecipes()
         {
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 15);
 			recipe.AddIngredient(ItemID.LifeCrystal, 5);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());

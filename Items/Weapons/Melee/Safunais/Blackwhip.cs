@@ -96,6 +96,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
 			recipe.Register();
 		}
 		public override float UseTimeMultiplier(Player player) => player.GetAttackSpeed(DamageClass.Melee); //Scale with melee speed buffs, like whips

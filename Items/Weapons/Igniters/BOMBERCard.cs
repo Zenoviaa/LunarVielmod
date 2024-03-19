@@ -71,6 +71,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
 			recipe.AddIngredient(ItemID.Leather, 9);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

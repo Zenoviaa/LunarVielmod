@@ -62,6 +62,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 100);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 100);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 30);
