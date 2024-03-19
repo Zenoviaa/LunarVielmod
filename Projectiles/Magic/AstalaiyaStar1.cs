@@ -16,7 +16,7 @@ namespace Stellamod.Projectiles.Magic
         {
             // DisplayName.SetDefault("Sun Death");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
         public override void SetDefaults()
         {

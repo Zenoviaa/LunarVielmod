@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using System;
@@ -132,12 +133,39 @@ namespace Stellamod.Projectiles.Safunai.Parendine
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 
-			ShakeModSystem.Shake = 4;
+	
 			SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
 
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX, speedY, ModContent.ProjectileType<FrostKaboom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+	
+			if (Slam)
+            {
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Parendine"));
+                for (int i = 0; i < 14; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 14; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
+                }
+			}
+			else
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Parendine2"));
+                ShakeModSystem.Shake = 4;
+                for (int i = 0; i < 8; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.AliceBlue, 0.5f).noGravity = true;
+                }
+            }
+
 
 
 		}

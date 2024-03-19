@@ -24,15 +24,15 @@ namespace Stellamod.Projectiles.Slashers.GrailAxe
 
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 35;
-            base.Projectile.width = 12;
-            base.Projectile.height = 12;
-            base.Projectile.timeLeft = 250;
-            base.Projectile.alpha = 0;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 35;
+            Projectile.width = 8;
+            Projectile.height = 8;
+            Projectile.timeLeft = 250;
+            Projectile.alpha = 0;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

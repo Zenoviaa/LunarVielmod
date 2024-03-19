@@ -17,8 +17,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		{
 			Projectile.friendly = true;
 			Projectile.hostile = false;
-			Projectile.width = 93;
-			Projectile.height = 75;
+			Projectile.width = 133;
+			Projectile.height = 166;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 21;
 			Projectile.scale = 1f;

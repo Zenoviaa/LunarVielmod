@@ -45,12 +45,14 @@
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Dusts\BubbleDust.png" />
+    <None Remove="Dusts\GunFlash.png" />
     <None Remove="Dusts\LumiDust.png" />
     <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
@@ -473,6 +475,8 @@
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Items\Weapons\Mage\Stein\" />
     <Folder Include="Projectiles\Hostile\" />
+    <Folder Include="Projectiles\FX\" />
+    <Folder Include="Projectiles\Steins\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />
   </ItemGroup>

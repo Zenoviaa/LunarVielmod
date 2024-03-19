@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IceRuneI>(), 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IceRuneI  >(), 1, 1));
         }
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
         public virtual string GlowTexturePath => Texture + "_Glow";

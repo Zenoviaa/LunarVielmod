@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Swords;
 using Terraria;
 using Terraria.DataStructures;

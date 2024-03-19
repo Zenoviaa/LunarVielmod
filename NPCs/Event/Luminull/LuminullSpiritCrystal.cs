@@ -209,7 +209,7 @@ namespace Stellamod.NPCs.Event.Luminull
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/LSC2"));
                 for (int i = 0; i < 14; i++)
                 {
-                    Dust.NewDustPerfect(base.NPC.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
+                    Dust.NewDustPerfect(base.NPC.Center, ModContent.DustType<GlowLineDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.MediumPurple, 1f).noGravity = true;
                 }
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
