@@ -30,8 +30,8 @@ namespace Stellamod.Projectiles.Steins
 		{
 			// DisplayName.SetDefault("Slasher");
 			Main.projFrames[Projectile.type] = 1;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20; // The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 3; // The recording mode
 		}
 		public override void SetDefaults()
 		{
@@ -46,6 +46,7 @@ namespace Stellamod.Projectiles.Steins
 			Projectile.friendly = true;
 			Projectile.scale = 1f;
 		}
+		int timer = 0;
 		public float Timer
 		{
 			get => Projectile.ai[0];
@@ -81,8 +82,8 @@ namespace Stellamod.Projectiles.Steins
 			if (!player.active || player.dead || player.CCed || player.noItems)
 				return;
 			Vector2 teleportPosition = Main.MouseWorld;
-			Timer++;
-			if (Timer < 2)
+			timer++;
+			if (timer < 5)
             {
 				player.Teleport(teleportPosition);
 				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
@@ -93,11 +94,11 @@ namespace Stellamod.Projectiles.Steins
 
 
 			Vector2 oldMouseWorld = Main.MouseWorld;	
-			if (Timer < 5)
-				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 5f;
+			if (timer < 5)
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
 
 
-			if (Timer > 5)
+			if (timer > 5)
             {
 				player.itemTime = 90;
 				player.itemAnimation = 90;
