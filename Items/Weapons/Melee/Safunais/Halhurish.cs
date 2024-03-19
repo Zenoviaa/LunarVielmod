@@ -121,6 +121,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
 			recipe.Register();
 		}
 		public override float UseTimeMultiplier(Player player) => player.GetAttackSpeed(DamageClass.Melee); //Scale with melee speed buffs, like whips

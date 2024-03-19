@@ -49,7 +49,7 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 3);
-            recipe.AddIngredient(ItemID.IceBoomerang, 1);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WoodenCrossbow>(), 1);
             recipe.Register();
         }

@@ -2,6 +2,7 @@
 using Stellamod.Brooches;
 using Stellamod.Buffs.Charms;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Tiles;
 using System.Collections.Generic;
 using Terraria;
@@ -53,10 +54,10 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 10);
 			recipe.AddIngredient(ItemID.Silk, 5);
-			recipe.AddIngredient(ItemID.Torch, 10);
 			recipe.AddIngredient(ItemID.CopperShortsword, 1);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();

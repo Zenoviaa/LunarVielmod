@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles.Crossbows.Lead;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Crossbows.Lead;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -46,7 +47,9 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
         public override void AddRecipes()
         {
+           
             Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ItemID.LeadBar, 7);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

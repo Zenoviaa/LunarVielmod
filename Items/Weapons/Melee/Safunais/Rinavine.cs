@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Safunai.Parendine;
 using Stellamod.Projectiles.Safunai.Rinavine;
@@ -93,7 +94,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.MythrilAnvil);
 
-
+			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
 			recipe.AddIngredient(ItemID.Chain, 15);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 5);
 			recipe.AddIngredient(ItemID.FallenStar, 10);

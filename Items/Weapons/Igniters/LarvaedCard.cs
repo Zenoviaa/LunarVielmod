@@ -68,6 +68,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

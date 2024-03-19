@@ -51,9 +51,8 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
 
             recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 30);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 13);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 13);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.AddIngredient(ItemID.Cobweb, 100);
-            recipe.AddIngredient(ItemID.WebSlinger, 1);
 
             recipe.Register();
 

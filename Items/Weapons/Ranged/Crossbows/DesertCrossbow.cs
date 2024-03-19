@@ -1,4 +1,5 @@
-﻿using Stellamod.Projectiles.Crossbows.Magical;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Crossbows.Magical;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -47,8 +48,9 @@ namespace Stellamod.Items.Weapons.Ranged.Crossbows
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.AntlionMandible, 20);
+            recipe.AddIngredient(ItemID.AntlionMandible, 5);
             recipe.AddIngredient(ItemID.SandBlock, 100);
+            recipe.AddIngredient(ModContent.ItemType<BlankCrossbow>(), 1);
             recipe.Register();
         }
 

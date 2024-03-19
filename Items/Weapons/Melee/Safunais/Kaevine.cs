@@ -95,6 +95,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			recipe.AddIngredient(ItemID.Stinger, 8);
 			recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 12);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 12);
+			recipe.AddIngredient(ModContent.ItemType<BlankSafunai>(), 1);
 			recipe.Register();
 		}
 
