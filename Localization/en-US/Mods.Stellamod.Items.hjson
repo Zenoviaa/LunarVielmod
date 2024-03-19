@@ -5950,7 +5950,8 @@ BlankSafunai: {
 
 Hultinstein: {
 	DisplayName: Hultinstein
-	Tooltip: '''
+	Tooltip:
+		'''
 		A brawling experience!
 		Tap to your cursor to dash into some damn high damage! 
 		Hitting enemies will give you bonus damage with words and immunity for reward! 

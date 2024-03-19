@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 			Item.shoot = ModContent.ProjectileType<HultFist>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
-			Item.crit = 46;
+			Item.crit = 26;
 		}
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
