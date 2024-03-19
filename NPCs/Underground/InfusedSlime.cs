@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Underground
         {
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Cavern.Chance * 0.5f);
+            return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
         }
 
         private void Visuals()

@@ -18,8 +18,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		{
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
-			Projectile.width = 129;
-			Projectile.height = 129;
+			Projectile.width = 258;
+			Projectile.height = 258;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 30;
 			Projectile.scale = 1.3f;

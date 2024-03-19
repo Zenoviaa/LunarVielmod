@@ -324,6 +324,7 @@ namespace Stellamod
                     return; // This is important so your code after this that rolls items will not run
                 }
             }
+		
 
             if (Player.ZoneSnow && Main.rand.NextBool(chance))
             {

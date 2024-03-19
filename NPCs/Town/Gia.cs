@@ -11,6 +11,8 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Whips;
@@ -104,6 +106,7 @@ namespace Stellamod.NPCs.Town
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
+			NPC.dontTakeDamage = true;
 
 			
 
@@ -381,6 +384,77 @@ namespace Stellamod.NPCs.Town
 
 
 				}
+
+
+				if (Main.LocalPlayer.HasItem(ModContent.ItemType<IceRuneI>()))
+				{
+					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1")); // Reforge/Anvil sound
+
+					Main.npcChatText = $"I give you my thanks for this Sky artifact, it'll help further my reserch to fixing this mess!";
+
+					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<IceRuneI>());
+					var entitySource = NPC.GetSource_GiftOrReward();
+
+					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					switch (Main.rand.Next(7))
+					{
+
+
+						case 0:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceBlade, 1);
+							break;
+						case 1:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SnowballCannon, 1);
+							break;
+						case 2:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Parendine>(), 1);
+
+							break;
+
+						case 3:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceBlock, 25);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
+
+							break;
+
+						case 4:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TheFirstAurora>());
+
+							break;
+
+						case 5:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 100);
+
+							break;
+
+						case 6:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BlizzardinaBottle, 1);
+
+							break;
+						case 7:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceSkates, 1);
+							break;
+					}
+
+
+
+					return;
+
+
+
+				}
+
 
 
 

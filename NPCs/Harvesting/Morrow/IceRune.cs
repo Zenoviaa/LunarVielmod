@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 16f);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
-                CombatText.NewText(NPC.getRect(), Color.LightBlue, "Sky Harvest Collected!", true, false);
+                CombatText.NewText(NPC.getRect(), Color.LightBlue, "Ice Harvest Collected!", true, false);
             }
         }
 

@@ -16,8 +16,8 @@ namespace Stellamod.Projectiles
 		public override void SetDefaults()
 		{
 			Projectile.friendly = true;
-			Projectile.width = 45;
-			Projectile.height = 45;
+			Projectile.width = 128;
+			Projectile.height = 129;
 			
 			Projectile.timeLeft = 40;
 			Projectile.scale = 1.2f;

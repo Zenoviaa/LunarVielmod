@@ -5471,8 +5471,8 @@ OnionOfHeight: {
 }
 
 TheAurora: {
-	DisplayName: The Aurora
-	Tooltip: ""
+	DisplayName: Astral Blast
+	Tooltip: Take the aurora with smart blasts!
 }
 
 ChromaCutter: {
@@ -5563,7 +5563,7 @@ Scatterbombs: {
 }
 
 VacuumDrill: {
-	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beat me.
+	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beats me.
 	DisplayName: Vacuum Drill
 }
 
@@ -5838,16 +5838,71 @@ LuminullSpiritFragments: {
 }
 
 IceRuneI: {
-	Tooltip: ""
-	DisplayName: Ice Rune I
+	Tooltip: Maybe a scientist can look at this?
+	DisplayName: Ancient Artifact
 }
 
-DirtGlove: {
-	DisplayName: Dirt Glove
+TitaniumBullet: {
+	DisplayName: Titanium Bullet
+	Tooltip: Strikes twice, the 2nd hit is weaker but pierces armor
+}
+
+RadiantArrow: {
+	DisplayName: Radiant Arrow
+	Tooltip: Speeds up over time and homes into targets, ignoring all defense!
+}
+
+AdamantiteBullet: {
+	DisplayName: Adamantite Bullet
+	Tooltip: Strikes twice, the 2nd hit is weaker but pierces armor
+}
+
+EldritchArrow: {
+	DisplayName: Eldritch Arrow
+	Tooltip: Spawns planetoids that shoot a bolt at nearby enemies when hit again
+}
+
+DriveRound: {
+	DisplayName: Drive Round
+	Tooltip: Infinitely pierces through all targets and explodes on each hit!
+}
+
+SpacialDistortionBullet: {
+	DisplayName: Spacial Distortion Bullet
+	Tooltip: Inflicts Abyssal Flame
+}
+
+IrradiatedArrow: {
+	DisplayName: Irradiated Arrow
+	Tooltip: Splits off into little robots that shoot irradiated lasers at enemies!
+}
+
+STARBLOCKER: {
+	DisplayName: STARBLOCKER
+	Tooltip: Use this to reject a Aurorean Starfall :(
+}
+
+Maelstrom: {
+	DisplayName: Maelstrom
+	Tooltip: Sirestias really is kind isn't she?
+}
+
+TheFirstAurora: {
+	DisplayName: Icefrect Longsword
+	Tooltip: A weapon of great renown and slicing!
+}
+
+ThePenetrator: {
+	DisplayName: The Penetrator
 	Tooltip: ""
 }
 
-TwilitTome: {
+SingularDive: {
+	DisplayName: Singular Dive
+	Tooltip: Right click to use little minions and a long spin to hit enemies!
+}
+
+DelgrimsHammer: {
 	Tooltip: ""
-	DisplayName: Twilit Tome
+	DisplayName: Delgrims Hammer
 }

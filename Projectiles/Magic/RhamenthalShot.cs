@@ -46,19 +46,12 @@ namespace Stellamod.Projectiles.Magic
 
             if (greb == 5)
             {
-                float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.00f + Main.rand.Next(0, 0) * 0.0f;
-
-
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXabc, Projectile.Center.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<KaBoomFenix>(), 100, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<KaBoomFenix>(), 100, 0f, Projectile.owner, 0f, 0f);
              
                 for (int i = 0; i < 5; i++)
                 {
-
-
                     ParticleManager.NewParticle(Projectile.Center, (Vector2.One * Main.rand.Next(1, 10)).RotatedByRandom(10.0), ParticleManager.NewInstance<morrowstar2>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
                 }
 
                 greb = 0;

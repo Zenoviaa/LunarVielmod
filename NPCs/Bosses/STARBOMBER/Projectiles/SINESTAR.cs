@@ -46,9 +46,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			{
 				if(Main.myPlayer == Projectile.owner)
 				{
-                    float speedXabc = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-                    float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                    int fireball = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0,
+             
+                    int fireball = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 0, 0f, Projectile.owner);
                     Projectile ichor = Main.projectile[fireball];
                     ichor.hostile = true;

@@ -56,7 +56,8 @@ namespace Stellamod.Projectiles.Magic
 				float speedYabc = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, ModContent.ProjectileType<AlcaricMushBoom2>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXabc, Projectile.position.Y + speedYabc, speedXabc * 0, speedYabc * 0, 
+					ModContent.ProjectileType<AlcaricMushBoom2>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				Timer = 0;
 
 
