@@ -5903,7 +5903,7 @@ SingularDive: {
 }
 
 DelgrimsHammer: {
-	Tooltip: ""
+	Tooltip: He's working hard
 	DisplayName: Delgrims Hammer
 }
 
@@ -5918,6 +5918,11 @@ TwilitTome: {
 }
 
 Voltenstein: {
-	Tooltip: ""
+	Tooltip: '''
+		A shocking experience!
+		Tap to your cursor to dash into electrifying damage! 
+		Hitting enemies will give you bonus damage and immunity for reward! 
+		The better the glove the more words!
+		'''
 	DisplayName: Voltenstein
 }
