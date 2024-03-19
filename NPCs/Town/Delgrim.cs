@@ -15,6 +15,7 @@ using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
@@ -496,6 +497,7 @@ namespace Stellamod.NPCs.Town
             .Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)
+            .Add<DelgrimsHammer>(Condition.Hardmode)
             .Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			;
 			npcShop.Register(); // Name of this shop tab		

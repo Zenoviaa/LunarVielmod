@@ -5901,3 +5901,8 @@ SingularDive: {
 	DisplayName: Singular Dive
 	Tooltip: Right click to use little minions and a long spin to hit enemies!
 }
+
+DelgrimsHammer: {
+	Tooltip: ""
+	DisplayName: Delgrims Hammer
+}
