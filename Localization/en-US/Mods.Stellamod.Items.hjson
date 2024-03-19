@@ -5563,7 +5563,7 @@ Scatterbombs: {
 }
 
 VacuumDrill: {
-	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beat me.
+	Tooltip: GHOSTBUSTAS BITCH, will lock onto enemies and zap em harder than my mom beats me.
 	DisplayName: Vacuum Drill
 }
 
@@ -5888,7 +5888,7 @@ Maelstrom: {
 }
 
 TheFirstAurora: {
-	DisplayName: The First Aurora
+	DisplayName: Icefrect Longsword
 	Tooltip: A weapon of great renown and slicing!
 }
 
