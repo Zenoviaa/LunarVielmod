@@ -37,11 +37,12 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
-            NPC.boss = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.alpha = 255;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
         }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {

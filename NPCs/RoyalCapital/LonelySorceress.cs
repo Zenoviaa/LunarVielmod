@@ -104,7 +104,8 @@ namespace Stellamod.NPCs.RoyalCapital
 			NPC.npcSlots = 0;
 			NPC.dontTakeDamageFromHostiles = true;
 			NPC.dontTakeDamage = true;
-		}
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+        }
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 1f;

@@ -5838,8 +5838,8 @@ LuminullSpiritFragments: {
 }
 
 IceRuneI: {
-	Tooltip: ""
-	DisplayName: Ice Rune I
+	Tooltip: Maybe a scientist can look at this?
+	DisplayName: Ancient Artifact
 }
 
 TitaniumBullet: {
