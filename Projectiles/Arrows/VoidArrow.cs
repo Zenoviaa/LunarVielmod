@@ -59,8 +59,8 @@ namespace Stellamod.Projectiles.Arrows
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item89);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Vector2.Zero, Vector2.Zero, 
-                ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage, 0f, Projectile.owner);
 
             for (int i = 0; i < 16; i++)
             {

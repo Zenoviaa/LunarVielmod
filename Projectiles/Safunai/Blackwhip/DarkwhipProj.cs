@@ -135,18 +135,15 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 
 
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-
 			ShakeModSystem.Shake = 4;
 			SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
-			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
-			float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
-
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedX * 0.5f, speedY, ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-
-
+			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+				ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 		}
+
 		private Vector2 GetSwingPosition(float progress)
 		{
 			//Starts at owner center, goes to peak range, then returns to owner center
@@ -276,9 +273,9 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 			float progress = Timer / SwingTime;
 
 			if (Slam)
-				progress = EaseFunction.EaseCubicInOut.Ease(progress);
+				progress = Easing.InOutBack(progress);
 			else
-				progress = EaseFunction.EaseQuadOut.Ease(progress);
+				progress = Easing.InOutExpo(progress);
 
 			float angleMaxDeviation = MathHelper.Pi * 0.85f;
 			float angleOffset = Owner.direction * (Flip ? -1 : 1) * MathHelper.Lerp(angleMaxDeviation, -angleMaxDeviation / 4, progress);

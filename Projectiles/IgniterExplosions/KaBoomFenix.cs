@@ -16,7 +16,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.width = 586;
+			Projectile.width = 585;
 			Projectile.height = 522;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 30;

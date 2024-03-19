@@ -42,7 +42,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             if (Projectile.penetrate <= 0)
             {
                 Projectile.Kill();
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + -40, Projectile.position.Y + -50, 0, 0, ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 0f), 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 0f), 0f);
             }
             else
             {

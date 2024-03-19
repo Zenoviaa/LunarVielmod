@@ -18,8 +18,8 @@ namespace Stellamod.Projectiles.Gun
 
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 24;
+            Projectile.height = 12;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
         }

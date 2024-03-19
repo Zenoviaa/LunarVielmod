@@ -5,29 +5,30 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class KaBoomSpirit : ModProjectile
+	public class Skullboom : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("FrostShotIN");
-			Main.projFrames[Projectile.type] = 16;
+			Main.projFrames[Projectile.type] = 30;
 		}
 
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
-			Projectile.width = 192;
-			Projectile.height = 192;
+			Projectile.width = 129;
+			Projectile.height = 129;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 48;
 			Projectile.scale = 2f;
-
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override void AI()
 		{
 			Projectile.rotation -= 0.01f;
@@ -40,10 +41,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		public override bool PreAI()
 		{
 			Projectile.tileCollide = false;
-			if (++Projectile.frameCounter >= 3)
+			if (++Projectile.frameCounter >= 2)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 16)
+				if (++Projectile.frame >= 30)
 				{
 					Projectile.frame = 0;
 				}
