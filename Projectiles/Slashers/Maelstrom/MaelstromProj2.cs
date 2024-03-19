@@ -20,15 +20,23 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
     public class MaelstromProj2 : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 240;
+        public int SwingTime = 240 * Swing_Speed_Multiplier;
         public float holdOffset = 60f;
+
+        //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
+
+        //This is for smoothin the trail
+        public const int Swing_Speed_Multiplier = 8;
+
+
         public int combowombo;
         private bool _initialized;
         private int timer;
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
@@ -64,6 +72,9 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
             Projectile.width = 100;
             Projectile.friendly = true;
             Projectile.scale = 1f;
+            Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 30 * Swing_Speed_Multiplier;
         }
 
         public float Timer
@@ -94,9 +105,9 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
             {
                 timer++;
 
-                SwingTime = (int)(240 / player.GetAttackSpeed(DamageClass.Melee));
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
+                Projectile.timeLeft = SwingTime + EndSwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
@@ -133,7 +144,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 }
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
                 Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 30;
+                Projectile.localNPCHitCooldown = 30 * Swing_Speed_Multiplier;
 
                 int dir = (int)Projectile.ai[1];
                 float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
@@ -191,7 +202,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Timer <= 120)
+            if (Timer <= 120 )
             {
                 Player player = Main.player[Projectile.owner];
 
@@ -267,7 +278,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
 
             if (SwordSlash4 == null)
             {
-                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(90f), (p) => new Color(255, 255, 255, 110) * (1f - p));
+                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(90f), (p) => new Color(255, 255, 255, 60) * (1f - p));
                 SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
             }

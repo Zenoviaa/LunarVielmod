@@ -20,15 +20,23 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
     public class AuroraSProj : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 100;
+        public int SwingTime = 100 * Swing_Speed_Multiplier;
         public float holdOffset = 60f;
+
+        //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
+
+        //This is for smoothin the trail
+        public const int Swing_Speed_Multiplier = 8;
+
+
         public int combowombo;
         private bool _initialized;
         private int timer;
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
@@ -64,6 +72,7 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
             Projectile.width = 100;
             Projectile.friendly = true;
             Projectile.scale = 1f;
+            Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
         }
 
         public float Timer
@@ -80,23 +89,16 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
         int Timeddeath = 0;
         public override void AI()
         {
-            Timeddeath++;
-
-
-            
-         //   if (Timeddeath >= 45)
-          // {
-         //       Projectile.Kill();
-         //  }
+          
 
             Player player = Main.player[Projectile.owner];
             if (!_initialized && Main.myPlayer == Projectile.owner)
             {
                 timer++;
 
-                SwingTime = (int)(100 / player.GetAttackSpeed(DamageClass.Melee));
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
+                Projectile.timeLeft = SwingTime + EndSwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
@@ -131,7 +133,7 @@ namespace Stellamod.Projectiles.Slashers.ThefirstAurora
                 }
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
                 Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 25;
+                Projectile.localNPCHitCooldown = 25 * Swing_Speed_Multiplier;
               
                 int dir = (int)Projectile.ai[1];
                 float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));

@@ -14,14 +14,21 @@ using Terraria.Graphics.Shaders;
 using Stellamod.Items.Accessories.Players;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Helpers;
 
 namespace Stellamod.Projectiles.Slashers.Maelstrom
 {
     public class MaelstromProj : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 30;
+        public int SwingTime = 30 * Swing_Speed_Multiplier;
         public float holdOffset = 60f;
+
+        //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
+
+        //This is for smoothin the trail
+        public const int Swing_Speed_Multiplier = 8;
         public int combowombo;
         private bool _initialized;
         private int timer;
@@ -64,6 +71,12 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
             Projectile.width = 100;
             Projectile.friendly = true;
             Projectile.scale = 1f;
+
+            Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
+            Projectile.usesLocalNPCImmunity = true;
+
+            //Multiplying by the thing so it's still 10 ticks
+            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
         }
 
         public float Timer
@@ -94,9 +107,9 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
             {
                 timer++;
 
-                SwingTime = (int)(30 / player.GetAttackSpeed(DamageClass.Melee));
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
                 Projectile.alpha = 255;
-                Projectile.timeLeft = SwingTime;
+                Projectile.timeLeft = SwingTime + EndSwingTime;
                 _initialized = true;
                 Projectile.damage -= 9999;
                 //Projectile.netUpdate = true;
@@ -133,20 +146,29 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 }
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
                 Projectile.usesLocalNPCImmunity = true;
-                Projectile.localNPCHitCooldown = 10;
+                Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
 
                 int dir = (int)Projectile.ai[1];
-                float swingProgress = Lerp(Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true));
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+
+                //Smooth it some more
+                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
+
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();
                 // starting rotation
-                float endSet = ((MathHelper.PiOver2) / 0.2f);
-                float start = defRot - endSet;
+
+                //How wide is the swing, in radians
+                float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
+                float start = defRot - swingRange;
 
                 // ending rotation
-                float end = (defRot + endSet);
+                float end = (defRot + swingRange);
+
                 // current rotation obv
-                float rotation = dir == 1 ? start.AngleLerp(end, swingProgress) : start.AngleLerp(end, 1f - swingProgress);
+                // angle lerp causes some weird things here, so just use a normal lerp
+                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+
                 // offsetted cuz sword sprite
                 Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
                 position += rotation.ToRotationVector2() * holdOffset;
