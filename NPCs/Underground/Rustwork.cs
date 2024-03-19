@@ -125,7 +125,7 @@ namespace Stellamod.NPCs.Underground
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return (SpawnCondition.Cavern.Chance * 0.3f);
+            return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

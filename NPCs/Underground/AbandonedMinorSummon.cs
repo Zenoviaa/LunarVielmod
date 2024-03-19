@@ -22,6 +22,7 @@ namespace Stellamod.NPCs.Underground
             NPC.damage = 42;
             NPC.defense = 8;
             NPC.lifeMax = 170;
+            NPC.npcSlots = 3;
             NPC.HitSound = SoundID.NPCHit48;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 563f;
@@ -49,7 +50,7 @@ namespace Stellamod.NPCs.Underground
         {
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Cavern.Chance * 0.5f);
+            return (SpawnCondition.Cavern.Chance * 0.2f);
         }
     }
 }
