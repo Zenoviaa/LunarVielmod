@@ -24,13 +24,13 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 				if (Dd < 60)
 				{
 					float rot = Player.velocity.ToRotation();
-					float spread = 0.4f;
+					float spread = 0.8f;
 
 					Vector2 offset = new Vector2(1.5f, -0.1f * Player.direction).RotatedBy(rot);
 
 
 
-					for (int k = 0; k < 7; k++)
+					for (int k = 0; k < 3; k++)
 					{
 						Vector2 direction = offset.RotatedByRandom(spread);
 
@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 
 
 					Player.immune = true;
-					Player.fullRotation += 0.06f;
+					Player.fullRotation += 0.2f;
 
 					Player.fullRotationOrigin = new Vector2(Player.width / 2, Player.height / 2);
 

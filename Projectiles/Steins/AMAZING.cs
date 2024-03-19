@@ -66,12 +66,12 @@ namespace Stellamod.Projectiles.Steins
 
 			if (Explosion > 119)
             {
-				float speedX = Main.rand.Next(-9, 9);
-				float speedY =  Main.rand.Next(-9, 9);
+			
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
 				for (int i = 0; i < 5; i++)
 				{
-
+					float speedX = Main.rand.Next(-9, 9);
+					float speedY = Main.rand.Next(-9, 9);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GunFlash>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
 				}

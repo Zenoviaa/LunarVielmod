@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.IgniterExplosions.Stein
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			spriteBatch.Draw(texture, drawPosition,
 				texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-				(Color)GetAlpha(lightColor), 0f, origin, 4f, SpriteEffects.None, 0f);
+				(Color)GetAlpha(lightColor), 0f, origin, 3f, SpriteEffects.None, 0f);
 			return false;
 		}
 

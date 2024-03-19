@@ -31,7 +31,7 @@ namespace Stellamod.Projectiles.Steins
 			// DisplayName.SetDefault("Slasher");
 			Main.projFrames[Projectile.type] = 1;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 3; // The recording mode
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2; // The recording mode
 		}
 		public override void SetDefaults()
 		{
@@ -41,8 +41,8 @@ namespace Stellamod.Projectiles.Steins
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
 			Projectile.DamageType = DamageClass.Melee;
-			Projectile.height = 32;
-			Projectile.width = 32;
+			Projectile.height = 100;
+			Projectile.width = 100;
 			Projectile.friendly = true;
 			Projectile.scale = 1f;
 		}
@@ -75,7 +75,8 @@ namespace Stellamod.Projectiles.Steins
 			Projectile.localNPCHitCooldown = 10000;
 			AttachToPlayer();
 		}
-		public override bool ShouldUpdatePosition() => false;
+		bool Beans = false;
+		
 		public void AttachToPlayer()
 		{
 			Player player = Main.player[Projectile.owner];
@@ -83,35 +84,59 @@ namespace Stellamod.Projectiles.Steins
 				return;
 			Vector2 teleportPosition = Main.MouseWorld;
 			timer++;
-			if (timer < 5)
+			if (timer == 5)
             {
 				player.Teleport(teleportPosition);
 				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
+				float speed = 5;
+				Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * speed;
+
+				Projectile.Center = player.Center;
+
 			}
-		
-			
+
+			Projectile.velocity *= 0.97f;
 			
 
 
 			Vector2 oldMouseWorld = Main.MouseWorld;	
-			if (timer < 5)
-				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
 
 
-			if (timer > 5)
+			if (timer > 7)
             {
-				player.itemTime = 90;
-				player.itemAnimation = 90;
+				Beans = true;
+
+				if (timer < 10)
+                {
+					player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
+				}
+					
+
+			}
+
+
+			if (timer > 45)
+			{
+				player.itemTime = 145;
+				player.itemAnimation = 145;
 
 				Projectile.Kill();
-            }
-			int dir = (int)Projectile.ai[1];
-			
+			}
 
-			player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-			player.itemRotation = player.direction;
-		
+
+
 			//Projectile.netUpdate = true;
+		}
+
+		public override bool? CanDamage()
+		{
+
+			if (Beans)
+            {
+				return false;
+            }
+
+			return base.CanDamage();
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
@@ -120,95 +145,96 @@ namespace Stellamod.Projectiles.Steins
 			player.GetModPlayer<SteinPlayer>().HasHitDance = true;
 			if (!bounced)
 			{
-				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -15f;
 				bounced = true;
-			}
-			//Wow, Amazing, So Hot, SEXY, Great
-			switch (Main.rand.Next(2))
-			{
-				case 0:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-					break;
-				case 1:
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					break;
 
-			}
-			float rot = player.velocity.ToRotation();
-			float spread = 0.6f;
-
-			Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
-			for (int k = 0; k < 7; k++)
-			{
-				Vector2 direction = offset.RotatedByRandom(spread);
-				Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 180, 40), 1);
-				Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.LightGoldenrodYellow * 0.5f, Main.rand.NextFloat(0.5f, 1));
-
-			}
-
-
-
-
-			switch (Main.rand.Next(3))
-			{
-				case 0:
-					target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-
-
-					for (int i = 0; i < 26; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
-					}
-					for (int i = 0; i < 20; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
-					}
-
-
-
-					break;
-				case 1:
-
-					target.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-					for (int i = 0; i < 26; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
-					}
-					for (int i = 0; i < 20; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
-					}
-					break;
-				case 2:
-					target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit3>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-					for (int i = 0; i < 26; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
-					}
-					for (int i = 0; i < 20; i++)
-					{
-						Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
-					}
-					break;
-
-			}
-
-			target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, 1);
-			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-		
-			
-			if (target.lifeMax <= 1000)
-			{
-				if (target.life < target.lifeMax / 2)
+				//Wow, Amazing, So Hot, SEXY, Great
+				switch (Main.rand.Next(2))
 				{
-					target.SimpleStrikeNPC(99999, 1, crit: false, 1);
+					case 0:
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						break;
+					case 1:
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						break;
+
+				}
+				float rot = player.velocity.ToRotation();
+				float spread = 0.6f;
+
+				Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
+				for (int k = 0; k < 7; k++)
+				{
+					Vector2 direction = offset.RotatedByRandom(spread);
+					Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 180, 40), 1);
+					Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.LightGoldenrodYellow * 0.5f, Main.rand.NextFloat(0.5f, 1));
+
+				}
+
+
+
+
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+
+
+						for (int i = 0; i < 26; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+						}
+						for (int i = 0; i < 20; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+						}
+
+
+
+						break;
+					case 1:
+
+						target.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						for (int i = 0; i < 26; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+						}
+						for (int i = 0; i < 20; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+						}
+						break;
+					case 2:
+						target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit3>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						for (int i = 0; i < 26; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+						}
+						for (int i = 0; i < 20; i++)
+						{
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+						}
+						break;
+
+				}
+
+				target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, 1);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+
+
+				if (target.lifeMax <= 1000)
+				{
+					if (target.life < target.lifeMax / 2)
+					{
+						target.SimpleStrikeNPC(99999, 1, crit: false, 1);
+					}
 				}
 			}
-			Projectile.Kill();
-		}
+			}
+		
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{

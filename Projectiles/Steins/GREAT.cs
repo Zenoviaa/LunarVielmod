@@ -66,13 +66,13 @@ namespace Stellamod.Projectiles.Steins
 
 			if (Explosion > 119)
 			{
-				float speedX = Main.rand.Next(-9, 9);
-				float speedY = Main.rand.Next(-9, 9);
+				
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
 
 				for (int i = 0; i < 5; i++)
 				{
-					
+					float speedX = Main.rand.Next(-9, 9);
+					float speedY = Main.rand.Next(-9, 9);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<GreatShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.LightPink, 1f).noGravity = true;
 				}
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Steins
 			}
 
 			Vector2 circlePosition = CalculateCirclePosition(owner);
-			float speed = 48;
+			float speed = 64;
 			Projectile.velocity = Vector2.Lerp(Projectile.velocity, VectorHelper.VelocitySlowdownTo(Projectile.Center, circlePosition, speed), 0.1f);
 
 
@@ -95,7 +95,7 @@ namespace Stellamod.Projectiles.Steins
 			int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
 
 			//Now we can calculate the circle position	
-			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<AMAZING>()];
+			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<GREAT>()];
 			float degreesBetweenFirefly = 360 / (float)minionCount;
 			float degrees = degreesBetweenFirefly * minionIndex;
 			float circleDistance = 96f;
