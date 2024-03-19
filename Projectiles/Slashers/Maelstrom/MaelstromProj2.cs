@@ -36,7 +36,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 40;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 

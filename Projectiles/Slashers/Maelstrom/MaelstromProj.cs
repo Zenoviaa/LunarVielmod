@@ -35,7 +35,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
         private bool ParticleSpawned;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
@@ -181,7 +181,7 @@ namespace Stellamod.Projectiles.Slashers.Maelstrom
                 player.itemTime = 2;
                 player.itemAnimation = 2;
                 //Projectile.netUpdate = true;
-                /*
+                /* Only needed if no swing multiplier
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
                     Projectile.oldPos[i] += player.velocity;
