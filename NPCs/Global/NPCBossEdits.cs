@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Global
 			if(npc.type == NPCID.TheDestroyer)
             {
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 1.8f;
 				npc.lifeMax = (int)lifeMax;
 			}
 			if(npc.type == NPCID.HallowBoss)
@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Global
 			if(npc.type == NPCID.Plantera)
             {
 				float lifeMax = npc.lifeMax;
-				lifeMax *= 1.5f;
+				lifeMax *= 2f;
 				npc.lifeMax = (int)lifeMax;
 			}
         }
