@@ -41,14 +41,16 @@ namespace Stellamod.NPCs.Acidic
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = 74;
-            int d1 = DustID.CursedTorch;
-            for (int k = 0; k < 30; k++)
+            for (int k = 0; k < 3; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, 
+                    ModContent.DustType<Dusts.GlowDust>(), newColor: new Color(24, 142, 61));
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height, 
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: new Color(24, 142, 61));
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
             }
 
             if (NPC.life <= 0)

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,7 +28,8 @@ namespace Stellamod.Items.Accessories
 			player.wingTimeMax = 130;
 			if (Main.rand.NextBool(4) && !hideVisual)
 			{
-				Dust.NewDust(player.position, player.width, player.height, DustID.GreenFairy);
+                Dust.NewDust(player.position, player.width, player.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
 			}
 		}
 

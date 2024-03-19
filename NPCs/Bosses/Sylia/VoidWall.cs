@@ -82,7 +82,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                new Vector3(117, 1, 187),
                new Vector3(3, 3, 3), 0);
 
-            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), drawColor, 1);
+            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, drawColor, 1);
             SpriteEffects effects = SpriteEffects.None;
             Vector2 drawPosition = NPC.Center - Main.screenPosition;
             Vector2 origin = new Vector2(58 / 2, 88 / 2);

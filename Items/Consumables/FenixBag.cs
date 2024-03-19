@@ -52,6 +52,7 @@ namespace Stellamod.Items.Consumables
 			return true;
 		}
 
+
 		public override void ModifyItemLoot(ItemLoot itemLoot)
 		{
 			int numResults = 5;

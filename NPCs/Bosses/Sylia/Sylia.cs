@@ -99,7 +99,14 @@ namespace Stellamod.NPCs.Bosses.Sylia
 		}
 
 		private Vector2 _slashCenter;
-		public override void SetStaticDefaults()
+
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+			return false;
+        }
+
+        public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = 30;
 			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -459,7 +466,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
 		public Color ColorFunction(float completionRatio)
 		{
-			return Color.Lerp(new Color(60, 0, 118), Color.Transparent, completionRatio);
+			return Color.Lerp(ColorFunctions.MiracleVoid, Color.Transparent, completionRatio);
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -488,7 +495,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			if (_spawned)
 			{
 				//Draw the glow
-				DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), drawColor, 2);
+				DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, drawColor, 2);
 				PreDrawAfterImage(spriteBatch, screenPos, drawColor);
 			} else
 			{

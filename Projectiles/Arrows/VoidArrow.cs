@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Arrows
         public override bool PreDraw(ref Color lightColor)
         {
             DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Black, ref lightColor);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Black, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 
