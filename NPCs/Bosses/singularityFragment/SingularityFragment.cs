@@ -27,6 +27,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
     [AutoloadBossHead]
     public class SingularityFragment : ModNPC
     {
+        private bool Dead;
         private bool _invincible;
         public bool PH2 = false;
         public bool Spawned = false;
@@ -45,9 +46,9 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            target.AddBuff(BuffType<AbyssalFlame>(), 200);
+            target.AddBuff(BuffType<SFBuff>(), 200);
         }
 
         public override void SetDefaults()
@@ -618,7 +619,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
                         NPC.ai[0]++;
                         if (!Lazer)
                         {
-                            if (NPC.ai[0] == 1)
+                            if (NPC.ai[0] <= 2)
                             {
                                 NPC.damage = 0;
                                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
@@ -923,10 +924,16 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         private void Disappear()
         {
+            if (!Dead)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
+                Dead = true;
+            }
             NPC.velocity.Y += 0.1f;
             NPC.scale -= 0.01f;
             if (NPC.scale <= 0)
             {
+  
                 NPC.active = false;
             }
         }

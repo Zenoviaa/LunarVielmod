@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -62,8 +63,15 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<CogKaboom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+         
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+            }
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
             for(int i = 0; i < Main.rand.Next(3, 7); i++)

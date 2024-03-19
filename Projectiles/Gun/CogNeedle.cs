@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 
 namespace Stellamod.Projectiles.Gun
 {
@@ -88,15 +90,14 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Dig);
-            int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
-            Main.projectile[p].scale = 0.5f;
-            for (int i = 0; i < 16; i++)
+
+            float spread = 0.4f;
+
+            Vector2 direction = Projectile.Center.RotatedByRandom(spread);
+            for (int i = 0; i <= 10; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Iron, speed, Scale: 1f);
-                d.noGravity = true;
+                Dust.NewDust(base.Projectile.position, 22, 22, ModContent.DustType<GlowLineDust>(), base.Projectile.velocity.X * 0.5f, base.Projectile.velocity.Y * 0.5f);
+                Dust.NewDust(base.Projectile.position, 22, 22, ModContent.DustType<GlowDust>(), 0f, 0f, 0, new Color(150, 80, 40), 0.3f);
             }
         }
     }

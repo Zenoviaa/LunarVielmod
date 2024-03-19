@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Safunai.Parendine;
 using Stellamod.Projectiles.Safunai.Vinger;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,8 +14,8 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
     public class Vinger : ModItem
 	{
 		public int combo;
-
-		public override void SetStaticDefaults()
+        public int combo2;
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Halhurish The Flamed"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			/* Tooltip.SetDefault("Whip your opponents in the air" +
@@ -44,29 +46,57 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 36;
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.useTime = Item.useAnimation = 18;
-			Item.shootSpeed = 1f;
-			Item.knockBack = 4f;
-			Item.UseSound = SoundID.Item116;
-			Item.shoot = ModContent.ProjectileType<VingerProj>();
-			Item.value = Item.sellPrice(gold: 10);
-			Item.noMelee = true;
-			Item.noUseGraphic = true;
-			Item.channel = true;
-			Item.autoReuse = true;
-			Item.DamageType = DamageClass.Melee;
-			Item.damage = 14;
-			Item.rare = ItemRarityID.Green;
-		}
+
+            Item.width = 32;
+            Item.height = 36;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = Item.useAnimation = 18;
+            Item.shootSpeed = 1f;
+            Item.knockBack = 4f;
+            Item.shoot = ModContent.ProjectileType<VingerProj>();
+            Item.value = Item.sellPrice(gold: 10);
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.channel = true;
+            Item.autoReuse = true;
+            Item.DamageType = DamageClass.Melee;
+            Item.damage = 40;
+            Item.rare = ItemRarityID.Blue;
+        }
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			combo++;
+            combo2++;
+            combo++;
+            if (combo2 == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"));
 
-			float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
+            }
+            if (combo2 == 2)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"));
+
+            }
+            if (combo2 == 3)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"));
+
+            }
+            if (combo2 == 4)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais3"));
+          
+
+            }
+            if (combo2 == 5)
+            {
+                combo2 = 0;
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"));
+            }
+
+            float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
 			float curvatureMult = 0.7f;
 
 			bool slam = combo % 5 == 4;

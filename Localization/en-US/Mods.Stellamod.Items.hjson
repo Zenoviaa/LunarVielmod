@@ -5841,3 +5841,13 @@ IceRuneI: {
 	Tooltip: ""
 	DisplayName: Ice Rune I
 }
+
+DirtGlove: {
+	DisplayName: Dirt Glove
+	Tooltip: ""
+}
+
+TwilitTome: {
+	Tooltip: ""
+	DisplayName: Twilit Tome
+}

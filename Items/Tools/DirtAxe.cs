@@ -14,7 +14,7 @@ namespace Stellamod.Items.Tools
 
 		public override void SetDefaults() 
 		{
-			Item.damage = 3;
+			Item.damage = 6;
 			Item.DamageType = DamageClass.Melee/* tModPorter Suggestion: Consider MeleeNoSpeed for no attack speed scaling */;
 			Item.width = 40;
 			Item.height = 40;

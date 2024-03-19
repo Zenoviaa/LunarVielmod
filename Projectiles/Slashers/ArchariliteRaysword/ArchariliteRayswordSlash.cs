@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,18 +15,18 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
     public class ArchariliteRayswordSlash : ModProjectile
     {
         public static bool swung = false;
-        public int SwingTime = 35;
+        public int SwingTime = 20;
         public float holdOffset = 30f;
         public int combowombo;
         private bool _initialized;
         private int timer;
-        /*  public override void SetStaticDefaults()
+          public override void SetStaticDefaults()
           {
-              ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
-              ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
-          }
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
+        }
 
-          */
+          
         public override void SetDefaults()
         {
             Projectile.damage = 10;
@@ -31,8 +35,8 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 74;
-            Projectile.width = 74;
+            Projectile.height = 90;
+            Projectile.width = 90;
             Projectile.friendly = true;
             Projectile.scale = 1f;
         }
@@ -47,10 +51,20 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
         {
             return val == 1f ? 1f : val == 1f ? 1f : (float)Math.Pow(2, val * 10f - 10f) / 2f;
         }
-
+        public override void OnSpawn(IEntitySource source)
+        {
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                Projectile.oldPos[i] = Projectile.position;
+            }
+        }
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                Projectile.oldPos[i] += player.velocity;
+            }
             if (!_initialized && Main.myPlayer == Projectile.owner)
             {
                 timer++;
@@ -149,6 +163,20 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
         }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
+        }
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 0.6f;
+            return MathHelper.SmoothStep(baseWidth, baseWidth * 0.8f, completionRatio);
+        }
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.LightYellow, Color.Transparent, completionRatio) * 0.7f;
+        }
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -156,7 +184,7 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
 
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
-
+            Player player = Main.player[Projectile.owner];
             Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
             Vector2 origin = sourceRectangle.Size() / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);
@@ -166,24 +194,13 @@ namespace Stellamod.Projectiles.Slashers.ArchariliteRaysword
                 sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 
 
-            /*
+            Texture2D Texture2 = TextureAssets.Projectile[Projectile.type].Value;
+            Main.spriteBatch.Draw(Texture2, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Texture2.Width / 2, Texture2.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
-             Main.spriteBatch.End();
-             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-             Main.instance.LoadProjectile(Projectile.type);
 
-
-             // Redraw the projectile with the color not influenced by light
-             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-             for (int k = 0; k < Projectile.oldPos.Length; k++)
-             {
-                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                 Color color = Projectile.GetAlpha(Color.Lerp(new Color(93, 203, 243), new Color(59, 72, 168), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-             }
-             Main.spriteBatch.End();
-             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            */
             return false;
         }
     }

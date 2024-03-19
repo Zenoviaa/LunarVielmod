@@ -410,7 +410,10 @@ namespace Stellamod
             {
                 reason = PlayerDeathReason.ByCustomReason(Player.name + " was contaminated");
             }
-
+            if (Player.FindBuffIndex(ModContent.BuffType<SFBuff>()) >= 0)
+            {
+                reason = PlayerDeathReason.ByCustomReason("You touched a black hole... WHAT DID YOU THINK WOULD HAPPEN?");
+            }
         }
         public override void OnHitAnything(float x, float y, Entity victim)
         {

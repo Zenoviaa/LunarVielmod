@@ -572,3 +572,8 @@ AmberB: {
 	Description: Mods.Stellamod.Buffs.AmberB.Description
 	DisplayName: Amber B
 }
+
+SFBuff: {
+	Description: Mods.Stellamod.Buffs.SFBuff.Description
+	DisplayName: S F Buff
+}

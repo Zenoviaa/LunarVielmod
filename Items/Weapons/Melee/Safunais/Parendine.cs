@@ -4,6 +4,7 @@ using Stellamod.Projectiles.Safunai.Parendine;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,8 +14,8 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
     public class Parendine : ModItem
 	{
 		public int combo;
-
-		public override void SetStaticDefaults()
+        public int combo2;
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Halhurish The Flamed"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			/* Tooltip.SetDefault("Whip your opponents in the air" +
@@ -51,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.useTime = Item.useAnimation = 18;
 			Item.shootSpeed = 1f;
 			Item.knockBack = 4f;
-			Item.UseSound = SoundID.Item116;
+		
 			Item.shoot = ModContent.ProjectileType<ParendineProj>();
 			Item.value = Item.sellPrice(gold: 10);
 			Item.noMelee = true;
@@ -59,15 +60,41 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 16;
+			Item.damage = 26;
 			Item.rare = ItemRarityID.Blue;
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			combo++;
+        {
+            combo2++;
+            combo++;
+			if (combo2 == 1)
+			{
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"));
 
-			float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
+            }
+            if (combo2 == 2)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"));
+
+            }
+            if (combo2 == 3)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais"));
+
+            }
+            if (combo2 == 4)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais2"));
+
+            }
+            if (combo2 == 5)
+            {
+				combo2 = 0;
+    
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Safunais3"));
+            }
+            float distanceMult = Main.rand.NextFloat(0.8f, 1.2f);
 			float curvatureMult = 0.7f;
 
 			bool slam = combo % 5 == 4;
@@ -86,20 +113,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunais
 			}
 
 			return false;
-		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-
-
-			recipe.AddIngredient(ItemID.Chain, 15);
-			recipe.AddIngredient(ItemID.IceBlade, 1);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 15);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
-
-
-			recipe.Register();
 		}
 		public override float UseTimeMultiplier(Player player) => player.GetAttackSpeed(DamageClass.Melee); //Scale with melee speed buffs, like whips
 		public override void NetSend(BinaryWriter writer) => writer.Write(combo);

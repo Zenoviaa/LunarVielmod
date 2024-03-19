@@ -22,8 +22,8 @@ namespace Stellamod.Items.Weapons.Melee
         public override void SetDefaults()
         {
             Item.damage = 19;
-            Item.useTime = 25;
-            Item.useAnimation = 25;
+            Item.useTime = 19;
+            Item.useAnimation = 19;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
@@ -87,8 +87,8 @@ namespace Stellamod.Items.Weapons.Melee
             if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
             {
                 Item.shootSpeed = 38f;
-                Item.useTime = 19;
-                Item.useAnimation = 19;
+                Item.useTime = 14;
+                Item.useAnimation = 14;
                 Item.damage = 25;
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWaveSC>(), damage * 2, knockback, player.whoAmI, 1, dir);
@@ -96,8 +96,8 @@ namespace Stellamod.Items.Weapons.Melee
             else
             {
                 Item.shootSpeed = 30f;
-                Item.useTime = 25;
-                Item.useAnimation = 25;
+                Item.useTime = 19;
+                Item.useAnimation = 19;
                 Item.damage = 19;
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteRaysWave>(), damage * 2, knockback, player.whoAmI, 1, dir);
