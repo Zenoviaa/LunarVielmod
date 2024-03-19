@@ -16,6 +16,7 @@ using Stellamod.Items.Accessories.Players;
 using ParticleLibrary;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
+using Stellamod.Items.Weapons.Mage.Stein;
 
 namespace Stellamod.Projectiles.Steins
 {
@@ -115,6 +116,7 @@ namespace Stellamod.Projectiles.Steins
 		{
 			Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
+			player.GetModPlayer<SteinPlayer>().HasHitDance = true;
 			if (!bounced)
 			{
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
