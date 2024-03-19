@@ -473,7 +473,6 @@
     <Folder Include="Items\Accessories\Shields\" />
     <Folder Include="Items\Weapons\Mage\Stein\" />
     <Folder Include="Projectiles\Hostile\" />
-    <Folder Include="Projectiles\Steins\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />
   </ItemGroup>
