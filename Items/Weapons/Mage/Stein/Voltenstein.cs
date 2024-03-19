@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 62;
+			Item.damage = 52;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 0;
 			Item.height = 0;
@@ -82,20 +82,20 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 			return false;
 		}
 
-		/*
+		
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
 
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 3);
+			recipe.AddIngredient(ItemID.HallowedBar, 20);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
-			recipe.AddIngredient(ModContent.ItemType<HornedNail>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Hultinstein>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 5);
 
 			recipe.Register();
 		}
 
-		*/
+		
 	}
 }

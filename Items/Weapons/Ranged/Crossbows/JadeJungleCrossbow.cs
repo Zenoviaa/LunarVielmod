@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Crossbows.Sniper;
 using Terraria;
 using Terraria.GameContent.Creative;

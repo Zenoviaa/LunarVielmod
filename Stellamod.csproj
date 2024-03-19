@@ -435,6 +435,7 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
+    <None Remove="Projectiles\Steins\HultFist.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />
     <None Remove="Projectiles\Summons\ToxicMissileFriendly.png" />

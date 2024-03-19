@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 12;
+			Item.damage = 9;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 0;
 			Item.height = 0;
@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<VoltFist>();
+			Item.shoot = ModContent.ProjectileType<HultFist>();
 			Item.shootSpeed = 20f;
 			Item.noUseGraphic = true;
 			Item.crit = 46;
@@ -72,12 +72,12 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 
 			if (combowombo == 4)
 			{
-				Item.shoot = ModContent.ProjectileType<VoltFist>();
+				Item.shoot = ModContent.ProjectileType<HultFist>();
 				combowombo = 0;
 			}
 			else
 			{
-				Item.shoot = ModContent.ProjectileType<VoltFist>();
+				Item.shoot = ModContent.ProjectileType<HultFist>();
 			}
 			return false;
 		}

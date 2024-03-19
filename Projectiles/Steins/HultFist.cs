@@ -20,7 +20,7 @@ using Stellamod.Items.Weapons.Mage.Stein;
 
 namespace Stellamod.Projectiles.Steins
 {
-	public class VoltFist : ModProjectile
+	public class HultFist : ModProjectile
 	{
 		public static bool swung = false;
 		public int SwingTime = 60;
@@ -76,7 +76,7 @@ namespace Stellamod.Projectiles.Steins
 			AttachToPlayer();
 		}
 		bool Beans = false;
-		
+
 		public void AttachToPlayer()
 		{
 			Player player = Main.player[Projectile.owner];
@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles.Steins
 			Vector2 teleportPosition = Main.MouseWorld;
 			timer++;
 			if (timer == 5)
-            {
+			{
 				player.Teleport(teleportPosition);
 				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
 				float speed = 5;
@@ -96,21 +96,21 @@ namespace Stellamod.Projectiles.Steins
 			}
 
 			Projectile.velocity *= 0.97f;
-			
 
 
-			Vector2 oldMouseWorld = Main.MouseWorld;	
+
+			Vector2 oldMouseWorld = Main.MouseWorld;
 
 
 			if (timer > 7)
-            {
+			{
 				Beans = true;
 
 				if (timer < 10)
-                {
-					player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
+				{
+					player.velocity = Projectile.DirectionTo(oldMouseWorld) * 5f;
 				}
-					
+
 
 			}
 
@@ -118,7 +118,7 @@ namespace Stellamod.Projectiles.Steins
 			if (timer > 45)
 			{
 				if (!bounced)
-				{
+                {
 					player.itemTime = 145;
 					player.itemAnimation = 145;
 				}
@@ -127,6 +127,7 @@ namespace Stellamod.Projectiles.Steins
 					player.itemTime = 60;
 					player.itemAnimation = 60;
 				}
+
 				Projectile.Kill();
 			}
 
@@ -139,9 +140,9 @@ namespace Stellamod.Projectiles.Steins
 		{
 
 			if (Beans)
-            {
+			{
 				return false;
-            }
+			}
 
 			return base.CanDamage();
 		}
@@ -152,14 +153,14 @@ namespace Stellamod.Projectiles.Steins
 			player.GetModPlayer<SteinPlayer>().HasHitDance = true;
 			if (!bounced)
 			{
-				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -15f;
+				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
 				bounced = true;
 
 				//Wow, Amazing, So Hot, SEXY, Great
 				switch (Main.rand.Next(2))
 				{
 					case 0:
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 						break;
 					case 1:
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
@@ -173,62 +174,50 @@ namespace Stellamod.Projectiles.Steins
 				for (int k = 0; k < 7; k++)
 				{
 					Vector2 direction = offset.RotatedByRandom(spread);
-					Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 180, 40), 1);
-					Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.LightGoldenrodYellow * 0.5f, Main.rand.NextFloat(0.5f, 1));
+					Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(255, 255, 255), 1);
+					Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.LightPink * 0.5f, Main.rand.NextFloat(0.5f, 1));
 
 				}
 
 
 
 
-				switch (Main.rand.Next(3))
+				switch (Main.rand.Next(2))
 				{
 					case 0:
 						target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 
 						for (int i = 0; i < 26; i++)
 						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Pink, 1f).noGravity = true;
 						}
 						for (int i = 0; i < 20; i++)
 						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.DeepPink, 1f).noGravity = true;
 						}
 
 
 
 						break;
+
 					case 1:
-
-						target.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-						for (int i = 0; i < 26; i++)
-						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
-						}
-						for (int i = 0; i < 20; i++)
-						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
-						}
-						break;
-					case 2:
 						target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Volthit3>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 						for (int i = 0; i < 26; i++)
 						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Yellow, 1f).noGravity = true;
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.White, 1f).noGravity = true;
 						}
 						for (int i = 0; i < 20; i++)
 						{
-							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Gold, 1f).noGravity = true;
+							Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.IndianRed, 1f).noGravity = true;
 						}
 						break;
 
 				}
 
-				target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, 1);
+				target.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, 1);
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
 
 
@@ -240,8 +229,8 @@ namespace Stellamod.Projectiles.Steins
 					}
 				}
 			}
-			}
-		
+		}
+
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
@@ -262,17 +251,17 @@ namespace Stellamod.Projectiles.Steins
 		{
 			Main.spriteBatch.End();
 
-			var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-			var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-			var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
-			var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
+			var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/MetalTrail").Value;
+			var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/MetalTrail").Value;
+			var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/DirnTrail").Value;
+			var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/DirnTrail").Value;
 			Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
 
 			if (SwordSlash == null)
 			{
-				SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(25f), (p) => new Color(250, 152, 25, 90) * (1f - p));
+				SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(25f), (p) => new Color(150, 110, 152, 90) * (1f - p));
 				SwordSlash.drawOffset = Projectile.Size / 1.8f;
 			}
 			if (SwordSlash2 == null)
@@ -283,14 +272,14 @@ namespace Stellamod.Projectiles.Steins
 			}
 			if (SwordSlash3 == null)
 			{
-				SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(250, 251, 25, 90) * (1f - p));
+				SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(250, 25, 251, 90) * (1f - p));
 				SwordSlash3.drawOffset = Projectile.Size / 2f;
 
 			}
 
 			if (SwordSlash4 == null)
 			{
-				SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(40f), (p) => new Color(255, 255, 255, 110) * (1f - p));
+				SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(30f), (p) => new Color(255, 255, 255, 90) * (1f - p));
 				SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
 			}

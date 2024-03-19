@@ -5918,11 +5918,42 @@ TwilitTome: {
 }
 
 Voltenstein: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		A shocking experience!
 		Tap to your cursor to dash into electrifying damage! 
 		Hitting enemies will give you bonus damage and immunity for reward! 
 		The better the glove the more words!
 		'''
 	DisplayName: Voltenstein
+}
+
+BlankBrooch: {
+	DisplayName: Blank Brooch
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankCard: {
+	DisplayName: Blank Card
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankCrossbow: {
+	DisplayName: Blank Crossbow
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankSafunai: {
+	DisplayName: Blank Safunai
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+Hultinstein: {
+	DisplayName: Hultinstein
+	Tooltip: '''
+		A brawling experience!
+		Tap to your cursor to dash into some damn high damage! 
+		Hitting enemies will give you bonus damage with words and immunity for reward! 
+		The better the glove the more words!
+		'''
 }
