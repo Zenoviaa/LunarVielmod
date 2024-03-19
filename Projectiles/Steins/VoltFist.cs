@@ -86,12 +86,14 @@ namespace Stellamod.Projectiles.Steins
 			timer++;
 			if (timer == 5)
             {
-				player.immuneTime = 1;
+	
 				player.Teleport(teleportPosition);
 				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
 				float speed = 5;
 				Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * speed;
 
+				player.immune = true;
+				player.immuneTime = 3;
 				Projectile.Center = player.Center;
 
 			}
@@ -109,6 +111,7 @@ namespace Stellamod.Projectiles.Steins
 
 				if (timer < 10)
                 {
+					
 					player.velocity = Projectile.DirectionTo(oldMouseWorld) * 10f;
 				}
 					
