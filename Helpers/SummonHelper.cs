@@ -188,16 +188,57 @@ namespace Stellamod.Helpers
 			return minionIndex;
 		}
 
-		/// <summary>
-		/// Basic search function that finds a valid target that can be chased by the given projectile
-		/// </summary>
-		/// <param name="owner"></param>
-		/// <param name="minion"></param>
-		/// <param name="foundTarget"></param>
-		/// <param name="distanceFromTarget"></param>
-		/// <param name="targetCenter"></param>
-		/// <param name="startingDistanceFromTarget"></param>
-		public static void SearchForTargets(Player owner, Projectile minion, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter, float startingSearchDistanceFromTarget = 700f)
+		private static bool IsCorrectType(int targetType, int[] types)
+		{
+			for(int i = 0; i < types.Length; i++)
+			{
+				if (targetType == types[i])
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+        public static int GetProjectileIndexMulti(Projectile projectile, params int[] types)
+        {
+            int minionIndex = 0;
+            // Fix overlap with other minions
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile other = Main.projectile[i];
+                if (other.owner != projectile.owner)
+                    continue;
+
+                //Ignore projectiles that are not fireflies and are from a different owner.
+				if(!IsCorrectType(other.type, types))
+                    continue;
+      
+                //If the project is not me, then increase the index.
+                if (i != projectileWhoAmI)
+                {
+                    minionIndex++;
+                }
+                else
+                {
+                    //We found ourselves, therefore we have our minion index.
+                    break;
+                }
+            }
+
+            return minionIndex;
+        }
+
+        /// <summary>
+        /// Basic search function that finds a valid target that can be chased by the given projectile
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="minion"></param>
+        /// <param name="foundTarget"></param>
+        /// <param name="distanceFromTarget"></param>
+        /// <param name="targetCenter"></param>
+        /// <param name="startingDistanceFromTarget"></param>
+        public static void SearchForTargets(Player owner, Projectile minion, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter, float startingSearchDistanceFromTarget = 700f)
 		{
 			// Starting search distance
 			distanceFromTarget = startingSearchDistanceFromTarget;
