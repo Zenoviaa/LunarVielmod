@@ -215,7 +215,7 @@ namespace Stellamod.Helpers
                     continue;
       
                 //If the project is not me, then increase the index.
-                if (i != projectileWhoAmI)
+                if (i != projectile.whoAmI)
                 {
                     minionIndex++;
                 }
