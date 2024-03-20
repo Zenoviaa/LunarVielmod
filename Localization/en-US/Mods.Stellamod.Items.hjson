@@ -5994,7 +5994,13 @@ Mardenstein: {
 
 TheActualMoon: {
 	DisplayName: The Actual Moon
-	Tooltip: ""
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		A heavier orb with a much stronger impact explosion!
+		I'm already Verlia
+		'''
 }
 
 ReflectionSeeker: {

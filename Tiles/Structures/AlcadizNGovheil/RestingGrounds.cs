@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
-using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
 using Terraria;

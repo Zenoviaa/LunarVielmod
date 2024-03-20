@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
-using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
@@ -21,7 +17,6 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Caeva;
-using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
@@ -29,8 +24,6 @@ using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER;
-using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Event.Luminull;
 using Stellamod.NPCs.Minibosses;
@@ -47,7 +40,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod
 {

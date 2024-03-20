@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Projectiles.Summons.Orbs
 {
     internal class TheActualMoonProj : ModProjectile
     {
@@ -75,7 +76,7 @@ namespace Stellamod.Items.Weapons.Summon
         public override void AI()
         {
             //Kill yourself if not holding the item
-            if(Owner.HeldItem.type != ModContent.ItemType<TheActualMoon>())
+            if (Owner.HeldItem.type != ModContent.ItemType<TheActualMoon>())
             {
                 Projectile.Kill();
                 return;
@@ -144,7 +145,7 @@ namespace Stellamod.Items.Weapons.Summon
         private void Reset()
         {
             EasedProgress = 0;
-            for(int i = 0; i < Projectile.localNPCImmunity.Length; i++)
+            for (int i = 0; i < Projectile.localNPCImmunity.Length; i++)
             {
                 Projectile.localNPCImmunity[i] = 0;
             }
@@ -159,9 +160,9 @@ namespace Stellamod.Items.Weapons.Summon
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GunFlash>(), newColor: new Color(69, 43, 149), Scale: 0.8f);
 
-            
+
                 Dust.NewDustPerfect(Projectile.position, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
-                
+
             }
         }
 
@@ -300,7 +301,7 @@ namespace Stellamod.Items.Weapons.Summon
                 case ActionState.Swing_2:
                     for (int i = 0; i < 4; i++)
                     {
-                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                             ModContent.DustType<GunFlash>(), newColor: new Color(85, 112, 188), Scale: 0.8f);
                     }
 
@@ -319,7 +320,7 @@ namespace Stellamod.Items.Weapons.Summon
                     break;
 
                 case ActionState.Swing_3:
-                    
+
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<StarsBoom>(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
 
@@ -329,7 +330,7 @@ namespace Stellamod.Items.Weapons.Summon
                     //Funny Screenshake
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") { PitchVariance = 0.15f }, Projectile.position);
                     break;
-            }            
+            }
         }
 
         public TrailRenderer SwordSlash;
@@ -337,7 +338,7 @@ namespace Stellamod.Items.Weapons.Summon
         public TrailRenderer SwordSlash3;
 
         public override bool PreDraw(ref Color lightColor)
-        {  
+        {
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
             var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StringTrail").Value;
             var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CrystalTrail").Value;
@@ -345,14 +346,14 @@ namespace Stellamod.Items.Weapons.Summon
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(150), new Vector2(128), p), 
+                    (p) => Vector2.Lerp(new Vector2(150), new Vector2(128), p),
                     (p) => new Color(230, 255, 255, 125) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, 
-                    (p) => Vector2.Lerp(new Vector2(75), new Vector2(75), p), 
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
+                    (p) => Vector2.Lerp(new Vector2(75), new Vector2(75), p),
                     (p) => new Color(247, 178, 239, 125) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }
@@ -377,7 +378,7 @@ namespace Stellamod.Items.Weapons.Summon
             Main.spriteBatch.Begin();
 
 
-            
+
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.4f, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }

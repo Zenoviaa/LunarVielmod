@@ -2,7 +2,7 @@
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Whips;
+using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,9 +10,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Items.Weapons.Summon.Orbs
 {
-    internal class AuroreanStarball : ModItem
+    internal class TheActualMoon : ModItem
     {
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AuroreanStarballDebuff.TagDamage);
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
             Item.width = 32;
             Item.height = 48;
-            Item.damage = 24;
+            Item.damage = 62;
             Item.DamageType = DamageClass.Summon;
             Item.knockBack = 8;
             Item.useTime = 4;
@@ -46,26 +46,27 @@ namespace Stellamod.Items.Weapons.Summon
             Item.autoReuse = true;
 
             // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-            Item.shoot = ModContent.ProjectileType<AuroreanStarballProj>();
+            Item.shoot = ModContent.ProjectileType<TheActualMoonProj>();
             Item.shootSpeed = 1;
         }
 
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if(player.HeldItem.type == ModContent.ItemType<AuroreanStarball>() && player.ownedProjectileCounts[ModContent.ProjectileType<AuroreanStarballProj>()]==0)
+            if (player.HeldItem.type == ModContent.ItemType<TheActualMoon>() &&
+                player.ownedProjectileCounts[ModContent.ProjectileType<TheActualMoonProj>()] == 0)
             {
-                var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<AuroreanStarballProj>(), Item.damage, Item.knockBack, player.whoAmI);
+                var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<TheActualMoonProj>(), Item.damage, Item.knockBack, player.whoAmI);
                 projectile.originalDamage = Item.damage;
             }
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            for(int i = 0; i < Main.projectile.Length; i++)
+            for (int i = 0; i < Main.projectile.Length; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<AuroreanStarballProj>() && Main.projectile[i].owner == player.whoAmI)
+                if (Main.projectile[i].type == ModContent.ProjectileType<TheActualMoonProj>() && Main.projectile[i].owner == player.whoAmI)
                 {
                     Main.projectile[i].ai[0]++;
                     break;
@@ -79,8 +80,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
             CreateRecipe(1)
                  .AddIngredient(ModContent.ItemType<BlankOrb>(), 1)
-                 .AddIngredient(ModContent.ItemType<AuroreanStarI>(), 100)
-                 .AddIngredient(ModContent.ItemType<StarSilk>(), 15)
+                 .AddIngredient(ModContent.ItemType<PearlescentScrap>(), 15)
                  .AddTile(TileID.Anvils)
                  .Register();
 

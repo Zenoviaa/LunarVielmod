@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Projectiles.Summons.Orbs
 {
     internal class AuroreanStarballProj : ModProjectile
     {
@@ -23,8 +24,8 @@ namespace Stellamod.Items.Weapons.Summon
             Swing_3
         }
 
-        public const float Swing_Time = 40* Swing_Speed_Multiplier;
-        public const float Swing_Time_2 = 60* Swing_Speed_Multiplier;
+        public const float Swing_Time = 40 * Swing_Speed_Multiplier;
+        public const float Swing_Time_2 = 60 * Swing_Speed_Multiplier;
         public const float Final_Swing_Distance = 252;
         public const float Combo_Time = 8;
         public const int Swing_Speed_Multiplier = 8;
@@ -75,7 +76,7 @@ namespace Stellamod.Items.Weapons.Summon
         public override void AI()
         {
             //Kill yourself if not holding the item
-            if(Owner.HeldItem.type != ModContent.ItemType<AuroreanStarball>())
+            if (Owner.HeldItem.type != ModContent.ItemType<AuroreanStarball>())
             {
                 Projectile.Kill();
                 return;
@@ -144,7 +145,7 @@ namespace Stellamod.Items.Weapons.Summon
         private void Reset()
         {
             EasedProgress = 0;
-            for(int i = 0; i < Projectile.localNPCImmunity.Length; i++)
+            for (int i = 0; i < Projectile.localNPCImmunity.Length; i++)
             {
                 Projectile.localNPCImmunity[i] = 0;
             }
@@ -303,20 +304,20 @@ namespace Stellamod.Items.Weapons.Summon
                     break;
 
                 case ActionState.Swing_3:
-                    
+
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomSigil>(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
 
                     target.SimpleStrikeNPC(Projectile.damage, hit.HitDirection);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") { PitchVariance = 0.15f }, Projectile.position);
                     break;
-            }            
+            }
         }
 
         public TrailRenderer SwordSlash;
         public TrailRenderer SwordSlash2;
         public override bool PreDraw(ref Color lightColor)
-        {  
+        {
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                 new Vector3(60, 0, 118),
                 new Vector3(117, 1, 187),
@@ -329,14 +330,14 @@ namespace Stellamod.Items.Weapons.Summon
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p), 
+                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p),
                     (p) => Color.White * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, 
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p), 
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
+                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p),
                     (p) => new Color(247, 178, 239, 255) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }

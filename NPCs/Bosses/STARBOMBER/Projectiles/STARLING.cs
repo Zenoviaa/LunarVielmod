@@ -1,30 +1,11 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Items.Harvesting;
-using Terraria;
-using Terraria.GameContent.ItemDropRules;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.DropRules;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Daeden;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.Daedus;
-using System.Collections.Generic;
-using System.IO;
 
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 {
-	public class STARLING : ModNPC
+    public class STARLING : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{

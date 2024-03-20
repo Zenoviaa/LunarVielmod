@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
 using Terraria;
 using Terraria.Audio;
