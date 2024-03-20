@@ -5991,3 +5991,8 @@ Mardenstein: {
 		3 Words!
 		'''
 }
+
+TheActualMoon: {
+	DisplayName: The Actual Moon
+	Tooltip: ""
+}

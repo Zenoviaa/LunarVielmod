@@ -78,7 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 22f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 12f);
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {

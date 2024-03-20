@@ -158,6 +158,10 @@ namespace Stellamod.Items.Weapons.Summon
                 DustTimer = 0;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GunFlash>(), newColor: new Color(69, 43, 149), Scale: 0.8f);
+
+            
+                Dust.NewDustPerfect(Projectile.position, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
+                
             }
         }
 
@@ -279,6 +283,17 @@ namespace Stellamod.Items.Weapons.Summon
         {
             base.OnHitNPC(target, hit, damageDone);
             target.AddBuff(ModContent.BuffType<AuroreanStarballDebuff>(), 240);
+
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
+            }
+
             switch (State)
             {
                 case ActionState.Swing_1:
@@ -312,7 +327,6 @@ namespace Stellamod.Items.Weapons.Summon
                     target.SimpleStrikeNPC(Projectile.damage, hit.HitDirection);
 
                     //Funny Screenshake
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 64);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") { PitchVariance = 0.15f }, Projectile.position);
                     break;
             }            
@@ -364,7 +378,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 
             
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.3f, Color.Transparent, ref lightColor);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(85, 112, 188) * 0.4f, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
     }
