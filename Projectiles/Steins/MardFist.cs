@@ -159,6 +159,21 @@ namespace Stellamod.Projectiles.Steins
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -15f;
 				bounced = true;
 
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SteinShading"));
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit1"), Projectile.Center);
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit2"), Projectile.Center);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit3"), Projectile.Center);
+						break;
+
+				}
+
 				//Wow, Amazing, So Hot, SEXY, Great
 				switch (Main.rand.Next(3))
 				{

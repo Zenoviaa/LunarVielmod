@@ -153,10 +153,36 @@ namespace Stellamod.Projectiles.Steins
 			Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
 			player.GetModPlayer<SteinPlayer>().HasHitDance = true;
+
+
+
+
+
+
 			if (!bounced)
 			{
+
+				
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
 				bounced = true;
+
+				
+
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SteinHulting"));
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit1"), Projectile.Center);
+						break;
+					case 1:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit2"), Projectile.Center);
+						break;
+					case 2:
+						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Steinhit3"), Projectile.Center);
+						break;
+
+				}
+
 
 				//Wow, Amazing, So Hot, SEXY, Great
 				switch (Main.rand.Next(2))
