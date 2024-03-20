@@ -2017,7 +2017,7 @@ StarflareBand: {
 	DisplayName: Starflare Band
 	Tooltip:
 		'''
-		+20% Magic Damage
+		+10% Magic Damage
 		Increased Mana regeneration!
 		Reduced Mana cost :o
 		'''
@@ -3691,7 +3691,7 @@ AlsisChestplate: {
 	Tooltip:
 		'''
 		+25 Health
-		+20% Magic Critical Strike Chance
+		+5% Magic Critical Strike Chance
 		+10% Magic Damage
 		'''
 }
@@ -3710,7 +3710,7 @@ AlsisMask: {
 	Tooltip:
 		'''
 		+10 Health
-		+5% Magic Critical Strike Chance
+		+1% Magic Critical Strike Chance
 		+10% Magic Damage
 		'''
 }
@@ -5921,7 +5921,7 @@ Voltenstein: {
 	Tooltip:
 		'''
 		A shocking experience!
-		Tap to your cursor to dash into electrifying damage! 
+		Tap to your cursor to dash into electrifying damage! F
 		Hitting enemies will give you bonus damage and immunity for reward! 
 		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
 		The better the glove the more words!
