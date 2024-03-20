@@ -5999,5 +5999,5 @@ TheActualMoon: {
 
 ReflectionSeeker: {
 	DisplayName: Reflection Seeker
-	Tooltip: ""
+	Tooltip: Creates little versions of you to attack enemies! (Will change depending on your character image)
 }
