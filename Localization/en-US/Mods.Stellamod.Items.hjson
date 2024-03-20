@@ -5981,7 +5981,8 @@ BlankOrb: {
 
 Mardenstein: {
 	DisplayName: Mardenstein
-	Tooltip: '''
+	Tooltip:
+		'''
 		A wowing experience!
 		Tap to your cursor to dash into some damn high damage! 
 		Hitting enemies will give you bonus damage with words and immunity for reward! 
