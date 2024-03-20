@@ -501,6 +501,7 @@ namespace Stellamod.NPCs.Town
 			.Add<BlankSafunai>()
 			.Add<BlankRune>()
 			.Add<BlankBrooch>()
+			.Add<BlankOrb>()
 			.Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)

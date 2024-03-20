@@ -5960,3 +5960,19 @@ Hultinstein: {
 		The better the glove the more words!
 		'''
 }
+
+AuroreanStarball: {
+	DisplayName: Aurorean Starball
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Special attack does a starry explosion upon impact!
+		We ballin'
+		'''
+}
+
+BlankOrb: {
+	DisplayName: Blank Orb
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}

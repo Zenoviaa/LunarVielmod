@@ -577,3 +577,8 @@ SFBuff: {
 	Description: Mods.Stellamod.Buffs.SFBuff.Description
 	DisplayName: S F Buff
 }
+
+AuroreanStarballDebuff: {
+	DisplayName: Aurorean Starball Debuff
+	Description: Mods.Stellamod.Buffs.AuroreanStarballDebuff.Description
+}
