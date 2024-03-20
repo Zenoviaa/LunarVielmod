@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -28,8 +29,8 @@ namespace Stellamod.Items.Consumables
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.rare = ItemRarityID.Orange;
-		}
+			Item.rare = ModContent.RarityType<DefaultSpecialRarity>();
+        }
 
 		public override void AddRecipes()
 		{
