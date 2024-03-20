@@ -5996,3 +5996,8 @@ TheActualMoon: {
 	DisplayName: The Actual Moon
 	Tooltip: ""
 }
+
+ReflectionSeeker: {
+	DisplayName: Reflection Seeker
+	Tooltip: ""
+}

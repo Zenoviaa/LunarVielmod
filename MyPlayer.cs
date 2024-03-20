@@ -84,6 +84,7 @@ namespace Stellamod
 		public int LovestruckBCooldown = 0;
 		public bool ADisease;
 		public bool ZoneFable = false;
+		public bool ReflectionS;
 
 		private Vector2 RandomOrig;
 		private Vector2 RandomOrig2;
@@ -600,8 +601,8 @@ namespace Stellamod
 			BroochBurningG = false;
 			BroochStone = false;
 
-		
 
+			ReflectionS = false;
 			SpiritPendent = false;
             GHE = false;
             ShadeRune = false;
