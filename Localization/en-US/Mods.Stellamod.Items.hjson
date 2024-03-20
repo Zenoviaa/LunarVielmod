@@ -5925,6 +5925,7 @@ Voltenstein: {
 		Hitting enemies will give you bonus damage and immunity for reward! 
 		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
 		The better the glove the more words!
+		2 Words!
 		'''
 	DisplayName: Voltenstein
 }
@@ -5958,6 +5959,7 @@ Hultinstein: {
 		Hitting enemies will give you bonus damage with words and immunity for reward! 
 		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
 		The better the glove the more words!
+		1 Word!
 		'''
 }
 
@@ -5975,4 +5977,16 @@ AuroreanStarball: {
 BlankOrb: {
 	DisplayName: Blank Orb
 	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+Mardenstein: {
+	DisplayName: Mardenstein
+	Tooltip: '''
+		A wowing experience!
+		Tap to your cursor to dash into some damn high damage! 
+		Hitting enemies will give you bonus damage with words and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		The better the glove the more words!
+		3 Words!
+		'''
 }

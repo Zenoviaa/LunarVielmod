@@ -96,6 +96,8 @@ namespace Stellamod.Projectiles.Steins
 
 			//Now we can calculate the circle position	
 			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<GREAT>()];
+			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<WOW>()];
+			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<AMAZING>()];
 			float degreesBetweenFirefly = 360 / (float)minionCount;
 			float degrees = degreesBetweenFirefly * minionIndex;
 			float circleDistance = 96f;
