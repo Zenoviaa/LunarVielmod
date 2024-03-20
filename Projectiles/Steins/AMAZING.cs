@@ -91,7 +91,7 @@ namespace Stellamod.Projectiles.Steins
 		private Vector2 CalculateCirclePosition(Player owner)
 		{
 			//Get the index of this minion
-			int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
+			int minionIndex = SummonHelper.GetProjectileIndexMulti(Projectile, ModContent.ProjectileType<WOW>(), ModContent.ProjectileType<AMAZING>(), ModContent.ProjectileType<GREAT>());
 
 			//Now we can calculate the circle position	
 			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<AMAZING>()];
