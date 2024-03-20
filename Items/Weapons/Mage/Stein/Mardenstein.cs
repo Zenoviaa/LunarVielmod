@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.Nails;
 using Stellamod.Projectiles.Steins;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -15,6 +17,17 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 	{
 		public int AttackCounter = 1;
 		public int combowombo = 1;
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+
+			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+			var line = new TooltipLine(Mod, "", "");
+			line = new TooltipLine(Mod, "Alcarishasd", "Stein Weapon Type")
+			{
+				OverrideColor = ColorFunctions.SteinWeaponType
+			};
+			tooltips.Add(line);
+		}
 
 		public override void SetStaticDefaults()
 		{
