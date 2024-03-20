@@ -1,11 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Stellamod.Items.Weapons.Summon.X3144;
@@ -109,7 +112,7 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			public override void SetStaticDefaults()
             {
-                ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+                ProjectileID.Sets.TrailCacheLength[Projectile.type] = 22;
                 ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
                 // DisplayName.SetDefault("Jelly Minion");
                 // Sets the amount of frames this minion has on its spritesheet
@@ -154,21 +157,34 @@ namespace Stellamod.Items.Weapons.Summon
 			{
 				return true;
 			}
+            public override Color? GetAlpha(Color lightColor)
+            {
+                return Color.White;
+            }
+            public PrimDrawer TrailDrawer { get; private set; } = null;
+            public float WidthFunction(float completionRatio)
+            {
+                float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+                return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            }
+            public Color ColorFunction(float completionRatio)
+            {
+                return Color.Lerp(Color.DarkRed, Color.Transparent, completionRatio) * 0.7f;
+            }
             public override bool PreDraw(ref Color lightColor)
             {
-
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-                for (int k = 0; k < Projectile.oldPos.Length; k++)
+                if (Main.rand.NextBool(3))
                 {
-                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(Color.Lerp(new Color(255, 8, 55), new Color(99, 39, 51), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-                    Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkRed, 0.4f).noGravity = true;
+
                 }
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                return true;
+                Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+                TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+                GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
+                TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
+
+                return false;
             }
             public override void AI()
 			{
@@ -298,8 +314,21 @@ namespace Stellamod.Items.Weapons.Summon
 
                         if (Projectile.ai[1] >= 30)
                         {
-          
-                            var EntitySource = Projectile.GetSource_Death();
+                            float rot = direction.ToRotation();
+                            float spread = 0.4f;
+
+							Vector2 offset = new Vector2(1.5f, -0.1f * Projectile.direction).RotatedBy(rot);
+
+							for (int k = 0; k < 7; k++)
+                            {
+                                Vector2 direction2 = offset.RotatedByRandom(spread);
+
+                                Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction2 * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.2f, 0.5f));
+                            }
+                            Dust.NewDustPerfect(Projectile.position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+							Dust.NewDustPerfect(Projectile.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+
+							var EntitySource = Projectile.GetSource_Death();
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                                 Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.Bullet, 40, 1, Main.myPlayer, 0, 0);
                             Projectile.ai[1] = 0;

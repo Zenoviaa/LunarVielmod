@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Veiizal;
 using Terraria;
 using Terraria.DataStructures;

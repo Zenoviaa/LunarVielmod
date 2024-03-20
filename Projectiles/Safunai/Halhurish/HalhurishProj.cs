@@ -140,7 +140,7 @@ namespace Stellamod.Projectiles.Safunai.Halhurish
                 ShakeModSystem.Shake = 4;
                 for (int i = 0; i < 14; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 0.5f).noGravity = true;
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 0.5f).noGravity = true;
                 }
                 for (int i = 0; i < 4; i++)
                 {

@@ -30,6 +30,7 @@ using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.STARBOMBER;
+using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Event.Luminull;
@@ -801,7 +802,7 @@ namespace Stellamod
             {
                 IrradiatedKilled = 0;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()))
             {
                 SingularityFragment = true;
             }

@@ -5906,3 +5906,18 @@ DelgrimsHammer: {
 	Tooltip: ""
 	DisplayName: Delgrims Hammer
 }
+
+TwilitTome: {
+	DisplayName: Twilit Tome
+	Tooltip: ""
+}
+
+DirtGlove: {
+	DisplayName: Dirt Glove
+	Tooltip: ""
+}
+
+XX4160: {
+	DisplayName: X X4160
+	Tooltip: ""
+}

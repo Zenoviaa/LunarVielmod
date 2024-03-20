@@ -317,14 +317,14 @@ namespace Stellamod
 
 		private void DoSingularityFragmentIntegration()
         {
-			string internalName6 = "SingularityoftheMoon";
+			string internalName6 = "LumarSingularity";
 
             // The NPC type of the boss
             int bossType6 = ModContent.NPCType<NPCs.Bosses.singularityFragment.SingularityFragment>();
 
 
-			// Value inferred from boss progression, see the wiki for details
-			float weight6 = 3.4f;
+            // Value inferred from boss progression, see the wiki for details
+            float weight6 = 3.4f;
 
 			// Used for tracking checklist progress
 			Func<bool> downed6 = () => DownedBossSystem.downedSOMBoss;

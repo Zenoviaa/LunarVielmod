@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -61,6 +62,15 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
 
         public override void OnKill(int timeLeft)
         {
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.RoyalBlue, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.RoyalBlue, 1f).noGravity = true;
+            }
+
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
         }

@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Slashers;
+using Stellamod.Projectiles.Slashers.ArchariliteRaysword;
+using Stellamod.Projectiles.Slashers.X3107;
 using Stellamod.Projectiles.Swords;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -25,13 +30,13 @@ namespace Stellamod.Items.Weapons.Melee
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 0, 16, 0);
+            Item.value = Item.sellPrice(0, 1, 16, 0);
             Item.rare = ItemRarityID.Pink;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.shoot = ModContent.ProjectileType<X3107Skull>();
-            Item.shootSpeed = 20f;
+            Item.shootSpeed = 30f;
             Item.DamageType = DamageClass.Melee;
         }
         public override void AddRecipes()
@@ -41,15 +46,35 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.AdamantiteForge);
             recipe.Register();
         }
-        public override void MeleeEffects(Player player, Rectangle hitbox)
+        public int AttackCounter = 1;
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (Main.rand.NextBool(2))
+            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 0)
             {
-                Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.RedTorch);
+                type = ModContent.ProjectileType<X3107Slash>();
+
+            }
+            if (player.GetModPlayer<MyPlayer>().SwordCombo >= 4)
+            {
+                type = ModContent.ProjectileType<X3107Slash>();
+             
             }
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            int dir = AttackCounter;
+            if (player.direction == 1)
+            {
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
+            }
+            else
+            {
+                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
+
+            }
+            AttackCounter = -AttackCounter;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
@@ -59,7 +84,7 @@ namespace Stellamod.Items.Weapons.Melee
             {
             }
 
-            return true;
+            return false;
         }
     }
 }
