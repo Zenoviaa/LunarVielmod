@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
+using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Summon
 {
@@ -18,7 +19,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public override void SetDefaults()
 		{
-			Item.damage = 28;
+			Item.damage = 21;
 			Item.DamageType = DamageClass.Summon;
 			Item.mana = 5;
 			Item.width = 26;
@@ -29,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.noMelee = true;
 			Item.knockBack = 1;
 			Item.value = Item.buyPrice(0, 0, 100, 0);
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
 			Item.UseSound = SoundID.Item44;
 			Item.shoot = ModContent.ProjectileType<ReflectionSeekerProj>();
 			Item.buffType = ModContent.BuffType<ReflectionSeekerBuff>();

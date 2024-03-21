@@ -12,8 +12,13 @@ namespace Stellamod.Helpers
             {
                 if (item.rare == ModContent.RarityType<DefaultSpecialRarity>())
                 {
-                        // Draw the custom tooltip line.
-                        DefaultSpecialRarity.DrawCustomTooltipLine(line);
+                    // Draw the custom tooltip line.    
+                    DefaultSpecialRarity.DrawCustomTooltipLine(line);
+                    return false;
+                }
+                if(item.rare == ModContent.RarityType<SirestiasSpecialRarity>())
+                {
+                    SirestiasSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
             }
