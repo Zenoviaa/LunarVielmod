@@ -43,8 +43,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<VacuumLightningBolt>();
-			Item.shootSpeed = 15f;
+			Item.shoot = ModContent.ProjectileType<StarTestProj>();
+			Item.shootSpeed = 3f;
 			Item.channel = true;
 		}
 
