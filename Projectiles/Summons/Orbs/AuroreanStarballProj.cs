@@ -6,7 +6,6 @@ using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal class AuroreanStarballProj : ModProjectile
+    internal class AuroreanStarballProj : OrbProjectile
     {
         public enum ActionState
         {
@@ -30,7 +29,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
         public const float Combo_Time = 8;
         public const int Swing_Speed_Multiplier = 8;
 
-        Player Owner => Main.player[Projectile.owner];
+        public override float MaxThrowDistance => 384;
 
         ref float ComboCounter => ref Projectile.ai[0];
         public ActionState State
@@ -38,6 +37,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
             get => (ActionState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
         }
+
         ref float Timer => ref Projectile.ai[2];
         float SwingTime;
         float EasedProgress;
@@ -134,7 +134,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
-                SwingTarget = Main.MouseWorld;
+                SwingTarget = GetSwingTarget();
                 SwingTime = Swing_Time;
                 State = ActionState.Swing_1;
                 ComboCounter = 0;
@@ -194,7 +194,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
                     SwingStart = Owner.Center + SwingVelocity.RotatedByRandom(MathHelper.TwoPi) * distance;
-                    SwingTarget = Main.MouseWorld;
+                    SwingTarget = GetSwingTarget();
                     SwingTime = Swing_Time;
                     State = ActionState.Swing_2;
                     ComboCounter = 0;
@@ -241,7 +241,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;
-                    SwingTarget = Main.MouseWorld;
+                    SwingTarget = GetSwingTarget();
                     SwingTime = Swing_Time_2;
                     State = ActionState.Swing_3;
                     ComboCounter = 0;
