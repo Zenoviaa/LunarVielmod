@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     public class BouncySword : ModProjectile
     {

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     public class SummonSpawnEffect : ModProjectile
     {

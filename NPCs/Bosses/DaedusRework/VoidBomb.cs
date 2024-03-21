@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     public class VoidBomb : ModProjectile
 	{

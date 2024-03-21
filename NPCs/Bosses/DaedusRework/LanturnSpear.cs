@@ -6,9 +6,9 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.DaedusRework
 {
-    internal class LanturnSpear2 : ModProjectile
+    internal class LanturnSpear : ModProjectile
     {
         bool Moved;
         int Timer = 0;
@@ -46,27 +46,33 @@ namespace Stellamod.NPCs.Bosses.Daedus
             if (Projectile.ai[1] == 1)
             {
                 Projectile.alpha = 255;
-                Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 40, Projectile.position.X + 40);
-                Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 40, Projectile.position.Y + 40);
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.position.X = Main.rand.NextFloat(Projectile.position.X - 40, Projectile.position.X + 40);
+                    Projectile.position.Y = Main.rand.NextFloat(Projectile.position.Y - 40, Projectile.position.Y + 40);
+                    Projectile.netUpdate = true;
+                }
             }
+
             if (Projectile.ai[1] == 2)
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
                 Projectile.velocity = -Projectile.velocity;
             }
+
             if (Projectile.ai[1] >= 0 && Projectile.ai[1] <= 20)
             {
                 Projectile.velocity *= .86f;
-
             }
+
             if (Projectile.ai[1] == 20)
             {
                 Projectile.velocity = Projectile.velocity;
             }
+
             if (Projectile.ai[1] >= 21 && Projectile.ai[1] <= 60)
             {
                 Projectile.velocity /= .90f;
-
             }
 
 
@@ -78,10 +84,13 @@ namespace Stellamod.NPCs.Bosses.Daedus
             if (Timer <= 2)
             {
                 maxDetectRadius = 2000f;
-
-                float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-                float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2, ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, 0, 0f, 0f);
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
+                    float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY + 2 * 2,
+                        ModContent.ProjectileType<SummonSpawnEffect>(), 0, 0f, Main.myPlayer, 0f, 0f);
+                }
             }
 
             if (Timer >= 4)
@@ -163,26 +172,25 @@ namespace Stellamod.NPCs.Bosses.Daedus
             }
         }
 
-            public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-                for (int k = 0; k < Projectile.oldPos.Length; k++)
-                {
-                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(Color.Lerp(new Color(253, 255, 71), new Color(182, 83, 38), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-                    Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-                }
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                return true;
+                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(Color.Lerp(new Color(253, 255, 71), new Color(182, 83, 38), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
+                Main.spriteBatch.Draw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
             }
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            return true;
+        }
         
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.PaleGoldenrod.ToVector3() * 1.75f * Main.essScale);
-
         }
     }
 }

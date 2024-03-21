@@ -5994,10 +5994,27 @@ Mardenstein: {
 
 TheActualMoon: {
 	DisplayName: The Actual Moon
-	Tooltip: ""
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		A heavier orb with a much stronger impact explosion!
+		I'm already Verlia
+		'''
 }
 
 ReflectionSeeker: {
 	DisplayName: Reflection Seeker
 	Tooltip: Creates little versions of you to attack enemies! (Will change depending on your character image)
+}
+
+TwinStarbombas: {
+	DisplayName: Twin Starbombas
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Wield two orbs at the same time! They attack by orbiting around you
+		So basically just STARBOMBER's balls
+		'''
 }

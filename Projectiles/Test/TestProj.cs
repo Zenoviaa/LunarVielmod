@@ -1,17 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
-using Stellamod.Helpers;
-using Stellamod.Particles;
 using Stellamod.Trails;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.Test
 {
     internal class TestProj : ModProjectile, IPixelPrimitiveDrawer
     {
