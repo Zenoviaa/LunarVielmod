@@ -26,6 +26,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
+using Stellamod.Buffs;
 
 namespace Stellamod.NPCs.Town
 {
@@ -72,12 +75,27 @@ namespace Stellamod.NPCs.Town
 				.SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Love) // Loves living near the dryad.
 				.SetNPCAffection(NPCID.Stylist, AffectionLevel.Like) // Likes living near the guide.
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
-				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate); // Hates living near the demolitionist.
 
-
-			
-
-			; // < Mind the semicolon!
+	
+			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
+			{
+				SpecificallyImmuneTo = new int[] {
+					BuffID.Poisoned,
+					BuffID.Burning,
+					BuffID.Ichor,
+					BuffID.Frostburn,
+					BuffID.Confused // Most NPCs have this
+				}
+			};
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Ichor] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<AcidFlame>()] = true;
+			// < Mind the semicolon!
 		}
 		
 		// Current state
