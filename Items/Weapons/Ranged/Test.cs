@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Gun;
+using Stellamod.Projectiles.Test;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<StarTestProj>();
+			Item.shoot = ModContent.ProjectileType<CircleTestProj>();
 			Item.shootSpeed = 3f;
 			Item.channel = true;
 		}
