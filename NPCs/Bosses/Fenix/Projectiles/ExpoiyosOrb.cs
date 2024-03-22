@@ -1,34 +1,15 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Items.Harvesting;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.DropRules;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Armors.Daeden;
-using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.Daedus;
-using System.Collections.Generic;
-using System.IO;
-using Terraria.Audio;
-using Stellamod.UI.Systems;
-using Stellamod.Projectiles.Summons;
-using ParticleLibrary;
-using Stellamod.Particles;
 
 namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 {
-	public class ExpoiyosOrb : ModNPC
+    public class ExpoiyosOrb : ModNPC
 	{
 		public override void SetStaticDefaults()
 		{

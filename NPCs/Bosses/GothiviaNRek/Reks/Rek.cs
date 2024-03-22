@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Daedus;
+using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Stellamod.UI.Systems;
 using System;
@@ -10,11 +10,9 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 namespace Stellamod.NPCs.Bosses.GothiviaNRek.Reks
 
 {

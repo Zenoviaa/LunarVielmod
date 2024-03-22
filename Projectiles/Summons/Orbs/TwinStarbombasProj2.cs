@@ -1,19 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Summon.Orbs;
+using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using System.Collections.Generic;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Projectiles.Summons.Orbs
 {
-    internal class AuroreanStarballProj : ModProjectile
+    internal class TwinStarbombasProj2 : OrbProjectile
     {
         public enum ActionState
         {
@@ -23,13 +26,14 @@ namespace Stellamod.Items.Weapons.Summon
             Swing_3
         }
 
-        public const float Swing_Time = 40* Swing_Speed_Multiplier;
-        public const float Swing_Time_2 = 60* Swing_Speed_Multiplier;
+        public const float Swing_Revolutions = 1.33f;
+        public const float Swing_Time = 34  *  Swing_Speed_Multiplier;
+        public const float Swing_Time_2 = 53 * Swing_Speed_Multiplier;
         public const float Final_Swing_Distance = 252;
         public const float Combo_Time = 8;
-        public const int Swing_Speed_Multiplier = 8;
+        public const int Swing_Speed_Multiplier = 16;
 
-        Player Owner => Main.player[Projectile.owner];
+        public override float MaxThrowDistance => 512;
 
         ref float ComboCounter => ref Projectile.ai[0];
         public ActionState State
@@ -40,13 +44,15 @@ namespace Stellamod.Items.Weapons.Summon
         ref float Timer => ref Projectile.ai[2];
         float SwingTime;
         float EasedProgress;
+        float OrbitRotation;
+        float OrbitSwingDistance;
         Vector2 SwingStart;
         Vector2 SwingTarget;
         Vector2 SwingVelocity;
         int DustTimer;
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 32;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 132;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -75,7 +81,7 @@ namespace Stellamod.Items.Weapons.Summon
         public override void AI()
         {
             //Kill yourself if not holding the item
-            if(Owner.HeldItem.type != ModContent.ItemType<AuroreanStarball>())
+            if (Owner.HeldItem.type != ModContent.ItemType<TwinStarbombas>())
             {
                 Projectile.Kill();
                 return;
@@ -98,26 +104,27 @@ namespace Stellamod.Items.Weapons.Summon
             }
         }
 
+        private void Reset()
+        {
+            ComboCounter = 0;
+            Timer = 0;
+            EasedProgress = 0;
+            for (int i = 0; i < Projectile.localNPCImmunity.Length; i++)
+            {
+                Projectile.localNPCImmunity[i] = 0;
+            }
+            OrbitSwingDistance = Vector2.Distance(Owner.Center, Main.MouseWorld);
+        }
+
         private void Orbit()
         {
-            //Orbiting
-            float orbitSpeed = 5;
-            float orbitDistance = 48;
-            float orbitProgress = VectorHelper.Osc(0, 1, orbitSpeed);
-            float easedProgress = Easing.InOutCubic(orbitProgress);
-
-            //Hovering
-            float hoverSpeed = 5;
-            float hoverDistance = 24;
-            float yOffset = VectorHelper.Osc(-hoverDistance, hoverDistance, hoverSpeed);
-
-            Vector2 offset = new Vector2(orbitDistance, yOffset);
-            Vector2 startVector = Owner.Center - offset;
-            Vector2 endVector = Owner.Center + offset;
-
+            //Orbit around the player
+            float orbitDistance = 128;
+            OrbitRotation -= 0.003f;
+            Vector2 targetOrbitPos = MovementHelper.OrbitAround(Owner.Center, Vector2.UnitY, orbitDistance, OrbitRotation);
+            
             //Lerp
-            Vector2 targetCenter = Vector2.Lerp(startVector, endVector, easedProgress);
-            Projectile.Center = Vector2.Lerp(Projectile.Center, targetCenter, 0.12f / Swing_Speed_Multiplier);
+            Projectile.Center = Vector2.Lerp(Projectile.Center, targetOrbitPos, 0.12f / Swing_Speed_Multiplier);
             if (ComboCounter >= 1)
             {
                 switch (Main.rand.Next(2))
@@ -133,20 +140,9 @@ namespace Stellamod.Items.Weapons.Summon
                 Reset();
                 SwingVelocity = Owner.DirectionTo(SwingTarget);
                 SwingStart = Owner.Center;
-                SwingTarget = Main.MouseWorld;
+                SwingTarget = GetSwingTarget();
                 SwingTime = Swing_Time;
                 State = ActionState.Swing_1;
-                ComboCounter = 0;
-                Timer = 0;
-            }
-        }
-
-        private void Reset()
-        {
-            EasedProgress = 0;
-            for(int i = 0; i < Projectile.localNPCImmunity.Length; i++)
-            {
-                Projectile.localNPCImmunity[i] = 0;
             }
         }
 
@@ -156,8 +152,10 @@ namespace Stellamod.Items.Weapons.Summon
             if (DustTimer >= 4 * Swing_Speed_Multiplier)
             {
                 DustTimer = 0;
+                //Get a random color
+                Color randColor = Main.rand.NextColor(Color.White, Main.DiscoColor, Color.Black);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    ModContent.DustType<GunFlash>(), newColor: Color.White, Scale: 0.8f);
+                    ModContent.DustType<GunFlash>(), newColor: randColor, Scale: 0.8f);
             }
         }
 
@@ -168,13 +166,14 @@ namespace Stellamod.Items.Weapons.Summon
 
             float progress = Timer / SwingTime;
             EasedProgress = Easing.SpikeOrb(progress);
-            float rot = MathHelper.Lerp(-MathHelper.Pi, 0, EasedProgress);
+            float orbitRotation = MathHelper.Lerp(-MathHelper.TwoPi * Swing_Revolutions , 0, EasedProgress);
+            float orbitDistance = MathHelper.Lerp(0, OrbitSwingDistance, EasedProgress);
 
             Vector2 start = SwingStart;
-            Vector2 end = SwingTarget.RotatedBy(rot, SwingStart);
+            Vector2 end =  MovementHelper.OrbitAround(Owner.Center, SwingVelocity.RotatedBy(-MathHelper.PiOver2), orbitDistance, orbitRotation);
             Vector2 lerpPosition = Vector2.Lerp(start, end, EasedProgress);
 
-            Projectile.Center = Vector2.Lerp(Projectile.Center, lerpPosition, 0.54f / Swing_Speed_Multiplier);
+            Projectile.Center = Vector2.Lerp(Projectile.Center, end, EasedProgress);
             if (Timer > SwingTime)
             {
                 if (ComboCounter >= 1)
@@ -193,11 +192,9 @@ namespace Stellamod.Items.Weapons.Summon
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     float distance = 180;
                     SwingStart = Owner.Center + SwingVelocity.RotatedByRandom(MathHelper.TwoPi) * distance;
-                    SwingTarget = Main.MouseWorld;
+                    SwingTarget = GetSwingTarget();
                     SwingTime = Swing_Time;
                     State = ActionState.Swing_2;
-                    ComboCounter = 0;
-                    Timer = 0;
                 }
                 else if (Timer > SwingTime + Combo_Time)
                 {
@@ -216,13 +213,14 @@ namespace Stellamod.Items.Weapons.Summon
 
             float progress = Timer / SwingTime;
             EasedProgress = Easing.SpikeOrb(progress);
-            float rot = MathHelper.Lerp(MathHelper.Pi, 0, EasedProgress);
+            float orbitRotation = MathHelper.Lerp(MathHelper.TwoPi * Swing_Revolutions, 0, EasedProgress);
+            float orbitDistance = MathHelper.Lerp(0, OrbitSwingDistance, EasedProgress);
 
             Vector2 start = SwingStart;
-            Vector2 end = SwingTarget.RotatedBy(rot, SwingStart);
+            Vector2 end = MovementHelper.OrbitAround(Owner.Center, SwingVelocity.RotatedBy(-MathHelper.PiOver2), orbitDistance, -orbitRotation);
             Vector2 lerpPosition = Vector2.Lerp(start, end, EasedProgress);
 
-            Projectile.Center = Vector2.Lerp(Projectile.Center, lerpPosition, 0.54f / Swing_Speed_Multiplier);
+            Projectile.Center = Vector2.Lerp(Projectile.Center, end, EasedProgress);
             if (Timer > SwingTime)
             {
                 if (ComboCounter >= 1)
@@ -240,11 +238,9 @@ namespace Stellamod.Items.Weapons.Summon
                     Reset();
                     SwingVelocity = Owner.DirectionTo(SwingTarget);
                     SwingStart = Projectile.Center;
-                    SwingTarget = Main.MouseWorld;
+                    SwingTarget = GetSwingTarget();
                     SwingTime = Swing_Time_2;
                     State = ActionState.Swing_3;
-                    ComboCounter = 0;
-                    Timer = 0;
                 }
                 else if (Timer > SwingTime + Combo_Time)
                 {
@@ -264,7 +260,11 @@ namespace Stellamod.Items.Weapons.Summon
 
             Vector2 start = Owner.Center;
             Vector2 end = SwingTarget + (SwingTarget - start).SafeNormalize(Vector2.Zero) * Final_Swing_Distance;
+
+            //This should be cool
+          
             Vector2 lerpPosition = Vector2.Lerp(start, end, EasedProgress);
+            lerpPosition += MathF.Sin(EasedProgress * 32) * (SwingVelocity.RotatedBy(MathHelper.PiOver2)) * 256;
 
             Projectile.Center = Vector2.Lerp(Projectile.Center, lerpPosition, 0.54f / Swing_Speed_Multiplier);
             if (Timer > SwingTime)
@@ -278,14 +278,15 @@ namespace Stellamod.Items.Weapons.Summon
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            target.AddBuff(ModContent.BuffType<AuroreanStarballDebuff>(), 240);
+            target.AddBuff(ModContent.BuffType<TwinStarbombasDebuff>(), 240);
             switch (State)
             {
                 case ActionState.Swing_1:
                 case ActionState.Swing_2:
                     for (int i = 0; i < 4; i++)
                     {
-                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GunFlash>(), Scale: 0.8f);
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
+                            ModContent.DustType<GunFlash>(), newColor: Color.Black, Scale: 0.8f);
                     }
 
                     switch (Main.rand.Next(3))
@@ -303,20 +304,36 @@ namespace Stellamod.Items.Weapons.Summon
                     break;
 
                 case ActionState.Swing_3:
-                    
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomSigil>(),
-                        Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                            ModContent.DustType<GunFlash>(), newColor: Main.DiscoColor, Scale: 0.8f);
+                    }
 
+                    for (int i = 0; i < 4; i++)
+                    {
+                        //Get a random velocity
+                        Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+
+                        //Get a random color
+                        Color randColor = Main.rand.NextColor(Color.White, Main.DiscoColor, Color.Black);
+                        float randScale = Main.rand.NextFloat(0.5f, 1.5f);
+                        ParticleManager.NewParticle<StarParticle>(Projectile.Center, velocity, randColor, randScale);
+                    }
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                        ModContent.ProjectileType<StarsBoom2>(),
+                        Projectile.damage, Projectile.knockBack, Projectile.owner);
                     target.SimpleStrikeNPC(Projectile.damage, hit.HitDirection);
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3") { PitchVariance = 0.15f }, Projectile.position);
                     break;
-            }            
+            }
         }
 
         public TrailRenderer SwordSlash;
         public TrailRenderer SwordSlash2;
         public override bool PreDraw(ref Color lightColor)
-        {  
+        {
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                 new Vector3(60, 0, 118),
                 new Vector3(117, 1, 187),
@@ -329,17 +346,23 @@ namespace Stellamod.Items.Weapons.Summon
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p), 
-                    (p) => Color.White * (1f - p));
+                    (p) => Vector2.Lerp(new Vector2(64), new Vector2(58), p),
+                    (p) => Color.Black);
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, 
-                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p), 
-                    (p) => new Color(247, 178, 239, 255) * (1f - p));
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
+                    (p) => Vector2.Lerp(new Vector2(28), new Vector2(12), p),
+                    (p) => new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 255) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }
+
+
+
+            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 1);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, Main.DiscoColor, Color.Transparent, ref lightColor);
+
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
@@ -355,10 +378,6 @@ namespace Stellamod.Items.Weapons.Summon
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
-
-
-            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 1);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
     }

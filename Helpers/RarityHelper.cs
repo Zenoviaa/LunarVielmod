@@ -14,7 +14,6 @@ namespace Stellamod.Helpers
         public static void DrawBaseTooltipTextAndGlow(DrawableTooltipLine tooltipLine, Color glowColor, Color textOuterColor, Color? textInnerColor = null, Texture2D glowTexture = null, Vector2? glowScaleOffset = null)
         {
             textInnerColor ??= Color.Black;
-            glowTexture ??= RarityTextureRegistry.BaseRarityGlow;
             glowScaleOffset ??= Vector2.One;
             // Get the text of the tooltip line.
             string text = tooltipLine.Text;
@@ -29,9 +28,13 @@ namespace Stellamod.Helpers
             // Get the scale of the glow texture based off of the text size.
             Vector2 glowScale = new Vector2(textSize.X * 0.115f, 0.6f) * glowScaleOffset.Value;
             glowColor.A = 0;
-            // Draw the glow texture.
-            Main.spriteBatch.Draw(glowTexture, glowPosition, null, glowColor * 0.85f, 0f, glowTexture.Size() * 0.5f, glowScale, SpriteEffects.None, 0f);
 
+            // Draw the glow texture.
+            if(glowTexture != null)
+            {
+                Main.spriteBatch.Draw(glowTexture, glowPosition, null, glowColor * 0.85f, 0f, glowTexture.Size() * 0.5f, glowScale, SpriteEffects.None, 0f);
+            }
+       
             // Get an offset to the afterimageOffset based on a sine wave.
             float sine = (float)((1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2.5f)) / 2);
             float sineOffset = MathHelper.Lerp(0.5f, 1f, sine);
@@ -69,6 +72,13 @@ namespace Stellamod.Helpers
                         position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.5f), -(int)(textSize.Y * 0.4f), (int)textSize.X, (int)(textSize.Y * 0.35f)));
                         velocity = Vector2.UnitY * Main.rand.NextFloat(0.1f, 0.25f);
                         sparklesList.Add(new DefaultSparkle(lifetime, scale, 0f, 0f, position, velocity));
+                        break;
+                    case SparkleType.MagicCircle:
+                        lifetime = (int)Main.rand.NextFloat(70f - 25f, 70f);
+                        scale = Main.rand.NextFloat(0.03f * 0.5f, 0.03f);
+                        position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.5f), -(int)(textSize.Y * 0.4f), (int)textSize.X, (int)(textSize.Y * 0.35f)));
+                        velocity = Vector2.UnitY * Main.rand.NextFloat(0.1f, 0.25f);
+                        sparklesList.Add(new CircleSparkle(lifetime, scale, 0f, 0f, position, velocity));
                         break;
                 }
             }

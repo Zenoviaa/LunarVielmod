@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.NPCs.Bosses.Daedus
+namespace Stellamod.NPCs.Bosses.DaedusRework
 {
     // Shows basic boss bar code using a custom colored texture. It only does visual things, so for a more practical boss bar, see the other example (MinionBossBossBar)
     // To use this, in an NPCs SetDefaults, write:

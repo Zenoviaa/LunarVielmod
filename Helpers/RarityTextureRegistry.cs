@@ -24,17 +24,24 @@ namespace Stellamod.Helpers
             get;
             private set;
         }
+        public static Texture2D ThornedRarityGlow
+        {
+            get;
+            private set;
+        }
 
         public override void Load()
         {
             BaseRarityGlow = ModContent.Request<Texture2D>($"{Path}BaseRarityGlow", AssetRequestMode.ImmediateLoad).Value;
             BaseRaritySparkleTexture = ModContent.Request<Texture2D>($"{Path}BaseRaritySparkleTexture", AssetRequestMode.ImmediateLoad).Value;
+            ThornedRarityGlow = ModContent.Request<Texture2D>($"{Path}ThornedRarityGlow", AssetRequestMode.ImmediateLoad).Value;
         }
 
         public override void Unload()
         {
             BaseRarityGlow = null;
             BaseRaritySparkleTexture = null;
+            ThornedRarityGlow = null;
         }
     }
 }

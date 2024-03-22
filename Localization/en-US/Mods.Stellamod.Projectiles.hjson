@@ -881,7 +881,9 @@ ShadingShot.DisplayName: Shading Shot
 WOW.DisplayName: W O W
 TheActualMoonProj.DisplayName: The Actual Moon Proj
 StarsBoom.DisplayName: Stars Boom
-XX4160Shot.DisplayName: X X4160 Shot
-X3107Slash.DisplayName: X3107 Slash
-NovaBlast.DisplayName: Nova Blast
-NovaFlame.DisplayName: Nova Flame
+ReflectionSeekerProj.DisplayName: Reflection Seeker Proj
+TwinStarbombasProj1.DisplayName: Twin Starbombas Proj1
+TwinStarbombasProj2.DisplayName: Twin Starbombas Proj2
+StarsBoom2.DisplayName: Stars Boom2
+StarTestProj.DisplayName: Star Test Proj
+CircleTestProj.DisplayName: Circle Test Proj

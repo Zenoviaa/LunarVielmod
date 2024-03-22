@@ -2,6 +2,7 @@
 {
     public enum SparkleType
     {
-        DefaultSparkle
+        DefaultSparkle,
+        MagicCircle
     }
 }

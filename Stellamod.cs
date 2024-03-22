@@ -5,15 +5,20 @@ using Stellamod.Backgrounds;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
+using Stellamod.WorldG;
 using System.IO;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
@@ -87,7 +92,9 @@ namespace Stellamod
             Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["VampKnives:BasicTrail"] = new MiscShaderData(BasicTrailRef, "TrailPass");
             GameShaders.Misc["VampKnives:LightningTrail"] = new MiscShaderData(LightningTrailRef, "TrailPass");
-
+           
+            Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc["Stellamod:SilhouetteShader"] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
 
 
             Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
@@ -270,6 +277,14 @@ namespace Stellamod
                 Main.instance.LoadTiles(TileID.Pearlsand);
                 TextureAssets.Tile[TileID.Pearlsand] = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/PearlSandRE");
             }
+            
+            
+            On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
+            {
+                orig(self, spriteBatch);
+                DrawWorldSelectItemOverlay(self, spriteBatch);
+            };
+
 
             Instance = this;
         }
@@ -320,9 +335,33 @@ namespace Stellamod
         internal class NPCs
         {
         }
-    }
 
-   
+        private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
+        {
+            //    bool data = uiItem.Data.TryGetHeaderData(ModContent.GetInstance<WorldLoadGen>(), out var _data);
+            UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldIcon.RemoveAllChildren();
+
+
+            UIElement worldIcon = WorldIcon;
+            UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree"))
+            {
+                Top = new StyleDimension(-10f, 0f),
+                Left = new StyleDimension(-6f, 0f),
+                IgnoresMouseInteraction = true
+            };
+            worldIcon.Append(element);
+
+
+        }
+
+    }
+    #region UnopenedWorldIcon
+
+
+    #endregion;
+
     public class Stellamenu : ModMenu
     {
 
@@ -357,3 +396,4 @@ namespace Stellamod
 
     }
 }
+

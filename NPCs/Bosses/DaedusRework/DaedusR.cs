@@ -9,7 +9,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs.Bosses.Daedus;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;

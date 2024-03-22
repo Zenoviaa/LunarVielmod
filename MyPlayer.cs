@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Assets.Biomes;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
-using Stellamod.Buffs.Charms;
 using Stellamod.Dusts;
-using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
@@ -21,7 +17,6 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Caeva;
-using Stellamod.NPCs.Bosses.Daedus;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
@@ -48,7 +43,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod
 {
@@ -85,6 +79,7 @@ namespace Stellamod
 		public int LovestruckBCooldown = 0;
 		public bool ADisease;
 		public bool ZoneFable = false;
+		public bool ReflectionS;
 
 		private Vector2 RandomOrig;
 		private Vector2 RandomOrig2;
@@ -601,8 +596,8 @@ namespace Stellamod
 			BroochBurningG = false;
 			BroochStone = false;
 
-		
 
+			ReflectionS = false;
 			SpiritPendent = false;
             GHE = false;
             ShadeRune = false;

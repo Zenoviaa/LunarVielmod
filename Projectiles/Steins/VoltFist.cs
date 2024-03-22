@@ -87,7 +87,7 @@ namespace Stellamod.Projectiles.Steins
 			if (timer == 5)
             {
 	
-				player.Teleport(teleportPosition);
+				player.Teleport(teleportPosition, 6);
 				NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
 				float speed = 5;
 				Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * speed;
@@ -159,7 +159,13 @@ namespace Stellamod.Projectiles.Steins
 				player.velocity = Projectile.DirectionTo(oldMouseWorld) * -15f;
 				bounced = true;
 
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SteinVolting"));
+			
+				
+					
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SteinVolting") { Pitch = Main.rand.NextFloat(-0.5f, 0.5f) });
+						
+				
+
 				switch (Main.rand.Next(3))
 				{
 					case 0:

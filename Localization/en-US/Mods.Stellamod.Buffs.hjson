@@ -582,3 +582,13 @@ AuroreanStarballDebuff: {
 	DisplayName: Aurorean Starball Debuff
 	Description: Mods.Stellamod.Buffs.AuroreanStarballDebuff.Description
 }
+
+ReflectionSeekerBuff: {
+	DisplayName: Reflection Seeker Buff
+	Description: Mods.Stellamod.Buffs.ReflectionSeekerBuff.Description
+}
+
+TwinStarbombasDebuff: {
+	Description: Mods.Stellamod.Buffs.TwinStarbombasDebuff.Description
+	DisplayName: Twin Starbombas Debuff
+}
