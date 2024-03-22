@@ -118,8 +118,8 @@ namespace Stellamod.NPCs.Town
 			NPC.height = 40;
 			NPC.aiStyle = 7;
 			NPC.damage = 90;
-			NPC.defense = 42;
-			NPC.lifeMax = 2000;
+			NPC.defense = 420;
+			NPC.lifeMax = 5000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;

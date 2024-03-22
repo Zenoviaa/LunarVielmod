@@ -1,17 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
-using Stellamod.Trails;
-using ReLogic.Content;
+using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+		public static void DrawCircle(Vector2 center, float radius, Vector2[] circlePos)
+		{
+            Vector2 startDirection = Vector2.UnitY;
+            for (int i = 0; i < circlePos.Length; i++)
+            {
+                float circleProgress = i / (float)(circlePos.Length);
+                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2);
+                circlePos[i] = center + startDirection.RotatedBy(radiansToRotateBy) * radius;
+            }
+        }
+
 		public static void DrawSupernovaChains(Texture2D chainTexture, Vector2[] oldPos, Rectangle animationFrame, float alpha)
 		{
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -179,7 +190,6 @@ namespace Stellamod.Helpers
 
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 			Vector2 drawOrigin = sourceRectangle.Size() / 2f;
-			float offsetX = 20f;
 			//drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
 			for (int k = 0; k < projectile.oldPos.Length; k++)
 			{

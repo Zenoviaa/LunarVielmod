@@ -6019,7 +6019,32 @@ TwinStarbombas: {
 		'''
 }
 
-XX4160: {
-	DisplayName: X X4160
+IlluriaDirtBlock: {
+	DisplayName: Illuria Dirt Block
+	Tooltip: ""
+}
+
+IlluriaDirtWallBlock: {
+	DisplayName: Illuria Dirt Wall Block
+	Tooltip: ""
+}
+
+IlluriaGrassBlock: {
+	DisplayName: Illuria Grass Block
+	Tooltip: ""
+}
+
+IlluriaLeaves: {
+	DisplayName: Illuria Leaves
+	Tooltip: ""
+}
+
+IlluriaRuneBlock: {
+	DisplayName: Illuria Rune Block
+	Tooltip: ""
+}
+
+IlluriaWoodBlock: {
+	DisplayName: Illuria Wood Block
 	Tooltip: ""
 }

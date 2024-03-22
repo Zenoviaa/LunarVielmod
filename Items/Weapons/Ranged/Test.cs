@@ -60,7 +60,11 @@ namespace Stellamod.Items.Weapons.Ranged
 			for(int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC npc = Main.npc[i];
-				npc.AddBuff(ModContent.BuffType<SupernovaChained>(), 300);
+				if(Vector2.Distance(player.Center, npc.Center) <= 128)
+				{
+                    npc.AddBuff(ModContent.BuffType<SupernovaChained>(), 300);
+                }
+		
 			}
 			return false;
         }

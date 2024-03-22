@@ -18,11 +18,15 @@ namespace Stellamod.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
+
             if (StellaMultiplayer.IsHost && !HasChains(npc))
             {
                 int npcIndexToFollow = npc.whoAmI;
                 Vector2 velocity = Vector2.UnitY * 0.01f;
                 velocity = velocity.RotatedBy(MathHelper.Pi + MathHelper.PiOver4);
+                Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
+                    ModContent.ProjectileType<SupernovaChainCircle>(), 0, 0, Main.myPlayer, npcIndexToFollow);
+
                 Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
                     ModContent.ProjectileType<SupernovaChainFront>(), 0, 0, Main.myPlayer, npcIndexToFollow);
                 Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
@@ -38,6 +42,8 @@ namespace Stellamod.Buffs
 
         private bool HasChains(NPC npc)
         {
+            if (!npc.active)
+                return true;
             for(int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile p = Main.projectile[i];

@@ -3,6 +3,8 @@ using ParticleLibrary;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
 using Stellamod.Dusts;
+using Stellamod.Gores.Foreground;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
@@ -242,6 +244,7 @@ namespace Stellamod
 		public bool ZoneDrakonic;
 		public bool ZoneMechanics;
 		public bool ZoneLab;
+		public bool ZoneIlluria;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -958,7 +961,24 @@ namespace Stellamod
                 player.ClearBuff(ModContent.BuffType<FCBuff>());
                 FCArmorTime = 0;
             }
-            if (ZoneAcid　|| ZoneLab)
+
+
+			if (ZoneIlluria)
+			{
+			
+
+				//Update Rain
+				Main.raining = true;
+
+				//That way, if it is already raining, it won't be overriden
+				//And if it is not raining, it'll just be permanent until you leave the biome
+				if (Main.rainTime <= 2)
+					Main.rainTime = 2;
+				Main.maxRaining = 0.8f;
+				Main.maxRain = 140;
+			}
+
+				if (ZoneAcid　|| ZoneLab)
             {
                 if (player.wet)
                 {
@@ -2463,6 +2483,40 @@ namespace Stellamod
             #endregion 
         }
         public const int CAMO_DELAY = 100;
+		public override void PreUpdate()
+		{
+			
+
+			
+
+
+			if (Main.hasFocus)
+				AddForegroundOrBackground();
+		}
+
+
+		private void AddForegroundOrBackground()
+		{
+			if (Player.GetModPlayer<MyPlayer>().ZoneIlluria) //Spawn BG items only when in the Verdant and above ground
+			{
+
+
+					
+
+					
+
+					int leafFGChance = Starstrike.SpawnChance(Player);
+					if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
+					{
+						Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+						ForegroundHelper.AddItem(new Starstrike(pos));
+					}
+				
+
+			}
+
+
+		}
 
 
 

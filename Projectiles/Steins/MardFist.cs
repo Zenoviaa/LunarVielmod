@@ -105,7 +105,7 @@ namespace Stellamod.Projectiles.Steins
 			Vector2 oldMouseWorld = Main.MouseWorld;
 
 
-			if (timer > 7)
+			if (timer > 8)
 			{
 				Beans = true;
 

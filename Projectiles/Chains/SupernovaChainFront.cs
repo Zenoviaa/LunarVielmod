@@ -61,6 +61,8 @@ namespace Stellamod.Projectiles.Chains
                 {
                     //Fade In
                     Projectile.alpha += 2;
+                    if (Projectile.alpha >= 255)
+                        Projectile.alpha = 255;
                     Projectile.Center = npc.Center;
                     Projectile.timeLeft = 3600;
                 }
