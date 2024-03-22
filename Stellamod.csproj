@@ -48,6 +48,7 @@
     <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
+    <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
@@ -384,6 +385,7 @@
     <None Remove="Projectiles\Bow\VampiricArrowProj.png" />
     <None Remove="Projectiles\Bow\Warrow.png" />
     <None Remove="Projectiles\BrackettThrough.png" />
+    <None Remove="Projectiles\Chains\SupernovaChainCircle.png" />
     <None Remove="Projectiles\CinderFireball2.png" />
     <None Remove="Projectiles\Crossbows\Eckasect\ExecutionRay.png" />
     <None Remove="Projectiles\Crossbows\Magical\PiaCircle.png" />
@@ -461,6 +463,7 @@
     <None Remove="Projectiles\Swords\GoldsSpawnEffect.png" />
     <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
     <None Remove="Projectiles\TestRay.png" />
+    <None Remove="Projectiles\Test\ChainTestProj2.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\VRay.png" />
