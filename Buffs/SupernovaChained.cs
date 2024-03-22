@@ -25,6 +25,9 @@ namespace Stellamod.Buffs
                 Vector2 velocity = Vector2.UnitY * 0.01f;
                 velocity = velocity.RotatedBy(MathHelper.Pi + MathHelper.PiOver4);
                 Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
+                    ModContent.ProjectileType<SupernovaChainCircle>(), 0, 0, Main.myPlayer, npcIndexToFollow);
+
+                Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
                     ModContent.ProjectileType<SupernovaChainFront>(), 0, 0, Main.myPlayer, npcIndexToFollow);
                 Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, velocity,
                     ModContent.ProjectileType<SupernovaChainBack>(), 0, 0, Main.myPlayer, npcIndexToFollow);
