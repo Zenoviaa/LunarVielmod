@@ -592,3 +592,8 @@ TwinStarbombasDebuff: {
 	Description: Mods.Stellamod.Buffs.TwinStarbombasDebuff.Description
 	DisplayName: Twin Starbombas Debuff
 }
+
+SupernovaChained: {
+	DisplayName: Supernova Chained
+	Description: Mods.Stellamod.Buffs.SupernovaChained.Description
+}

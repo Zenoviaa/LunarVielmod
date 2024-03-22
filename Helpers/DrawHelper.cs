@@ -12,6 +12,84 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+		public static void DrawSupernovaChains(Texture2D chainTexture, Vector2[] oldPos, Rectangle animationFrame, float alpha)
+		{
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            float time = Main.GlobalTimeWrappedHourly;
+            float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+            float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
+            time %= 4f;
+            time /= 2f;
+
+            if (time >= 1f)
+            {
+                time = 2f - time;
+            }
+
+            time = time * 0.5f + 0.5f;
+
+            for (float k = 0f; k < 1f; k += 0.25f)
+            {
+                float radians = (k + timer) * MathHelper.TwoPi;
+                for (int i = 1; i < oldPos.Length; i++)
+                {
+                    //Draw from center bottom of texture
+                    Vector2 frameSize = new Vector2(12, 30);
+                    Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
+
+                    Vector2 position = oldPos[i] + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
+
+                    float rotation = (oldPos[i] - oldPos[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                    float yScale = Vector2.Distance(oldPos[i], oldPos[i - 1]) / frameSize.Y; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                    Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                    Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                    chainLightColor = chainLightColor.MultiplyAlpha(alpha);
+
+                    for (int j = 0; j < 2; j++)
+                    {
+                        spriteBatch.Draw(chainTexture, position - Main.screenPosition, animationFrame,
+                            chainLightColor * 0.2f, rotation, origin, scale, SpriteEffects.None, 0);
+                    }
+                }
+            }
+
+            for (int i = 1; i < oldPos.Length; i++)
+            {
+                //Draw from center bottom of texture
+                Vector2 frameSize = new Vector2(12, 30);
+                Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
+
+                Vector2 position = oldPos[i];
+
+                float rotation = (oldPos[i] - oldPos[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                float yScale = Vector2.Distance(oldPos[i], oldPos[i - 1]) / frameSize.Y; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+				chainLightColor = chainLightColor.MultiplyAlpha(alpha);
+
+                for (int j = 0; j < 3; j++)
+                {
+                    spriteBatch.Draw(chainTexture, position - Main.screenPosition, animationFrame,
+                        chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                }
+            }
+        }
+
+		public static void DrawChainOval(Vector2 center, float xRadius, float yRadius, float angle, float rotation, ref Vector2[] oldPos)
+        {
+            for (int i = 0; i < oldPos.Length; i++)
+            {
+                float ovalProgress = (float)(i / (float)oldPos.Length);
+                float xOffset = xRadius * MathF.Cos(ovalProgress * angle);
+                float yOffset = yRadius * MathF.Sin(ovalProgress * angle);
+                Vector2 pointOnOval = center + new Vector2(xOffset, yOffset).RotatedBy(rotation);
+                oldPos[i] = pointOnOval;
+            }
+        }
+
 		/// <summary>
 		/// Oscillates between two colors
 		/// </summary>

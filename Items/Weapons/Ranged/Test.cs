@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.Projectiles.Chains;
 using Stellamod.Projectiles.Gun;
-using Stellamod.Projectiles.Test;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -33,7 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.autoReuse = false;
+			Item.autoReuse = true;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Balls");
 
 			// Weapon Properties
@@ -43,9 +44,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<CircleTestProj>();
-			Item.shootSpeed = 3f;
-			Item.channel = true;
+			Item.shoot = ModContent.ProjectileType<SupernovaChainFront>();
+			Item.shootSpeed = 0.01f;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -54,5 +54,15 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+			for(int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC npc = Main.npc[i];
+				npc.AddBuff(ModContent.BuffType<SupernovaChained>(), 300);
+			}
+			return false;
+        }
     }
 }
