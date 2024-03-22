@@ -40,7 +40,7 @@ namespace Stellamod.Helpers
         {
             position = pos;
             velocity = vel;
-            Texture = ModContent.Request<Texture2D>($"Verdant/Systems/Foreground/{path}");
+            Texture = ModContent.Request<Texture2D>($"Stellamod/Gores/Foreground/{path}");
             scale = sc;
             source = new Rectangle(0, 0, Texture.Width(), Texture.Height());
         }

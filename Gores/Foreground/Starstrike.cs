@@ -15,9 +15,10 @@ namespace Stellamod.Gores.Foreground
 
         public static int SpawnChance(Player p)
         {
-            if (Main.raining && p.Center.Y / 16f < Main.worldSurface)
-                return 10;
+
             if (p.Center.Y / 16f > Main.worldSurface)
+                return 20;
+            if (p.Center.Y / 16f < Main.worldSurface)
                 return 20;
             return -1;
         }
