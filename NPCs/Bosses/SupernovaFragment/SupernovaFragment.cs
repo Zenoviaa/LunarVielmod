@@ -10,9 +10,11 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Bosses.SunStalker;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using System.IO;
@@ -31,6 +33,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
     {
         private bool Dead;
         private bool _invincible;
+        public bool PH2TP = false;
         public bool PH2 = false;
         public bool Spawned = false;
         public bool TP = false;
@@ -147,14 +150,14 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void AI()
         {
             Spawner++;
-            PH2 = NPC.life < NPC.lifeMax * 0.4f;
+            PH2 = NPC.life < NPC.lifeMax * 0.6f;
             if (PH2)
             {
-                MaxAttac = 7;
+                MaxAttac = 6;
             }
             else
             {
-                MaxAttac = 5;
+                MaxAttac = 4;
             }
 
             var entitySource = NPC.GetSource_FromThis();
@@ -287,17 +290,49 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             }
                             else
                             {
-                                _invincible = false;
-                                Attack = Main.rand.Next(1, 3);
-                                NPC.ai[1] = Attack;
-                                NPC.netUpdate = true;
-                                NPC.scale = 1;
+                                if (PH2)
+                                {
+                                    if (!PH2TP)
+                                    {
+                                        Lazer = false;
+                                        TP = false;
+                                        NPC.netUpdate = true;
+                                        NPC.ai[1] = 15;
+                                        PH2TP = true;
+                                    }
+                                    else
+                                    {
+                                        _invincible = false;
+                                        Attack = Main.rand.Next(1, 6);
+                                        NPC.ai[1] = Attack;
+                                        NPC.netUpdate = true;
+                                        NPC.scale = 1;
+                                    }
+                   
+                                }
+                                else
+                                {
+                                    _invincible = false;
+                                    Attack = Main.rand.Next(1, 4);
+                                    NPC.ai[1] = Attack;
+                                    NPC.netUpdate = true;
+                                    NPC.scale = 1;
+                                }
+               
                             }
                         }
                         break;
                     case 1:
                         NPC.ai[0]++;
-                        CasuallyApproachChild();
+                        if (PH2TP)
+                        {
+                            NPC.velocity *= 0.90f;
+                        }
+                        else
+                        {
+                            CasuallyApproachChild();
+                        }
+          
                         if (NPC.ai[0] == 50 || NPC.ai[0] == 150)
                         {
                             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot"), NPC.position);
@@ -348,7 +383,14 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         break;
                     case 2:
                         NPC.ai[0]++;
-                        CasuallyApproachChild();
+                        if (PH2TP)
+                        {
+                            NPC.velocity *= 0.90f;
+                        }
+                        else
+                        {
+                            CasuallyApproachChild();
+                        }
                         if (NPC.ai[0] == 70 || NPC.ai[0] == 100 || NPC.ai[0] == 130)
                         {
                             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -372,7 +414,193 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             NPC.ai[0] = 0;
                         }
                         break;
+
+                    case 3:
+                        NPC.ai[0]++;
+                        if (PH2TP)
+                        {
+                            NPC.velocity *= 0.90f;
+                        }
+                        else
+                        {
+                            CasuallyApproachChild();
+                        }
+                        if (NPC.ai[0] == 70)
+                        {
+                            int Sound = Main.rand.Next(1, 3);
+                            if (Sound == 1)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot1"), NPC.position);
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Sun_Shot2"), NPC.position);
+                            }
+                            float offsetRandom = Main.rand.Next(0, 50);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 124f);
+                            for (int i = 0; i < 20; i++)
+                            {
+                                Dust.NewDustPerfect(NPC.Center, DustID.CopperCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 2f).noGravity = false;
+                            }
+
+                            float spread = 45f * 0.0174f;
+                            double startAngle = Math.Atan2(1, 0) - spread / 2;
+                            double deltaAngle = spread / 8f;
+                            double offsetAngle;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
+                                        ModContent.ProjectileType<NovaBomb>(), 16, 0, Main.myPlayer);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f),
+                                        ModContent.ProjectileType<NovaBomb>(), 16, 0, Main.myPlayer);
+                                }
+                            }
+                        }
+                        if (NPC.ai[0] >= 100)
+                        {
+                            PrevAttac = 2;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
+                        break;
+
+                    case 4:
+                        NPC.ai[0]++;
+                        if (PH2TP)
+                        {
+                            NPC.velocity *= 0.90f;
+                        }
+                        else
+                        {
+                            CasuallyApproachChild();
+                        }
+                        if (NPC.ai[0] == 70)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 1050 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 80)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 700 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 90)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 350 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 100)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 110)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 350 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 120)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 700 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 130)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 1050 + 175, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] >= 250)
+                        {
+                            PrevAttac = 2;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
+                        break;
+
                     case 5:
+                        NPC.ai[0]++;
+                        if (PH2TP)
+                        {
+
+                        }
+                        else
+                        {
+                            CasuallyApproachChild();
+                        }
+                        if (NPC.ai[0] == 70)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 1050, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 80)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 700, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 90)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X - 350, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 100)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 110)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 350, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 120)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 700, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] == 130)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                NPC.NewNPC(entitySource, (int)NPC.Center.X + 1050, (int)NPC.Center.Y, ModContent.NPCType<SupernovaZapwarn>());
+                            }
+                        }
+                        if (NPC.ai[0] >= 250)
+                        {
+                            PrevAttac = 2;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
+                        break;
+                    case 15:
     
                         NPC.ai[0]++;
                         if (!Lazer)
@@ -392,7 +620,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn"), NPC.position);
                                     TP = true;
                                     NPC.velocity.Y = 0;
-                                    NPC.position = SingularityStart;
+                                    NPC.position = player.Center;
                                 }
                             }
                             else
@@ -400,9 +628,40 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                 NPC.scale += 0.015f;
                                 if (NPC.scale >= 1)
                                 {
-                                    Lazer = true;
+                                    float radius = 900;
+                                    float rot = MathHelper.TwoPi / 7;
+                                    for (int I = 0; I < 7; I++)
+                                    {
+                                        SingularityOrbs = 7;
+                                        if (StellaMultiplayer.IsHost)
+                                        {
+                                            Vector2 position = NPC.Center + radius * (I * rot).ToRotationVector2();
+                                            NPC.NewNPC(NPC.GetSource_FromAI(), (int)(position.X), (int)(position.Y),
+                                                ModContent.NPCType<SupernovaOrb>(), NPC.whoAmI, NPC.whoAmI, I * rot, radius);
+                                        }
+                                    }
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
+                                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                                    for (int i = 0; i < 14; i++)
+                                    {
+                                        Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default, 4f).noGravity = true;
+                                    }
+                                    for (int i = 0; i < 40; i++)
+                                    {
+                                        Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default, 1f).noGravity = false;
+                                    }
+                                    for (int i = 0; i < 40; i++)
+                                    {
+                                        Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 6f).noGravity = true;
+                                    }
+                                    for (int i = 0; i < 20; i++)
+                                    {
+                                        Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 2f).noGravity = false;
+                                    }
+                                    NPC.ai[1] = 0;
+                                    PH2TP = true;               
                                     NPC.scale = 1;
-                                    NPC.damage = 999;
+                                    NPC.damage = 99999;
                                     TP = false;
                                     NPC.ai[0] = 0;
                                 }

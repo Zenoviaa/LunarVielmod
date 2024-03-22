@@ -305,7 +305,7 @@ namespace Stellamod.Projectiles.Summons.Orbs
 
                 case ActionState.Swing_3:
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomSigil>(),
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomSigil>(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
 
                     target.SimpleStrikeNPC(Projectile.damage, hit.HitDirection);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Dusts;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Trails;
 using Terraria;
@@ -9,7 +10,6 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Accord.Math.FourierTransform;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.SupernovaFragment
@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             Projectile.width = 12;
             Projectile.height = 12;
-            Projectile.timeLeft = 250;
+            Projectile.timeLeft = 180;
             Projectile.alpha = 0;
             Projectile.friendly = false;
             Projectile.hostile = true;
@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             }
             if (Main.rand.NextBool(3))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f, 150, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<GlowDust>(), 0f, 0f, 150, Color.OrangeRed, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
                 Main.dust[dustnumber].velocity.Y += Main.rand.Next(-2, 2);
                 Main.dust[dustnumber].velocity.X += Main.rand.Next(-2, 2);
@@ -74,10 +74,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 {
                     Projectile.scale -= 0.22f;
                 }
-                if (alphaCounter >= 0)
-                {
-                    alphaCounter -= 0.08f;
-                }
+                alphaCounter += 0.02f;
             }
 
             Projectile.spriteDirection = Projectile.direction;
@@ -85,6 +82,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         }
         public override void OnKill(int timeLeft)
         {
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 124f);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0,
                        ModContent.ProjectileType<SupernovaExplosion>(), Projectile.damage, 1, Owner: Main.myPlayer);
         }
@@ -119,11 +117,11 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 1.0f * Main.essScale);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * 1), (int)(45f * 1), (int)(15f * 1), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
+            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.0f * Main.essScale);
         }
     }
 }

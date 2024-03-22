@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 {
     public class SupernovaExplosion : ModProjectile
     {
-        public float MaxRadius = 100;
+        public float MaxRadius = 200;
 
         public PrimitiveTrailCopy FireDrawer;
 
@@ -27,14 +27,14 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 30;
+            Projectile.width = Projectile.height = 60;
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 84;
-            Projectile.MaxUpdates = 2;
+            Projectile.MaxUpdates = 4;
             Projectile.scale = 1f;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -77,7 +77,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireVertexShader);
 
             TrailRegistry.FireVertexShader.UseSaturation(0.45f);
-            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.SpikyTrail1);
+            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.WaterTrail);
 
             List<float> rotationPoints = new();
             List<Vector2> drawPoints = new();

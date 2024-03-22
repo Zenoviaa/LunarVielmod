@@ -277,8 +277,10 @@
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
+    <None Remove="NPCs\Bosses\DreadMire\DreadMireZapwarnBig - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
+    <None Remove="NPCs\Bosses\DreadMire\FinalBeam - Copy.png" />
     <None Remove="NPCs\Bosses\Fenix\BLACKHOLE.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\AlcShot.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\CrileShot.png" />

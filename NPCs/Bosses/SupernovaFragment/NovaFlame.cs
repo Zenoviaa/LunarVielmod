@@ -59,6 +59,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void OnKill(int timeLeft)
         {
+
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
