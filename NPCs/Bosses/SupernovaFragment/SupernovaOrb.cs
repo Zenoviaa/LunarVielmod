@@ -24,7 +24,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             // DisplayName.SetDefault("Dread Fire");
             NPCID.Sets.TrailingMode[NPC.type] = 0;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 5;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 28;
         }
         float Size = 3;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -95,12 +95,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = NPC.scale * NPC.width * 1.0f;
-            return MathHelper.SmoothStep(baseWidth, 0.35f, completionRatio);
+            return MathHelper.SmoothStep(baseWidth, baseWidth * 0.1f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.LightBlue, Color.Blue, completionRatio) * 0.7f;
+            return Color.Lerp(Color.OrangeRed, Color.DeepPink, completionRatio) * 0.7f;
         }
 
 
@@ -137,6 +137,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                 Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
                 Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
             }
+
+            Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+            spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, screenPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), drawColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
         }
         public override void SetDefaults()
         {
@@ -167,7 +170,10 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             }
             if (NPC.life <= 0)
             {
-                SingularityFragment.SingularityOrbs -= 1;
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 124f);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0,
+                           ModContent.ProjectileType<SupernovaExplosionSmall>(), NPC.damage, 1, Owner: Main.myPlayer);
+                SupernovaFragment.SingularityOrbs -= 1;
                 for (int i = 0; i < 20; i++)
                 {
                     int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SomethingRed, 0f, -2f, 0, default, .8f);

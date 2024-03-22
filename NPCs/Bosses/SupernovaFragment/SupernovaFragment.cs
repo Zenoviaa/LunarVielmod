@@ -42,7 +42,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public int PrevAttac = 0;
         public int MaxAttac = 0;
         public static int LazerType = 0;
-        public static int SingularityOrbs = 0;
+        public static int SingularityOrbs = -1;
         public static Vector2 SingularityPos;
         public static Vector2 SingularityStart;
         public override void SetStaticDefaults()
@@ -292,7 +292,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             {
                                 if (PH2)
                                 {
-                                    if (!PH2TP)
+                                    if (!PH2TP && SingularityOrbs == -1)
                                     {
                                         Lazer = false;
                                         TP = false;
@@ -307,8 +307,32 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         NPC.ai[1] = Attack;
                                         NPC.netUpdate = true;
                                         NPC.scale = 1;
+                                        if(SingularityOrbs == 0)
+                                        {
+                                            NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
+                                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
+                                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                                            for (int i = 0; i < 14; i++)
+                                            {
+                                                Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default, 4f).noGravity = true;
+                                            }
+                                            for (int i = 0; i < 40; i++)
+                                            {
+                                                Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default, 1f).noGravity = false;
+                                            }
+                                            for (int i = 0; i < 40; i++)
+                                            {
+                                                Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 6f).noGravity = true;
+                                            }
+                                            for (int i = 0; i < 20; i++)
+                                            {
+                                                Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 2f).noGravity = false;
+                                            }
+                                            PH2TP = false;
+                                            SingularityOrbs = -2;
+                                        }
                                     }
-                   
+
                                 }
                                 else
                                 {
@@ -453,9 +477,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                 if (StellaMultiplayer.IsHost)
                                 {
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * 9f), (float)(Math.Cos(offsetAngle) * 9f),
-                                        ModContent.ProjectileType<NovaBomb>(), 16, 0, Main.myPlayer);
+                                        ModContent.ProjectileType<NovaBomb>(), 45, 0, Main.myPlayer);
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * 9f), (float)(-Math.Cos(offsetAngle) * 9f),
-                                        ModContent.ProjectileType<NovaBomb>(), 16, 0, Main.myPlayer);
+                                        ModContent.ProjectileType<NovaBomb>(), 45, 0, Main.myPlayer);
                                 }
                             }
                         }
@@ -628,6 +652,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                 NPC.scale += 0.015f;
                                 if (NPC.scale >= 1)
                                 {
+                                    NPC.AddBuff(ModContent.BuffType<SupernovaChained>(), 9999999);
                                     float radius = 900;
                                     float rot = MathHelper.TwoPi / 7;
                                     for (int I = 0; I < 7; I++)
@@ -663,6 +688,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                     NPC.scale = 1;
                                     NPC.damage = 99999;
                                     TP = false;
+                                    _invincible = true;
                                     NPC.ai[0] = 0;
                                 }
                             }
@@ -759,6 +785,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         {
             if (!Dead)
             {
+                NPC.DelBuff(NPC.FindBuffIndex(ModContent.BuffType<SupernovaChained>()));
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
                 Dead = true;
             }

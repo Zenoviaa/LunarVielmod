@@ -56,6 +56,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
             if (Projectile.ai[1] <= 1)
             {
+                Projectile.timeLeft = Main.rand.Next(180, 190);
                 Projectile.scale = 1.5f;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
             }
