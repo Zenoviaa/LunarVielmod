@@ -50,8 +50,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-
-			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ItemID.AntlionMandible, 5);
 			recipe.AddIngredient(ItemID.Cactus, 10);
 			recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 5);

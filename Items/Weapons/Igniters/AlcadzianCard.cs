@@ -70,6 +70,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ItemID.HallowedBar, 5);
 			recipe.AddIngredient(ModContent.ItemType<STARCORE>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

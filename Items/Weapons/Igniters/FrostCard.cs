@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
@@ -64,12 +65,10 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Silk, 3);
 			recipe.AddIngredient(ModContent.ItemType<FrileOre>(), 21);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
-			recipe.AddIngredient(ItemID.IceBlock, 100);
-			recipe.AddIngredient(ItemID.Leather, 9);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}

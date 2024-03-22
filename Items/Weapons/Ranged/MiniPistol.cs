@@ -78,7 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 22f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 12f);
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
@@ -96,8 +96,10 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 direction = offset.RotatedByRandom(spread);
 
+                
                 Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(180, 50, 40), Main.rand.NextFloat(0.2f, 0.5f));
             }
+
             Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
             Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
             return base.Shoot(player, source, position, velocity, type, damage, knockback);

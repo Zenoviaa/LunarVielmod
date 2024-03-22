@@ -66,9 +66,9 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 30);
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<GintzlBroochA>(), 1);
-			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ItemID.SoulofNight, 10);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();

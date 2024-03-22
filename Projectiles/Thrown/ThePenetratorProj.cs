@@ -176,11 +176,11 @@ namespace Stellamod.Projectiles.Thrown
             {
                 Trail = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, 
                     (p) => Vector2.Lerp(new Vector2(90), Vector2.Zero, p), 
-                    (p) => new Color(60, 0, 118) * (1f - p));
+                    (p) => ColorFunctions.MiracleVoid * (1f - p));
                 Trail.drawOffset = Projectile.Size / 2f;
             }
 
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(60, 0, 118), Color.Transparent, ref lightColor);
+            DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             
@@ -189,7 +189,7 @@ namespace Stellamod.Projectiles.Thrown
             for (int i = 0; i < 2; i++)
             {
                 Main.spriteBatch.Draw(spinTexture, Projectile.Center - Main.screenPosition, null,
-                    new Color(60, 0, 118) * (Timer / Charge_Time) * 0.4f,
+                    ColorFunctions.MiracleVoid * (Timer / Charge_Time) * 0.4f,
                     Projectile.rotation, new Vector2(200, 200), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
             }
 
@@ -220,7 +220,7 @@ namespace Stellamod.Projectiles.Thrown
             for (int k = 0; k < projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
-                Color color = projectile.GetAlpha(Color.Lerp(Color.Transparent, new Color(60, 0, 118), (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer / Charge_Time));
+                Color color = projectile.GetAlpha(Color.Lerp(Color.Transparent, ColorFunctions.MiracleVoid, (1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k)) * (Timer / Charge_Time));
                 Main.spriteBatch.Draw(glowTexture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
             }
 
@@ -232,7 +232,7 @@ namespace Stellamod.Projectiles.Thrown
             for (int i = 0; i < 1; i++)
             {
                 Vector2 drawPosition = Projectile.position - Main.screenPosition + drawOrigin;
-                Color drawColor = Color.Lerp(Color.Transparent, new Color(60, 0, 118), (Timer / Charge_Time)) * (Timer / Charge_Time);
+                Color drawColor = Color.Lerp(Color.Transparent, ColorFunctions.MiracleVoid, (Timer / Charge_Time)) * (Timer / Charge_Time);
                 Main.spriteBatch.Draw(glowTexture, drawPosition, sourceRectangle, drawColor, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
             }
         }

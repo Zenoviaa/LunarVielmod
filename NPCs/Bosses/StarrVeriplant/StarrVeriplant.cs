@@ -81,9 +81,13 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 		public int rippleSize = 20;
 		public int rippleSpeed = 25;
 		public float distortStrength = 210f;
+		public float Spawner = 0;
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return Spawner > 30;
+        }
 
-
-		public override void SetStaticDefaults()
+        public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = 64;
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
@@ -338,7 +342,7 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 
         public override void AI()
 		{
-
+			Spawner++;
 			bee--;
 
 			if (bee == 0)

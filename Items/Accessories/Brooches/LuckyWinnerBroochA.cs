@@ -56,6 +56,7 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<DustedSilk>(), 20);

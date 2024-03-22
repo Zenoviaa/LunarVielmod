@@ -1,6 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using System;
 using Terraria;
@@ -330,10 +331,8 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 				if (Main.rand.NextBool(3))
 				{
-					int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.GreenFairy);
-					int dust1 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.GreenFairy);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust1].noGravity = true;
+	                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+						ModContent.DustType<Dusts.GunFlash>(), newColor: ColorFunctions.AcidFlame);
 				}
 				// Some visuals here
 				Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);

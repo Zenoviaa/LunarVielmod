@@ -2017,7 +2017,7 @@ StarflareBand: {
 	DisplayName: Starflare Band
 	Tooltip:
 		'''
-		+20% Magic Damage
+		+10% Magic Damage
 		Increased Mana regeneration!
 		Reduced Mana cost :o
 		'''
@@ -3691,7 +3691,7 @@ AlsisChestplate: {
 	Tooltip:
 		'''
 		+25 Health
-		+20% Magic Critical Strike Chance
+		+5% Magic Critical Strike Chance
 		+10% Magic Damage
 		'''
 }
@@ -3710,7 +3710,7 @@ AlsisMask: {
 	Tooltip:
 		'''
 		+10 Health
-		+5% Magic Critical Strike Chance
+		+1% Magic Critical Strike Chance
 		+10% Magic Damage
 		'''
 }
@@ -5903,8 +5903,98 @@ SingularDive: {
 }
 
 DelgrimsHammer: {
-	Tooltip: ""
+	Tooltip: He's working hard
 	DisplayName: Delgrims Hammer
+}
+
+DirtGlove: {
+	Tooltip: ""
+	DisplayName: Dirt Glove
+}
+
+TwilitTome: {
+	Tooltip: ""
+	DisplayName: Twilit Tome
+}
+
+Voltenstein: {
+	Tooltip:
+		'''
+		A shocking experience!
+		Tap to your cursor to dash into electrifying damage! F
+		Hitting enemies will give you bonus damage and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		The better the glove the more words!
+		2 Words!
+		'''
+	DisplayName: Voltenstein
+}
+
+BlankBrooch: {
+	DisplayName: Blank Brooch
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankCard: {
+	DisplayName: Blank Card
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankCrossbow: {
+	DisplayName: Blank Crossbow
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+BlankSafunai: {
+	DisplayName: Blank Safunai
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+Hultinstein: {
+	DisplayName: Hultinstein
+	Tooltip:
+		'''
+		A brawling experience!
+		Tap to your cursor to dash into some damn high damage! 
+		Hitting enemies will give you bonus damage with words and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		The better the glove the more words!
+		1 Word!
+		'''
+}
+
+AuroreanStarball: {
+	DisplayName: Aurorean Starball
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Special attack does a starry explosion upon impact!
+		We ballin'
+		'''
+}
+
+BlankOrb: {
+	DisplayName: Blank Orb
+	Tooltip: A sprawling template from Delgrim which may help craft some items!
+}
+
+Mardenstein: {
+	DisplayName: Mardenstein
+	Tooltip:
+		'''
+		A wowing experience!
+		Tap to your cursor to dash into some damn high damage! 
+		Hitting enemies will give you bonus damage with words and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		The better the glove the more words!
+		3 Words!
+		'''
+}
+
+TheActualMoon: {
+	DisplayName: The Actual Moon
+	Tooltip: ""
 }
 
 TwilitTome: {

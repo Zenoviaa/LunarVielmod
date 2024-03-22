@@ -181,6 +181,17 @@ namespace Stellamod.Helpers
                 : (2 - MathF.Pow(2, -(p * 2) * t + p)) / 2;
         }
 
+
+        public static float SpikeOrb(float t)
+        {
+            if (t <= .5f)
+                return InOutExpo(t / .5f, 8);
+            else
+            {
+                return InOutExpo((1-t) / 0.5f, 8); 
+            }
+        }
+
         ///<Summary>
         /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
         ///</Summary>

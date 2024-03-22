@@ -439,7 +439,9 @@
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerShotProj.png" />
-    <None Remove="Projectiles\Slashers\X3107\X3107Slash.png" />
+    <None Remove="Projectiles\Steins\HultFist.png" />
+    <None Remove="Projectiles\Steins\MardFist.png" />
+    <None Remove="Projectiles\Steins\ShadingShot.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />
     <None Remove="Projectiles\Summons\ToxicMissileFriendly.png" />
@@ -478,10 +480,8 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
-    <Folder Include="Items\Weapons\Mage\Stein\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
-    <Folder Include="Projectiles\Steins\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
     <Folder Include="Struct\Catacombs\" />
   </ItemGroup>

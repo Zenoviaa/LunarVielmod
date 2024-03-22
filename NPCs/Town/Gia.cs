@@ -407,17 +407,17 @@ namespace Stellamod.NPCs.Town
 							break;
 						case 1:
 
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 200);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SnowballCannon, 1);
 							break;
 						case 2:
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 200);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Parendine>(), 1);
 
 							break;
 
 						case 3:
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 200);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceBlock, 25);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 250);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 50);
@@ -425,13 +425,13 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 4:
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 200);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TheFirstAurora>());
 
 							break;
 
 						case 5:
-
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 200);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 100);
 
 							break;

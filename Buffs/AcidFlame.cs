@@ -1,3 +1,7 @@
+using Microsoft.Xna.Framework;
+using ParticleLibrary;
+using Stellamod.Helpers;
+using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,21 +16,16 @@ namespace Stellamod.Buffs
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoTimeDisplay[Type] = false;
-            // DisplayName.SetDefault("Acid Flame");
-            // Description.SetDefault("'An Acidic force melts your insides'");
         }
 
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.lifeRegen -= 30;
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(6))
             {
-                int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.GreenFairy);
-                Main.dust[dust].scale = 1.5f;
-                Main.dust[dust].noGravity = true;
-                int dust1 = Dust.NewDust(npc.position, npc.width, npc.height, DustID.GreenFairy);
-                Main.dust[dust1].scale = 1.5f;
-                Main.dust[dust1].noGravity = true;
+                int x = Main.rand.Next(0, npc.width);
+                int y = Main.rand.Next(0, npc.height);
+                ParticleManager.NewParticle<AcidFlameParticle>(npc.position + new Vector2(x, y), Vector2.Zero, Color.White, 1f);
             }
         }
 
@@ -37,11 +36,11 @@ namespace Stellamod.Buffs
             player.blind = true;
             player.blackout = true;
             player.yoraiz0rDarkness = true;
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(6))
             {
-                int dust = Dust.NewDust(player.position, player.width, player.height, DustID.GreenFairy);
-                Main.dust[dust].scale = 1.5f;
-                Main.dust[dust].noGravity = true;
+                int x = Main.rand.Next(0, player.width);
+                int y = Main.rand.Next(0, player.height);
+                ParticleManager.NewParticle<AcidFlameParticle>(player.position + new Vector2(x, y), Vector2.Zero, Color.White, 1f);
             }
         }
     }

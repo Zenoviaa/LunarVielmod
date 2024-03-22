@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Brooches;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
@@ -62,6 +63,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<DaedCard>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<Neptune8Card>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ScorcheCard>(), 1);

@@ -65,6 +65,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 20);

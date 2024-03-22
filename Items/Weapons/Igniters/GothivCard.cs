@@ -69,6 +69,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			recipe.AddIngredient(ModContent.ItemType<DaedCard>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 11);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 
 			recipe.AddIngredient(ItemID.Leather, 9);
 			recipe.AddTile(TileID.Anvils);

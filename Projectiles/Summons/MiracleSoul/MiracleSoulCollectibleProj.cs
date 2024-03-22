@@ -99,7 +99,7 @@ namespace Stellamod.Projectiles.Summons.MiracleSoul
                 new Vector3(117, 1, 187),
                 new Vector3(3, 3, 3), 0);
 
-            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, new Color(60, 0, 118), lightColor, 1);
+            DrawHelper.DrawDimLight(Projectile, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, lightColor, 1);
             DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(217, 48, 228), new Color(117, 1, 187), ref lightColor);
             return true;
         }

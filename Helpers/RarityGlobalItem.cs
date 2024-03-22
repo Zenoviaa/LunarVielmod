@@ -1,0 +1,23 @@
+﻿using Terraria;
+using Terraria.ModLoader;
+
+namespace Stellamod.Helpers
+{
+    public class CustomRarityGlobalItem : GlobalItem
+    { 
+        public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
+        {
+            // If the item is of the rarity, and the line is the item name.
+            if (line.Mod == "Terraria" && line.Name == "ItemName")
+            {
+                if (item.rare == ModContent.RarityType<DefaultSpecialRarity>())
+                {
+                        // Draw the custom tooltip line.
+                        DefaultSpecialRarity.DrawCustomTooltipLine(line);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+}

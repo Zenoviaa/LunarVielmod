@@ -78,6 +78,11 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return Spawner > 30;
+        }
+
         Vector2 targetPos;
         public override void OnKill()
         {

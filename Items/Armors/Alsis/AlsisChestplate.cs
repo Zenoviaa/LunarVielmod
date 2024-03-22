@@ -36,7 +36,7 @@ namespace Stellamod.Items.Armors.Alsis
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetCritChance(DamageClass.Magic) += 20f; 
+			player.GetCritChance(DamageClass.Magic) += 5f; 
 			player.GetDamage(DamageClass.Magic) *= 1.1f;
 			player.statLifeMax2 += 25;
 		}
