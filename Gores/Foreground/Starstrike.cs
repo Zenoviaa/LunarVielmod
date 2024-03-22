@@ -19,6 +19,8 @@ namespace Stellamod.Gores.Foreground
                 return 20;
             if (p.Center.Y / 16f > Main.worldSurface)
                 return 20;
+            if (p.Center.Y / 16f < Main.worldSurface)
+                return 20;
             return -1;
         }
 
