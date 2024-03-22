@@ -58,7 +58,7 @@ namespace Stellamod.Gores.Foreground
         {
             drawPosition = position + ParallaxPosition();
             Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
-            Color frontColour = (position.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 185);
+            Color frontColour = (position.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
             drawColor = Color.Lerp(lightColour, frontColour, (parallax - (0.25f)) / 1.25f);
 
             base.Draw();

@@ -82,7 +82,7 @@ public static class ForegroundHelper
 
     public static int AddItem(ForegroundItem item, bool forced = false, bool playerLayer = false)
     {
-        if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == false && !forced) //Skip if option is turned off
+        if (!forced) //Skip if option is turned off
             return -1;
 
         if (playerLayer)
