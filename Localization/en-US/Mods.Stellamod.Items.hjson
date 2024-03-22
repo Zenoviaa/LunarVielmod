@@ -6018,3 +6018,33 @@ TwinStarbombas: {
 		So basically just STARBOMBER's balls
 		'''
 }
+
+IlluriaDirtBlock: {
+	DisplayName: Illuria Dirt Block
+	Tooltip: ""
+}
+
+IlluriaDirtWallBlock: {
+	DisplayName: Illuria Dirt Wall Block
+	Tooltip: ""
+}
+
+IlluriaGrassBlock: {
+	DisplayName: Illuria Grass Block
+	Tooltip: ""
+}
+
+IlluriaLeaves: {
+	DisplayName: Illuria Leaves
+	Tooltip: ""
+}
+
+IlluriaRuneBlock: {
+	DisplayName: Illuria Rune Block
+	Tooltip: ""
+}
+
+IlluriaWoodBlock: {
+	DisplayName: Illuria Wood Block
+	Tooltip: ""
+}

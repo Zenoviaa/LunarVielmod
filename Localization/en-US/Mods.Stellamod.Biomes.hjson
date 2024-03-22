@@ -102,3 +102,8 @@ Laboratory: {
 	DisplayName: Laboratory
 	TownNPCDialogueName: the Laboratory
 }
+
+IlluriaBiome: {
+	TownNPCDialogueName: the Illuria Biome
+	DisplayName: Illuria Biome
+}
