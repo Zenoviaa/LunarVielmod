@@ -5908,13 +5908,13 @@ DelgrimsHammer: {
 }
 
 DirtGlove: {
-	Tooltip: ""
 	DisplayName: Dirt Glove
+	Tooltip: ""
 }
 
 TwilitTome: {
-	Tooltip: ""
 	DisplayName: Twilit Tome
+	Tooltip: ""
 }
 
 Voltenstein: {
@@ -5994,16 +5994,6 @@ Mardenstein: {
 
 TheActualMoon: {
 	DisplayName: The Actual Moon
-	Tooltip: ""
-}
-
-TwilitTome: {
-	DisplayName: Twilit Tome
-	Tooltip: ""
-}
-
-DirtGlove: {
-	DisplayName: Dirt Glove
 	Tooltip: ""
 }
 

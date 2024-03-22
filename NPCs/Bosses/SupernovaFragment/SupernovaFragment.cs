@@ -10,6 +10,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
 using Stellamod.NPCs.Bosses.Verlia;
@@ -68,7 +69,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.npcSlots = 10f;
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SingularityFragment");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SupernovaFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
             NPC.BossBar = GetInstance<SInBossBar>();
             NPC.aiStyle = 0;
@@ -258,7 +259,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         }
 
 
-    
+
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
                                         for (int i = 0; i < 14; i++)
@@ -287,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                             else
                             {
                                 _invincible = false;
-                                Attack = Main.rand.Next(1, 1);
+                                Attack = Main.rand.Next(1, 3);
                                 NPC.ai[1] = Attack;
                                 NPC.netUpdate = true;
                                 NPC.scale = 1;
@@ -297,8 +298,117 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     case 1:
                         NPC.ai[0]++;
                         CasuallyApproachChild();
+                        if (NPC.ai[0] == 50 || NPC.ai[0] == 150)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot"), NPC.position);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
+                                direction.Normalize();
+                                int damage = Main.expertMode ? 10 : 28;
+                                Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
+                                    ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+                                Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
+                                    ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+                                for (int j = -2; j <= 2; j++)
+                                {
+                                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center).RotatedBy(j * 0.5f) * 6f,
+                                        ModContent.ProjectileType<NovaBlast>(), damage, 0f, Owner: Main.myPlayer);
+                                }
+                            }
+                        }
+                        if (NPC.ai[0] == 100 || NPC.ai[0] == 200)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot1"), NPC.position);
+                            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
+                                direction.Normalize();
+                                int damage = Main.expertMode ? 10 : 28;
+                                Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
+                                    ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+                                Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Zero,
+                                    ModContent.ProjectileType<JackSpawnEffect>(), 0, 0f, Owner: Main.myPlayer);
+                                for (int j = -1; j <= 1; j++)
+                                {
+                                    Projectile.NewProjectile(entitySource, NPC.Center, Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center).RotatedBy(j * 0.5f) * 6f,
+                                        ModContent.ProjectileType<NovaBlast>(), damage, 0f, Owner: Main.myPlayer);
+                                }
+                            }
+
+                        }
+                        if (NPC.ai[0] >= 250)
+                        {
+                            PrevAttac = 2;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
                         break;
-                   
+                    case 2:
+                        NPC.ai[0]++;
+                        CasuallyApproachChild();
+                        if (NPC.ai[0] == 70 || NPC.ai[0] == 100 || NPC.ai[0] == 130)
+                        {
+                            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+                            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
+
+                            if (StellaMultiplayer.IsHost)
+                            {
+
+                                float offsetX = Main.rand.Next(-1, 1);
+                                float offsetY = Main.rand.Next(-1, 1);
+                                int damage = Main.expertMode ? 11 : 15;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, (direction.X * 1.5f) + offsetX, (direction.Y * 1.5f) + offsetY,
+                                    ModContent.ProjectileType<NovaFlame>(), damage, 1, Owner: Main.myPlayer);
+                            }
+                        }
+                        if (NPC.ai[0] >= 150)
+                        {
+                            PrevAttac = 2;
+                            NPC.ai[1] = 0;
+                            NPC.ai[0] = 0;
+                        }
+                        break;
+                    case 5:
+    
+                        NPC.ai[0]++;
+                        if (!Lazer)
+                        {
+                            if (NPC.ai[0] <= 2)
+                            {
+                                NPC.damage = 0;
+                                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPOut"), NPC.position);
+                            }
+                            if (!TP)
+                            {
+                                NPC.velocity.Y += 0.05f;
+                                NPC.scale -= 0.015f;
+                                if (NPC.scale <= 0)
+                                {
+                                    NPC.scale = 0;
+                                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_TPIn"), NPC.position);
+                                    TP = true;
+                                    NPC.velocity.Y = 0;
+                                    NPC.position = SingularityStart;
+                                }
+                            }
+                            else
+                            {
+                                NPC.scale += 0.015f;
+                                if (NPC.scale >= 1)
+                                {
+                                    Lazer = true;
+                                    NPC.scale = 1;
+                                    NPC.damage = 999;
+                                    TP = false;
+                                    NPC.ai[0] = 0;
+                                }
+                            }
+                        }
+                        break;
                 }
         }
 

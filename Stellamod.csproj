@@ -302,7 +302,9 @@
     <None Remove="NPCs\Bosses\singularityFragment\SingularityFragment_Glow - Copy.png" />
     <None Remove="NPCs\Bosses\singularityFragment\SingularityFragment_Head_Boss - Copy.png" />
     <None Remove="NPCs\Bosses\singularityFragment\SoulBeam.png" />
+    <None Remove="NPCs\Bosses\singularityFragment\SoulBlast - Copy.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
+    <None Remove="NPCs\Bosses\singularityFragment\VoidFlame - Copy.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SINESTAR.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
@@ -375,6 +377,7 @@
     <None Remove="Particles\SpinewBigOrange.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
     <None Remove="Projectiles\BloodWaterProj.png" />
+    <None Remove="Projectiles\Bow\CrysalizerExplosion - Copy.png" />
     <None Remove="Projectiles\Bow\GalvinieArrow1.png" />
     <None Remove="Projectiles\Bow\HuntrianArrow - Copy.png" />
     <None Remove="Projectiles\Bow\VampiricArrowProj.png" />

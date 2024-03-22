@@ -7,6 +7,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.NPCs.Bosses.singularityFragment;
+using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Overworld.ShadowWraith;
 using Stellamod.Utilis;
 using System;
