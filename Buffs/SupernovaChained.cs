@@ -18,6 +18,7 @@ namespace Stellamod.Buffs
 
         public override void Update(NPC npc, ref int buffIndex)
         {
+
             if (StellaMultiplayer.IsHost && !HasChains(npc))
             {
                 int npcIndexToFollow = npc.whoAmI;
@@ -38,6 +39,8 @@ namespace Stellamod.Buffs
 
         private bool HasChains(NPC npc)
         {
+            if (!npc.active)
+                return true;
             for(int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile p = Main.projectile[i];
