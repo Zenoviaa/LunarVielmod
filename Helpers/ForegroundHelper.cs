@@ -9,15 +9,23 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Helpers;
 
-public static class ForegroundHelper
+public class ForegroundHelper : ModSystem
 {
     public static readonly List<ForegroundItem> Items = new List<ForegroundItem>();
     public static readonly List<ForegroundItem> PlayerLayerItems = new();
 
-    internal static void Hooks()
+    public override void Load()
     {
         On_Main.DrawProjectiles += PlayerLayerHook;
         On_Main.DoUpdateInWorld += On_Main_DoUpdateInWorld;
+    }
+
+    public override void Unload()
+    {
+        On_Main.DrawProjectiles -= PlayerLayerHook;
+        On_Main.DoUpdateInWorld -= On_Main_DoUpdateInWorld;
+        Items.Clear();
+        PlayerLayerItems.Clear();
     }
 
     private static void On_Main_DoUpdateInWorld(On_Main.orig_DoUpdateInWorld orig, Main self, System.Diagnostics.Stopwatch sw)
@@ -39,6 +47,7 @@ public static class ForegroundHelper
 
         Main.spriteBatch.End();
     }
+
 
     public static void Draw()
     {
@@ -74,11 +83,6 @@ public static class ForegroundHelper
             set.Remove(item);
     }
 
-    public static void Unload()
-    {
-        Items.Clear();
-        PlayerLayerItems.Clear();
-    }
 
     public static int AddItem(ForegroundItem item, bool forced = false, bool playerLayer = false)
     {
