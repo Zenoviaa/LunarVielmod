@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-	public class KaBoomSigil2 : ModProjectile
+    public class KaBoomSigil2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -17,8 +16,8 @@ namespace Stellamod.Projectiles.IgniterExplosions
 		{
 			Projectile.friendly = true;
 			Projectile.hostile = false;
-			Projectile.width = 127;
-			Projectile.height = 145;
+			Projectile.width = 254;
+			Projectile.height = 289;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 48;
 			Projectile.scale = 1f;

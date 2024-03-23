@@ -6074,3 +6074,14 @@ ThePollinator: {
 		Radiating with the power of Zui's flowers
 		'''
 }
+
+BlackBall: {
+	DisplayName: Black Ball
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		A lighter orb that attacks faster
+		Empowered by the Alcad!
+		'''
+}

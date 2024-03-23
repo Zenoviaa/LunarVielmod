@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Buffs.Whipfx
 {
-    public class ThePollinatorDebuff : ModBuff
+    public class BlackballDebuff : ModBuff
 	{
 		public static readonly int TagDamage = 10;
 
@@ -24,17 +24,15 @@ namespace Stellamod.Buffs.Whipfx
                 for (int i = 0; i < 2; i++)
                 {
                     int d = Dust.NewDust(npc.position, npc.width, npc.height,
-                        ModContent.DustType<GlowDust>(), newColor: Color.DarkGoldenrod * 0.33f);
+                        ModContent.DustType<GlowDust>(), newColor: Color.Black * 0.33f);
                     Main.dust[d].noGravity = true;
                 }
             }
-
-            //SLOW EM DOWN MWAHAHAH
-            npc.velocity *= 0.75f;
         }
     }
 
-    public class ThePollinatorDebuffNPC : GlobalNPC
+
+    public class BlackballDebuffNPC : GlobalNPC
     {
         // This is required to store information on entities that isn't shared between them.
         public override bool InstancePerEntity => true;
@@ -52,7 +50,7 @@ namespace Stellamod.Buffs.Whipfx
             // Only player attacks should benefit from this buff, hence the NPC and trap checks.
             if (markedByWhip && !projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type]))
             {
-                projectile.damage += ThePollinatorDebuff.TagDamage;
+                projectile.damage += BlackballDebuff.TagDamage;
             }
         }
     }
