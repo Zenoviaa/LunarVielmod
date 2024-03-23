@@ -307,6 +307,11 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
+
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TomeofRaining>(), 1);
+
+
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			SendQuestPacket();
 
