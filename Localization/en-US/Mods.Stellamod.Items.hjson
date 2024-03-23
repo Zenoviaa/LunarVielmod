@@ -6085,3 +6085,8 @@ BlackBall: {
 		Empowered by the Alcad!
 		'''
 }
+
+TomeofRaining: {
+	Tooltip: ""
+	DisplayName: Tome of Raining
+}

@@ -34,7 +34,7 @@ namespace Stellamod.Items.Accessories
         {
             if (!Main.raining)
             {
-                Main.raining = true;
+                Main.StartRain();
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetworkText auroeanStarfallEnded = NetworkText.FromLiteral("Zui decided to help you make it rain!");
