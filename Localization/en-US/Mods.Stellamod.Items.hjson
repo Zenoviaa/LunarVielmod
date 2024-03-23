@@ -6048,3 +6048,18 @@ IlluriaWoodBlock: {
 	DisplayName: Illuria Wood Block
 	Tooltip: ""
 }
+
+IlluriaTreeSmallI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Small I
+}
+
+IlluriaTreeMedI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Med I
+}
+
+IlluriaTreeBigI: {
+	Tooltip: ""
+	DisplayName: Illuria Tree Big I
+}

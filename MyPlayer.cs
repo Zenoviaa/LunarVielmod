@@ -689,7 +689,8 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
@@ -2496,7 +2497,18 @@ namespace Stellamod
 					bool spawnOnPlayerLayer = true;
 					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
 					ForegroundHelper.AddItem(new Starstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
-				}	
+				}
+
+
+
+				int SnowFGChance = Snowstrike.SpawnChance(Player);
+				if (SnowFGChance != -1 && Main.rand.NextBool(SnowFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Snowstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
 			}
 		}
 
