@@ -798,7 +798,7 @@ namespace Stellamod
             {
                 IrradiatedKilled = 0;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>() || ZoneIlluria))
             {
                 SingularityFragment = true;
             }
