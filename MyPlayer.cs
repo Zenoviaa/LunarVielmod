@@ -1742,10 +1742,10 @@ namespace Stellamod
 			
 
 
-			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAbyss || ZoneAurelus))
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAbyss || ZoneAurelus || ZoneIlluria))
 			{
 			
-				Main.windPhysicsStrength = 50;
+				
 
 
 				GoldenRingCooldown++;
