@@ -802,7 +802,7 @@ namespace Stellamod
             {
                 SingularityFragment = true;
             }
-			if else (ZoneIlluria)
+			else if (ZoneIlluria)
 			{
 				SingularityFragment = true;
 			}
