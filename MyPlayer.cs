@@ -2534,7 +2534,7 @@ namespace Stellamod
 				
 			}
 
-			if (Main.raining && Player.ZoneForest)
+			if (Main.raining && (Player.ZoneForest || ZoneVillage))
 			{
 				int leafFGChance = Cherryblossom.SpawnChance(Player);
 				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
