@@ -602,3 +602,8 @@ ThePollinatorDebuff: {
 	Description: Mods.Stellamod.Buffs.ThePollinatorDebuff.Description
 	DisplayName: The Pollinator Debuff
 }
+
+BlackballDebuff: {
+	Description: Mods.Stellamod.Buffs.BlackballDebuff.Description
+	DisplayName: Blackball Debuff
+}
