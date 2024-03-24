@@ -2549,6 +2549,22 @@ namespace Stellamod
 
 
 			}
+
+			if ((Player.ZoneDesert))
+			{
+				int leafFGChance = Sandstrike.SpawnChance(Player);
+				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Sandstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
+
+
+
+
+			}
 		}
 
 
