@@ -6,13 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Ebistar : ModItem
+    public class Ebistar : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// Tooltip.SetDefault("Arcanal Weapon.");
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 62;
+			Item.mana = 4;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.Arkhalis);
 			Item.damage = 16; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.

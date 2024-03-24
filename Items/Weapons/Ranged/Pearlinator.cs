@@ -11,21 +11,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Pearlinator : ModItem
+    public class Pearlinator : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			/* Tooltip.SetDefault("Classy!" +
-				"\nTotally has no reference to Hollow Knight" +
-				"\nA weapon that shoots classy bomb and bullets.. A LOT" +
-				"\nDia Gun..."); */
-			// DisplayName.SetDefault("Hornet");
+		public override DamageClass AlternateClass => DamageClass.Magic;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
 			line = new TooltipLine(Mod, "Pealet", "(D) Really low scaling damage")
@@ -35,10 +26,16 @@ namespace Stellamod.Items.Weapons.Ranged
 			};
 			tooltips.Add(line);
 
-
+			base.ModifyTooltips(tooltips);
 		}
 
-		public override void SetDefaults()
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 24;
+			Item.mana = 4;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.width = 62;
 			Item.height = 32;

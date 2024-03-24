@@ -11,8 +11,9 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Ranged
 {
 
-    public class HarmonicBlasphemy : ModItem
+    public class HarmonicBlasphemy : ClassSwapItem
     {
+        public override DamageClass AlternateClass => throw new System.NotImplementedException();
 
         public override void SetStaticDefaults()
         {
@@ -35,17 +36,17 @@ namespace Stellamod.Items.Weapons.Ranged
 
             };
             tooltips.Add(line);
- 
-          
+            base.ModifyTooltips(tooltips);
+        }
 
+        public override void SetClassSwappedDefaults()
+        {
+            base.SetClassSwappedDefaults();
+            Item.damage = 28;
+            Item.mana = 4;
+            Item.shootSpeed = 21;
+        }
 
-
-        
-
-
-
-
-    }
         public override void SetDefaults()
         {
             Item.damage = 20;

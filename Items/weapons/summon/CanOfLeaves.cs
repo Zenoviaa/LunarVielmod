@@ -9,14 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class CanOfLeaves : ModItem
+    internal class CanOfLeaves : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Box of Leaves");
-			// Tooltip.SetDefault("Summon the leaves, dont bother picking them up, they are a bit aggressive, and magical...");
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 18;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.damage = 9;
 			Item.mana = 1;
@@ -38,6 +40,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.autoReuse = true;
 			Item.crit = 15;
 		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// NewProjectile returns the index of the projectile it creates in the NewProjectile array.

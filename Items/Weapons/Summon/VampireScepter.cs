@@ -17,6 +17,7 @@ namespace Stellamod.Items.Weapons.Summon
     {
 		public float rotation;
 		public bool lifesteal;
+		public bool isMagic;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -43,7 +44,7 @@ namespace Stellamod.Items.Weapons.Summon
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
-			if(lifesteal && proj.DamageType == DamageClass.Summon)
+			if(lifesteal && proj.DamageType == DamageClass.Summon || (isMagic && proj.DamageType == DamageClass.Magic))
             {
 				float distanceToTarget = Vector2.Distance(Player.position, target.position);
 				//10 tile radius
@@ -121,8 +122,17 @@ namespace Stellamod.Items.Weapons.Summon
 					}
 				}
 
-				player.GetDamage(DamageClass.Summon) += 0.33f;
-				player.GetModPlayer<VampirePlayer>().lifesteal = true;
+				if (player.GetModPlayer<VampirePlayer>().isMagic)
+				{
+                    player.GetDamage(DamageClass.Magic) += 0.33f;
+                    player.GetModPlayer<VampirePlayer>().lifesteal = true;
+				}
+				else
+				{
+                    player.GetDamage(DamageClass.Summon) += 0.33f;
+                    player.GetModPlayer<VampirePlayer>().lifesteal = true;
+                }
+
 			}
 			else
 			{
@@ -132,8 +142,10 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 	}
 
-	public class VampireScepter : ModItem
+	public class VampireScepter : ClassSwapItem
 	{
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
 		public override void SetDefaults()
 		{
 			Item.damage = 34;
@@ -166,8 +178,15 @@ namespace Stellamod.Items.Weapons.Summon
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
-			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
-			return false;
+            player.GetModPlayer<VampirePlayer>().isMagic = IsSwapped;
+            if (IsSwapped)
+            {
+                projectile.DamageType = Item.DamageType;
+            }
+
+		
+            // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+            return false;
 		}
 
         public override void AddRecipes()
@@ -206,8 +225,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 			// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
+			Projectile.minion = true; // Declares this as a minion (has many effects)// Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 		}

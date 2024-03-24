@@ -16,8 +16,6 @@ namespace Stellamod.Projectiles.Summons
 
         public override void SetStaticDefaults()
         {
-            
-
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
@@ -28,7 +26,6 @@ namespace Stellamod.Projectiles.Summons
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.aiStyle = 0;
-            Projectile.DamageType = DamageClass.Summon;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
@@ -39,7 +36,6 @@ namespace Stellamod.Projectiles.Summons
             Projectile.penetrate = -1;
             Projectile.stepSpeed = 1f;
             Projectile.alpha = 255;
-
         }
 
         public override void AI()

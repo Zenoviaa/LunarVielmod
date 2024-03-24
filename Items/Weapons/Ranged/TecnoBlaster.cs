@@ -9,12 +9,14 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    class TecnoBlaster : ModItem
+    public class TecnoBlaster : ClassSwapItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Tecno Blaster");
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 24;
+            Item.mana = 7;
         }
 
         public override void SetDefaults()

@@ -7,27 +7,22 @@ using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Violar : ModItem
-	{
-		public override void SetStaticDefaults()
+    public class Violar : ClassSwapItem
+    {
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 38;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			/* Tooltip.SetDefault("Let them burn in harmony!" +
-				"\nSimple weapon forged from Stellean bricks and the heat from plants of the morrow" +
-				"\nImpractical but very rewarding..."); */
-			// DisplayName.SetDefault("Violiar");
-
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
 			var line = new TooltipLine(Mod, "", "");
 			line = new TooltipLine(Mod, "Violar", "(D) Low Damage scaling for flames")
@@ -43,15 +38,9 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			};
 			tooltips.Add(line);
+            base.ModifyTooltips(tooltips);
+        }
 
-
-
-
-
-
-
-
-		}
 		public override void SetDefaults()
 		{
 			Item.width = 40;

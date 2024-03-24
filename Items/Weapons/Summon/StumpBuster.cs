@@ -5,14 +5,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class StumpBuster : ModItem
+    internal class StumpBuster : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Stump Buster");
-			// Tooltip.SetDefault("I command thee, use the power of stumps!");
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 24;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.damage = 15;
 			Item.mana = 5;

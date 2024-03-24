@@ -1,7 +1,6 @@
 ﻿using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
-using Stellamod.Projectiles;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
@@ -9,14 +8,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-	internal class Stonen : ModItem
+    internal class Stonen : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Palm Tomahawks");
-			// Tooltip.SetDefault("Throw around tomahawks forged from palm, sounds boring :(");
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        public override void SetDefaults()
 		{
 			Item.damage = 83;
 			Item.width = 20;
@@ -37,6 +33,7 @@ namespace Stellamod.Items.Weapons.Thrown
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
