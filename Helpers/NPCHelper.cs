@@ -20,6 +20,17 @@ namespace Stellamod.Helpers
             return false;
         }
 
+        public static float TilesToDistance(this float tiles)
+        {
+            return (tiles * 16);
+        }
+
+        public static int ScaleFromContactDamage(this NPC npc, float damageMultiplier)
+        {
+            float damage = npc.damage;
+            return (int)(damage * damageMultiplier);
+        }
+
         /// <summary>
         /// Finds the closest NPC to a point that can be chased by a minion/projectile
         /// </summary>
