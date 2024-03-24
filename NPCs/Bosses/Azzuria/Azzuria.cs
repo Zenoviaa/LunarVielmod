@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             //Don't want her to be hit by any debuffs
             NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
-            NPCID.Sets.TrailCacheLength[Type] = TotalSegments;
+            NPCID.Sets.TrailCacheLength[Type] = Total_Segments;
             NPCID.Sets.TrailingMode[Type] = 2;
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
             drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Sylia/SyliaPreview";
@@ -71,7 +71,9 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
         public override void AI()
         {
+            NPC.TargetClosest();
             UpdateOrientation();
+            LookAtTarget();
         }
     }
 }

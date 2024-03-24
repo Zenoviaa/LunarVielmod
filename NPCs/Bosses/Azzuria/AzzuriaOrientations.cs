@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
             float progress = OscTimer / duration;
             float sinOsc = MathF.Sin(progress * -16);
-            float rotOsc = progress * MathHelper.PiOver4 / 8;
+            float rotOsc = progress * MathHelper.PiOver4 / 16;
 
             SegmentPosOsc = new Vector2(0, sinOsc);
             SegmentRotationOsc = rotOsc;
@@ -41,13 +41,13 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
         private void OrientArching()
         {
-            TargetSegmentRotation = -(MathHelper.PiOver4 / 20);
+            TargetSegmentRotation = -(MathHelper.PiOver4 / Total_Segments);
             TargetHeadRotation = MathHelper.PiOver4;
         }
 
         private void OrientStraight()
         {
-            TargetSegmentRotation = -(MathHelper.PiOver4 / 20);
+            TargetSegmentRotation = -(MathHelper.PiOver4 / Total_Segments);
             TargetHeadRotation = 0;
         }
 
@@ -57,7 +57,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
             float tiles = 32f;
             Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
-            if(distanceToTarget < tiles.TilesToDistance() && StartSegmentDirection.X < directionToTarget.X)
+            if(distanceToTarget < tiles.TilesToDistance())
             {
                 TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation();
             } else
