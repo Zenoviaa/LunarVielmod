@@ -93,10 +93,12 @@ namespace Stellamod.Items
             if (tag.ContainsKey("IsSwapped"))
             {
                 IsSwapped = tag.GetBool("IsSwapped");
-                Item.DamageType = AlternateClass;
-                SetClassSwappedDefaults();
+                if (IsSwapped)
+                {
+                    Item.DamageType = AlternateClass;
+                    SetClassSwappedDefaults();
+                }  
             }
-
         }
 
         public override void NetSend(BinaryWriter writer)
