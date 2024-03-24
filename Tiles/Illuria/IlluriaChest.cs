@@ -11,9 +11,9 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Stellamod.Tiles
+namespace Stellamod.Tiles.Illuria
 {
-    public class CinderChest : ModTile
+    public class IlluriaChest : ModTile
 	{
 
 		public override LocalizedText DefaultContainerName(int frameX, int frameY)
@@ -82,11 +82,6 @@ namespace Stellamod.Tiles
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
 			DustType = dustType;
-			
-				
-
-
-			Main.NewText("Heavy chest opened!", Color.Orange);
 			return true;
 		}
 

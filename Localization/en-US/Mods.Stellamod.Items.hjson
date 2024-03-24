@@ -6099,3 +6099,8 @@ SirestiasToken: {
 		'''
 	DisplayName: Sirestias Token
 }
+
+IlluriaChesti: {
+	DisplayName: Illuria Chesti
+	Tooltip: ""
+}
