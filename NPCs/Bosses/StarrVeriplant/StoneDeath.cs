@@ -37,7 +37,6 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
             NPC.value = 60f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
-            NPC.boss = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.alpha = 255;

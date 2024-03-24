@@ -95,12 +95,12 @@ namespace Stellamod.Tiles.Structures.Cathedral
 			Player player = Main.LocalPlayer;
 			int key = ModContent.ItemType<MoonflameLantern>();
 			bool isNightime = !Main.dayTime;
-			if (player.HasItem(key) && isNightime && !NPC.AnyNPCs(ModContent.NPCType<StarteV>()) && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+			if (player.HasItem(key) && isNightime && !NPC.AnyNPCs(ModContent.NPCType<VerliaSpawn>()) && !NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
 			{
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.NewText("Verlia has awoken!", Color.LightSkyBlue);
-					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<StarteV>());
+					Main.NewText("Verlia has been freed from her lantern!", Color.LightSkyBlue);
+					int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<VerliaSpawn>());
 					Main.npc[npcID].netUpdate2 = true;
 				}
 				else
@@ -108,7 +108,7 @@ namespace Stellamod.Tiles.Structures.Cathedral
 					if (Main.netMode == NetmodeID.SinglePlayer)
 						return false;
 
-					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<StarteV>(), i * 16, (j * 16));
+					StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<VerliaSpawn>(), i * 16, (j * 16));
 				}
 
 				return true;

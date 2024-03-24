@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -60,8 +61,16 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
             {
 				int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.DungeonSpirit, 0f, 0f);
 				Main.dust[dust].scale = 0.6f;
-				int dust3 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.WhiteTorch, 0f, 0f);
-				Main.dust[dust3].scale = 1f;
+
+				for (int i = 0; i < 1; i++)
+				{
+					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 1f).noGravity = true;
+				}
+				for (int i = 0; i < 1; i++)
+				{
+					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 0.3f).noGravity = true;
+				}
+
 				timer = 0;
 			}
 			

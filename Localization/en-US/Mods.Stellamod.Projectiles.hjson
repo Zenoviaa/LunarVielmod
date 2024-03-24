@@ -548,6 +548,7 @@ POAProj5.DisplayName: P O A Proj5
 PetalDance.DisplayName: Petal Dance
 BluePikminAttack.DisplayName: Blue Pikmin Attack
 BluePikminThrow.DisplayName: Blue Pikmin Throw
+Blue.DisplayName: Blue
 PurplePikminAttack.DisplayName: Purple Pikmin Attack
 PurplePikminThrow.DisplayName: Purple Pikmin Throw
 RedPikminAttack.DisplayName: Red Pikmin Attack
@@ -895,3 +896,4 @@ SupernovaChainFront.DisplayName: Supernova Chain Front
 SupernovaChainCircle.DisplayName: Supernova Chain Circle
 ThePollinatorProj.DisplayName: The Pollinator Proj
 BlackBallProj.DisplayName: Black Ball Proj
+VerliaSpeech1.DisplayName: Verlia Speech1
