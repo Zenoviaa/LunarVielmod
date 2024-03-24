@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -19,7 +20,7 @@ namespace Stellamod.Items.Weapons.Mage
 	{
 		//Do if(IsSwapped) if you want to check for the alternate class
 		//Stats to have when in the other class
-		Item.damage = 50;
+		Item.damage = 30;
 		Item.knockBack = 12;
 	}
 	public override void SetStaticDefaults()
@@ -33,8 +34,8 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
-			Item.useTime = 14;
-			Item.useAnimation = 14;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Guitar;
 			Item.noMelee = true;
 			Item.knockBack = 0f;
@@ -43,20 +44,16 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/bongo");
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<BoomCircle>();
+			Item.shoot = ModContent.ProjectileType<BongoBoom>();
 			Item.autoReuse = true;
 			Item.crit = 22;
 		}
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.BorealWood, 10);
-			recipe.AddIngredient(ItemID.Stinger, 3);
-			recipe.AddIngredient(ItemID.JungleSpores, 3);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 120);
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
