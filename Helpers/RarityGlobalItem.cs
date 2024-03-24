@@ -23,9 +23,14 @@ namespace Stellamod.Helpers
                     return false;
                 }
             }
-            if(line.Name == "SirestiasTokenSwap" && item.ModItem is ClassSwapItem swapItem)
+            if(line.Name == "SirestiasTokenSwap" && item.ModItem is ClassSwapItem)
             {
                 SirestiasSpecialRarity.DrawCustomTooltipLine(line);
+                return false;
+            } 
+            else if(line.Name == "SirestiasTokenSwitched" && item.ModItem is ClassSwapItem)
+            {
+                SirestiasSwappedRarity.DrawCustomTooltipLine(line);
                 return false;
             }
             return true;

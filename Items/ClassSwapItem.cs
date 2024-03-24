@@ -20,6 +20,11 @@ namespace Stellamod.Items
                 var line = new TooltipLine(Mod, "SirestiasTokenSwap", $"Can be changed to {AlternateClass.DisplayName}!");
                 tooltips.Add(line);
             }
+            else
+            {
+                var line = new TooltipLine(Mod, "SirestiasTokenSwitched", $"Damage Type Swapped!");
+                tooltips.Add(line);
+            }
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
