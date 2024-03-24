@@ -31,6 +31,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 60;
 			Projectile.scale = 1f;
+			Projectile.tileCollide = false;
 		}
 
 		public float Timer
@@ -44,7 +45,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			Vector3 RGB = new(0.89f, 2.53f, 2.55f);
 			// The multiplication here wasn't doing anything
 			Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
+			Projectile.tileCollide = false;
 		}
 
 
@@ -75,7 +76,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			spriteBatch.Draw(texture, drawPosition,
 				texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-				(Color)GetAlpha(lightColor), 0f, origin, 3f, SpriteEffects.None, 0f);
+				(Color)GetAlpha(lightColor), 0f, origin, 1f, SpriteEffects.None, 0f);
 			return false;
 		}
 
