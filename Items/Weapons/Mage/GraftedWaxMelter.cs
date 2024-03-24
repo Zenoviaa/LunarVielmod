@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 
 
-
+            base.ModifyTooltips(tooltips);
 
 
 

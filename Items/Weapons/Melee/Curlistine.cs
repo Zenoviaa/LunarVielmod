@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 
 
-
+            base.ModifyTooltips(tooltips);
 
 
 
