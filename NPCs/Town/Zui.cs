@@ -291,7 +291,13 @@ namespace Stellamod.NPCs.Town
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 18);
 			}
 
-			ZuiQuestSystem.QuestsCompleted += 1;
+			if (ZuiQuestSystem.QuestsCompleted == 15)
+			{
+				
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FungalFlace>(), 1);
+
+			}
+				ZuiQuestSystem.QuestsCompleted += 1;
 
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());

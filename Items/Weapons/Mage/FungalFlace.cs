@@ -64,16 +64,7 @@ namespace Stellamod.Items.Weapons.Mage
 			}
 			return false;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemType<FrileBar>(), 13);
-			recipe.AddIngredient(ItemID.Stinger, 13);
-			recipe.AddIngredient(ItemID.GlowingMushroom, 5);
-			recipe.AddIngredient(ItemID.JungleSpores, 20);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.Register();
-		}
+		
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
