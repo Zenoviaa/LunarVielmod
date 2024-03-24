@@ -6087,7 +6087,7 @@ BlackBall: {
 }
 
 TomeofRaining: {
-	Tooltip: ""
+	Tooltip: Use to make it rain! Zui gives her thanks!
 	DisplayName: Tome of Raining
 }
 
