@@ -17,6 +17,7 @@ namespace Stellamod.Items.Consumables
 
         public override void SetDefaults()
         {
+            Item.maxStack = 1;
             Item.width = 18;
             Item.height = 28;
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
