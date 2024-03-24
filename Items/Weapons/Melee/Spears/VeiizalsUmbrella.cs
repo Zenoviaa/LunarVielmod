@@ -10,8 +10,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class VeiizalsUmbrella : ModItem
+    internal class VeiizalsUmbrella : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 60;
+            Item.knockBack = 10;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");
@@ -69,7 +80,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         {
             if (player.altFunctionUse == 2)
             {
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<VeiizalsUmbrellaProjOpen>(), damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<VeiizalsUmbrellaProjOpen>(), damage * 4, knockback, player.whoAmI);
                 return false;
             }
             else

@@ -7,8 +7,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class HolmbergScythe : ModItem
+    internal class HolmbergScythe : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 60;
+            Item.useAnimation = 25;
+            Item.useTime = 25;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");

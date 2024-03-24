@@ -19,8 +19,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    public class Swingaling : ModItem
+    public class Swingaling : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.mana = 0;
+            Item.damage = 12;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 

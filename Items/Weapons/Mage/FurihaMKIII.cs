@@ -11,9 +11,19 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Mage
 {
 
-    public class FurihaMKIII : ModItem
+    public class FurihaMKIII : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Ranged;
 
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.mana = 0;
+            Item.damage = 50;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Wooden Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
