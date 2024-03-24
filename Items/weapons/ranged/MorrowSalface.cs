@@ -5,20 +5,22 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class MorrowSalface : ModItem
+    public class MorrowSalface : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// Tooltip.SetDefault("Arcanal Weapon.");
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 21;
+			Item.mana = 8;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.Arkhalis);
 			Item.damage = 6; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40; // hitbox width of the Item
 			Item.height = 20; // hitbox height of the Item
-			Item.mana = 100;
 			Item.useTime = 90; // The Item's use time in ticks (60 ticks == 1 second.)
 			Item.useAnimation = 30; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot;
