@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Dusts;
+using Stellamod.Items;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gia;
@@ -215,19 +217,45 @@ namespace Stellamod.NPCs.Town
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop)
-		{
-			
-
+		{	
 			if (firstButton)
 			{
-
 				Player player = Main.LocalPlayer;
 				WeightedRandom<string> chat = new WeightedRandom<string>();
 
+				//Item converting system
+				if (player.HasItem(ModContent.ItemType<SirestiasToken>()) 
+					&& player.HeldItem.ModItem is ClassSwapItem swapItem)
+				{
+					//Swap the item
+					player.HeldItem.DamageType = swapItem.AlternateClass;
+					swapItem.IsSwapped = true;
+					swapItem.SetClassSwappedDefaults();
 
+					//Delete the item
+                    int itemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<SirestiasToken>());
+                    Main.LocalPlayer.inventory[itemIndex].TurnToAir();
+					NetMessage.SendData(MessageID.SyncItem);
 
-				//-----------------------------------------------------------------------------------------------
-				if (Main.LocalPlayer.HasItem(ModContent.ItemType<ScrapToken>()))
+					//Effects
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
+                    for (int i = 0; i < 4; i++)
+                    {
+						Dust.NewDust(NPC.Center, NPC.width, NPC.height, DustID.Electric);
+                    }
+                    for (int i = 0; i < 14; i++)
+                    {
+
+                        Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
+                    }
+
+                    for (int i = 0; i < 14; i++)
+                    {
+                        Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
+                    }
+                } 
+				else if (Main.LocalPlayer.HasItem(ModContent.ItemType<ScrapToken>()))
 				{
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted")); // Reforge/Anvil sound
 

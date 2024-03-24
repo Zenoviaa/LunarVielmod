@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
@@ -21,6 +22,11 @@ namespace Stellamod.Helpers
                     SirestiasSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
+            }
+            if(line.Name == "SirestiasTokenSwap" && item.ModItem is ClassSwapItem swapItem)
+            {
+                SirestiasSpecialRarity.DrawCustomTooltipLine(line);
+                return false;
             }
             return true;
         }
