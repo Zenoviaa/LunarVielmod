@@ -31,8 +31,8 @@ namespace Stellamod.Items.Weapons.Melee
 			//Stats to have when in the other class
 			Item.damage = 350;
 			Item.mana = 22;
-			Item.useTime = 70;
-			Item.useAnimation = 70;
+			Item.useTime = 50;
+			Item.useAnimation = 50;
 		}
 		public override void SetStaticDefaults()
 		{
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 			};
 			tooltips.Add(line);
-
+			base.ModifyTooltips(tooltips);
 
 
 		}
