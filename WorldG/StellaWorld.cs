@@ -6666,66 +6666,77 @@ namespace Stellamod.WorldG
 						// itemsToAdd will hold type and stack data for each item we want to add to the chest
 						var itemsToAdd = new List<(int type, int stack)>();
 
-
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-							Tuple.Create(ModContent.ItemType<EmptyMoonflameLantern>(), 0.9)
+
+							Tuple.Create(ModContent.ItemType<EmptyMoonflameLantern>(), 0.5)
+
+						// Choose no item with a high weight of 7.
 						);
 						if (specialItem != ItemID.None)
 						{
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(4))
+						switch (Main.rand.Next(6))
 						{
 							case 0:
-								itemsToAdd.Add((ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Sundial, 1));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<Starrdew>(), Main.rand.Next(2, 10))); ;
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 5)));
-								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.Star, Main.rand.Next(1, 50)));
 								break;
 							case 1:
-								itemsToAdd.Add((ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Sundial, 1));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 5)));
-								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
-								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.Star, Main.rand.Next(1, 50)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.Sundial, Main.rand.Next(1, 3)));
-								itemsToAdd.Add((ItemID.FireblossomSeeds, Main.rand.Next(2, 5)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-								itemsToAdd.Add((ItemID.ManaCrystal, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(1, 5)));
+								itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.Star, Main.rand.Next(1, 50)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<BroochesTableI>(), Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
 								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-								itemsToAdd.Add((ItemID.LifeCrystal, Main.rand.Next(3, 7)));
 
 								break;
+							case 4:
+								itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 5:
+								itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+								itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+
+
 						}
 
 						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
@@ -6735,13 +6746,12 @@ namespace Stellamod.WorldG
 							Item item = new Item();
 							item.SetDefaults(itemToAdd.type);
 							item.stack = itemToAdd.stack;
-							c.item[chestItemIndex] = item;
+							chest.item[chestItemIndex] = item;
 							chestItemIndex++;
 							if (chestItemIndex >= 40)
 								break; // Make sure not to exceed the capacity of the chest
 						}
 					}
-
 
 
 					placed = true;
