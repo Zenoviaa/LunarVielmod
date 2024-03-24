@@ -6092,6 +6092,6 @@ TomeofRaining: {
 }
 
 SirestiasToken: {
-	Tooltip: ""
+	Tooltip: A token of graditude given from Sirestias after achieving her goals.
 	DisplayName: Sirestias Token
 }
