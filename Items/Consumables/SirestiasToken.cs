@@ -1,6 +1,8 @@
 ﻿
 
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,6 +25,19 @@ namespace Stellamod.Items.Consumables
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.value = Item.sellPrice(1, 0, 0, 0);
      
+        }
+
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ModContent.ItemType<ReflectionSeeker>(), 1);
+            recipe.Register();
+
+
+            Recipe recipe2 = CreateRecipe();
+            recipe2.AddIngredient(ModContent.ItemType<Maelstrom>(), 1);
+            recipe2.Register();
         }
     }
 }

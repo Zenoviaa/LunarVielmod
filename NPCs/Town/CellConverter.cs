@@ -239,7 +239,8 @@ namespace Stellamod.NPCs.Town
 
 					//Effects
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Converted"));
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
+					CombatText.NewText(NPC.getRect(), Color.White, "Weapon Converted!", true, false);
+					Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 16f);
                     for (int i = 0; i < 4; i++)
                     {
 						Dust.NewDust(NPC.Center, NPC.width, NPC.height, DustID.Electric);
