@@ -5161,7 +5161,7 @@ CompletedFlowerBag: {
 
 EmptyFlowerBag: {
 	DisplayName: Empty Flower Bag
-	Tooltip: Whats wrong? Need some love to keep ya going? Fill up the damn bag
+	Tooltip: Whats wrong? Need some love to keep ya going? Craft the completed bag with some flowers.
 }
 
 BurnedCarianTome: {
@@ -5171,7 +5171,7 @@ BurnedCarianTome: {
 
 EmptyCollectorsBag: {
 	DisplayName: Empty Collectors Bag
-	Tooltip: Collecting up the dust of your remains after you're done with this.
+	Tooltip: Collecting up the dust of your remains after you're done with this. You know the deal.
 }
 
 CinderedLantern: {
