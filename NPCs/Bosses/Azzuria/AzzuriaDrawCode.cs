@@ -1,12 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Helpers;
-using System.Diagnostics.Metrics;
-using System.IO;
 using Terraria;
-using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Azzuria
@@ -19,9 +15,9 @@ namespace Stellamod.NPCs.Bosses.Azzuria
         public Vector2 NextSegmentPos;
         public float NextSegmentRot;
         public Vector2 StartSegmentDirection = new Vector2(-1, 0);
-        public Vector2[] SegmentPos = new Vector2[TotalSegments];
+        public Vector2[] SegmentPos = new Vector2[Total_Segments];
         public Vector2 SegmentCorrection;
-        public float[] SegmentRot = new float[TotalSegments];
+        public float[] SegmentRot = new float[Total_Segments];
 
         public float SegmentRotation;
         public float SegmentRotationOsc;
@@ -29,17 +25,18 @@ namespace Stellamod.NPCs.Bosses.Azzuria
         public float SegmentTurnRotation;
         public float HeadRotation;
 
+        // Wing Animation Frame Counters
+        public int WingFrameCounter;
+        public int WingFrameTick;
+        public int WingDrawIndex;
 
-        // Current frame
-        public int FrameCounter;
-        // Current frame's progress
-        public int FrameTick;
-
-        public const int TotalSegments = NeckSegments + BodySegments + TailSegments + 4;
-        public const int NeckSegments = 4;
-        public const int BodySegments = 2;
-        public const int TailSegments = 3;
-
+        public const int Total_Segments = Neck_Segments + Body_Segments + Tail_Segments + 4;
+        public const int Neck_Segments = 3;
+        public const int Body_Segments = 4;
+        public const int Tail_Segments = 7;
+        public const float Tail_Min_Scale = 0.2f;
+        public const float Body_Min_Scale = 0.5f;
+        public const float Glow_Distance = 2;
         public Texture2D AzzuriaHead => ModContent.Request<Texture2D>($"{BaseTexturePath}AzzuriaHead").Value;
         public Vector2 AzzuriaHeadSize => new Vector2(172, 108);
 
@@ -48,6 +45,13 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
         public Texture2D AzzuriaArmFront => ModContent.Request<Texture2D>($"{BaseTexturePath}AzzuriaArmFront").Value;
         public Vector2 AzzuriaArmFrontSize => new Vector2(58, 64);
+
+
+        public Texture2D AzzuriaLegBack => ModContent.Request<Texture2D>($"{BaseTexturePath}AzzuriaLegBack").Value;
+        public Vector2 AzzuriaLegBackSize => new Vector2(24, 42);
+
+        public Texture2D AzzuriaLegFront => ModContent.Request<Texture2D>($"{BaseTexturePath}AzzuriaLegFront").Value;
+        public Vector2 AzzuriaLegFrontSize => new Vector2(56, 64);
 
         public Texture2D AzzuriaBodyBack => ModContent.Request<Texture2D>($"{BaseTexturePath}AzzuriaBodyBack").Value;
         public Vector2 AzzuriaBodyBackSize => new Vector2(38, 54);
@@ -74,22 +78,24 @@ namespace Stellamod.NPCs.Bosses.Azzuria
      
 
 
-        private void SetSegmentPosition(Vector2 segmentSize)
+        private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
-            float segmentWidth = (segmentSize.X / 2) + 8;
+            float segmentWidth = ((segmentSize.X / 2) + 8) * scale;
             if(_segmentIndex > 0)
             {
                 //Set the position of the segment
                 SegmentPos[_segmentIndex] = NextSegmentPos;
                 SegmentRot[_segmentIndex] = NextSegmentRot;
 
+                float rotMultiplier = _segmentIndex >= 1 + Neck_Segments && 
+                    _segmentIndex <= 1 + Neck_Segments + Body_Segments ? 0.2f : 1f;
                 //Set the position and rotation of the next one
                 Vector2 segmentDirection = (SegmentPos[_segmentIndex] - SegmentPos[_segmentIndex - 1])
                     .SafeNormalize(Vector2.Zero)
-                    .RotatedBy(NextSegmentRot);
+                    .RotatedBy(NextSegmentRot * rotMultiplier);
 
                 NextSegmentPos += segmentDirection * segmentWidth;
-                NextSegmentRot += SegmentTurnRotation;
+                NextSegmentRot += SegmentTurnRotation * rotMultiplier;
             }
             else
             {
@@ -108,31 +114,40 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             _segmentIndex = SegmentPos.Length - 1;
             SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
             //Draw Tail Back
-            DrawSegment(spriteBatch, AzzuriaTailBack, AzzuriaTailBackSize, drawColor);
+            DrawSegment(spriteBatch, AzzuriaTailBack, AzzuriaTailBackSize, drawColor, rot: MathHelper.Pi);
 
             //Draw Tail
-            for (int i = 0; i < TailSegments; i++)
+            for (int i = 0; i < Tail_Segments; i++)
             {
-                DrawSegment(spriteBatch, AzzuriaTailFront, AzzuriaTailFrontSize, drawColor);
+                float scaleProgress = i / (float)Tail_Segments;
+                DrawSegment(spriteBatch, AzzuriaTailFront, AzzuriaTailFrontSize, drawColor, scaleProgress + Tail_Min_Scale);
             }
 
             //Draw Body Back
-            DrawSegment(spriteBatch, AzzuriaBodyBack, AzzuriaBodyBackSize, drawColor);
+            DrawSegment(spriteBatch, AzzuriaBodyBack, AzzuriaBodyBackSize, drawColor, Body_Min_Scale);
             Vector2 wingDrawOrigin = new Vector2(226, 190);
 
-            int wingDrawIndex = _segmentIndex - 2;
-            Rectangle drawRectangle = AzzuriaWingBack.AnimationFrame(ref FrameCounter, ref FrameTick, 4, 9, true);
-            Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[wingDrawIndex] - MathHelper.PiOver2) * -24;
+            WingDrawIndex = _segmentIndex - Body_Segments - 1;
+            Rectangle drawRectangle = AzzuriaWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
+            Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
             DrawSegment(spriteBatch, AzzuriaWingBack, AzzuriaWingSize, drawColor,
                 drawOrigin: wingDrawOrigin,
                 drawOffset: wingDrawOffset,
                 sourceRectangle: drawRectangle,
-                overrideIndex: wingDrawIndex);
+                overrideIndex: WingDrawIndex);
+
+            //Draw Back Leg
+            int legDrawIndex = _segmentIndex - 2;
+            Vector2 backLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * AzzuriaArmBackSize.Y * 1.3f;
+            DrawSegment(spriteBatch, AzzuriaLegBack, AzzuriaLegBackSize, drawColor,
+                    drawOffset: backLegDrawOffset,
+                    overrideIndex: legDrawIndex - 1);
 
             //Draw Body
-            for (int i = 0; i < BodySegments; i++)
+            for (int i = 0; i < Body_Segments; i++)
             {
-                DrawSegment(spriteBatch, AzzuriaBodyMiddle, AzzuriaBodyMiddleSize, drawColor);
+                float scaleProgress = i / (float)Body_Segments;
+                DrawSegment(spriteBatch, AzzuriaBodyMiddle, AzzuriaBodyMiddleSize, drawColor, scaleProgress + Body_Min_Scale);
             }
 
             //Draw Back Arm
@@ -142,12 +157,13 @@ namespace Stellamod.NPCs.Bosses.Azzuria
                 drawOffset: backArmOffset,
                 overrideIndex: armDrawIndex - 1);
 
+    
             //Draw Body Front
-            DrawSegment(spriteBatch, AzzuriaBodyFront, AzzuriaBodyFrontSize, drawColor);
-            for (int i = 0; i < NeckSegments; i++)
+            DrawSegment(spriteBatch, AzzuriaBodyFront, AzzuriaBodyFrontSize, drawColor, 1f + Body_Min_Scale);
+            for (int i = 0; i < Neck_Segments; i++)
             {
                 //Draw Neck
-                DrawSegment(spriteBatch, AzzuriaNeck, AzzuriaNeckSize, drawColor);
+                DrawSegment(spriteBatch, AzzuriaNeck, AzzuriaNeckSize, drawColor, 1.2f);
             }
 
             //Draw Front Arm
@@ -156,17 +172,96 @@ namespace Stellamod.NPCs.Bosses.Azzuria
                 drawOffset: frontArmOffset,
                 overrideIndex: armDrawIndex);
 
+            //Draw Front Leg
+            Vector2 frontLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * AzzuriaArmBackSize.Y * 1.3f;
+            DrawSegment(spriteBatch, AzzuriaLegFront, AzzuriaLegFrontSize, drawColor,
+                 drawOffset: frontLegDrawOffset,
+                 overrideIndex: legDrawIndex);
+
             DrawSegment(spriteBatch, AzzuriaWingFront, AzzuriaWingSize, drawColor,
                 drawOrigin: wingDrawOrigin,
                 drawOffset: wingDrawOffset,
                 sourceRectangle: drawRectangle,
-                overrideIndex: wingDrawIndex);
+                overrideIndex: WingDrawIndex);
 
             //Draw4 Head
             DrawSegment(spriteBatch, AzzuriaHead, AzzuriaHeadSize, drawColor);
         }
 
-        private void DrawSegment(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor, 
+        private void DrawSegmentGlow(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
+            Vector2? drawOrigin = null,
+            Rectangle? sourceRectangle = null,
+            Vector2? drawOffset = null,
+            int overrideIndex = -1)
+        {
+            Vector2 origin = segmentSize / 2;
+            if (drawOrigin != null)
+            {
+                origin = (Vector2)drawOrigin;
+            }
+
+            if (_segmentIndex == SegmentRot.Length - 1)
+            {
+                SegmentRot[_segmentIndex] += MathHelper.PiOver2;
+            }
+
+            Vector2 drawPos;
+            if (overrideIndex != -1)
+            {
+                drawPos = SegmentPos[overrideIndex];
+            }
+            else
+            {
+                drawPos = SegmentPos[_segmentIndex];
+            }
+
+            if (drawOffset != null)
+            {
+                drawPos += (Vector2)drawOffset;
+            }
+
+            if (_segmentIndex != 0 || overrideIndex != -1)
+            {
+                drawPos -= SegmentCorrection;
+            }
+
+
+            Color rotatedColor = Color.LightSkyBlue;
+            rotatedColor = rotatedColor.MultiplyAlpha(0.1f);
+            float glowDistance = Glow_Distance;
+            if (overrideIndex != -1)
+            {
+                Vector2 posOsc = SegmentPosOsc * (overrideIndex + 1);
+                float rotationOsc = SegmentRotationOsc * (overrideIndex + 1);
+
+
+                float time = Main.GlobalTimeWrappedHourly;
+                float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+                float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
+                time %= 4f;
+                time /= 2f;
+
+                if (time >= 1f)
+                {
+                    time = 2f - time;
+                }
+
+                time = time * 0.5f + 0.5f;
+                for (float i = 0f; i < 1f; i += 0.25f)
+                {
+                    float radians = (i + timer) * MathHelper.TwoPi;
+                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, glowDistance * rotationOffset).RotatedBy(radians) * time;
+                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+                }
+
+
+                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+            }
+        }
+
+        private void DrawSegment(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
+            float scale = 1,
+            float rot = 0,
             Vector2? drawOrigin = null, 
             Rectangle? sourceRectangle = null, 
             Vector2? drawOffset = null, 
@@ -205,7 +300,8 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
 
             Color rotatedColor = Color.LightSkyBlue;
-            rotatedColor = rotatedColor.MultiplyAlpha(0.5f);
+            rotatedColor = rotatedColor.MultiplyAlpha(0.1f);
+            float glowDistance = Glow_Distance;
             if(overrideIndex != -1)
             {
                 Vector2 posOsc = SegmentPosOsc * (overrideIndex + 1);
@@ -227,12 +323,12 @@ namespace Stellamod.NPCs.Bosses.Azzuria
                 for (float i = 0f; i < 1f; i += 0.25f)
                 {
                     float radians = (i + timer) * MathHelper.TwoPi;
-                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
-                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, glowDistance * rotationOffset).RotatedBy(radians) * time;
+                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rot + rotationOsc, origin, scale, SpriteEffects.None, 0);
                 }
 
        
-                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rot + rotationOsc, origin, scale, SpriteEffects.None, 0);
             }
             else
             {
@@ -259,11 +355,11 @@ namespace Stellamod.NPCs.Bosses.Azzuria
                 for (float i = 0f; i < 1f; i += 0.25f)
                 {
                     float radians = (i + timer) * MathHelper.TwoPi;
-                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
-                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[_segmentIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, glowDistance * rotationOffset).RotatedBy(radians) * time;
+                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[_segmentIndex] + rot + rotationOsc, origin, scale, SpriteEffects.None, 0);
                 }
 
-                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[_segmentIndex] + rotationOsc, origin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[_segmentIndex] + rot + rotationOsc, origin, scale, SpriteEffects.None, 0);
                 _segmentIndex--;
             }
         }
@@ -276,25 +372,27 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
             //Draw4 Head
             SetSegmentPosition(AzzuriaHeadSize);
-            for (int i = 0; i < NeckSegments; i++)
+            for (int i = 0; i < Neck_Segments; i++)
             {
                 SetSegmentPosition(AzzuriaNeckSize);
             }
 
             //Draw Body
-            SetSegmentPosition(AzzuriaBodyFrontSize);
-            for (int i = 0; i < BodySegments; i++)
+            SetSegmentPosition(AzzuriaBodyFrontSize, 1f + Body_Min_Scale);
+            for (int i = 0; i < Body_Segments; i++)
             {
-                SetSegmentPosition(AzzuriaBodyMiddleSize);
+                float scaleProgress = i / (float)Body_Segments;
+                SetSegmentPosition(AzzuriaBodyMiddleSize, (1f - scaleProgress) + Body_Min_Scale);
             }
 
-            SetSegmentPosition(AzzuriaBodyBackSize);
+            SetSegmentPosition(AzzuriaBodyBackSize, Body_Min_Scale);
             //Draw Tail
-            for (int i = 0; i < TailSegments; i++)
+            for (int i = 0; i < Tail_Segments; i++)
             {
-                SetSegmentPosition(AzzuriaTailFrontSize);
+                float scaleProgress = i / (float)Tail_Segments;
+                SetSegmentPosition(AzzuriaTailFrontSize, (1f - scaleProgress) + Tail_Min_Scale);
             }
-            SetSegmentPosition(AzzuriaTailBackSize);
+            SetSegmentPosition(AzzuriaTailBackSize, 0.2f);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -305,29 +403,18 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             return false;
         }
 
-        /*
-        public virtual string GlowTexturePath => Texture + "_Glow";
-        private Asset<Texture2D> _glowTexture;
-        public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+    
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Lighting.AddLight(NPC.Center, Color.LightSkyBlue.ToVector3() * 1.75f * Main.essScale);
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (NPC.spriteDirection == 1)
-            {
-                spriteEffects = SpriteEffects.FlipHorizontally;
-            }
-            Vector2 halfSize = new Vector2(GlowTexture.Width / 2, GlowTexture.Height / Main.npcFrameCount[NPC.type] / 2);
-            spriteBatch.Draw(
-                GlowTexture,
-                new Vector2(NPC.position.X - screenPos.X + (NPC.width / 2) - GlowTexture.Width * NPC.scale / 2f + halfSize.X * NPC.scale, NPC.position.Y - screenPos.Y + NPC.height - GlowTexture.Height * NPC.scale / Main.npcFrameCount[NPC.type] + 4f + halfSize.Y * NPC.scale + Main.NPCAddHeight(NPC) + NPC.gfxOffY),
-                NPC.frame,
-                Color.White,
-                NPC.rotation,
-                halfSize,
-                NPC.scale,
-                spriteEffects,
-            0);
-        }*/
+            Rectangle drawRectangle = AzzuriaWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
+            Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
+            Vector2 wingDrawOrigin = new Vector2(226, 190);
+
+            DrawSegmentGlow(spriteBatch, AzzuriaWingFront, AzzuriaWingSize, drawColor,
+                drawOrigin: wingDrawOrigin,
+                drawOffset: wingDrawOffset,
+                sourceRectangle: drawRectangle,
+                overrideIndex: WingDrawIndex);
+        }
     }
 }
