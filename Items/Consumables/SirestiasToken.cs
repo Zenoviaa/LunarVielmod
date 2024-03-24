@@ -22,7 +22,7 @@ namespace Stellamod.Items.Consumables
             Item.height = 28;
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.value = Item.sellPrice(1, 0, 0, 0);
-            Item.rare = ItemRarityID.Orange;
+     
         }
     }
 }

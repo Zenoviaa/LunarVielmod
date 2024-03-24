@@ -6090,3 +6090,8 @@ TomeofRaining: {
 	Tooltip: ""
 	DisplayName: Tome of Raining
 }
+
+SirestiasToken: {
+	Tooltip: ""
+	DisplayName: Sirestias Token
+}
