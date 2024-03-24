@@ -10,10 +10,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
+    //Use class swap item
     public class FireflyCannon : ClassSwapItem
     {
+        //Alternate class you want it to change to
         public override DamageClass AlternateClass => DamageClass.Magic;
 
+        //Defaults for the other class
         public override void SetClassSwappedDefaults()
         {
             //Do if(IsSwapped) if you want to check for the alternate class
