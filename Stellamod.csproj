@@ -322,6 +322,9 @@
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
+    <None Remove="NPCs\Bosses\Verlia\Projectiles\DeathVerlia.png" />
+    <None Remove="NPCs\Bosses\Verlia\VerliaDP.png" />
+    <None Remove="NPCs\Bosses\Verlia\VerliaSpawn.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\BlightShot.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\GoldBeam.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\GoldBeamWarn.png" />

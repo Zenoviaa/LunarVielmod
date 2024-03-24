@@ -2026,7 +2026,32 @@ namespace Stellamod.NPCs.Bosses.Verlia
             }
         }
 
-        public void ResetTimers()
+		public override void HitEffect(NPC.HitInfo hit)
+		{
+			if (NPC.life <= 0)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
+				var entitySource = NPC.GetSource_FromThis();
+				NPC.NewNPC(entitySource, (int)NPC.Center.X + 00, (int)NPC.Center.Y + 0, ModContent.NPCType<DeathVerlia>());
+				NPC.NewNPC(entitySource, (int)NPC.Center.X + 00, (int)NPC.Center.Y + 0, ModContent.NPCType<VerliaDP>());
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+			}
+			else
+			{
+				for (int k = 0; k < 2; k++)
+				{
+
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 1.2f);
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.IceTorch, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), 0.5f);
+				}
+			}
+		}
+
+		public void ResetTimers()
         {
             if (StellaMultiplayer.IsHost)
             {
