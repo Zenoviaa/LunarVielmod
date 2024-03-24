@@ -17,7 +17,7 @@ namespace Stellamod.Items
         {
             if (!IsSwapped)
             {
-                var line = new TooltipLine(Mod, "SirestiasTokenSwap", $"Can be changed to {AlternateClass.DisplayName}!");
+                var line = new TooltipLine(Mod, "SirestiasTokenSwap", $"Can be changed to{AlternateClass.DisplayName}!");
                 tooltips.Add(line);
             }
             else

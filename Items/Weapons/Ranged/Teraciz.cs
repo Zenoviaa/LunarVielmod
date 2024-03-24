@@ -12,19 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Teraciz : ModItem
+    public class Teraciz : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			/* Tooltip.SetDefault("Meatballs" +
-				"\nDo not be worried, this mushes reality into bit bits and then shoots it!" +
-				"\nYou can never miss :P"); */
-			// DisplayName.SetDefault("Teraciz");
+		public override DamageClass AlternateClass => DamageClass.Magic;
+        public override void SetClassSwappedDefaults()
+        {
+			Item.mana = 8;
+			Item.damage = 25;
+        }
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
-
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Item.width = 62;
 			Item.height = 32;

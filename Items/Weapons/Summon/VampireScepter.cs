@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -15,7 +17,6 @@ namespace Stellamod.Items.Weapons.Summon
 {
     public class VampirePlayer : ModPlayer
     {
-		public float rotation;
 		public bool lifesteal;
 		public bool isMagic;
         public override void ResetEffects()
@@ -24,27 +25,10 @@ namespace Stellamod.Items.Weapons.Summon
 			lifesteal = false;
         }
 
-        public override void PostUpdateBuffs()
-        {
-            base.PostUpdateBuffs();
-			if (lifesteal)
-			{
-				rotation+=2f;
-				float radius = 320;
-				int count = 64;
-				for (int i = 0; i < count; i++)
-				{
-					Vector2 position = Player.Center + new Vector2(radius, 0).RotatedBy(((i * MathHelper.PiOver2 / count) + rotation) * 4);
-					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(position, speed * 0, ParticleManager.NewInstance<Ink3>(), default(Color), Main.rand.NextFloat(0.2f, 0.8f));
-				}
-			}
-		}
-
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
-			if(lifesteal && proj.DamageType == DamageClass.Summon || (isMagic && proj.DamageType == DamageClass.Magic))
+			if(lifesteal && (!isMagic && proj.DamageType == DamageClass.Summon) || (isMagic && proj.DamageType == DamageClass.Magic))
             {
 				float distanceToTarget = Vector2.Distance(Player.position, target.position);
 				//10 tile radius
@@ -204,8 +188,11 @@ namespace Stellamod.Items.Weapons.Summon
 		}
     }
 
-	public class VampireTorchMinion : ModProjectile
+	public class VampireTorchMinion : ModProjectile,
+		IPixelPrimitiveDrawer
 	{
+		public Vector2[] CirclePos = new Vector2[48];
+		public const float Beam_Width = 8;
 		public override void SetStaticDefaults()
 		{
 			// Sets the amount of frames this minion has on its spritesheet
@@ -250,8 +237,9 @@ namespace Stellamod.Items.Weapons.Summon
 		}
 
 		private void Visuals()
-		{
-			DrawHelper.AnimateTopToBottom(Projectile, 5);
+        {
+            Player owner = Main.player[Projectile.owner];
+            DrawHelper.AnimateTopToBottom(Projectile, 5);
 			if (Main.rand.NextBool(12))
 			{
 				int count = 3;
@@ -261,7 +249,30 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 			}
 
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+            DrawHelper.DrawCircle(owner.Center, 320, CirclePos);
+            Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
 		}
-	}
+
+        public float WidthFunction(float completionRatio)
+        {
+            return Projectile.scale * Beam_Width;
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Red;
+        }
+
+        internal PrimitiveTrail BeamDrawer;
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+
+            TrailRegistry.LaserShader.UseColor(Color.Black);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
+
+            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
+            Main.spriteBatch.ExitShaderRegion();
+        }
+    }
 }
