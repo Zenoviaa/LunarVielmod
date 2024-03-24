@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
     public class HarmonicBlasphemy : ClassSwapItem
     {
-        public override DamageClass AlternateClass => throw new System.NotImplementedException();
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
         public override void SetStaticDefaults()
         {

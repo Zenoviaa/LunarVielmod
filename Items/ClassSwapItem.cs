@@ -90,9 +90,13 @@ namespace Stellamod.Items
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
-            IsSwapped = tag.GetBool("IsSwapped");
-            Item.DamageType = AlternateClass;
-            SetClassSwappedDefaults();
+            if (tag.ContainsKey("IsSwapped"))
+            {
+                IsSwapped = tag.GetBool("IsSwapped");
+                Item.DamageType = AlternateClass;
+                SetClassSwappedDefaults();
+            }
+
         }
 
         public override void NetSend(BinaryWriter writer)
