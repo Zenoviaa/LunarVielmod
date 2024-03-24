@@ -9,9 +9,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class Bongos : ModItem
+    internal class Bongos : ClassSwapItem
+    {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
+	//Defaults for the other class
+	public override void SetClassSwappedDefaults()
 	{
-		public override void SetStaticDefaults()
+		//Do if(IsSwapped) if you want to check for the alternate class
+		//Stats to have when in the other class
+		Item.damage = 50;
+		Item.knockBack = 12;
+	}
+	public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Star-Gilded Bongo");
 			// Tooltip.SetDefault("Bong bong boom :)");
