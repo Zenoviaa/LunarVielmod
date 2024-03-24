@@ -112,7 +112,8 @@ namespace Stellamod.NPCs.Town
 		public int counter;
 		public override void SetDefaults()
 		{
-			NPC.dontTakeDamageFromHostiles = true;           // Sets NPC to be a Town NPC
+			NPC.townNPC = true;
+			NPC.dontTakeDamageFromHostiles = true;   // Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 18;
 			NPC.height = 40;
