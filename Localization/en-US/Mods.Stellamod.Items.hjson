@@ -6092,6 +6092,9 @@ TomeofRaining: {
 }
 
 SirestiasToken: {
-	Tooltip: A token of graditude given from Sirestias after achieving her goals.
+	Tooltip: '''
+	A token of graditude given from Sirestias after achieving her goals.
+	Use at the cell converter with a badged weapon in hand to switch it's class!
+	'''
 	DisplayName: Sirestias Token
 }
