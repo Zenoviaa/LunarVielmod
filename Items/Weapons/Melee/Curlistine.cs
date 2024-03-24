@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Melee
     public class Curlistine : ClassSwapItem
     {
         //Alternate class you want it to change to
-        public override DamageClass AlternateClass => DamageClass.Throwing;
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
         //Defaults for the other class
         public override void SetClassSwappedDefaults()
