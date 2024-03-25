@@ -6,6 +6,7 @@ using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
+using Stellamod.NPCs.Event.Gintzearmy;
 using Stellamod.WorldG;
 using System;
 using Terraria;
@@ -56,8 +57,8 @@ namespace Stellamod.NPCs.Illuria
 		}
 		public override void SetDefaults()
 		{
-			NPC.width = 20; // The width of the npc's hitbox (in pixels)
-			NPC.height = 48; // The height of the npc's hitbox (in pixels)
+			NPC.width = 40; // The width of the npc's hitbox (in pixels)
+			NPC.height = 96; // The height of the npc's hitbox (in pixels)
 			NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
 			NPC.damage = 30; // The amount of damage that this npc deals
 			NPC.defense = 50; // The amount of defense that this npc has
@@ -80,7 +81,11 @@ namespace Stellamod.NPCs.Illuria
 
 			if (timer3 == 1)
 			{
-				
+				if (StellaMultiplayer.IsHost)
+				{
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
+				}
 			}
 			switch (State)
 			{
@@ -148,7 +153,6 @@ namespace Stellamod.NPCs.Illuria
 				case ActionState.Wait:
 					NPC.damage = 40;
 					counter++;
-					NPC.velocity.Y += 4f;
 
 					NPC.TargetClosest(true);
 
@@ -434,7 +438,7 @@ namespace Stellamod.NPCs.Illuria
 
 
 	
-			if (Main.player[NPC.target].Distance(NPC.Center) > 150f)
+			if (Main.player[NPC.target].Distance(NPC.Center) > 350f)
 			{
 				
 				if (timer >= 30)
@@ -456,20 +460,29 @@ namespace Stellamod.NPCs.Illuria
 			if (timer == 12)
 			{
 
+				Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+				float numberProjectiles = 1;
+				float rotation = MathHelper.ToRadians(30);
 
+				for (int i = 0; i < numberProjectiles; i++)
+				{
+					Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+					if (StellaMultiplayer.IsHost)
+					{
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<HoloBuster>(), 50, 1, Main.myPlayer, 0, 0);
+					}
+				}
 			}
 
 
 
-				if (Main.player[NPC.target].Distance(NPC.Center) > 350f)
-			{
-				
+			
 				if (timer >= 30)
 				{
 					State = ActionState.Call;
 					ResetTimers();
 				}
-			}
+			
 
 		}
 		public void ResetTimers()

@@ -353,6 +353,8 @@
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\RedLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="NPCs\Illuria\HoloBuster.png" />
+    <None Remove="NPCs\Illuria\HoloBuster_Glow.png" />
     <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />
