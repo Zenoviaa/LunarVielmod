@@ -143,6 +143,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         }
         public override void SetDefaults()
         {
+
             NPC.aiStyle = 0;
             NPC.width = 42;
             NPC.height = 42;

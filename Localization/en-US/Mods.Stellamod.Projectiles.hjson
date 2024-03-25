@@ -891,5 +891,11 @@ X3107Slash.DisplayName: X3107 Slash
 XX4160Shot.DisplayName: X X4160 Shot
 SupernovaChainFront.DisplayName: Supernova Chain Front
 SupernovaChainBack.DisplayName: Supernova Chain Back
-SupernovaChainFront.DisplayName: Supernova Chain Front
 SupernovaChainCircle.DisplayName: Supernova Chain Circle
+NovaBlast.DisplayName: Nova Blast
+NovaBomb.DisplayName: Nova Bomb
+NovaFlame.DisplayName: Nova Flame
+SupernovaBeam.DisplayName: Supernova Beam
+SupernovaExplosion.DisplayName: Supernova Explosion
+SupernovaExplosionSmall.DisplayName: Supernova Explosion Small
+SupernovaGodExplosion.DisplayName: Supernova God Explosion

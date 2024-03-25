@@ -10,6 +10,7 @@ using Terraria.Graphics.Shaders;
 using static Terraria.ModLoader.ModContent;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Dusts;
 
 namespace Stellamod.Projectiles.Magic
 {
@@ -55,12 +56,12 @@ namespace Stellamod.Projectiles.Magic
             }
 
             Projectile.spriteDirection = Projectile.direction;
-            Projectile.rotation += 0.08f;
+
 
 
 
             Projectile.velocity.Y += 0.1f;
-            Projectile.rotation = Main.rand.NextFloat(-0.2f, 0.2f);
+            Projectile.rotation += 0.1f;
             Projectile.spriteDirection = Projectile.direction;
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
@@ -86,7 +87,6 @@ namespace Stellamod.Projectiles.Magic
 
                 }
                 Spin = Main.rand.Next(0, 2);
-                Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
             }
             if (Projectile.ai[0] >= 30)
             {
@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Magic
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
             for (int i = 0; i < 2; i++)
             {
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, -2f, 0, default(Color), 1.5f);
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<GlowDust>(), 0f, -2f, 0, default(Color), 1.5f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                 Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -119,13 +119,13 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                 }
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 2f).noGravity = false;
+                Dust.NewDustPerfect(Projectile.Center, DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 0.7f).noGravity = true;
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 6; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
+                Dust.NewDustPerfect(Projectile.Center, DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 100, Color.Gray, 0.4f).noGravity = true;
             }
             for (int i = 0; i < 2; i++)
             {
@@ -152,7 +152,7 @@ namespace Stellamod.Projectiles.Magic
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.LightYellow, Color.Orange, completionRatio) * 0.7f;
+            return Color.Lerp(Color.LightYellow, Color.Orange, completionRatio) * 0.2f;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -160,7 +160,7 @@ namespace Stellamod.Projectiles.Magic
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail2);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
         }
@@ -171,7 +171,7 @@ namespace Stellamod.Projectiles.Magic
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (7 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.0f * Main.essScale);
+            Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.0f * Main.essScale);
         }
     }
 
