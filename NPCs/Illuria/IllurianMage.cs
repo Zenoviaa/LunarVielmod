@@ -75,25 +75,14 @@ namespace Stellamod.NPCs.Illuria
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			if (Main.rand.NextBool(2))
-			{
-				switch (Main.rand.Next(3))
-				{
-					case 0:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestpants>(), 1, 1, 1));
-						break;
-					case 1:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestplate>(), 1, 1, 1));
-						break;
-
-					case 2:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestmask>(), 1, 1, 1));
-						break;
-
-				}
-
-			}
 			
+
+			npcLoot.Add(ItemDropRule.OneFromOptions(2,
+			ModContent.ItemType<IllurianCrestpants>(),
+			ModContent.ItemType<IllurianCrestplate>(),
+			ModContent.ItemType<IllurianCrestmask>()
+			));
+
 		}
 		public override void AI()
 		{

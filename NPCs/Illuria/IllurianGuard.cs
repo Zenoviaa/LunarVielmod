@@ -66,26 +66,14 @@ namespace Stellamod.NPCs.Illuria
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			if (Main.rand.NextBool(3))
-			{
-				switch (Main.rand.Next(3))
-				{
-					case 0:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorChestplate>(), 1, 1, 1));
-						break;
-					case 1:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorGreaves>(), 1, 1, 1));
-						break;
-
-					case 2:
-						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorHelm>(), 1, 1, 1));
-						break;
-
-				}
-
-			}
-
+			
+			npcLoot.Add(ItemDropRule.OneFromOptions(3,
+			ModContent.ItemType<IllurianWarriorChestplate>(),
+			ModContent.ItemType<IllurianWarriorGreaves>(),
+			ModContent.ItemType<IllurianWarriorHelm>()
+			));
 		}
+	
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.15f;
