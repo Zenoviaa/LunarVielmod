@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Global
                 }
             }
 
-            else if (npc.type == NPCID.Plantera && !NPC.downedPlantBoss)
+            if (npc.type == NPCID.Plantera && !NPC.downedPlantBoss)
             {
                 string text = "The Lunar tree rumbles...";
                 Color color = Color.LightGreen;
@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Global
                 }
             }
 
-            else if(npc.type == NPCID.WallofFlesh && !Main.hardMode)
+            if(npc.type == NPCID.WallofFlesh && !Main.hardMode)
             {
                 string text = "The Abysm and Virulent stir...";
                 Color color = Color.Red;
@@ -57,7 +57,8 @@ namespace Stellamod.NPCs.Global
                     Main.NewText(text, color.R, color.G, color.B);
                 }
             } 
-            else if (npc.type == NPCID.EyeofCthulhu && !NPC.downedBoss1)
+           
+            if (npc.type == NPCID.EyeofCthulhu && !NPC.downedBoss1)
             {
                 string text = "Azurewrath's dreams alcadize the sky.";
                 if (Main.netMode == NetmodeID.Server)
@@ -71,7 +72,7 @@ namespace Stellamod.NPCs.Global
                 }
             }
 
-            else if (npc.type == ModContent.NPCType<Gothiviab>() && !DownedBossSystem.downedGothBoss)
+            if (npc.type == ModContent.NPCType<Gothiviab>() && !DownedBossSystem.downedGothBoss)
             {
                 string text = "The toxic reunion begins! Gothivia's love bleeds through.";
                 if (Main.netMode == NetmodeID.Server)
