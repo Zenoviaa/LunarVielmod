@@ -6701,6 +6701,9 @@ namespace Stellamod.WorldG
                         continue;
 
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, randomStructure, tileBlend);
+
+					//GUARDS!!!
+					IllurianGuardSpawnSystem.Add(Loc, randomStructure);
 					placed = true;
                     foreach (int chestIndex in ChestIndexs)
                     {
