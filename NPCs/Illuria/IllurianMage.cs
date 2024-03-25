@@ -134,17 +134,13 @@ namespace Stellamod.NPCs.Illuria
 				case ActionState.Call:
 					NPC.damage = 0;
 					counter++;
-					NPC.aiStyle = 3;
-					AIType = NPCID.SnowFlinx;
 					NPC.velocity.X *= 0;
-					Call();
+					BeforeAttack();
 					break;
 
 				case ActionState.Attack:
 					NPC.damage = 100;
 					counter++;
-					NPC.aiStyle = 3;
-					AIType = NPCID.SnowFlinx;
 					NPC.velocity.X *= 0;
 					Attack();
 					break;
@@ -247,7 +243,7 @@ namespace Stellamod.NPCs.Illuria
 
 				case ActionState.Call:
 					rect = new Rectangle(0, 14 * 96, 40, 1 * 96);
-					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 500, 6, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+					spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 500, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
 					break;
 			}
 			return false;
@@ -396,7 +392,7 @@ namespace Stellamod.NPCs.Illuria
 				dashDirection.Normalize();
 				dashDirection *= speed;
 				NPC.velocity = dashDirection;
-				NPC.direction = 2;
+				NPC.direction = 1;
 				NPC.velocity.Y += 4f;
 			}
 
@@ -415,7 +411,7 @@ namespace Stellamod.NPCs.Illuria
 				dashDirection.Normalize();
 				dashDirection *= speed;
 				NPC.velocity = dashDirection;
-				NPC.direction = 1;
+				NPC.direction = 2;
 				NPC.velocity.Y += 4f;
 
 			}
@@ -428,25 +424,6 @@ namespace Stellamod.NPCs.Illuria
 
 
 
-
-		}
-		public void Call()
-		{
-			timer++;
-
-			Player player = Main.player[NPC.target];
-
-
-	
-			if (Main.player[NPC.target].Distance(NPC.Center) > 350f)
-			{
-				
-				if (timer >= 30)
-				{
-					State = ActionState.Pace;
-					ResetTimers();
-				}
-			}
 
 		}
 
@@ -479,9 +456,18 @@ namespace Stellamod.NPCs.Illuria
 			
 				if (timer >= 30)
 				{
-					State = ActionState.Call;
+					switch (Main.rand.Next(2))
+					{
+					case 0:
+						State = ActionState.Pace;
+						break;
+					case 1:
+						State = ActionState.Paceopp;
+						break;
+
+					}
 					ResetTimers();
-				}
+			}
 			
 
 		}

@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Magic
         {
             alphaCounter += 0.04f;
             Projectile.rotation += 0.3f;
-            if (Main.rand.NextBool(20))
+            if (Main.rand.NextBool(40))
             {
                 for (int i = 0; i < 1; i++)
                 {
