@@ -12,16 +12,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class StarCall : ModItem
+    public class StarCall : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Starbomber");
-			/* Tooltip.SetDefault("Your summons will explode into big stary bits!" +
-				"\nTakes 2 slots to summon" +
-				"\nThey will act as temporary summons for big damage"); */
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+         
+        }
+
+        public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
@@ -47,7 +47,8 @@ namespace Stellamod.Items.Weapons.Summon
 		{
 			Lighting.AddLight(Item.position, 0.46f, .07f, .52f);
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
@@ -55,6 +56,10 @@ namespace Stellamod.Items.Weapons.Summon
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
+			if (IsSwapped)
+			{
+				projectile.DamageType = Item.DamageType;
+			}
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;

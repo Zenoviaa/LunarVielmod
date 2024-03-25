@@ -10,8 +10,20 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class SkyrageShasher : ModItem
+    public class SkyrageShasher : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 30;
+			Item.useAnimation = 25;
+			Item.useTime = 30;
+		}
 		public float ArrowCount = 0;
 		public override void SetStaticDefaults()
         {

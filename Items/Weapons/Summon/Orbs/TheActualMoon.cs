@@ -31,7 +31,7 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
         {
             Item.width = 32;
             Item.height = 48;
-            Item.damage = 62;
+            Item.damage = 56;
             Item.DamageType = DamageClass.Summon;
             Item.knockBack = 8;
             Item.useTime = 4;

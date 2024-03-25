@@ -29,6 +29,7 @@ using Terraria.Utilities;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Stellamod.Buffs;
+using Stellamod.Items.Accessories.Brooches;
 
 namespace Stellamod.NPCs.Town
 {
@@ -112,7 +113,8 @@ namespace Stellamod.NPCs.Town
 		public int counter;
 		public override void SetDefaults()
 		{
-			NPC.townNPC = true; // Sets NPC to be a Town NPC
+			NPC.townNPC = true;
+			NPC.dontTakeDamageFromHostiles = true;   // Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 18;
 			NPC.height = 40;
@@ -414,7 +416,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(7))
+					switch (Main.rand.Next(10))
 					{
 
 
@@ -462,6 +464,18 @@ namespace Stellamod.NPCs.Town
 
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceSkates, 1);
+							break;
+
+						case 8:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<TwilitTome>(), 1);
+							break;
+
+						case 9:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileBroochA>(), 1);
 							break;
 					}
 

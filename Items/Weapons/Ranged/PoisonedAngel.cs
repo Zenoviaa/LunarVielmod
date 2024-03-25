@@ -11,17 +11,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-	public class PoisonedAngel : ModItem
-	{
-		public override void SetStaticDefaults()
-		{
-			/* Tooltip.SetDefault("Let them burn in harmony!" +
-				"\nSimple weapon forged from Stellean bricks and the heat from plants of the morrow" +
-				"\nImpractical but very rewarding..."); */
-			// DisplayName.SetDefault("Violiar");
+	public class PoisonedAngel : ClassSwapItem
+    {
+        public override DamageClass AlternateClass => DamageClass.Throwing;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 
@@ -41,17 +34,9 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			};
 			tooltips.Add(line);
-
-
-
-
-
-
-
-
-
-
+			base.ModifyTooltips(tooltips);
 		}
+
 		public override void SetDefaults()
 		{
 			Item.width = 40;

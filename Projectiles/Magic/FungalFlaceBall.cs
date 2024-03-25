@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -78,11 +79,22 @@ namespace Stellamod.Projectiles.Magic
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<FungalFlaceCloud>(), 5, 1, Main.myPlayer, 0, 0);
             }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 14; i++)
+            {
+
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
+            }
             for (int i = 0; i < 2; i++)
             {
                 Projectile.timeLeft = 2;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-2, 2), Main.rand.Next(-2, 2), ModContent.ProjectileType<FungalFlaceCloudGreen>(), 5, 1, Main.myPlayer, 0, 0);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(-2, 2)).RotatedByRandom(19.0), 0, Color.DarkOliveGreen, 1f).noGravity = true;
             }
             for (int i = 0; i < 20; i++)
             {

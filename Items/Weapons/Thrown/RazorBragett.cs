@@ -1,21 +1,14 @@
-﻿
-using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Tech;
+﻿using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
-using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class RazorBragett : ModItem
+    public class RazorBragett : ClassSwapItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Boralius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-        }
+        public override DamageClass AlternateClass => DamageClass.Ranged;
 
         public override void SetDefaults()
         {

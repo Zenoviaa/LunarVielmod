@@ -18,8 +18,21 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class Nekomara : ModItem
+	public class Nekomara : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Ranged;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 80;
+			Item.useTime = 5;
+			Item.useAnimation = 100;
+			Item.knockBack = 5;
+		}
 		public override void SetStaticDefaults()
 		{
 
@@ -53,7 +66,7 @@ namespace Stellamod.Items.Weapons.Melee
 			tooltips.Add(line);
 
 
-
+			base.ModifyTooltips(tooltips);
 		}
 		public override void SetDefaults()
 		{

@@ -8,18 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-
-    public class Valtotude : ModItem
+    public class Valtotude : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Alcadiz String n Charm");
-			/* Tooltip.SetDefault("Your summons will target focused enemies" +
-				"\nSummons will manifest out of your string shield" +
-				"\nThey will act as temporary summons to give your other minions company!" +
-				"\nThe Charm above gives you 10+ Defense while active!"); */
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+			Item.damage = 21;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 20;
@@ -41,6 +39,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
 		}
+
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
 			Lighting.AddLight(Item.position, 0.46f, .07f, .52f);

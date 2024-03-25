@@ -7,8 +7,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class GladiatorSpear : ModItem
+    internal class GladiatorSpear : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 56;
+            Item.knockBack = 5;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Gladiator Spear");

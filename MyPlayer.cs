@@ -692,7 +692,8 @@ namespace Stellamod
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
@@ -804,11 +805,17 @@ namespace Stellamod
             {
                 SingularityFragment = true;
             }
-            else
+			else if (ZoneIlluria)
+			{
+				SingularityFragment = true;
+			}
+			else
             {
                 SingularityFragment = false;
             }
-            if (SingularityFragment)
+
+
+			if (SingularityFragment)
             {
                 if (Main.shimmerAlpha <= 1)
                 {
@@ -968,14 +975,7 @@ namespace Stellamod
 			
 
 				//Update Rain
-				Main.raining = true;
-
-				//That way, if it is already raining, it won't be overriden
-				//And if it is not raining, it'll just be permanent until you leave the biome
-				if (Main.rainTime <= 2)
-					Main.rainTime = 2;
-				Main.maxRaining = 0.8f;
-				Main.maxRain = 140;
+				
 			}
 
 				if (ZoneAcid　|| ZoneLab)
@@ -1751,10 +1751,10 @@ namespace Stellamod
 			
 
 
-			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAbyss || ZoneAurelus))
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAbyss || ZoneAurelus || ZoneIlluria))
 			{
 			
-				Main.windPhysicsStrength = 50;
+				
 
 
 				GoldenRingCooldown++;
@@ -2506,7 +2506,67 @@ namespace Stellamod
 					bool spawnOnPlayerLayer = true;
 					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
 					ForegroundHelper.AddItem(new Starstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
-				}	
+				}
+
+
+
+				int SnowFGChance = Snowstrike.SpawnChance(Player);
+				if (SnowFGChance != -1 && Main.rand.NextBool(SnowFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Snowstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
+			}
+
+
+			if (Main._shouldUseWindyDayMusic)
+			{
+				int leafFGChance = Cherryblossom.SpawnChance(Player);
+				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Cherryblossom(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
+
+
+
+				
+			}
+
+			if (Main.raining && (Player.ZoneForest || ZoneVillage))
+			{
+				int leafFGChance = Cherryblossom.SpawnChance(Player);
+				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Cherryblossom(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
+
+
+
+
+			}
+
+			if ((Player.ZoneDesert))
+			{
+				int leafFGChance = Sandstrike.SpawnChance(Player);
+				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
+				{
+					bool spawnForegroundItem = true;
+					bool spawnOnPlayerLayer = true;
+					Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
+					ForegroundHelper.AddItem(new Sandstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
+				}
+
+
+
+
 			}
 		}
 

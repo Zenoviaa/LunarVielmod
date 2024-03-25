@@ -915,7 +915,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 						switch (Main.rand.Next(2))
 						{
 							case 0:
-								State = ActionState.SpinAroundPlayerZui;
+								State = ActionState.SonicDashZui;
 								break;
 							case 1:
 								State = ActionState.SonicDashZui;//RunZui;

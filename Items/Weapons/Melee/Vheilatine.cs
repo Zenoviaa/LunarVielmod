@@ -13,8 +13,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Vheilatine : ModItem
+    public class Vheilatine : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 22;
+            Item.mana = 22;
+        }
         public int AttackCounter = 1;
         public int combowombo = 0;
 
@@ -38,7 +49,7 @@ namespace Stellamod.Items.Weapons.Melee
             };
             tooltips.Add(line);
 
-
+            base.ModifyTooltips(tooltips);
 
         }
         public override void SetDefaults()

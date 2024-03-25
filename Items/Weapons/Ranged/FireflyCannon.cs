@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Brooches;
-using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles;
@@ -13,8 +10,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class FireflyCannon : ModItem
+    //Use class swap item
+    public class FireflyCannon : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.mana = 8;
+        }
+
         public override void SetDefaults()
         {
             Item.damage = 54;
@@ -81,13 +90,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
 
         
-        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            Texture2D iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Weapons/Transformer/Summoner").Value;
-            Vector2 drawOrigin = new Vector2(8, 12);
-            Vector2 drawPosition = position + drawOrigin;
-            spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
-        }
+
 
         public override void AddRecipes()
         {
@@ -101,5 +104,7 @@ namespace Stellamod.Items.Weapons.Ranged
             recipe.AddIngredient(ItemID.Firefly, 3);
             recipe.Register();
         }
+
+
     }
 }

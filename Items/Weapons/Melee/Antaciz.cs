@@ -9,14 +9,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Antaciz : ModItem
+    public class Antaciz : ClassSwapItem
     {
-        public override void SetStaticDefaults()
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
         {
-            // Tooltip.SetDefault("Spinny Winny damage the binny");
-
+            Item.damage = 21;
         }
-
 
         public override void SetDefaults()
         {

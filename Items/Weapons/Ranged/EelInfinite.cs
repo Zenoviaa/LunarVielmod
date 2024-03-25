@@ -8,8 +8,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class EelInfinite : ModItem
+    internal class EelInfinite : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 64;
+            Item.mana = 4;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 114;

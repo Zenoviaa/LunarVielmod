@@ -10,12 +10,9 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class ComicalTrident : ModItem
+    public class ComicalTrident : ClassSwapItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("GreyBricks"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-        }
+        public override DamageClass AlternateClass => DamageClass.Melee;
 
         public override void SetDefaults()
         {

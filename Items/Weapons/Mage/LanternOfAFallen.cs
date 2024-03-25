@@ -8,8 +8,22 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class LanternOfAFallen : ModItem
+    internal class LanternOfAFallen : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Ranged;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 69;
+			Item.knockBack = 3;
+			Item.mana = 0;
+			Item.useTime = 45;
+			Item.useAnimation = 45;
+		}
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Pearlescent Ice Ball");

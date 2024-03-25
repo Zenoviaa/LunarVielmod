@@ -71,7 +71,7 @@ namespace Stellamod.Brooches
 			DrawHelper.AnimateTopToBottom(Projectile, 5);
 
 			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+			
 		}
 	}
 }

@@ -229,7 +229,6 @@ namespace Stellamod.Tiles
 			return true;
 		}
 
-
 		public override void MouseOverFar(int i, int j)
 		{
 			MouseOver(i, j);

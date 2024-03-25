@@ -45,7 +45,7 @@ namespace Stellamod.Helpers
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
             rectangle.Location = location;
-            if (!ignoreStructures &!structures.CanPlace(rectangle))
+            if (!ignoreStructures && !structures.CanPlace(rectangle))
                 return false;
             structures.AddProtectedStructure(rectangle);
             return true;

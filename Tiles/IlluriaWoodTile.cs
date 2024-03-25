@@ -21,7 +21,7 @@ namespace Stellamod.Tiles
             RegisterItemDrop(ModContent.ItemType<Items.Materials.IlluriaWoodBlock>());
             AddMapEntry(new Color(122, 40, 153));
             MineResist = 1f;
-            MinPick = 180;
+            MinPick = 211;
 
         }
 

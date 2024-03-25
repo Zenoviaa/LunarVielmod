@@ -9,8 +9,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Curlistine : ModItem
+    public class Curlistine : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 22;
+            Item.mana = 5;
+        }
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("Spinny Winny damage the binny");
@@ -33,7 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
 
 
 
-
+            base.ModifyTooltips(tooltips);
 
 
 

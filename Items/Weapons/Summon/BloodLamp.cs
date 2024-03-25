@@ -9,16 +9,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    internal class BloodLamp : ModItem
+    internal class BloodLamp : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Blood Lamp");
-			/* Tooltip.SetDefault("Enrages your summons by hitting enemies, shows a red mark on them!" +
-				"\nSummons a red explosion crystal that hurts foes" +
-			"\nEven makes a bloodthirst trail for the summon being empowered!"); */
-		}
-		public override void SetDefaults()
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetDefaults()
 		{
 			Item.damage = 4;
 			Item.mana = 15;
@@ -39,6 +34,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.crit = 15;
 			Item.value = 1200;
 		}
+
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			base.OnHitNPC(player, target, hit, damageDone);

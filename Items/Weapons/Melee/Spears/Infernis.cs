@@ -7,8 +7,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee.Spears
 {
-    internal class Infernis : ModItem
+    internal class Infernis : ClassSwapItem
     {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.damage = 60;
+            Item.knockBack = 12;
+            Item.mana = 5;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Infernis");
@@ -32,7 +44,6 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ModContent.ProjectileType<InfernisProj>();
             Item.shootSpeed = 20f;
-            Item.mana = 5;
             Item.useAnimation = 20;
             Item.useTime = 45;
             Item.consumeAmmoOnLastShotOnly = true;

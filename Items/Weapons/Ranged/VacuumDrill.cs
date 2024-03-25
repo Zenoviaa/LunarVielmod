@@ -1,28 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials.Tech;
-using Stellamod.NPCs.Catacombs.Trap.Sparn;
-using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Gun;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class VacuumDrill : ModItem
+    public class VacuumDrill : ClassSwapItem
     {
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Meatballs" +
-				"\nDo not be worried, this mushes reality into bit bits and then shoots it!" +
-				"\nYou can never miss :P"); */
-            // DisplayName.SetDefault("Teraciz");
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 28;
+            Item.mana = 8;
         }
 
         public override void SetDefaults()

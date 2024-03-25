@@ -19,6 +19,7 @@ namespace Stellamod.NPCs
         {
             // DisplayName.SetDefault("Cinder Bat");
         }
+       
 
         public override void FindFrame(int frameHeight)
         {

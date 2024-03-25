@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,6 +39,7 @@ namespace Stellamod.Projectiles.Magic
             Lighting.AddLight(Projectile.Center, 0.3f * num, 0.2f * num, 0.1f * num);
             Projectile.rotation = Projectile.velocity.X / 2f;
             return true;
+          
         }
         float alphaCounter;
 
@@ -49,6 +51,13 @@ namespace Stellamod.Projectiles.Magic
         {
             alphaCounter += 0.04f;
             Projectile.rotation += 0.3f;
+            if (Main.rand.NextBool(40))
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(-2, 2)).RotatedByRandom(19.0), 0, Color.Pink, 0.4f).noGravity = true;
+                }
+            }
         }
     }
 }

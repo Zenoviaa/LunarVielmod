@@ -17,9 +17,11 @@ namespace Stellamod.Gores.Foreground
         {
 
             if (Main.raining && p.Center.Y / 16f < Main.worldSurface)
-                return 20;
+                return 5;
             if (p.Center.Y / 16f > Main.worldSurface)
-                return 20;
+                return 5;
+            if (p.Center.Y / 16f < Main.worldSurface)
+                return 5;
             return -1;
         }
 

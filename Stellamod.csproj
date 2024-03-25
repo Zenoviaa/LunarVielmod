@@ -147,6 +147,9 @@
     <None Remove="Items\Placeable\Govheil\GothWall.png" />
     <None Remove="Items\Placeable\Govheil\GovheilHallI.png" />
     <None Remove="Items\Placeable\Govheil\GovheilWallsI.png" />
+    <None Remove="Items\Placeable\Illurian\IlluriaTreeBigI.png" />
+    <None Remove="Items\Placeable\Illurian\IlluriaTreeMedI.png" />
+    <None Remove="Items\Placeable\Illurian\IlluriaTreeSmallI.png" />
     <None Remove="Items\Placeable\Laboratory\GLabCrystal.png" />
     <None Remove="Items\Placeable\Laboratory\LabHall.png" />
     <None Remove="Items\Placeable\Manor\DrakonicCageI.png" />
@@ -328,6 +331,9 @@
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
+    <None Remove="NPCs\Bosses\Verlia\Projectiles\DeathVerlia.png" />
+    <None Remove="NPCs\Bosses\Verlia\VerliaDP.png" />
+    <None Remove="NPCs\Bosses\Verlia\VerliaSpawn.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\BlightShot.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\GoldBeam.png" />
     <None Remove="NPCs\Bosses\Zui\Projectiles\GoldBeamWarn.png" />
@@ -356,6 +362,8 @@
     <None Remove="NPCs\Harvesting\Morrow\OceanRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\RedLightBig.png" />
     <None Remove="NPCs\Harvesting\Virulent\HarvestIce.png" />
+    <None Remove="NPCs\Illuria\HoloBuster.png" />
+    <None Remove="NPCs\Illuria\HoloBuster_Glow.png" />
     <None Remove="NPCs\TestLaserNPC.png" />
     <None Remove="NPCs\Town\Merena_Head.png" />
     <None Remove="NPCs\Town\Merena_Party.png" />

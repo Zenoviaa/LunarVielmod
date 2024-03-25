@@ -9,14 +9,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-	public class BlossomingScissor : ModItem
+	public class BlossomingScissor : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Melee;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
 		{
-			// DisplayName.SetDefault("Frost Swing");
-			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
-			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.mana = 0;
+			Item.damage = 240;
 		}
+
 		public override void SetDefaults()
 		{
 			Item.damage = 210;
