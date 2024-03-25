@@ -27,6 +27,11 @@ namespace Stellamod.Helpers
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
+
+            //NOT UNTIL POST PLANT
+            if (!NPC.downedPlantBoss)
+                return;
+
             for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
