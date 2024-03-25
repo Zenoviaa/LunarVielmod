@@ -4377,6 +4377,7 @@ namespace Stellamod.WorldG
 										itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 										itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
 
+									
 										break;
 									case 4:
 										itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 10)));

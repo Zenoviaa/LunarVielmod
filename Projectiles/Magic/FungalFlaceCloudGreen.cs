@@ -52,9 +52,9 @@ namespace Stellamod.Projectiles.Magic
             Projectile.rotation += 0.3f;
             if (Main.rand.NextBool(20))
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 1; i++)
                 {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGreen, 0.4f).noGravity = true;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(-2, 2)).RotatedByRandom(19.0), 0, Color.DarkGreen, 0.4f).noGravity = true;
                 }
             }
         }

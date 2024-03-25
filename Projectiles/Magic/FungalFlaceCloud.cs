@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.Magic
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DeepPink, 0.4f).noGravity = true;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(-2, 2)).RotatedByRandom(19.0), 0, Color.HotPink, 0.4f).noGravity = true;
                 }
             }
         }
