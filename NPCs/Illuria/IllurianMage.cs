@@ -83,8 +83,8 @@ namespace Stellamod.NPCs.Illuria
 			{
 				if (StellaMultiplayer.IsHost)
 				{
-					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
-					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<IllurianGuard>());
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<IllurianGuard>());
 				}
 			}
 			switch (State)
