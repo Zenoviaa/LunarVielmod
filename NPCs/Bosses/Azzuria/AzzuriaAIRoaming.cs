@@ -7,7 +7,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
     internal partial class Azzuria
     {
         //Number of tiles to fly off
-        public const float Max_Roaming_Time = 30;
+        public const float Max_Roaming_Time = 7200;
 
         public float RoamingDirection = -1f;
         public float RoamingSpeed = 2;
