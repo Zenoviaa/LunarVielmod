@@ -37,8 +37,8 @@ namespace Stellamod.NPCs.Illuria
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
 		{
-			NPC.width = 46;
-			NPC.height = 50;
+			NPC.width = 40;
+			NPC.height = 56;
 			NPC.damage = 30;
 			NPC.defense = 50;
 			NPC.lifeMax = 1055;
