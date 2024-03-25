@@ -3556,12 +3556,12 @@ IgniterCardsMKII: {
 
 DesertRuneI: {
 	DisplayName: Ancient Artifact
-	Tooltip: Maybe a scientist can look at this?
+	Tooltip: Maybe Gia can look at this?
 }
 
 OverworldRuneI: {
 	DisplayName: Ancient Artifact
-	Tooltip: Maybe a scientist can look at this?
+	Tooltip: Maybe Gia can look at this?
 }
 
 ThrowingCardsMKII: {
@@ -3570,7 +3570,7 @@ ThrowingCardsMKII: {
 }
 
 JungleRuneI: {
-	Tooltip: Maybe a scientist can look at this?
+	Tooltip: Maybe Gia can look at this?
 	DisplayName: Ancient Artifact
 }
 
@@ -3858,7 +3858,7 @@ AlcadThrowingCards: {
 
 OceanRuneI: {
 	DisplayName: Ancient Artifact
-	Tooltip: A scientist may want to look at this..
+	Tooltip: Maybe Gia can look at this?
 }
 
 Starvast: {
@@ -5511,7 +5511,7 @@ ElectricCrystal: {
 
 SkyRuneI: {
 	DisplayName: Ancient Artifact
-	Tooltip: A scientist may want to look at this..
+	Tooltip: Maybe Gia can look at this?
 }
 
 EelInfinite: {
@@ -5838,7 +5838,7 @@ LuminullSpiritFragments: {
 }
 
 IceRuneI: {
-	Tooltip: Maybe a scientist can look at this?
+	Tooltip: Maybe Gia can look at this?
 	DisplayName: Ancient Artifact
 }
 
