@@ -45,9 +45,8 @@ namespace Stellamod.Items.Armors.Illurian
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "Allows you to walk on water and summons a magic lantern companion!";  // This is the setbonus tooltip
+			player.setBonus = "Allows you to walk on water";  // This is the setbonus tooltip
 			player.waterWalk = true;
-			player.magicLantern = true;
 
 
 
