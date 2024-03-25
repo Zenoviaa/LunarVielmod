@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Illuria;
 using Stellamod.NPCs.RoyalCapital;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Stellamod.Helpers
         //Possible guards here
         public static int[] PossibleGuards = new int[]
         {
-            NPCID.VoodooDemon
+            ModContent.NPCType<IllurianMage>()
         };
 
         public static Point WorshipingTower1TileOffset => new Point(31, -54);
