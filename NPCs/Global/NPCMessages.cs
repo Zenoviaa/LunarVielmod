@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
@@ -25,6 +27,22 @@ namespace Stellamod.NPCs.Global
                     Main.NewText(text, color.R, color.G, color.B);
                 }
             }
+
+            else if (npc.type == NPCID.Plantera && !NPC.downedPlantBoss)
+            {
+                string text = "The Lunar tree rumbles...";
+                Color color = Color.LightGreen;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetworkText nText = NetworkText.FromLiteral(text);
+                    ChatHelper.BroadcastChatMessage(nText, color);
+                }
+                else
+                {
+                    Main.NewText(text, color.R, color.G, color.B);
+                }
+            }
+
             else if(npc.type == NPCID.WallofFlesh && !Main.hardMode)
             {
                 string text = "The Abysm and Virulent stir...";
@@ -41,11 +59,25 @@ namespace Stellamod.NPCs.Global
             } 
             else if (npc.type == NPCID.EyeofCthulhu && !NPC.downedBoss1)
             {
-                string text = "The night sky alcadizes...";
+                string text = "Azurewrath's dreams alcadize the sky.";
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetworkText nText = NetworkText.FromLiteral(text);
                     ChatHelper.BroadcastChatMessage(nText, new Color(234, 96, 114));
+                }
+                else
+                {
+                    Main.NewText(text, 234, 96, 114);
+                }
+            }
+
+            else if (npc.type == ModContent.NPCType<Gothiviab>() && !DownedBossSystem.downedGothBoss)
+            {
+                string text = "The toxic reunion begins! Gothivia's love bleeds through.";
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetworkText nText = NetworkText.FromLiteral(text);
+                    ChatHelper.BroadcastChatMessage(nText, new Color(234, 296, 114));
                 }
                 else
                 {
