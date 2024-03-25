@@ -6148,3 +6148,18 @@ IllurianWarriorHelm: {
 	DisplayName: Illurian Warrior Helm
 	Tooltip: Azzuria loves to watch over the world with the Lunar tree huh? It's written on the back of this.
 }
+
+IllurineScale: {
+	DisplayName: Illurine Scale
+	Tooltip: Radiating with Azzuria's lunar energy!
+}
+
+PureHeart: {
+	DisplayName: Pure Heart
+	Tooltip:
+		'''
+		The heart of the guardian of the world!
+		It overflows with her love and cosmic power...
+		But, why did you kill her? :(
+		'''
+}
