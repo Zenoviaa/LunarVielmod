@@ -82,7 +82,9 @@ namespace Stellamod.Tiles.Illuria
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
 			DustType = dustType;
-			return true;
+
+			//Locked until post plant
+			return NPC.downedPlantBoss;
 		}
 
 		public static string MapChestName(string name, int i, int j)
@@ -178,6 +180,10 @@ namespace Stellamod.Tiles.Illuria
 						NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 					}
 				}
+				else
+				{
+                    CombatText.NewText(player.getRect(), Color.LightSkyBlue, "Locked by an Overgrown plant...", true, false);
+                }
 
 				return true;
             }

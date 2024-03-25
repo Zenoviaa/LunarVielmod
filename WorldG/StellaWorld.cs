@@ -6723,6 +6723,15 @@ namespace Stellamod.WorldG
                                 Tuple.Create((int)ItemID.Boomstick, 0.5)
                                 );
                             itemsToAdd.Add((specialItem, 1));
+
+							switch (Main.rand.Next(1))
+							{
+								case 0:
+                                    itemsToAdd.Add((ModContent.ItemType<IllurineScale>(), Main.rand.Next(2, 5)));
+                                    itemsToAdd.Add((ItemID.LifeFruit, Main.rand.Next(1, 3)));
+                                    itemsToAdd.Add((ItemID.Ectoplasm, Main.rand.Next(2, 5)));
+                                    break;
+							}
                         }
                         else
                         {
@@ -6741,12 +6750,12 @@ namespace Stellamod.WorldG
                                 case 0:
                                     itemsToAdd.Add((ModContent.ItemType<FlowerBatch>(), Main.rand.Next(1, 3)));
                                     itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(2, 5)));
-                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(1, 3)));
+                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
                                     break;
                                 case 1:
                                     itemsToAdd.Add((ItemID.Vine, Main.rand.Next(1, 3)));
                                     itemsToAdd.Add((ItemID.JungleSpores, Main.rand.Next(2, 5)));
-                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(1, 3)));
+                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
                                     break;
                                 case 2:
                                     itemsToAdd.Add((ModContent.ItemType<FlowerBatch>(), Main.rand.Next(1, 1)));
@@ -6756,7 +6765,7 @@ namespace Stellamod.WorldG
                                     itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
                                     break;
                                 case 3:
-                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(1, 3)));
+                                    itemsToAdd.Add((ItemID.Stinger, Main.rand.Next(3, 7)));
                                     itemsToAdd.Add((ItemID.RecallPotion, Main.rand.Next(1, 3)));
                                     itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
                                     itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));

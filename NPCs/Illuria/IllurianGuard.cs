@@ -72,6 +72,7 @@ namespace Stellamod.NPCs.Illuria
 			ModContent.ItemType<IllurianWarriorGreaves>(),
 			ModContent.ItemType<IllurianWarriorHelm>()
 			));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurineScale>(), minimumDropped: 1, maximumDropped: 2));
 		}
 	
 		public override void FindFrame(int frameHeight)

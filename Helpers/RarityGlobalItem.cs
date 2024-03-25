@@ -22,6 +22,11 @@ namespace Stellamod.Helpers
                     SirestiasSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
+                if(item.rare == ModContent.RarityType<AzzuriaSpecialRarity>())
+                {
+                    AzzuriaSpecialRarity.DrawCustomTooltipLine(line);
+                    return false;
+                }
             }
             if(line.Name == "SirestiasTokenSwap" && item.ModItem is ClassSwapItem)
             {
