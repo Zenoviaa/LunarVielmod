@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
 using Stellamod.Dusts;
+using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -63,6 +64,28 @@ namespace Stellamod.NPCs.Illuria
 
 		}
 
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			if (Main.rand.NextBool(3))
+			{
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorChestplate>(), 1, 1, 1));
+						break;
+					case 1:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorGreaves>(), 1, 1, 1));
+						break;
+
+					case 2:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianWarriorHelm>(), 1, 1, 1));
+						break;
+
+				}
+
+			}
+
+		}
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter += 0.15f;

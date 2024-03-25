@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
@@ -70,6 +71,29 @@ namespace Stellamod.NPCs.Illuria
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
 
+		}
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			if (Main.rand.NextBool(2))
+			{
+				switch (Main.rand.Next(3))
+				{
+					case 0:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestpants>(), 1, 1, 1));
+						break;
+					case 1:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestplate>(), 1, 1, 1));
+						break;
+
+					case 2:
+						npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurianCrestmask>(), 1, 1, 1));
+						break;
+
+				}
+
+			}
+			
 		}
 		public override void AI()
 		{
@@ -478,11 +502,7 @@ namespace Stellamod.NPCs.Illuria
 			frameCounter = 0;
 			frameTick = 0;
 		}
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 0, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
-		}
+		
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
