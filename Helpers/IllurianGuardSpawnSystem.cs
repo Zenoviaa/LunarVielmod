@@ -12,12 +12,6 @@ namespace Stellamod.Helpers
 {
     internal class IllurianGuardSpawnSystem : ModSystem
     {
-        //Possible guards here
-        public static int[] PossibleGuards = new int[]
-        {
-            ModContent.NPCType<IllurianMage>()
-        };
-
         public static Point WorshipingTower1TileOffset => new Point(31, -54);
         public static Point WorshipingTower2TileOffset => new Point(24, -58);
         public static Point WorshipingTower3TileOffset => new Point(34, -44);
@@ -53,8 +47,8 @@ namespace Stellamod.Helpers
 
                     if(distanceToPlayer <= maxDistanceAway && !HasActiveGuard[tilePlacedOn])
                     {
-                        int npcToSpawn = PossibleGuards[Main.rand.Next(0, PossibleGuards.Length)];
-                        int npcIndex = NPC.NewNPC(player.GetSource_FromThis(), (int)tileWorld.X, (int)tileWorld.Y, npcToSpawn);
+                        int npcIndex = NPC.NewNPC(player.GetSource_FromThis(), (int)tileWorld.X, (int)tileWorld.Y,
+                            ModContent.NPCType<IllurianMage>());
                         NetMessage.SendData(MessageID.SyncNPC);
                         HasActiveGuard[tilePlacedOn] = true;
                     }
