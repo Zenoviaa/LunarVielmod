@@ -6104,3 +6104,46 @@ IlluriaChesti: {
 	DisplayName: Illuria Chesti
 	Tooltip: ""
 }
+
+IllurianWarriorGreaves: {
+	Tooltip: Greaves of someone who may of shit their pants.
+	DisplayName: Illurian Warrior Greaves
+}
+
+IllurianWarriorChestplate: {
+	Tooltip: Extremely defensive!
+	DisplayName: Illurian Warrior Chestplate
+}
+
+IllurianCrestplate: {
+	Tooltip: '''
+		+3 Minions and +50 mana
+		-50 Health
+		'''
+	DisplayName: Illurian Crestplate
+}
+
+IllurianCrestpants: {
+	Tooltip: '''
+		+1 Minion and 10% increased movement speed!
+		20% more damage and +15 Armor penetration
+		-40 Health
+		'''
+	DisplayName: Illurian Crestpants
+}
+
+IllurianCrestmask: {
+	Tooltip: '''
+		12% Magic and Summon damage!
+		10% Crit hit!
+		A very dissapointed Azzuria.
+		'''
+	DisplayName: Illurian Crestmask
+}
+
+IllurianWarriorHelm: {
+	DisplayName: Illurian Warrior Helm
+	Tooltip: '''
+		Azzuria loves to watch over the world with the Lunar tree huh? It's written on the back of this.
+		'''
+}
