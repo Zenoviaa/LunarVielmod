@@ -94,7 +94,13 @@ namespace Stellamod.NPCs.Illuria
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-		public override void AI()
+        public override bool CheckActive()
+        {
+			//Returning false here makes them not despawn
+			return false;
+        }
+
+        public override void AI()
 		{
 			NPC.TargetClosest(true);
 

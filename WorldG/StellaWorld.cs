@@ -3780,6 +3780,7 @@ namespace Stellamod.WorldG
 					structures.AddProtectedStructure(rectangle);
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Illuria");
 					structures.AddProtectedStructure(rectangle);
+					NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
