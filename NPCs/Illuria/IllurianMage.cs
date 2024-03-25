@@ -502,7 +502,11 @@ namespace Stellamod.NPCs.Illuria
 			frameCounter = 0;
 			frameTick = 0;
 		}
-		
+		public override bool CheckActive()
+		{
+			//Returning false here makes them not despawn
+			return false;
+		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
