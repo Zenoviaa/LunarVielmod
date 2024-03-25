@@ -89,6 +89,23 @@ namespace Stellamod.NPCs.Illuria
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BlueMoss, NPC.direction, -1f, 1, default, .61f);
 
 
+				for (int i = 0; i < 8; i++)
+				{
+					Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;
+				}
+				for (int i = 0; i < 4; i++)
+				{
+					Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.AliceBlue, 0.5f).noGravity = true;
+				}
+
+				if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 150f)
+				{
+					// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
+					
+						
+					
+				}
+
 				invisibilityTimer = 0;
 			}
 
@@ -140,21 +157,7 @@ namespace Stellamod.NPCs.Illuria
 		{
 			timer++;
 
-			if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 150f)
-			{
-				// Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
-				if (timer == 50)
-				{
-					for (int i = 0; i < 8; i++)
-					{
-						Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;
-					}
-					for (int i = 0; i < 4; i++)
-					{
-						Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.AliceBlue, 0.5f).noGravity = true;
-					}
-				}
-			}
+			
 
 				if (timer > 50)
 				{
