@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Illuria
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			
-			npcLoot.Add(ItemDropRule.OneFromOptions(3,
+			npcLoot.Add(ItemDropRule.OneFromOptions(2,
 			ModContent.ItemType<IllurianWarriorChestplate>(),
 			ModContent.ItemType<IllurianWarriorGreaves>(),
 			ModContent.ItemType<IllurianWarriorHelm>()

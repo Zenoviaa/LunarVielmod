@@ -77,7 +77,7 @@ namespace Stellamod.NPCs.Illuria
 		{
 			
 
-			npcLoot.Add(ItemDropRule.OneFromOptions(2,
+			npcLoot.Add(ItemDropRule.OneFromOptions(1,
 			ModContent.ItemType<IllurianCrestpants>(),
 			ModContent.ItemType<IllurianCrestplate>(),
 			ModContent.ItemType<IllurianCrestmask>()
