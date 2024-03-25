@@ -128,7 +128,9 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
             //Draw Body Back
             DrawSegment(spriteBatch, AzzuriaBodyBack, AzzuriaBodyBackSize, drawColor, Body_Min_Scale);
-            Vector2 wingDrawOrigin = new Vector2(226, 190);
+            Vector2 rightWingDrawOrigin = new Vector2(226, 190);
+            Vector2 flippedWingDrawOrigin = new Vector2(110, 190);
+            Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
 
             WingDrawIndex = _segmentIndex - Body_Segments - 1;
             Rectangle drawRectangle = AzzuriaWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
