@@ -6646,7 +6646,7 @@ namespace Stellamod.WorldG
 			};
 
 
-			int numberToPlace = Main.rand.Next(9, 13);
+			int numberToPlace = Main.rand.Next(10, 17);
 			int attempts = 0;
 			int maxAttempts = 100000;
 			for(int k = 0; k < numberToPlace; k++)
