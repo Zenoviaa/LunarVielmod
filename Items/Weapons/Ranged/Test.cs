@@ -2,6 +2,7 @@
 using Stellamod.Buffs;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
+using Stellamod.Projectiles;
 using Stellamod.Projectiles.Chains;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -44,8 +45,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<SupernovaChainFront>();
-			Item.shootSpeed = 0.01f;
+			Item.shoot = ModContent.ProjectileType<StarTestProj>();
+			Item.shootSpeed = 1f;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -54,19 +55,5 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-			for(int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if(Vector2.Distance(player.Center, npc.Center) <= 128)
-				{
-                    npc.AddBuff(ModContent.BuffType<SupernovaChained>(), 300);
-                }
-		
-			}
-			return false;
-        }
     }
 }

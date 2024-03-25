@@ -6151,10 +6151,7 @@ IllurianWarriorHelm: {
 
 IllurineScale: {
 	DisplayName: Illurine Scale
-	Tooltip:
-		'''
-		Radiating with Azzuria's lunar energy!
-		'''
+	Tooltip: Radiating with Azzuria's lunar energy!
 }
 
 PureHeart: {

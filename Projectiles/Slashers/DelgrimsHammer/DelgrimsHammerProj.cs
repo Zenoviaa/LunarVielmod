@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
+using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
 using System;
 using System.IO;
@@ -176,7 +180,23 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
             Player player = Main.player[Projectile.owner];
             Vector2 oldMouseWorld = Main.MouseWorld;
 
-            if(BounceTimer <= 0)
+            for(int i = 0; i < 8; i++)
+            {
+                //Get a random velocity
+                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+
+                //Get a random
+                float randScale = Main.rand.NextFloat(0.5f, 1.5f);
+                ParticleManager.NewParticle<StarParticle2>(target.Center, velocity, Color.DarkGoldenrod, randScale);
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 1f).noGravity = true;
+            }
+
+
+            if (BounceTimer <= 0)
             {
                 player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
                 BounceTimer = 10 * Swing_Speed_Multiplier;
