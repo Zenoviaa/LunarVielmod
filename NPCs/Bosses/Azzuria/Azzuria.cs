@@ -10,7 +10,28 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 {
     internal partial class Azzuria : ModNPC
     {
+        public enum ActionState
+        {
+            Roaming,
+            Obliterate,
+            Sleeping,
+            BossFight
+        }
 
+        public ActionState State
+        {
+            get
+            {
+                return (ActionState)NPC.ai[0];
+            }
+            set
+            {
+                NPC.ai[0] = (float)value;
+            }
+        }
+
+        ref float Timer => ref NPC.ai[1];
+        ref float AttackTimer => ref NPC.ai[2];
 
         public override void SetStaticDefaults()
         {
@@ -72,8 +93,21 @@ namespace Stellamod.NPCs.Bosses.Azzuria
         public override void AI()
         {
             NPC.TargetClosest();
-            UpdateOrientation();
-            LookAtTarget();
+            switch (State)
+            {
+                case ActionState.Roaming:
+                    AIRoaming();
+                    break;
+                case ActionState.Obliterate:
+                    AIObliterate();
+                    break;
+                case ActionState.Sleeping:
+                    AISleeping();
+                    break;
+                case ActionState.BossFight:
+                    AIBossFight();
+                    break; 
+            }
         }
     }
 }

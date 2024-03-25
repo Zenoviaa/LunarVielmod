@@ -71,7 +71,15 @@ namespace Stellamod.NPCs.Illuria
 			NPC.noTileCollide = false;
 
 		}
-		public override void AI()
+
+
+        public override bool CheckActive()
+        {
+            //Returning false here makes them not despawn
+            return false;
+        }
+
+        public override void AI()
 		{
 
 
