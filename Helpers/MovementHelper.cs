@@ -11,5 +11,14 @@ namespace Stellamod.Helpers
             Vector2 rotatedPos = offsetPos.RotatedBy(radians, center);
             return rotatedPos;
         }
+
+        public static Vector2 HomingVelocity(Vector2 currentVelocity, Vector2 targetPosition, float homingFactor)
+        {
+            homingFactor = MathHelper.Clamp(homingFactor, 0, 1);
+            Vector2 directionToTargetPosition = (targetPosition - currentVelocity).SafeNormalize(Vector2.Zero);
+            float targetRot = directionToTargetPosition.ToRotation();
+            currentVelocity = currentVelocity.RotatedBy(targetRot * homingFactor);
+            return currentVelocity;
+        }
     }
 }

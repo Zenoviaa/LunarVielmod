@@ -11,37 +11,23 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
     public class VoidBolt : ModProjectile
     {
-        private int _particleCounter;
-        private int _dustCounter;
-        private float _projSpeed = 0;
-        private float _maxProjSpeed;
-
-        //AI Values
-        //Visuals
-        private const float Max_Proj_Speed_Min = 3;
-        private const float Max_Proj_Speed_Max = 4;
         private const int Body_Radius = 4;
-        private const int Body_Particle_Count = 1;
         private const int Kill_Particle_Count = 16;
         private const int Explosion_Particle_Count = 8;
 
-        //Lower number = faster
-        private const int Body_Particle_Rate = 1;
-        private const int Body_Dust_Rate = 9;
+        ref float Timer => ref Projectile.ai[0];
 
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public override void SetDefaults()
         {
-            base.SetDefaults();
             Projectile.width = 52;
             Projectile.height = 38;
-            Projectile.tileCollide = false;
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.timeLeft = 300;
@@ -49,35 +35,8 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void AI()
         {
-            if (_maxProjSpeed == 0)
-            {
-                _maxProjSpeed = Main.rand.NextFloat(Max_Proj_Speed_Min, Max_Proj_Speed_Max);
-            }
-
-            //Movement Code
-            //Wanna just home into enemies and then explode or something
-            //On second thought, maybe have ai similar to charging type minions like optic staff
-            //hmmm
-            Player playerToHomeTo = Main.player[Main.myPlayer];
-            float closestDistance = Vector2.Distance(Projectile.position, playerToHomeTo.position);
-            for (int i = 0; i < Main.maxPlayers; i++)
-            {
-                Player player = Main.player[i];
-                float distanceToPlayer = Vector2.Distance(Projectile.position, player.position);
-                if(distanceToPlayer < closestDistance)
-                {
-                    closestDistance = distanceToPlayer;
-                    playerToHomeTo = player;
-                }
-            }
-
-            _projSpeed += 0.25f;
-            if (_projSpeed > _maxProjSpeed)
-            {
-                _projSpeed = _maxProjSpeed;
-            }
-
-            Projectile.velocity = (playerToHomeTo.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _projSpeed;
+            Timer++;
+            Projectile.velocity *= 1.01f;
             Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
         }
@@ -99,35 +58,27 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         private void Visuals()
         {
-            _particleCounter++;
-            if (_particleCounter > Body_Particle_Rate)
+            if (Timer % 8 == 0)
             {
                 //Main Body
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = Projectile.Center + 
-                        new Vector2(Main.rand.Next(0, Body_Radius), Main.rand.Next(0, Body_Radius));
-                    float size = Main.rand.NextFloat(0.75f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), size);
+                Vector2 position = Projectile.Center +
+                     new Vector2(Main.rand.Next(0, Body_Radius), Main.rand.Next(0, Body_Radius));
+                float size = Main.rand.NextFloat(0.75f, 1f);
+                Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
+                    default(Color), size);
 
-                    p.layer = Particle.Layer.BeforeProjectiles;
-                    Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.025f);
+                p.layer = Particle.Layer.BeforeProjectiles;
+                Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
+                    default(Color), size + 0.025f);
 
-                    tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
-
-                _particleCounter = 0;
+                tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
             }
 
-            _dustCounter++;
-            if(_dustCounter > Body_Dust_Rate)
+            if(Timer % 16 == 0)
             {
                 Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
                 Dust dust = Dust.NewDustPerfect(position, DustID.GemAmethyst, Scale: Main.rand.NextFloat(0.5f, 3f));
                 dust.noGravity = true;
-                _dustCounter = 0;
             }
 
             Projectile.scale = VectorHelper.Osc(0.9f, 1f, 5f);
@@ -142,7 +93,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             for (int i = 0; i < Explosion_Particle_Count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
+                ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
                     default(Color), Main.rand.NextFloat(0.9f, 1.33f));
             }
 

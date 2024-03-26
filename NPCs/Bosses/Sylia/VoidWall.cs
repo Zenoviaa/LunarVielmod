@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
     {
         private int _particleCounter = 0;
         private int _tooFarCounter = 0;
-        private float _projSpeed = 5.5f;
+        private float _projSpeed = 3.5f;
         private bool _tooFar;
         private bool _spawned;
 

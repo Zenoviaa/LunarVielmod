@@ -8,18 +8,15 @@ namespace Stellamod.Projectiles.Swords
 {
     public class RipperSlashProjSmall : ModProjectile
     {
-        public float VEL = 1;
-        public bool randomRotation = true;
         public override void SetStaticDefaults()
         {
-
             Main.projFrames[Projectile.type] = 7;
         }
         public override void SetDefaults()
         {
             Projectile.width = 192;
             Projectile.height = 192;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.penetrate = 110;
             Projectile.timeLeft = 900;
@@ -36,12 +33,12 @@ namespace Stellamod.Projectiles.Swords
 
             if (Projectile.ai[0] <= 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2"), Projectile.position);
-                if (randomRotation)
-                    Projectile.rotation = Main.rand.Next(0, 360);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash2");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            Projectile.spriteDirection = Projectile.direction;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 2)
             {
@@ -71,5 +68,9 @@ namespace Stellamod.Projectiles.Swords
         {
         }
 
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
     }
 }

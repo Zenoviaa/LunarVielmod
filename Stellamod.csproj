@@ -319,6 +319,7 @@
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidVortex.png" />
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEater.png" />
     <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
+    <None Remove="NPCs\Bosses\Sylia\SyliaMagicCircle.png" />
     <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
     <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />

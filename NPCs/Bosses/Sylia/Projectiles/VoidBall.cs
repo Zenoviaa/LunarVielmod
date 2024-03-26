@@ -26,6 +26,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         private const int Body_Particle_Rate = 1;
         private const int Body_Dust_Rate = 9;
 
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;

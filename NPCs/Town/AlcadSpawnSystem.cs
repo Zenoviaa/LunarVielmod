@@ -103,7 +103,7 @@ namespace Stellamod.NPCs.Town
                             ModContent.NPCType<Zui>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(), 
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 

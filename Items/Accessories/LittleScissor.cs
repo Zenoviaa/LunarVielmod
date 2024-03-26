@@ -112,8 +112,6 @@ namespace Stellamod.Items.Accessories
 
 				xSlashPart1.timeLeft = 1500;
 				xSlashPart2.timeLeft = 1500;
-				(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
-				(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;
 				xSlashPart2.rotation = MathHelper.ToRadians(90);
 
 				//Actual Attack Here

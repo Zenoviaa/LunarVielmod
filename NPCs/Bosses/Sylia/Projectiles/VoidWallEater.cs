@@ -32,7 +32,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -66,7 +66,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio);
+            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio) * 0.5f;
         }
 
         //Visual Stuffs

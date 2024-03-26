@@ -33,19 +33,6 @@ namespace Stellamod.Items.Armors.Miracle
             player.whipRangeMultiplier += 0.2f;
         }
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.Robe, 1)
-                .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
-                .AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
-                .AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
-
-
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             DrawHelper.DrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);

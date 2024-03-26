@@ -1,22 +1,24 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ParticleLibrary;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Particles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using ParticleLibrary;
+using Stellamod.Particles;
+using Terraria.Audio;
+using Stellamod.Projectiles.Swords;
 
 namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 {
-    public class VoidHorizontalRift : ModProjectile
+    internal class XScissorRift : ModProjectile
     {
-        private int _particleCounter;
-        private const int Body_Particle_Count = 4;
-
-        //Lower number = faster
-        private const int Body_Particle_Rate = 2;
+        ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 30;
@@ -28,10 +30,10 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Projectile.width = 150;
             Projectile.height = 40;
             Projectile.tileCollide = false;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 180;
 
             //Local NPC hit time so it doesn't interfere with other piercing weps
             Projectile.usesLocalNPCImmunity = true;
@@ -40,6 +42,11 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if(Timer < 58)
+            {
+                return false;
+            }
+
             //Draw The Body
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                 new Vector3(60, 0, 118),
@@ -90,62 +97,64 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             return base.PreDraw(ref lightColor);
         }
 
+
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            if (Main.rand.NextBool(50))
+            Timer++;
+            if(Timer == 1)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<VoidDrip>(), 30, 1, Projectile.owner);
+                //Spawn Telegraph Particle
+                Particle p = ParticleManager.NewParticle<RipperSlashTelegraphParticle>(Projectile.Center, Vector2.Zero, Color.White, 1f);
+                p.rotation = Projectile.velocity.ToRotation();
+
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle);
             }
 
+            if(Timer == 58)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, 
+                    Projectile.velocity, ModContent.ProjectileType<RipperSlashProjBig>(), 0, 0, Projectile.owner);
+            }
+
+            Projectile.rotation = Projectile.velocity.ToRotation();
             Visuals();
         }
 
         public override bool ShouldUpdatePosition()
         {
+            //Returning false here makes velocity not change the position
             return false;
+        }
+
+        public override bool? CanDamage()
+        {
+            return Timer > 58;
         }
 
         private void Visuals()
         {
-            _particleCounter++;
-            if (_particleCounter > Body_Particle_Rate)
+            if (Timer % 8 == 0)
             {
                 float radius = 64;
-                for (int i = 0; i < Body_Particle_Count; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(radius / 2, radius / 2);
                     Particle p = ParticleManager.NewParticle(position, new Vector2(0, -2f), ParticleManager.NewInstance<VoidParticle>(),
                         default(Color), Main.rand.NextFloat(0.1f, 0.2f));
                     p.layer = Particle.Layer.BeforeProjectiles;
                 }
-                _particleCounter = 0;
             }
 
             float scaleOut = 20;
-            if(Projectile.timeLeft < scaleOut)
+            if (Projectile.timeLeft < scaleOut)
             {
                 Projectile.scale = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / scaleOut);
             }
 
             DrawHelper.AnimateTopToBottom(Projectile, 3);
             Lighting.AddLight(Projectile.Center, Color.Pink.ToVector3() * 0.28f);
-        }
-
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 32; i++)
-            {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);
-                Particle p = ParticleManager.NewParticle(Projectile.Center, speed, ParticleManager.NewInstance<VoidParticle>(),
-                    default(Color), 1 / 3f);
-                p.layer = Particle.Layer.BeforeProjectiles;
-            }
-
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose");
-            soundStyle.PitchVariance = 0.5f;
-            SoundEngine.PlaySound(soundStyle);
         }
     }
 }

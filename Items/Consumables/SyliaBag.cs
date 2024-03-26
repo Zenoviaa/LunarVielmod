@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Wings;
+using Stellamod.Items.Armors.Miracle;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent;
@@ -26,7 +27,7 @@ namespace Stellamod.Items.Consumables
             Item.width = 36; // The item texture's width
             Item.height = 34; // The item texture's height
             Item.rare = ItemRarityID.Expert;
-            Item.maxStack = 9999; // The item's max stack value
+            Item.maxStack = Item.CommonMaxStack; // The item's max stack value
             Item.consumable = true;
             Item.expert = true;
         }
@@ -40,9 +41,13 @@ namespace Stellamod.Items.Consumables
         {
             base.ModifyItemLoot(itemLoot);
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<LittleScissor>(), 1));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SewingKit>(), 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleThread>(), minimumDropped: 30, maximumDropped: 40));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SewingKit>(), chanceDenominator: 4));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiracleWings>(), chanceDenominator: 4));
+            
+            IItemDropRule armorRule = ItemDropRule.Common(ModContent.ItemType<MiracleHead>(), chanceDenominator: 4);
+            armorRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MiracleBody>(), 1));
+            itemLoot.Add(armorRule);
         }
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
