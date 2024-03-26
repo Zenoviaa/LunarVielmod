@@ -57,7 +57,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ParticleManager.NewParticle<VoidParticle>(pos, vel, Color.White, 1f);
                     if (i % 2 == 0)
                     {
-                        Dust.NewDustPerfect(pos, DustID.GemAmethyst, vel);
+                        Dust d = Dust.NewDustPerfect(pos, DustID.GemAmethyst, vel);
+                        d.noGravity = true;
                     }
                 }
             }
