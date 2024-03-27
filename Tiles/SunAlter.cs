@@ -83,45 +83,28 @@ namespace Stellamod.Tiles
         {
             Player player = Main.LocalPlayer;
             int key = ModContent.ItemType<SunClaw>();
-            if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()))
+            if (!player.HasItem(key))
+            {
+                Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
+                return true;
+            }
+
+            if (!NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()) && 
+                !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()))
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        Main.NewText("Sun Stalker has awoken!", Color.Gold);
-                        int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
-                        Main.npc[npcID].netUpdate2 = true;
-                    }
-                    else
-                    {
-                        if (Main.netMode == NetmodeID.SinglePlayer)
-                            return false;
-
-                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<SunStalkerPreSpawn>(), i * 16, (j * 16) - 5);
-                    }
-
-                    if (!player.HasItem(key))
-                    {
-                        Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
-                    }
+                    Main.NewText("Sun Stalker has awoken!", Color.Gold);
+                    int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
+                    Main.npc[npcID].netUpdate2 = true;
                 }
                 else
                 {
                     if (Main.netMode == NetmodeID.SinglePlayer)
                         return false;
 
-                    if (player.HasItem(ModContent.ItemType<SunClaw>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalker>()) && !NPC.AnyNPCs(ModContent.NPCType<SunStalkerPreSpawn>()))
-                    {
-                        Main.NewText("Sun Stalker has awoken!", Color.Gold);
-                        int npcID = NPC.NewNPC(new Terraria.DataStructures.EntitySource_TileUpdate(i, j), i * 16 + Main.rand.Next(-10, 10), j * 16, ModContent.NPCType<SunStalkerPreSpawn>(), 0, 0, 0, 0, 0, Main.myPlayer);
-                        Main.npc[npcID].netUpdate = true;
-                    }
-
-                    if (!player.HasItem(ModContent.ItemType<SunClaw>()))
-                    {
-                        Main.NewText("Come back with a Sun Stone to fight the warrior of the desert.", Color.Gold);
-                    }
+                    StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, 
+                        ModContent.NPCType<SunStalkerPreSpawn>(), i * 16, (j * 16) - 5);
                 }
 
                 return true;
