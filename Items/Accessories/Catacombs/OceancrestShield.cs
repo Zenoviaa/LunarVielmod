@@ -52,7 +52,7 @@ namespace Stellamod.Items.Accessories.Catacombs
            
                 _cooldown = cooldownInTicks;
                 modifiers.FinalDamage *= 0f;
-                SoundEngine.PlaySound(SoundID.NPCDeath58);
+                SoundEngine.PlaySound(SoundID.NPCDeath58, Player.position);
 
                 int count = 48;
                 float degreesPer = 360 / (float)count;

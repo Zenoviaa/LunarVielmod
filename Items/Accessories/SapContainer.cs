@@ -15,13 +15,8 @@ namespace Stellamod.Items.Accessories
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Sap Container");
-			/* Tooltip.SetDefault("Every 10 seconds eat stardew and MAJORLY increase your magic damage" +
-				"\n+7% Magic damage..."); */
-
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
-		public float Timer2;
 
 		public override void SetDefaults()
 		{
@@ -43,22 +38,12 @@ namespace Stellamod.Items.Accessories
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-
-			Timer2++;
-
-			
-			player.GetDamage(DamageClass.Magic) *= 1.07f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Magic) += 0.07f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().ArcaneM = true;
 			player.GetModPlayer<MyPlayer>().ArcaneMCooldown++;
-		
-
-
 		}
-
-
-
-
 	}
 }

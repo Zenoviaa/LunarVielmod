@@ -58,7 +58,7 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             ShakeModSystem.Shake = 10;
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<CombusterExplosionProj1>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 

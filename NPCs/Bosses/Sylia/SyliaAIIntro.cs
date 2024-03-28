@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                 SoundStyle soundStyle = SoundID.Item100;
                 soundStyle.Pitch = -0.75f;
                 soundStyle.PitchVariance = 0.15f;
-                SoundEngine.PlaySound(soundStyle);
+                SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
             if(Timer == 300)

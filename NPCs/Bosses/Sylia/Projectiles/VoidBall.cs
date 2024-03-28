@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             }
 
             //REPLACE SOUND AT SOME POINT
-            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact);
+            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
             for (int i = 0; i < Explosion_Particle_Count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);

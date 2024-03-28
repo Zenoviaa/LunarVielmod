@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.Stone
 		public override void UpdateEquip(Player player)
 		{
 		
-			player.GetDamage(DamageClass.Generic) *= 1.02f;
+			player.GetDamage(DamageClass.Generic) += 0.02f;
 			player.maxFallSpeed *= 3;
 		}
 

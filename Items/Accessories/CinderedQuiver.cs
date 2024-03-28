@@ -22,7 +22,7 @@ namespace Stellamod.Items.Accessories
         {
             if (type == ProjectileID.WoodenArrowFriendly && hasQuiver)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordThrow"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordThrow"), position);
                 type = ProjectileID.HellfireArrow;
                 damage += 7;
                 velocity *= 2f;

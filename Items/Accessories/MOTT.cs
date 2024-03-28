@@ -28,7 +28,7 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().TAuraSpawn = true;
-			player.GetDamage(DamageClass.Ranged) *= 1.05f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Ranged) += 0.05f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().TAuraCooldown--;
 		}
 	}

@@ -6,6 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.Fenix.Projectiles;
@@ -20,6 +21,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.NPCs.Bosses.Fenix
 {
@@ -115,15 +117,14 @@ namespace Stellamod.NPCs.Bosses.Fenix
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 12));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 100, 500));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 2, 3));
 			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<FenixBag>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<FenixBossRel>()));
 
-	
-			//notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LittleScissor>(), 1));
-			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LittleScissor>(), 1));
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Angelenthal>(), chanceDenominator: 15));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Yumiko>(), chanceDenominator: 2));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Nekomara>(), chanceDenominator: 1));

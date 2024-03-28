@@ -138,7 +138,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     _tooFarCounter++;
                     if (_tooFarCounter > 30)
                     {
-                        SoundEngine.PlaySound(SoundID.Roar);
+                        SoundEngine.PlaySound(SoundID.Roar, NPC.position);
                         _tooFar = true;
                     }
                 }
@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if(ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Vomit);
                     }
 
@@ -287,7 +287,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Blast);
                     }
                     break;
@@ -311,7 +311,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                             }
                         }
 
-                        SoundEngine.PlaySound(SoundID.NPCDeath12);
+                        SoundEngine.PlaySound(SoundID.NPCDeath12, NPC.position);
                     }
 
                     if(ai_Counter >= 150)
@@ -327,7 +327,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Laser);
                     }
                     break;
@@ -341,7 +341,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.Item117);
+                        SoundEngine.PlaySound(SoundID.Item117, NPC.position);
                         SwitchState(AttackState.Void_Suck);
                     }
                     break;

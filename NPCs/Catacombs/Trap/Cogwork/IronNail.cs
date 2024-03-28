@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
                 ModContent.ProjectileType<IronNailLodged>(), Projectile.damage, 1, Projectile.owner);
 
             //Effects
-            SoundEngine.PlaySound(SoundID.Dig);
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             for (int i = 0; i < 64; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(2f, 2f);

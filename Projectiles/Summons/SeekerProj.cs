@@ -117,7 +117,7 @@ namespace Stellamod.Projectiles.Summons
 						d.noGravity = true;
 					}
 					ShakeModSystem.Shake = 3;
-					SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
+					SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.position);
 					Projectile.Kill();
 					
 
@@ -145,7 +145,7 @@ namespace Stellamod.Projectiles.Summons
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y , speedXb, speedYb, ModContent.ProjectileType<Coinspa>(), Projectile.damage / 2, 0f, Projectile.owner, 0f, 0f);
 					}
 					ShakeModSystem.Shake = 3;
-					SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact);
+					SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, Projectile.position);
 					Projectile.Kill();
 					
 
@@ -162,7 +162,7 @@ namespace Stellamod.Projectiles.Summons
 					}
 					ShakeModSystem.Shake = 3;
 					Projectile.Kill();
-					SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse);
+					SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse,  Projectile.position);
 
 
 					break;
@@ -180,7 +180,7 @@ namespace Stellamod.Projectiles.Summons
 						d.noGravity = true;
 					}
 					ShakeModSystem.Shake = 3;
-					SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot);
+					SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
 					Projectile.Kill();
 			
 
@@ -217,7 +217,7 @@ namespace Stellamod.Projectiles.Summons
 						}
 					}
 
-					SoundEngine.PlaySound(SoundID.DD2_DrakinShot);
+					SoundEngine.PlaySound(SoundID.DD2_DrakinShot, Projectile.position);
 					ShakeModSystem.Shake = 3;
 
 					Projectile.Kill();
@@ -258,7 +258,7 @@ namespace Stellamod.Projectiles.Summons
 					target.AddBuff(BuffID.OnFire, 100);
 					target.AddBuff(BuffID.Confused, 100);
 					target.AddBuff(BuffID.Frostburn2, 100);
-					SoundEngine.PlaySound(SoundID.Shatter);
+					SoundEngine.PlaySound(SoundID.Shatter, Projectile.position);
 					Projectile.Kill();
 				
 

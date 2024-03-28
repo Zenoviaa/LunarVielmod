@@ -159,7 +159,7 @@ namespace Stellamod.Tiles.Structures
 			Main.npcChatText = "";
 			if (Main.editChest)
 			{
-				SoundEngine.PlaySound(SoundID.MenuTick);
+				SoundEngine.PlaySound(SoundID.MenuTick, player.position);
 				Main.editChest = false;
 				Main.npcChatText = string.Empty;
 			}
@@ -205,7 +205,7 @@ namespace Stellamod.Tiles.Structures
 					{
 						player.chest = -1;
 						Recipe.FindRecipes();
-						SoundEngine.PlaySound(SoundID.MenuClose);
+						SoundEngine.PlaySound(SoundID.MenuClose, player.position);
 					}
 					else
 					{
@@ -223,7 +223,7 @@ namespace Stellamod.Tiles.Structures
 						if (chest == player.chest)
 						{
 							player.chest = -1;
-							SoundEngine.PlaySound(SoundID.MenuClose);
+							SoundEngine.PlaySound(SoundID.MenuClose, player.position);
 						}
 						else
 						{

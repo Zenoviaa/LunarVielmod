@@ -94,7 +94,7 @@ namespace Stellamod.NPCs.Underground
                 AI_Timer++;
                 if (AI_Timer == 60)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+                    SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, NPC.position);
                 }
                 else if (AI_Timer > 60 && AI_Timer < 120)
                 {
@@ -123,7 +123,7 @@ namespace Stellamod.NPCs.Underground
                                 ModContent.ProjectileType<InfusedSlimeBolt>(), 42, 1, Owner: Main.myPlayer);
                     }
 
-                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, NPC.position);
                     AI_Timer = 0;
                 }
             } 

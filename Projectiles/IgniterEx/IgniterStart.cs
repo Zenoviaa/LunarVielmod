@@ -585,7 +585,7 @@ namespace Stellamod.Projectiles.IgniterEx
 						Vector2 velocity = npc.velocity;
 						if (npc.active && npc.HasBuff<EXPtime>())
 						{
-							SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+							SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 							Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
 							Projectile.scale = 1.5f;
 							ShakeModSystem.Shake = 7;

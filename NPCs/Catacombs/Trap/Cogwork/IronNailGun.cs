@@ -122,7 +122,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
             if (ai_Counter > 24)
             {
                 Vector2 velocity = NPC.Center.DirectionTo(player.Center) * 7;
-                SoundEngine.PlaySound(SoundID.Item108);
+                SoundEngine.PlaySound(SoundID.Item108, NPC.position);
 
                 int count = 48;
                 for (int k = 0; k < count; k++)

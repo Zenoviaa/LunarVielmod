@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose");
             soundStyle.PitchVariance = 0.5f;
-            SoundEngine.PlaySound(soundStyle);
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }

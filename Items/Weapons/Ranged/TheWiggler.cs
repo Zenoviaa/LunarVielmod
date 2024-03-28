@@ -81,7 +81,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
 
             SoundStyle soundStyle = new SoundStyle(soundPath) with { PitchVariance = 0.1f };
-            SoundEngine.PlaySound(soundStyle);
+            SoundEngine.PlaySound(soundStyle, position);
 
             //Dust Burst Towards Mouse
             int count = 4;

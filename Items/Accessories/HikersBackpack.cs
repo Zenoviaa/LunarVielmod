@@ -43,7 +43,7 @@ namespace Stellamod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<MyPlayer>().HikersBSpawn = true;
-			player.GetDamage(DamageClass.Generic) *= 1.03f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic) += 0.03f; // Increase ALL player damage by 100%
 			player.GetModPlayer<MyPlayer>().HikersBCooldown--;
 			player.lifeRegen += 1;
 

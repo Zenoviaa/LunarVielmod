@@ -65,7 +65,7 @@ namespace Stellamod.Projectiles.Thrown
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(0, -120), Vector2.Zero,
                 ModContent.ProjectileType<ScatterBoom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
             for (int i = 0; i < Main.rand.Next(3, 7); i++)
             {

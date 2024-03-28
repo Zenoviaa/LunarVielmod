@@ -86,7 +86,7 @@ namespace Stellamod.Projectiles
             player.Teleport(teleportPos);
             NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPos.X, teleportPos.Y, 1);
 
-            SoundEngine.PlaySound(SoundID.Item115);
+            SoundEngine.PlaySound(SoundID.Item115, Projectile.position);
             Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
                 ModContent.ProjectileType<KaBoomMagic2>(), 0, 1, player.whoAmI);
         }

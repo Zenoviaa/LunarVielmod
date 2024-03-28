@@ -150,7 +150,7 @@ namespace Stellamod.Projectiles.Whips
 			//Idk if this is the correct way to do it, but it should work?
 			target.active = false;
 			target.position = Vector2.Zero;
-			SoundEngine.PlaySound(SoundID.Item171);	
+			SoundEngine.PlaySound(SoundID.Item171, Projectile.position);	
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.

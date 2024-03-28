@@ -20,8 +20,8 @@ namespace Stellamod.Items.Accessories.Catacombs
 
         private void BlockVisuals()
         {
-            SoundEngine.PlaySound(SoundID.NPCHit42);
-            SoundEngine.PlaySound(SoundID.Item45);
+            SoundEngine.PlaySound(SoundID.NPCHit42, Player.position);
+            SoundEngine.PlaySound(SoundID.Item45, Player.position);
 
             int combatText = CombatText.NewText(Player.getRect(), Color.OrangeRed, "Resisted!", true);
             CombatText numText = Main.combatText[combatText];

@@ -109,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlashTelegraph");
                 soundStyle.PitchVariance = 0.15f;
-                SoundEngine.PlaySound(soundStyle);
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
             if(Timer == 58)

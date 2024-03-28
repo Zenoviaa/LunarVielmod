@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite);
+				SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Projectile.position);
 			}
 
 			if (Timer == 50)
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.5f, speedY, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2f , speedY * 0.5f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1.1f, speedY * 1.2f, ModContent.ProjectileType<GardenWreckerBullet>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
-				SoundEngine.PlaySound(SoundID.DD2_GoblinBomb);
+				SoundEngine.PlaySound(SoundID.DD2_GoblinBomb, Projectile.position);
 				ShakeModSystem.Shake = 4;
 
 

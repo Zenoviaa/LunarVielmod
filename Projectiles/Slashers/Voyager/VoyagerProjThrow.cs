@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-                SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
+                SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
                 Projectile.Kill();
             }
 
@@ -118,7 +118,7 @@ namespace Stellamod.Projectiles.Slashers.Voyager
             ShakeModSystem.Shake = 5;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, 
                 ModContent.ProjectileType<AlcaricMushBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
+            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
         }
     }
 }

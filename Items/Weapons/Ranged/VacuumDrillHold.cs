@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Timer++;
             if (Timer > 15)
             {
-                SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+                SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, Projectile.position);
                 Timer = 0;
             }
 

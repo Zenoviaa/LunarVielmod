@@ -53,9 +53,9 @@ namespace Stellamod.Items.Accessories
                     }
 
                     Dust.QuickDustLine(Player.Center, target.Center, 100f, Color.Red);
-                    SoundEngine.PlaySound(SoundID.NPCHit18);
+                    SoundEngine.PlaySound(SoundID.NPCHit18, target.Center);
 
-                    SoundEngine.PlaySound(SoundID.Item171);
+                    SoundEngine.PlaySound(SoundID.Item171, target.Center);
                     int projectilSpawnCount = Main.rand.Next(2, 5);
                     for (int d = 0; d < projectilSpawnCount; d++)
                     {

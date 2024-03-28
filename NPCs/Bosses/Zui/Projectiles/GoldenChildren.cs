@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
         {
             //Electrifying!!!! nEMIES!!!
             target.AddBuff(BuffID.Electrified, 120);
-            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, target.position);
 
             for (int i = 0; i < 8; i++)
             {

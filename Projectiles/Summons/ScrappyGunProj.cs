@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles.Summons
                     Vector2 velocity = Projectile.rotation.ToRotationVector2();
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                         ModContent.ProjectileType<ScrappyGunLaser>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: Projectile.whoAmI);
-                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.position);
                 }
             
                 float targetRotation = Projectile.DirectionTo(targetCenter).ToRotation();

@@ -38,8 +38,8 @@ namespace Stellamod.Items.Armors.Verl
 		public override void UpdateEquip(Player player)
 		{
 
-			player.GetDamage(DamageClass.Ranged) *= 1.07f;
-			player.GetDamage(DamageClass.Magic) *= 1.07f;
+			player.GetDamage(DamageClass.Ranged) += 0.07f;
+			player.GetDamage(DamageClass.Magic) += 0.07f;
 			player.statLifeMax2 += 40;
 			player.moveSpeed += 0.1f;
 			player.maxRunSpeed += 0.1f;

@@ -21,7 +21,7 @@ namespace Stellamod.Items.Accessories
         {
             if (type == ProjectileID.WoodenArrowFriendly && hasQuiver)
             {
-                SoundEngine.PlaySound(SoundID.Item1);
+                SoundEngine.PlaySound(SoundID.Item1, Player.position);
                 type = ProjectileID.ThrowingKnife;
                 damage += 6;
                 velocity *= 2f;

@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles
                 float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AivanKaboom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 Projectile.Kill();
             }
 
@@ -120,7 +120,7 @@ namespace Stellamod.Projectiles
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<AivanKaboom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             Projectile.Kill();
         }
     }

@@ -57,7 +57,7 @@ namespace Stellamod.Projectiles
                 d.noGravity = true;
             }
 
-            SoundEngine.PlaySound(SoundID.Dig);   
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);   
         }
 
         public override bool PreDraw(ref Color lightColor)

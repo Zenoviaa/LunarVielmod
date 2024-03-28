@@ -24,8 +24,6 @@ namespace Stellamod.Buffs.Charms
 			player.wellFed = true;
 			player.statManaMax2 += 10; // Increase how many mana points the player can have by 20
 			player.statLifeMax2 += 10;
-			Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.SolarFlare, Vector2.Zero);
-			
 		}
 	}
 }

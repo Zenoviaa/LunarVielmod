@@ -69,7 +69,6 @@ namespace Stellamod.Items.Consumables
 
 			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Fenix>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 4, maximumDropped: 55));
-			itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<FenixBossRel>()));
 		}
 
 		// Below is code for the visuals

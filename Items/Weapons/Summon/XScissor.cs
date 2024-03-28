@@ -159,7 +159,7 @@ namespace Stellamod.Items.Weapons.Summon
 						}
 
 						//Firing Sound :P
-						SoundEngine.PlaySound(SoundID.Item73);
+						SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
 						_counter = 0;
 					}
 					break;

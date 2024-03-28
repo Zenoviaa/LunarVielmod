@@ -18,7 +18,7 @@ namespace Stellamod.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.lifeRegen = 4;
-            player.moveSpeed += 0.2f;
+            player.moveSpeed += 0.1f;
         }
     }
 }

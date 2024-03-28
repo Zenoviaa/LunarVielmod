@@ -18,8 +18,7 @@ namespace Stellamod.Buffs.Charms
 		{
 			player.statDefense += 2;
 			player.arrowDamage += 0.25f;
-
-			player.GetDamage(DamageClass.Ranged) *= 1.1f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Ranged) += 0.1f; // Increase ALL player damage by 100%
 		}
 	}
 }

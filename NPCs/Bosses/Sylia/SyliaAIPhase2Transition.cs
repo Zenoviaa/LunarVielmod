@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
             {
                 //Void Wall Spawn Here
                 NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y + 128, ModContent.NPCType<VoidWall>());
-                SoundEngine.PlaySound(SoundID.NPCDeath62);
+                SoundEngine.PlaySound(SoundID.NPCDeath62, NPC.position);
                 ShakeModSystem.Shake = 0;
                 Phase = ActionPhase.Phase_2;
                 ResetAI();

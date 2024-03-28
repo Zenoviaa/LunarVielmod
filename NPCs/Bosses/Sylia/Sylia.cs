@@ -277,7 +277,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     p.layer = Particle.Layer.BeforeProjectiles;
                 }
 
-                SoundEngine.PlaySound(SoundID.Item165);
+                SoundEngine.PlaySound(SoundID.Item165, NPC.position);
             }
         }
 

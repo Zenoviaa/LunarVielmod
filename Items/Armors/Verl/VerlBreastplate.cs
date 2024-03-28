@@ -40,8 +40,8 @@ namespace Stellamod.Items.Armors.Verl
 		{
 
 			player.GetArmorPenetration(DamageClass.Generic) += 12f; ;
-			player.GetDamage(DamageClass.Ranged) *= 1.1f;
-			player.GetDamage(DamageClass.Magic) *= 1.1f;
+			player.GetDamage(DamageClass.Ranged) += 0.1f;
+			player.GetDamage(DamageClass.Magic) += 0.1f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
 			player.statLifeMax2 += 20;
 

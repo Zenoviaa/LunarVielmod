@@ -34,7 +34,7 @@ namespace Stellamod.Items.Armors.Stone
 		public override void UpdateEquip(Player player)
 		{
 			player.GetArmorPenetration(DamageClass.Generic) += 5f; ;
-			player.GetDamage(DamageClass.Generic) *= 1.03f;
+			player.GetDamage(DamageClass.Generic) += 0.03f;
 			player.GetCritChance(DamageClass.Generic) += 5f;
 		}
 

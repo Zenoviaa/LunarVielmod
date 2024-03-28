@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Dig);
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             int p = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
             Main.projectile[p].scale = 0.5f;

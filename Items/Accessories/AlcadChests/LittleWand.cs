@@ -46,11 +46,11 @@ namespace Stellamod.Items.Accessories.AlcadChests
             ShakeModSystem.Shake = 5;
             if (Main.rand.NextBool(4))
             {
-                Bad(player);
+                CastMagic(player);
             }
             else
             {
-                CastMagic(player);
+                Bad(player);
             }
 
             return true;
@@ -68,7 +68,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                             ProjectileID.Typhoon, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
-                    SoundEngine.PlaySound(SoundID.Item84);
+                    SoundEngine.PlaySound(SoundID.Item84, player.position);
                     break;
                 case 1:
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
@@ -78,7 +78,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                             ProjectileID.InfernoFriendlyBolt, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
-                    SoundEngine.PlaySound(SoundID.Item73);
+                    SoundEngine.PlaySound(SoundID.Item73, player.position);
                     break;
                 case 2:
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
@@ -88,7 +88,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                             ProjectileID.LostSoulFriendly, 200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
-                    SoundEngine.PlaySound(SoundID.Item43);
+                    SoundEngine.PlaySound(SoundID.Item43, player.position);
                     break;
                 case 3:
                     for (int i = 0; i < Main.rand.Next(4, 7); i++)
@@ -99,11 +99,11 @@ namespace Stellamod.Items.Accessories.AlcadChests
                             200, 1, player.whoAmI);
                         Main.projectile[p].timeLeft = 600;
                     }
-                    SoundEngine.PlaySound(SoundID.Item82);
+                    SoundEngine.PlaySound(SoundID.Item82, player.position);
                     break;
                 case 4:
                     player.statLife = player.statLifeMax;
-                    SoundEngine.PlaySound(SoundID.Item3);
+                    SoundEngine.PlaySound(SoundID.Item3, player.position);
                     break;
             }
         }
@@ -118,7 +118,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
                     player.AddBuff(BuffID.OnFire3, 1000);
                     player.AddBuff(BuffID.Frostburn2, 1000);
                     player.AddBuff(BuffID.Daybreak, 1000);
-                    SoundEngine.PlaySound(SoundID.PlayerHit);
+                    SoundEngine.PlaySound(SoundID.PlayerHit, player.position);
                     break;
                 case 1:
                     int[] bad = new int[] {
@@ -136,21 +136,30 @@ namespace Stellamod.Items.Accessories.AlcadChests
                         NPC.NewNPC(player.GetSource_FromThis(), (int)spawn.X, (int)spawn.Y, npcType);
                     }
 
-                    SoundEngine.PlaySound(SoundID.Roar);
+                    SoundEngine.PlaySound(SoundID.Roar, player.position);
                     break;
 
                 case 2:
                     player.statLife = 1;
-                    SoundEngine.PlaySound(SoundID.PlayerKilled);
+                    SoundEngine.PlaySound(SoundID.PlayerKilled, player.position);
                     break;
 
                 case 3:
-                    int offsetX = Main.rand.Next(-10, 10) * 2;
-                    int offsetY = Main.rand.Next(-500, 500) - 1700;
-                    Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f, 
-                        ModContent.ProjectileType<AuroreanStarbomber>(), 0, 1, player.whoAmI);
-                    Main.NewText("Aurorean Stars are... wait, what?", 234, 96, 114);
-                    SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    if (Main.rand.NextBool(5))
+                    {
+                        int offsetX = Main.rand.Next(-10, 10) * 2;
+                        int offsetY = Main.rand.Next(-500, 500) - 1700;
+                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f,
+                            ModContent.ProjectileType<AuroreanStarbomber>(), 0, 1, player.whoAmI);
+                        Main.NewText("Aurorean Stars are... wait, what?", 234, 96, 114);
+                        SoundEngine.PlaySound(SoundID.AchievementComplete, player.position);
+                    }
+                    else
+                    {
+                        player.statLife = 1;
+                        SoundEngine.PlaySound(SoundID.PlayerKilled, player.position);
+                    }
+          
                     break;
             }
         }

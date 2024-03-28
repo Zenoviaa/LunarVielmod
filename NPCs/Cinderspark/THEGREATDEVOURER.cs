@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Cinderspark
                 Vector2 direction = NPC.Center.DirectionTo(target.Center);
                 if(ai_Counter == chaseTicks)
                 {
-                    SoundEngine.PlaySound(SoundID.Item20);
+                    SoundEngine.PlaySound(SoundID.Item20, NPC.position);
                 }
 
                 if (ai_Counter == attackTicks)
@@ -73,7 +73,7 @@ namespace Stellamod.NPCs.Cinderspark
                     Vector2 targetVelocity = direction * speed;
                     NPC.velocity += targetVelocity;
 
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.position);
                     for (int i = 0; i < 16; i++)
                     {
                         Vector2 dustSpeed = Main.rand.NextVector2CircularEdge(8f, 8f);
