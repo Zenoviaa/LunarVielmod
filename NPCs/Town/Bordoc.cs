@@ -113,40 +113,12 @@ namespace Stellamod.NPCs.Town
 			NPC.frame.Y = frame * frameHeight;
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			bool npcAlreadyExists = false;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC npc = Main.npc[i];
-				if (npc.type == ModContent.NPCType<Bordoc>())
-				{
-					npcAlreadyExists = true;
-					break;
-				}
-			}
+        public override bool CheckActive()
+        {
+			return false;
+        }
 
-			//Don't spawn the npc if it already exists
-			if (npcAlreadyExists)
-			{
-				return 0f;
-			}
-
-			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-
-			if (spawnInfo.Player.InModBiome<FableBiome>() && Main.hardMode)
-			{
-
-				return 0.34f;
-
-			}
-
-			//Else, the example bone merchant will not spawn if the above conditions are not met.
-			return 0f;
-		}
-
-
-		public override bool CanChat()
+        public override bool CanChat()
 		{
 			return true;
 		}

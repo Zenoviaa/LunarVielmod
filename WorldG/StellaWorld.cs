@@ -327,6 +327,7 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx + 10, smy + 340 );
+					NPCs.Town.AlcadSpawnSystem.FableTile = Loc;
 
 					//This code just places
 					int width = 253;
@@ -342,8 +343,7 @@ namespace Stellamod.WorldG
 
 					Point Loc2 = new Point(smx + 10, smy + 380);
 					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
-					//
-
+					
 					Point Loc22 = new Point(smx +10, smy - 33);
 		//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
 					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");

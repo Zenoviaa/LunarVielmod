@@ -22,6 +22,7 @@ namespace Stellamod.NPCs.Town
         public static Point LabTile;
         public static Point GiaTile;
         public static Point IlluriaTile;
+        public static Point FableTile;
 
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
@@ -32,6 +33,7 @@ namespace Stellamod.NPCs.Town
         public static Point LabSpawnTileOffset => new Point(39, -20);
         public static Point GiaSpawnTileOffset => new Point(14, -7);
         public static Point AzzuriaSpawnTileOffset => new Point(134, -224);
+        public static Point BORDOCSpawnTileOffset => new Point(94, -380);
 
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
@@ -43,7 +45,7 @@ namespace Stellamod.NPCs.Town
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 AzzuriaSpawnWorld => IlluriaTile.ToWorldCoordinates() + AzzuriaSpawnTileOffset.ToWorldCoordinates();
-
+        public static Vector2 BORDOCSpawnWorld => FableTile.ToWorldCoordinates() + BORDOCSpawnTileOffset.ToWorldCoordinates();
         public static bool TownedGia;
 
         public override void NetSend(BinaryWriter writer)
@@ -56,6 +58,7 @@ namespace Stellamod.NPCs.Town
             writer.Write(TownedGia);
             writer.WriteVector2(GiaTile.ToVector2());
             writer.WriteVector2(IlluriaTile.ToVector2());
+            writer.WriteVector2(FableTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -68,6 +71,7 @@ namespace Stellamod.NPCs.Town
             TownedGia = reader.ReadBoolean();
             GiaTile = reader.ReadVector2().ToPoint();
             IlluriaTile = reader.ReadVector2().ToPoint();
+            FableTile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -144,6 +148,12 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)AzzuriaSpawnWorld.X, (int)AzzuriaSpawnWorld.Y,
                         ModContent.NPCType<Azzuria>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                } else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
+                        ModContent.NPCType<Bordoc>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
             }
