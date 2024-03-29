@@ -228,7 +228,37 @@ namespace Stellamod.WorldG
                 }
             }
 
-            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+				if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
+				{
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Mushroom3>());
+				}
+			}
+
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+				if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
+				{
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Mushroom2>());
+				}
+			}
+
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+				if (Main.tile[X, Y].TileType == TileID.Stone || Main.tile[X, Y].TileType == TileID.ClayBlock)
+				{
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.Mushroom1>());
+				}
+			}
+
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);

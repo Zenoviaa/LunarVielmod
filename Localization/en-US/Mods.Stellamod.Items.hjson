@@ -587,13 +587,13 @@ Morrowshroom: {
 }
 
 MorrowVine: {
-	DisplayName: Summer Vine
+	DisplayName: Spring Vine
 	Tooltip: A vine that grows underground and populates the world
 }
 
 Mushroom: {
-	DisplayName: Mushroomer
-	Tooltip: Ew a mushroom, for planting probably?
+	DisplayName: Spring mushroom
+	Tooltip: Mushrooms found underground
 }
 
 Stick: {
