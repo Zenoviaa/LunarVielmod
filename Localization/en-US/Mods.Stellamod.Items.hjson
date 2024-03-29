@@ -2569,7 +2569,7 @@ TheDeafen: {
 
 TheShrieker: {
 	DisplayName: The Shrieker
-	Tooltip: Ow, my ears
+	Tooltip: Ow, my ears, but the damage...
 }
 
 TomeOfTheSingularity: {
@@ -2679,7 +2679,7 @@ StarKeeper: {
 
 SwordOfGlactia: {
 	DisplayName: Sword Of Glactia
-	Tooltip: ""
+	Tooltip: Shoot little beams of swords
 }
 
 SwordOfTheJungleGoddess: {
@@ -2714,17 +2714,17 @@ BrokenWrath: {
 
 CloudBow: {
 	DisplayName: Cloud Bow
-	Tooltip: ""
+	Tooltip: Its so floaty while shooting some cloud shots
 }
 
 Crysalizer: {
 	DisplayName: Crysalizer
-	Tooltip: Shoot enemies with a crystallized shot!
+	Tooltip: Shoot enemies with  3-round crystallized shots!
 }
 
 DeathShot: {
 	DisplayName: Death Shot
-	Tooltip: ""
+	Tooltip: A sniper for a the skull emoji.
 }
 
 DivineSniper: {
@@ -2799,12 +2799,12 @@ SolarSpiner: {
 
 TecnoBlaster: {
 	DisplayName: Techno Blaster
-	Tooltip: ""
+	Tooltip: Get technical
 }
 
 TheRedSkull: {
 	DisplayName: The Red Skull
-	Tooltip: ""
+	Tooltip: Another skull emoji.
 }
 
 Tociflare: {
@@ -2854,7 +2854,7 @@ IrradiatedCreeperStaff: {
 
 IvyakenStaff: {
 	DisplayName: Ivyaken Staff
-	Tooltip: ""
+	Tooltip: Summons a small little guy to fight for you
 }
 
 JellyStaff: {
@@ -2904,7 +2904,7 @@ Boralius: {
 
 Bricks: {
 	DisplayName: Bricks
-	Tooltip: ""
+	Tooltip: Bonk
 }
 
 Cactius: {
