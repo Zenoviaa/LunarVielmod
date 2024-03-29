@@ -25,7 +25,7 @@ namespace Stellamod.Tiles
             HitSound = SoundID.Grass;
             DustType = DustID.PinkCrystalShard;
 
-            AddMapEntry(new Color(200, 258, 193));
+            AddMapEntry(new Color(250, 158, 193));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
