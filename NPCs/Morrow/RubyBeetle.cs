@@ -121,7 +121,8 @@ namespace Stellamod.NPCs.Morrow
 		{
 	
 			npcLoot.Add(ItemDropRule.Common(ItemID.Ruby, 2, 1, 4));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 3, 1, 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Morrowshroom>(), 2, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), 3, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 3, 1, 7));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 5, 1, 1));
