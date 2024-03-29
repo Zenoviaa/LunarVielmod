@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.AddIngredient(ItemID.Ectoplasm, 20);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());

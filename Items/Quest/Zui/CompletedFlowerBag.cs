@@ -50,7 +50,7 @@ namespace Stellamod.Items.Quest.Zui
 
             Recipe recipe5 = CreateRecipe();
             recipe5.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe5.AddIngredient(ModContent.ItemType<MorrowVine>(), 10);
+            recipe5.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
             recipe5.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
             recipe5.AddIngredient(ModContent.ItemType<Morrowshroom>(), 10);
             recipe5.AddIngredient(ModContent.ItemType<EmptyFlowerBag>(), 1);

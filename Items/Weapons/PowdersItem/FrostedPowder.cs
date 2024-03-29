@@ -48,7 +48,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			recipe.AddIngredient(ItemID.IceBlock, 50);
 			recipe.AddIngredient(ItemID.FallenStar, 5);
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 	
 			recipe.Register();

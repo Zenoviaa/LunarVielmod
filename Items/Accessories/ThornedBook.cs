@@ -32,7 +32,7 @@ namespace Stellamod.Items.Accessories
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
 			recipe.AddIngredient(ItemID.CordageGuide, 1);
 			recipe.AddIngredient(ItemID.Silk, 10);

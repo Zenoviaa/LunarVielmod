@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.PocketDust
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 100);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 
