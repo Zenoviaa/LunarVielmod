@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.knockBack = 8;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
+            Item.value = Item.sellPrice(0, 0, 0, 50);
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 15;
             Item.autoReuse = true;
@@ -38,14 +38,6 @@ namespace Stellamod.Items.Weapons.Thrown
             Item.maxStack = 9999;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe(50);
-            recipe.AddIngredient(ItemID.Leather, 1);
-            recipe.AddIngredient(ItemID.Shuriken, 50);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-3f, -2f);

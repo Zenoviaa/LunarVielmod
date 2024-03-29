@@ -31,9 +31,8 @@ namespace Stellamod.Items.Armors.ForestCore
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 6);
-            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 5);
-            recipe.AddIngredient(ItemID.WoodGreaves, 1);
+            recipe.AddIngredient(ItemID.Wood, 3);
+            recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 2);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

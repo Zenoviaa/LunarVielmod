@@ -16,7 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 1, 1, 29);
+            Item.value = Item.buyPrice(0, 5, 0, 0);
             Item.rare = ItemRarityID.Green;
             Item.staff[Item.type] = true;
             Item.shootSpeed = 15;
@@ -31,15 +31,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<TerrorFragments>(), 4);
-            recipe.AddIngredient(ItemID.Leather, 8);
-            recipe.AddIngredient(ItemID.IronBar, 5);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.Register();
-        }
+       
 
         public override Vector2? HoldoutOffset()
         {

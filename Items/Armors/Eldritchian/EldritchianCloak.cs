@@ -42,7 +42,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 25);
 			recipe.AddIngredient(ItemID.SoulofMight, 10);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
-			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 10);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}

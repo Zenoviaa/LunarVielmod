@@ -67,15 +67,7 @@ namespace Stellamod.Items.Weapons.Melee
   
             return base.CanUseItem(player);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 15);
-            recipe.AddIngredient(ItemID.Wood, 15);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+        
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (Main.rand.NextBool(3))

@@ -39,7 +39,7 @@ namespace Stellamod.Items.Armors.Scrappy
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.AddIngredient(ModContent.ItemType<ArmorDrive>(), 3);
             recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 25);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 3);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ItemID.Ectoplasm, 3);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 5);
 

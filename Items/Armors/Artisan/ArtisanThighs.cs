@@ -53,6 +53,7 @@ namespace Stellamod.Items.Armors.Artisan
 			recipe.AddIngredient(ModContent.ItemType<KaleidoscopicInk>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 
 			recipe.Register();
 		}

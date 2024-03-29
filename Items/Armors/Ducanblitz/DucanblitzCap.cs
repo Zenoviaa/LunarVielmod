@@ -74,7 +74,7 @@ namespace Stellamod.Items.Armors.Ducanblitz
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 10);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 8);
 			recipe.AddIngredient(ItemID.Ectoplasm, 8);
-			recipe.AddIngredient(ItemID.BrokenHeroSword, 1);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
