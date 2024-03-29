@@ -27,6 +27,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.Items.Armors.Vanity.Nyxia;
+using Terraria.DataStructures;
 
 namespace Stellamod.NPCs.Town
 {
@@ -349,9 +350,11 @@ namespace Stellamod.NPCs.Town
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Damn, 10 quests? You're on a role you know! I've got some more items for you in my shop actually, I went travelling and Sirestias gave me a few items! I'll give you some more items if you can do 10 more!";
 
+            var entitySource = NPC.GetSource_GiftOrReward();
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Hookarama>(), 1);
 
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
@@ -371,6 +374,9 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
+
+
+
 			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();

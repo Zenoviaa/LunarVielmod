@@ -6182,3 +6182,8 @@ MushroomGreatbow: {
 	Tooltip: ""
 	DisplayName: Mushroom Greatbow
 }
+
+Hookarama: {
+	DisplayName: Hookarama
+	Tooltip: ""
+}
