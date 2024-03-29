@@ -100,6 +100,10 @@ namespace Stellamod.Projectiles.Magic
                     Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
             }
             SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt, Projectile.position);
+            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<Skullboom>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+
         }
         float alphaCounter = 2;
         public override Color? GetAlpha(Color lightColor)
