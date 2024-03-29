@@ -26,7 +26,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 		{
 			NPC.width = 32;
 			NPC.height = 17;
-			NPC.damage = 20;
+			NPC.damage = 30;
 			NPC.defense = 0;
 			NPC.lifeMax = 65;
 			NPC.noGravity = true;

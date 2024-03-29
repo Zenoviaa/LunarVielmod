@@ -1550,7 +1550,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot2"));
 				}
@@ -1560,7 +1560,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-                            ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
                     }
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot3"));
@@ -1571,7 +1571,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot2>(), 40, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot1"));
 				}
@@ -1589,7 +1589,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot>(), 33, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot>(), 43, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot1"));
 				}
@@ -1600,7 +1600,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-                                ModContent.ProjectileType<FrostShot>(), 33, 0f, Owner: Main.myPlayer);
+                                ModContent.ProjectileType<FrostShot>(), 43, 0f, Owner: Main.myPlayer);
                     }
 	
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot3"));
