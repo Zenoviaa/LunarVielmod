@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.height = 17;
 			NPC.damage = 20;
 			NPC.defense = 0;
-			NPC.lifeMax = 50;
+			NPC.lifeMax = 65;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
 			NPC.HitSound = SoundID.NPCHit1;

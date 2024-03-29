@@ -696,7 +696,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 60, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword1F>(), 5, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword1F>(), 7, 0f, Owner: Main.myPlayer);
 					}
 				}
 
@@ -707,7 +707,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 80, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword1F>(), 5, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword1F>(), 7, 0f, Owner: Main.myPlayer);
 					}
 				}
 
@@ -718,7 +718,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 120, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword1F>(), 7, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword1F>(), 9, 0f, Owner: Main.myPlayer);
 					}
 				}
 
@@ -729,7 +729,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 140, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword2F>(), 7, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword2F>(), 9, 0f, Owner: Main.myPlayer);
 					}
 				}
 
@@ -740,7 +740,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 170, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword2F>(), 7, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword2F>(), 9, 0f, Owner: Main.myPlayer);
 					}
 				}
 
@@ -751,7 +751,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 						float speedX = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 						float speedY = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedX + 200, NPC.position.Y + speedY - 130, speedX - 2 * 2, speedY - 2 * 2,
-							ModContent.ProjectileType<Sword2F>(), 7, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Sword2F>(), 9, 0f, Owner: Main.myPlayer);
 					}
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Huhhuh"));
@@ -793,7 +793,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXd = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYd = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXd + 10, NPC.position.Y + speedYd - 130, speedXd - 2 * 2, speedYd - 2 * 2,
-							ModContent.ProjectileType<TheMoon>(), 50, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<TheMoon>(), 90, 0f, Owner: Main.myPlayer);
                     }
                 }
             }
@@ -887,9 +887,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0,
-                            ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<SineSword>(), 29, 0f, Owner: Main.myPlayer);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0,
-                            ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<SineSword>(), 29, 0f, Owner: Main.myPlayer);
                     }
 
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
@@ -905,9 +905,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(2, 2) * 0f;
                         float speedYc = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-2, -2) * 0f;
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYb * -1,
-							ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<SineSword>(), 27, 0f, Owner: Main.myPlayer);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYc * 1, 
-							ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<SineSword>(), 27, 0f, Owner: Main.myPlayer);
                     }
                    
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
@@ -989,7 +989,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                     int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, 
 						ModContent.NPCType<GhostCharger>());
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0, 
-						ModContent.ProjectileType<SineSword>(), 30, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<SineSword>(), 40, 0f, Owner: Main.myPlayer);
                 }
 
 			
@@ -1025,7 +1025,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (StellaMultiplayer.IsHost)
 				{
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 20, speedXb * 1, speedYa - 1 * 0, 
-						ModContent.ProjectileType<SineSword>(), 20, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<SineSword>(), 23, 0f, Owner: Main.myPlayer);
 				}
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
 			}
@@ -1088,7 +1088,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (StellaMultiplayer.IsHost)
 				{
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, 
-						ModContent.ProjectileType<AltideSword>(), 15, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<AltideSword>(), 45, 0f, Owner: Main.myPlayer);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2,
 						ModContent.ProjectileType<AltideSword>(), 22, 0f, Owner: Main.myPlayer);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa - 100, speedXa * 1, speedYa - 1 * 0, 
@@ -1127,7 +1127,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				if (StellaMultiplayer.IsHost)
 				{
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 230, speedXb * 1, speedYa - 1 * 0, 
-						ModContent.ProjectileType<SineSword>(), 30, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<SineSword>(), 40, 0f, Owner: Main.myPlayer);
 				}
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordThrow"));
 			}
@@ -1139,7 +1139,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, 
 						ModContent.ProjectileType<AltideSword>(), 15, 0f, Owner: Main.myPlayer);
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa - 2 * 1, speedYa - 1 * 2, 
-						ModContent.ProjectileType<AltideSword>(), 22, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<AltideSword>(), 32, 0f, Owner: Main.myPlayer);
 					int index2 = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 10, (int)NPC.Center.Y - 40, ModContent.NPCType<GhostCharger>());
 					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa + 140, speedXa * 1, speedYa - 1 * 0, 
 						ModContent.ProjectileType<SineSword>(), 30, 0f, Owner: Main.myPlayer);
@@ -1303,9 +1303,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1, 
-							ModContent.ProjectileType<Strummer>(), 12, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Strummer>(), 20, 0f, Owner: Main.myPlayer);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1, 
-							ModContent.ProjectileType<Strummer>(), 12, 0f, Owner: Main.myPlayer);
+							ModContent.ProjectileType<Strummer>(), 20, 0f, Owner: Main.myPlayer);
                     }
 					
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Sadano"));
@@ -1441,9 +1441,9 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXa = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
                         float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXa - 2 * 8, speedYa - 1 * 1,
-                            ModContent.ProjectileType<Strummer>(), 12, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<Strummer>(), 20, 0f, Owner: Main.myPlayer);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa + 60, NPC.position.Y + speedYa + 110, speedXBa + 2 * 8, speedYa - 1 * 1,
-                            ModContent.ProjectileType<Strummer>(), 12, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<Strummer>(), 20, 0f, Owner: Main.myPlayer);
                     }
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Sadano"));
@@ -1550,7 +1550,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot2>(), 33, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot2"));
 				}
@@ -1560,7 +1560,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-                            ModContent.ProjectileType<FrostShot2>(), 33, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
                     }
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot3"));
@@ -1571,7 +1571,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot2>(), 33, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot2>(), 36, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot1"));
 				}
@@ -1589,7 +1589,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
 						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-						ModContent.ProjectileType<FrostShot>(), 27, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<FrostShot>(), 33, 0f, Owner: Main.myPlayer);
 					}
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot1"));
 				}
@@ -1600,7 +1600,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 					if (StellaMultiplayer.IsHost)
 					{
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb + 10, speedXb - 2 * 2, speedYb - 2 * 2,
-                                ModContent.ProjectileType<FrostShot>(), 27, 0f, Owner: Main.myPlayer);
+                                ModContent.ProjectileType<FrostShot>(), 33, 0f, Owner: Main.myPlayer);
                     }
 	
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/FrostShot3"));
@@ -1881,7 +1881,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                         float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 100, NPC.position.Y + speedYb + 80, speedXb - 2 * 2, speedYb - 2 * 2,
-                            ModContent.ProjectileType<SlashRight>(), 26, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<SlashRight>(), 32, 0f, Owner: Main.myPlayer);
                     }
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Hyuh"));
@@ -1894,7 +1894,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                         float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                         float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 100, NPC.position.Y + speedYb + 80, speedXb - 2 * 2, speedYb - 2 * 2,
-                            ModContent.ProjectileType<SlashLeft>(), 26, 0f, Owner: Main.myPlayer);
+                            ModContent.ProjectileType<SlashLeft>(), 32, 0f, Owner: Main.myPlayer);
                     }
 
 					SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Hyuh"));
@@ -1955,7 +1955,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, 
-						ModContent.ProjectileType<SlashHold>(), 110, 0f, Main.myPlayer, 0f, ai1);
+						ModContent.ProjectileType<SlashHold>(), 160, 0f, Main.myPlayer, 0f, ai1);
                 }
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Moaning"));

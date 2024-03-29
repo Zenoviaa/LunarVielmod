@@ -25,14 +25,6 @@ namespace Stellamod.Items.Materials
             Item.rare = ItemRarityID.Green;
         }
 
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-
-            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 3);
-
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
     }
 }
