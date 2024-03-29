@@ -46,9 +46,7 @@ namespace Stellamod.Items.Weapons.Melee
 			recipe.AddIngredient(ItemID.WoodenSword, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ItemID.Torch, 20);
 		}
 	}
 }
