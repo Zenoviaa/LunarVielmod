@@ -25,7 +25,7 @@ namespace Stellamod.Tiles
             HitSound = SoundID.Grass;
             DustType = DustID.PinkCrystalShard;
 
-            AddMapEntry(new Color(250, 158, 193));
+            AddMapEntry(new Color(250, 258, 193));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
@@ -40,9 +40,9 @@ namespace Stellamod.Tiles
         }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
-            r = .130f * 2;
-            g = .277f * 2;
-            b = .102f * 2;
+            r = .230f * 2;
+            g = .177f * 2;
+            b = .202f * 2;
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
