@@ -6190,7 +6190,8 @@ Hookarama: {
 }
 
 MushyCard: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		Use with a combination of dusts to make spells :)
 		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 		'''

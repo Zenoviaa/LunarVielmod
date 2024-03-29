@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Items.Materials;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,6 +31,7 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Wood, 50);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
 			recipe.AddIngredient(ItemID.Cobweb, 30);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();

@@ -1,4 +1,5 @@
 ﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -31,7 +32,7 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
-			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<Morrowshroom>(), 20);
 			recipe.AddIngredient(ItemID.NaturesGift, 1);
 			recipe.AddTile(TileID.Anvils);

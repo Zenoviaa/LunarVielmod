@@ -35,7 +35,6 @@ namespace Stellamod.Items.Accessories
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 20);
 			recipe.AddIngredient(ItemID.CordageGuide, 1);
-			recipe.AddIngredient(ItemID.Silk, 10);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

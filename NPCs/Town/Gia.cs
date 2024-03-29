@@ -419,7 +419,7 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(10))
+					switch (Main.rand.Next(11))
 					{
 
 
@@ -480,6 +480,12 @@ namespace Stellamod.NPCs.Town
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileBroochA>(), 1);
 							break;
+
+						case 10:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrostSwing>(), 1);
+							break;
 					}
 
 
@@ -505,7 +511,7 @@ namespace Stellamod.NPCs.Town
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(15))
+					switch (Main.rand.Next(16))
 					{
 
 
@@ -612,6 +618,13 @@ namespace Stellamod.NPCs.Town
 						case 14:
 				
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ViolinStick>(), 1);
+
+
+							break;
+
+						case 15:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<HornedNail>(), 1);
 
 
 							break;

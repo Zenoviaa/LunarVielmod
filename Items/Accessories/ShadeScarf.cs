@@ -36,7 +36,7 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<Steali>(), 1);
-			recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
 			recipe.AddTile(TileID.TinkerersWorkbench);
