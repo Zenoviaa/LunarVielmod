@@ -91,12 +91,6 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
 			}
-			if (Main.rand.NextBool(1))
-			{
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Starrdew>(), Main.rand.Next(3, 25));
-			}
-			
-
 
 		}
 

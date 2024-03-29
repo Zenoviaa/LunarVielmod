@@ -90,7 +90,6 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.Anvils);
 
             recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 22);
             recipe.AddIngredient(ItemID.FallenStar, 9);
             recipe.Register();

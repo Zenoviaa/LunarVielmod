@@ -2009,7 +2009,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 				 ModContent.ItemType<SupernovaSitar>(),
 				 ModContent.ItemType<HarmonicBlasphemy>(),
 				 ModContent.ItemType<Curlistine>()));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Starrdew>(), minimumDropped: 3, maximumDropped: 25));
+	
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 3, maximumDropped: 25));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
 			npcLoot.Add(notExpertRule);

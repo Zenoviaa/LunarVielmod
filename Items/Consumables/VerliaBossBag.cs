@@ -50,7 +50,6 @@ namespace Stellamod.Items.Consumables
         {
             base.ModifyItemLoot(itemLoot);
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerliaBroochA>()));
-			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Starrdew>(), minimumDropped: 5, maximumDropped: 25));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PearlescentScrap>(), minimumDropped: 9, maximumDropped: 25));
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
 				 ModContent.ItemType<VerliaHat>(),
