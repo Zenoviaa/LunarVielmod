@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public int WinterboundArrow;
         public override void SetDefaults()
         {
-            Item.damage = 8;
+            Item.damage = 7;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -48,19 +48,13 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            int count = 2;
-            for (int k = 0; k < count; k++)
-            {
-                Vector2 newVelocity = (velocity * 20).RotatedByRandom(MathHelper.ToRadians(15));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Dust.NewDust(position, 0, 0, DustID.Torch, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
-            }
 
-            int numProjectiles = Main.rand.Next(1, 2);
+
+            int numProjectiles = Main.rand.Next(1, 4);
             for (int p = 0; p < numProjectiles; p++)
             {
                 // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(6));
+                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(30));
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
                 Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
             }
