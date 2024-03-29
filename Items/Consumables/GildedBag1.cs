@@ -4,6 +4,7 @@ using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Terraria;
@@ -57,7 +58,7 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
 			}
 
-			if (Main.rand.NextBool(12))
+			if (Main.rand.NextBool(15))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
 			}
@@ -71,7 +72,11 @@ namespace Stellamod.Items.Consumables
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());
 				}
 			}
-			
+		
+			if (Main.rand.NextBool(40))
+			{
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
+			}
 
 			if (Main.rand.NextBool(4))
 			{
@@ -89,7 +94,7 @@ namespace Stellamod.Items.Consumables
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(7, 13));
 			}
-			if (Main.rand.NextBool(50))
+			if (Main.rand.NextBool(100))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(50, 175));
 			}

@@ -259,6 +259,14 @@ namespace Stellamod.NPCs.Town
 
 			ZuiQuestSystem.QuestsCompleted += 1;
 
+			if (ZuiQuestSystem.QuestsCompleted == 1)
+			{
+
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>(), 1);
+
+			}
+
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -374,14 +382,20 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p ";
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			ZuiQuestSystem.QuestsCompleted += 1;
+			if (ZuiQuestSystem.QuestsCompleted == 30)
+			{
 
+				var entitySource = NPC.GetSource_GiftOrReward();
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+			}
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			ZuiQuestSystem.QuestsCompleted += 1;
+			
             SendQuestPacket();
         }
 

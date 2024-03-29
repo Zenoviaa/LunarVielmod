@@ -8,6 +8,7 @@ using Stellamod.Items.Special;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
+using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -57,12 +58,12 @@ namespace Stellamod.Items.Consumables
 
 					case 0:
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<StarterCard>());
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Verstidust>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<GrassDirtPowder>());
 
 						break;
 					case 1:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>());
 
 						break;
 					case 2:
@@ -77,13 +78,12 @@ namespace Stellamod.Items.Consumables
 						break;
 					case 4:
 
-						player.QuickSpawnItem(entitySource, ItemID.LeadBar, Main.rand.Next(5, 20));
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<GildedBag1>(), Main.rand.Next(1, 7));
 						break;
 					case 5:
 
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<AlcaologyI>());
-						player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, Main.rand.Next(1, 3));
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>());
+
 						break;
 
 					case 6:

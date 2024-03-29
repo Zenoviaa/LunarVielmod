@@ -2534,7 +2534,7 @@ Pericarditis: {
 
 ShadeHandTome: {
 	DisplayName: Shade Hand Tome
-	Tooltip: ""
+	Tooltip: Little small hands to tickle your enemies
 }
 
 StaffOFlame: {
@@ -2574,7 +2574,7 @@ TheShrieker: {
 
 TomeOfTheSingularity: {
 	DisplayName: Tome Of The Singularity
-	Tooltip: ""
+	Tooltip: A volley of fragments
 }
 
 TorrentialLance: {
@@ -2584,7 +2584,7 @@ TorrentialLance: {
 
 VoidsGrasp: {
 	DisplayName: Voids Grasp
-	Tooltip: ""
+	Tooltip: Summon a hand that will go out and tickle enemies :)
 }
 
 WintersStom: {

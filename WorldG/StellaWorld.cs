@@ -2182,8 +2182,7 @@ namespace Stellamod.WorldG
 							Tuple.Create((int)ItemID.Acorn, 0.1),
 							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1),
 							Tuple.Create(ModContent.ItemType<MorrowChestKey>(), 0.5),
-								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8),
-							Tuple.Create(ModContent.ItemType<Bongos>(), 0.4) // Choose no item with a high weight of 7.
+								Tuple.Create(ModContent.ItemType<GrassDirtPowder>(), 0.8)// Choose no item with a high weight of 7.
 						);
 
 						if (specialItem != ItemID.None)
@@ -2201,7 +2200,6 @@ namespace Stellamod.WorldG
 								
 								itemsToAdd.Add((ModContent.ItemType<Morrowshroom>(), Main.rand.Next(20, 30)));
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-
 								itemsToAdd.Add((ItemID.PotionOfReturn, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
 								break;
