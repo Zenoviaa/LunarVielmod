@@ -2745,7 +2745,7 @@ namespace Stellamod.WorldG
 		private void WorldGenAurelusTemple(GenerationProgress progress, GameConfiguration configuration)
 		{
 			StructureMap structures = GenVars.structures;
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Aurelus/AurelusTemple");
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Aurelus/AurelusTemple2");
 			progress.Message = "Singularities singing!";
 
 			bool placed = false;
@@ -2790,7 +2790,7 @@ namespace Stellamod.WorldG
 					Point Loc = new Point(abysmx - 150, abysmy + 100);
 					rectangle.Location = Loc;
 					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Aurelus/AurelusTemple2");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];

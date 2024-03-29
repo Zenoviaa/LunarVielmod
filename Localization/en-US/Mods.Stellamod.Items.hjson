@@ -6177,3 +6177,8 @@ PureHeart: {
 		But, why did you kill her? :(
 		'''
 }
+
+MushroomGreatbow: {
+	Tooltip: ""
+	DisplayName: Mushroom Greatbow
+}

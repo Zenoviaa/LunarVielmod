@@ -208,5 +208,7 @@ namespace Stellamod.NPCs.Overworld.ShadeSlime
                 NPC.active = false;
             }
         }
+
+       
     }
 }

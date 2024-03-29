@@ -47,7 +47,7 @@ namespace Stellamod.Items.Armors.Huntrian
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 2);
+			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 8);
 			recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 10);

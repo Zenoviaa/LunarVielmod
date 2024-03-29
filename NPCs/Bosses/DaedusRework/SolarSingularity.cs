@@ -86,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.defense = 0;
             NPC.lifeMax = 400;
             NPC.HitSound = SoundID.NPCHit16;
-            NPC.value = 60f;
+            NPC.value = 10f;
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;

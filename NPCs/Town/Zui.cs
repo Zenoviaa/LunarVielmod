@@ -560,14 +560,14 @@ namespace Stellamod.NPCs.Town
 
 
 			.Add<DriveConstruct>(ZuiQuestSystem.ShopCondition6)
-			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
-			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
+			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 15) }, (ZuiQuestSystem.ShopCondition6))
+			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.Gladius) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
 			//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 
 			.Add<OnionOfUselessness>(ZuiQuestSystem.ShopCondition10)
-			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition10))
-			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 40) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 65) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 80) }, (ZuiQuestSystem.ShopCondition10))
 			.Add(new Item(ItemID.Obsidian) { shopCustomPrice = Item.buyPrice(silver: 4) }, (ZuiQuestSystem.ShopCondition10))
 
 			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition20)
