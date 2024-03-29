@@ -40,9 +40,9 @@ namespace Stellamod.Tiles
         }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
-            r = .230f * 2;
-            g = .177f * 2;
-            b = .202f * 2;
+            r = .230f * 1;
+            g = .177f * 1;
+            b = .202f * 1;
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
