@@ -298,7 +298,7 @@ namespace Stellamod.NPCs.Town
 
 			}
 				ZuiQuestSystem.QuestsCompleted += 1;
-
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
