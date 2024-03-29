@@ -45,8 +45,42 @@ namespace Stellamod.Helpers
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = StructureLoader.ReadRectangle(path);
             rectangle.Location = location;
+
+            int[] tilesToCheckFor = new int[]
+            {
+                TileID.LihzahrdBrick,
+                TileID.BlueDungeonBrick,
+                TileID.CrackedBlueDungeonBrick,
+                TileID.CrackedGreenDungeonBrick,
+                TileID.CrackedPinkDungeonBrick,
+                TileID.PinkDungeonBrick,
+                TileID.GreenDungeonBrick,
+            };
+
+            //Temple Check
+            for (int j = 0; j < rectangle.Width; j++)
+            {
+                for (int i = 0; i < rectangle.Height; i++)
+                {
+                    int x = location.X + j;
+                    int y = location.Y - i;
+                    if(x >= Main.maxTilesX || y >= Main.maxTilesY)
+                    {
+                        return false;
+                    }
+
+                    Tile otherTile = Main.tile[x, y];
+                    for(int t = 0; t < tilesToCheckFor.Length; t++)
+                    {
+                        if (tilesToCheckFor[t] == otherTile.TileType)
+                            return false;
+                    }
+                }
+            }
+
             if (!ignoreStructures && !structures.CanPlace(rectangle))
                 return false;
+
             structures.AddProtectedStructure(rectangle);
             return true;
         }
