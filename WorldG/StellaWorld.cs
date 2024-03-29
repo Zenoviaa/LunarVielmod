@@ -1280,8 +1280,9 @@ namespace Stellamod.WorldG
 					for (int da = 0; da < 1; da++)
 					{
 						Point Loc = new Point(smx, smy - Main.rand.Next(125, 150));
-
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld2");
+                        if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Overworld/Overworld2"))
+                            continue;
+                        int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld2");
 						foreach (int chestIndex in ChestIndexs)
 						{
 							var chest = Main.chest[chestIndex];
@@ -1464,8 +1465,10 @@ namespace Stellamod.WorldG
 					for (int da = 0; da < 1; da++)
 					{
 						Point Loc = new Point(smx, smy - Main.rand.Next(125, 150));
+                        if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Overworld/Overworld3"))
+                            continue;
 
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld3");
+                        int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Overworld3");
 						foreach (int chestIndex in ChestIndexs)
 						{
 							var chest = Main.chest[chestIndex];
@@ -1916,11 +1919,13 @@ namespace Stellamod.WorldG
 				bool placed = false;
 				int attempts = 0;
 
-				while (!placed && attempts++ < 1000000)
+				while (!placed && attempts++ < 3000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
 					int smx = WorldGen.genRand.Next(220, 300); // from 50 since there's a unaccessible area at the world's borders
-																									 // 50% of choosing the last 6th of the world
+					
+			
+					// 50% of choosing the last 6th of the world
 																									 // Choose which side of the world to be on randomly
 					///if (WorldGen.genRand.NextBool())
 					///{
@@ -1944,11 +1949,12 @@ namespace Stellamod.WorldG
 
 					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
 			
-					//	if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
-                //    {
-				//		yOffset++;
-				//		continue;
-				//	}
+			        if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
+                    {
+						yOffset++;
+						attempts++;
+						continue;
+					}
 					
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
 					foreach (int chestIndex in ChestIndexs)
@@ -2013,7 +2019,7 @@ namespace Stellamod.WorldG
 				bool placed = false;
 				int attempts = 0;
 			
-				while (!placed && attempts++ < 1000000)
+				while (!placed && attempts++ < 3000)
 				{
 					// Select a place in the first 6th of the world, avoiding the oceans
 					int smx = WorldGen.genRand.Next((Main.maxTilesX) - 160, (Main.maxTilesX) - 120); // from 50 since there's a unaccessible area at the world's borders
@@ -2040,11 +2046,12 @@ namespace Stellamod.WorldG
 					}
 
 					Point Loc = new Point(smx - 100, smy + 275 + yOffset);
-				//	if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
-                 //   {
-				//		yOffset++;
-				//		continue;
-				//	}
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Catacombs/CatacombsWater"))
+                    {
+						yOffset++;
+                        attempts++;
+                        continue;
+					}
 				
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Catacombs/CatacombsWater");
 					foreach (int chestIndex in ChestIndexs)
@@ -4182,15 +4189,10 @@ namespace Stellamod.WorldG
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Getting shafted";
-
-
-
-
-
 			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05 - 3); k++)
 			{
 
-				int xa = WorldGen.genRand.Next(250, Main.maxTilesX - 250);
+				int xa = WorldGen.genRand.Next(500, Main.maxTilesX - 500);
 				int ya = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
 				Point Loc = new Point(xa, ya);
 
@@ -4207,13 +4209,12 @@ namespace Stellamod.WorldG
 					int Sounda = Main.rand.Next(1, 6);
 					if (Sounda == 1)
 					{
-
-
 						for (int da = 0; da < 1; da++)
 						{
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft1"))
+                                continue;
 
-
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft1");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft1");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -4352,8 +4353,10 @@ namespace Stellamod.WorldG
 						for (int da = 0; da < 1; da++)
 						{
 
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft2"))
+                                continue;
 
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft2");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft2");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -4491,8 +4494,10 @@ namespace Stellamod.WorldG
 						for (int da = 0; da < 1; da++)
 						{
 
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft2"))
+                                continue;
 
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft2");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft2");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -4637,8 +4642,10 @@ namespace Stellamod.WorldG
 						for (int da = 0; da < 1; da++)
 						{
 
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft3"))
+                                continue;
 
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft3");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft3");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -4782,9 +4789,11 @@ namespace Stellamod.WorldG
 
 						for (int da = 0; da < 1; da++)
 						{
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft4"))
+                                continue;
 
 
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft4");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft4");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -4927,9 +4936,11 @@ namespace Stellamod.WorldG
 
 						for (int da = 0; da < 1; da++)
 						{
+                            if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Underground/AbandonedMineshaft4"))
+                                continue;
 
 
-							int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft4");
+                            int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Underground/AbandonedMineshaft4");
 							foreach (int chestIndex in ChestIndexs)
 							{
 								var chest = Main.chest[chestIndex];
@@ -6713,21 +6724,6 @@ namespace Stellamod.WorldG
                     //Avoid the temple
                     Rectangle structureRect = StructureLoader.ReadRectangle(randomStructure);
                     structureRect.Location = Loc;
-                    for (int j = 0; j < structureRect.Width; j++)
-                    {
-                        for (int i = 0; i < structureRect.Height; i++)
-                        {
-                            Tile otherTile = Main.tile[Loc.X + j, Loc.Y - i];
-                            if (otherTile.TileType == TileID.LihzahrdBrick)
-                            {
-                                dontPlace = true;
-                            }
-                        }
-                    }
-
-                    if (dontPlace)
-                        continue;
-
                     if (!StructureLoader.TryPlaceAndProtectStructure(Loc, randomStructure))
                         continue;
 
