@@ -50,9 +50,6 @@ namespace Stellamod.Items.Weapons.Mage
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.PalmWood, 25);
-			recipe.AddIngredient(ItemID.Seashell, 5);
-			recipe.AddIngredient(ItemID.Starfish, 8);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 8);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 8);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 8);
 			recipe.AddTile(TileID.WorkBenches);

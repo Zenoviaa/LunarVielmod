@@ -24,13 +24,6 @@ namespace Stellamod.Items.Materials
 			Item.rare = ItemRarityID.Blue;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe(4);
-			recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 3);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-		}
+		
 	}
 }

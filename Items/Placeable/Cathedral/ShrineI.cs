@@ -25,17 +25,6 @@ namespace Stellamod.Items.Placeable.Cathedral
 			Item.height = 24;
 		}
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ItemID.LunarBar, 22);
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 35);
 		
-			recipe.AddIngredient(ItemID.Bone, 20);
-
-			recipe.Register();
-		}
 	}
 }

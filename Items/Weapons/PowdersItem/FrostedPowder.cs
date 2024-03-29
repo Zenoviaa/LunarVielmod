@@ -45,13 +45,10 @@ namespace Stellamod.Items.Weapons.PowdersItem
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 12);
-			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ItemID.IceBlock, 50);
-			recipe.AddIngredient(ItemID.FallenStar, 10);
+			recipe.AddIngredient(ItemID.FallenStar, 5);
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 	
 			recipe.Register();
