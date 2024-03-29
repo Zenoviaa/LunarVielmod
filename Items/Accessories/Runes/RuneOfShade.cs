@@ -29,14 +29,13 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddRecipeGroup(nameof(ItemID.DemoniteBar), 15);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 20);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
-            recipe.AddTile(ModContent.TileType<RunicTableT>());
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.statManaMax2 += 20;
-            Item.defense = 2;
             player.GetModPlayer<MyPlayer>().ShadeRune = true;
 
         }

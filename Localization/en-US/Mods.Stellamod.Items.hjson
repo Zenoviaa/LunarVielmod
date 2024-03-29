@@ -746,8 +746,8 @@ Bench: {
 }
 
 BroochesTableI: {
-	DisplayName: Brooches Jewelry Station
-	Tooltip: This bench allows you to craft exquisite brooches and combine them!
+	DisplayName: Rune and Brooch Jewelry Station
+	Tooltip: This bench allows you to craft exquisite brooches and runes!
 }
 
 CathediteBlock: {
