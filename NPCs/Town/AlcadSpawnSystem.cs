@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Town
         private bool TargetBossAlive()
         {
             return 
-                NPC.AnyNPCs(ModContent.NPCType<Zui>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
@@ -104,8 +104,6 @@ namespace Stellamod.NPCs.Town
 
         private void Spawn()
         {
-
-            SpawnDelay = 10;
             for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
