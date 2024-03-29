@@ -34,6 +34,7 @@ namespace Stellamod.Items.Materials
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Cinderscrap>(), 2);
             recipe.AddIngredient(ModContent.ItemType<ArncharChunk>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 1);
             recipe.AddTile(TileID.Furnaces);
             recipe.Register();
         }
