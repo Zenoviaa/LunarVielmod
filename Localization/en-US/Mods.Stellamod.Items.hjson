@@ -1929,7 +1929,11 @@ GiftOfLife: {
 
 LeatherGlove: {
 	DisplayName: Leather Glove
-	Tooltip: Increases throwing damage and throwing velocity.
+	Tooltip:
+		'''
+		10% increased throwing damage
+		Increased throwing velocity
+		'''
 }
 
 LunarBand: {
