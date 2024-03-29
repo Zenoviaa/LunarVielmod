@@ -580,8 +580,6 @@ namespace Stellamod.NPCs.Town
 
 
 						case 9:
-
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Stick>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), 5);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BandofStarpower, 1);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
@@ -835,7 +833,7 @@ namespace Stellamod.NPCs.Town
 
 						case 9:
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Stick>(), 50);
+						
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), 5);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.JungleSpores, 30);
 

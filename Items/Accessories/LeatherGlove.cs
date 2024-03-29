@@ -32,8 +32,8 @@ namespace Stellamod.Items.Accessories
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 1);
-            recipe.AddIngredient(RecipeGroupID.IronBar, 2);
+            recipe.AddIngredient(ItemID.Leather, 2);
+            recipe.AddRecipeGroup(nameof(ItemID.IronBar), 2);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
         }

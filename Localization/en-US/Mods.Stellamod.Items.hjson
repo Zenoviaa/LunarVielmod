@@ -1929,7 +1929,11 @@ GiftOfLife: {
 
 LeatherGlove: {
 	DisplayName: Leather Glove
-	Tooltip: Increases throwing damage and throwing velocity.
+	Tooltip:
+		'''
+		10% increased throwing damage
+		Increased throwing velocity
+		'''
 }
 
 LunarBand: {
@@ -2128,18 +2132,26 @@ HeavyMetalLegs: {
 }
 
 LeatherBody: {
-	DisplayName: Leather Body
-	Tooltip: " Increases throwing damage by 25%"
+	DisplayName: Leather Armor
+	Tooltip: 4% increased ranged crit chance
 }
 
 LeatherHead: {
 	DisplayName: Leather Head
-	Tooltip: Increases throwing critical strike chance by 4%
+	Tooltip:
+		'''
+		4% increased ranged crit chance
+		10% increased ranged damage
+		'''
 }
 
 LeatherLegs: {
 	DisplayName: Leather Legs
-	Tooltip: Increases movement speed by 10%
+	Tooltip:
+		'''
+		4% increased ranged crit chance
+		10% increased movement speed
+		'''
 }
 
 ShadeWraithBody: {

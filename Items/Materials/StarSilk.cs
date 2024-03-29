@@ -30,7 +30,7 @@ namespace Stellamod.Items.Materials
             recipe.AddIngredient(ItemID.Silk, 2);
             recipe.AddIngredient(ItemID.FallenStar, 1);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
-            recipe.AddTile(TileID.Bottles);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
 
