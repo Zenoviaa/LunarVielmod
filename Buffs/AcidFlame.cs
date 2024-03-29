@@ -21,12 +21,6 @@ namespace Stellamod.Buffs
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.lifeRegen -= 30;
-            if (Main.rand.NextBool(6))
-            {
-                int x = Main.rand.Next(0, npc.width);
-                int y = Main.rand.Next(0, npc.height);
-                ParticleManager.NewParticle<AcidFlameParticle>(npc.position + new Vector2(x, y), Vector2.Zero, Color.White, 1f);
-            }
         }
 
         public override void Update(Player player, ref int buffIndex)
@@ -36,12 +30,6 @@ namespace Stellamod.Buffs
             player.blind = true;
             player.blackout = true;
             player.yoraiz0rDarkness = true;
-            if (Main.rand.NextBool(6))
-            {
-                int x = Main.rand.Next(0, player.width);
-                int y = Main.rand.Next(0, player.height);
-                ParticleManager.NewParticle<AcidFlameParticle>(player.position + new Vector2(x, y), Vector2.Zero, Color.White, 1f);
-            }
         }
     }
 }

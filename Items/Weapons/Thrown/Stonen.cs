@@ -40,7 +40,6 @@ namespace Stellamod.Items.Weapons.Thrown
 			recipe.AddIngredient(ItemID.BeetleHusk, 5);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 25);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 25);
 			recipe.AddIngredient(ItemID.ThrowingKnife, 3);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();

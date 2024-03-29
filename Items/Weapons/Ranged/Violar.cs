@@ -72,19 +72,14 @@ namespace Stellamod.Items.Weapons.Ranged
 		}
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.StoneBlock, 100);
-			recipe.AddTile(TileID.Anvils);
-			
+			Recipe recipe = CreateRecipe();		
 			recipe.AddIngredient(ModContent.ItemType<ViolinStick>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 15);
-			
-
-			recipe.Register();
+            recipe.AddTile(TileID.Anvils);
+            recipe.Register();
 		}
 	}
 }
