@@ -103,7 +103,6 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
             recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 100);
             recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
