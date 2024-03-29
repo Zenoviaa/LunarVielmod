@@ -587,13 +587,8 @@ Morrowshroom: {
 }
 
 MorrowVine: {
-	DisplayName: Fabled Vine
-	Tooltip:
-		'''
-		A useful piece of string!
-		From some Fabled warriors of the morrow
-		Used in many recipes for weapons, bags and such
-		'''
+	DisplayName: Summer Vine
+	Tooltip: A vine that grows underground and populates the world
 }
 
 Mushroom: {
@@ -679,12 +674,11 @@ PearlescentScrap: {
 }
 
 RippedFabric: {
-	DisplayName: Ripped Fabric
+	DisplayName: Quest Leaf
 	Tooltip:
 		'''
-		From the knowledge of the Gilded to robes on enemies, it's wonderous!
-		A very magical material, although...
-		I feel like the item calls my name...
+		Gathered from doing quests from Merena, Gia and Zui!
+		Do some quests to gather more 
 		'''
 }
 
@@ -2734,7 +2728,7 @@ DeathShot: {
 }
 
 DivineSniper: {
-	DisplayName: Divine Sniper
+	DisplayName: Divine Cloud Shotgun
 	Tooltip: It really isnt all that divine
 }
 

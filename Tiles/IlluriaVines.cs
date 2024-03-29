@@ -17,15 +17,15 @@ namespace Stellamod.Tiles
             Main.tileNoFail[Type] = true;
             Main.tileNoAttach[Type] = true;
             Main.tileLighted[Type] = true;
-
+            RegisterItemDrop(ModContent.ItemType<Items.Harvesting.MorrowVine>());
 
             TileID.Sets.VineThreads[Type] = true;
             TileID.Sets.IsVine[Type] = true;
 
             HitSound = SoundID.Grass;
-            DustType = DustID.IceTorch;
+            DustType = DustID.PinkCrystalShard;
 
-            AddMapEntry(new Color(200, 18, 193));
+            AddMapEntry(new Color(200, 258, 193));
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
@@ -41,8 +41,8 @@ namespace Stellamod.Tiles
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             r = .130f * 2;
-            g = .077f * 2;
-            b = .202f * 2;
+            g = .277f * 2;
+            b = .102f * 2;
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
@@ -53,7 +53,7 @@ namespace Stellamod.Tiles
                 type = tileAbove.TileType;
             }
 
-            if (type == ModContent.TileType<IlluriaDirt>() || type == Type)
+            if (type == TileID.Stone || type == Type)
             {
                 return true;
             }
@@ -67,24 +67,24 @@ namespace Stellamod.Tiles
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
             {
-                bool placeVine = false;
-                int yTest = j;
-                while (yTest > j - 10)
+                bool placeVines = false;
+                int yTests = j;
+                while (yTests > j - 10)
                 {
-                    Tile testTile = Framing.GetTileSafely(i, yTest);
+                    Tile testTile = Framing.GetTileSafely(i, yTests);
                     if (testTile.BottomSlope)
                     {
                         break;
                     }
-                    else if (!testTile.HasTile || testTile.TileType != ModContent.TileType<IlluriaDirt>())
+                    else if (!testTile.HasTile || testTile.TileType != TileID.Stone)
                     {
-                        yTest--;
+                        yTests--;
                         continue;
                     }
-                    placeVine = true;
+                    placeVines = true;
                     break;
                 }
-                if (placeVine)
+                if (placeVines)
                 {
                     tileBelow.TileType = Type;
                     tileBelow.HasTile = true;
