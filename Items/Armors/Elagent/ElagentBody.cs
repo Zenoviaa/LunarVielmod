@@ -27,7 +27,7 @@ namespace Stellamod.Items.Armors.Elagent
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.Orange; // The rarity of the item
-            Item.defense = 9; // The amount of defense the item will give when equipped
+            Item.defense = 4; // The amount of defense the item will give when equipped
         }
         public override void UpdateEquip(Player player)
         {
@@ -39,9 +39,9 @@ namespace Stellamod.Items.Armors.Elagent
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<StarSilk>(), 9);
             recipe.AddIngredient(ItemType<PearlescentScrap>(), 9);
-            recipe.AddIngredient(ItemID.Feather, 12);
+            recipe.AddIngredient(ItemID.Cloud, 12);
             recipe.AddIngredient(ItemID.Bone, 16);
-            recipe.AddTile(TileID.SkyMill);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
 
         }
