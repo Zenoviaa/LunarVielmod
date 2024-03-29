@@ -49,7 +49,7 @@ namespace Stellamod.Items.Armors.Alsis
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
-
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
 			recipe.Register();
 		}
