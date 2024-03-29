@@ -420,7 +420,7 @@ namespace Stellamod
             }
             if (DetonationRune)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(7))
                 {
                     var EntitySource = Player.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
@@ -432,7 +432,7 @@ namespace Stellamod
                 if (Main.rand.NextBool(7))
                 {
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage / 4, 1, Player.whoAmI, 0, 0);
 
                 }
             }

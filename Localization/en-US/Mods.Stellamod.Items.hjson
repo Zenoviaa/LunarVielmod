@@ -240,7 +240,7 @@ HuntrianBoots: {
 		'''
 		Corroded Woods
 		+5% Damage!
-		+10 Health
+		-10 Health
 		+7 Critical Strike Chance!
 		'''
 }

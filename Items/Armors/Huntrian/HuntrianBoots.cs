@@ -36,7 +36,7 @@ namespace Stellamod.Items.Armors.Huntrian
 		public override void UpdateEquip(Player player)
 		{
 		
-			player.statLifeMax2 += 10;
+			player.statLifeMax2 -= 10;
 			player.GetDamage(DamageClass.Generic) *= 1.05f;
 			player.GetCritChance(DamageClass.Generic) += 7f;
 
