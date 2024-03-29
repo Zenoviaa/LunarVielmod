@@ -220,7 +220,8 @@ namespace Stellamod.NPCs.Morrow
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bomb, 5, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fireblossom, 3, 3, 5));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 3, 5));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Morrowshroom>(), 2, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowChestKey>(), 3, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OvermorrowWood>(), 1, 1, 5));
 		}
 		public override void HitEffect(NPC.HitInfo hit)

@@ -15,6 +15,7 @@ namespace Stellamod.NPCs.Town
 {
     internal class AlcadSpawnSystem : ModSystem
     {
+        public static int SpawnDelay = 10;
         public static Point AlcadTile;
         public static Point UnderworldRuinsTile;
         public static Point LittleWitchTownTile;
@@ -79,7 +80,31 @@ namespace Stellamod.NPCs.Town
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
-            for(int i = 0; i < Main.maxPlayers; i++)
+            if (TargetBossAlive())
+            {
+                SpawnDelay = 10;
+            }
+
+            SpawnDelay--;
+            if(SpawnDelay <= 0)
+            {
+                Spawn();
+            }
+        }
+
+        private bool TargetBossAlive()
+        {
+            return 
+                NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
+                NPC.AnyNPCs(NPCID.WallofFlesh);
+
+        }
+
+        private void Spawn()
+        {
+            for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
                 if (!player.active)
@@ -109,8 +134,8 @@ namespace Stellamod.NPCs.Town
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
-                    NPC.NewNPC(player.GetSource_FromThis(), 
-                        (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y,
                         ModContent.NPCType<UnderworldRift>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
@@ -142,14 +167,15 @@ namespace Stellamod.NPCs.Town
                         (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
                         ModContent.NPCType<Gia>());
                     NetMessage.SendData(MessageID.SyncNPC);
-                } 
+                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Azzuria>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)AzzuriaSpawnWorld.X, (int)AzzuriaSpawnWorld.Y,
                         ModContent.NPCType<Azzuria>());
                     NetMessage.SendData(MessageID.SyncNPC);
-                } else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
+                }
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
@@ -158,7 +184,6 @@ namespace Stellamod.NPCs.Town
                 }
             }
         }
-
         public override void PostUpdateNPCs()
         {
             if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
