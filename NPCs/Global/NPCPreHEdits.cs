@@ -220,9 +220,9 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.Creeper)
 			{
-				npc.life = 550;
-				npc.lifeMax = 550;
-				npc.damage = 30;		
+				npc.life = 575;
+				npc.lifeMax = 575;
+				npc.damage = 50;		
 			}
 
 			if (npc.type == NPCID.EaterofWorldsTail)
