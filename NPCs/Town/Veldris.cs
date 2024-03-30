@@ -53,7 +53,7 @@ namespace Stellamod.NPCs.Town
 			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
-
+			NPCID.Sets.NoTownNPCHappiness[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
