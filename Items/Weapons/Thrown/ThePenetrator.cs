@@ -44,10 +44,12 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void AddRecipes()
         {
-            CreateRecipe(1)
-                .AddIngredient(ItemID.MoltenFury, 1)
+            CreateRecipe()
+                .AddIngredient(ItemID.HallowedRepeater, 1)
                 .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
-                .AddCondition(CustomConditions.SewingKitEquipped)
+                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }

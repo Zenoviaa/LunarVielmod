@@ -25,13 +25,15 @@ namespace Stellamod.Items.Accessories.Players
 
 		// The fields related to the dash accessory
 		public bool DashAccessoryEquipped;
+		public bool OneDashAccessoryEquipped;
 		public int DashDelay = 0; // frames remaining till we can dash again
 		public int DashTimer = 0; // frames remaining in the dash
 
 		public override void ResetEffects()
 		{
-			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-			DashAccessoryEquipped = false;
+			OneDashAccessoryEquipped = false;
+            // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
+            DashAccessoryEquipped = false;
 
 			// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
 			// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash

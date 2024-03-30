@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;
 using Terraria;
@@ -194,9 +195,15 @@ namespace Stellamod.Items.Accessories
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 		}
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
+        public override bool CanEquipAccessory(Player player, int slot, bool modded)
+        {
+            return !player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped; 
+        }
+    
+        public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<LittleScissorDashPlayer>().DashAccessoryEquipped = true;
+			player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
+            player.GetModPlayer<LittleScissorDashPlayer>().DashAccessoryEquipped = true;
 		}
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

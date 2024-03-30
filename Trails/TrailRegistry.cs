@@ -33,6 +33,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> VortexTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/VortexTrail");
         public static Asset<Texture2D> WhispyTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhispyTrail");
         public static Asset<Texture2D> CorkscrewTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CorkscrewTrail");
+        public static Asset<Texture2D> TwistingTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TwistingTrail");
         public static Asset<Texture2D> FadedStreak => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/FadedStreak");
         public static Asset<Texture2D> TerraTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TerraTrail");
         public static Asset<Texture2D> DNATrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/DNAHelixTrail");

@@ -11,9 +11,7 @@ namespace Stellamod.Trails
     {
         #region Fields And Properities
         private static RenderTarget2D PixelRenderTarget;
-
         private static List<IPixelPrimitiveDrawer> PixelPrimDrawersList = new();
-
         private Vector2 PreviousScreenSize;
         #endregion
 
@@ -22,6 +20,7 @@ namespace Stellamod.Trails
         {
             On_Main.CheckMonoliths += DrawToCustomRenderTargets;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRenderTarget;
+
             ResizeRenderTarget(true);
         }
 
@@ -55,6 +54,14 @@ namespace Stellamod.Trails
                 Projectile projectile = Main.projectile[i];
                 // If the projectile is active, a mod projectile, and uses our interface,
                 if (projectile.active && projectile.ModProjectile != null && projectile.ModProjectile is IPixelPrimitiveDrawer pixelPrimitiveProjectile)
+                    // Add it to the list of prims to draw this frame.
+                    PixelPrimDrawersList.Add(pixelPrimitiveProjectile);
+            }
+            for (int i = 0; i < Main.npc.Length; i++)
+            {
+                NPC npc = Main.npc[i];
+                // If the projectile is active, a mod projectile, and uses our interface,
+                if (npc.active && npc.ModNPC != null && npc.ModNPC is IPixelPrimitiveDrawer pixelPrimitiveProjectile)
                     // Add it to the list of prims to draw this frame.
                     PixelPrimDrawersList.Add(pixelPrimitiveProjectile);
             }
