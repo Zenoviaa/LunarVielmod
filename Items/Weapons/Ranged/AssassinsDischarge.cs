@@ -11,7 +11,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 27;
+            Item.damage = 13;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Ranged;
             Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 36f;
+            Item.shootSpeed = 26f;
             Item.useAmmo = AmmoID.Arrow;
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 28;
@@ -31,16 +31,11 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
-       
-
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-20f, 0f);
+            return new Vector2(-2f, 0f);
         }
 
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
 
-        }
     }
 }

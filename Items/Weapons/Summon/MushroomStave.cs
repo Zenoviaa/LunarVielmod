@@ -84,11 +84,9 @@ namespace Stellamod.Items.Weapons.Summon
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddTile(TileID.Anvils);
 
 
-            recipe.AddIngredient(ItemID.Wood, 10);
-            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 12);
             recipe.Register();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
