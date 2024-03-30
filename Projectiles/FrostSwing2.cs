@@ -60,7 +60,10 @@ namespace Stellamod.Projectiles
 			{
 				Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.AliceBlue, 0.5f).noGravity = true;
 			}
-
+			for (int i = 0; i < 8; i++)
+			{
+				Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.Red, 0.5f).noGravity = true;
+			}
 			base.OnHitNPC(target, hit, damageDone);
 
 		}
