@@ -1066,11 +1066,11 @@ EnergizedNail: {
 }
 
 FrostSwing: {
-	DisplayName: Frost Swing
+	DisplayName: Twin Witch's Mistletoe
 	Tooltip:
 		'''
-		Shoots one bone bolt to swirl and kill your enemies after attacking!
-		Hitting foes with the melee swing builds damage towards the swing of the weapon
+		Passed down for generations through the family of elite sorcerers of the Royal Capital, given to Veldris
+		It is your turn to wield this beauty.
 		'''
 }
 
