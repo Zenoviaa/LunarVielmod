@@ -19,10 +19,17 @@ namespace Stellamod.Items.Weapons.Summon
     {
 		public bool lifesteal;
 		public bool isMagic;
+		public float cooldown;
         public override void ResetEffects()
         {
             base.ResetEffects();
 			lifesteal = false;
+        }
+
+        public override void UpdateEquips()
+        {
+            base.UpdateEquips();
+			cooldown--;
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -32,10 +39,11 @@ namespace Stellamod.Items.Weapons.Summon
             {
 				float distanceToTarget = Vector2.Distance(Player.position, target.position);
 				//10 tile radius
-				if(distanceToTarget <= 320)
+				if(distanceToTarget <= 320 && Main.rand.NextBool(6) && cooldown <= 0)
                 {
-					//Life steal for 5% of the damage
-					float healFactor = damageDone * 0.08f;
+					cooldown = 30;
+                    //Life steal for 5% of the damage
+                    float healFactor = damageDone * 0.08f;
 					int healthToHeal = (int)healFactor;
 					healthToHeal = Math.Clamp(healthToHeal, 1, 20);
 					Player.Heal(healthToHeal);

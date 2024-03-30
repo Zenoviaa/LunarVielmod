@@ -12,13 +12,13 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
-		public static void DrawCircle(Vector2 center, float radius, Vector2[] circlePos)
+		public static void DrawCircle(Vector2 center, float radius, Vector2[] circlePos, float offset = 0)
 		{
             Vector2 startDirection = Vector2.UnitY;
             for (int i = 0; i < circlePos.Length; i++)
             {
                 float circleProgress = i / (float)(circlePos.Length);
-                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2);
+                float radiansToRotateBy = (circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2)) + offset;
                 circlePos[i] = center + startDirection.RotatedBy(radiansToRotateBy) * radius;
             }
         }
