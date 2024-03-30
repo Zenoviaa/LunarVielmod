@@ -8,8 +8,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class FrostSwing : ModItem
+    public class FrostSwing : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 26;
+			Item.mana = 6;
+			Item.knockBack = 12;
+		}
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Frost Swing");
@@ -18,20 +30,20 @@ namespace Stellamod.Items.Weapons.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 36;
+			Item.damage = 16;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
-			Item.mana = 2;
+			Item.mana = 3;
 			Item.height = 32;
 			Item.useTime = 23;
 			Item.useAnimation = 23;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.knockBack = 5;
+			Item.knockBack = 7;
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = false;
 			Item.value = Item.sellPrice(0, 0, 0, 20);
-			Item.shoot = ModContent.ProjectileType<FrostSwProj>();
+			Item.shoot = ModContent.ProjectileType<FrostySwing>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
@@ -40,10 +52,10 @@ namespace Stellamod.Items.Weapons.Melee
 		{
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
 
-			if (Item.shoot == ModContent.ProjectileType<FrostSwProj>())
-				Item.shoot = ModContent.ProjectileType<FrostSwProj3>();
+			if (Item.shoot == ModContent.ProjectileType<FrostySwing>())
+				Item.shoot = ModContent.ProjectileType<FrostySwing2>();
 			else
-				Item.shoot = ModContent.ProjectileType<FrostSwProj>();
+				Item.shoot = ModContent.ProjectileType<FrostySwing>();
 			
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
