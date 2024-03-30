@@ -140,22 +140,7 @@ namespace Stellamod.Projectiles.Thrown
         private Vector2 DrawOffset;
         private float alphaCounter = 2;
         private float counter = 3;
-        public override void PostDraw(Color lightColor)
-        {
-            if (Projectile.spriteDirection != 1)
-            {
-                DrawOffset.X = Projectile.Center.X - 22;
-                DrawOffset.Y = Projectile.Center.Y;
-            }
-            else
-            {
-                DrawOffset.X = Projectile.Center.X - 30;
-                DrawOffset.Y = Projectile.Center.Y;
-            }
-            Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
-            Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, DrawOffset - Main.screenPosition, null, new Color((int)(35f * alphaCounter), (int)(85f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(200, 200), 0.07f * (counter + 0.6f), SpriteEffects.None, 0f);
-        }
+       
     }
 }
 
