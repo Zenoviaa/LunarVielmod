@@ -240,7 +240,7 @@ HuntrianBoots: {
 		'''
 		Corroded Woods
 		+5% Damage!
-		+10 Health
+		-10 Health
 		+7 Critical Strike Chance!
 		'''
 }
@@ -587,18 +587,13 @@ Morrowshroom: {
 }
 
 MorrowVine: {
-	DisplayName: Fabled Vine
-	Tooltip:
-		'''
-		A useful piece of string!
-		From some Fabled warriors of the morrow
-		Used in many recipes for weapons, bags and such
-		'''
+	DisplayName: Spring Vine
+	Tooltip: A vine that grows underground and populates the world
 }
 
 Mushroom: {
-	DisplayName: Mushroomer
-	Tooltip: Ew a mushroom, for planting probably?
+	DisplayName: Spring mushroom
+	Tooltip: Mushrooms found underground
 }
 
 Stick: {
@@ -679,12 +674,11 @@ PearlescentScrap: {
 }
 
 RippedFabric: {
-	DisplayName: Ripped Fabric
+	DisplayName: Quest Leaf
 	Tooltip:
 		'''
-		From the knowledge of the Gilded to robes on enemies, it's wonderous!
-		A very magical material, although...
-		I feel like the item calls my name...
+		Gathered from doing quests from Merena, Gia and Zui!
+		Do some quests to gather more 
 		'''
 }
 
@@ -752,8 +746,8 @@ Bench: {
 }
 
 BroochesTableI: {
-	DisplayName: Brooches Jewelry Station
-	Tooltip: This bench allows you to craft exquisite brooches and combine them!
+	DisplayName: Rune and Brooch Jewelry Station
+	Tooltip: This bench allows you to craft exquisite brooches and runes!
 }
 
 CathediteBlock: {
@@ -1072,11 +1066,11 @@ EnergizedNail: {
 }
 
 FrostSwing: {
-	DisplayName: Frost Swing
+	DisplayName: Twin Witch's Mistletoe
 	Tooltip:
 		'''
-		Shoots one bone bolt to swirl and kill your enemies after attacking!
-		Hitting foes with the melee swing builds damage towards the swing of the weapon
+		Passed down for generations through the family of elite sorcerers of the Royal Capital, given to Veldris
+		It is your turn to wield this beauty.
 		'''
 }
 
@@ -1935,7 +1929,11 @@ GiftOfLife: {
 
 LeatherGlove: {
 	DisplayName: Leather Glove
-	Tooltip: Increases throwing damage and throwing velocity.
+	Tooltip:
+		'''
+		10% increased throwing damage
+		Increased throwing velocity
+		'''
 }
 
 LunarBand: {
@@ -2134,18 +2132,26 @@ HeavyMetalLegs: {
 }
 
 LeatherBody: {
-	DisplayName: Leather Body
-	Tooltip: " Increases throwing damage by 25%"
+	DisplayName: Leather Armor
+	Tooltip: 4% increased ranged crit chance
 }
 
 LeatherHead: {
 	DisplayName: Leather Head
-	Tooltip: Increases throwing critical strike chance by 4%
+	Tooltip:
+		'''
+		4% increased ranged crit chance
+		10% increased ranged damage
+		'''
 }
 
 LeatherLegs: {
 	DisplayName: Leather Legs
-	Tooltip: Increases movement speed by 10%
+	Tooltip:
+		'''
+		4% increased ranged crit chance
+		10% increased movement speed
+		'''
 }
 
 ShadeWraithBody: {
@@ -2540,7 +2546,7 @@ Pericarditis: {
 
 ShadeHandTome: {
 	DisplayName: Shade Hand Tome
-	Tooltip: ""
+	Tooltip: Little small hands to tickle your enemies
 }
 
 StaffOFlame: {
@@ -2575,12 +2581,12 @@ TheDeafen: {
 
 TheShrieker: {
 	DisplayName: The Shrieker
-	Tooltip: Ow, my ears
+	Tooltip: Ow, my ears, but the damage...
 }
 
 TomeOfTheSingularity: {
 	DisplayName: Tome Of The Singularity
-	Tooltip: ""
+	Tooltip: A volley of fragments
 }
 
 TorrentialLance: {
@@ -2590,7 +2596,7 @@ TorrentialLance: {
 
 VoidsGrasp: {
 	DisplayName: Voids Grasp
-	Tooltip: ""
+	Tooltip: Summon a hand that will go out and tickle enemies :)
 }
 
 WintersStom: {
@@ -2685,7 +2691,7 @@ StarKeeper: {
 
 SwordOfGlactia: {
 	DisplayName: Sword Of Glactia
-	Tooltip: ""
+	Tooltip: Shoot little beams of swords
 }
 
 SwordOfTheJungleGoddess: {
@@ -2720,21 +2726,21 @@ BrokenWrath: {
 
 CloudBow: {
 	DisplayName: Cloud Bow
-	Tooltip: ""
+	Tooltip: Its so floaty while shooting some cloud shots
 }
 
 Crysalizer: {
 	DisplayName: Crysalizer
-	Tooltip: Shoot enemies with a crystallized shot!
+	Tooltip: Shoot enemies with  3-round crystallized shots!
 }
 
 DeathShot: {
 	DisplayName: Death Shot
-	Tooltip: ""
+	Tooltip: A sniper for a the skull emoji.
 }
 
 DivineSniper: {
-	DisplayName: Divine Sniper
+	DisplayName: Divine Cloud Shotgun
 	Tooltip: It really isnt all that divine
 }
 
@@ -2805,12 +2811,12 @@ SolarSpiner: {
 
 TecnoBlaster: {
 	DisplayName: Techno Blaster
-	Tooltip: ""
+	Tooltip: Get technical
 }
 
 TheRedSkull: {
 	DisplayName: The Red Skull
-	Tooltip: ""
+	Tooltip: Another skull emoji.
 }
 
 Tociflare: {
@@ -2860,7 +2866,7 @@ IrradiatedCreeperStaff: {
 
 IvyakenStaff: {
 	DisplayName: Ivyaken Staff
-	Tooltip: ""
+	Tooltip: Summons a small little guy to fight for you
 }
 
 JellyStaff: {
@@ -2910,7 +2916,7 @@ Boralius: {
 
 Bricks: {
 	DisplayName: Bricks
-	Tooltip: ""
+	Tooltip: Bonk
 }
 
 Cactius: {
@@ -3868,7 +3874,7 @@ OceanRuneI: {
 
 Starvast: {
 	DisplayName: Starvast
-	Tooltip: Hit enemies will explode with homing stars
+	Tooltip: Summons stars that orbit around you and seek out enemies!
 }
 
 SawtoothNecklace: {
@@ -5808,6 +5814,7 @@ StoningFlyBroochA: {
 		'''
 		Jump extra high and fast acceleration!
 		No fall damage!
+		Glow in the dark!
 		+10% Damage
 		30% Increased Movement speed!
 		'''
@@ -6182,4 +6189,23 @@ PureHeart: {
 		It overflows with her love and cosmic power...
 		But, why did you kill her? :(
 		'''
+}
+
+MushroomGreatbow: {
+	Tooltip: ""
+	DisplayName: Mushroom Greatbow
+}
+
+Hookarama: {
+	DisplayName: Hookarama
+	Tooltip: ""
+}
+
+MushyCard: {
+	Tooltip:
+		'''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+	DisplayName: Mushy Card
 }

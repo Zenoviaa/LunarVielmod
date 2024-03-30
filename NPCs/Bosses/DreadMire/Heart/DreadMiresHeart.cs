@@ -45,7 +45,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
             NPC.noGravity = true;
             NPC.lifeMax = 800;
             NPC.defense = 10;
-            NPC.damage = 40;
+            NPC.damage = 60;
             NPC.value = 65f;
             NPC.knockBackResist = 0f;
             NPC.width = 60;
@@ -241,9 +241,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                 {
                                     offsetAngle = (startAngle + deltaAngle * (i + i * i) / 2f) + 32f * i + offsetRandom;
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(Math.Sin(offsetAngle) * Speed), (float)(Math.Cos(offsetAngle) * Speed),
-                                        ModContent.ProjectileType<DreadMiresHeartEye>(), 12, 0, Owner: Main.myPlayer);
+                                        ModContent.ProjectileType<DreadMiresHeartEye>(), 16, 0, Owner: Main.myPlayer);
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center.X, NPC.Center.Y, (float)(-Math.Sin(offsetAngle) * Speed), (float)(-Math.Cos(offsetAngle) * Speed),
-                                        ModContent.ProjectileType<DreadMiresHeartEye>(), 12, 0, Owner: Main.myPlayer);
+                                        ModContent.ProjectileType<DreadMiresHeartEye>(), 16, 0, Owner: Main.myPlayer);
                                 }
                             }
                         }
@@ -408,7 +408,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                                 {
                                     float offsetX = Main.rand.Next(-200, 200) * 0.01f;
                                     float offsetY = Main.rand.Next(-200, 200) * 0.01f;
-                                    int damage = Main.expertMode ? 8 : 12;
+                                    int damage = Main.expertMode ? 14 : 20;
                                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, 
                                         ModContent.ProjectileType<DreadMiresHeartVomit1>(), damage, 1, Owner: Main.myPlayer);
                                 }

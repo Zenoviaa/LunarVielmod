@@ -225,7 +225,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ExploreMorrowedVillage>(), 1);
-
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			SendQuestPacket();
@@ -251,7 +251,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
-
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
@@ -264,6 +264,7 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"Woa, the energy is pouring out of this one with seamless orange stripes! How did you even get your hands on this?? Either way thanks, now I just need 100 dust bags, it helps with the brewery.";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Give100DustBags>(), 1);
+			
 		}
 
 		private void Quest_DustBagsComplete()
@@ -277,7 +278,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
-
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
@@ -291,6 +292,7 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"Neat neat, that shouldn't have been too bad for you I think. Next I need some magical paper, there are magical creatures all over the world of hardmode who drop these, most of them being rare and unique creatures, go get em'!";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeMagicPaper>(), 1);
+			
 		}
 		
 		private void Quest_MagicPaperComplete()
@@ -304,7 +306,7 @@ namespace Stellamod.NPCs.Town
 
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
-
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(20));
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);
@@ -325,8 +327,8 @@ namespace Stellamod.NPCs.Town
 		{
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"THANK YOU THANK YOU THANK YOU, omg this is the best day of my life! I never knew this actually existed! Were the rumors true??! dsfjhnbhfribdhs- Nevermind who cares anymore, we can both be the best mages ever! I open my shop to you and here, a token of my graditude. ";
-			
-
+			var entitySource = NPC.GetSource_GiftOrReward();
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(100));
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.KillVerliaCompleted, -1);
 			NPC.SetEventFlagCleared(ref MerenaQuestSystem.ExploreMorrowedVillageCompleted, -1);

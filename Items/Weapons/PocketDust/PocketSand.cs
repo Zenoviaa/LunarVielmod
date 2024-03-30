@@ -43,12 +43,11 @@ namespace Stellamod.Items.Weapons.PocketDust
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.SandBlock, 100);
-			recipe.AddIngredient(ItemID.FallenStar, 15);
+			recipe.AddIngredient(ItemID.FallenStar, 1);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 100);
 			recipe.AddIngredient(ItemID.Silk, 5);
 		}
 

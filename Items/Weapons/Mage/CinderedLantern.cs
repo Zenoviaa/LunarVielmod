@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 16;
+            Item.damage = 13;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.HoldUp;
@@ -35,7 +35,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<LampShot>();
             Item.shootSpeed = 10f;
-            Item.mana = 8;
+            Item.mana = 17;
             Item.useAnimation = 7;
             Item.useTime = 7;
             Item.consumeAmmoOnLastShotOnly = true;

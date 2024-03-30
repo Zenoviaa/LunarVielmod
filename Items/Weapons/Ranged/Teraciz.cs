@@ -60,7 +60,6 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ItemID.HellstoneBar, 12);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 20);
 			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);

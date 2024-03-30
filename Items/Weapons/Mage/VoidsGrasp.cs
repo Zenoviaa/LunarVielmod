@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 24;
+            Item.damage = 36;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 5);
+            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
             recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
             recipe.AddIngredient(ModContent.ItemType<ShadeHandTome>(), 1);
             recipe.AddTile(TileID.WorkBenches);

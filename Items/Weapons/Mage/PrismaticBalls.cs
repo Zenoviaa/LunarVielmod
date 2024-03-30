@@ -51,6 +51,7 @@ namespace Stellamod.Items.Weapons.Mage
 
 
 			Recipe recipe2 = CreateRecipe();
+			recipe2.AddIngredient(ItemID.Ectoplasm, 10);
 			recipe2.AddIngredient(ItemID.RainbowRod, 1);
 			recipe2.AddTile(TileID.MythrilAnvil);
 			recipe2.Register();

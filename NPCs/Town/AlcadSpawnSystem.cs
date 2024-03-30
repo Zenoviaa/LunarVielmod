@@ -15,13 +15,16 @@ namespace Stellamod.NPCs.Town
 {
     internal class AlcadSpawnSystem : ModSystem
     {
+        public static int SpawnDelay = 10;
         public static Point AlcadTile;
         public static Point UnderworldRuinsTile;
         public static Point LittleWitchTownTile;
         public static Point MechanicsTownTile;
         public static Point LabTile;
         public static Point GiaTile;
+        public static Point VelTile;
         public static Point IlluriaTile;
+        public static Point FableTile;
 
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
@@ -32,7 +35,9 @@ namespace Stellamod.NPCs.Town
         public static Point LabSpawnTileOffset => new Point(39, -20);
         public static Point GiaSpawnTileOffset => new Point(14, -7);
         public static Point AzzuriaSpawnTileOffset => new Point(134, -224);
+        public static Point BORDOCSpawnTileOffset => new Point(94, -380);
 
+        public static Point VelSpawnTileOffset => new Point(18, -23);
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -43,8 +48,40 @@ namespace Stellamod.NPCs.Town
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 AzzuriaSpawnWorld => IlluriaTile.ToWorldCoordinates() + AzzuriaSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 BORDOCSpawnWorld => FableTile.ToWorldCoordinates() + BORDOCSpawnTileOffset.ToWorldCoordinates();
+
+        public static Vector2 VelSpawnWorld => VelTile.ToWorldCoordinates() + VelSpawnTileOffset.ToWorldCoordinates();
 
         public static bool TownedGia;
+        public override void SaveWorldData(TagCompound tag)
+        {
+            base.SaveWorldData(tag);
+            tag["AlcadTile"] = AlcadTile;
+            tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
+            tag["LittleWitchTownTile"] = LittleWitchTownTile;
+            tag["MechanicsTownTile"] = MechanicsTownTile;
+            tag["LabTile"] = LabTile;
+            tag["GiaTile"] = GiaTile;
+            tag["TownedGia"] = TownedGia;
+            tag["IlluriaTile"] = IlluriaTile;
+            tag["VelTile"] = VelTile;
+            tag["FableTile"] = FableTile;
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            base.LoadWorldData(tag);
+            AlcadTile = tag.Get<Point>("AlcadTile");
+            UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
+            LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
+            MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
+            LabTile = tag.Get<Point>("LabTile");
+            GiaTile = tag.Get<Point>("GiaTile");
+            TownedGia = tag.GetBool("TownedGia");
+            IlluriaTile = tag.Get<Point>("IlluriaTile");
+            VelTile = tag.Get<Point>("VelTile");
+            FableTile = tag.Get<Point>("FableTile");
+        }
 
         public override void NetSend(BinaryWriter writer)
         {
@@ -56,6 +93,8 @@ namespace Stellamod.NPCs.Town
             writer.Write(TownedGia);
             writer.WriteVector2(GiaTile.ToVector2());
             writer.WriteVector2(IlluriaTile.ToVector2());
+            writer.WriteVector2(FableTile.ToVector2());
+            writer.WriteVector2(VelTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -68,6 +107,8 @@ namespace Stellamod.NPCs.Town
             TownedGia = reader.ReadBoolean();
             GiaTile = reader.ReadVector2().ToPoint();
             IlluriaTile = reader.ReadVector2().ToPoint();
+            FableTile = reader.ReadVector2().ToPoint();
+            VelTile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -75,7 +116,31 @@ namespace Stellamod.NPCs.Town
         public override void PostUpdateWorld()
         {
             base.PostUpdateWorld();
-            for(int i = 0; i < Main.maxPlayers; i++)
+            if (TargetBossAlive())
+            {
+                SpawnDelay = 10;
+            }
+
+            SpawnDelay--;
+            if(SpawnDelay <= 0)
+            {
+                Spawn();
+            }
+        }
+
+        private bool TargetBossAlive()
+        {
+            return 
+                NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
+                NPC.AnyNPCs(NPCID.WallofFlesh);
+
+        }
+
+        private void Spawn()
+        {
+            for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player player = Main.player[i];
                 if (!player.active)
@@ -105,8 +170,8 @@ namespace Stellamod.NPCs.Town
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
-                    NPC.NewNPC(player.GetSource_FromThis(), 
-                        (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y,
                         ModContent.NPCType<UnderworldRift>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
@@ -138,7 +203,7 @@ namespace Stellamod.NPCs.Town
                         (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
                         ModContent.NPCType<Gia>());
                     NetMessage.SendData(MessageID.SyncNPC);
-                } 
+                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Azzuria>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -146,9 +211,24 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Azzuria>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Veldris>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)VelSpawnWorld.X, (int)VelSpawnWorld.Y,
+                        ModContent.NPCType<Veldris>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Bordoc>()) && Main.hardMode)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
+                        ModContent.NPCType<Bordoc>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
             }
         }
-
         public override void PostUpdateNPCs()
         {
             if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
@@ -157,30 +237,6 @@ namespace Stellamod.NPCs.Town
             }
         }
 
-        public override void SaveWorldData(TagCompound tag)
-        {
-            base.SaveWorldData(tag);
-            tag["AlcadTile"] = AlcadTile;
-            tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
-            tag["LittleWitchTownTile"] = LittleWitchTownTile;
-            tag["MechanicsTownTile"] = MechanicsTownTile;
-            tag["LabTile"] = LabTile;
-            tag["GiaTile"] = GiaTile;
-            tag["TownedGia"] = TownedGia;
-            tag["IlluriaTile"] = IlluriaTile;
-        }
 
-        public override void LoadWorldData(TagCompound tag)
-        {
-            base.LoadWorldData(tag);
-            AlcadTile = tag.Get<Point>("AlcadTile");
-            UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
-            LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
-            MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
-            LabTile = tag.Get<Point>("LabTile");
-            GiaTile = tag.Get<Point>("GiaTile");
-            TownedGia = tag.GetBool("TownedGia");
-            IlluriaTile = tag.Get<Point>("IlluriaTile");
-        }
     }
 }

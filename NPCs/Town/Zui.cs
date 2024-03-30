@@ -27,6 +27,7 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.Items.Armors.Vanity.Nyxia;
+using Terraria.DataStructures;
 
 namespace Stellamod.NPCs.Town
 {
@@ -259,6 +260,14 @@ namespace Stellamod.NPCs.Town
 
 			ZuiQuestSystem.QuestsCompleted += 1;
 
+			if (ZuiQuestSystem.QuestsCompleted == 1)
+			{
+
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CanOfLeaves>(), 1);
+
+			}
+
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -298,7 +307,7 @@ namespace Stellamod.NPCs.Town
 
 			}
 				ZuiQuestSystem.QuestsCompleted += 1;
-
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -341,9 +350,11 @@ namespace Stellamod.NPCs.Town
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 			Main.npcChatText = $"Damn, 10 quests? You're on a role you know! I've got some more items for you in my shop actually, I went travelling and Sirestias gave me a few items! I'll give you some more items if you can do 10 more!";
 
+            var entitySource = NPC.GetSource_GiftOrReward();
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Hookarama>(), 1);
 
-			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
-			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
+            //Setting all previous quests to be complete, so it's backwards compatible with the old version.
+            NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 			ZuiQuestSystem.QuestsCompleted += 1;
@@ -363,6 +374,9 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
+
+
+
 			ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
@@ -374,14 +388,20 @@ namespace Stellamod.NPCs.Town
 			Main.npcChatText = $"My graditude is of the utmost thanks, in return you can have anything in my shop! And I'll help you out personally sometime if you need me ;p ";
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+			ZuiQuestSystem.QuestsCompleted += 1;
+			if (ZuiQuestSystem.QuestsCompleted == 30)
+			{
 
+				var entitySource = NPC.GetSource_GiftOrReward();
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+			}
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TenQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
-			ZuiQuestSystem.QuestsCompleted += 1;
+			
             SendQuestPacket();
         }
 
@@ -560,14 +580,14 @@ namespace Stellamod.NPCs.Town
 
 
 			.Add<DriveConstruct>(ZuiQuestSystem.ShopCondition6)
-			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
-			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
+			.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = Item.buyPrice(gold: 15) }, (ZuiQuestSystem.ShopCondition6))
+			.Add(new Item(ItemID.CloudinaBalloon) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition6))
 			.Add(new Item(ItemID.Gladius) { shopCustomPrice = Item.buyPrice(gold: 5) }, (ZuiQuestSystem.ShopCondition6))
 			//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
 
 			.Add<OnionOfUselessness>(ZuiQuestSystem.ShopCondition10)
-			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 25) }, (ZuiQuestSystem.ShopCondition10))
-			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 40) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.BundleofBalloons) { shopCustomPrice = Item.buyPrice(gold: 65) }, (ZuiQuestSystem.ShopCondition10))
+			.Add(new Item(ItemID.CobaltShield) { shopCustomPrice = Item.buyPrice(gold: 80) }, (ZuiQuestSystem.ShopCondition10))
 			.Add(new Item(ItemID.Obsidian) { shopCustomPrice = Item.buyPrice(silver: 4) }, (ZuiQuestSystem.ShopCondition10))
 
 			.Add<OnionOfSight>(ZuiQuestSystem.ShopCondition20)

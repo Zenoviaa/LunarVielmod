@@ -72,7 +72,7 @@ namespace Stellamod.Items.Armors.Scrappy
             recipe.AddIngredient(ModContent.ItemType<ArmorDrive>(), 8);
             recipe.AddIngredient(ModContent.ItemType<BrokenTech>(), 10);
             recipe.AddIngredient(ModContent.ItemType<DriveConstruct>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ItemID.Ectoplasm, 5);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 10);
 

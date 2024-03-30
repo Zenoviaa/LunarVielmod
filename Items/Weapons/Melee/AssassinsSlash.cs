@@ -23,14 +23,14 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 33;
+            Item.damage = 16;
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 0, 16, 0);
+            Item.value = Item.buyPrice(0, 5, 0, 0);
             Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
@@ -51,7 +51,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             if (player.altFunctionUse == 2)
             {
-                if (player.GetModPlayer<MyPlayer>().AssassinsSlashnpc != null && Hits == 7)
+                if (player.GetModPlayer<MyPlayer>().AssassinsSlashnpc != null && Hits == 3)
                 {
                     player.GetModPlayer<MyPlayer>().AssassinsSlash = true;
                     Hits = 0;
@@ -67,15 +67,7 @@ namespace Stellamod.Items.Weapons.Melee
   
             return base.CanUseItem(player);
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 15);
-            recipe.AddIngredient(ItemID.Wood, 15);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
-        }
+        
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (Main.rand.NextBool(3))
@@ -86,15 +78,15 @@ namespace Stellamod.Items.Weapons.Melee
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Hits != 7)
+            if (Hits != 3)
             {
                 Hits += 1;
             }
 
-            if(Hits == 6)
+            if(Hits == 2)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashCharge"), player.position);              
-                Hits = 7;
+                Hits = 3;
             }
             player.GetModPlayer<MyPlayer>().AssassinsSlashnpc = target;
             player.AddBuff(ModContent.BuffType<AssassinsSlashBuff>(), 480);

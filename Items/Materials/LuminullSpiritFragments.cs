@@ -22,7 +22,7 @@ namespace Stellamod.Items.Materials
             Item.height = 28;
             Item.consumable = true;
             Item.rare = ItemRarityID.LightRed;
-            Item.maxStack = 999;
+            Item.maxStack = Item.CommonMaxStack;
         }
 
         public override void PostUpdate()

@@ -53,14 +53,13 @@ namespace Stellamod.Items.Weapons.Ranged
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.WoodenBow, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 4);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
-			recipe.AddIngredient(ItemID.Silk, 5);
+			
 		}
 	}
 }

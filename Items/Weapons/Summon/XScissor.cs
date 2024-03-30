@@ -55,8 +55,7 @@ namespace Stellamod.Items.Weapons.Summon
 			CreateRecipe()
 				.AddIngredient(ItemID.Excalibur, 1)
 				.AddIngredient(ModContent.ItemType<MiracleThread>(), 12)
-				.AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
-				.AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
+				.AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
 				.AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();

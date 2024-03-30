@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
@@ -18,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 9;
+            Item.damage = 40;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -32,13 +33,20 @@ namespace Stellamod.Items.Weapons.Mage
             Item.DamageType = DamageClass.Magic;
             Item.shoot = ModContent.ProjectileType<SGBolt>();
             Item.shootSpeed = 15f;
-            Item.mana = 6;
+            Item.mana = 20;
             Item.useAnimation = 50;
             Item.useTime = 50;
             Item.consumeAmmoOnLastShotOnly = true;
         }
 
-
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.Register();
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 55);
+            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 25);
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5f, 0f);

@@ -43,14 +43,14 @@ namespace Stellamod.Items.Quest.Zui
             Recipe recipe4 = CreateRecipe();
             recipe4.AddTile(ModContent.TileType<AlcaologyTable>());
             recipe4.AddIngredient(ModContent.ItemType<Cinderscrap>(), 30);
-            recipe4.AddIngredient(ModContent.ItemType<Stick>(), 30);
+            recipe4.AddIngredient(ModContent.ItemType<Stick>(), 5);
             recipe4.AddIngredient(ModContent.ItemType<CondensedDirt>(), 999);
             recipe4.AddIngredient(ModContent.ItemType<EmptyFlowerBag>(), 1);
             recipe4.Register();
 
             Recipe recipe5 = CreateRecipe();
             recipe5.AddTile(ModContent.TileType<AlcaologyTable>());
-            recipe5.AddIngredient(ModContent.ItemType<MorrowVine>(), 10);
+            recipe5.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
             recipe5.AddIngredient(ModContent.ItemType<Mushroom>(), 10);
             recipe5.AddIngredient(ModContent.ItemType<Morrowshroom>(), 10);
             recipe5.AddIngredient(ModContent.ItemType<EmptyFlowerBag>(), 1);

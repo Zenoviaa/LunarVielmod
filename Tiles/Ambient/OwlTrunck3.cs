@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -21,7 +22,7 @@ namespace Stellamod.Tiles.Ambient
             LocalizedText name = CreateMapEntryName();
 
             AddMapEntry(new Color(200, 200, 200), name);
+            RegisterItemDrop(ModContent.ItemType<Stick>());
         }
-
     }
 }

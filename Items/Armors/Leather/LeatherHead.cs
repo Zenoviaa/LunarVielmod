@@ -1,3 +1,4 @@
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -9,13 +10,6 @@ namespace Stellamod.Items.Armors.Leather
     [AutoloadEquip(EquipType.Head)]
     public class LeatherHead : ModItem
     {
-        public bool Spetalite = false;
-        public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Leather Hat");
-			// Tooltip.SetDefault("Increases throwing critical strike chance by 4%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -27,7 +21,8 @@ namespace Stellamod.Items.Armors.Leather
 
         public override void UpdateEquip(Player player)
         {
-            player.ThrownVelocity += 4;
+            player.GetCritChance(DamageClass.Ranged) += 4;
+            player.GetDamage(DamageClass.Ranged) += 0.1f;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -48,7 +43,8 @@ namespace Stellamod.Items.Armors.Leather
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 8);
+            recipe.AddIngredient(ItemID.Leather, 1);
+            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 4);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

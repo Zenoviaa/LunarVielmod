@@ -36,18 +36,23 @@ namespace Stellamod.Items.Accessories
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<Steali>(), 1);
-			recipe.AddIngredient(ItemID.SharkToothNecklace, 1);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 10);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 		}
 
+        public override bool CanEquipAccessory(Player player, int slot, bool modded)
+        {
+            return !player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped;
+        }
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 
-
-			player.GetModPlayer<DashPlayer2>().DashAccessoryEquipped = true;
+            player.GetModPlayer<DashPlayer>().OneDashAccessoryEquipped = true;
+            player.GetModPlayer<DashPlayer2>().DashAccessoryEquipped = true;
 			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
 			player.lifeRegen += 1;
 			player.GetDamage(DamageClass.Generic) *= 1.02f;

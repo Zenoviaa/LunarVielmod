@@ -423,7 +423,7 @@ namespace Stellamod
             }
             if (DetonationRune)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(7))
                 {
                     var EntitySource = Player.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
@@ -435,7 +435,7 @@ namespace Stellamod
                 if (Main.rand.NextBool(7))
                 {
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<RealityBolt>(), Player.HeldItem.damage / 4, 1, Player.whoAmI, 0, 0);
 
                 }
             }
@@ -447,18 +447,18 @@ namespace Stellamod
 			if (WindRune && !Player.HasBuff(ModContent.BuffType<GintzelSheildCD>()) && !Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
 			{
 
-				if (Main.rand.NextBool(4))
+				if (Main.rand.NextBool(3))
 				{
 					var EntitySource = Player.GetSource_FromThis();
 					Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
 					SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
-					Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 400);
+					Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 800);
 					WindRuneOn = true;
 
 				}
 			}
 
-			if (StealthRune && StealthTime >= 500)
+			if (StealthRune && StealthTime >= 1800)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StealthRune"), Player.position);
                 for (int m = 0; m < 20; m++)
@@ -2769,21 +2769,31 @@ namespace Stellamod
 
 			if (StealthRune)
 			{
-				if (StealthTime <= 500)
+				if (StealthTime <= 1800)
 				{
 					StealthTime++;
 				}
 				else
 				{
 					if (Main.rand.NextBool(5))
-					{
-						int dustnumber = Dust.NewDust(Player.position, Player.width, Player.height, DustID.Firework_Red, 0f, 0f, 150, Color.Gold, 1f);
-						Main.dust[dustnumber].velocity *= 0.3f;
-						Main.dust[dustnumber].noGravity = true;
-					}
-				}
+                    {
+                        int d = Dust.NewDust(Player.position, Player.width, Player.height,
+                                ModContent.DustType<GlowDust>(), newColor: Color.Red, Scale: 0.8f);
+                        Main.dust[d].noGravity = true;
+              
+						if (Main.rand.NextBool(5))
+						{
+                            Dust.NewDust(Player.position, Player.width, Player.height,
+                              ModContent.DustType<GunFlash>(), newColor: Color.Red, Scale: 0.8f);
 
-				Player.GetDamage(DamageClass.Generic) += StealthTime / 1500f;
+                        }
+                    }
+                }
+
+				float maxDamageIncrease = 0.33f;
+				float stealthProgress = StealthTime / 1800;
+				float damageIncrease = stealthProgress * maxDamageIncrease;
+				Player.GetDamage(DamageClass.Generic) += damageIncrease;
 			}
 
 			if (SpiritPendent && ZoneAbyss)

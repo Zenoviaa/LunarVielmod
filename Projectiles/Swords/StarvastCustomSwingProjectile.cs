@@ -1,221 +1,213 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Core.Utils;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Magic;
+using Stellamod.Trails;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    // ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
-    // This is great if you want to make melee weapons with complex swing behaviour
-    // Note that this projectile only covers 2 relatively simple swings, everything else is up to you
-    // Aside from the custom animation, the custom collision code in Colliding is very important to this weapon
     public class StarvastCustomSwingProjectile : ModProjectile
 	{
-		// We define some constants that determine the swing range of the sword
-		// Not that we use multipliers here since that simplifies the amount of tweaks for these interactions
-		// You could change the values or even replace them entirely, but they are tweaked with looks in mind
-		private const float SWINGRANGE = 1.67f * (float)Math.PI; // The angle a swing attack covers (300 deg)
-		private const float FIRSTHALFSWING = 0.45f; // How much of the swing happens before it reaches the target angle (in relation to swingRange)
-		private enum AttackType // Which attack is being performed
-		{
-			// Swings are normal sword swings that can be slightly aimed
-			// Swings goes through the full cycle of animations
-			Swing,
-			Swing_Up
-		}
+        private bool _init;
+        public override string Texture => "Stellamod/Items/Weapons/Melee/Starvast";
 
-		// Variables to keep track of during runtime
-		private ref float InitialAngle => ref Projectile.ai[1]; // Angle aimed in (with constraints)
-		private ref float Timer => ref Projectile.ai[2]; // Timer to keep track of progression of each stage
-		private ref float Progress => ref Projectile.localAI[1]; // Position of sword relative to initial angle
-		private ref float Size => ref Projectile.localAI[2]; // Size of sword
-		private AttackType CurrentAttack
-		{
-			get => (AttackType)Projectile.ai[0];
-			set => Projectile.ai[0] = (float)value;
-		}
+        ref float Dir => ref Projectile.ai[0];
+        ref float Timer => ref Projectile.ai[1];
 
+        //Swing Stats
+        public float SwingDistance;
+        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        public float holdOffset = 60f;
 
-		// We define timing functions for each stage, taking into account melee attack speed
-		// Note that you can change this to suit the need of your projectile
-		private float execTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-		public override string Texture => "Stellamod/Items/Weapons/Melee/Starvast"; // Use texture of item as projectile texture
-		private Player Owner => Main.player[Projectile.owner];
-		public override void SetStaticDefaults()
-		{
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
-		}
+        //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
+        public int EndSwingTime = 4 * Swing_Speed_Multiplier;
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 54; // Hitbox width of projectile
-			Projectile.height = 60; // Hitbox height of projectile
-			Projectile.friendly = true; // Projectile hits enemies
-			Projectile.timeLeft = 10000; // Time it takes for projectile to expire
-			Projectile.penetrate = -1; // Projectile pierces infinitely
-			Projectile.tileCollide = false; // Projectile does not collide with tiles
-			Projectile.usesLocalNPCImmunity = true; // Uses local immunity frames
-			Projectile.localNPCHitCooldown = -1; // We set this to -1 to make sure the projectile doesn't hit twice
-			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
-			Projectile.DamageType = DamageClass.Melee; // Projectile is a melee projectile
-		}
+        //This is for smoothin the trail
+        public const int Swing_Speed_Multiplier = 8;
 
-		public override void OnSpawn(IEntitySource source)
-		{
-			Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
-			float targetAngle = (Main.MouseWorld - Owner.MountedCenter).ToRotation();
-			if (Projectile.spriteDirection == 1)
-			{
-				// However, we limit the rangle of possible directions so it does not look too ridiculous
-				targetAngle = MathHelper.Clamp(targetAngle, (float)-Math.PI * 1 / 3, (float)Math.PI * 1 / 6);
-			}
-			else
-			{
-				if (targetAngle < 0)
-				{
-					targetAngle += 2 * (float)Math.PI; // This makes the range continuous for easier operations
-				}
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
+        }
 
-				targetAngle = MathHelper.Clamp(targetAngle, (float)Math.PI * 5 / 6, (float)Math.PI * 4 / 3);
-			}
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 64;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
 
-			InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection;
-		}
+            Projectile.scale = 1f;
 
-		public override void SendExtraAI(BinaryWriter writer)
-		{
-			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually. 
-			writer.Write((sbyte)Projectile.spriteDirection);
-		}
+            Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
+            Projectile.usesLocalNPCImmunity = true;
 
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
-			Projectile.spriteDirection = reader.ReadSByte();
-		}
+            //Multiplying by the thing so it's still 10 ticks
+            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+        }
 
-		public override void AI()
-		{
-			// Extend use animation until projectile is killed
-			Owner.itemAnimation = 2;
-			Owner.itemTime = 2;
+        public override void AI()
+        {
+            base.AI();
+            Player player = Main.player[Projectile.owner];
+            if (!_init && Main.myPlayer == Projectile.owner)
+            {
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
+   
+                _init = true;
+                Projectile.alpha = 255;
+                Projectile.timeLeft = SwingTime + EndSwingTime;
+            }
+            else if (_init)
+            {
+                if (!player.active || player.dead || player.CCed || player.noItems)
+                {
+                    return;
+                }
 
-			// Kill the projectile if the player dies or gets crowd controlled
-			if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed)
-			{
-				Projectile.Kill();
-				return;
-			}
+                Projectile.alpha = 0;
+                Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+                float multiplier = 0.2f;
+                RGB *= multiplier;
 
-			// AI depends on stage and attack
-			// Note that these stages are to facilitate the scaling effect at the beginning and end
-			// If this is not desireable for you, feel free to simplify
-			ExecuteStrike();
-			SetSwordPosition();
-			Timer++;
-		}
+                Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			// Calculate origin of sword (hilt) based on orientation and offset sword rotation (as sword is angled in its sprite)
-			Vector2 origin;
-			float rotationOffset;
-			SpriteEffects effects;
+                int dir = (int)Dir;
 
-			if (Projectile.spriteDirection > 0)
-			{
-				origin = new Vector2(0, Projectile.height);
-				rotationOffset = MathHelper.ToRadians(45f);
-				effects = SpriteEffects.None;
-			}
-			else
-			{
-				origin = new Vector2(Projectile.width, Projectile.height);
-				rotationOffset = MathHelper.ToRadians(135f);
-				effects = SpriteEffects.FlipHorizontally;
-			}
+                //Get the swing progress
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
 
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-			DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(152, 208, 113), new Color(53, 107, 112), ref lightColor);
-			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+                //Smooth it some more
+                float swingProgress = Easing.InOutExpo(lerpValue, 10f);
 
-			//Add trail/dusts here maybe
+                // the actual rotation it should have
+                float defRot = Projectile.velocity.ToRotation();
+                // starting rotation
 
-			// Since we are doing a custom draw, prevent it from normally drawing
-			return false;
-		}
+                //How wide is the swing, in radians
+                float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
+                float start = defRot - swingRange;
 
-		// Find the start and end of the sword and use a line collider to check for collision with enemies
-		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-		{
-			Vector2 start = Owner.MountedCenter;
-			Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
-			float collisionPoint = 0f;
-			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
-		}
+                // ending rotation
+                float end = (defRot + swingRange);
 
-		// Do a similar collision check for tiles
-		public override void CutTiles()
-		{
-			Vector2 start = Owner.MountedCenter;
-			Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
-			Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
-		}
+                // current rotation obv
+                // angle lerp causes some weird things here, so just use a normal lerp
+                float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
 
-		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
-		{
-			// Make knockback go away from player
-			modifiers.HitDirectionOverride = target.position.X > Owner.MountedCenter.X ? 1 : -1;
+                // offsetted cuz sword sprite
+                Vector2 position = player.RotatedRelativePoint(player.MountedCenter);
+                position += rotation.ToRotationVector2() * holdOffset;
+                Projectile.Center = position;
+                Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
-			//MAKE STARS EXPLODEEEEEE
-			int count = Main.rand.Next(4, 7);
-			float degreesPer = 360 / (float)count;
-			for (int k = 0; k < count; k++)
-			{
-				float degrees = k * degreesPer;
-				Vector2 direction = Vector2.One.RotatedBy(MathHelper.ToRadians(degrees));
-				Vector2 vel = direction * 8;
-				Projectile.NewProjectileDirect(Owner.GetSource_FromThis(), target.Center, vel, ModContent.ProjectileType<StarKeeperStar>(), Projectile.damage, Projectile.knockBack, Owner.whoAmI);
-			}
-
-			//Explosion and Effects
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ZthoKnifes1"));
-
-			//Add some hit particles here
-		}
-
-		// Function to easily set projectile and arm position
-		public void SetSwordPosition()
-		{
-			Projectile.rotation = InitialAngle + Projectile.spriteDirection * Progress; // Set projectile rotation
-
-			// Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-			Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-			Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-			armPosition.Y += Owner.gfxOffY;
-			Projectile.Center = armPosition; // Set projectile to arm position
-			Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
-			Owner.heldProj = Projectile.whoAmI; // set held projectile to this projectile
-		}
+                Timer++;
+                if (Timer >= 3 * Swing_Speed_Multiplier)
+                {
+                    Vector2 offset = Projectile.rotation.ToRotationVector2();
+                    Vector2 starSpawnCenter = Projectile.Center + offset;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), starSpawnCenter, Vector2.Zero,
+                        ModContent.ProjectileType<StarvastStarProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    Timer = 0;
+                }
 
 
-		// Function facilitating the first half of the swing
-		private void ExecuteStrike()
-		{
-			float time = Timer / execTime;
-			float easedTime = EaseFunction.EaseQuadInOut.Ease(time);
-			Progress = MathHelper.Lerp(0, SWINGRANGE, easedTime);
-			Size = 1f;
-			if (Timer >= execTime)
-			{
-				Projectile.Kill();
-			}
-		}
-	}
+                player.heldProj = Projectile.whoAmI;
+                player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                player.itemRotation = rotation * player.direction;
+                player.itemTime = 2;
+                player.itemAnimation = 2;
+            }
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
+            return MathHelper.SmoothStep(baseWidth, 1.5f, completionRatio);
+        }
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Turquoise, Color.Transparent, completionRatio) * 0.7f;
+        }
+
+
+        public TrailRenderer SwordSlash;
+        public TrailRenderer SwordSlash2;
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.spriteBatch.End();
+
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
+            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhispyTrail").Value;
+        
+            Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
+
+
+
+            /*
+            Texture2D Texture2 = TextureAssets.Projectile[Projectile.type].Value;
+            Main.spriteBatch.Draw(Texture2, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Texture2.Width / 2, Texture2.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
+            if (SwordSlash == null)
+            {
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(61, 230, 241, 50) * (1f - p));
+                SwordSlash.drawOffset = Projectile.Size / 1.8f;
+            }
+
+            if (SwordSlash2 == null)
+            {
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(255, 255, 255, 4) * (1f - p));
+                SwordSlash2.drawOffset = Projectile.Size / 1.9f;
+            }
+
+            Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
+
+
+            float[] rotation = new float[Projectile.oldRot.Length];
+            for (int i = 0; i < rotation.Length; i++)
+            {
+                rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
+            }
+
+
+            SwordSlash.Draw(Projectile.oldPos, rotation);
+            SwordSlash2.Draw(Projectile.oldPos, rotation);
+
+
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
+            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+            int startY = frameHeight * Projectile.frame;
+
+            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+            Vector2 origin = sourceRectangle.Size() / 2f;
+            Color drawColor = Projectile.GetAlpha(lightColor);
+
+
+            Main.EntitySpriteDraw(texture,
+               Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+               sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
+           
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin();
+            return false;
+
+        }
+
+    }
 }

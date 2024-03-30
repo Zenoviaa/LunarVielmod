@@ -167,7 +167,9 @@ namespace Stellamod.Items.Weapons.Melee
             CreateRecipe()
                 .AddIngredient(ItemID.SkyFracture, 1)
                 .AddIngredient(ModContent.ItemType<MiracleThread>(), 15)
-				.AddCondition(CustomConditions.SewingKitEquipped)
+                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }

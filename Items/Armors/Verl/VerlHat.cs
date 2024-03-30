@@ -72,7 +72,7 @@ namespace Stellamod.Items.Armors.Verl
 			recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 8);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ItemID.Silk, 15);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 3);
 			recipe.AddIngredient(ItemID.FallenStar, 10);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());
 			recipe.Register();

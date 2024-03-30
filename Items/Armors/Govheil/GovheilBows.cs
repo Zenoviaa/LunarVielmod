@@ -63,7 +63,8 @@ namespace Stellamod.Items.Armors.Govheil
 			Projectile.scale = 0.7f;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 20;
-		}
+            Projectile.minionSlots = 0;
+        }
 
 		// Here you can decide if your minion breaks things like grass or pots
 		public override bool? CanCutTiles()

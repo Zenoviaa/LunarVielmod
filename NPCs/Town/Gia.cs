@@ -53,8 +53,8 @@ namespace Stellamod.NPCs.Town
 			NPCID.Sets.AttackTime[Type] = 90; // The amount of time it takes for the NPC's attack animation to be over once it starts.
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
-			
 
+			NPCID.Sets.NoTownNPCHappiness[Type] = true;
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
@@ -283,12 +283,13 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					switch (Main.rand.Next(7))
 					{
 
 
 						case 0:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 10);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.DesertFossil, 100);
 							break;
@@ -324,7 +325,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 6:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 10);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SandstorminaBottle, 1);
 
 							break;
@@ -350,12 +351,13 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					switch (Main.rand.Next(7))
 					{
 
 
 						case 0:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 10);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Feather, 10);
 							break;
@@ -391,7 +393,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 6:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 10);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.CloudinaBalloon, 1);
 
 							break;
@@ -416,12 +418,13 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					switch (Main.rand.Next(10))
 					{
 
 
 						case 0:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+						
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IceBlade, 1);
 							break;
@@ -477,6 +480,8 @@ namespace Stellamod.NPCs.Town
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileBroochA>(), 1);
 							break;
+
+		
 					}
 
 
@@ -498,15 +503,17 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OverworldRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(15))
+
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
+					switch (Main.rand.Next(16))
 					{
 
 
 						case 0:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.IronOre, 100);
 							break;
 						case 1:
@@ -539,7 +546,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 5:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							break;
@@ -558,7 +565,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 8:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+			
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<VerianOre>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.Aglet, 1);
 
@@ -569,8 +576,6 @@ namespace Stellamod.NPCs.Town
 
 
 						case 9:
-
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Stick>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), 5);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.BandofStarpower, 1);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
@@ -585,14 +590,14 @@ namespace Stellamod.NPCs.Town
 
 						case 11:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+				
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Ivythorn>(), 150);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 150);
 
 							break;
 
 						case 12:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<GildedStaff>(), 1);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 
@@ -605,8 +610,15 @@ namespace Stellamod.NPCs.Town
 
 							break;
 						case 14:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+				
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ViolinStick>(), 1);
+
+
+							break;
+
+						case 15:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<HornedNail>(), 1);
 
 
 							break;
@@ -636,7 +648,7 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OceanRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					switch (Main.rand.Next(17))
 					{
@@ -660,17 +672,17 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 4:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<OceanScroll>(), 1);
 							break;
 
 						case 5:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+		
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
 							break;
 
 						case 6:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.TsunamiInABottle, 1);
 							break;
 
@@ -705,17 +717,17 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 13:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AquaCrystal>(), 1);
 							break;
 
 						case 14:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CoralBand>(), 1);
 							break;
 
 						case 15:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ShellSheid>(), 1);
 							break;
 
@@ -745,7 +757,7 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<JungleRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					switch (Main.rand.Next(15))
 					{
@@ -772,7 +784,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 3:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileOre>(), 150);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
@@ -786,13 +798,13 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 5:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 2);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Bagitem>(), 3);
 							break;
 
 						case 6:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.FlowerBoots, 1);
 
 							break;
@@ -805,7 +817,7 @@ namespace Stellamod.NPCs.Town
 							break;
 
 						case 8:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<VerianOre>(), 50);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.AnkletoftheWind, 1);
 
@@ -816,8 +828,8 @@ namespace Stellamod.NPCs.Town
 
 
 						case 9:
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Stick>(), 50);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
+						
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<AlcadizScrap>(), 5);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.JungleSpores, 30);
 
@@ -832,7 +844,7 @@ namespace Stellamod.NPCs.Town
 
 						case 11:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 150);
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 15);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Ivythorn>(), 150);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CondensedDirt>(), 150);
 

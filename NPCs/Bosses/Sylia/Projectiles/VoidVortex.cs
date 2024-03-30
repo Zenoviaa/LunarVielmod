@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			Projectile.height = 64;
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 240;
-			Projectile.scale = 1.3f;
+			Projectile.scale = 0.01f;
 			Projectile.usesLocalNPCImmunity = true;
 
 			//5 ticks local npc immunity
@@ -40,7 +40,21 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			int npcIndex = (int)Projectile.ai[0];
 			NPC centerNpc = Main.npc[npcIndex];
 			Projectile.Center = centerNpc.Center;
-			Projectile.rotation += 0.5f;
+			if(Projectile.timeLeft > 60)
+			{
+                Projectile.scale += 0.01f;
+			}
+			else
+			{
+				Projectile.scale -= 0.04f;
+				if(Projectile.scale <= 0)
+				{
+					Projectile.scale = 0;
+				}
+			}
+		
+
+            Projectile.rotation += 0.5f;
 			Projectile.velocity.X *= 0.0f;
 			Projectile.velocity.Y *= 0.01f;
 
@@ -123,22 +137,22 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 			Color drawColor = new(60, 0, 255, 0);
 			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
 						  VorTexture.Value.Bounds, drawColor, Projectile.rotation,
-						  VorTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
+						  VorTexture.Size() * 0.5f, Projectile.scale, SpriteEffects.None, 0);
 
 			Color drawColor2 = new(60, 0, 255, 0);
 			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
 						  VorTexture.Value.Bounds, drawColor2, -Projectile.rotation,
-						  VorTexture.Size() * 0.5f, 2f, SpriteEffects.None, 0);
+						  VorTexture.Size() * 0.5f, Projectile.scale * 2, SpriteEffects.None, 0);
 
 			Color drawColor3 = new(60, 0, 255, 0);
 			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
 						  VorTexture.Value.Bounds, drawColor3, Projectile.rotation,
-						  VorTexture.Size() * 0.5f, 3f, SpriteEffects.None, 0);
+						  VorTexture.Size() * 0.5f, Projectile.scale * 3, SpriteEffects.None, 0);
 
 			Color drawColor4 = new(60, 0, 255, 0);
 			Main.EntitySpriteDraw(VorTexture.Value, drawPosition,
 						  VorTexture.Value.Bounds, drawColor4, -Projectile.rotation,
-						  VorTexture.Size() * 0.5f, 4f, SpriteEffects.None, 0);
+						  VorTexture.Size() * 0.5f, Projectile.scale * 4, SpriteEffects.None, 0);
 			return true;
 		}
 	}

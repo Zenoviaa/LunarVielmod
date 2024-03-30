@@ -28,14 +28,13 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 15);
             recipe.AddIngredient(ModContent.ItemType<ArnchaliteBar>(), 5);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
-            recipe.AddTile(ModContent.TileType<RunicTableT>());
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
 
 
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            Item.defense = 2;
             player.GetModPlayer<MyPlayer>().DetonationRune = true;
 
         }

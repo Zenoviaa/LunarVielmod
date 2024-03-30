@@ -1666,7 +1666,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				{
 					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Aldox>(), 20, 0f, Main.myPlayer, 0f, 0);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Aldox>(), 40, 0f, Main.myPlayer, 0f, 0);
 				}
 			}
 
@@ -1691,8 +1691,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 				{
 					float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
 					float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Slashers>(), 200, 0f, Main.myPlayer, 0f, ai1);
-					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixHold>(), 200, 0f, Main.myPlayer, 0f, ai1);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<Slashers>(), 240, 0f, Main.myPlayer, 0f, ai1);
+					Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y + speedYb, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<FenixHold>(), 240, 0f, Main.myPlayer, 0f, ai1);
 
 					switch (Main.rand.Next(5))
 					{

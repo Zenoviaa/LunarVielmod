@@ -57,16 +57,6 @@ namespace Stellamod.Items.Weapons.Summon
 			// We do not want vanilla to spawn a duplicate projectile.
 			return false;
 		}
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.BorealWood, 10);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 5);
-			recipe.AddIngredient(ItemID.JungleSpores, 3);
-		}
 	}
 }
 

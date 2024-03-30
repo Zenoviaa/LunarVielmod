@@ -35,7 +35,7 @@ namespace Stellamod.Items.Accessories
             recipe.AddIngredient(ItemID.FeralClaws, 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
             recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
-            recipe.AddIngredient(ItemID.Stinger, 10);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ItemID.SharkFin, 5);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

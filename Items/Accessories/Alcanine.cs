@@ -36,7 +36,7 @@ namespace Stellamod.Items.Accessories
 			recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
 		}

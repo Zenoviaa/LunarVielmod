@@ -43,7 +43,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe(250);
 			recipe.AddIngredient(ItemID.BorealWood, 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 2);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();

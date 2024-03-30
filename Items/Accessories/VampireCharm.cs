@@ -102,9 +102,9 @@ namespace Stellamod.Items.Accessories
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BloodMoonStarter, 1);
             recipe.AddIngredient(ModContent.ItemType<TerrorFragments>(), 30);
             recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 12);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ItemID.SoulofNight, 7);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();

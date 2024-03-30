@@ -57,6 +57,7 @@ namespace Stellamod.Items.Accessories
 			recipe.AddIngredient(ModContent.ItemType<EldritchSoul>(), 50);
 			recipe.AddIngredient(ModContent.ItemType<GrailBar>(), 15);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 30);
 			recipe.Register();
 		}
 

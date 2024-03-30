@@ -1,19 +1,13 @@
-using Stellamod.Items.Materials;
+using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.Leather
 {
     [AutoloadEquip(EquipType.Legs)]
     public class LeatherLegs : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Leather Legs");
-			// Tooltip.SetDefault("Increases movement speed by 10%");
-		}
         public override void SetDefaults()
         {
             Item.width = 28;
@@ -26,12 +20,14 @@ namespace Stellamod.Items.Armors.Leather
         public override void UpdateEquip(Player player)
         {
             player.moveSpeed += 0.1f;
+            player.GetCritChance(DamageClass.Ranged) += 4f;
         }
 
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Leather, 6);
+            recipe.AddIngredient(ItemID.Leather, 1);
+            recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 4);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 2);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();

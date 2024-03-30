@@ -1,20 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Trails;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Sylia.Projectiles;
 using Stellamod.Particles;
-using Stellamod.Projectiles.Summons.VoidMonsters;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.Shaders;
+using System;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
-    internal class VoidWall : ModNPC
+    internal class VoidWall : ModNPC,
+        IPixelPrimitiveDrawer
     {
-        private int _particleCounter = 0;
+        internal PrimitiveTrail BeamDrawer;
+
         private int _tooFarCounter = 0;
         private float _projSpeed = 3.5f;
         private bool _tooFar;
@@ -34,12 +39,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
         }
 
         private const int Body_Radius = 64;
-        private const int Body_Particle_Count = 10;
-        private const int Body_Particle_Rate = 2;
         private const int Check_For_Pull_Radius = 2048;
 
         //AI
         private const int Idle_Time = 240;
+        private const float Wall_Length = 2048;
+        private const float Wall_Width = 2048;
 
         public override void SetStaticDefaults()
         {
@@ -48,7 +53,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         public override void SetDefaults()
         {
-            NPC.Size = new Vector2(Body_Radius, Body_Radius * 16);
+            NPC.width = Body_Radius;
+            NPC.height = Body_Radius * 16;
             NPC.damage = 100;
             NPC.defense = 66;
             NPC.lifeMax = 6666;
@@ -73,28 +79,12 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         private int _frameCounter;
         private int _frameTick;
+        private int _frameCounter2;
+        private int _frameTick2;
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {        
-            //Visual Stuffs
-            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-               new Vector3(60, 0, 118),
-               new Vector3(117, 1, 187),
-               new Vector3(3, 3, 3), 0);
-
-            DrawHelper.DrawDimLight(NPC, huntrianColorXyz.X, huntrianColorXyz.Y, huntrianColorXyz.Z, ColorFunctions.MiracleVoid, drawColor, 1);
-            SpriteEffects effects = SpriteEffects.None;
-            Vector2 drawPosition = NPC.Center - Main.screenPosition;
-            Vector2 origin = new Vector2(58 / 2, 88 / 2);
-
-            Texture2D voidMouthTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/Projectiles/VoidMouth").Value;
-            int frameSpeed = 2;
-            int frameCount = 6;
-            Main.EntitySpriteDraw(voidMouthTexture, drawPosition,
-                voidMouthTexture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, true),
-                Color.White, 0, origin, 1f, effects, 0f);
-
-            return base.PreDraw(spriteBatch, screenPos, drawColor);
+        {
+            return false;
         }
 
         private void PullPlayer()
@@ -143,6 +133,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     }
                 }
 
+                homingVelocity.Y = 0;
                 NPC.velocity = homingVelocity;
             }
             else
@@ -198,21 +189,8 @@ namespace Stellamod.NPCs.Bosses.Sylia
             ref float ai_State = ref NPC.ai[1];
             ref float ai_Cycle = ref NPC.ai[2];
 
-            if (!_spawned)
-            {
-                ai_Counter += Idle_Time;
-                /*if (StellaMultiplayer.IsHost)
-                {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<VoidTrailProj>(), 0, 0, Main.myPlayer, ai1: NPC.whoAmI);
-                }*/
-
-                _spawned = true;
-            }
-
             Movement();
             PullPlayer();
-            Visuals();
 
 
             if (!NPC.HasValidTarget)
@@ -363,37 +341,86 @@ namespace Stellamod.NPCs.Bosses.Sylia
         }
 
 
-        private void Visuals()
+        public float WidthFunction(float completionRatio)
         {
-            _particleCounter++;
-            if (_particleCounter > Body_Particle_Rate)
+            return Wall_Width * MathF.Sin(completionRatio * 2 * VectorHelper.Osc(0.9f, 1f, 0.3f));
+        }
+        public float WidthFunction2(float completionRatio)
+        {
+            return Wall_Width * MathF.Sin(completionRatio * 1 * VectorHelper.Osc(0.9f, 1f, 0.3f)) * 0.68f;
+        }
+
+
+        public Color ColorFunction(float completionRatio)
+        {
+            if(completionRatio < 0.1f)
             {
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = NPC.Center + Main.rand.NextVector2Circular(Body_Radius / 2, Body_Radius / 2);
-                    float size = Main.rand.NextFloat(0.75f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), size);
-
-                    p.layer = Particle.Layer.BeforeNPCs;
-                    Particle tearParticle = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidTearParticle>(),
-                        default(Color), size + 0.025f);
-
-                    tearParticle.layer = Particle.Layer.BeforePlayersBehindNPCs;
-                }
-
-                for (int i = 0; i < Body_Particle_Count; i++)
-                {
-                    Vector2 position = NPC.RandomPositionWithinEntity();
-                    float size = Main.rand.NextFloat(0.75f, 1f);
-                    Particle p = ParticleManager.NewParticle(position, Vector2.Zero, ParticleManager.NewInstance<VoidParticle>(),
-                        default(Color), size);
-
-                    p.layer = Particle.Layer.BeforeNPCs;
-                }
-
-                _particleCounter = 0;
+                return ColorFunctions.MiracleVoid * ((1f - completionRatio) / 0.1f);
             }
+            return ColorFunctions.MiracleVoid * MathF.Sin(completionRatio);
+        }
+        public Color ColorFunction2(float completionRatio)
+        {
+            if (completionRatio < 0.1f)
+            {
+                return Color.Black * ((1f - completionRatio) / 0.1f);
+            }
+
+            return ColorFunctions.MiracleVoid;
+        }
+
+
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+
+            TrailRegistry.LaserShader.UseColor(Color.Black);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.FadedStreak);
+
+            List<Vector2> points = new();
+            Vector2 velocity = Vector2.Zero;
+            velocity.X = 0;
+            velocity.Y = 1;
+
+            Vector2 startPos = NPC.Center + new Vector2(0, Wall_Length / 2);
+            for (int i = 0; i <= 8; i++)
+            {
+                points.Add(Vector2.Lerp(startPos, startPos - velocity * Wall_Length, i / 8f));
+            }
+            BeamDrawer.WidthFunction = WidthFunction2;
+            BeamDrawer.ColorFunction = ColorFunction2;
+            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
+
+            BeamDrawer.WidthFunction = WidthFunction;
+            BeamDrawer.ColorFunction = ColorFunction;
+            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
+
+            Vector2 drawPosition = NPC.Center - Main.screenPosition;
+            Vector2 origin = new Vector2(58 / 2, 88 / 2);
+
+            Texture2D voidMouthTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/Projectiles/VoidMouth").Value;
+            int frameSpeed = 2;
+            int frameCount = 6;
+            Rectangle animationFrame = voidMouthTexture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, true);
+            Main.EntitySpriteDraw(voidMouthTexture, drawPosition, animationFrame,
+                Color.White, 0, origin, 2f, SpriteEffects.None, 0f);
+
+            Vector2 drawOffset = new Vector2(-48, -128);
+            Texture2D voidEaterTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/Projectiles/VoidWallEaterMini").Value;
+            animationFrame = voidEaterTexture.AnimationFrame(ref _frameCounter2, ref _frameTick2, frameSpeed, frameCount, true);
+            Vector2 voidEaterSize = new Vector2(52, 38);
+            Vector2 voidEaterOrigin = voidEaterSize / 2;
+
+            Main.EntitySpriteDraw(voidEaterTexture, drawPosition + drawOffset, animationFrame,
+                Color.White, 0, voidEaterOrigin, VectorHelper.Osc(0.5f, 1f, 6f), SpriteEffects.None, 0f);
+
+            drawOffset.Y *= -1;
+            Main.EntitySpriteDraw(voidEaterTexture, drawPosition + drawOffset, animationFrame,
+                Color.White, 0, origin, VectorHelper.Osc(0.5f, 1f, 6f), SpriteEffects.None, 0f);
+
+
+
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

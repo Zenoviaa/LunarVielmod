@@ -28,12 +28,12 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ItemID.Leather, 10);
             recipe.AddRecipeGroup(nameof(ItemID.IronBar), 5);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
-            recipe.AddTile(ModContent.TileType<RunicTableT>());
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            Item.defense = 2;
+           
             player.GetModPlayer<MyPlayer>().StealthRune = true;
 
         }

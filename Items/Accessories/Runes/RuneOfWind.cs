@@ -30,13 +30,13 @@ namespace Stellamod.Items.Accessories.Runes
             recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 15);
             recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 10);
             recipe.AddIngredient(ModContent.ItemType<BlankRune>(), 1);
-            recipe.AddTile(ModContent.TileType<RunicTableT>());
+            recipe.AddTile(ModContent.TileType<BroochesTable>());
             recipe.Register();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            Item.defense = 2;
+            
             player.GetModPlayer<MyPlayer>().WindRune = true;
 
         }

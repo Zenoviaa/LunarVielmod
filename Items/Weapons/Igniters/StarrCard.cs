@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Igniters
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 6;
+			Item.damage = 5;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
@@ -65,12 +65,10 @@ namespace Stellamod.Items.Weapons.Igniters
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<Starrdew>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.AddIngredient(ItemID.FallenStar, 3);
-			recipe.AddIngredient(ItemID.Silk, 10);
 			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

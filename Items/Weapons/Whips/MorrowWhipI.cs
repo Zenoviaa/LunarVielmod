@@ -52,10 +52,9 @@ namespace Stellamod.Items.Weapons.Whips
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddIngredient(ModContent.ItemType<Stick>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
 			recipe.AddIngredient(ModContent.ItemType<FlowerBatch>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 9);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 300);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 9);
 			recipe.Register();
 		}

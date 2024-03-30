@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<Bagitem>(), 3);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 50);
-			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 200);
 			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
 			recipe.AddIngredient(ItemID.Stinger, 5);
 			recipe.AddTile(ModContent.TileType<AlcaologyTable>());

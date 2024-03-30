@@ -1,4 +1,5 @@
-﻿using Stellamod.Items.Materials;
+﻿using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -31,7 +32,7 @@ namespace Stellamod.Items.Ores
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 2);
+			recipe.AddIngredient(ModContent.ItemType<MorrowVine>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<VerianOre>(), 3);
 			recipe.AddTile(TileID.Hellforge);
 			recipe.Register();
