@@ -3874,10 +3874,7 @@ OceanRuneI: {
 
 Starvast: {
 	DisplayName: Starvast
-	Tooltip:
-		'''
-		Summons stars that orbit around you and seek out enemies!
-		'''
+	Tooltip: Summons stars that orbit around you and seek out enemies!
 }
 
 SawtoothNecklace: {
