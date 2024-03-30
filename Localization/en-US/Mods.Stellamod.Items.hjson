@@ -3874,7 +3874,10 @@ OceanRuneI: {
 
 Starvast: {
 	DisplayName: Starvast
-	Tooltip: Hit enemies will explode with homing stars
+	Tooltip:
+		'''
+		Summons stars that orbit around you and seek out enemies!
+		'''
 }
 
 SawtoothNecklace: {

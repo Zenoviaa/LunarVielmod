@@ -1,16 +1,18 @@
 ﻿using Stellamod.Projectiles.Thrown;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class Hookarama : ModItem
+    internal class Hookarama : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 32;
+        }
+
         public override void SetDefaults()
         {
             Item.noUseGraphic = true;

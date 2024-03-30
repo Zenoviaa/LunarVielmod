@@ -53,6 +53,35 @@ namespace Stellamod.NPCs.Town
         public static Vector2 VelSpawnWorld => VelTile.ToWorldCoordinates() + VelSpawnTileOffset.ToWorldCoordinates();
 
         public static bool TownedGia;
+        public override void SaveWorldData(TagCompound tag)
+        {
+            base.SaveWorldData(tag);
+            tag["AlcadTile"] = AlcadTile;
+            tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
+            tag["LittleWitchTownTile"] = LittleWitchTownTile;
+            tag["MechanicsTownTile"] = MechanicsTownTile;
+            tag["LabTile"] = LabTile;
+            tag["GiaTile"] = GiaTile;
+            tag["TownedGia"] = TownedGia;
+            tag["IlluriaTile"] = IlluriaTile;
+            tag["VelTile"] = VelTile;
+            tag["FableTile"] = FableTile;
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            base.LoadWorldData(tag);
+            AlcadTile = tag.Get<Point>("AlcadTile");
+            UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
+            LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
+            MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
+            LabTile = tag.Get<Point>("LabTile");
+            GiaTile = tag.Get<Point>("GiaTile");
+            TownedGia = tag.GetBool("TownedGia");
+            IlluriaTile = tag.Get<Point>("IlluriaTile");
+            VelTile = tag.Get<Point>("VelTile");
+            FableTile = tag.Get<Point>("FableTile");
+        }
 
         public override void NetSend(BinaryWriter writer)
         {
@@ -208,32 +237,6 @@ namespace Stellamod.NPCs.Town
             }
         }
 
-        public override void SaveWorldData(TagCompound tag)
-        {
-            base.SaveWorldData(tag);
-            tag["AlcadTile"] = AlcadTile;
-            tag["UnderworldRuinsTile"] = UnderworldRuinsTile;
-            tag["LittleWitchTownTile"] = LittleWitchTownTile;
-            tag["MechanicsTownTile"] = MechanicsTownTile;
-            tag["LabTile"] = LabTile;
-            tag["GiaTile"] = GiaTile;
-            tag["TownedGia"] = TownedGia;
-            tag["IlluriaTile"] = IlluriaTile;
-            tag["VelTile"] = VelTile;
-        }
 
-        public override void LoadWorldData(TagCompound tag)
-        {
-            base.LoadWorldData(tag);
-            AlcadTile = tag.Get<Point>("AlcadTile");
-            UnderworldRuinsTile = tag.Get<Point>("UnderworldRuinsTile");
-            LittleWitchTownTile = tag.Get<Point>("LittleWitchTownTile");
-            MechanicsTownTile = tag.Get<Point>("MechanicsTownTile");
-            LabTile = tag.Get<Point>("LabTile");
-            GiaTile = tag.Get<Point>("GiaTile");
-            TownedGia = tag.GetBool("TownedGia");
-            IlluriaTile = tag.Get<Point>("IlluriaTile");
-            VelTile = tag.Get<Point>("VelTile");
-        }
     }
 }

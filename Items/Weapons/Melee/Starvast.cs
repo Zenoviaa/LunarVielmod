@@ -6,16 +6,23 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Starvast : ModItem
+    public class Starvast : ClassSwapItem
     {
-        public int attackType = 0;
+        public int dir;
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 41;
+            Item.mana = 2;
+        }
+
         public override void SetDefaults()
         {
-            Item.damage = 60;
+            Item.damage = 30;
             Item.DamageType = DamageClass.Melee;
             Item.width = 54;
             Item.height = 60;
@@ -34,7 +41,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             // Projectile Properties
             Item.shootSpeed = 15f;
-            Item.shoot = ProjectileType<StarvastCustomSwingProjectile>(); // The sword as a projectile
+            Item.shoot = ModContent.ProjectileType<StarvastCustomSwingProjectile>(); // The sword as a projectile
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -50,8 +57,19 @@ namespace Stellamod.Items.Weapons.Melee
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlashProj3"));
             }
 
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, attackType);
-            attackType = (attackType + 1) % 2;
+            if(dir == -1)
+            {
+                dir = 1;
+            } else if (dir == 1)
+            {
+                dir = -1;
+            }
+            else
+            {
+                dir = 1;
+            }
+
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
             return false; // return false to prevent original projectile from being shot
         }
 
@@ -59,10 +77,11 @@ namespace Stellamod.Items.Weapons.Melee
         {
             base.AddRecipes();
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<LuminullSpiritFragments>(), 10);
-            recipe.AddIngredient(ItemType<StarSilk>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 150);
+            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<StarSilk>(), 15);
             recipe.AddIngredient(ItemID.Starfury, 1);
-            recipe.AddIngredient(ItemType<StarKeeper>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<StarKeeper>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
