@@ -15,7 +15,7 @@ namespace Stellamod.Tiles
                 //Tile tileAbove = Framing.GetTileSafely(i, j - 1);
 
                 //Try place vine
-                if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile)
+                if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
                 {
                     if (!tile.BottomSlope)
                     {
@@ -28,7 +28,7 @@ namespace Stellamod.Tiles
                         }
                     }
                 }
-                if (WorldGen.genRand.NextBool(3) && !tileBelow.HasTile)
+                if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
                 {
                     if (!tile.BottomSlope)
                     {

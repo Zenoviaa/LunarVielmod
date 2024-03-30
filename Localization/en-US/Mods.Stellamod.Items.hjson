@@ -6209,3 +6209,8 @@ MushyCard: {
 		'''
 	DisplayName: Mushy Card
 }
+
+XX4160: {
+	Tooltip: ""
+	DisplayName: X X4160
+}
