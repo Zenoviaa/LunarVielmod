@@ -143,7 +143,7 @@ namespace Stellamod.Projectiles.Magic
                         Color.White, 1);
                 }
 
-                SoundEngine.PlaySound(SoundID.Item100);
+                SoundEngine.PlaySound(SoundID.Item100, Projectile.position);
             }
 
             if (ai_suckTimer == 60)

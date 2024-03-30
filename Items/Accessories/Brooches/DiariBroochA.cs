@@ -70,6 +70,11 @@ namespace Stellamod.Items.Accessories.Brooches
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
 			broochPlayer.KeepBroochAlive<DiariBrooch, Diarii>(ref broochPlayer.hasDiariBrooch);
+			if (!hideVisual)
+			{
+                Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)),
+					DustID.SolarFlare, Vector2.Zero);
+            }
 		}
 	}
 }

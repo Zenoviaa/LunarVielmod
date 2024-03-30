@@ -57,4 +57,22 @@ namespace Stellamod.Helpers
             RarityHelper.SpawnAndUpdateTooltipParticles(tooltipLine, ref SparkleList, 7, SparkleType.DefaultSparkle);
         }
     }
+
+    public class AzzuriaSpecialRarity : ModRarity
+    {
+        public override Color RarityColor => Color.White;
+
+        internal static List<RaritySparkle> SparkleList = new();
+
+        public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine)
+        {
+            // Draw the base tooltip text and glow.
+            RarityHelper.DrawBaseTooltipTextAndGlow(tooltipLine,
+                Color.DarkSlateBlue,
+                Color.Lerp(Color.LightSkyBlue, Color.DarkSlateBlue, VectorHelper.Osc(0, 1, 2)), new Color(12, 26, 47), RarityTextureRegistry.ThornedRarityGlow, glowScaleOffset: new Vector2(0.75f, 0.5f));
+
+            // Draw base sparkles.
+            RarityHelper.SpawnAndUpdateTooltipParticles(tooltipLine, ref SparkleList, 7, SparkleType.DefaultSparkle);
+        }
+    }
 }

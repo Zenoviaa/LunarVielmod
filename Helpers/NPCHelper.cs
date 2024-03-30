@@ -25,10 +25,28 @@ namespace Stellamod.Helpers
             return (tiles * 16);
         }
 
+        public static bool IsHealthLowerThanPercent(this NPC npc, float healthPercent)
+        {
+            float lifeMax = npc.lifeMax;
+            float life = npc.life;
+            float lifeFactor = life / lifeMax;
+            return lifeFactor <= healthPercent;
+        }
+
         public static int ScaleFromContactDamage(this NPC npc, float damageMultiplier)
         {
             float damage = npc.damage;
-            return (int)(damage * damageMultiplier);
+            float factor = 1f;
+            if (Main.masterMode)
+            {
+                factor = 0.33f;
+            }
+            else if (Main.expertMode)
+            {
+                factor = 0.5f;
+            }
+
+            return (int)(damage * damageMultiplier * factor);
         }
 
         /// <summary>

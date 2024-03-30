@@ -116,7 +116,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
                 }
 				_telegraphLightningX = 0;
 				_telegraphLightningY = 0;
-                SoundEngine.PlaySound(SoundID.DD2_LightningBugZap);
+                SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, NPC.position);
             }
 		}
 
@@ -252,7 +252,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 					if (ai_Counter == 0)
 					{
 						Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.Center, 1024f, 32f);
-						SoundEngine.PlaySound(SoundID.Item121);
+						SoundEngine.PlaySound(SoundID.Item121, NPC.position);
 					}
 					if (StellaMultiplayer.IsHost)
 					{
@@ -266,7 +266,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterJellyfish
 					if (ai_Counter == 0)
 					{
 						Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.Center, 1024f, 32f);
-						SoundEngine.PlaySound(SoundID.Item121);
+						SoundEngine.PlaySound(SoundID.Item121, NPC.position);
 					}
 
 					ai_Counter++;

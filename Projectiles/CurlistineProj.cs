@@ -169,7 +169,7 @@ namespace Stellamod.Projectiles
             ShakeModSystem.Shake = 4;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<FrostKaboom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
-            SoundEngine.PlaySound(SoundID.Item110);
+            SoundEngine.PlaySound(SoundID.Item110,  Projectile.position);
         }
 
     }

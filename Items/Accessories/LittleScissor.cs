@@ -21,7 +21,7 @@ namespace Stellamod.Items.Accessories
 		public const int DashRight = 2;
 		public const int DashLeft = 3;
 
-		public const int DashCooldown = 5; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+		public const int DashCooldown = 25; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
 		public const int DashDuration = 5; // Duration of the dash afterimage effect in frames
 		public const int RiftDuration = 30;
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
@@ -112,8 +112,6 @@ namespace Stellamod.Items.Accessories
 
 				xSlashPart1.timeLeft = 1500;
 				xSlashPart2.timeLeft = 1500;
-				(xSlashPart1.ModProjectile as RipperSlashProjBig).randomRotation = false;
-				(xSlashPart2.ModProjectile as RipperSlashProjBig).randomRotation = false;
 				xSlashPart2.rotation = MathHelper.ToRadians(90);
 
 				//Actual Attack Here
@@ -158,7 +156,7 @@ namespace Stellamod.Items.Accessories
 					ModContent.ProjectileType<LittleScissorVoidBolt>(), 54, 1, owner: Player.whoAmI);
 
 				//Scale with all damage classe
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"), Player.position);
 				_riftCounter = 10;
 			}
 		}
@@ -169,6 +167,7 @@ namespace Stellamod.Items.Accessories
 				&& Player.dashType == 0 // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
 				&& !Player.setSolar // player isn't wearing solar armor
 				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+
 		}
 	}
 

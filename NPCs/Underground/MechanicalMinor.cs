@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Underground
                 _attackTimer++;
                 if (_attackTimer == 60)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton);
+                    SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton, NPC.position);
                 }
                 else if (_attackTimer > 60 && _attackTimer < 120)
                 {

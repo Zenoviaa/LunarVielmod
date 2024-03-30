@@ -86,7 +86,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     Dust.NewDust(position, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
                 }
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), position);
                 return false;
             }
             else
@@ -100,7 +100,7 @@ namespace Stellamod.Items.Weapons.Ranged
                     Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
                 }
 
-                SoundEngine.PlaySound(SoundID.Item38);
+                SoundEngine.PlaySound(SoundID.Item38, position);
             }
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);

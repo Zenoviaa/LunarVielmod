@@ -35,7 +35,7 @@ namespace Stellamod.Items.Armors.Stone
 		{
 
 			player.GetArmorPenetration(DamageClass.Generic) += 2f; ;
-			player.GetDamage(DamageClass.Generic) *= 1.01f;
+			player.GetDamage(DamageClass.Generic) += 0.01f;
 			player.GetCritChance(DamageClass.Generic) += 2f;
 
 		}

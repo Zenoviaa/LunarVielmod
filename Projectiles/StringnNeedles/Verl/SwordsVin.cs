@@ -279,7 +279,7 @@ namespace Stellamod.Projectiles.StringnNeedles.Verl
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1f, speedYa * 1.4f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
 					ShakeModSystem.Shake = 4;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 1.5f, speedYa * 0.6f, ModContent.ProjectileType<SwordsArmy>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(SoundID.Item110);
+			SoundEngine.PlaySound(SoundID.Item110, Projectile.position);
 				
 
 			

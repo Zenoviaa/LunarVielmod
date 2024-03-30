@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
             SegmentPosOsc = new Vector2(0, sinOsc);
             SegmentRotationOsc = rotOsc;
-            NPC.velocity = new Vector2(0, VectorHelper.Osc(-1, 1));
+
         }
 
         private void OrientArching()
@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
 
         private void OrientStraight()
         {
-            TargetSegmentRotation = -(MathHelper.PiOver4 / Total_Segments);
+            TargetSegmentRotation = (MathHelper.PiOver4 / Total_Segments) / 3;
             TargetHeadRotation = 0;
         }
 

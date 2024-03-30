@@ -20,7 +20,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
         {
             if (type == ProjectileID.WoodenArrowFriendly && hasQuiver)
             {
-                SoundEngine.PlaySound(SoundID.Item176);
+                SoundEngine.PlaySound(SoundID.Item176, Player.position);
                 type = ModContent.ProjectileType<VoidArrow>();
                 damage += 5;
                 velocity *= 2f;

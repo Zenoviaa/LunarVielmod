@@ -32,7 +32,7 @@ namespace Stellamod.Items.Armors.Eldritchian
 			player.runAcceleration *= 1.1f;
 			player.moveSpeed += 0.2f;
 			player.maxRunSpeed += 0.2f; // Increase the movement speed of the player
-			player.GetAttackSpeed(DamageClass.Throwing) += 0.8f;
+			player.GetAttackSpeed(DamageClass.Throwing) += 0.08f;
 			player.GetDamage(DamageClass.Throwing) += 0.23f;
 		}
 

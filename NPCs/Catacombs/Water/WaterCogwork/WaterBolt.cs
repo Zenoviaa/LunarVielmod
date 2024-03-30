@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Catacombs.Water.WaterCogwork
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.SplashWeak);
+            SoundEngine.PlaySound(SoundID.SplashWeak, Projectile.position);
 
             int count = 16;
             for (int i = 0; i < count; i++)

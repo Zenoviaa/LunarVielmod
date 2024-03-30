@@ -82,7 +82,9 @@ namespace Stellamod.Tiles.Illuria
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
 		{
 			DustType = dustType;
-			return true;
+
+			//Locked until post plant
+			return NPC.downedPlantBoss;
 		}
 
 		public static string MapChestName(string name, int i, int j)
@@ -148,7 +150,7 @@ namespace Stellamod.Tiles.Illuria
 			Main.npcChatText = "";
 			if (Main.editChest)
 			{
-				SoundEngine.PlaySound(SoundID.MenuTick);
+				SoundEngine.PlaySound(SoundID.MenuTick, player.position);
 				Main.editChest = false;
 				Main.npcChatText = string.Empty;
 			}
@@ -178,6 +180,10 @@ namespace Stellamod.Tiles.Illuria
 						NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 					}
 				}
+				else
+				{
+                    CombatText.NewText(player.getRect(), Color.LightSkyBlue, "Locked by an Overgrown plant...", true, false);
+                }
 
 				return true;
             }
@@ -190,7 +196,7 @@ namespace Stellamod.Tiles.Illuria
 					{
 						player.chest = -1;
 						Recipe.FindRecipes();
-						SoundEngine.PlaySound(SoundID.MenuClose);
+						SoundEngine.PlaySound(SoundID.MenuClose, player.position);
 					}
 					else
 					{
@@ -208,7 +214,7 @@ namespace Stellamod.Tiles.Illuria
 						if (chest == player.chest)
 						{
 							player.chest = -1;
-							SoundEngine.PlaySound(SoundID.MenuClose);
+							SoundEngine.PlaySound(SoundID.MenuClose, player.position);
 						}
 						else
 						{

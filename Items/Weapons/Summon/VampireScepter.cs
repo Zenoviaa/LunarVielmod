@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Summon
 						Dust.NewDust(target.Center, 0, 0, DustID.BloodWater, vel.X, vel.Y);
 					}
 					Dust.QuickDustLine(Player.Center, target.Center, 100f, Color.Red);
-					SoundEngine.PlaySound(SoundID.NPCHit18);
+					SoundEngine.PlaySound(SoundID.NPCHit18, target.Center);
 				}
 			}
         }

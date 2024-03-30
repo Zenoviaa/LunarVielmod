@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
     {
         private int _particleCounter = 0;
         private int _tooFarCounter = 0;
-        private float _projSpeed = 5.5f;
+        private float _projSpeed = 3.5f;
         private bool _tooFar;
         private bool _spawned;
 
@@ -138,7 +138,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     _tooFarCounter++;
                     if (_tooFarCounter > 30)
                     {
-                        SoundEngine.PlaySound(SoundID.Roar);
+                        SoundEngine.PlaySound(SoundID.Roar, NPC.position);
                         _tooFar = true;
                     }
                 }
@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if(ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Vomit);
                     }
 
@@ -287,7 +287,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Blast);
                     }
                     break;
@@ -311,7 +311,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                             }
                         }
 
-                        SoundEngine.PlaySound(SoundID.NPCDeath12);
+                        SoundEngine.PlaySound(SoundID.NPCDeath12, NPC.position);
                     }
 
                     if(ai_Counter >= 150)
@@ -327,7 +327,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.NPCDeath13);
+                        SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.position);
                         SwitchState(AttackState.Void_Laser);
                     }
                     break;
@@ -341,7 +341,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
                     ai_Counter++;
                     if (ai_Counter >= 60)
                     {
-                        SoundEngine.PlaySound(SoundID.Item117);
+                        SoundEngine.PlaySound(SoundID.Item117, NPC.position);
                         SwitchState(AttackState.Void_Suck);
                     }
                     break;

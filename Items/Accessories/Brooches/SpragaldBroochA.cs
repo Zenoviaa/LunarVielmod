@@ -63,7 +63,11 @@ namespace Stellamod.Items.Accessories.Brooches
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			BroochPlayer broochPlayer = player.GetModPlayer<BroochPlayer>();
-			broochPlayer.KeepBroochAlive<SpragaldBrooch, Spragald>(ref broochPlayer.hasSpragaldBrooch);		
+			broochPlayer.KeepBroochAlive<SpragaldBrooch, Spragald>(ref broochPlayer.hasSpragaldBrooch);
+			if (!hideVisual)
+			{
+                Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.GoldCoin, Vector2.Zero);
+            }
 		}
 	}
 }

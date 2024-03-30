@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles
                                 default(Color), 1 / 3f);
                         }
 
-                        SoundEngine.PlaySound(SoundID.NPCHit42);
+                        SoundEngine.PlaySound(SoundID.NPCHit42, Projectile.position);
                         p.Kill();
                     }
                 }

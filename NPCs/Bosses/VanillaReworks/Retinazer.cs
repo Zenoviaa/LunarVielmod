@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                 bool lineOfSight = Collision.CanHitLine(npc.Center, 1, 1, targetCenter, 1, 1);
                 if (_passiveFireCounter > 60 && lineOfSight)
                 {
-                    SoundEngine.PlaySound(SoundID.Item72);
+                    SoundEngine.PlaySound(SoundID.Item72, npc.position);
 
                     float speedVariance = 3;
                     float speedVariance2 = 1;
@@ -125,7 +125,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 
@@ -179,7 +179,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 
@@ -225,7 +225,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 
@@ -265,7 +265,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 
@@ -311,7 +311,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 
@@ -357,7 +357,7 @@ namespace Stellamod.NPCs.Bosses.VanillaReworks
                                     d.noGravity = true;
                                 }
 
-                                SoundEngine.PlaySound(SoundID.Item12);
+                                SoundEngine.PlaySound(SoundID.Item12, npc.position);
                                 _fireCounter = 0;
                             }
 

@@ -92,13 +92,19 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public override void AI()
         {
+            Projectile.rotation = Projectile.velocity.ToRotation();
             if (Main.rand.NextBool(50))
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<VoidDrip>(), 30, 1);
+                    ModContent.ProjectileType<VoidDrip>(), 30, 1, Projectile.owner);
             }
 
             Visuals();
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
         }
 
         private void Visuals()
@@ -118,7 +124,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             }
 
             float scaleOut = 20;
-            if(Projectile.timeLeft < scaleOut && Projectile.DamageType != DamageClass.Summon)
+            if(Projectile.timeLeft < scaleOut)
             {
                 Projectile.scale = MathHelper.Lerp(0f, 1f, Projectile.timeLeft / scaleOut);
             }
@@ -137,7 +143,9 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
                 p.layer = Particle.Layer.BeforeProjectiles;
             }
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose"));
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SyliaRiftClose");
+            soundStyle.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
         }
     }
 }

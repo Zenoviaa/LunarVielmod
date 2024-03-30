@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
+using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Event.Gintzearmy;
 using Stellamod.WorldG;
@@ -71,6 +73,17 @@ namespace Stellamod.NPCs.Illuria
 			NPC.noTileCollide = false;
 
 		}
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(ItemDropRule.OneFromOptions(1,
+				ModContent.ItemType<IllurianCrestpants>(),
+				ModContent.ItemType<IllurianCrestplate>(),
+				ModContent.ItemType<IllurianCrestmask>()
+			));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurineScale>(), minimumDropped: 3, maximumDropped: 5));
+        }
+
 		public override void AI()
 		{
 
@@ -83,8 +96,8 @@ namespace Stellamod.NPCs.Illuria
 			{
 				if (StellaMultiplayer.IsHost)
 				{
-					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
-					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<GintzeSolider>());
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y - 10, ModContent.NPCType<IllurianGuard>());
+					NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y - 10, ModContent.NPCType<IllurianGuard>());
 				}
 			}
 			switch (State)
@@ -478,10 +491,10 @@ namespace Stellamod.NPCs.Illuria
 			frameCounter = 0;
 			frameTick = 0;
 		}
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		public override bool CheckActive()
 		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzlMetal>(), 0, 1, 3));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 6, 1, 5));
+			//Returning false here makes them not despawn
+			return false;
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{

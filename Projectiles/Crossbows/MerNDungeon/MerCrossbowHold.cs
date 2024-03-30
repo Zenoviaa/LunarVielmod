@@ -89,7 +89,7 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 				float speedY = Projectile.velocity.Y * 7;
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<MerCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 				ShakeModSystem.Shake = 2;
 			}
 
@@ -99,26 +99,26 @@ namespace Stellamod.Projectiles.Crossbows.MerNDungeon
 				float speedY = Projectile.velocity.Y * 7;
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 11f, ModContent.ProjectileType<MerCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 			
 			if (Timer == 46)
 			{
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<MerCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 			
 			if (Timer == 49)
 			{
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<MerCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
 			if (Timer == 52)
 			{
 
 				Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 10f, ModContent.ProjectileType<MerCrossbowBolt>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, Projectile.position);
 			}
 
 			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position

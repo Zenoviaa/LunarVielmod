@@ -77,7 +77,7 @@ namespace Stellamod.NPCs.Illuria
 
 
 			
-			if (Timer2 < 25)
+			if (Timer2 < 20)
 			{
 				maxDetectRadius = 2000f;
 				Projectile.rotation = Projectile.DirectionTo(playerToHomeTo.Center).ToRotation() - MathHelper.PiOver2;

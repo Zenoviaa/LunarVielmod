@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<DLantern>(), (int)(27 * 1.5f), 0f, Main.myPlayer);
                 }
             
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, NPC.position);
             }
 
             if (!Down)

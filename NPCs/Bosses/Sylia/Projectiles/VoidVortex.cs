@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -13,6 +14,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
     internal class VoidVortex : ModProjectile
     {
 		private static Asset<Texture2D> VorTexture;
+		public override string Texture => TextureRegistry.EmptyTexture;
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Projectile.type] = 18;

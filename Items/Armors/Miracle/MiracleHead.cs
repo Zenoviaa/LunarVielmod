@@ -58,18 +58,6 @@ namespace Stellamod.Items.Armors.Miracle
             player.armorEffectDrawShadow = true;
         }
 
-        public override void AddRecipes() 
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.WizardHat, 1)
-                .AddIngredient(ModContent.ItemType<MiracleThread>(), 10)
-                .AddIngredient(ModContent.ItemType<WanderingFlame>(), 6)
-                .AddIngredient(ModContent.ItemType<DarkEssence>(), 2)
-                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 2)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
-
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             DrawHelper.DrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);

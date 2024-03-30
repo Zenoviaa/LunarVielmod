@@ -38,8 +38,8 @@ namespace Stellamod.Items.Armors.Vanity.Astolfo
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.statLifeMax2 += 30;
-			player.GetDamage(DamageClass.Generic) *= 1.02f;
+			player.statLifeMax2 += 35;
+			player.GetDamage(DamageClass.Generic) += 0.02f;
 			player.pickSpeed *= 0.80f;
 			
 		

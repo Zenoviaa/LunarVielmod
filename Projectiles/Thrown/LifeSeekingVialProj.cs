@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Thrown
 			float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GlassBreak>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(SoundID.Item107);
+			SoundEngine.PlaySound(SoundID.Item107, Projectile.position);
 			float Speed = Main.rand.Next(4, 7);
 			float offsetRandom = Main.rand.Next(0, 50);
 			Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 2048f, 12f);
@@ -86,7 +86,7 @@ namespace Stellamod.Projectiles.Thrown
 			}
 
 
-			SoundEngine.PlaySound(SoundID.Item107);
+			SoundEngine.PlaySound(SoundID.Item107, Projectile.position);
 			Projectile.Kill();
 			return false;
 		}

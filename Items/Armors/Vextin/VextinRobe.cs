@@ -33,7 +33,7 @@ namespace Stellamod.Items.Armors.Vextin
 		public override void UpdateEquip(Player player)
 		{
 
-			player.statLifeMax2 += 10;
+			player.statLifeMax2 += 40;
 			
 		}
 

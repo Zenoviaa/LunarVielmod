@@ -91,13 +91,13 @@ namespace Stellamod.Items.Weapons.Summon
 				if (_attackState == FireflyMinion.AttackState.Defense_Mode)
 				{
 					_attackState = FireflyMinion.AttackState.Attack_Mode;
-					SoundEngine.PlaySound(SoundID.Item46);
+					SoundEngine.PlaySound(SoundID.Item46, player.position);
 
 				}
 				else
 				{
 					_attackState = FireflyMinion.AttackState.Defense_Mode;
-					SoundEngine.PlaySound(SoundID.Item43);
+					SoundEngine.PlaySound(SoundID.Item43, player.position);
 				}
 				
 

@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio);
+            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio) * 0.5f;
         }
 
         //Visual Stuffs
@@ -119,7 +119,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
         public override void OnKill(int timeLeft)
         {
             //REPLACE SOUND AT SOME POINT
-            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact);
+            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
             for (int i = 0; i < Explosion_Particle_Count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);

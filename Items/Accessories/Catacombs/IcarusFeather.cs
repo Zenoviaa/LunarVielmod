@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                 }
                 if(_counter % 8 == 0)
                 {
-                    SoundEngine.PlaySound(SoundID.LiquidsWaterLava);
+                    SoundEngine.PlaySound(SoundID.LiquidsWaterLava, player.position);
                 }
             }
         }

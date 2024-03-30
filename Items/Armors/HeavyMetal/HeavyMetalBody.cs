@@ -22,8 +22,8 @@ namespace Stellamod.Items.Armors.HeavyMetal
             Item.value = Item.sellPrice(0, 0, 20, 0);
             Item.rare = ItemRarityID.Blue;
             Item.defense = 3;
-            Item.vanity = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -31,6 +31,5 @@ namespace Stellamod.Items.Armors.HeavyMetal
             recipe.AddTile(TileID.HeavyWorkBench);
             recipe.Register();
         }
-
     }
 }

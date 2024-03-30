@@ -9,6 +9,7 @@ using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.INest;
+using Stellamod.NPCs.Bosses.Azzuria;
 
 namespace Stellamod.NPCs.Town
 {
@@ -20,33 +21,31 @@ namespace Stellamod.NPCs.Town
         public static Point MechanicsTownTile;
         public static Point LabTile;
         public static Point GiaTile;
+        public static Point IlluriaTile;
+
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
         public static Point ZuiSpawnTileOffset => new Point(15, -15);
-
         public static Point CellConverterSpawnTileOffset => new Point(83, -8);
         public static Point DelgrimSpawnTileOffset => new Point(39, -7);
-
-
         public static Point LabSpawnTileOffset => new Point(39, -20);
-
         public static Point GiaSpawnTileOffset => new Point(14, -7);
+        public static Point AzzuriaSpawnTileOffset => new Point(134, -224);
 
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
         public static Vector2 UnderworldRiftSpawnWorld => UnderworldRuinsTile.ToWorldCoordinates() + UnderworldRiftTileOffset.ToWorldCoordinates();
         public static Vector2 LittleWitchSpawnWorld => LittleWitchTownTile.ToWorldCoordinates() + ZuiSpawnTileOffset.ToWorldCoordinates();
-
         public static Vector2 DelgrimSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + DelgrimSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 CellConverterSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + CellConverterSpawnTileOffset.ToWorldCoordinates();
-
-
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 AzzuriaSpawnWorld => IlluriaTile.ToWorldCoordinates() + AzzuriaSpawnTileOffset.ToWorldCoordinates();
 
         public static bool TownedGia;
+
         public override void NetSend(BinaryWriter writer)
         {
             writer.WriteVector2(AlcadTile.ToVector2());
@@ -56,6 +55,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(LabTile.ToVector2());
             writer.Write(TownedGia);
             writer.WriteVector2(GiaTile.ToVector2());
+            writer.WriteVector2(IlluriaTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -67,6 +67,7 @@ namespace Stellamod.NPCs.Town
             LabTile = reader.ReadVector2().ToPoint();
             TownedGia = reader.ReadBoolean();
             GiaTile = reader.ReadVector2().ToPoint();
+            IlluriaTile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -80,8 +81,6 @@ namespace Stellamod.NPCs.Town
                 if (!player.active)
                     continue;
 
-                MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
-                float distanceToUnderworldRuins = Vector2.Distance(player.Center, UnderworldRiftSpawnWorld);
                 if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -89,8 +88,7 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Merena>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
-                if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
+                else if (!NPC.AnyNPCs(ModContent.NPCType<LonelySorceress>()) &&
                     !NPC.AnyNPCs(ModContent.NPCType<Fenix>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -105,14 +103,13 @@ namespace Stellamod.NPCs.Town
                             ModContent.NPCType<Zui>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(), 
                         (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y, 
                         ModContent.NPCType<UnderworldRift>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Delgrim>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -127,7 +124,6 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<CellConverter>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
                 else if (!NPC.AnyNPCs(ModContent.NPCType<UnknownSignal>()) && Main.hardMode &&
                     !NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()))
                 {
@@ -136,15 +132,20 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<UnknownSignal>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
                         ModContent.NPCType<Gia>());
                     NetMessage.SendData(MessageID.SyncNPC);
+                } 
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Azzuria>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)AzzuriaSpawnWorld.X, (int)AzzuriaSpawnWorld.Y,
+                        ModContent.NPCType<Azzuria>());
+                    NetMessage.SendData(MessageID.SyncNPC);
                 }
-
             }
         }
 
@@ -166,6 +167,7 @@ namespace Stellamod.NPCs.Town
             tag["LabTile"] = LabTile;
             tag["GiaTile"] = GiaTile;
             tag["TownedGia"] = TownedGia;
+            tag["IlluriaTile"] = IlluriaTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -178,6 +180,7 @@ namespace Stellamod.NPCs.Town
             LabTile = tag.Get<Point>("LabTile");
             GiaTile = tag.Get<Point>("GiaTile");
             TownedGia = tag.GetBool("TownedGia");
+            IlluriaTile = tag.Get<Point>("IlluriaTile");
         }
     }
 }

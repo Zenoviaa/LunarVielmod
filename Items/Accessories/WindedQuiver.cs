@@ -20,7 +20,7 @@ namespace Stellamod.Items.Accessories
         {
             if (type == ProjectileID.WoodenArrowFriendly && hasQuiver)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordThrow"));
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordThrow"), position);
                 type = ModContent.ProjectileType<ShinobiKnife>();
                 damage += 2;
                 velocity *= 2f;

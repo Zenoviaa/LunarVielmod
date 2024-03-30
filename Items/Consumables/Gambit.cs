@@ -42,7 +42,7 @@ namespace Stellamod.Items.Consumables
 		public override void RightClick(Player player)
 		{
 			var entitySource = player.GetSource_OpenItem(Type);
-			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Trick"));
+			SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Trick"), player.position);
             int index = NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DiceinNPC>());
             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, index);
             player.GetModPlayer<MyPlayer>().Dice = true;

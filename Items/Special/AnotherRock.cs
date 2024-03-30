@@ -24,7 +24,7 @@ namespace Stellamod.Items.Special
             Vector2 teleportPosition = TeleportSystem.StoneGolemAltarWorld;
             player.Teleport(teleportPosition);
             NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, teleportPosition.X, teleportPosition.Y, 1);
-            SoundEngine.PlaySound(SoundID.Item6);
+            SoundEngine.PlaySound(SoundID.Item6, player.position);
             return true;
         }
     }

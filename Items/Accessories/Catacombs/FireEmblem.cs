@@ -47,7 +47,9 @@ namespace Stellamod.Items.Accessories.Catacombs
                 if (hit.Crit && Main.rand.NextBool(2))
                 {
                     ShakeModSystem.Shake = 10;
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+                    SoundStyle soundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");
+                    soundStyle.PitchVariance = 0.15f;
+                    SoundEngine.PlaySound(soundStyle, target.position);
                     Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center, Vector2.Zero,
                         ModContent.ProjectileType<FireBoom>(), damageDone / 2, hit.Knockback, Player.whoAmI);
                 }

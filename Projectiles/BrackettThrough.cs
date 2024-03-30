@@ -83,12 +83,12 @@ namespace Stellamod.Projectiles
                 if (A == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Zombie83, Projectile.position);
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"), Projectile.position);
                 }
                 else
                 {
                     SoundEngine.PlaySound(SoundID.Zombie82, Projectile.position);
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"));
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Saw1"), Projectile.position);
                 }
             }
 

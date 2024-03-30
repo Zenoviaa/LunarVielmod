@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
 using Stellamod.Helpers;
-using Stellamod.Particles;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

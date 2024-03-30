@@ -356,7 +356,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Sparn
                             ModContent.ProjectileType<SparnSkull>(), 34, 2, Owner: Main.myPlayer);
 
                         DustBurst(spawnPosition);
-                        SoundEngine.PlaySound(SoundID.Item43);
+                        SoundEngine.PlaySound(SoundID.Item43, NPC.position);
                     }
                 }
 

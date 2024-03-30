@@ -99,7 +99,7 @@ namespace Stellamod.Projectiles.Spears
                 float speedY = Projectile.velocity.Y * 7;
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, new Vector2(0,0), ModContent.ProjectileType<DreadSpawnEffect>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 32f, ModContent.ProjectileType<VeiizalsUmbrellaWaveProj>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
-                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot, player.position);
                 float recoilStrength = 7;
                 Vector2 targetVelocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
                 player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);

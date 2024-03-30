@@ -26,8 +26,8 @@ namespace Stellamod.Items.Armors.ForestCore
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Ranged) += 0.25f;
-
+           // player.GetDamage(DamageClass.Ranged) += 0.25f;
+            player.GetDamage(DamageClass.Ranged).Flat += 2;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)

@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Catacombs.Trap.Cogwork
 				Projectile.velocity *= 0.94f;
 			}
 
-			SoundEngine.PlaySound(SoundID.Dig);
+			SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 			return false;
 		}
 

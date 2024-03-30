@@ -40,8 +40,8 @@ namespace Stellamod.Items.Armors
 		public override void UpdateEquip(Player player)
 		{
 			player.statLifeMax2 += 35;
-			player.GetDamage(DamageClass.Melee) *= 1.02f;
-			player.GetDamage(DamageClass.Ranged) *= 1.02f;
+			player.GetDamage(DamageClass.Melee) += 0.02f;
+			player.GetDamage(DamageClass.Ranged) += 0.02f;
 			
 		}
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect

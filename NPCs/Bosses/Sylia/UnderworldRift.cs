@@ -278,6 +278,10 @@ namespace Stellamod.NPCs.Bosses.Sylia
 
         public override void AI()
         {
+            if (NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
+            {
+                NPC.Kill();
+            }
             NPC.TargetClosest();
             AI_FadeIn();
 			AI_Hover();

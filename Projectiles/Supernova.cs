@@ -79,7 +79,7 @@ namespace Stellamod.Projectiles
 		{
 			
 
-			SoundEngine.PlaySound(SoundID.Item110);
+			SoundEngine.PlaySound(SoundID.Item110, Projectile.position);
 		}
 	}
 

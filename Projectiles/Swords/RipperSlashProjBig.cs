@@ -1,26 +1,22 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
     public class RipperSlashProjBig : ModProjectile
     {
-        private bool _sync;
-        public float VEL = 1;
-        public bool randomRotation=true;
         public override void SetStaticDefaults()
         {
-
             Main.projFrames[Projectile.type] = 7;
         }
+
         public override void SetDefaults()
         {
             Projectile.width = 400;
             Projectile.height = 400;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.penetrate = 110;
             Projectile.timeLeft = 900;
@@ -28,27 +24,28 @@ namespace Stellamod.Projectiles.Swords
             Projectile.aiStyle = -1;
         }
 
+        public override bool ShouldUpdatePosition()
+        {
+            //Returning false here makes the position not change
+            return false;
+        }
+
         public override bool PreAI()
         {
-            if(!_sync && Main.myPlayer == Projectile.owner)
-            {
-                Projectile.netUpdate = true;
-                _sync = true;
-            }
-
             Projectile.ai[0]++;
             Projectile.alpha -= 40;
             if (Projectile.alpha < 0)
                 Projectile.alpha = 0;
-            if (Projectile.ai[0] <= 1 )
+
+            if (Projectile.ai[0] <= 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1"), Projectile.position);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1");
+                soundStyle.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-      
             }
 
-            Projectile.rotation = Projectile.ai[1];
-            Projectile.spriteDirection = Projectile.direction;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 2)
             {
@@ -58,25 +55,11 @@ namespace Stellamod.Projectiles.Swords
                 {
                     Projectile.active = false;
                 }
-
-
             }
+
             return true;
         }
 
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.ShimmerSplash, 0, 60, 133);
-            }
-        }
-
         public override Color? GetAlpha(Color lightColor) => Color.White;
-
-        public override void AI()
-        {
-        }
-
     }
 }

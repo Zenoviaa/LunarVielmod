@@ -37,9 +37,9 @@ namespace Stellamod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetDamage(DamageClass.Generic) *= 1.03f; // Increase ALL player damage by 100%
+			player.GetDamage(DamageClass.Generic) += 0.03f; // Increase ALL player damage by 100%
 			player.lifeRegen += 1;
-			player.GetCritChance(DamageClass.Generic) *= 1.05f;
+			player.GetCritChance(DamageClass.Generic) += 0.05f;
 		}
 	}
 }

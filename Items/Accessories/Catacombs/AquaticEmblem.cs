@@ -45,7 +45,7 @@ namespace Stellamod.Items.Accessories.Catacombs
                     }
                 }
 
-                SoundEngine.PlaySound(SoundID.Item85);
+                SoundEngine.PlaySound(SoundID.Item85, target.position);
             }
         }
     }

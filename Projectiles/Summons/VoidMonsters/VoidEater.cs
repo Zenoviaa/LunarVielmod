@@ -124,7 +124,7 @@ namespace Stellamod.Projectiles.Summons.VoidMonsters
         public override void OnKill(int timeLeft)
         {
             //REPLACE SOUND AT SOME POINT
-            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact);
+            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
             for (int i = 0; i < Explosion_Particle_Count; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1.5f, 1.5f);

@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Magic
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, speed, Scale: 1f);
                 d.noGravity = true;
             }
-            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact);
+            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.position);
         }
     }
 }
