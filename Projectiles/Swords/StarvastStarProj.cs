@@ -72,15 +72,16 @@ namespace Stellamod.Projectiles.Swords
             Visuals();
             ai_Counter++;
             Player owner = Main.player[Projectile.owner];
-            foundTarget = false;
-            SummonHelper.SearchForTargets(owner, Projectile,
-                out foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            if (foundTarget)
+
+            NPC npc = NPCHelper.FindClosestNPC(Projectile.position, 700);
+            if (npc != null)
             {
-                AI_Movement(targetCenter, 15);
+                foundTarget = true;
+                AI_Movement(npc.Center, 15);
             }
             else
             {
+                foundTarget = false;
                 Timer += 0.02f;
                 Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.1f);
@@ -155,7 +156,6 @@ namespace Stellamod.Projectiles.Swords
             // So it will lean slightly towards the direction it's moving
             float rotation = MathHelper.ToRadians(ai_Counter * 5);
             Projectile.rotation = rotation;
-            DrawHelper.AnimateTopToBottom(Projectile, 5);
 
             // Some visuals here
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
