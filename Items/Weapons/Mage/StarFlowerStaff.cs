@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 14;
+            Item.damage = 24;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -41,9 +41,9 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Daybloom, 5);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 50);
             recipe.AddIngredient(ModContent.ItemType<WanderingFlame>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
             recipe.AddIngredient(ItemID.FallenStar, 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
