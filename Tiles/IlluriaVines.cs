@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SpiritMod.Tiles;
+using Stellamod.Gores;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -23,12 +24,12 @@ namespace Stellamod.Tiles
             TileID.Sets.IsVine[Type] = true;
 
             HitSound = SoundID.Grass;
-            DustType = DustID.PinkCrystalShard;
+            DustType = DustID.GreenMoss;
 
             AddMapEntry(new Color(250, 258, 193));
         }
 
-        public override void NumDust(int i, int j, bool fail, ref int num) => num = 4;
+        public override void NumDust(int i, int j, bool fail, ref int num) => num = 2;
 
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
@@ -36,6 +37,16 @@ namespace Stellamod.Tiles
             if (tile.HasTile && tile.TileType == Type)
             {
                 WorldGen.KillTile(i, j + 1);
+
+
+                int gore = GoreHelper.TypeFallingIllurianVine;
+                var source = new Terraria.DataStructures.EntitySource_TileUpdate(i, j);
+                for (int x = 0; x < 2; x++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Vector2 pos = new Vector2(i * 16, j * 16);
+                    Gore.NewGore(source, pos, velocity, gore);
+                }
             }
         }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
