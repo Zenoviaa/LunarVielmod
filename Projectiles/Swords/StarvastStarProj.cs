@@ -22,7 +22,7 @@ namespace Stellamod.Projectiles.Swords
         {
             // DisplayName.SetDefault("Spragald");
             // Sets the amount of frames this minion has on its spritesheet
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 4;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -72,6 +72,7 @@ namespace Stellamod.Projectiles.Swords
             Visuals();
             ai_Counter++;
             Player owner = Main.player[Projectile.owner];
+            foundTarget = false;
             SummonHelper.SearchForTargets(owner, Projectile,
                 out foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
             if (foundTarget)
@@ -82,6 +83,7 @@ namespace Stellamod.Projectiles.Swords
             {
                 Timer += 0.02f;
                 Vector2 orbitCenter = MovementHelper.OrbitAround(owner.Center, Vector2.UnitY, 64, Timer);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.1f);
                 Projectile.Center = Vector2.Lerp(Projectile.Center, orbitCenter, 0.8f);
             }
         }
@@ -89,7 +91,7 @@ namespace Stellamod.Projectiles.Swords
         public override void OnKill(int timeLeft)
         {
             //Charged Sound thingy
-            for (int i = 0; i < 32; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Vector2 position = Projectile.Center;
                 Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
@@ -137,7 +139,7 @@ namespace Stellamod.Projectiles.Swords
             {
                 if (ai_Counter % 8 == 0)
                 {
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         Vector2 position = Projectile.Center;
                         Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
@@ -146,14 +148,6 @@ namespace Stellamod.Projectiles.Swords
                         p.layer = Particle.Layer.BeforeProjectiles;
                     }
                 }
-
-                if (ai_Counter % 15 == 0)
-                {
-                    Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(1f, 1f);
-                    Dust dust = Dust.NewDustPerfect(position, ModContent.DustType<GunFlash>(), Scale: Main.rand.NextFloat(0.5f, 1f));
-                    dust.noGravity = true;
-                }
-
             }
 
 

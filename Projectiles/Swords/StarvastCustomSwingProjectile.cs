@@ -114,12 +114,12 @@ namespace Stellamod.Projectiles.Swords
                 Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
                 Timer++;
-                if (Timer >= 3 * Swing_Speed_Multiplier)
+                if (Timer >= 6 * Swing_Speed_Multiplier)
                 {
                     Vector2 offset = Projectile.rotation.ToRotationVector2();
                     Vector2 starSpawnCenter = Projectile.Center + offset;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), starSpawnCenter, Vector2.Zero,
-                        ModContent.ProjectileType<StarvastStarProj>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<StarvastStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Timer = 0;
                 }
 
