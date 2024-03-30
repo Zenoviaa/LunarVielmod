@@ -8,8 +8,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Kilvier : ModItem
+    public class Kilvier : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Throwing;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 67;
+
+			Item.knockBack = 15;
+		}
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("This sword feels warm, what is this Materials?"); // The (English) text shown below your weapon's name.
