@@ -219,6 +219,7 @@ namespace Stellamod.NPCs.Town
             tag["GiaTile"] = GiaTile;
             tag["TownedGia"] = TownedGia;
             tag["IlluriaTile"] = IlluriaTile;
+            tag["VelTile"] = VelTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -232,6 +233,7 @@ namespace Stellamod.NPCs.Town
             GiaTile = tag.Get<Point>("GiaTile");
             TownedGia = tag.GetBool("TownedGia");
             IlluriaTile = tag.Get<Point>("IlluriaTile");
+            VelTile = tag.Get<Point>("VelTile");
         }
     }
 }
