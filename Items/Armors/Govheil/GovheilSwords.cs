@@ -54,7 +54,8 @@ namespace Stellamod.Items.Armors.Govheil
 			Projectile.timeLeft = 1500;
 			Projectile.scale = 0.7f;
 			Projectile.CloneDefaults(ProjectileID.DeadlySphere);
-			AIType = ProjectileID.DeadlySphere;
+			Projectile.minionSlots = 0;
+            AIType = ProjectileID.DeadlySphere;
 		}
 
 		// Here you can decide if your minion breaks things like grass or pots	
