@@ -419,7 +419,7 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(11))
+					switch (Main.rand.Next(10))
 					{
 
 
@@ -481,11 +481,7 @@ namespace Stellamod.NPCs.Town
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileBroochA>(), 1);
 							break;
 
-						case 10:
-
-
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrostSwing>(), 1);
-							break;
+		
 					}
 
 

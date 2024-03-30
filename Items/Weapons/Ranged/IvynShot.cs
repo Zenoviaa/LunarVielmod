@@ -10,7 +10,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 9;
+            Item.damage = 6;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.Wood, 12);
+
             recipe.AddIngredient(ModContent.ItemType<Ivythorn>(), 9);
             recipe.AddTile(TileID.WorkBenches);
             recipe.Register();
