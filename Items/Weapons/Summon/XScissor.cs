@@ -13,11 +13,10 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class XScissorComboPlayer : ModPlayer
+    public class XScissorComboPlayer : ModPlayer
 	{
 		public float speed = 1f;
 		public float timer;
@@ -64,7 +63,7 @@ namespace Stellamod.Items.Weapons.Summon
             _attackStyle = newForm;
             if (_attackStyle == 1)
             {
-                Item.damage = 320;
+                Item.damage = 214;
 				Item.UseSound = null; 
 				Item.DamageType = DamageClass.Melee;
                 Item.mana = 4;
@@ -104,11 +103,23 @@ namespace Stellamod.Items.Weapons.Summon
         {
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Brooch of the TaGo", "Right click to change form, requires a Sewing Kit")
+            if (_attackStyle == 0)
             {
-                OverrideColor = Color.Magenta
-            };
-            tooltips.Add(line);
+                line = new TooltipLine(Mod, "Brooch of the TaGo", "Right click to change form, requires a Sewing Kit")
+                {
+                    OverrideColor = Color.Magenta
+                };
+                tooltips.Add(line);
+            }
+            else
+            {
+                line = new TooltipLine(Mod, "Brooch of the TaGo", "Changed by Sewing Kit, effects may be incorrect...")
+                {
+                    OverrideColor = Color.Magenta
+                };
+                tooltips.Add(line);
+            }
+
         }
 
         public override bool CanUseItem(Player player)
@@ -137,6 +148,7 @@ namespace Stellamod.Items.Weapons.Summon
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
                         break;
                 }
+                return false;
             }
 
             return base.CanUseItem(player);
@@ -159,7 +171,12 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-			if(_attackStyle == 0)
+            if (!player.GetModPlayer<SewingKitPlayer>().hasSewingKit && _attackStyle == 1)
+            {
+                ChangeForm(0);
+            }
+
+            if (_attackStyle == 0)
 			{
                 //Spawn at the mouse cursor position
                 position = Main.MouseWorld;

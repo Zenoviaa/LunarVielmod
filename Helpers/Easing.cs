@@ -192,6 +192,16 @@ namespace Stellamod.Helpers
             }
         }
 
+        public static float SpikeCirc(float t)
+        {
+            if (t <= .5f)
+                return InOutCirc(t / .5f);
+            else
+            {
+                return InOutCirc((1 - t) / 0.5f);
+            }
+        }
+
         ///<Summary>
         /// Useful easing function for making things smooth! <see href="https://easings.net/">Ease Functions</see>           
         ///</Summary>

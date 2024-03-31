@@ -77,11 +77,23 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Brooch of the TaGo", "Right click to change form, requires a Sewing Kit")
+            if (_attackStyle == 0)
             {
-                OverrideColor = Color.Magenta
-            };
-            tooltips.Add(line);
+                line = new TooltipLine(Mod, "Brooch of the TaGo", "Right click to change form, requires a Sewing Kit")
+                {
+                    OverrideColor = Color.Magenta
+                };
+                tooltips.Add(line);
+            }
+            else
+            {
+                line = new TooltipLine(Mod, "Brooch of the TaGo", "Changed by Sewing Kit, effects may be incorrect...")
+                {
+                    OverrideColor = Color.Magenta
+                };
+                tooltips.Add(line);
+            }
+
         }
 
         public override bool CanUseItem(Player player)
@@ -110,6 +122,7 @@ namespace Stellamod.Items.Weapons.Ranged
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia3"), player.position);
                         break;
                 }
+                return false;
             }
 
             return base.CanUseItem(player);

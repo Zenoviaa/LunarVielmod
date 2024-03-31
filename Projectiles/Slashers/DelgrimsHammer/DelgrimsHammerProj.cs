@@ -190,12 +190,6 @@ namespace Stellamod.Projectiles.Slashers.DelgrimsHammer
                 ParticleManager.NewParticle<StarParticle2>(target.Center, velocity, Color.DarkGoldenrod, randScale);
             }
 
-            for (int i = 0; i < 2; i++)
-            {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 1f).noGravity = true;
-            }
-
-
             if (BounceTimer <= 0)
             {
                 player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;

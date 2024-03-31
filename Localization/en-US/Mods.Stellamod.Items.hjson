@@ -6213,6 +6213,41 @@ XX4160: {
 ExampleScriptureItem: {
 	Tooltip: ""
 	DisplayName: Example Scripture Item
+	Content:
+		'''
+		PLEASE PLAY MASTERMODE or EXPERTMODE FOR THIS MOD!
+			MULTIPLAYER COMPATIBLE!!!
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			The Lunar Veil is an expansive mod for the world of Aimacra. As a crossover from a personal game Diari,
+			Sirestias has sought to expand her skills in the world of terraria and she wants to eliminate all false gods and goddesses on the planet.
+
+			The ones that pose a threat to existence on the planet of terraria would be gods who own singularities. They cause inreversible damage and often corrupts the worlds and the minds within them.
+			People go out to worship these gods and protect them, and nobody dare stand up to the ones who rule their domains.
+
+			What new evils have befallen this world? Who knows :P
+			But your job is to eliminate all of them
+
+			This is a content/quality of life mod which includes:
+			- Many new enemies and npcs
+			- 200+ New interesting weapons
+			- New systems for weapons and gameplay including Harvesting Spots, Weapon Powders, igniters, brooches and more!
+			- A Gambling feature for post bosses
+			- 4 New main town NPC
+			- Many Shop NPC's around the world!
+			- 50+ Accessories that will indefinetly help you with battles
+			- Many fleshed out biomes and structures around the world to keep you searching and exploring
+			- Castles, Dungeons and a very open and treasure filled world that makes it feel like a metroidvania!
+			- Many new bosses around both prehardmode and hardmode now!
+			- Many main armors to flesh out prehardmode's lack of class armors
+			- A fully immersive soundtrack from both me and Azza (Go check out my Diari Soundtrack, please lol)
+			- Pretty much made by three people, Me, Azzalea and Scolon!
+			- Over 600 new items!
+			- Many new quality of life addons to make the terraria experience better :)
+
+			Keep in mind this is mainly prehardmode content so far!
+			(WARNING: THIS MOD ENCOURAGES YOU TO WORK ON EVASION)
+			There is plenty of hardmode content as of the Stars and Bloom update!
+		'''
 }
 
 VeilBrick: {
