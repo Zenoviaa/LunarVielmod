@@ -612,3 +612,8 @@ MiracleLiquid: {
 	DisplayName: Miracle Liquid
 	Description: You feel goofy... 2.2x damage!!!!
 }
+
+SplashAttackDebuff: {
+	DisplayName: Splash Attack Debuff
+	Description: Mods.Stellamod.Buffs.SplashAttackDebuff.Description
+}

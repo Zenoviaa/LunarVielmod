@@ -1,4 +1,5 @@
-﻿using Terraria.GameContent.UI.Elements;
+﻿using Microsoft.Xna.Framework;
+using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -14,6 +15,8 @@ namespace Stellamod.UI.Scripture
             panel.Width.Set(612, 0);
             panel.Height.Set(768, 0);
             panel.HAlign = panel.VAlign = 0.5f;
+            panel.BackgroundColor = Color.Transparent;
+            panel.BorderColor = Color.Transparent;
             Append(panel);
 
             Popup = new ScripturePopup();

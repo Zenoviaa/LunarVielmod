@@ -6383,3 +6383,13 @@ VeiledScriptureSigfried: {
 	Turn this into an Idol for rewards from Sirestias
 	'''
 }
+
+SplashAttack: {
+	DisplayName: Splash Attack
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Slappin' you up with all my paints
+		'''
+}
