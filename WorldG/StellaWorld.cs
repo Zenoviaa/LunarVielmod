@@ -7275,8 +7275,8 @@ namespace Stellamod.WorldG
 				
 					for (int daa = 0; daa < 1; daa++)
 					{
-						Point Loc2 = new Point(towerX, towerY + 45);
-						WorldUtils.Gen(Loc2, new Shapes.Rectangle(25, 25), new Actions.SetTile(TileID.SnowBlock));
+						Point Loc2 = new Point(towerX, towerY + 21);
+						WorldUtils.Gen(Loc2, new Shapes.Rectangle(45, 25), new Actions.SetTile(TileID.SnowBlock));
 
 
 
