@@ -25,6 +25,7 @@ namespace Stellamod.NPCs.Town
         public static Point VelTile;
         public static Point IlluriaTile;
         public static Point FableTile;
+        public static Point SireTile;
 
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
@@ -37,6 +38,7 @@ namespace Stellamod.NPCs.Town
         public static Point AzzuriaSpawnTileOffset => new Point(134, -224);
         public static Point BORDOCSpawnTileOffset => new Point(94, -380);
 
+        public static Point SirestiasSpawnTileOffset => new Point(24, -21);
         public static Point VelSpawnTileOffset => new Point(18, -23);
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
@@ -49,6 +51,8 @@ namespace Stellamod.NPCs.Town
         public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 AzzuriaSpawnWorld => IlluriaTile.ToWorldCoordinates() + AzzuriaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 BORDOCSpawnWorld => FableTile.ToWorldCoordinates() + BORDOCSpawnTileOffset.ToWorldCoordinates();
+
+        public static Vector2 SireSpawnWorld => SireTile.ToWorldCoordinates() + SirestiasSpawnTileOffset.ToWorldCoordinates();
 
         public static Vector2 VelSpawnWorld => VelTile.ToWorldCoordinates() + VelSpawnTileOffset.ToWorldCoordinates();
 
@@ -66,6 +70,7 @@ namespace Stellamod.NPCs.Town
             tag["IlluriaTile"] = IlluriaTile;
             tag["VelTile"] = VelTile;
             tag["FableTile"] = FableTile;
+            tag["SireTile"] = SireTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -81,6 +86,7 @@ namespace Stellamod.NPCs.Town
             IlluriaTile = tag.Get<Point>("IlluriaTile");
             VelTile = tag.Get<Point>("VelTile");
             FableTile = tag.Get<Point>("FableTile");
+            SireTile = tag.Get<Point>("SireTile");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -95,6 +101,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(IlluriaTile.ToVector2());
             writer.WriteVector2(FableTile.ToVector2());
             writer.WriteVector2(VelTile.ToVector2());
+            writer.WriteVector2(SireTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -109,6 +116,7 @@ namespace Stellamod.NPCs.Town
             IlluriaTile = reader.ReadVector2().ToPoint();
             FableTile = reader.ReadVector2().ToPoint();
             VelTile = reader.ReadVector2().ToPoint();
+            SireTile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -133,6 +141,7 @@ namespace Stellamod.NPCs.Town
             return 
                 NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
 
@@ -225,6 +234,14 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)BORDOCSpawnWorld.X, (int)BORDOCSpawnWorld.Y,
                         ModContent.NPCType<Bordoc>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Sirestias>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)SireSpawnWorld.X, (int)SireSpawnWorld.Y,
+                        ModContent.NPCType<Sirestias>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
             }

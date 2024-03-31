@@ -6239,3 +6239,18 @@ VeilPot: {
 	DisplayName: Veil Pot
 	Tooltip: ""
 }
+
+VeilBanneri: {
+	Tooltip: ""
+	DisplayName: Veil Banneri
+}
+
+VeilBanner2i: {
+	Tooltip: ""
+	DisplayName: Veil Banner2i
+}
+
+CompletionIdol: {
+	DisplayName: Completion Idol
+	Tooltip: ""
+}

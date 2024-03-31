@@ -229,7 +229,7 @@ namespace Stellamod.NPCs.Town
 		public override void SetChatButtons(ref string button, ref string button2)
 		{ // What the chat buttons are when you open up the chat UI
 			button = Language.GetTextValue("LegacyInterface.28");
-			button2 = "What do I do next?";
+			button2 = "Talk";
 
 		}
 
@@ -263,132 +263,64 @@ namespace Stellamod.NPCs.Town
 				Player player = Main.LocalPlayer;
 				WeightedRandom<string> chat = new WeightedRandom<string>();
 
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2"));
 
-
-				//-----------------------------------------------------------------------------------------------
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss1"));
-
-				if (!DownedBossSystem.downedGintzlBoss)
+				//-----------------------------------------------------------------------------------------------	
+				switch (Main.rand.Next(10))
 				{
-					Main.npcChatText = $"Wait for at least 3 Npcs to enter our town and an army will raid us, theres a leader and I think his name is Gintzia, go fight him! ";
+					case 0:
+						Main.npcChatText = $"Heyyy at least we're out of Ekrose alive! I'm glad Vixyl is safe back at the main house.";
 
+						break;
 
-				}
-				if (DownedBossSystem.downedGintzlBoss)
-				{
+					case 1:
+						Main.npcChatText = $"I hate being Sirestias's Assassin.. Speaking of I met a guy named Veldris and he's totally cool!";
 
-					Main.npcChatText = $"Now that you've killed the Stone guardian, I'd recommend going into the Fabled Swamp over to the right or collecting resources to get ready to fight either Jack or find a sun alter in a desert and prepare for Sunstalker! ";
+						break;
 
+					case 2:
+						Main.npcChatText = $"I'll be back I may go to look for some new stuff underground. ";
 
-					if (DownedBossSystem.downedSunsBoss)
-					{
+						break;
 
-						Main.npcChatText = $"Ohhh great! I would recommend Jack next as they are decently difficult but maybe a bit harder than the last one. Go make a Wandering essence and go into the Fabled Swamp and touch a Pumpkin scarecrow! ";
+					case 3:
+						Main.npcChatText = $"What is a thug shaker? To shake or not to shake? Sometimes I wonder if life truly does give lemons.";
 
+						break;
 
+					case 4:
+						Main.npcChatText = $"What class would I even be? ";
 
-					}
+						break;
 
+					case 5:
+						Main.npcChatText = $"Hey sorry for what may of happened on Ekrose but I hope we can still be friends and make up to each other.";
 
-					if (DownedBossSystem.downedJackBoss)
-					{
+						break;
 
-						Main.npcChatText = $"Nice work! I want you to go headhunt a bird in the desert, his name is Sunstalker and they are a bit challenging but less so than the last, collect some mandibles in the desert to make the Sun stone! Find the alter on the surface of a desert!";
+					case 6:
+						Main.npcChatText = $"STARBOMBERS ARE ON THIS PLANET TOOOOO!!!";
 
+						break;
 
+					case 7:
+						Main.npcChatText = $"I totally haven't been playing geometry dash.";
 
-					}
+						break;
 
-					if (DownedBossSystem.downedJackBoss && DownedBossSystem.downedSunsBoss)
-					{
+					case 8:
+						Main.npcChatText = $"I've seen some weird things in my life, but never would I have thought Fenix would be more chronically horny than Sirestias, but to be fair Sirestias just gets more power doing that.";
 
-						Main.npcChatText = $"You're next target is Daedus, he's a strong one. Sirestias described him as a very loyal Guardian to one of the biggest threats here being Gothivia, we need him gone to get to the big fish in the sea. He resides low in the temple in the Fabled Swamp, no extra preperation needed.";
+						break;
 
+					case 9:
+						Main.npcChatText = $"I hate being part human.";
 
-						if (DownedBossSystem.downedDaedusBoss)
-						{
+						break;
 
-							Main.npcChatText = $"Oh my gosh nice, so here's where things are going to get difficult. If a blood moon happens we need to exterminate Dreadmire, she spawns after killing a blood cyst during a blood moon, you can also get some terror fragments too! She'll pose too much of a threat if we let her live. Thanks!";
-
-
-
-
-							if (DownedBossSystem.downedDreadBoss)
-							{
-
-								Main.npcChatText = $"We are making big progress now! I don't know if you have been killing other ravenous monsters but I'd recommend doing so as the next one on our list is Verlia but to get to her we have quite a few things to do first. Make yourself a void key and find a temple deep in the ice biome, there should be some loot and hopefully an alter that'll give you a lantern.";
-
-								if (DownedBossSystem.downedSOMBoss)
-								{
-
-									Main.npcChatText = $"Ok you got the lantern! From what Sirestias says here, we need to go to the cathedral overtop the ice biome and summon her at the top at night. This will be our biggest foe yet but I know you can kill her, sorry I'm tired of being Sirestias's assasin so it's your turn.";
-
-
-
-
-									if (DownedBossSystem.downedVeriBoss)
-									{
-
-										Main.npcChatText = $"Oh damn this is great. I think that completes our list for now, check back in with me in Hardmode!";
-
-
-										if (Main.hardMode)
-                                        {
-											Main.npcChatText = $"Welp here we go again. So theres a strange issue we have, so Daedus isn't the only barrier to trying to stop us from getting to Gothivia, I just went and explored around and found some new places and there was this castle underground in a green biome? I noticed Gothivia's marks on it and the Sun hasnt started turning green, could you look at that? There should be some catacombs underground in the desert, ocean and caverns to help power up too.";
-
-
-
-											if (DownedBossSystem.downedGothBoss)
-											{
-
-												Main.npcChatText = $"There was a person down there claiming to be Gothiva? Thats strange. I really need to tell Sirestias about this, on the other side Gothivia seems to be making an appearance on the world. Apparently things are changing the skies and things are falling from them";
-
-
-
-												if (DownedBossSystem.downedSTARBoss)
-												{
-
-													Main.npcChatText = $"WHATTT there's STARBOMBERS ON THIS PLANET TOO? TELL ME YOU'RE LYING... Ok um this is awkward, now we've both killed some then. I didn't think Rosemary's creations would've made it here. Ekrose sure does have an affect on this world. I saw some strange disturbance on the left side of the underworld though, can you check that out? ";
-
-
-
-													if (DownedBossSystem.downedSyliaBoss)
-													{
-
-														Main.npcChatText = $"It was a void witch... Interesting. I haven't been to the Royal Capital much, mainly because it's so far out but maybe we should kill the Queen there, she is definitely extremely powerful but I don't really know how to talk to her, I haven't seen her yet. If you can could you go kill her for us? ";
-
-
-
-														if (DownedBossSystem.downedFenixBoss)
-														{
-
-															Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao.";
-
-
-
-
-
-														}
-
-													}
-
-												}
-											}
-										}
-									}
-								}
-
-							}
-						}
-					}
-
-					return;
-
-
-
+					
 				}
 
-				
 
 
 
@@ -398,20 +330,12 @@ namespace Stellamod.NPCs.Town
 
 
 
-				
 
 
 
 
 
 
-
-
-				
-
-
-
-				
 			}
 
 
