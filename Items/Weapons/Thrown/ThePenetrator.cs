@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Thrown
             _attackStyle = newForm;
             if (_attackStyle == 1)
             {
-                Item.damage = 250;
+                Item.damage = 166;
                 Item.UseSound = null;
                 Item.DamageType = DamageClass.Ranged;
                 Item.useTime = 18;

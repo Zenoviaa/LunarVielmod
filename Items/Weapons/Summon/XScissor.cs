@@ -63,7 +63,7 @@ namespace Stellamod.Items.Weapons.Summon
             _attackStyle = newForm;
             if (_attackStyle == 1)
             {
-                Item.damage = 214;
+                Item.damage = 166;
 				Item.UseSound = null; 
 				Item.DamageType = DamageClass.Melee;
                 Item.mana = 4;
