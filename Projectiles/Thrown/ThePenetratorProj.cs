@@ -107,7 +107,7 @@ namespace Stellamod.Projectiles.Thrown
                             Projectile.timeLeft = 180;
 
                             float newDamage = Projectile.damage;
-                            newDamage *= 20 * (Timer / Charge_Time);
+                            newDamage *= 13 * (Timer / Charge_Time);
                             player.heldProj = -1;
                             Projectile.penetrate = 6;
                             Projectile.damage = (int)newDamage;
