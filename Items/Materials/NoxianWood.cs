@@ -26,7 +26,7 @@ namespace Stellamod.Items.Materials
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.Naxtrin.NoxianBlock>();
+			Item.createTile = ModContent.TileType<Tiles.Veil.NoxianBlock>();
 		}
 	}
 }
