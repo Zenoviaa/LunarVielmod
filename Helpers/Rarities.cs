@@ -87,7 +87,7 @@ namespace Stellamod.Helpers
             // Draw the base tooltip text and glow.
             RarityHelper.DrawBaseTooltipTextAndGlow(tooltipLine,
                 Color.DarkGoldenrod,
-                Color.Lerp(Color.DarkGoldenrod, Color.Goldenrod, VectorHelper.Osc(0, 1, 2)), new Color(12, 26, 47), RarityTextureRegistry.ThornedRarityGlow, glowScaleOffset: new Vector2(0.75f, 0.5f));
+                Color.Lerp(Color.DarkGoldenrod, Color.Goldenrod, VectorHelper.Osc(0, 1, 2)), new Color(12, 26, 47), glowScaleOffset: new Vector2(0.75f, 0.5f));
 
             // Draw base sparkles.
             RarityHelper.SpawnAndUpdateTooltipParticles(tooltipLine, ref SparkleList, 7, SparkleType.DefaultSparkle);

@@ -38,6 +38,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.shoot = ModContent.ProjectileType<X3107Skull>();
             Item.shootSpeed = 30f;
             Item.DamageType = DamageClass.Melee;
+            Item.noUseGraphic = true;
         }
         public override void AddRecipes()
         {
