@@ -6256,17 +6256,17 @@ VeilBrick: {
 }
 
 AzurerinPaintingI: {
-	DisplayName: Azurerin Painting I
+	DisplayName: Azurerin Painting
 	Tooltip: ""
 }
 
 GothiviaPaintingI: {
-	DisplayName: Gothivia Painting I
+	DisplayName: Gothivia Painting
 	Tooltip: ""
 }
 
 SigfriedPaintingI: {
-	DisplayName: Sigfried Painting I
+	DisplayName: Sigfried Painting
 	Tooltip: ""
 }
 
@@ -6276,16 +6276,97 @@ VeilPot: {
 }
 
 VeilBanneri: {
-	Tooltip: ""
+	Tooltip: Banner of someone who worships higher beings below the veil
 	DisplayName: Veil Banner
 }
 
 VeilBanner2i: {
-	Tooltip: ""
+	Tooltip: Banner of someone who worships higher beings below the veil
 	DisplayName: Veil Banner
 }
 
 CompletionIdol: {
 	DisplayName: Completion Idol
 	Tooltip: An Idol made after collecting scripts from the towers of higher beings and forged from those souls into a trophy.
+}
+
+VeiledScriptureGothivia: {
+	Tooltip: Use to read.
+	DisplayName: Gothivia's Veiled Scripture
+	Content: '''
+
+
+		This higher being is of the Iyx family. Related to Verlia and Vixyl they hold a high amount of skill and passion for the things they love.
+		They are to be believed to be seperated at birth from Rosemary of Ekrose from their other sister. 
+		
+		This specimen bears heavy grudges and will attempt to do anything to reconcile. 
+		She had her village (Govheil Castle) taken away from her as the acidic corruption took her people, her ginzte army and her friends.
+		After Fenix took and trapped her sister this beig took a journey to go seek power from Lumi Veil, another benounced god to save her.
+		I believe she may have taken a weak singularity and bounded it to Daedus for protection meaning she is most likely the strongest being over
+		Fenix without using a singularity's power. 
+
+		She currently is gone but the people who escaped the acid from taking over ended up going to the fable, they pay their respects to her here.
+		We can only assume she has been training to save her sister for the past 30 years...
+
+			- Love Sirestias
+		'''
+}
+
+VeiledScriptureAzurerin: {
+	Tooltip: Use to read.
+	DisplayName: Azurerin's Veiled Scripture
+	Content: '''
+
+
+		This higher being is of the Veil family and is one of the two sisters of Lumi Veil.
+		She also is related to Dreadmire, formally known as Cozmire and has a singularity that guards her soul.
+		
+		This specimen has a strong resemblence to the stars and was heavily connected to Cozmire throughout her life.
+		Through family complications this higher being sought power to gain connection to her other sisters. She sought
+		out more power through a singularity with Lumi and ended up becoming powerful but to no avail of having more of a 
+		bond. A being of care and overthinking. She may prove to be a challenge due to her soul being binded but she is lost,
+		so take advantage of that. She also took part in sealing Sigfried so her and Zui have a small connection.
+
+		Currently they are residing in the stars watching from above, sleeping and casting Aurorean starfalls with their dreams.
+		They await for their sister's rebound.
+
+		- Love Sirestias
+
+		'''
+}
+
+VeiledScriptureMiner1: {
+	Tooltip: Use to read.
+	DisplayName: Diary log 1
+	Content: '''
+
+		Today I found some REALLY good coal. Like I know I'm supposed to be looking for diamonds but like-
+		how can I say no to all of this? I need this to smelt some ores. My buddy Bimbam over here keeps throwing dynamite and
+		getting stuck in the vines, you know everyday we are minin' I'm always thinking about butch lesbians.
+
+		- Dharlie Mixam's log 1!
+
+		'''
+}
+
+VeiledScriptureSigfried: {
+	Content: '''
+
+
+		Belonging to the Sepsis family, being the old lord of the Illuria and the Lunar tree, of all things silver.
+		Exiled out of the community this one is, Sigfried lost control and set off chain reactions throughout the lands
+		
+		Sigfried seemed to have no relative connection but was a masterclass thief who bit off more than they could chew.
+		He has a brother who now holds the throne in Illuria. Once a vigilante who sought peace turned insane by taking in the power
+		of a high singularity, Pulsar Fragment. 40 or 50 so years ago Sigfried stole a singularity from Lumi Veil and merged it with his body.
+		Unknowingly doing this caused him to loose control of his body and destroying the world as we know it. Killing of Fenix's parents, which
+		would allow her to rise to the throne of her own Capital and becoming crazy herself. He was exiled after the destruction and was trapped
+		within a Pulsing Key which is hidden away deep underground, Zui being the one to stop him.
+
+		To bring out Lumi we may need to reawaken him.
+		- Love Sirestias
+
+		'''
+	DisplayName: Sigfried's Veiled Scripture
+	Tooltip: Use to read.
 }

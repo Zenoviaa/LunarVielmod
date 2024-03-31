@@ -171,6 +171,9 @@
     <None Remove="Items\Shrines\GovheilNAlca\ShrineLightsI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineSolMothI.png" />
     <None Remove="Items\Shrines\Underground\ShrineBridgetI.png" />
+    <None Remove="Items\Special\VeiledScriptureAzurerin.png" />
+    <None Remove="Items\Special\VeiledScriptureMiner1.png" />
+    <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Weapons\Mage\Aneuriliac.png" />
     <None Remove="Items\Weapons\Mage\Astalaiya.png" />
     <None Remove="Items\Weapons\Mage\Eclipsia.png" />
