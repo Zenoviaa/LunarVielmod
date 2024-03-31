@@ -598,7 +598,7 @@ Mushroom: {
 
 Stick: {
 	DisplayName: Stick
-	Tooltip: Welp it's a stick
+	Tooltip: Welp it's a stick from small tree parts.
 }
 
 ViolinStick: {
@@ -2920,7 +2920,7 @@ Cactius: {
 }
 
 GreyBricks: {
-	DisplayName: Grey Bricks
+	DisplayName: Gray Bricks
 	Tooltip: ""
 }
 
@@ -6213,4 +6213,29 @@ XX4160: {
 ExampleScriptureItem: {
 	Tooltip: ""
 	DisplayName: Example Scripture Item
+}
+
+VeilBrick: {
+	DisplayName: Veil Brick
+	Tooltip: ""
+}
+
+AzurerinPaintingI: {
+	DisplayName: Azurerin Painting I
+	Tooltip: ""
+}
+
+GothiviaPaintingI: {
+	DisplayName: Gothivia Painting I
+	Tooltip: ""
+}
+
+SigfriedPaintingI: {
+	DisplayName: Sigfried Painting I
+	Tooltip: ""
+}
+
+VeilPot: {
+	DisplayName: Veil Pot
+	Tooltip: ""
 }
