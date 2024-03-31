@@ -72,7 +72,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
 				tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen AzurinTower", WorldGenTA));
-				tasks.Insert(MorrowGen + 16, new PassLegacy("World Gen GothiviaTower", WorldGenTG));
+	
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -114,8 +114,8 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 24, new PassLegacy("World Gen Mechanic spot", WorldGenMechShop));
 				tasks.Insert(CathedralGen2 + 25, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
                 tasks.Insert(CathedralGen2 + 26, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-
-            }
+				tasks.Insert(CathedralGen2 + 27, new PassLegacy("World Gen GothiviaTower", WorldGenTG));
+			}
 
 
 			
