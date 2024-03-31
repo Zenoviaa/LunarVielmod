@@ -607,3 +607,8 @@ BlackballDebuff: {
 	Description: Mods.Stellamod.Buffs.BlackballDebuff.Description
 	DisplayName: Blackball Debuff
 }
+
+MiracleLiquid: {
+	DisplayName: Miracle Liquid
+	Description: You feel goofy... 2.2x damage!!!!
+}

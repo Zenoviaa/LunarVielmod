@@ -44,6 +44,7 @@
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\MiracleBoost.png" />
+    <None Remove="Buffs\MiracleLiquid.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadowBoost.png" />
