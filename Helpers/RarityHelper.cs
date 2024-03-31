@@ -73,6 +73,7 @@ namespace Stellamod.Helpers
                         velocity = Vector2.UnitY * Main.rand.NextFloat(0.1f, 0.25f);
                         sparklesList.Add(new DefaultSparkle(lifetime, scale, 0f, 0f, position, velocity));
                         break;
+
                     case SparkleType.MagicCircle:
                         lifetime = (int)Main.rand.NextFloat(70f - 25f, 70f);
                         scale = Main.rand.NextFloat(0.03f * 0.5f, 0.03f);

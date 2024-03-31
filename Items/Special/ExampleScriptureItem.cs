@@ -1,4 +1,5 @@
-﻿using Stellamod.UI.Scripture;
+﻿using Stellamod.Helpers;
+using Stellamod.UI.Scripture;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -24,7 +25,7 @@ namespace Stellamod.Items.Special
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<GoldenSpecialRarity>();
         }
 
         public override void UpdateInventory(Player player)

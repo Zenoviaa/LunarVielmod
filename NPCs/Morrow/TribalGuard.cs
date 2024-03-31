@@ -50,15 +50,9 @@ namespace Stellamod.NPCs.Morrow
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			Player player = spawnInfo.Player;
-			if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
-			{
-				return spawnInfo.Player.ZoneFable() ? 1.6f : 0f;
-			}
-
 			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
 			{
-				return SpawnCondition.Underground.Chance * 0.5f;
+				return 0.5f;
 			}
 
 			return 0f;

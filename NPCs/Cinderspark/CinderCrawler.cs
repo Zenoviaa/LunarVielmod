@@ -168,7 +168,7 @@ namespace Stellamod.NPCs.Cinderspark
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<CindersparkBiome>())
+            if (spawnInfo.Player.InModBiome<CindersparkBiome>() && !spawnInfo.Player.ZoneUnderworldHeight)
             {
                 return 0.15f;
             }
