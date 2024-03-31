@@ -117,6 +117,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 		{
 			var entitySource = NPC.GetSource_FromAI();
 			timer++;
+			NPC.TargetClosest();
 			NPC.spriteDirection = NPC.direction;
 
 			Shooting++;
