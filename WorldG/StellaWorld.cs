@@ -7324,8 +7324,7 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[towerX, towerY];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Sand
-					|| tile.TileType == TileID.Mud))
+				if (!(tile.TileType == TileID.Mud || tile.TileType == TileID.JungleGrass))
 				{
 					continue;
 				}
