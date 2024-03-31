@@ -1,38 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Core.Utils;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Magic;
+using Stellamod.Items.Weapons.Summon;
 using Stellamod.Trails;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Swords
 {
-    public class StarvastCustomSwingProjectile : ModProjectile
-	{
+    internal class XScissorMiracleProj : ModProjectile
+    {
         private bool _init;
-        public override string Texture => "Stellamod/Items/Weapons/Melee/Starvast";
+        public override string Texture => "Stellamod/Items/Weapons/Melee/XScissorMiracle";
 
         ref float Dir => ref Projectile.ai[0];
-        ref float Timer => ref Projectile.ai[1];
+        ref float Speed => ref Main.player[Projectile.owner].GetModPlayer<XScissorComboPlayer>().speed;
+        ref float Timer => ref Main.player[Projectile.owner].GetModPlayer<XScissorComboPlayer>().timer;
 
         //Swing Stats
         public float SwingDistance;
-        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        public int SwingTime = 30 * Swing_Speed_Multiplier;
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
         public int EndSwingTime = 4 * Swing_Speed_Multiplier;
 
         //This is for smoothin the trail
-        public const int Swing_Speed_Multiplier = 8;
+        public const int Swing_Speed_Multiplier = 12;
 
         public override void SetStaticDefaults()
         {
@@ -42,8 +39,8 @@ namespace Stellamod.Projectiles.Swords
 
         public override void SetDefaults()
         {
-            Projectile.width = 64;
-            Projectile.height = 64;
+            Projectile.width = 52;
+            Projectile.height = 52;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
@@ -65,8 +62,8 @@ namespace Stellamod.Projectiles.Swords
             Player player = Main.player[Projectile.owner];
             if (!_init && Main.myPlayer == Projectile.owner)
             {
-                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-   
+                SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee) / Speed);
+
                 _init = true;
                 Projectile.alpha = 255;
                 Projectile.timeLeft = SwingTime + EndSwingTime;
@@ -114,17 +111,6 @@ namespace Stellamod.Projectiles.Swords
                 Projectile.Center = position;
                 Projectile.rotation = (position - player.Center).ToRotation() + MathHelper.PiOver4;
 
-                Timer++;
-                if (Timer >= 6 * Swing_Speed_Multiplier)
-                {
-                    Vector2 offset = Projectile.rotation.ToRotationVector2();
-                    Vector2 starSpawnCenter = Projectile.Center + offset;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), starSpawnCenter, Vector2.Zero,
-                        ModContent.ProjectileType<StarvastStarProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                    Timer = 0;
-                }
-
-
                 player.heldProj = Projectile.whoAmI;
                 player.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
                 player.itemRotation = rotation * player.direction;
@@ -133,17 +119,36 @@ namespace Stellamod.Projectiles.Swords
             }
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 1.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Turquoise, Color.Transparent, completionRatio) * 0.7f;
-        }
 
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+
+            //Increase speed when you hit
+            Speed += 0.15f;
+            Timer = 0;
+            if (Speed >= 15)
+            {
+                Speed = 15;
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), 
+                    (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, ColorFunctions.MiracleVoid, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                    ModContent.DustType<GunFlash>(), newColor: ColorFunctions.MiracleVoid, Scale: 0.8f);
+            }
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/VoidHit");
+            soundStyle.PitchVariance = 0.15f;
+            soundStyle.Pitch = 0.75f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
+        }
 
         public TrailRenderer SwordSlash;
         public TrailRenderer SwordSlash2;
@@ -154,26 +159,22 @@ namespace Stellamod.Projectiles.Swords
 
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
             var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhispyTrail").Value;
-        
+
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
 
-            /*
-            Texture2D Texture2 = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(Texture2, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Texture2.Width / 2, Texture2.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
+  
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(61, 230, 241, 50) * (1f - p));
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(
+                    ColorFunctions.MiracleVoid.R, ColorFunctions.MiracleVoid.G, ColorFunctions.MiracleVoid.B, 255) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
 
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(255, 255, 255, 4) * (1f - p));
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(0, 0, 0, 255) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
             }
 
@@ -190,7 +191,6 @@ namespace Stellamod.Projectiles.Swords
             SwordSlash.Draw(Projectile.oldPos, rotation);
             SwordSlash2.Draw(Projectile.oldPos, rotation);
 
-
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
@@ -199,16 +199,20 @@ namespace Stellamod.Projectiles.Swords
             Vector2 origin = sourceRectangle.Size() / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);
 
-
-            Main.EntitySpriteDraw(texture,
-               Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-               sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0); // drawing the sword itself
+            DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.MiracleVoid, Color.Transparent, ref lightColor);
+            if(Speed < 9)
+            {
+                float xScale = Speed / 15;
+                xScale = 1f - xScale;
+                xScale += 0.3f;
+                Main.EntitySpriteDraw(texture,
+              Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+              sourceRectangle, drawColor, Projectile.rotation, origin, new Vector2(xScale, 1), SpriteEffects.None, 0); // drawing the sword itself
+            }
            
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
             return false;
-
         }
-
     }
 }

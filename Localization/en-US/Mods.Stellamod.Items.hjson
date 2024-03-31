@@ -6209,3 +6209,8 @@ XX4160: {
 	Tooltip: ""
 	DisplayName: X X4160
 }
+
+ExampleScriptureItem: {
+	Tooltip: ""
+	DisplayName: Example Scripture Item
+}
