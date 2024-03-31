@@ -6291,11 +6291,14 @@ CompletionIdol: {
 }
 
 VeiledScriptureGothivia: {
-	Tooltip: Use to read.
+	Tooltip:  '''
+	Use to read.
+	Turn this into an Idol for rewards from Sirestias
+	'''
 	DisplayName: Gothivia's Veiled Scripture
 	Content:
 		'''
-
+		---------------------------------------
 
 		This higher being is of the Iyx family. Related to Verlia and Vixyl they hold a high amount of skill and passion for the things they love.
 		They are to be believed to be seperated at birth from Rosemary of Ekrose from their other sister. 
@@ -6314,11 +6317,14 @@ VeiledScriptureGothivia: {
 }
 
 VeiledScriptureAzurerin: {
-	Tooltip: Use to read.
+	Tooltip: '''
+	Use to read.
+	Turn this into an Idol for rewards from Sirestias
+	'''
 	DisplayName: Azurerin's Veiled Scripture
 	Content:
 		'''
-
+		---------------------------------------
 
 		This higher being is of the Veil family and is one of the two sisters of Lumi Veil.
 		She also is related to Dreadmire, formally known as Cozmire and has a singularity that guards her soul.
@@ -6355,7 +6361,7 @@ VeiledScriptureMiner1: {
 VeiledScriptureSigfried: {
 	Content:
 		'''
-
+		---------------------------------------
 
 		Belonging to the Sepsis family, being the old lord of the Illuria and the Lunar tree, of all things silver.
 		Exiled out of the community this one is, Sigfried lost control and set off chain reactions throughout the lands
@@ -6372,5 +6378,8 @@ VeiledScriptureSigfried: {
 
 		'''
 	DisplayName: Sigfried's Veiled Scripture
-	Tooltip: Use to read.
+	Tooltip:  '''
+	Use to read.
+	Turn this into an Idol for rewards from Sirestias
+	'''
 }

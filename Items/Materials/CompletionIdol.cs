@@ -1,5 +1,8 @@
 ﻿
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.Vanity.Gothivia;
+using Stellamod.Items.Ores;
+using Stellamod.Items.Special;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -24,6 +27,25 @@ namespace Stellamod.Items.Materials
             Item.maxStack = 1; // The item's max stack value
             Item.value = Item.sellPrice(gold: 50); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
+        }
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe(1);
+            recipe.AddIngredient(ModContent.ItemType<VeiledScriptureGothivia>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Twirlers>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
+            recipe.Register();
+
+            Recipe recipe2 = CreateRecipe(1);
+            recipe2.AddIngredient(ModContent.ItemType<VeiledScriptureCozmire>(), 1);
+            recipe2.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 20);
+            recipe2.Register();
+
+            Recipe recipe3 = CreateRecipe(1);
+            recipe3.AddIngredient(ModContent.ItemType<VeiledScriptureAzurerin>(), 1);
+            recipe3.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
+            recipe3.AddIngredient(ModContent.ItemType<RadianuiBar>(), 10);
+            recipe3.Register();
         }
 
     }
