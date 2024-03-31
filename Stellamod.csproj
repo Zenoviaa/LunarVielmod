@@ -159,6 +159,10 @@
     <None Remove="Items\Placeable\RalladI.png" />
     <None Remove="Items\Placeable\SunSall.png" />
     <None Remove="Items\Placeable\VeilScriptureI.png" />
+    <None Remove="Items\Placeable\Veil\AzurerinPaintingI.png" />
+    <None Remove="Items\Placeable\Veil\GothiviaPaintingI.png" />
+    <None Remove="Items\Placeable\Veil\SigfriedPaintingI.png" />
+    <None Remove="Items\Placeable\Veil\VeilPot.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineBUANI.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineGardenWreckerI.png" />

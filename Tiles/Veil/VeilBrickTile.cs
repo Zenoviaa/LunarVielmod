@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles.Naxtrin
+namespace Stellamod.Tiles.Veil
 {
-    public class NoxianBlock : ModTile
+	public class VeilBrickTile : ModTile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -14,11 +14,11 @@ namespace Stellamod.Tiles.Naxtrin
 			Main.tileBlockLight[Type] = true;
 
 			DustType = Main.rand.Next(110, 113);
-			RegisterItemDrop(ModContent.ItemType<Items.Materials.NoxianWood>());
+			RegisterItemDrop(ModContent.ItemType<Items.Materials.VeilBrick>());
 			MineResist = 2f;
 			MinPick = 225;
 
-			AddMapEntry(new Color(7, 26, 2));
+			AddMapEntry(new Color(20, 26, 2));
 
 			// TODO: implement
 			// SetModTree(new Trees.ExampleTree());

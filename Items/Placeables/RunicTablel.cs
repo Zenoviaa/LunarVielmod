@@ -32,14 +32,7 @@ namespace Stellamod.Items.Placeables
 
             Item.createTile = Mod.Find<ModTile>("RunicTableT").Type;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.WorkBench, 1);
-            recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
+       
 
     }
 }
