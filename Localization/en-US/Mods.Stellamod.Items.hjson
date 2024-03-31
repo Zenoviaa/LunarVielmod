@@ -6291,10 +6291,11 @@ CompletionIdol: {
 }
 
 VeiledScriptureGothivia: {
-	Tooltip:  '''
-	Use to read.
-	Turn this into an Idol for rewards from Sirestias
-	'''
+	Tooltip:
+		'''
+		Use to read.
+		Turn this into an Idol for rewards from Sirestias
+		'''
 	DisplayName: Gothivia's Veiled Scripture
 	Content:
 		'''
@@ -6317,10 +6318,11 @@ VeiledScriptureGothivia: {
 }
 
 VeiledScriptureAzurerin: {
-	Tooltip: '''
-	Use to read.
-	Turn this into an Idol for rewards from Sirestias
-	'''
+	Tooltip:
+		'''
+		Use to read.
+		Turn this into an Idol for rewards from Sirestias
+		'''
 	DisplayName: Azurerin's Veiled Scripture
 	Content:
 		'''
@@ -6378,8 +6380,36 @@ VeiledScriptureSigfried: {
 
 		'''
 	DisplayName: Sigfried's Veiled Scripture
-	Tooltip:  '''
-	Use to read.
-	Turn this into an Idol for rewards from Sirestias
-	'''
+	Tooltip:
+		'''
+		Use to read.
+		Turn this into an Idol for rewards from Sirestias
+		'''
+}
+
+VeiledScriptureCozmire: {
+	Content: '''
+		---------------------------------------
+
+		This higher being is of the Veil family and is one of the two sisters of Lumi Veil.
+		Using all of her power for evil and demonic purposes and causing her family disfunction this being is very interesting.
+
+		Cozmire was one out of the two sisters that were given life by Lumi Veil. Cozmire was granted the power of the cosmos, 
+		hence her name. She left the skies to use her powers for alternative purposes and damaged their family relations, making 
+		Azurerin feel incomplete. Lumi sent dreadmire a singularity to let her know that she was still cared for in the family
+		yet she gave it away to fenix for more power. This trade corrupted her soul and Fenix ended up using the singularity
+		for some heinous deeds it seems although she never put it in her soul. Cozmire was weakened by this and is now
+		awakened by a cyst during the most evil times of the year, a blood moon. We should take advantage of her weak form.
+
+		Now know as Dreadmire, people look up to her for evil purposes and to bring the rein of the red cosmos to the people.
+		Would take her out because of this. 
+
+		- Love Sirestias
+
+		'''
+	DisplayName: Cozmire's Veiled Scripture
+	Tooltip: '''
+		Use to read.
+		Turn this into an Idol for rewards from Sirestias
+		'''
 }
