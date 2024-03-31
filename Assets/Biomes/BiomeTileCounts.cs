@@ -4,7 +4,7 @@ using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Catacombs;
-using Stellamod.Tiles.Naxtrin;
+using Stellamod.Tiles.Veil;
 using Stellamod.Tiles.RoyalCapital;
 using System;
 using Terraria.ModLoader;
