@@ -7,6 +7,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Particles;
 using Stellamod.Projectiles.Summons.VoidMonsters;
 using Stellamod.Projectiles.Swords;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
