@@ -1118,13 +1118,8 @@ Halhurish: {
 }
 
 Verstibloom: {
-	DisplayName: Thorner
-	Tooltip:
-		'''
-		Shoots a swirling red bloom to swirl and kill your enemies after attacking!
-		Hitting foes with the melee swing builds damage towards the swing of the weapon
-		Does trenourmous damage!
-		'''
+	DisplayName: Thorned Witch's blade
+	Tooltip: Slash the enemies of Merena and Sylia through your enhanced blade.
 }
 
 VerstiDance: {

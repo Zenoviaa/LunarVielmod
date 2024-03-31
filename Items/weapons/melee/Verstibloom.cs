@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
@@ -10,32 +9,42 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Verstibloom : ModItem
+	public class Verstibloom : ClassSwapItem
 	{
+		//Alternate class you want it to change to
+		public override DamageClass AlternateClass => DamageClass.Magic;
+
+		//Defaults for the other class
+		public override void SetClassSwappedDefaults()
+		{
+			//Do if(IsSwapped) if you want to check for the alternate class
+			//Stats to have when in the other class
+			Item.damage = 45;
+			Item.mana = 5;
+			Item.knockBack = 12;
+		}
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Thorner");
-			/* Tooltip.SetDefault("Shoots a swirling red bloom to swirl and kill your enemies after attacking!" +
-				"\nHitting foes with the melee swing builds damage towards the swing of the weapon" +
-				"\nDoes trenourmous damage!"); */
+			// DisplayName.SetDefault("Frost Swing");
+			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
+			"\nHitting foes with the melee swing builds damage towards the swing of the weapon"); */
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 46;
+			Item.damage = 23;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 32;
-			Item.mana = 5;
+			Item.mana = 3;
 			Item.height = 32;
 			Item.useTime = 23;
-			Item.crit = 30;
 			Item.useAnimation = 23;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.knockBack = 5;
+			Item.knockBack = 7;
 			Item.rare = ItemRarityID.Blue;
-			Item.UseSound = SoundID.DD2_DarkMageAttack;
+			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.autoReuse = false;
-			Item.value = Item.sellPrice(0, 0, 12, 20);
-			Item.shoot = ModContent.ProjectileType<FrostSwProj2>();
+			Item.value = Item.sellPrice(0, 0, 0, 20);
+			Item.shoot = ModContent.ProjectileType<VerstiSwing>();
 			Item.shootSpeed = 10f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
@@ -43,26 +52,24 @@ namespace Stellamod.Items.Weapons.Melee
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-			
-			if (Item.shoot == ModContent.ProjectileType<FrostSwProj2>())
-				Item.shoot = ModContent.ProjectileType<VerstibloomProjectile>();
+
+			if (Item.shoot == ModContent.ProjectileType<VerstiSwing>())
+				Item.shoot = ModContent.ProjectileType<VerstiSwing2>();
 			else
-				Item.shoot = ModContent.ProjectileType<FrostSwProj2>();
+				Item.shoot = ModContent.ProjectileType<VerstiSwing>();
 
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
-
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.WoodenSword, 1);
 			recipe.AddTile(TileID.Anvils);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<SpacialDistortionFragments>(), 20);
+			recipe.AddIngredient(ModContent.ItemType<FrostSwing>(), 1);
+			recipe.AddIngredient(ItemID.JungleSpores, 12);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 5);
-			recipe.AddIngredient(ModContent.ItemType<OvermorrowWood>(), 15);
-			recipe.AddIngredient(ItemID.Vine, 3);
-			recipe.AddIngredient(ItemID.Stinger, 3);
 		}
 	}
 }

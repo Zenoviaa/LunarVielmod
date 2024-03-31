@@ -852,7 +852,6 @@ namespace Stellamod.NPCs.Town
 
 						case 12:
 
-							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Verstibloom>(), 1);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.JungleSpores, 10);
 
 							break;
