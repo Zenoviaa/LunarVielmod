@@ -6277,15 +6277,15 @@ VeilPot: {
 
 VeilBanneri: {
 	Tooltip: ""
-	DisplayName: Veil Banneri
+	DisplayName: Veil Banner
 }
 
 VeilBanner2i: {
 	Tooltip: ""
-	DisplayName: Veil Banner2i
+	DisplayName: Veil Banner 
 }
 
 CompletionIdol: {
 	DisplayName: Completion Idol
-	Tooltip: ""
+	Tooltip: An Idol made after collecting scripts from the towers of higher beings and forged from those souls into a trophy.
 }
