@@ -6425,3 +6425,8 @@ SplashAttack: {
 		Slappin' you up with all my paints
 		'''
 }
+
+CozmirePaintingI: {
+	DisplayName: Cozmire Painting I
+	Tooltip: ""
+}

@@ -73,8 +73,9 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 				tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
-				tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen AzurinTower", WorldGenTA));
-	
+				tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
+				tasks.Insert(MorrowGen + 16, new PassLegacy("World Gen CozmireTower", WorldGenTC));
+
 			}
 
 			int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -7415,6 +7416,155 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
 								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+
+
+					placed = true;
+
+				}
+			}
+
+		}
+
+		private void WorldGenTC(GenerationProgress progress, GameConfiguration configuration)
+		{
+
+			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+			progress.Message = "Cozmire getting her singularity stolen";
+
+			bool placed = false;
+			int attempts = 0;
+			while (!placed && attempts++ < 100000)
+			{
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int towerX = WorldGen.genRand.Next(500, Main.maxTilesX - 500); // from 50 since there's a unaccessible area at the world's borders
+																			   // 50% of choosing the last 6th of the world
+																			   // Choose which side of the world to be on randomly
+				///if (WorldGen.genRand.NextBool())
+				///{
+				///	towerX = Main.maxTilesX - towerX;
+				///}
+
+				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
+				int towerY = (int)Main.worldSurface - 200;
+
+				// We go down until we hit a solid tile or go under the world's surface
+				while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
+				{
+					towerY++;
+				}
+
+				// If we went under the world's surface, try again
+				if (towerY > Main.worldSurface)
+				{
+					continue;
+				}
+				Tile tile = Main.tile[towerX, towerY];
+				// If the type of the tile we are placing the tower on doesn't match what we want, try again
+				if (!(tile.TileType == TileID.Sandstone || tile.TileType == TileID.Sand))
+				{
+					continue;
+				}
+
+
+				for (int da = 0; da < 1; da++)
+				{
+					Point Loc = new Point(towerX, towerY + 20);
+
+
+
+
+
+					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
+					StructureMap structures = GenVars.structures;
+					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/TowerCozmire");
+					rectangle.Location = Loc;
+					structures.AddProtectedStructure(rectangle);
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/TowerCozmire");
+					Chest c = Main.chest[ChestIndexs[0]];
+
+					foreach (int chestIndex in ChestIndexs)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<VeiledScriptureCozmire>(), 0.5)
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(7))
+						{
+							case 0:
+								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+								break;
+							case 1:
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 2:
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+							case 3:
+								itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+								itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+								break;
+							case 4:
+								itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 5:
+								itemsToAdd.Add((ModContent.ItemType<SirestiasToken>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+								break;
+
+							case 6:
+								itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								break;
 
 
