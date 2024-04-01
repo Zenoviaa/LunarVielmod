@@ -68,7 +68,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Flame Ores", WorldGenVeriplantBlobs));
 				tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Govheil Castle", WorldGenRoyalCapital));
 				tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Alcad", WorldGenAlcadSpot));
-				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Alcad", WorldGenIlluria));
+				tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Illuria", WorldGenIlluria));
 				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
 				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
@@ -3815,7 +3815,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx - 240, smyy - 20);
+					Point Loc = new Point(smx - 270, smyy - 20);
 
 					rectangle.Location = Loc;
 					// NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
