@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -188,6 +189,11 @@ namespace Stellamod.UI.Dialogue
         public void HideMyUI()
         {
             _panel?.SetState(null);
+        }
+
+        public void SetPortrait(string texture)
+        {
+            Panel.Portrait.SetImage(ModContent.Request<Texture2D>(texture));
         }
     }
 }

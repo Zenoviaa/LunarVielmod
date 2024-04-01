@@ -29,7 +29,7 @@ namespace Stellamod.Items.Special
         {
             //1. Get the dialogue system
             DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
-
+    
             //2. Create a new instance of your dialogue
             ExampleDialogue exampleDialogue = new ExampleDialogue();
 

@@ -1,4 +1,7 @@
-﻿namespace Stellamod.UI.Dialogue
+﻿using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
+
+namespace Stellamod.UI.Dialogue
 {
     internal class ExampleDialogue : Dialogue
     {
@@ -14,7 +17,7 @@
             {
                 case 0:
                     //Set the texture of the portrait
-                    DialogueSystem.Panel.Portrait.Texture = "Stellamod/UI/Dialogue/ExampleDialoguePortrait";
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/ExampleDialoguePortrait");
                    
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("ExampleDialogue1"));
