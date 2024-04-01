@@ -12,6 +12,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Stellamod.Projectiles.Visual;
 
 
 namespace Stellamod.Projectiles.Paint
