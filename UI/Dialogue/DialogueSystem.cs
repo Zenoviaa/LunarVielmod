@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -11,9 +12,18 @@ namespace Stellamod.UI.Dialogue
     {
         private UserInterface _panel;
         private bool _isVisible;
+        private string _text;
+        private string _fullText;
+
+        private float _textingCounter;
+        private int _textingLength;
+        private int _dialogueIndex;
 
         public DialoguePanel Panel { get; private set; }
-
+        public Dialogue Dialogue { get; private set; }
+        public float TextingSpeed;
+        public int NumLines { get; private set; }
+        public bool IsFinishedWithLine { get; private set; }
         public bool IsVisible
         {
             get
@@ -37,13 +47,89 @@ namespace Stellamod.UI.Dialogue
         public override void Load()
         {
             Panel = new DialoguePanel();
+            Panel.OnLeftClick += OnButtonClick; 
             Panel.Activate();
             _panel = new UserInterface();
+        }
+
+        private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            //If no dialogue then no
+            if (Dialogue == null)
+                return;
+
+            // We can do stuff in here!
+            if (!IsFinishedWithLine)
+            {
+                SkipLine();
+                return;
+            }
+
+            _dialogueIndex++;
+            if(_dialogueIndex >= Dialogue.Length)
+            {
+                //End
+                ResetTexts();
+                IsVisible = false;
+                Dialogue.Complete();
+            }
+            else
+            {
+                Dialogue.Next(_dialogueIndex);
+            }
+        }
+
+        private void NextCharacter()
+        {
+            //Call this every frame for type writer effect
+            _textingCounter++;
+            if (_textingCounter >= TextingSpeed && _textingLength < _fullText.Length)
+            {
+                _textingLength++;
+                _text = _fullText.Substring(0, _textingLength);
+
+                //Fill the rest of the line with blank spaces so yeah
+                for (int i = 0; i < 200; i++)
+                {
+                    _text += " ";
+                }
+
+
+                _textingCounter = 0;
+                Panel.Text.SetText(_text);
+            }
+
+            if (_textingLength >= _fullText.Length)
+            {
+                IsFinishedWithLine = true;
+            }
+        }
+
+
+        private void SkipLine()
+        {
+            //Store the text in variable
+            _textingCounter = 0;
+            _textingLength = _fullText.Length;
+            _text = _fullText.Substring(0, _textingLength);
+            //Fill the rest of the line with blank spaces so yeah
+            for (int i = 0; i < 200; i++)
+            {
+                _text += " ";
+            }
+
+            //Update the text
+            Panel.Text.SetText(_text);
+            IsFinishedWithLine = true;
         }
 
         public override void UpdateUI(GameTime gameTime)
         {
             _panel?.Update(gameTime);
+            if(_fullText != string.Empty && _text != _fullText)
+            {
+                NextCharacter();
+            }
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -63,6 +149,37 @@ namespace Stellamod.UI.Dialogue
             }
         }
 
+        public void StartDialogue(Dialogue dialogue)
+        {
+            //Reset our stuffs
+            ResetTexts();
+            IsVisible = true;
+
+            //Reset the dialogue index so we start from the beginning
+            _dialogueIndex = 0;
+            Dialogue = dialogue;
+
+            //Let's goooo
+            Dialogue?.Next(_dialogueIndex);
+        }
+
+        private void ResetTexts()
+        {
+            _text = string.Empty;
+            _fullText = string.Empty;
+            _textingCounter = 0;
+            _textingLength = 0;
+            Panel.Text.SetText(string.Empty);
+            IsFinishedWithLine = false;
+        }
+
+        public void WriteText(string text)
+        {
+            ResetTexts();
+            _text = string.Empty;
+            _fullText = text;
+        }
+        
         public void ShowMyUI()
         {
             _panel?.SetState(Panel);

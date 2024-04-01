@@ -13,14 +13,20 @@ namespace Stellamod.UI.Dialogue
 {
     internal class DialogueBox : UIElement
     {
-        public virtual string Texture { get; set; } = "Stellamod/UI/Scripture/DialogueBox";
+        public virtual string Texture { get; set; } = "Stellamod/UI/Dialogue/DialogueBox";
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             Texture2D texture2D = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            Vector2 drawPos = new Vector2(Main.screenWidth, Main.screenHeight) / 2f;
-            Vector2 size = new Vector2(texture2D.Width, texture2D.Height);
-            drawPos -= size / 2;
+
+            //Bottom Center Screen
+            Vector2 drawPos = new Vector2(Main.screenWidth / 2f, Main.screenHeight);
+
+            //Move to bottom of sceren
+            drawPos -= new Vector2(0, 32);
+
+            Vector2 offset = new Vector2(texture2D.Width / 2, texture2D.Height);
+            drawPos -= offset;
             spriteBatch.Draw(texture2D, drawPos, Color.White);
         }
     }

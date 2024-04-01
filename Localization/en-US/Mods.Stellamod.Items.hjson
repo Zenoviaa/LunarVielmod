@@ -6430,3 +6430,8 @@ CozmirePaintingI: {
 	DisplayName: Cozmire Painting I
 	Tooltip: ""
 }
+
+ExampleDialogueItem: {
+	DisplayName: Example Dialogue Item
+	Tooltip: ""
+}
