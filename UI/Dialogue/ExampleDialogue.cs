@@ -15,6 +15,8 @@
                 case 0:
                     //Set the texture of the portrait
                     DialogueSystem.Panel.Portrait.Texture = "Stellamod/UI/Dialogue/ExampleDialoguePortrait";
+                   
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
                     DialogueSystem.WriteText(GetLocalizedText("ExampleDialogue1"));
                     break;
                 case 1:
