@@ -32,6 +32,7 @@
         {
             base.Update(index);
             //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
         }
 
         public override void Complete()
