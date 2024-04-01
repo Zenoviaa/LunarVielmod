@@ -6388,7 +6388,8 @@ VeiledScriptureSigfried: {
 }
 
 VeiledScriptureCozmire: {
-	Content: '''
+	Content:
+		'''
 		---------------------------------------
 
 		This higher being is of the Veil family and is one of the two sisters of Lumi Veil.
@@ -6408,7 +6409,8 @@ VeiledScriptureCozmire: {
 
 		'''
 	DisplayName: Cozmire's Veiled Scripture
-	Tooltip: '''
+	Tooltip:
+		'''
 		Use to read.
 		Turn this into an Idol for rewards from Sirestias
 		'''

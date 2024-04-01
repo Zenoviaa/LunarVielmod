@@ -296,22 +296,21 @@ namespace Stellamod.NPCs.Global
 
 			if (npc.type == NPCID.WallCreeperWall)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DustedSilk>(), 1, 1, 3)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
-
-
-			//------------------------------------------- Dungeon
-
-			if (npc.type == NPCID.BlueArmoredBones)
+            if (npc.type == NPCID.BlueArmoredBones || 
+				npc.type == NPCID.BlueArmoredBonesMace ||
+                npc.type == NPCID.BlueArmoredBonesNoPants || 
+				npc.type == NPCID.BlueArmoredBonesSword)
 			{
-
-
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DungeonCrossbow>(), 75, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
-			if (npc.type == NPCID.AngryBones)
+
+			if (npc.type == NPCID.AngryBones ||
+				npc.type == NPCID.AngryBonesBig ||
+				npc.type == NPCID.AngryBonesBigHelmet || 
+				npc.type == NPCID.AngryBonesBigMuscle)
 			{
 
 

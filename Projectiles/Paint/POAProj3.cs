@@ -93,6 +93,12 @@ namespace Stellamod.Projectiles.Paint
             Player player = Main.player[Projectile.owner];
             if (Main.rand.NextBool(2))
             {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+
+            if (Main.rand.NextBool(2))
+            {
                 float speedXa = Main.rand.NextFloat(-35f, 35f);
                 float speedYa = Main.rand.Next(-35, 35);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + speedXa, Projectile.Center.Y + speedYa, 0, 0, ModContent.ProjectileType<PaintBomb1>(), (Projectile.damage / 2) + player.GetModPlayer<MyPlayer>().PPPaintDMG2, 1, Projectile.owner, 0, 0);

@@ -12,6 +12,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Stellamod.Projectiles.Visual;
 
 
 namespace Stellamod.Projectiles.Paint
@@ -92,6 +93,13 @@ namespace Stellamod.Projectiles.Paint
         {
 
             Player player = Main.player[Projectile.owner];
+
+            if (Main.rand.NextBool(2))
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+
             if (Main.rand.NextBool(2))
             {
                 float speedXa = Main.rand.NextFloat(-35f, 35f);
