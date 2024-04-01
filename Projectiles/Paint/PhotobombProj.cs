@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Projectiles.Visual;
 using Stellamod.UI.Systems;
 using System;
 using Terraria;
@@ -45,7 +46,17 @@ namespace Stellamod.Projectiles.Paint
 
 
 		public float beens = 0;
-		public override void AI()
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < Main.rand.Next(1, 3); i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+        }
+
+        public override void AI()
 		{
 			Timer++;
 			beens++;

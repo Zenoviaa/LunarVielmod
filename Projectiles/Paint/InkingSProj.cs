@@ -12,6 +12,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Stellamod.Items.Accessories.Players;
+using Stellamod.Projectiles.Visual;
 
 namespace Stellamod.Projectiles.Paint
 {
@@ -260,7 +261,14 @@ namespace Stellamod.Projectiles.Paint
 		{
 		//	Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
-			for (int i = 0; i < 25; i++)
+
+            for (int i = 0; i < Main.rand.Next(1, 3); i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+
+            for (int i = 0; i < 25; i++)
 			{
 				Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<PaintBlob2>(), (Vector2.One * Main.rand.Next(1, 8)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
 				Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);

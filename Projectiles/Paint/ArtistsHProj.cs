@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using Stellamod.Utilis;
 using Terraria;
@@ -132,6 +133,12 @@ namespace Stellamod.Projectiles.Paint
         {
             Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
+            for(int i = 0; i < Main.rand.Next(2, 6); i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+
             for (int i = 0; i < 15; i++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);

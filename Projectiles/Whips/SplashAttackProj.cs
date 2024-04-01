@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Projectiles.Paint;
+using Stellamod.Projectiles.Visual;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -45,6 +46,14 @@ namespace Stellamod.Projectiles.Whips
             target.AddBuff(ModContent.BuffType<SplashAttackDebuff>(), 240);
             Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
+
+            for (int i = 0; i < Main.rand.Next(1, 3); i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<SplashProj>(), 0, 0, Projectile.owner);
+            }
+
+
             for (int i = 0; i < 15; i++)
             {
                 Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
