@@ -2866,7 +2866,11 @@ IvyakenStaff: {
 
 JellyStaff: {
 	DisplayName: Jelly Staff
-	Tooltip: Summons a small jelly to fight for you!
+	Tooltip:
+		'''
+		Summons a small jelly to fight for you!
+		The jellies will charge up and zap nearby enemies
+		'''
 }
 
 SwarmerStaff: {
