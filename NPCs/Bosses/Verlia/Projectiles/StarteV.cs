@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.UI.Dialogue;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -55,7 +56,8 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			NPC.friendly = true;
-			NPC.aiStyle = 0;
+			NPC.aiStyle = -1;
+			NPC.dontTakeDamageFromHostiles = true;
 		}
 		public float Spawner = 0;
 		public override void AI()
@@ -204,42 +206,28 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 			timer++;
 			if (timer == 1)
 			{
+
+				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+				//2. Create a new instance of your dialogue
+				VerliasDialogue exampleDialogue = new VerliasDialogue();
+
+				//3. Start it
+				dialogueSystem.StartDialogue(exampleDialogue);
+
+
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 25f);
 				NPC.netUpdate = true;
 			}
 
-			if (timer == 100)
-            {
-				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f - 2;
-
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb - 30, NPC.position.Y - 60, speedXb * 0, speedYb * 0.1f, ModContent.ProjectileType<VerliaHeadScreen>(), 0, 0f, 0, 0f, 0f);
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText1>(), 0, 0f, 0, 0f, 0f);
-				NPC.netUpdate = true;
-			}
-
-			if (timer == 400)
-			{
-				float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-				float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f - 2;
-
-				
-				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb + 200, NPC.position.Y - 60, speedXb * 0, speedYb * 0.2f, ModContent.ProjectileType<VerliaText2>(), 0, 0f, 0, 0f, 0f);
-				NPC.netUpdate = true;
-			}
-
-			if (timer == 700)
-			{
-				// after .66 seconds, we go to the hover state. //TODO, gravity?
-				State = ActionState.Death;
-				ResetTimers();
-				NPC.netUpdate = true;
-			}
+			
 		}
 
 		public void killyoself()
 		{
 			timer++;	
+		
+			
 			if (timer == 2)
 			{
 				int index = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VerliaB>());

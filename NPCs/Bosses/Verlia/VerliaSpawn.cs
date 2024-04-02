@@ -17,6 +17,7 @@ using System;
 using Stellamod.Tiles.Catacombs;
 using Stellamod.Dusts;
 using Stellamod.Texts;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 
 namespace Stellamod.NPCs.Bosses.Verlia
 {
@@ -49,8 +50,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y - 500, speedXb - 2 * 2, speedYb - 2 * 2,
-                        ModContent.ProjectileType<VerliaSpeech1>(), 0, 0f, Main.myPlayer, 0f, ai1);
                 }
             }
             _centerSparkleSize += 0.02f;
@@ -166,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 if (StellaMultiplayer.IsHost)
                 {
                     //Main.NewText("Jack has awoken!", Color.Gold);
-                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VerliaB>());
+                    int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<StarteV>());
                     Main.npc[npcID].netUpdate2 = true;
                 }
 
