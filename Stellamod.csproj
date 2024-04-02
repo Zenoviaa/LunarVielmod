@@ -53,6 +53,7 @@
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
+    <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
     <None Remove="Dusts\BubbleDust.png" />
     <None Remove="Dusts\GunFlash.png" />
     <None Remove="Dusts\LumiDust.png" />
@@ -470,6 +471,7 @@
     <None Remove="Projectiles\Steins\MardFist.png" />
     <None Remove="Projectiles\Steins\ShadingShot.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
+    <None Remove="Projectiles\Summons\Orbs\SineSireProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />
     <None Remove="Projectiles\Summons\ToxicMissileFriendly.png" />
     <None Remove="Projectiles\Summons\VoidMonsters\VoidEater.png" />

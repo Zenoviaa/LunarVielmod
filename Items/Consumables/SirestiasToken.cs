@@ -3,6 +3,7 @@
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Summon.Orbs;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,6 +39,10 @@ namespace Stellamod.Items.Consumables
             Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ModContent.ItemType<Maelstrom>(), 1);
             recipe2.Register();
+
+            Recipe recipe3 = CreateRecipe();
+            recipe3.AddIngredient(ModContent.ItemType<SineSire>(), 1);
+            recipe3.Register();
         }
     }
 }
