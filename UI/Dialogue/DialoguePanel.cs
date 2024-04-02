@@ -34,8 +34,8 @@ namespace Stellamod.UI.Dialogue
             UIPanel.Append(Box);
 
             Portrait = new UIImage(ModContent.Request<Texture2D>("Stellamod/UI/Dialogue/ExampleDialoguePortrait"));
-            Portrait.HAlign = 0.02f;
-            Portrait.VAlign = 0.5f;
+            Portrait.PaddingRight = 701 / 2;
+           
             Portrait.Width.Set(150, 0);
             Portrait.Height.Set(150, 0);
             UIPanel.Append(Portrait);
