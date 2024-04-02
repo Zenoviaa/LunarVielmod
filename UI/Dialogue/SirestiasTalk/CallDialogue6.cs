@@ -6,10 +6,10 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.UI.Dialogue
 {
-    internal class CallDialogue3 : Dialogue
+    internal class CallDialogue6 : Dialogue
     {
         //The number of steps in this dialogue
-        public override int Length => 2;
+        public override int Length => 1;
 
         public override void Next(int index)
         {
@@ -23,15 +23,9 @@ namespace Stellamod.UI.Dialogue
                     DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
 
                     //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
-                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk4"));
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk10"));
                     break;
 
-                case 1:
-                    //Set the texture of the portrait
-
-                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
-                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk5"));
-                    break;
 
             }
         }

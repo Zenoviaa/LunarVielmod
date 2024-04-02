@@ -140,14 +140,70 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+                if (DownedBossSystem.downedDaedusBoss)
+                {
 
+
+
+                    if (!player.GetModPlayer<MyPlayer>().ZoneAcid)
+                        switch (Main.rand.Next(2))
+                        {
+
+
+                            case 0:
+                                CallDialogue4 exampleDialogue = new CallDialogue4();
+
+
+                                dialogueSystem.StartDialogue(exampleDialogue);
+                                break;
+
+
+
+                            case 1:
+                                CallDialogue5 exampleDialogue2 = new CallDialogue5();
+
+
+                                dialogueSystem.StartDialogue(exampleDialogue2);
+                                break;
+
+                        }
+
+
+
+                    if (player.GetModPlayer<MyPlayer>().ZoneAcid)
+                        switch (Main.rand.Next(1))
+                        {
+
+
+                            case 0:
+                                CallDialogue6 exampleDialogue = new CallDialogue6();
+
+
+                                dialogueSystem.StartDialogue(exampleDialogue);
+                                break;
+
+
+
+                        }
+
+
+
+
+
+
+
+
+
+
+
+                }
             }
-            //1. Get the dialogue system
+                //1. Get the dialogue system
 
 
-            //2. Create a new instance of your dialogue
+                //2. Create a new instance of your dialogue
 
-            return true;
+                return true;
         }
     }
 }
