@@ -821,11 +821,11 @@ namespace Stellamod
             {
                 IrradiatedKilled = 0;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) || NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
                 SingularityFragment = true;
             }
-			else if (ZoneIlluria || ZoneCathedral)
+			else if (ZoneIlluria)
 			{
 				SingularityFragment = true;
 			}
