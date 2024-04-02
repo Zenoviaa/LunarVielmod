@@ -24,6 +24,7 @@ using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
@@ -483,6 +484,30 @@ namespace Stellamod.NPCs.Town
 
 							case 1:
 								
+
+								break;
+
+							case 2:
+
+								break;
+
+						}
+
+					}
+
+
+					else if (DownedBossSystem.downedAzurewrathBoss)
+					{
+
+						switch (Main.rand.Next(3))
+						{
+							case 0:
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
+
+								break;
+
+							case 1:
+
 
 								break;
 

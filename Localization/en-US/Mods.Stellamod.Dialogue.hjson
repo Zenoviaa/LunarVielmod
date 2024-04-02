@@ -75,36 +75,49 @@ SirestiasTalk4:
 	You killed the army nice! I think you can try going to the fable, it should be just on the right of where you landed.
 	You could also do some quests for Zui, I think we have a similar line of thinking so we can count her as an ally.
 	'''
-	
-	SirestiasTalk5:
+SirestiasTalk5:
 	'''
 	Interestingly enough I went over to get some bread from the army and they seemed really calm. I mean it seems like they are just really lost warrior guys it seems.
 	Back to sleeping.
 	'''
-
-		SirestiasTalk7:
+SirestiasTalk7:
 	'''
 	Sooo we need to kill Dreadmire, I think she is Cozmire but in a weaker state and this is like the perfect time to do it!
 	If a blood moon is happening please find a blood cyst and execute her. Ill give you rewards ;p
 	'''
-
-		SirestiasTalk6:
+SirestiasTalk6:
 	'''
 	Ok with Daedus out of the way we should be free to go to the govheil castle. Gothivia may of binded him to the singularity and the castle for protection.
 	Since you purged him and his singularity it should give you access to that place, Daedus will remain forgotten.
 	'''
-
-		SirestiasTalk8:
+SirestiasTalk8:
 	'''
 	With Daedus being gone there's a lot more to explore, Dreadmire, or Cozmire, needs to be purged pretty soon so be prepared for that but other than that we should head over to the Virulent.
 	Those fabled folks are old residents of the govheil castle which is in the viruelent. Theres some pretty good stuff there.
 	'''
-	SirestiasTalk9:
+SirestiasTalk9: The acidic green place that has taken over the jungle is called the Virulent according to Aimacra. It took over Gothivia's village and it caused some major issues. It seemed to root from a lab but I'm not sure if the old fabled folks knew that.
+SirestiasTalk10: Sweet you're there! I'm assuming you took care of Dreadmire for us? If you have come give me my idol after your excursion. I just want you to search for some loot and possibly get a void key sometime soon? We should start going for Verlia and her bindings.
+
+SirestiasTalk11:
 	'''
-	The acidic green place that has taken over the jungle is called the Virulent according to Aimacra. It took over Gothivia's village and it caused some major issues. It seemed to root from a lab but I'm not sure if the old fabled folks knew that.
+	Oki dokie, you took care of the evil monster, although I dont think they posed a threat it was pretty necessary to get rid of them for our purification process.
+	Aimacra discovered a place near the underworld, the cinderspark. It's been charred to all hell from the increasing heat of the world.
 	'''
 
-	SirestiasTalk10:
+	SirestiasTalk12:
 	'''
-	Sweet you're there! I'm assuming you took care of Dreadmire for us? If you have come give me my idol after your excursion. I just want you to search for some loot and possibly get a void key sometime soon? We should start going for Verlia and her bindings.
+	We need to collect some materials to make this fake void key. Fenix binded Verlia's soul to this singularity as protection from her sister Gothivia.
+	To get to another one of those big fish we need to kill Verlia to anger Gothivia. We'll be able to brag in her face and she'll want to come for us, so get moving :)
+	'''
+
+	SirestiasTalk13:
+	'''
+	This cinderspark place is extremely hot huh, It definitely was home to some dragons. I heard they went extinct a long time ago due to the heat.
+	Which is interesting because there's some other monsters here. We might need to collect some of these souls' skins for the key mold.
+	'''
+
+	SirestiasTalk14:
+	'''
+	I think this place is burned from the singularity lurking here. I went and talked to Zui earlier and she told me about Sigfried. Apparently he's trapped somewhere down here.
+	His raw power is what we need to bring Lumi down for revenge, but we have other fish to fry first so we should get out of here and take out Verlia's singularity binding.
 	'''

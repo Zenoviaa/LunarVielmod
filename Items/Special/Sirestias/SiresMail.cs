@@ -193,10 +193,84 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+                    if (NPC.downedBoss2)
+                    {
 
+                        if (!player.GetModPlayer<MyPlayer>().ZoneCinder)
+                        {
+                            switch (Main.rand.Next(1))
+                            {
+
+
+                                case 0:
+                                    CallDialogue7 exampleDialogue = new CallDialogue7();
+
+
+                                    dialogueSystem.StartDialogue(exampleDialogue);
+                                    break;
+
+
+
+                            }
+
+
+                        }
+
+
+
+
+
+
+                        if (player.GetModPlayer<MyPlayer>().ZoneCinder)
+                        {
+                            switch (Main.rand.Next(1))
+                            {
+
+
+                                case 0:
+                                    CallDialogue8 exampleDialogue = new CallDialogue8();
+
+
+                                    dialogueSystem.StartDialogue(exampleDialogue);
+                                    break;
+
+
+
+                            }
+
+
+                        }
+
+
+
+
+
+                    }
 
 
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
                 //1. Get the dialogue system
 
