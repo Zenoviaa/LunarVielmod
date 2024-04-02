@@ -233,7 +233,6 @@ namespace Stellamod.Items.Weapons.Summon
                 }
                 else
 				{
-					Timer--;
 					//Idle
 					SummonHelper.CalculateIdleValues(Owner, Projectile,
 						out Vector2 vectorToIdlePosition,
