@@ -201,7 +201,7 @@ namespace Stellamod.Items.Weapons.Summon
 					Timer++;
 					Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
 					Vector2 offset = -directionToTarget * 200;
-					Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter + offset, 2);
+					Projectile.velocity = VectorHelper.VelocitySlowdownTo(Projectile.Center, targetCenter + offset, 8);
 					if(Timer == 1)
 					{
                         NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
@@ -233,7 +233,6 @@ namespace Stellamod.Items.Weapons.Summon
                 }
                 else
 				{
-					Timer--;
 					//Idle
 					SummonHelper.CalculateIdleValues(Owner, Projectile,
 						out Vector2 vectorToIdlePosition,

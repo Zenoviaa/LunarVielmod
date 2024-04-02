@@ -200,7 +200,7 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 				else
 				{
-					Timer--;
+
 				}
                 Visuals();
             }
