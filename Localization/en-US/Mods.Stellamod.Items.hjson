@@ -6445,7 +6445,7 @@ ExampleDialogueItem: {
 }
 
 SineSire: {
-	DisplayName: Sine Sire
+	DisplayName: Sire Wave
 	Tooltip:
 		'''
 		{$CommonItemTooltip.SummonTagDamage}
