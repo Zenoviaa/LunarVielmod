@@ -55,3 +55,27 @@ SirestiasDialogue4:
 	This world seems to have already undergone some serious injury so I'll be able to purify it once everyone with power is gone so I'll leave it up to you to give them their executions.
 	'''
 SirestiasDialogue5: Remember if you ever need some help be sure to call me! Love ya and have fun!
+
+SirestiasTalk1:
+	'''
+	Hey I think you should descend and fight the old guardian! I think somewhere in that starter bag I gave you a rock that can help you get to him.
+	Doing so will allow you to fight him and shortly after an army will come raid you. Be sure to explore the world too, the fabled swamp is off to the right.
+	'''
+
+	SirestiasTalk2:
+	'''
+	So you called? I see you're in the morrow. Interesting place to call me at, there should be plenty of breakables here to collect stuff from.
+	Theres some decently difficult enemies here so be wary.
+	'''
+
+		SirestiasTalk3:
+	'''
+	Alternatively there is someone here important that we need to kill. Daedus, he may of collected dust but an extremely weak singularity is bound to him.
+	Singularities are this places' source of energy and power. You can bind them to souls and whatnot but they come with side effects.
+	'''
+
+	SirestiasTalk4:
+	'''
+	You killed the army nice! I think you can try going to the fable, it should be just on the right of where you landed.
+	You could also do some quests for Zui, I think we have a similar line of thinking so we can count her as an ally.
+	'''
