@@ -38,7 +38,7 @@ namespace Stellamod.Items.Consumables
 		{
 			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 15);
-            recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<MoltenScrap>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 10);
 			recipe.AddIngredient(ItemID.HellstoneBar, 5);
 			recipe.AddTile(TileID.DemonAltar);
