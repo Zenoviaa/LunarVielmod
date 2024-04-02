@@ -21,10 +21,7 @@ namespace Stellamod.UI.Dialogue
             UIPanel.Width.Set(701, 0);
             UIPanel.Height.Set(200, 0);
             UIPanel.HAlign = 0.5f;
-
-            float screenHeight = Main.screenHeight;
-            float screenPercent = (screenHeight - 32) / Main.screenHeight;
-            PresetVAlign = UIPanel.VAlign = screenPercent;
+            PresetVAlign = UIPanel.VAlign = 0.9f;
 
             UIPanel.BackgroundColor = Color.Transparent;
             UIPanel.BorderColor = Color.Transparent;
