@@ -31,9 +31,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
             NPC.width = 200;
             NPC.height = 200;
-            NPC.damage = 79;
+            NPC.damage = 83;
             NPC.defense = 21;
-            NPC.lifeMax = 7000;
+            NPC.lifeMax = 13000;
             NPC.HitSound = SoundID.NPCHit51;
             NPC.DeathSound = SoundID.NPCHit53;
             NPC.value = 60f;
