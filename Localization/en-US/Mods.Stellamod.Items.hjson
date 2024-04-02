@@ -2880,7 +2880,11 @@ SwarmerStaff: {
 
 VoidStaff: {
 	DisplayName: Void Staff
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a mini singularity to fight for you!
+		Requires 2 minion slots
+		'''
 }
 
 X3144: {
