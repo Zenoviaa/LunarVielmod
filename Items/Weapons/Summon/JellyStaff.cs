@@ -1,4 +1,9 @@
 using Microsoft.Xna.Framework;
+using Mono.Cecil;
+using ParticleLibrary;
+using Stellamod.Helpers;
+using Stellamod.Particles;
+using Stellamod.Projectiles.Summons;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -60,7 +65,7 @@ namespace Stellamod.Items.Weapons.Summon
 
 		public override void SetDefaults()
 		{
-			Item.damage = 17;
+			Item.damage = 14;
 			Item.knockBack = 3f;
 			Item.mana = 10;
 			Item.width = 32;
@@ -96,7 +101,11 @@ namespace Stellamod.Items.Weapons.Summon
 		 * If it isn't attacking, it will float near the player with minimal movement
 		 */
 		public class JellyMinion : ModProjectile
-		{
+        {
+            private static float _orbitingOffset;
+            Player Owner => Main.player[Projectile.owner];
+			ref float Timer => ref Projectile.ai[0];
+			ref float TimerOffset => ref Projectile.ai[1];
 			public override void SetStaticDefaults()
 			{
 				// DisplayName.SetDefault("Jelly Minion");
@@ -143,187 +152,111 @@ namespace Stellamod.Items.Weapons.Summon
 			// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
 			public override bool MinionContactDamage()
 			{
-				return true;
+				return false;
 			}
 
 			public override void AI()
 			{
-				Player player = Main.player[Projectile.owner];
+				if (!SummonHelper.CheckMinionActive<JellyMinionBuff>(Owner, Projectile))
+					return;
 
-				#region Active check
-				// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-				if (player.dead || !player.active)
-				{
-					player.ClearBuff(BuffType<JellyMinionBuff>());
-				}
-				if (player.HasBuff(BuffType<JellyMinionBuff>()))
-				{
-					Projectile.timeLeft = 2;
-				}
-				#endregion
-
-				#region General behavior
-				Vector2 idlePosition = player.Center;
-				idlePosition.Y -= 1f; // Go up 48 coordinates (three tiles from the center of the player)
-
-				// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-				// The index is projectile.minionPos
-				float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -player.direction;
-
-				// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-				// Teleport to player if distance is too big
-				Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
-				float distanceToIdlePosition = vectorToIdlePosition.Length();
-				if (Main.myPlayer == player.whoAmI && distanceToIdlePosition > 1000f)
-				{
-					// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-					// and then set netUpdate to true
-					Projectile.position = idlePosition;
-					Projectile.velocity *= 0.20f;
-					Projectile.netUpdate = true;
-				}
-
-				// If your minion is flying, you want to do this independently of any conditions
-				float overlapVelocity = 0.04f;
-				for (int i = 0; i < Main.maxProjectiles; i++)
-				{
-					// Fix overlap with other minions
-					Projectile other = Main.projectile[i];
-					if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
-					{
-						if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
-						else Projectile.velocity.X += overlapVelocity;
-
-						if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
-						else Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-				#endregion
-
-				#region Find target
-				// Starting search distance
-				float distanceFromTarget = 900f;
-				Vector2 targetCenter = Projectile.position;
-				bool foundTarget = false;
-
-				// This code is required if your minion weapon has the targeting feature
-				if (player.HasMinionAttackTargetNPC)
-				{
-					NPC npc = Main.npc[player.MinionAttackTargetNPC];
-					float between = Vector2.Distance(npc.Center, Projectile.Center);
-					// Reasonable distance away so it doesn't target across multiple screens
-					if (between < 2000f)
-					{
-						distanceFromTarget = between;
-						targetCenter = npc.Center;
-						foundTarget = true;
-					}
-				}
-				if (!foundTarget)
-				{
-					// This code is required either way, used for finding a target
-					for (int i = 0; i < Main.maxNPCs; i++)
-					{
-						NPC npc = Main.npc[i];
-						if (npc.CanBeChasedBy())
-						{
-							float between = Vector2.Distance(npc.Center, Projectile.Center);
-							bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-							bool inRange = between < distanceFromTarget;
-							bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-							// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-							// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-							bool closeThroughWall = between < 100f;
-							if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall))
-							{
-								distanceFromTarget = between;
-								targetCenter = npc.Center;
-								foundTarget = true;
-							}
-						}
-					}
-				}
-
-				// friendly needs to be set to true so the minion can deal contact damage
-				// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-				// Both things depend on if it has a target or not, so it's just one assignment here
-				// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-				Projectile.friendly = foundTarget;
-				#endregion
-
-				#region Movement
-
-				// Default movement parameters (here for attacking)
-				float speed = 11f;
-				float inertia = 20f;
+				_orbitingOffset+=0.03f;
+				Projectile.Center = CalculateCirclePosition(Owner);
+				SummonHelper.SearchForTargets(Owner, Projectile, 
+					out bool foundTarget, 
+					out float distanceFromTarget, 
+					out Vector2 targetCenter);
 
 				if (foundTarget)
 				{
-					// Minion has a target: attack (here, fly towards the enemy)
-					if (distanceFromTarget > 40f)
+					Timer++;
+					if(Timer < 120)
 					{
-						// The immediate range around the target (so it doesn't latch onto it when close)
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
+						ChargeVisuals(Timer, 80);
+                    }
+
+					if(Timer >= 120 + TimerOffset)
+                    {
+                        if (Main.myPlayer == Projectile.owner)
+                        {
+                            TimerOffset = Main.rand.Next(0, 30);
+                            Projectile.netUpdate = true;
+                        }
+
+                        SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap);
+                        Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
+						Vector2 velocityToTarget = directionToTarget * 1;
+                        int numProjectiles = Main.rand.Next(1, 3);
+                        for (int p = 0; p < numProjectiles; p++)
+                        {
+                            // Rotate the velocity randomly by 30 degrees at max.
+                            Vector2 newVelocity = velocityToTarget.RotatedByRandom(MathHelper.ToRadians(6));
+                            newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, newVelocity, 
+								ModContent.ProjectileType<JellyStaffLightningProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        }
+                        Timer = 0;
 					}
 				}
 				else
 				{
-					// Minion doesn't have a target: return to player and idle
-					if (distanceToIdlePosition > 600f)
-					{
-						// Speed up the minion if it's away from the player
-						speed = 30f;
-						inertia = 60f;
-					}
-					else
-					{
-						// Slow down the minion if closer to the player
-						speed = 4f;
-						inertia = 80f;
-					}
-					if (distanceToIdlePosition > 20f)
-					{
-						// The immediate range around the player (when it passively floats about)
-
-						// This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-						vectorToIdlePosition.Normalize();
-						vectorToIdlePosition *= speed;
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-					}
-					else if (Projectile.velocity == Vector2.Zero)
-					{
-						// If there is a case where it's not moving at all, give it a little "poke"
-						Projectile.velocity.X = -0.15f;
-						Projectile.velocity.Y = -0.05f;
-					}
+					Timer--;
 				}
-				#endregion
+                Visuals();
+            }
+            private void ChargeVisuals(float timer, float maxTimer)
+            {
+				
+                float progress = timer / maxTimer;
+                float minParticleSpawnSpeed = 8;
+                float maxParticleSpawnSpeed = 2;
+                int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
+                if (timer % particleSpawnSpeed == 0)
+                {
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                        Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 4;
+						Dust d = Dust.NewDustPerfect(pos, DustID.Electric, vel, 0, Color.White);
+						d.noGravity = true;
+                    }
+                }
+            }
+            private Vector2 CalculateCirclePosition(Player owner)
+            {
+                //Get the index of this minion
+                int minionIndex = SummonHelper.GetProjectileIndex(Projectile);
 
-				#region Animation and visuals
-				// So it will lean slightly towards the direction it's moving
-				Projectile.rotation = Projectile.velocity.X * 0.05f;
+                //Now we can calculate the circle position	
+                int fireflyCount = owner.ownedProjectileCounts[ModContent.ProjectileType<JellyMinion>()];
+                float degreesBetween = 360 / (float)fireflyCount;
+                float degrees = degreesBetween * minionIndex;
+				float circleDistance = 64;
+                Vector2 circlePosition = owner.Center + new Vector2(circleDistance, 0).RotatedBy(MathHelper.ToRadians(degrees + _orbitingOffset));
+                return circlePosition;
+            }
 
-				// This is a simple "loop through all frames from top to bottom" animation
-				int frameSpeed = 5;
-				Projectile.frameCounter++;
-				if (Projectile.frameCounter >= frameSpeed)
-				{
-					Projectile.frameCounter = 0;
-					Projectile.frame++;
-					if (Projectile.frame >= Main.projFrames[Projectile.type])
-					{
-						Projectile.frame = 0;
-					}
-				}
+            private void Visuals()
+			{
+                // So it will lean slightly towards the direction it's moving
+                Projectile.rotation = Projectile.velocity.X * 0.05f;
 
-				// Some visuals here
-				Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
-				#endregion
-			}
+                // This is a simple "loop through all frames from top to bottom" animation
+                int frameSpeed = 5;
+                Projectile.frameCounter++;
+                if (Projectile.frameCounter >= frameSpeed)
+                {
+                    Projectile.frameCounter = 0;
+                    Projectile.frame++;
+                    if (Projectile.frame >= Main.projFrames[Projectile.type])
+                    {
+                        Projectile.frame = 0;
+                    }
+                }
+
+                // Some visuals here
+                Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+            }
 		}
 	}
 }
