@@ -44,6 +44,7 @@ namespace Stellamod.Trails
 
 
         public static Asset<Texture2D> CrystalNoise => ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Noise/Crystals");
+        public static Asset<Texture2D> CausticTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/CausticTrail");
 
 
     }

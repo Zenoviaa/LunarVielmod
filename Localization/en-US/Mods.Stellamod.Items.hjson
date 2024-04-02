@@ -6435,3 +6435,13 @@ ExampleDialogueItem: {
 	DisplayName: Example Dialogue Item
 	Tooltip: ""
 }
+
+SineSire: {
+	DisplayName: Sine Sire
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		A watery orb that moves in wave-like patterns!
+		'''
+}

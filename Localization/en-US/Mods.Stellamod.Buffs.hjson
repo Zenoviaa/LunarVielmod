@@ -617,3 +617,8 @@ SplashAttackDebuff: {
 	DisplayName: Splash Attack Debuff
 	Description: Mods.Stellamod.Buffs.SplashAttackDebuff.Description
 }
+
+SineSireDebuff: {
+	Description: Mods.Stellamod.Buffs.SineSireDebuff.Description
+	DisplayName: Sine Sire Debuff
+}
