@@ -9,7 +9,7 @@ namespace Stellamod.UI.Dialogue
     internal class CallDialogue2 : Dialogue
     {
         //The number of steps in this dialogue
-        public override int Length => 1;
+        public override int Length => 2;
 
         public override void Next(int index)
         {
