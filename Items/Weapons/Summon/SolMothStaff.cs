@@ -271,9 +271,6 @@ namespace Stellamod.Items.Weapons.Summon
 				}
 				else
 				{
-					Timer--;
-					if (Timer <= 0)
-						Timer = 0;
                     SummonHelper.CalculateIdleValues(Owner, Projectile,
                                 out Vector2 vectorToIdlePosition,
                                 out float distanceToIdlePosition);
