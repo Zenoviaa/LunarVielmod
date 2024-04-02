@@ -363,14 +363,14 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
                     (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.Lerp(Color.DarkBlue, Color.Aquamarine, 0.5f) * (Easing.SpikeCirc(p)) * 0.66f);
+                    (p) => Color.DarkBlue * (Easing.SpikeCirc(p)) * 0.66f);
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash2 == null)
             {
                 SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
                     (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.LightBlue * (Easing.SpikeCirc(p)) * 0.66f);
+                    (p) => Color.Blue * (Easing.SpikeCirc(p)) * 0.66f);
                 SwordSlash2.drawOffset = Projectile.Size / 2f;
             }
             if (SwordSlash3 == null)
