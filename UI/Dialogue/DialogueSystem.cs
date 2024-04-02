@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,10 +12,10 @@ namespace Stellamod.UI.Dialogue
     internal class DialogueSystem : ModSystem
     {
         private UserInterface _panel;
-        private bool _isVisible;
         private string _text;
         private string _fullText;
 
+        private float _easeTimer;
         private float _textingCounter;
         private int _textingLength;
         private int _dialogueIndex;
@@ -25,26 +25,7 @@ namespace Stellamod.UI.Dialogue
         public float TextingSpeed;
         public int NumLines { get; private set; }
         public bool IsFinishedWithLine { get; private set; }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                if (_isVisible)
-                {
-                    ShowMyUI();
-                }
-                else
-                {
-                    HideMyUI();
-                }
-            }
-        }
-
+        public bool IsVisible { get; set; }
         public override void Load()
         {
             Panel = new DialoguePanel();
@@ -124,11 +105,41 @@ namespace Stellamod.UI.Dialogue
             IsFinishedWithLine = true;
         }
 
+        private void UpdateVisibility()
+        {
+            float easeLength = 60;
+            _easeTimer = MathHelper.Clamp(_easeTimer, 0, easeLength);
+
+            if (IsVisible)
+            {
+                _panel?.SetState(Panel);
+                _easeTimer++;
+              
+                float progress = _easeTimer / easeLength;
+                float easedProgress = Easing.OutCubic(progress);
+                Panel.UIPanel.VAlign = MathHelper.Lerp(2, Panel.PresetVAlign, easedProgress);
+            }
+            else
+            {
+                _easeTimer--;
+                float progress = _easeTimer / easeLength;
+                float easedProgress = Easing.OutCubic(progress);
+                Panel.UIPanel.VAlign = MathHelper.Lerp(2, Panel.PresetVAlign, easedProgress);
+                if(_easeTimer <= 0)
+                {
+                    _panel?.SetState(null);
+                }
+            }
+        }
+
         public override void UpdateUI(GameTime gameTime)
         {
             _panel?.Update(gameTime);
-            if(_fullText != string.Empty && _text != _fullText)
+
+            UpdateVisibility();
+            if (_fullText != string.Empty && _text != _fullText)
             {
+         
                 NextCharacter();
             }
         }
@@ -154,6 +165,12 @@ namespace Stellamod.UI.Dialogue
         {
             //Reset our stuffs
             ResetTexts();
+            if (!IsVisible)
+            {
+                _easeTimer = 0;
+                Panel.UIPanel.VAlign = 3;
+            }
+       
             IsVisible = true;
 
             //Reset the dialogue index so we start from the beginning
@@ -179,16 +196,6 @@ namespace Stellamod.UI.Dialogue
             ResetTexts();
             _text = string.Empty;
             _fullText = text;
-        }
-        
-        public void ShowMyUI()
-        {
-            _panel?.SetState(Panel);
-        }
-
-        public void HideMyUI()
-        {
-            _panel?.SetState(null);
         }
 
         public void SetPortrait(string texture)

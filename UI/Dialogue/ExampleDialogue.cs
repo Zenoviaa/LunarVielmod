@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.NPCs.Bosses.Verlia;
+using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.UI.Dialogue
@@ -43,6 +46,7 @@ namespace Stellamod.UI.Dialogue
             base.Complete();
             //Do something when the dialogue is completely finished
             //Maybe you want to summon a boss or play a sound or something something
+
         }
     }
 }
