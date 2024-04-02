@@ -6445,3 +6445,8 @@ SineSire: {
 		A watery orb that moves in wave-like patterns!
 		'''
 }
+
+SiresMail: {
+	DisplayName: Sires Mail
+	Tooltip: ""
+}
