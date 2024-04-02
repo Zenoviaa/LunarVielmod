@@ -352,7 +352,7 @@ namespace Stellamod.NPCs.Town
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
-					switch (Main.rand.Next(7))
+					switch (Main.rand.Next(8))
 					{
 
 
@@ -395,6 +395,12 @@ namespace Stellamod.NPCs.Town
 						case 6:
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mushroom>(), 10);
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.CloudinaBalloon, 1);
+
+							break;
+
+						case 7:
+						
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CloudSkaters>());
 
 							break;
 					}

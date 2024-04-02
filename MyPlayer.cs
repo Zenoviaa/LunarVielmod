@@ -38,6 +38,7 @@ using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
+using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
 using System.Collections.Generic;
 using Terraria;
@@ -45,6 +46,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod
 {
@@ -716,6 +718,24 @@ namespace Stellamod
 		}
 		public override void PostUpdate()
         {
+            if (!Sirestiastalk)
+            {
+
+				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+				//2. Create a new instance of your dialogue
+				SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
+
+				//3. Start it
+				dialogueSystem.StartDialogue(exampleDialogue);
+
+				Sirestiastalk = true;
+			}
+			
+
+
+
+
 			if (Aurorean >= 0.5f)
             {
                 AuroreanBool = true;
@@ -2492,6 +2512,20 @@ namespace Stellamod
 
 			if (Main.hasFocus)
 				AddForegroundOrBackground();
+		}
+
+		bool Sirestiastalk;
+		public override void SaveData(TagCompound tag)
+		{
+			tag["Sirestiastalk"] = Sirestiastalk;
+
+		}
+
+		public override void LoadData(TagCompound tag)
+		{
+
+			Sirestiastalk = tag.GetBool("Sirestiastalk");
+
 		}
 
 
