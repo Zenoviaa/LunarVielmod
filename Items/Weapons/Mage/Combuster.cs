@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Mage
         private int _combo;
         public override void SetDefaults()
         {
-            Item.width = 30;
+            Item.width = 20;
             Item.height = 54;
             Item.damage = 36;
             Item.knockBack = 8;
