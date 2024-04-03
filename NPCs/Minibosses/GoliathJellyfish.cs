@@ -198,9 +198,6 @@ namespace Stellamod.NPCs.Minibosses
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.HellfireArrow, 1, 1, 9999));
 			npcLoot.Add(ItemDropRule.Common(ItemID.LavaCharm, 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 2, 1, 1));
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyfishTissue>(), 2, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VerianOre>(), 1, 1, 2000));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizMetal>(), 2, 1, 20));

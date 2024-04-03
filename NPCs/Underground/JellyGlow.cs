@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Weapons.Mage;
@@ -24,7 +25,7 @@ namespace Stellamod.NPCs.Underground
             Angry
         }
 
-        const float Movement_Osc_Time = 90;
+        const float Movement_Osc_Time = 120;
 
         private Vector2 _wanderDirection;
         private float _wanderTimer;
@@ -107,6 +108,19 @@ namespace Stellamod.NPCs.Underground
                     Angry();
                     break;
             }
+
+            Visuals();
+        }
+
+        private void Visuals()
+        {
+            if (Main.rand.NextBool(8))
+            {
+                Dust.NewDustPerfect(NPC.Center + new Vector2(0, 64), DustID.PinkCrystalShard);
+            }
+
+            // Some visuals here
+            Lighting.AddLight(NPC.Center + new Vector2(0, -64), Color.White.ToVector3() * 0.28f);
         }
 
         private void OscillateTimer()
@@ -147,10 +161,11 @@ namespace Stellamod.NPCs.Underground
 
 
             //Move to the player
-            float progress = (Timer + 10) / Movement_Osc_Time;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float progress = Timer / Movement_Osc_Time;
+            float easedProgress = Easing.InOutCirc(progress);
             Vector2 smoothVelocity = targetVelocity * easedProgress;
             NPC.velocity = smoothVelocity;
+            NPC.velocity.Y += MathHelper.Lerp(-0.5f, 0.5f, easedProgress);
         }
 
         private void Angry()
@@ -164,10 +179,11 @@ namespace Stellamod.NPCs.Underground
 
 
             //Move to the player
-            float progress = (Timer + 10) / Movement_Osc_Time;
-            float easedProgress = Easing.SpikeCirc(progress);
+            float progress = Timer / Movement_Osc_Time;
+            float easedProgress = Easing.InOutCirc(progress);
             Vector2 smoothVelocity = targetVelocity * easedProgress;
             NPC.velocity = smoothVelocity;
+            NPC.velocity.Y += MathHelper.Lerp(-0.5f, 0.5f, easedProgress);
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -191,6 +207,26 @@ namespace Stellamod.NPCs.Underground
                 ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), chanceDenominator: num),
                 ItemDropRule.Common(ModContent.ItemType<JellyTome>(), chanceDenominator: num),
                 ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), chanceDenominator: num)));
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
+                    Color.Purple.ToVector3(),
+                    Color.Violet.ToVector3(),
+                    new Vector3(2, 2, 2), 0);
+
+            Vector2 drawPos = NPC.Center - Main.screenPosition + new Vector2(0, -64);
+            for (int i = 0; i < 4; i++)
+            {
+                Main.spriteBatch.Draw(texture, drawPos, null, new Color((int)(huntrianColorXyz.X * 1), (int)(huntrianColorXyz.Y * 1), (int)(huntrianColorXyz.Z * 1), 0), 
+                    NPC.rotation, new Vector2(32, 32), 0.66f * (7 + 0.6f), SpriteEffects.None, 0f);
+            }
+
+            Lighting.AddLight(drawPos, Color.Purple.ToVector3() * 1.0f * Main.essScale);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
 
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;

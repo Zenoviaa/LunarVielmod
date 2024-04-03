@@ -351,26 +351,6 @@ namespace Stellamod.NPCs.Global
 
 			//------------------------------------------------------------------------ OVERWORLD + RAI
 
-			if (npc.type == NPCID.PinkJellyfish)
-			{
-
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 10, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 10, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 15, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
-			if (npc.type == NPCID.GreenJellyfish)
-			{
-
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 5, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 5, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 10, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
 			if (npc.type == NPCID.MartianWalker)
 			{
 
@@ -379,17 +359,6 @@ namespace Stellamod.NPCs.Global
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Dragoniper>(), 50, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			// In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
-
-			if (npc.type == NPCID.BlueJellyfish)
-			{
-
-
-
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 5, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 5, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 9, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-			}
-
 
 			if (npc.type == NPCID.Zombie)
 			{
