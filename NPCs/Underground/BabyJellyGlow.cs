@@ -151,10 +151,8 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyBow>(), 75));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), 75));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyTome>(), 75));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), 75));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, minimumDropped: 2, maximumDropped: 4));
+        
         }
 
 

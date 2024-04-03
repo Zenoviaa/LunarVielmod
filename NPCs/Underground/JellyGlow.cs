@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -7,6 +8,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -114,9 +116,17 @@ namespace Stellamod.NPCs.Underground
 
         private void Visuals()
         {
-            if (Main.rand.NextBool(8))
+            Vector2 drawPos = NPC.Center + new Vector2(0, -24);
+            if (Main.rand.NextBool(2))
             {
-                Dust.NewDustPerfect(NPC.Center + new Vector2(0, 64), DustID.PinkCrystalShard);
+                Particle p = ParticleManager.NewParticle(drawPos, new Vector2(0, 7).RotatedByRandom(MathHelper.PiOver4  / 2), ParticleManager.NewInstance<ShadeParticle>(),
+                          Color.White,  2f);
+                p.layer = Particle.Layer.BeforeNPCs;
+
+            }
+            if (Main.rand.NextBool(16))
+            {
+                Dust.NewDustPerfect(drawPos, ModContent.DustType<GlowDust>(), new Vector2(0, 7).RotatedByRandom(MathHelper.PiOver2), 0, Color.Lerp(Color.Purple, Color.Black, 0.5f), 2f); ;
             }
 
             // Some visuals here
@@ -164,8 +174,8 @@ namespace Stellamod.NPCs.Underground
             float progress = Timer / Movement_Osc_Time;
             float easedProgress = Easing.InOutCirc(progress);
             Vector2 smoothVelocity = targetVelocity * easedProgress;
-            NPC.velocity = smoothVelocity;
-            NPC.velocity.Y += MathHelper.Lerp(-0.5f, 0.5f, easedProgress);
+           // NPC.velocity = smoothVelocity;
+            NPC.velocity.Y = MathHelper.Lerp(-0.5f, 0.5f, easedProgress);
         }
 
         private void Angry()
@@ -201,12 +211,10 @@ namespace Stellamod.NPCs.Underground
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            int num = 4;
-            npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
-                ItemDropRule.Common(ModContent.ItemType<JellyBow>(), chanceDenominator: num),
-                ItemDropRule.Common(ModContent.ItemType<JellyStaff>(), chanceDenominator: num),
-                ItemDropRule.Common(ModContent.ItemType<JellyTome>(), chanceDenominator: num),
-                ItemDropRule.Common(ModContent.ItemType<MorrowedJelliesBroochA>(), chanceDenominator: num)));
+            npcLoot.Add(ItemDropRule.OneFromOptions(1,
+                ModContent.ItemType<JellyBow>(),
+                ModContent.ItemType<JellyStaff>(),
+                ModContent.ItemType<JellyTome>()));
         }
 
 
