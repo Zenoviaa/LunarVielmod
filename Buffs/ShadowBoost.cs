@@ -9,7 +9,6 @@ namespace Stellamod.Buffs
         //This buff doesn't do anything, it just shows you how much time you got left.
         public override void SetStaticDefaults()
         {
-            Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoTimeDisplay[Type] = false;
         }

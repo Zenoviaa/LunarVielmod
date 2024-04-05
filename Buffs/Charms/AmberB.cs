@@ -10,10 +10,10 @@ namespace Stellamod.Buffs.Charms
 		{
 			// DisplayName.SetDefault("Charm Buff!");
 			// Description.SetDefault("Icy Frileness!");
-			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
 		}
+
 		public override void Update(Player player, ref int buffIndex)
 		{
 			Lighting.AddLight(player.Center, Color.Orange.ToVector3() * 4.75f * Main.essScale);
@@ -21,7 +21,6 @@ namespace Stellamod.Buffs.Charms
 			player.pickSpeed -= 40;
 			player.moveSpeed += 0.4f;
 			player.maxRunSpeed += 0.4f;
-
 		}
 	}
 }

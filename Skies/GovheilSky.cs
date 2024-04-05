@@ -120,13 +120,6 @@ namespace Stellamod.Skies
             for (int i = 0; i < Main.maxClouds; i++)
                 Main.cloud[i].kill = true;
 
-            // Deactivate any blood moons and wind.
-            if (Main.bloodMoon)
-                Main.bloodMoon = false;
-
-          
-
-
 
             if (!Main.LocalPlayer.GetModPlayer<GovheilSkyPlayer>().VisualsActive)
             {
@@ -134,9 +127,6 @@ namespace Stellamod.Skies
                 if (intensity <= 0)
                     Deactivate();
             }
-
-
-          
         }
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
