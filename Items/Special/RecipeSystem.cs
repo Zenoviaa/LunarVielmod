@@ -19,12 +19,12 @@ namespace Stellamod.Items.Special
                 Recipe recipe = Main.recipe[i];
                 if (recipe.TryGetResult(ItemID.MythrilAnvil, out Item result))
                 {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
+                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
 
                 if (recipe.TryGetResult(ItemID.OrichalcumAnvil, out Item result2))
                 {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 10);
+                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
             }
         }
