@@ -10,7 +10,6 @@ namespace Stellamod.Buffs.Charms
 		{
 			// DisplayName.SetDefault("Charm Buff!");
 			// Description.SetDefault("Icy Frileness!");
-			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
 		}
