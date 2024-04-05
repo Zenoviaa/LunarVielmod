@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Underground
 
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[NPC.type] = 60;
+            Main.npcFrameCount[NPC.type] = 12;
             NPCID.Sets.TrailCacheLength[NPC.type] = 90;
         }
 
@@ -69,13 +69,7 @@ namespace Stellamod.NPCs.Underground
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
         }
 
-        public override void FindFrame(int frameHeight)
-        {
-            NPC.frameCounter += 0.5f;
-            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
-            int frame = (int)NPC.frameCounter;
-            NPC.frame.Y = frame * frameHeight;
-        }
+     
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
@@ -84,7 +78,10 @@ namespace Stellamod.NPCs.Underground
 
         public override void AI()
         {
-            if(StellaMultiplayer.IsHost && !Pregnate)
+
+            UpdateFrame(0.8f, 1, 60);
+
+            if (StellaMultiplayer.IsHost && !Pregnate)
             {
                 int range = 256;
                 for(int i = 0; i < Main.rand.Next(5, 13); i++)
@@ -208,7 +205,18 @@ namespace Stellamod.NPCs.Underground
             base.ModifyIncomingHit(ref modifiers);
             State = ActionState.Angry;
         }
-
+        public void UpdateFrame(float speed, int minFrame, int maxFrame)
+        {
+            trueFrame += speed;
+            if (trueFrame < minFrame)
+            {
+                trueFrame = minFrame;
+            }
+            if (trueFrame > maxFrame)
+            {
+                trueFrame = minFrame;
+            }
+        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.OneFromOptions(1,
@@ -216,10 +224,27 @@ namespace Stellamod.NPCs.Underground
                 ModContent.ItemType<JellyStaff>(),
                 ModContent.ItemType<JellyTome>()));
         }
+      
+
+        float trueFrame = 0;
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frame.Width = 79;
+            NPC.frame.X = ((int)trueFrame % 5) * NPC.frame.Width;
+            NPC.frame.Y = (((int)trueFrame - ((int)trueFrame % 5)) / 5) * NPC.frame.Height;
+        }
 
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            Texture2D texture2 = ModContent.Request<Texture2D>(Texture).Value;
+
+            spriteBatch.Draw(texture2, new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + new Vector2(0, NPC.gfxOffY), NPC.frame, new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f), NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0);
+
+
+
             Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
                     Color.Purple.ToVector3(),
@@ -234,7 +259,7 @@ namespace Stellamod.NPCs.Underground
             }
 
             Lighting.AddLight(drawPos, Color.Purple.ToVector3() * 1.0f * Main.essScale);
-            return base.PreDraw(spriteBatch, screenPos, drawColor);
+            return false;
         }
 
         Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
