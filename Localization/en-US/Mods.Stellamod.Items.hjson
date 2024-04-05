@@ -6458,3 +6458,13 @@ SiresMail: {
 	DisplayName: Sire's Mail
 	Tooltip: Sirestias's special gift to contact her at will!
 }
+
+IllurianBroochA: {
+	DisplayName: Illurian Brooch
+	Tooltip:
+		'''
+		Greatly increased max run speed and mobility!
+		Reduced defense...
+		You are one with Illuria~
+		'''
+}

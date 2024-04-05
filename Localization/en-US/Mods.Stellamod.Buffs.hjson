@@ -622,3 +622,8 @@ SineSireDebuff: {
 	Description: Mods.Stellamod.Buffs.SineSireDebuff.Description
 	DisplayName: Sine Sire Debuff
 }
+
+IllurianB: {
+	Description: Mods.Stellamod.Buffs.IllurianB.Description
+	DisplayName: Illurian B
+}

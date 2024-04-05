@@ -64,7 +64,7 @@ namespace Stellamod.Brooches
         public bool hasAurock;
 
         public bool hasDefensiveJS;
-
+        public bool hasIllurianBrooch;
 
         public override void ResetEffects()
         {
@@ -109,7 +109,7 @@ namespace Stellamod.Brooches
             hasStonefly = false;
             hasDaedDredRose = false;
             hasRadiantBrooches = false;
-
+            hasIllurianBrooch = false;
         }
 
 
@@ -251,7 +251,7 @@ namespace Stellamod.Brooches
 
 
                 if (hasSandyBear)
-                    {
+                {
                     KeepBroochAlive<SandyBrooch, SandyB>(ref hasSandyBrooch);
                     KeepBroochAlive<BearBrooch, BearB>(ref hasBearBrooch);
 
@@ -259,7 +259,6 @@ namespace Stellamod.Brooches
 
                     Player.GetDamage(DamageClass.Summon) *= 1.20f;
                 }
-
 
                 if (hasDefensiveJS)
                 {
@@ -269,9 +268,8 @@ namespace Stellamod.Brooches
                     Player.GetDamage(DamageClass.Generic) *= 0.70f;
                 }
 
-
                 if (hasDaedDredRose)
-                   {
+                {
                     KeepBroochAlive<VixedBrooch, VixedB>(ref hasVixedBrooch);
                     KeepBroochAlive<RoseBrooch, RoseB>(ref hasRoseBrooch);
                     KeepBroochAlive<DreadBrooch, DreadB>(ref hasDreadBrooch);
@@ -290,21 +288,19 @@ namespace Stellamod.Brooches
                     KeepBroochAlive<GintzlBrooch, GintBroo>(ref hasGintzlBrooch);
                     KeepBroochAlive<VillagersBrooch, VillagersB>(ref hasVillagersBrooch);
                     Player.GetDamage(DamageClass.Generic) *= 1.15f;
-
                 }
 
-
-
-
-
-
-
-
+                if (hasIllurianBrooch)
+                {
+                    KeepBroochAlive<IllurianBrooch, IllurianB>(ref hasIllurianBrooch);
+                    Player.moveSpeed += 0.05f;
+                    Player.jumpSpeedBoost *= 1.2f;
+                    Player.accRunSpeed *= 1.5f;
+                    Player.maxRunSpeed *= 1.5f;
+                    Player.hasMagiluminescence = true;
+                    Player.statDefense -= 10;
+                }
             }
-
-            
-
-           
         }
 
         public override void PostUpdateEquips()
