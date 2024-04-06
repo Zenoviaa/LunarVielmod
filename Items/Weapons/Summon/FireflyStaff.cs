@@ -29,6 +29,10 @@ namespace Stellamod.Items.Weapons.Summon
 			if (!SummonHelper.UpdateMinionBuff<FireflyMinion>(player, ref buffIndex))
 				return;
 
+			//Only work if summoner
+			if (player.HeldItem.DamageType != DamageClass.Summon)
+				return;
+
 			int fireflyCount = player.ownedProjectileCounts[ProjectileType<FireflyMinion>()];
 			int fireflyMinionType = ProjectileType<FireflyMinion>();
 			for (int i = 0; i < Main.maxProjectiles; i++)
