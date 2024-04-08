@@ -6470,7 +6470,8 @@ IllurianBroochA: {
 }
 
 GarbagePants: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		10% Increased movement speed
 		+1 Minion
 		'''
@@ -6478,7 +6479,8 @@ GarbagePants: {
 }
 
 GarbageMask: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		15% Increased Summoner and Throwing Damage!
 		30% Increased Throwing speed.
 		+2 Minions
@@ -6487,7 +6489,8 @@ GarbageMask: {
 }
 
 GarbageChestplate: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		25% Increased Summoner and Throwing Damage!
 		10% Increased Throwing speed.
 		+1 Minion
