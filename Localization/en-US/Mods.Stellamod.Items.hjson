@@ -6474,6 +6474,7 @@ GarbagePants: {
 		'''
 		10% Increased movement speed
 		+1 Minion
+		Goofy goobers eat Osama bin Ladin 
 		'''
 	DisplayName: Garbage Pants
 }
@@ -6484,6 +6485,7 @@ GarbageMask: {
 		15% Increased Summoner and Throwing Damage!
 		30% Increased Throwing speed.
 		+2 Minions
+		It's actually garbage.
 		'''
 	DisplayName: Garbage Mask
 }
@@ -6495,6 +6497,7 @@ GarbageChestplate: {
 		10% Increased Throwing speed.
 		+1 Minion
 		+40 Health and increased regeneration!
+		Throw it in the trash now!
 		'''
 	DisplayName: Garbage Chestplate
 }
