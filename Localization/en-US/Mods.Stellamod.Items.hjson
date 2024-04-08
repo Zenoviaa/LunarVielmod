@@ -6501,3 +6501,12 @@ GarbageChestplate: {
 		'''
 	DisplayName: Garbage Chestplate
 }
+
+Sirius: {
+	DisplayName: Sirius
+	Tooltip:
+		'''
+		Throws a spear that lodges into targets and then violently explodes!
+		Azzuria's wrath~
+		'''
+}
