@@ -30,7 +30,7 @@ namespace Stellamod.Projectiles
             Projectile.penetrate = -1;
             Projectile.hide = true;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 60;
+            Projectile.localNPCHitCooldown = 120;
             Projectile.extraUpdates = 2;
         }
 
