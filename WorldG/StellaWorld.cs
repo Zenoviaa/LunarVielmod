@@ -1,10 +1,9 @@
-﻿
-using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Armors.Alcalite;
 using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Windmillion;
 using Stellamod.Items.Consumables;
@@ -27,14 +26,12 @@ using Stellamod.Items.Weapons.Ranged.Crossbows;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
-using Stellamod.NPCs.Harvesting.Morrow;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -72,9 +69,6 @@ namespace Stellamod.WorldG
 				tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
 				tasks.Insert(MorrowGen + 12, new PassLegacy("World Gen Cinderspark", WorldGenArncharOre2));
 				tasks.Insert(MorrowGen + 13, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-				tasks.Insert(MorrowGen + 14, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
-				tasks.Insert(MorrowGen + 15, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
-				tasks.Insert(MorrowGen + 16, new PassLegacy("World Gen CozmireTower", WorldGenTC));
 
 			}
 
@@ -118,7 +112,10 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 25, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
                 tasks.Insert(CathedralGen2 + 26, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
 				tasks.Insert(CathedralGen2 + 27, new PassLegacy("World Gen GothiviaTower", WorldGenTG));
-			}
+                tasks.Insert(CathedralGen2 + 28, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
+                tasks.Insert(CathedralGen2 + 29, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
+                tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTC));
+            }
 
 
 			
@@ -446,7 +443,7 @@ namespace Stellamod.WorldG
 				///}
 
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.UnderworldLayer - 400));
+				int smy = Main.UnderworldLayer - 400;
 
 				// We go down until we hit a solid tile or go under the world's surface
 				Tile tile = Main.tile[smx, smy];
@@ -1679,7 +1676,7 @@ namespace Stellamod.WorldG
 
 							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<CinderBraker>(), 0.1)
+									Tuple.Create(ModContent.ItemType<CinderBraker>(), 0.1)
 
 
 							);
@@ -1869,7 +1866,7 @@ namespace Stellamod.WorldG
 
 							// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 							int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-									Tuple.Create((int)ModContent.ItemType<SunClaw>(), 0.1)
+									Tuple.Create(ModContent.ItemType<SunClaw>(), 0.1)
 
 
 							);
@@ -1974,7 +1971,7 @@ namespace Stellamod.WorldG
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-								Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+								Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1)
 
 
 						);
@@ -2071,7 +2068,7 @@ namespace Stellamod.WorldG
 
 						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-								Tuple.Create((int)ModContent.ItemType<GildedBag1>(), 0.1)
+								Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1)
 
 
 						);
@@ -3942,7 +3939,7 @@ namespace Stellamod.WorldG
 				int smx = WorldGen.genRand.Next(220, (Main.maxTilesX) / 15); // from 50 since there's a unaccessible area at the world's borders
 																			 // 50% of choosing the last 6th of the world																	 // Choose which side of the world to be on randomly
 				//Start at 200 tiles above the surface instead of 0, to exclude floating islands
-				int smy = ((int)(Main.UnderworldLayer - 200));
+				int smy = Main.UnderworldLayer - 200;
 				// We go down until we hit a solid tile or go under the world's surface
 				while (!WorldGen.SolidTile(smx, smy) && smy <= Main.maxTilesY)
 				{
@@ -5803,7 +5800,7 @@ namespace Stellamod.WorldG
 		{
 			// 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
 			progress.Message = "Hunters settling down";
-			for (int k = 0; k < (int)(2); k++)
+			for (int k = 0; k < 2; k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(300, Main.maxTilesX - 300);
@@ -5903,7 +5900,7 @@ namespace Stellamod.WorldG
 				}
 			}
 
-			for (int k = 0; k < (int)(2); k++)
+			for (int k = 0; k < 2; k++)
 			{
 				// 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
 				int xa = WorldGen.genRand.Next(200, Main.maxTilesX - 200);
@@ -5997,7 +5994,7 @@ namespace Stellamod.WorldG
 			}
 
 
-			for (int g = 0; g < (int)(1); g++)
+			for (int g = 0; g < 1; g++)
 			{
 				int xab = WorldGen.genRand.Next(0, Main.maxTilesX);
 				int yab = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, Main.maxTilesY);
@@ -6015,7 +6012,7 @@ namespace Stellamod.WorldG
 			}
 
 
-			for (int k = 0; k < (int)(1); k++)
+			for (int k = 0; k < 1; k++)
 			{
 				int xab = WorldGen.genRand.Next(-50, -40);
 				int yab = WorldGen.genRand.Next(-200, -190);
@@ -6126,7 +6123,7 @@ namespace Stellamod.WorldG
 
 
 
-				for (int k = 0; k < (int)(1); k++)
+				for (int k = 0; k < 1; k++)
 				{
 					int xab = WorldGen.genRand.Next(-50, -40);
 					int yab = WorldGen.genRand.Next(-150, -149);
@@ -6235,7 +6232,7 @@ namespace Stellamod.WorldG
 
 
 
-			for (int k = 0; k < (int)(1); k++)
+			for (int k = 0; k < 1; k++)
 			{
 				int xab = WorldGen.genRand.Next(-50, -40);
 				int yab = WorldGen.genRand.Next(-100, -99);
@@ -6342,7 +6339,7 @@ namespace Stellamod.WorldG
 				}
 			}
 
-			for (int k = 0; k < (int)(1); k++)
+			for (int k = 0; k < 1; k++)
 			{
 				int xab = WorldGen.genRand.Next(-50, -40);
 				int yab = WorldGen.genRand.Next(-50, -49);
@@ -6449,7 +6446,7 @@ namespace Stellamod.WorldG
 				}
 			}
 
-			for (int k = 0; k < (int)(1); k++)
+			for (int k = 0; k < 1; k++)
 			{
 				int xab = WorldGen.genRand.Next(-50, -40);
 				int yab = WorldGen.genRand.Next(-250, -249);
@@ -6556,7 +6553,7 @@ namespace Stellamod.WorldG
 				}
 			}
 
-			for (int k = 0; k < (int)(1); k++)
+			for (int k = 0; k < 1; k++)
 			{
 				int xab = WorldGen.genRand.Next(-50, -40);
 				int yab = WorldGen.genRand.Next(-300, -299);
@@ -6715,8 +6712,6 @@ namespace Stellamod.WorldG
 					attempts++;
 					if (attempts > maxAttempts)
 						break;
-
-                    bool dontPlace = false;
                     int xa = WorldGen.genRand.Next(leftmostJungleTileX, rightmostJungleTileX);
                     int ya = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
                     Point Loc = new Point(xa, ya);
@@ -6755,20 +6750,26 @@ namespace Stellamod.WorldG
 
                         if (tileType == ModContent.TileType<IlluriaChest>())
                         {
-                            //Illura Chest Loot here
-                            int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-                                Tuple.Create((int)ItemID.AnkletoftheWind, 0.5),
-                                Tuple.Create((int)ItemID.StaffofRegrowth, 0.5),
-                                Tuple.Create((int)ItemID.FlowerBoots, 0.5),
-                                Tuple.Create((int)ItemID.Boomstick, 0.5)
-                                );
-                            itemsToAdd.Add((specialItem, 1));
+							//Illura Chest Loot here
+							switch (Main.rand.Next(2))
+							{
+								case 0:
+									//Illuria Brooch
+                                    itemsToAdd.Add((ModContent.ItemType<IllurianBroochA>(), 1));
+                                    break;
+								case 1:
+									//Alcalite Set
+                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteMask>(), 1));
+                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteRobe>(), 1));
+                                    itemsToAdd.Add((ModContent.ItemType<AlcaliteTrunks>(), 1));
+                                    break;
+							}
 
 							switch (Main.rand.Next(1))
 							{
 								case 0:
                                     itemsToAdd.Add((ModContent.ItemType<IllurineScale>(), Main.rand.Next(2, 5)));
-                                    itemsToAdd.Add((ItemID.LifeFruit, Main.rand.Next(1, 3)));
+                                    itemsToAdd.Add((ItemID.LifeFruit, Main.rand.Next(1, 4)));
                                     itemsToAdd.Add((ItemID.Ectoplasm, Main.rand.Next(2, 5)));
                                     break;
 							}
@@ -7191,23 +7192,18 @@ namespace Stellamod.WorldG
 				}
 
 
-				for (int da = 0; da < 1; da++)
+                //Try to put the structure here and protect it
+                string path = "Struct/Overworld/TowerSigfried";
+                Point Loc = new Point(towerX, towerY + 20);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
+
+                for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(towerX, towerY + 20);
-
-
-
-
-
-					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-					StructureMap structures = GenVars.structures;
-					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/TowerSigfried");
-					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/TowerSigfried");
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
 					NPCs.Town.AlcadSpawnSystem.SireTile = Loc;
-					Chest c = Main.chest[ChestIndexs[0]];
-
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -7335,23 +7331,17 @@ namespace Stellamod.WorldG
 					continue;
 				}
 
+                string path = "Struct/Overworld/TowerAzurerin";
+                Point Loc = new Point(towerX, towerY + 20);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
 
-				for (int da = 0; da < 1; da++)
+
+                for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(towerX, towerY + 20);
-
-
-
-
-
-					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-					StructureMap structures = GenVars.structures;
-					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/TowerAzurerin");
-					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/TowerAzurerin");
-					Chest c = Main.chest[ChestIndexs[0]];
-
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -7477,23 +7467,16 @@ namespace Stellamod.WorldG
 					continue;
 				}
 
+                string path = "Struct/Overworld/TowerCozmire";
+                Point Loc = new Point(towerX, towerY + 20);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
 
-				for (int da = 0; da < 1; da++)
+                for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(towerX, towerY + 20);
-
-
-
-
-
-					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-					StructureMap structures = GenVars.structures;
-					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/TowerCozmire");
-					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/TowerCozmire");
-					Chest c = Main.chest[ChestIndexs[0]];
-
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -7618,27 +7601,21 @@ namespace Stellamod.WorldG
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
 				if (!(tile.TileType == TileID.Sand
 					|| tile.TileType == TileID.Dirt))
-				{
+                {
+                    continue;
+                }
+
+				//Try to put the structure here and protect it
+                string path = "Struct/Overworld/TowerGothivia";
+                Point Loc = new Point(towerX, towerY + 20);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
 					continue;
-				}
+                }
 
-
-				for (int da = 0; da < 1; da++)
+                for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(towerX, towerY + 20);
-
-
-
-
-
-					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-					StructureMap structures = GenVars.structures;
-					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/TowerGothivia");
-					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/TowerGothivia");
-					Chest c = Main.chest[ChestIndexs[0]];
-
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];

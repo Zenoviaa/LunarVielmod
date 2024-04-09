@@ -294,6 +294,8 @@ namespace Stellamod
 		public int TericGramTime = 0;
         public int TericGramLevel = 0;
         public bool TericGram = false;
+
+		public bool HasAlcaliteSet;
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
@@ -600,9 +602,9 @@ namespace Stellamod
 			BroochGovheill = false;
 			BroochBurningG = false;
 			BroochStone = false;
+			HasAlcaliteSet = false;
 
-
-			ReflectionS = false;
+            ReflectionS = false;
 			SpiritPendent = false;
             GHE = false;
             ShadeRune = false;

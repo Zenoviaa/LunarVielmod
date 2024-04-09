@@ -6510,3 +6510,31 @@ Sirius: {
 		Azzuria's wrath~
 		'''
 }
+
+AlcaliteTrunks: {
+	DisplayName: Alcalite Trunks
+	Tooltip:
+		'''
+		4% increased magic and summon damage
+		+1 max minions
+		Slightly increased mobility
+		'''
+}
+
+AlcaliteRobe: {
+	DisplayName: Alcalite Robe
+	Tooltip:
+		'''
+		12% increased magic and summon damage
+		+2 max minions
+		'''
+}
+
+AlcaliteMask: {
+	DisplayName: Alcalite Mask
+	Tooltip:
+		'''
+		8% increased magic and summon damage
+		+1 max minions
+		'''
+}
