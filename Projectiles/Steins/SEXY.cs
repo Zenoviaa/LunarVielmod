@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.Steins
 {
 
 
-	public class WOW : ModProjectile
+	public class SEXY : ModProjectile
 	{
 		private static float _orbitCounter;
 		public enum AttackState
@@ -26,7 +26,7 @@ namespace Stellamod.Projectiles.Steins
 		public override void SetStaticDefaults()
 		{
 			// Sets the amount of frames this minion has on its spritesheet
-			Main.projFrames[Projectile.type] = 30;
+			Main.projFrames[Projectile.type] = 60;
 			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
@@ -34,8 +34,8 @@ namespace Stellamod.Projectiles.Steins
 
 		public sealed override void SetDefaults()
 		{
-			Projectile.width = 132;
-			Projectile.height = 36;
+			Projectile.width = 96;
+			Projectile.height = 43;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 
 			// These below are needed for a minion weapon
@@ -64,30 +64,24 @@ namespace Stellamod.Projectiles.Steins
 			Player owner = Main.player[Projectile.owner];
 			Explosion++;
 
-			if (Explosion > 179)
+			if (Explosion > 119)
 			{
 
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
+
 				for (int i = 0; i < 5; i++)
 				{
 					float speedX = Main.rand.Next(-9, 9);
 					float speedY = Main.rand.Next(-9, 9);
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<ShadingShot>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GunFlash>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Purple, 1f).noGravity = true;
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<SexyShot>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.SpringGreen, 1f).noGravity = true;
 				}
-				for (int i = 0; i < 4; i++)
-				{
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
-				}
-				for (int i = 0; i < 4; i++)
-				{
-					Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 0.5f).noGravity = true;
-				}
+
 				Projectile.Kill();
 			}
 
 			Vector2 circlePosition = CalculateCirclePosition(owner);
-			float speed = 48;
+			float speed = 64;
 			Projectile.velocity = Vector2.Lerp(Projectile.velocity, VectorHelper.VelocitySlowdownTo(Projectile.Center, circlePosition, speed), 0.1f);
 
 
@@ -98,16 +92,14 @@ namespace Stellamod.Projectiles.Steins
 		private Vector2 CalculateCirclePosition(Player owner)
 		{
 			//Get the index of this minion
-			int minionIndex = SummonHelper.GetProjectileIndexMulti(Projectile, ModContent.ProjectileType<WOW>(), ModContent.ProjectileType<AMAZING>(), ModContent.ProjectileType<GREAT>(), ModContent.ProjectileType<SOHOT>(), ModContent.ProjectileType<SEXY>());
-
+			int minionIndex = SummonHelper.GetProjectileIndexMulti(Projectile, ModContent.ProjectileType<WOW>(), ModContent.ProjectileType<AMAZING>(), ModContent.ProjectileType<GREAT>(), ModContent.ProjectileType<SEXY>(), ModContent.ProjectileType<SOHOT>());
 
 			//Now we can calculate the circle position	
-			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<WOW>()];
+			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<SEXY>()];
+			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<WOW>()];
 			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<AMAZING>()];
 			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<GREAT>()];
 			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<SOHOT>()];
-			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<SEXY>()];
-
 			float degreesBetweenFirefly = 360 / (float)minionCount;
 			float degrees = degreesBetweenFirefly * minionIndex;
 			float circleDistance = 96f;

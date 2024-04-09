@@ -92,12 +92,15 @@ namespace Stellamod.Projectiles.Steins
 		private Vector2 CalculateCirclePosition(Player owner)
 		{
 			//Get the index of this minion
-			int minionIndex = SummonHelper.GetProjectileIndexMulti(Projectile, ModContent.ProjectileType<WOW>(), ModContent.ProjectileType<AMAZING>(), ModContent.ProjectileType<GREAT>());
+			int minionIndex = SummonHelper.GetProjectileIndexMulti(Projectile, ModContent.ProjectileType<WOW>(), ModContent.ProjectileType<AMAZING>(), ModContent.ProjectileType<GREAT>(), ModContent.ProjectileType<SOHOT>(), ModContent.ProjectileType<SEXY>());
+
 
 			//Now we can calculate the circle position	
 			int minionCount = owner.ownedProjectileCounts[ModContent.ProjectileType<GREAT>()];
 			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<WOW>()];
 			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<AMAZING>()];
+			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<SOHOT>()];
+			minionCount += owner.ownedProjectileCounts[ModContent.ProjectileType<SEXY>()];
 			float degreesBetweenFirefly = 360 / (float)minionCount;
 			float degrees = degreesBetweenFirefly * minionIndex;
 			float circleDistance = 96f;

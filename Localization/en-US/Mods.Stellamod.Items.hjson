@@ -6510,3 +6510,49 @@ Sirius: {
 		Azzuria's wrath~
 		'''
 }
+
+Iknoctstein: {
+	Tooltip:
+		'''
+		A super exploding experience!
+		Tap to your cursor to dash into SUPER damage! 
+		Hitting enemies will give you bonus damage and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		The better the glove the more words!
+		5 Words!
+		'''
+	DisplayName: Iknoctstein
+}
+
+Gothinstein: {
+	Tooltip:
+		'''
+		Gothivia didn't have this...
+		Tap to your cursor to dash into Gothivia's damage! 
+		Hitting enemies will give you bonus damage and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		A combination of every other glove!
+		5 Words!
+		'''
+	DisplayName: Gothinstein
+}
+
+Friedstein: {
+	Tooltip:
+		'''
+		Zui would love this!
+		Tap to your cursor to dash into radiant damage! 
+		Hitting enemies will give you bonus damage and immunity for reward! 
+		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+
+		This glove has incredible speed to attack after hitting but missing has an even longer wait.
+		It has has way more words per hit sometimes!
+		4 Words!
+		'''
+	DisplayName: Friedstein
+}
+
+ManifestedLove: {
+	Tooltip: The entirety of the world's ambitions were put to rest as her love spreads about. Goodbye Gothivia.
+	DisplayName: Manifested Love
+}

@@ -27,6 +27,12 @@ namespace Stellamod.Helpers
                     AzzuriaSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
+
+                if (item.rare == ModContent.RarityType<GothiviaSpecialRarity>())
+                {
+                    GothiviaSpecialRarity.DrawCustomTooltipLine(line);
+                    return false;
+                }
                 if (item.rare == ModContent.RarityType<GoldenSpecialRarity>())
                 {
                     GoldenSpecialRarity.DrawCustomTooltipLine(line);
