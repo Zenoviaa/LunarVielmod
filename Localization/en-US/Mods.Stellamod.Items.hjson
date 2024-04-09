@@ -6556,3 +6556,28 @@ ManifestedLove: {
 	Tooltip: The entirety of the world's ambitions were put to rest as her love spreads about. Goodbye Gothivia.
 	DisplayName: Manifested Love
 }
+
+IllurianLoveLocket: {
+	DisplayName: Illurian Love Locket
+	Tooltip: ""
+}
+
+AlcaliteMask: {
+	DisplayName: Alcalite Mask
+	Tooltip: ""
+}
+
+AlcaliteRobe: {
+	DisplayName: Alcalite Robe
+	Tooltip: ""
+}
+
+AlcaliteTrunks: {
+	DisplayName: Alcalite Trunks
+	Tooltip: ""
+}
+
+IlluriteDrill: {
+	DisplayName: Illurite Drill
+	Tooltip: ""
+}
