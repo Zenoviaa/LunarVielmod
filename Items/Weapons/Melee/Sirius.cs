@@ -29,7 +29,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SiriusProj>();
-            Item.shootSpeed = 21;
+            Item.shootSpeed = 30;
         }
 
         public override void AddRecipes()

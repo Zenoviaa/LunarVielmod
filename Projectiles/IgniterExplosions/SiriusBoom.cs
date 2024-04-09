@@ -8,17 +8,17 @@ namespace Stellamod.Projectiles.IgniterExplosions
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Projectile.type] = 6;
+            Main.projFrames[Projectile.type] = 30;
         }
 
         public override void SetDefaults()
         {
             Projectile.hostile = false;
             Projectile.friendly = true;
-            Projectile.width = 331;
-            Projectile.height = 330;
+            Projectile.width = 129;
+            Projectile.height = 129;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 18;
+            Projectile.timeLeft = 60;
             Projectile.scale = 1f;
             Projectile.tileCollide = false;
         }
@@ -40,10 +40,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override bool PreAI()
         {
             Projectile.tileCollide = false;
-            if (++Projectile.frameCounter >= 3)
+            if (++Projectile.frameCounter >= 2)
             {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 6)
+                if (++Projectile.frame >= 30)
                 {
                     Projectile.frame = 0;
                 }
