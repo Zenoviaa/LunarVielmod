@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.INest
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradieagleWrath>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TheIrradiaspear>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StaffoftheIrradiaflare>(), chanceDenominator: 2));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), minimumDropped: 3, maximumDropped: 25));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IrradiatedCreeperStaff>(), chanceDenominator: 2));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrokenTech>(), minimumDropped: 10, maximumDropped: 10));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<UnknownCircuitry>(), minimumDropped: 10, maximumDropped: 10));
 
