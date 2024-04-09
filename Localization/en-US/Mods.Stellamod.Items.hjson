@@ -6538,3 +6538,11 @@ AlcaliteMask: {
 		+1 max minions
 		'''
 }
+
+IlluriteDrill: {
+	DisplayName: Illurite Drill
+	Tooltip:
+		'''
+		Explodes every so often
+		'''
+}

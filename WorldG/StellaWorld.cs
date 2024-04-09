@@ -16,6 +16,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Special;
 using Stellamod.Items.Special.MinerLogs;
+using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
@@ -6751,7 +6752,7 @@ namespace Stellamod.WorldG
                         if (tileType == ModContent.TileType<IlluriaChest>())
                         {
 							//Illura Chest Loot here
-							switch (Main.rand.Next(2))
+							switch (Main.rand.Next(3))
 							{
 								case 0:
 									//Illuria Brooch
@@ -6762,6 +6763,10 @@ namespace Stellamod.WorldG
                                     itemsToAdd.Add((ModContent.ItemType<AlcaliteMask>(), 1));
                                     itemsToAdd.Add((ModContent.ItemType<AlcaliteRobe>(), 1));
                                     itemsToAdd.Add((ModContent.ItemType<AlcaliteTrunks>(), 1));
+                                    break;
+								case 2:
+									//Illurite Dril
+                                    itemsToAdd.Add((ModContent.ItemType<IlluriteDrill>(), 1));
                                     break;
 							}
 
