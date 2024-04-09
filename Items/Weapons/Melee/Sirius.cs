@@ -11,6 +11,11 @@ namespace Stellamod.Items.Weapons.Melee
 {
     internal class Sirius : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ItemNoGravity[Item.type] = true;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 70;

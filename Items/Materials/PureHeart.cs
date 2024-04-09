@@ -2,12 +2,18 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Materials
 {
     internal class PureHeart : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ItemNoGravity[Item.type] = true;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 50;

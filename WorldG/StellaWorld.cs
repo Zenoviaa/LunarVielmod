@@ -6752,7 +6752,7 @@ namespace Stellamod.WorldG
                         if (tileType == ModContent.TileType<IlluriaChest>())
                         {
 							//Illura Chest Loot here
-							switch (Main.rand.Next(3))
+							switch (Main.rand.Next(4))
 							{
 								case 0:
 									//Illuria Brooch
@@ -6768,7 +6768,10 @@ namespace Stellamod.WorldG
 									//Illurite Dril
                                     itemsToAdd.Add((ModContent.ItemType<IlluriteDrill>(), 1));
                                     break;
-							}
+								case 3:
+                                    itemsToAdd.Add((ModContent.ItemType<IllurianLoveLocket>(), 1));
+									break;
+                            }
 
 							switch (Main.rand.Next(1))
 							{
