@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Arrows
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(250, 120, 1, 125), Color.Transparent, completionRatio);
+            return Color.Lerp(new Color(250, 100, 1, 125), Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -61,10 +61,10 @@ namespace Stellamod.Projectiles.Arrows
 
             for (int i = 0; i < 6; i++)
             {
-                float speedXa = -Main.rand.NextFloat(-8.5f, 8.5f);
-                float speedYa = -Main.rand.NextFloat(-8.5f, 8.5f);
+                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(-2.5f, 2.5f);
+                float speedYa = -Projectile.velocity.Y * Main.rand.NextFloat(-2.5f, 2.5f);
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 0.3f), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa, speedYa, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 0.3f), 0f, Projectile.owner, 0f, 0f);
               
             }
 
