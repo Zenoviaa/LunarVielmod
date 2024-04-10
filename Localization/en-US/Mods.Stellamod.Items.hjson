@@ -6581,3 +6581,18 @@ IlluriteDrill: {
 	DisplayName: Illurite Drill
 	Tooltip: ""
 }
+
+FlowerHat: {
+	DisplayName: Flower Hat
+	Tooltip: ""
+}
+
+FlowerPants: {
+	DisplayName: Flower Pants
+	Tooltip: ""
+}
+
+FlowerRobe: {
+	DisplayName: Flower Robe
+	Tooltip: ""
+}
