@@ -267,7 +267,7 @@ namespace Stellamod.NPCs.Town
 
 			}
 
-			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(4));
+			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(5));
 
 			int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedFlowerBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();

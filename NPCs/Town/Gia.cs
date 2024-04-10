@@ -351,7 +351,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(5));
 					switch (Main.rand.Next(8))
 					{
 
@@ -487,7 +487,11 @@ namespace Stellamod.NPCs.Town
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<FrileBroochA>(), 1);
 							break;
 
-		
+						case 10:
+
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Cryal>(), 1);
+							break;
 					}
 
 
@@ -509,10 +513,9 @@ namespace Stellamod.NPCs.Town
 
 					int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OverworldRuneI>());
 					var entitySource = NPC.GetSource_GiftOrReward();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(2));
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
 
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					switch (Main.rand.Next(16))
 					{
 
@@ -765,7 +768,7 @@ namespace Stellamod.NPCs.Town
 					var entitySource = NPC.GetSource_GiftOrReward();
 					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RippedFabric>(), Main.rand.Next(3));
 					Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
-					switch (Main.rand.Next(15))
+					switch (Main.rand.Next(16))
 					{
 
 
@@ -871,6 +874,13 @@ namespace Stellamod.NPCs.Town
 						case 14:
 
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<ViolinStick>(), 1);
+
+
+							break;
+
+						case 15:
+
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MahoganyStorm>(), 1);
 
 
 							break;

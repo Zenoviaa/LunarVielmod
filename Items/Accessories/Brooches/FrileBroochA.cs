@@ -51,7 +51,6 @@ namespace Stellamod.Items.Accessories.Brooches
 			recipe.AddIngredient(ModContent.ItemType<CondensedDirt>(), 30);
 			recipe.AddIngredient(ItemID.Silk, 5);
 			recipe.AddIngredient(ModContent.ItemType<BlankBrooch>(), 1);
-			recipe.AddIngredient(ItemID.FrostDaggerfish, 10);
 			recipe.AddIngredient(ItemID.IceBlade, 1);
 			recipe.AddTile(ModContent.TileType<BroochesTable>());
 			recipe.Register();
