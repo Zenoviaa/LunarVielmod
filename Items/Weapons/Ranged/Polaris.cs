@@ -15,8 +15,9 @@ using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Polaris : ModItem
+    internal class Polaris : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Wooden Crossbow"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
@@ -24,6 +25,11 @@ namespace Stellamod.Items.Weapons.Ranged
                 + "\n'Triple Threat!'"); */
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             ItemID.Sets.ItemNoGravity[Item.type] = true;
+        }
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.mana = 20;
         }
 
         public override void SetDefaults()

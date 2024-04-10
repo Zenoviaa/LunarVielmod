@@ -9,8 +9,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    internal class Sirius : ModItem
+    internal class Sirius : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Throwing;
+
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemNoGravity[Item.type] = true;
