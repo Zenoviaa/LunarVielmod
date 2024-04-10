@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Morrow
             if (spawnInfo.Player.ZoneJungle)
             {
 
-                return SpawnCondition.OverworldDay.Chance * 0.3f;
+                return SpawnCondition.OverworldDay.Chance * 0.04f;
 
             }
             return SpawnCondition.OverworldNight.Chance * 0f;
