@@ -44,11 +44,10 @@ namespace Stellamod.Items.Weapons.Summon
         {
 			CreateRecipe()
 				.AddIngredient(ItemID.CookingPot, 1)
-				.AddIngredient(ModContent.ItemType<MiracleThread>(), 20)
-				.AddIngredient(ModContent.ItemType<WanderingFlame>(), 8)
-				.AddIngredient(ModContent.ItemType<DarkEssence>(), 4)
-				.AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
-				.AddTile(TileID.MythrilAnvil)
+                .AddIngredient(ModContent.ItemType<MiracleThread>(), 20)
+                .AddIngredient(ModContent.ItemType<AlcaricMush>(), 4)
+                .AddIngredient(ModContent.ItemType<EldritchSoul>(), 4)
+                .AddTile(TileID.MythrilAnvil)
 				.Register();
 		}
 
