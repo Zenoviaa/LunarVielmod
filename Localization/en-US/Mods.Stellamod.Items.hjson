@@ -2077,17 +2077,17 @@ AstrasilkLegs: {
 }
 
 ElagentBody: {
-	DisplayName: Elagent Body
+	DisplayName: Elegant Coat
 	Tooltip: +1 Minion
 }
 
 ElagentHead: {
-	DisplayName: Elagent Head
+	DisplayName: Elegant Crown
 	Tooltip: +20% Minion Damage
 }
 
 ElagentLegs: {
-	DisplayName: Elagent Legs
+	DisplayName: Elegant Leggings
 	Tooltip:
 		'''
 		+10% Summon Damage
@@ -6559,27 +6559,47 @@ ManifestedLove: {
 
 IllurianLoveLocket: {
 	DisplayName: Illurian Love Locket
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a ring a powerful orbiting stars around you!
+		Said to be filled with a fragment of Niivi's love
+		'''
 }
 
 AlcaliteMask: {
 	DisplayName: Alcalite Mask
-	Tooltip: ""
+	Tooltip:
+		'''
+		8% increased magic and summon damage
+		+1 max minions
+		'''
 }
 
 AlcaliteRobe: {
 	DisplayName: Alcalite Robe
-	Tooltip: ""
+	Tooltip:
+		'''
+		12% increased magic and summon damage
+		+2 max minions
+		'''
 }
 
 AlcaliteTrunks: {
 	DisplayName: Alcalite Trunks
-	Tooltip: ""
+	Tooltip:
+		'''
+		Increases movement speed and acceleration
+		4% increased magic and summon damage
+		+1 max minions
+		'''
 }
 
 IlluriteDrill: {
 	DisplayName: Illurite Drill
-	Tooltip: ""
+	Tooltip:
+		'''
+		Periodically explodes, like blast mining!
+		'''
 }
 
 FlowerRobe: {

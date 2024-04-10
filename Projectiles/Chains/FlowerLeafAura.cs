@@ -52,6 +52,7 @@ namespace Stellamod.Projectiles.Chains
             Vector2 chainCenter = Projectile.Center;
             float ovalXRadius = 64;
             float ovalYRadius = 64;
+
             float ovalAngle = MathHelper.TwoPi + MathHelper.PiOver4 / 2;
             DrawHelper.DrawChainOval(chainCenter, ovalXRadius, ovalYRadius, ovalAngle, 0,
                 ref ChainPos);
