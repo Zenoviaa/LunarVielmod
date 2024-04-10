@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Arrows
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(60, 0, 118, 125), Color.Transparent, completionRatio);
+            return Color.Lerp(new Color(250, 120, 1, 125), Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
