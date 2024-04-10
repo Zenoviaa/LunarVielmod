@@ -170,7 +170,7 @@ namespace Stellamod.Projectiles.Magic
 
     internal class IlluriaStarProjBlue : IlluriaStarProj
     {
-        public override Color StarColor => ColorFunctions.Azzurian;
+        public override Color StarColor => ColorFunctions.Niivin;
     }
 
 

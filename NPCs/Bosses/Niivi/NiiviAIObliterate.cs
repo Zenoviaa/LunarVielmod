@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stellamod.NPCs.Bosses.Azzuria
+namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class Azzuria
+    internal partial class Niivi
     {
-        private void AIBossFight()
+        private void AIObliterate()
         {
 
         }

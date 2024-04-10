@@ -3,9 +3,9 @@ using Stellamod.Helpers;
 using System;
 using Terraria;
 
-namespace Stellamod.NPCs.Bosses.Azzuria
+namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class Azzuria
+    internal partial class Niivi
     {
         public float TargetHeadRotation;
         public float TargetSegmentRotation;

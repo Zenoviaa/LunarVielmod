@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
-namespace Stellamod.NPCs.Bosses.Azzuria
+namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class Azzuria
+    internal partial class Niivi
     {
         //Number of tiles to fly off
         public const float Max_Roaming_Time = 7200;

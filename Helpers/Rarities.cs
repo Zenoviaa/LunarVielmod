@@ -58,7 +58,7 @@ namespace Stellamod.Helpers
         }
     }
 
-    public class AzzuriaSpecialRarity : ModRarity
+    public class NiiviSpecialRarity : ModRarity
     {
         public override Color RarityColor => Color.White;
 

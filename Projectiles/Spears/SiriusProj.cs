@@ -171,7 +171,7 @@ namespace Stellamod.Projectiles.Spears
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(ColorFunctions.Azzurian, Color.Transparent, completionRatio);
+            return Color.Lerp(ColorFunctions.Niivin, Color.Transparent, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -179,7 +179,7 @@ namespace Stellamod.Projectiles.Spears
             if (_targetNpc == -1)
             {
                 DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.CausticTrail);
-                DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.Azzurian, Color.Transparent, ref lightColor);
+                DrawHelper.DrawAdditiveAfterImage(Projectile, ColorFunctions.Niivin, Color.Transparent, ref lightColor);
             }
 
             return base.PreDraw(ref lightColor);

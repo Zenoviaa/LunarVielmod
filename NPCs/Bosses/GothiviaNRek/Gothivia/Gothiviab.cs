@@ -88,7 +88,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
 			// DisplayName.SetDefault("Verlia of The Moon");
 
 			Main.npcFrameCount[Type] = 41;
-
 			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
 			NPCID.Sets.TrailingMode[NPC.type] = 0;
 
