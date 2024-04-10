@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 20;
             Item.useTime = 4; // one third of useAnimation
-            Item.reuseDelay = 20;
+            Item.reuseDelay = 60;
             Item.consumeAmmoOnLastShotOnly = true;
         }
         public override void AddRecipes()
