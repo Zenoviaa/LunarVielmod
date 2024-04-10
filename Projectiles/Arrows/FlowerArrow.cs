@@ -61,10 +61,10 @@ namespace Stellamod.Projectiles.Arrows
 
             for (int i = 0; i < 6; i++)
             {
-                float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(-2.5f, 2.5f);
-                float speedYa = -Projectile.velocity.Y * Main.rand.NextFloat(-2.5f, 2.5f);
+                float speedXa = -Main.rand.NextFloat(-8.5f, 8.5f);
+                float speedYa = -Main.rand.NextFloat(-8.5f, 8.5f);
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<SexyShot>(), (int)(Projectile.damage * 0.5f), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<VoltingShot>(), (int)(Projectile.damage * 0.3f), 0f, Projectile.owner, 0f, 0f);
               
             }
 

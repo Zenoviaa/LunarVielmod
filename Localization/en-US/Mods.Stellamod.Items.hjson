@@ -6583,7 +6583,8 @@ IlluriteDrill: {
 }
 
 FlowerRobe: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		Zui gave you some health!
 		+60 Health
 		+18% Melee and Ranged Damage!
@@ -6592,7 +6593,8 @@ FlowerRobe: {
 }
 
 FlowerPants: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		+30% Speed and flower walking!
 		+10% Melee and Ranged Damage!
 		'''
@@ -6600,7 +6602,8 @@ FlowerPants: {
 }
 
 FlowerHat: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		Zui gave you a halo!
 		+16% Melee and Ranged Damage!
 		'''
