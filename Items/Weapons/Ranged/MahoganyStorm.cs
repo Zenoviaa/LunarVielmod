@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public int WinterboundArrow;
         public override void SetDefaults()
         {
-            Item.damage = 10;
+            Item.damage = 8;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
