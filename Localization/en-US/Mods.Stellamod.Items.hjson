@@ -6596,10 +6596,7 @@ AlcaliteTrunks: {
 
 IlluriteDrill: {
 	DisplayName: Illurite Drill
-	Tooltip:
-		'''
-		Periodically explodes, like blast mining!
-		'''
+	Tooltip: Periodically explodes, like blast mining!
 }
 
 FlowerRobe: {
@@ -6628,4 +6625,19 @@ FlowerHat: {
 		+16% Melee and Ranged Damage!
 		'''
 	DisplayName: Flower Hat
+}
+
+Cryal: {
+	DisplayName: Cryal
+	Tooltip: Shoots 2 icy bolts and some arrows!
+}
+
+MahoganyStorm: {
+	DisplayName: Mahogany Storm
+	Tooltip: Shoots a barrage of arrows!
+}
+
+Dunderbustion: {
+	DisplayName: Dunderbustion
+	Tooltip: A burst rifle with some serious mechanical malfunctions since it was handmade.
 }

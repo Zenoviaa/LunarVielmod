@@ -329,6 +329,12 @@ namespace Stellamod.NPCs.Town
 							Main.LocalPlayer.QuickSpawnItem(entitySource, ItemID.SandstorminaBottle, 1);
 
 							break;
+
+						case 7:
+							Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Dunderbustion>(), 1);
+						
+
+							break;
 					}
 
 					

@@ -23,7 +23,7 @@ namespace Stellamod.Projectiles.Bow
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(2))
-                target.AddBuff(BuffID.OnFire, 180);
+                target.AddBuff(BuffID.Frostburn, 180);
         }
         public override void SetDefaults()
         {
