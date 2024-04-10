@@ -1,6 +1,9 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Chains;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -65,10 +68,18 @@ namespace Stellamod.Items.Armors.Flower
 				"\nTurns all your wooden arrows into flower arrows! Which when hitting a target, " +
 				"\nsplits into little golden shots that hit back! "
 			 ; // This is the setbonus tooltip
-			player.lifeRegen += 1;
-			player.GetModPlayer<FlowerPlayer>().hasQuiver = true;
 
+
+			player.lifeRegen += 1;
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<FlowerLeafAura>()] == 0)
+            {
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<FlowerLeafAura>(), 0, 0, player.whoAmI);
+            }
+
+            player.GetModPlayer<FlowerPlayer>().hasQuiver = true;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();

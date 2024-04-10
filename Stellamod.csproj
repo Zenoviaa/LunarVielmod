@@ -40,6 +40,7 @@
     <None Remove="Buffs\Dusteffects\SpiritDust.png" />
     <None Remove="Buffs\Dusteffects\UseIgniter.png" />
     <None Remove="Buffs\Dusteffects\VoiddDust.png" />
+    <None Remove="Buffs\FlowerPower.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
@@ -407,6 +408,7 @@
     <None Remove="Projectiles\Bow\VampiricArrowProj.png" />
     <None Remove="Projectiles\Bow\Warrow.png" />
     <None Remove="Projectiles\BrackettThrough.png" />
+    <None Remove="Projectiles\Chains\FlowerLeafAura.png" />
     <None Remove="Projectiles\Chains\SupernovaChainCircle.png" />
     <None Remove="Projectiles\CinderFireball2.png" />
     <None Remove="Projectiles\Crossbows\Eckasect\ExecutionRay.png" />

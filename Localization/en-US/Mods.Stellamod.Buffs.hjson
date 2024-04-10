@@ -627,3 +627,8 @@ IllurianB: {
 	Description: Mods.Stellamod.Buffs.IllurianB.Description
 	DisplayName: Illurian B
 }
+
+FlowerPower: {
+	Description: Mods.Stellamod.Buffs.FlowerPower.Description
+	DisplayName: Flower Power
+}
