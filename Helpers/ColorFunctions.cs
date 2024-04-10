@@ -15,7 +15,7 @@ namespace Stellamod.Helpers
 
         public static Color GreatswordWeaponType => new Color(Main.DiscoR, 150, 150, 0f);
 
-        public static Color Azzurian => new Color(72, 67, 200);
+        public static Color Niivin => new Color(72, 67, 200);
         public static Color NextColor(this UnifiedRandom rand, params Color[] colors)
         {
             return colors[rand.Next(0, colors.Length)];

@@ -3760,7 +3760,7 @@ namespace Stellamod.WorldG
 		{
 			StructureMap structures = GenVars.structures;
 			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/Illuria");
-			progress.Message = "Azzuria protecting the cities above.";
+			progress.Message = "Niivi protecting the cities above.";
 
 
 
@@ -6664,7 +6664,7 @@ namespace Stellamod.WorldG
 
 		private void WorldGenWorshipingTowers(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = "Praising our lord and savior Azzuria";
+			progress.Message = "Praising our lord and savior Niivi";
 
             int leftmostJungleTileX = int.MaxValue;
             int rightmostJungleTileX = int.MinValue;

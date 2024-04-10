@@ -22,9 +22,9 @@ namespace Stellamod.Helpers
                     SirestiasSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
-                if(item.rare == ModContent.RarityType<AzzuriaSpecialRarity>())
+                if(item.rare == ModContent.RarityType<NiiviSpecialRarity>())
                 {
-                    AzzuriaSpecialRarity.DrawCustomTooltipLine(line);
+                    NiiviSpecialRarity.DrawCustomTooltipLine(line);
                     return false;
                 }
 

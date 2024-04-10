@@ -1,16 +1,24 @@
-﻿using Stellamod.Items.Harvesting;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Chains;
+using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
+using Terraria.Audio;
+using Stellamod.Projectiles.Arrows;
 
 namespace Stellamod.Items.Armors.Flower
 {
     // The AutoloadEquip attribute automatically attaches an equip texture to this item.
     // Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
-    [AutoloadEquip(EquipType.Head)]
+ 
+	[AutoloadEquip(EquipType.Head)]
 	public class FlowerHat : ModItem
 	{
 		public override void SetStaticDefaults()
@@ -56,12 +64,22 @@ namespace Stellamod.Items.Armors.Flower
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = "Increases life regen by decent amount!" +
-				"\nThe armor makes a flowery circle that heals players in it for a large amount!"
+				"\nThe armor makes a flowery circle that heals players in it for a large amount!" +
+				"\nTurns all your wooden arrows into flower arrows! Which when hitting a target, " +
+				"\nsplits into little golden shots that hit back! "
 			 ; // This is the setbonus tooltip
+
+
 			player.lifeRegen += 1;
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<FlowerLeafAura>()] == 0)
+            {
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<FlowerLeafAura>(), 0, 0, player.whoAmI);
+            }
 
-
+            player.GetModPlayer<FlowerPlayer>().hasQuiver = true;
 		}
+
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
@@ -72,6 +90,30 @@ namespace Stellamod.Items.Armors.Flower
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
 		}
+
+
+		
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+	}
+
+	internal class FlowerPlayer : ModPlayer
+	{
+		public bool hasQuiver;
+		public override void ResetEffects()
+		{
+			base.ResetEffects();
+			hasQuiver = false;
+		}
+
+		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			if (type == ProjectileID.WoodenArrowFriendly && hasQuiver)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordThrow"), position);
+				type = ModContent.ProjectileType<FlowerArrow>();
+				damage += 2;
+				velocity *= 2f;
+			}
+		}
 	}
 }

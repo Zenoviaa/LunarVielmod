@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.height = 74;
             Item.damage = 300;
             Item.DamageType = DamageClass.Melee;
-            Item.rare = ModContent.RarityType<AzzuriaSpecialRarity>();
+            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
 
             Item.useTime = 32;
             Item.useAnimation = 32;
@@ -54,7 +54,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, ColorFunctions.Azzurian);
+            DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, ColorFunctions.Niivin);
             return true;
         }
 

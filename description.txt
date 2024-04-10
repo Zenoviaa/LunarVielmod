@@ -58,7 +58,7 @@ small little parts, quests and remakes to make everything up to standard! Much b
 1.5.2.5 - A lot of bug fixes and config option fixes 
 -----
 Green Sun Update: 1.6 Has been released!
-Introducing many new systems like weapon swapping, reworked undergrounds and environments and quests! 4 New Post plant - Post ML bosses! Gothivia, Azurewrath, Supernova fragment and Azzuria!
+Introducing many new systems like weapon swapping, reworked undergrounds and environments and quests! 4 New Post plant - Post ML bosses! Gothivia, Azurewrath, Supernova fragment and Niivi!
 Many reworks to old bosses such as Verlia, Sylia and Irradia! More npcs and many more structures as well as structure fixing from old bugs. Over 100+ new weapons with new weapon types such as 
 Steins, Greatswords, Orbs and more! Overhauls to many of the old weapons and recipes while gearing the game more towards our new systems! New biomes such as the Illuria, Veil Towers, Worshipping
 spots! Green Sun is the main event during this update and it's a long lasting event that covers through Irradia to Gothivia (Our new God tier boss!). More connected lore and overall even more

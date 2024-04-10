@@ -68,7 +68,7 @@ namespace Stellamod.Projectiles
             if (Main.rand.NextBool(32))
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(3, 3);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, ColorFunctions.Azzurian, 0.5f);
+                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, ColorFunctions.Niivin, 0.5f);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Stellamod.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.White, ColorFunctions.Azzurian, 0.5f);
+            Color color = Color.Lerp(Color.White, ColorFunctions.Niivin, 0.5f);
             return Color.Lerp(color, Color.Transparent, completionRatio);
         }
 

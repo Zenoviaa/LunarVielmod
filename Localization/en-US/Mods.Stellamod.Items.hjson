@@ -6169,19 +6169,19 @@ IllurianCrestmask: {
 		'''
 		12% Magic and Summon damage!
 		10% Critical Strike Chance!
-		A very dissapointed Azzuria.
+		A very dissapointed Niivi.
 		'''
 	DisplayName: Illurian Crestmask
 }
 
 IllurianWarriorHelm: {
 	DisplayName: Illurian Warrior Helm
-	Tooltip: Azzuria loves to watch over the world with the Lunar tree huh? It's written on the back of this.
+	Tooltip: Niivi loves to watch over the world with the Lunar tree huh? It's written on the back of this.
 }
 
 IllurineScale: {
 	DisplayName: Illurine Scale
-	Tooltip: Radiating with Azzuria's lunar energy!
+	Tooltip: Radiating with Niivi's lunar energy!
 }
 
 PureHeart: {
@@ -6507,7 +6507,7 @@ Sirius: {
 	Tooltip:
 		'''
 		Throws a spear that lodges into targets and then violently explodes!
-		Azzuria's wrath~
+		Niivi's wrath~
 		'''
 }
 
@@ -6582,17 +6582,30 @@ IlluriteDrill: {
 	Tooltip: ""
 }
 
-FlowerHat: {
-	DisplayName: Flower Hat
-	Tooltip: ""
+FlowerRobe: {
+	Tooltip:
+		'''
+		Zui gave you some health!
+		+60 Health
+		+18% Melee and Ranged Damage!
+		'''
+	DisplayName: Flower Robe
 }
 
 FlowerPants: {
+	Tooltip:
+		'''
+		+30% Speed and flower walking!
+		+10% Melee and Ranged Damage!
+		'''
 	DisplayName: Flower Pants
-	Tooltip: ""
 }
 
-FlowerRobe: {
-	DisplayName: Flower Robe
-	Tooltip: ""
+FlowerHat: {
+	Tooltip:
+		'''
+		Zui gave you a halo!
+		+16% Melee and Ranged Damage!
+		'''
+	DisplayName: Flower Hat
 }

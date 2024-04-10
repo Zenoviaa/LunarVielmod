@@ -9,7 +9,7 @@ using Stellamod.NPCs.Bosses.Sylia;
 using Terraria.ID;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.INest;
-using Stellamod.NPCs.Bosses.Azzuria;
+using Stellamod.NPCs.Bosses.Niivi;
 
 namespace Stellamod.NPCs.Town
 {
@@ -35,7 +35,7 @@ namespace Stellamod.NPCs.Town
         public static Point DelgrimSpawnTileOffset => new Point(39, -7);
         public static Point LabSpawnTileOffset => new Point(39, -20);
         public static Point GiaSpawnTileOffset => new Point(14, -7);
-        public static Point AzzuriaSpawnTileOffset => new Point(134, -224);
+        public static Point NiiviSpawnTileOffset => new Point(134, -224);
         public static Point BORDOCSpawnTileOffset => new Point(94, -380);
 
         public static Point SirestiasSpawnTileOffset => new Point(24, -21);
@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Town
         public static Vector2 CellConverterSpawnWorld => MechanicsTownTile.ToWorldCoordinates() + CellConverterSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LabSpawnWorld => LabTile.ToWorldCoordinates() + LabSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 GiaSpawnWorld => GiaTile.ToWorldCoordinates() + GiaSpawnTileOffset.ToWorldCoordinates();
-        public static Vector2 AzzuriaSpawnWorld => IlluriaTile.ToWorldCoordinates() + AzzuriaSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 NiiviSpawnWorld => IlluriaTile.ToWorldCoordinates() + NiiviSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 BORDOCSpawnWorld => FableTile.ToWorldCoordinates() + BORDOCSpawnTileOffset.ToWorldCoordinates();
 
         public static Vector2 SireSpawnWorld => SireTile.ToWorldCoordinates() + SirestiasSpawnTileOffset.ToWorldCoordinates();
@@ -213,11 +213,11 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Gia>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<Azzuria>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)AzzuriaSpawnWorld.X, (int)AzzuriaSpawnWorld.Y,
-                        ModContent.NPCType<Azzuria>());
+                        (int)NiiviSpawnWorld.X, (int)NiiviSpawnWorld.Y,
+                        ModContent.NPCType<Niivi>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 

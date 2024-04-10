@@ -6,9 +6,9 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Azzuria
+namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal partial class Azzuria : ModNPC
+    internal partial class Niivi : ModNPC
     {
         public enum ActionState
         {
@@ -51,7 +51,7 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             // Sets the description of this NPC that is listed in the bestiary
             bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
                 new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Azzuria, The First Dragon")
+				new FlavorTextBestiaryInfoElement("Niivi, The First Dragon")
             });
         }
 
@@ -61,8 +61,8 @@ namespace Stellamod.NPCs.Bosses.Azzuria
             NPC.lifeMax = 126000;
             NPC.defense = 24;
             NPC.damage = 150;
-            NPC.width = (int)AzzuriaHeadSize.X;
-            NPC.height = (int)AzzuriaHeadSize.Y;
+            NPC.width = (int)NiiviHeadSize.X;
+            NPC.height = (int)NiiviHeadSize.Y;
 
             //It won't be considered a boss or take up slots until the fight actually starts
             //So the values are like this for now

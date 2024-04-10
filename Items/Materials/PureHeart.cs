@@ -18,7 +18,7 @@ namespace Stellamod.Items.Materials
         {
             Item.width = 50;
             Item.height = 76;
-            Item.rare = ModContent.RarityType<AzzuriaSpecialRarity>();
+            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
             Item.maxStack = Item.CommonMaxStack;
         }
 
