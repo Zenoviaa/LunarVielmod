@@ -6641,3 +6641,12 @@ Dunderbustion: {
 	DisplayName: Dunderbustion
 	Tooltip: A burst rifle with some serious mechanical malfunctions since it was handmade.
 }
+
+Polaris: {
+	DisplayName: Polaris
+	Tooltip:
+		'''
+		Hold to charge and release a powerful laser!
+		Powered by Niivi's tears
+		'''
+}
