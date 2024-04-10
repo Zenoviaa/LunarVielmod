@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Item5;
             Item.useAnimation = 20;
             Item.useTime = 4; // one third of useAnimation
-            Item.reuseDelay = 60;
+            Item.reuseDelay = 70;
             Item.consumeAmmoOnLastShotOnly = true;
         }
         public override Vector2? HoldoutOffset()
