@@ -5755,7 +5755,7 @@ AmberBroochA: {
 
 VillagersBroochA: {
 	DisplayName: Villagers Brooch
-	Tooltip: Had enough social time? Why dont you use the extra 12% this give you?
+	Tooltip: Had enough social time? Why dont you use the extra 12% of damage this gives you?
 }
 
 RadianuiBar: {
@@ -6634,6 +6634,7 @@ Cryal: {
 
 MahoganyStorm: {
 	DisplayName: Mahogany Storm
+	DisplayName: Mahogany Storm
 	Tooltip: Shoots a barrage of arrows!
 }
 
@@ -6657,6 +6658,6 @@ GovheilPlatformBlock: {
 }
 
 ManifestedBravery: {
-	Tooltip: ""
+	Tooltip: Verlia's soul manifested at it's core, in the end she stood up against Fenix to save her village and her sister.
 	DisplayName: Manifested Bravery
 }
