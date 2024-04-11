@@ -247,6 +247,7 @@ namespace Stellamod
 		public bool ZoneMechanics;
 		public bool ZoneLab;
 		public bool ZoneIlluria;
+		public bool ZoneIshtar;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -699,6 +700,7 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
+			base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
