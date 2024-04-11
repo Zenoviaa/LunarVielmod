@@ -6655,3 +6655,8 @@ GovheilPlatformBlock: {
 	Tooltip: ""
 	DisplayName: Govheil Platform Block
 }
+
+ManifestedBravery: {
+	Tooltip: ""
+	DisplayName: Manifested Bravery
+}

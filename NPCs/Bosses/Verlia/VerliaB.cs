@@ -1997,6 +1997,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedBravery>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));

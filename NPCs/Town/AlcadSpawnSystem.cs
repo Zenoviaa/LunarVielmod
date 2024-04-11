@@ -10,6 +10,7 @@ using Terraria.ID;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.Niivi;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 
 namespace Stellamod.NPCs.Town
 {
@@ -26,7 +27,7 @@ namespace Stellamod.NPCs.Town
         public static Point IlluriaTile;
         public static Point FableTile;
         public static Point SireTile;
-
+        public static Point IrrTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -40,6 +41,8 @@ namespace Stellamod.NPCs.Town
 
         public static Point SirestiasSpawnTileOffset => new Point(24, -21);
         public static Point VelSpawnTileOffset => new Point(18, -23);
+
+        public static Point IrrSpawnTileOffset => new Point(120, -22);
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -56,6 +59,8 @@ namespace Stellamod.NPCs.Town
 
         public static Vector2 VelSpawnWorld => VelTile.ToWorldCoordinates() + VelSpawnTileOffset.ToWorldCoordinates();
 
+        public static Vector2 IrrSpawnWorld => IrrTile.ToWorldCoordinates() + IrrSpawnTileOffset.ToWorldCoordinates();
+
         public static bool TownedGia;
         public override void SaveWorldData(TagCompound tag)
         {
@@ -71,6 +76,7 @@ namespace Stellamod.NPCs.Town
             tag["VelTile"] = VelTile;
             tag["FableTile"] = FableTile;
             tag["SireTile"] = SireTile;
+            tag["IrrTile"] = IrrTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -87,6 +93,7 @@ namespace Stellamod.NPCs.Town
             VelTile = tag.Get<Point>("VelTile");
             FableTile = tag.Get<Point>("FableTile");
             SireTile = tag.Get<Point>("SireTile");
+            IrrTile = tag.Get<Point>("IrrTile");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -102,6 +109,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(FableTile.ToVector2());
             writer.WriteVector2(VelTile.ToVector2());
             writer.WriteVector2(SireTile.ToVector2());
+            writer.WriteVector2(IrrTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -117,6 +125,7 @@ namespace Stellamod.NPCs.Town
             FableTile = reader.ReadVector2().ToPoint();
             VelTile = reader.ReadVector2().ToPoint();
             SireTile = reader.ReadVector2().ToPoint();
+            IrrTile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -242,6 +251,14 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)SireSpawnWorld.X, (int)SireSpawnWorld.Y,
                         ModContent.NPCType<Sirestias>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
+                        ModContent.NPCType<IrradiaIdle>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
             }

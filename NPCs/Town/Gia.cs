@@ -33,8 +33,8 @@ using Stellamod.Items.Accessories.Brooches;
 
 namespace Stellamod.NPCs.Town
 {
-    // [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
-    [AutoloadHead]
+	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+	[AutoloadBossHead]
 	public class Gia : ModNPC
 	{
 		public int NumberOfTimesTalkedTo = 0;
@@ -54,7 +54,15 @@ namespace Stellamod.NPCs.Town
 			NPCID.Sets.AttackAverageChance[Type] = 30;
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 
+
+			NPCID.Sets.ActsLikeTownNPC[Type] = true;
+
+			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
+			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
+			NPCID.Sets.SpawnsWithCustomName[Type] = true;
+
 			NPCID.Sets.NoTownNPCHappiness[Type] = true;
+
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
@@ -113,8 +121,7 @@ namespace Stellamod.NPCs.Town
 		public int counter;
 		public override void SetDefaults()
 		{
-			NPC.townNPC = true;
-			NPC.dontTakeDamageFromHostiles = true;   // Sets NPC to be a Town NPC
+			  // Sets NPC to be a Town NPC
 			NPC.friendly = true; // NPC Will not attack player
 			NPC.width = 18;
 			NPC.height = 40;
@@ -128,14 +135,19 @@ namespace Stellamod.NPCs.Town
 			AnimationType = NPCID.Guide;
 			NPC.dontTakeDamage = true;
 
-			
-
+			NPC.BossBar = Main.BigBossProgressBar.NeverValid;
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs)
+
+		//This prevents the NPC from despawning
+		public override bool CheckActive()
 		{
-			return AlcadSpawnSystem.TownedGia;
+			return false;
 		}
+		//public override bool CanTownNPCSpawn(int numTownNPCs)
+		//{
+		//	return AlcadSpawnSystem.TownedGia;
+		//}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -171,6 +183,10 @@ namespace Stellamod.NPCs.Town
 
 			return true;
 
+		}
+		public override bool CanChat()
+		{
+			return true;
 		}
 		public override string GetChat()
 		{

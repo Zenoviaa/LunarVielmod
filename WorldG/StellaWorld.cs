@@ -2980,10 +2980,11 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					string path = "Struct/Huntria/GovheilCastle";
+					string path = "Struct/Huntria/Govheil2";
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, path, tileBlend);
 					rectangle.Location = pointL;
+					NPCs.Town.AlcadSpawnSystem.IrrTile = pointL;
 					StructureLoader.ProtectStructure(pointL, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
