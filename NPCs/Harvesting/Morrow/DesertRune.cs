@@ -28,10 +28,10 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         {
             if (spawnInfo.Player.ZoneDesert)
             {
-                return SpawnCondition.Overworld.Chance * 0.075f;
+                return SpawnCondition.Overworld.Chance * SpawnRates.Rune_Spawn_Chance;
             }
 
-            return SpawnCondition.DesertCave.Chance * 0.075f;
+            return SpawnCondition.DesertCave.Chance * SpawnRates.Rune_Spawn_Chance;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
