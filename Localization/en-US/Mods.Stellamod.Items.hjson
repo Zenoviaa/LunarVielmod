@@ -6650,3 +6650,8 @@ Polaris: {
 		Powered by Niivi's tears
 		'''
 }
+
+GovheilPlatformBlock: {
+	Tooltip: ""
+	DisplayName: Govheil Platform Block
+}

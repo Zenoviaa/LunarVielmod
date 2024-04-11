@@ -5,6 +5,7 @@ using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Flasks;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Special;
+using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
@@ -105,6 +106,7 @@ namespace Stellamod.Items.Consumables
             player.QuickSpawnItem(entitySource, ModContent.ItemType<AnotherRock>(), Main.rand.Next(1, 1));
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<XixianFlask>(), Main.rand.Next(1, 1));
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<HealthyInsource>(), Main.rand.Next(1, 1));
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<SiresMail>(), Main.rand.Next(1, 1));
 		}
 
 		// Below is code for the visuals

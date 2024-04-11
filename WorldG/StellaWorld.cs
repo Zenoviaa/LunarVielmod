@@ -478,7 +478,7 @@ namespace Stellamod.WorldG
 				{
 					Point Loc = new Point(smx, smy + 350);
 					//StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-					string path = "Struct/Underground/Manor";
+					string path = "Struct/Underground/Manor";//
 
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                     StructureLoader.ProtectStructure(Loc, path);
@@ -2922,9 +2922,13 @@ namespace Stellamod.WorldG
 		private void WorldGenGovheilCastle(GenerationProgress progress, GameConfiguration configuration)
 		{
 			StructureMap structures = GenVars.structures;
-			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Huntria/GovheilCastle");
-			progress.Message = "Gothivia marrying Paraffin";
-
+			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Huntria/Govheil2");
+			progress.Message = "Irradia marrying Paraffin instead of Delgrim";
+			
+			int[] tileBlend = new int[]
+			{
+				TileID.RubyGemspark
+			};
 
 
 			bool placed = false;
@@ -2976,10 +2980,11 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
+					string path = "Struct/Huntria/GovheilCastle";
 
+					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, path, tileBlend);
 					rectangle.Location = pointL;
-					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, "Struct/Huntria/GovheilCastle");
-					structures.AddProtectedStructure(rectangle);
+					StructureLoader.ProtectStructure(pointL, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -2992,8 +2997,8 @@ namespace Stellamod.WorldG
 						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
 							Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
-							Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+							Tuple.Create(ModContent.ItemType<LostScrap>(), 0.4),
+							Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.1)
 
 						// Choose no item with a high weight of 7.
 						);
@@ -3007,8 +3012,7 @@ namespace Stellamod.WorldG
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<GovheilPowder>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(5, 20)));
-								 ;
+								itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(5, 20)));								 
 								itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
@@ -3078,7 +3082,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
 								break;
 
-							case 9:
+							case 8:
 								itemsToAdd.Add((ModContent.ItemType<Blackdot>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 								itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
