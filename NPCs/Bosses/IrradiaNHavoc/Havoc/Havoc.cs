@@ -51,9 +51,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             set => NPC.ai[1] = value;
         }
 
-        float AttackTimer;
         float OrbitTimer;
-        bool Slowdown;
+        Vector2 ArenaCenter;
 
         //Draw Code
         //Segment Positions;
@@ -107,6 +106,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         public override void AI()
         {
  
+            if(ArenaCenter == default(Vector2))
+            {
+                ArenaCenter = NPC.position;
+            }
+
             switch (State)
             {
                 case ActionState.Idle:
@@ -139,20 +143,19 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         private void AI_Idle()
         {
             NPC.TargetClosest();
-            Player target = Main.player[NPC.target];
 
             //Orbit Around
-            float orbitDistance = 800;
+            float orbitDistance = 500;
             float speed = 20;
-            OrbitTimer += 0.02f;
-            Vector2 targetCenter = MovementHelper.OrbitAround(target.Center, Vector2.UnitY, orbitDistance, OrbitTimer);
-            Vector2 targetVelocity = VectorHelper.VelocityDirectTo(NPC.Center, targetCenter, speed);
+            OrbitTimer += 0.01f;
+            Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
+            Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
             NPC.velocity = targetVelocity;
             NPC.rotation = targetVelocity.ToRotation();
-
             SegmentStretch = MathHelper.Lerp(SegmentStretch, 1.8f, 0.03f);
+
             Timer++;
-            if(Timer >= 400)
+            if(Timer >= 500)
             {
                 State = ActionState.Charge;
                 Timer = 0;
@@ -167,23 +170,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         {
             Player target = Main.player[NPC.target];
             Timer++;
-            if(Timer < 100)
+
+            float orbitDistance = MathHelper.Lerp(500, 300, Timer / 150);
+            if (Timer < 100)
             {
                 if (Timer == 1)
                 {
                     NPC.TargetClosest();
-                    //Choose to be on left or right of player
-                    Slowdown = false;
                     StartSegmentStretch = SegmentStretch;
-                    if (Main.rand.NextBool(2))
-                    {
-                        ChargeDirection = Vector2.UnitX;
-                    }
-                    else
-                    {
-                        ChargeDirection = -Vector2.UnitX;
-                    }
-                  
                 }
 
                 //Ease in
@@ -191,28 +185,26 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 float easedProgress = Easing.InOutCubic(progress);
                 SegmentStretch = MathHelper.Lerp(StartSegmentStretch, 1f, easedProgress);
 
+                ChargeDirection = NPC.Center.DirectionTo(target.Center);
 
-                Vector2 targetCenter = target.Center + -ChargeDirection * 800;
-
-                float maxSpeed = 40;
-                float speed = maxSpeed * easedProgress;
-                Vector2 targetVelocity = VectorHelper.VelocityDirectTo(NPC.Center, targetCenter, speed);
-                float distanceToEndPosition = Vector2.Distance(NPC.Center, targetCenter);
-                if (distanceToEndPosition < speed || Slowdown)
-                {
-                    Slowdown = true;
-                    NPC.velocity *= 0.94f;
-                }
-                else
-                {
-                    NPC.velocity = targetVelocity;
-                }
-          
+               
+                float speed = 20;
+                OrbitTimer += 0.02f;
+                Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
+                Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
+                NPC.velocity = targetVelocity;
+                NPC.velocity *= 0.8f;
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
             } 
             else if (Timer < 150)
             {
-                NPC.velocity *= 0.94f;
+                ChargeDirection = NPC.Center.DirectionTo(target.Center);
+                float speed = 20;
+                OrbitTimer += 0.02f;
+                Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
+                Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
+                NPC.velocity = targetVelocity;
+                NPC.velocity *= 0.3f;
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
             } 
             else if(Timer == 151)
@@ -236,7 +228,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
             Head.Position = NPC.position;
             Head.Rotation = NPC.rotation;
-            MoveSegmentsInLine(-ChargeDirection);
+            MoveSegmentsLikeWorm();
         }
 
         private void AI_Laser()
@@ -271,7 +263,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 ref HavocSegment frontSegment = ref Segments[i - 1];
                 Vector2 offset = direction * segment.Size.X * SegmentStretch;
                 Vector2 targetPosition = frontSegment.Position + offset;
-                segment.Position = Vector2.Lerp(segment.Position, targetPosition, 0.03f);
+                segment.Position = Vector2.Lerp(segment.Position, targetPosition, 0.5f);
             }
         }
 
