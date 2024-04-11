@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,52 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
     }
     internal class Havoc : ModNPC
     {
+
+        private enum ActionState
+        {
+            Idle,
+            Charge,
+            Laser,
+            Laser_Big,
+            Circle
+        }
+
+        //AI
+        ActionState State
+        {
+            get
+            {
+                return (ActionState)NPC.ai[0];
+            }
+            set
+            {
+                NPC.ai[0] = (float)value;
+            }
+        }
+
+        float Timer
+        {
+            get => NPC.ai[1];
+            set => NPC.ai[1] = value;
+        }
+
+        float AttackTimer;
+        float OrbitTimer;
+        bool Slowdown;
+
+        //Draw Code
         //Segment Positions;
         HavocSegment[] Segments;
-        float SegmentStretch;
+        float SegmentStretch = 1.8f;
+        float StartSegmentStretch;
 
+
+        //Attacks
+        //Charge
+        Vector2 ChargeDirection;
 
         //Textures
-        public const string BaseTexturePath = "Stellamod/NPCs/Bosses/GothiviaNRek/Havoc/";
+        public const string BaseTexturePath = "Stellamod/NPCs/Bosses/IrradiaNHavoc/Havoc/";
         private HavocSegment Head => Segments[0];
         private HavocSegment BodyFront => Segments[1];
         private HavocSegment BodyMiddle => Segments[2];
@@ -62,31 +102,156 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             Segments[2].TexturePath = $"{BaseTexturePath}HavocSegmentMiddle";
             Segments[3].TexturePath = $"{BaseTexturePath}HavocSegmentBack";
             Segments[4].TexturePath = $"{BaseTexturePath}HavocTail";
-
-
         }
 
         public override void AI()
         {
-            NPC.TargetClosest();
+ 
+            switch (State)
+            {
+                case ActionState.Idle:
+                    AI_Idle();
+                    break;
+                case ActionState.Charge:
+                    AI_Charge();
+                    break;
+                case ActionState.Laser:
+                    AI_Laser();
+                    break;
+                case ActionState.Laser_Big:
+                    AI_LaserBig();
+                    break;
+                case ActionState.Circle:
+                    AI_Circle();
+                    break;
+            }
 
             //This controls how far apart the segments are
             //Set to 1 if you want them to be touching each other, any number bigger than 1 spaces them out,
             //Smaller than 1 makes them overlap
-            SegmentStretch = 1.8f;
 
-
-            //Just follow the player for testing...
-            Player target = Main.player[NPC.target];
-            Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 2;
-            NPC.velocity = velocity;
-            NPC.rotation = velocity.ToRotation();
 
             //Set head position and rotation
             //If using the worm like movement, don't forget to set the head position and rotation before calling that MoveSegments function
+
+        }
+
+        private void AI_Idle()
+        {
+            NPC.TargetClosest();
+            Player target = Main.player[NPC.target];
+
+            //Orbit Around
+            float orbitDistance = 800;
+            float speed = 20;
+            OrbitTimer += 0.02f;
+            Vector2 targetCenter = MovementHelper.OrbitAround(target.Center, Vector2.UnitY, orbitDistance, OrbitTimer);
+            Vector2 targetVelocity = VectorHelper.VelocityDirectTo(NPC.Center, targetCenter, speed);
+            NPC.velocity = targetVelocity;
+            NPC.rotation = targetVelocity.ToRotation();
+
+            SegmentStretch = MathHelper.Lerp(SegmentStretch, 1.8f, 0.03f);
+            Timer++;
+            if(Timer >= 400)
+            {
+                State = ActionState.Charge;
+                Timer = 0;
+            }
+
             Head.Position = NPC.position;
             Head.Rotation = NPC.rotation;
             MoveSegmentsLikeWorm();
+        }
+
+        private void AI_Charge()
+        {
+            Player target = Main.player[NPC.target];
+            Timer++;
+            if(Timer < 100)
+            {
+                if (Timer == 1)
+                {
+                    NPC.TargetClosest();
+                    //Choose to be on left or right of player
+                    Slowdown = false;
+                    StartSegmentStretch = SegmentStretch;
+                    if (Main.rand.NextBool(2))
+                    {
+                        ChargeDirection = Vector2.UnitX;
+                    }
+                    else
+                    {
+                        ChargeDirection = -Vector2.UnitX;
+                    }
+                  
+                }
+
+                //Ease in
+                float progress = Timer / 100;
+                float easedProgress = Easing.InOutCubic(progress);
+                SegmentStretch = MathHelper.Lerp(StartSegmentStretch, 1f, easedProgress);
+
+
+                Vector2 targetCenter = target.Center + -ChargeDirection * 800;
+
+                float maxSpeed = 40;
+                float speed = maxSpeed * easedProgress;
+                Vector2 targetVelocity = VectorHelper.VelocityDirectTo(NPC.Center, targetCenter, speed);
+                float distanceToEndPosition = Vector2.Distance(NPC.Center, targetCenter);
+                if (distanceToEndPosition < speed || Slowdown)
+                {
+                    Slowdown = true;
+                    NPC.velocity *= 0.94f;
+                }
+                else
+                {
+                    NPC.velocity = targetVelocity;
+                }
+          
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
+            } 
+            else if (Timer < 150)
+            {
+                NPC.velocity *= 0.94f;
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
+            } 
+            else if(Timer == 151)
+            {
+                NPC.velocity = ChargeDirection * 40;
+            } 
+            else if (Timer < 230)
+            {
+                float timer = Timer - 151;
+                float maxTimer = 230 - 151;
+
+                float progress = timer / maxTimer;
+                float easedProgress = Easing.InOutCubic(progress);
+                SegmentStretch = MathHelper.Lerp(1f, 3f, easedProgress);
+            }
+            else if (Timer == 230)
+            {
+                State = ActionState.Idle;
+                Timer = 0;
+            }
+
+            Head.Position = NPC.position;
+            Head.Rotation = NPC.rotation;
+            MoveSegmentsInLine(-ChargeDirection);
+        }
+
+        private void AI_Laser()
+        {
+
+        }
+
+        private void AI_LaserBig()
+        {
+
+        }
+
+        private void AI_Circle()
+        {
+
         }
 
         public override void PostAI()
@@ -95,6 +260,18 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             for (int i = 0; i < Segments.Length; i++)
             {
                 Segments[i].Position += Segments[i].Velocity;
+            }
+        }
+
+        private void MoveSegmentsInLine(Vector2 direction)
+        {
+            for(int i = 1; i < Segments.Length; i++)
+            {
+                ref HavocSegment segment = ref Segments[i];
+                ref HavocSegment frontSegment = ref Segments[i - 1];
+                Vector2 offset = direction * segment.Size.X * SegmentStretch;
+                Vector2 targetPosition = frontSegment.Position + offset;
+                segment.Position = Vector2.Lerp(segment.Position, targetPosition, 0.03f);
             }
         }
 
