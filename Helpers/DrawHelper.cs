@@ -110,8 +110,8 @@ namespace Stellamod.Helpers
                 float radians = (k + timer) * MathHelper.TwoPi;
                 for (int i = 1; i < oldPos.Length; i++)
                 {
-                    //Draw from center bottom of texture
-                    Vector2 frameSize = new Vector2(12, 30);
+					//Draw from center bottom of texture
+					Vector2 frameSize = animationFrame.Size();
                     Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
 
                     Vector2 position = oldPos[i] + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
@@ -133,8 +133,8 @@ namespace Stellamod.Helpers
 
             for (int i = 1; i < oldPos.Length; i++)
             {
-                //Draw from center bottom of texture
-                Vector2 frameSize = new Vector2(12, 30);
+				//Draw from center bottom of texture
+				Vector2 frameSize = animationFrame.Size();
                 Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
 
                 Vector2 position = oldPos[i];
