@@ -8,6 +8,7 @@ using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.NPCs.Event.Gintzearmy;
 using Stellamod.WorldG;
 using System;
@@ -82,6 +83,7 @@ namespace Stellamod.NPCs.Illuria
 				ModContent.ItemType<IllurianCrestmask>()
 			));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IllurineScale>(), minimumDropped: 3, maximumDropped: 5));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrameStaff>(), chanceDenominator: 2, minimumDropped: 1, maximumDropped: 1));
         }
 
 		public override void AI()

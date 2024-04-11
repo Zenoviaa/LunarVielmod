@@ -6660,3 +6660,12 @@ ManifestedBravery: {
 	Tooltip: Verlia's soul manifested at it's core, in the end she stood up against Fenix to save her village and her sister.
 	DisplayName: Manifested Bravery
 }
+
+FrameStaff: {
+	DisplayName: Frame Staff
+		Tooltip:
+		'''
+		Right click to summon a node at your cursor position
+		Then hold it to connect a laser between each of the nodes!
+		'''
+}
