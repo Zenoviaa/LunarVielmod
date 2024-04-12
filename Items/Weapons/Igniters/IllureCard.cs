@@ -15,7 +15,7 @@ using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Igniters
 {
-	internal class IshtarCard : ModItem
+	internal class IllureCard : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -26,7 +26,7 @@ namespace Stellamod.Items.Weapons.Igniters
 
 		public override void SetDefaults()
 		{
-			Item.damage = 20;
+			Item.damage = 18;
 			Item.mana = 3;
 			Item.width = 40;
 			Item.height = 40;
@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Igniters
 			}
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
-		
+
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
