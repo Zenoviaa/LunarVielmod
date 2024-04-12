@@ -130,7 +130,7 @@ namespace Stellamod.NPCs.Town
 				
 				invisibilityTimer = 0;
 			}
-			NPC.rotation -= 0.2f;
+		
 			UpdateFrame(0.8f, 1, 90);
 			bee2--;
 
