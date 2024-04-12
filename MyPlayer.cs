@@ -1040,9 +1040,13 @@ namespace Stellamod
 			{
 				player.AddBuff(ModContent.BuffType<DarkHold>(), 10);
 			}
-
 			
-            if (CorsageTime >= 1)
+			if (ZoneIshtar && !DownedBossSystem.downedZuiBoss)
+			{
+				player.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 10);
+			}
+
+			if (CorsageTime >= 1)
             {
                 var entitySource = Player.GetSource_FromThis();
                 if (Main.rand.NextBool(5))
@@ -2535,7 +2539,7 @@ namespace Stellamod
 
 		private void AddForegroundOrBackground()
 		{
-			if (ZoneIlluria)
+			if (ZoneIlluria || ZoneIshtar)
 			{
 				int leafFGChance = Starstrike.SpawnChance(Player);
 				if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))

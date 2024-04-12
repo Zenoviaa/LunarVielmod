@@ -6677,14 +6677,13 @@ LiliumArrow: {
 
 IshtarKey: {
 	DisplayName: Ishtar Key
-	Tooltip: '''
-		Willed with insanity, use this key in the Ishtar to open things.
-		'''
+	Tooltip: Willed with insanity, use this key in the Ishtar to open things.
 }
 
 IshtarCandle: {
 	DisplayName: Ishtar Candle
-	Tooltip: '''
+	Tooltip:
+		'''
 		Ereshkigal grants you a gift..
 		Can use as an accessory to brighten the Ishtar.
 		A hexed flame that holds Sigfried's insanity.
@@ -6723,5 +6722,10 @@ IshtarPainting: {
 
 Robi: {
 	DisplayName: Robi
+	Tooltip: ""
+}
+
+IshtarBlock: {
+	DisplayName: Ishtar Block
 	Tooltip: ""
 }
