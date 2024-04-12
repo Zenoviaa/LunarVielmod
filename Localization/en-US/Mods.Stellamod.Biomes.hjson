@@ -107,3 +107,8 @@ IlluriaBiome: {
 	TownNPCDialogueName: the Illuria Biome
 	DisplayName: Illuria Biome
 }
+
+IshtarBiome: {
+	TownNPCDialogueName: the Ishtar Biome
+	DisplayName: Ishtar Biome
+}

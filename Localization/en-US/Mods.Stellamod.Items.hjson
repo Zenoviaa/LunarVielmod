@@ -6663,9 +6663,65 @@ ManifestedBravery: {
 
 FrameStaff: {
 	DisplayName: Frame Staff
-		Tooltip:
+	Tooltip:
 		'''
 		Right click to summon a node at your cursor position
 		Then hold it to connect a laser between each of the nodes!
 		'''
+}
+
+LiliumArrow: {
+	Tooltip: When hitting with these arrows they split into golden shards and hone to the enemy with explosions
+	DisplayName: Lilium Arrow
+}
+
+IshtarKey: {
+	DisplayName: Ishtar Key
+	Tooltip: '''
+		Willed with insanity, use this key in the Ishtar to open things.
+		'''
+}
+
+IshtarCandle: {
+	DisplayName: Ishtar Candle
+	Tooltip: '''
+		Ereshkigal grants you a gift..
+		Can use as an accessory to brighten the Ishtar.
+		A hexed flame that holds Sigfried's insanity.
+		'''
+}
+
+BushyEyesI: {
+	DisplayName: Bushy Eyes I
+	Tooltip: ""
+}
+
+BushySticksI: {
+	DisplayName: Bushy Sticks I
+	Tooltip: ""
+}
+
+BushyWebs: {
+	DisplayName: Bushy Webs
+	Tooltip: ""
+}
+
+IshtarDoor: {
+	DisplayName: Ishtar Door
+	Tooltip: ""
+}
+
+IshtarLockedChest: {
+	DisplayName: Ishtar Locked Chest
+	Tooltip: ""
+}
+
+IshtarPainting: {
+	DisplayName: Ishtar Painting
+	Tooltip: ""
+}
+
+Robi: {
+	DisplayName: Robi
+	Tooltip: ""
 }

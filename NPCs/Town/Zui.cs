@@ -28,6 +28,7 @@ using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.Items.Armors.Vanity.Nyxia;
 using Terraria.DataStructures;
+using Stellamod.Items.Ammo;
 
 namespace Stellamod.NPCs.Town
 {
@@ -298,6 +299,7 @@ namespace Stellamod.NPCs.Town
 			if (Main.rand.NextBool(1))
 			{
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 18);
+				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<LiliumArrow>(), 250);
 			}
 
 			if (ZuiQuestSystem.QuestsCompleted == 15)
