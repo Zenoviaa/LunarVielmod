@@ -170,7 +170,7 @@ namespace Stellamod.Projectiles.Magic
             {
 
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<SparkleTrailParticle>(), Color.PaleVioletRed, Main.rand.NextFloat(0.2f, 0.8f));
+                ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle4>(), Color.PaleVioletRed, Main.rand.NextFloat(0.2f, 0.8f));
 
 
             }
