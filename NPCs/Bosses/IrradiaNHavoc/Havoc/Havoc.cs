@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
     }
     internal class Havoc : ModNPC
     {
-        private const float Default_Segment_Stretch = 3;
+        private const float Default_Segment_Stretch = 2;
         private enum ActionState
         {
             Idle,
