@@ -629,7 +629,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
 								break;
 							case 2:
-								itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<RazzleDazzle>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								itemsToAdd.Add((ItemID.FlipperPotion, Main.rand.Next(1, 3)));
