@@ -6764,12 +6764,17 @@ Aquarius: {
 
 RazzleDazzle: {
 	DisplayName: Razzle Dazzle
-	Tooltip: ""
+	Tooltip:
+		'''
+		Every third shot fires a webbed ball that explodes into spiders!
+		Razzle Dazzle Dazzle Dazzle Razzle Dazzle
+		'''
 }
 
 IllureCard: {
 	DisplayName: Illure Card
-	Tooltip: '''
+	Tooltip:
+		'''
 		Use with a combination of dusts to make spells :)
 		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
 		'''

@@ -22,7 +22,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
     }
     internal class Havoc : ModNPC
     {
-
+        private const float Default_Segment_Stretch = 3;
         private enum ActionState
         {
             Idle,
@@ -57,7 +57,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         //Draw Code
         //Segment Positions;
         HavocSegment[] Segments;
-        float SegmentStretch = 1.8f;
+
+        float SegmentStretch = Default_Segment_Stretch;
         float StartSegmentStretch;
 
 
@@ -152,7 +153,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
             NPC.velocity = targetVelocity;
             NPC.rotation = targetVelocity.ToRotation();
-            SegmentStretch = MathHelper.Lerp(SegmentStretch, 1.8f, 0.03f);
+            SegmentStretch = MathHelper.Lerp(SegmentStretch, Default_Segment_Stretch, 0.03f);
 
             Timer++;
             if(Timer >= 500)
@@ -218,7 +219,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
                 float progress = timer / maxTimer;
                 float easedProgress = Easing.InOutCubic(progress);
-                SegmentStretch = MathHelper.Lerp(1f, 3f, easedProgress);
+                SegmentStretch = MathHelper.Lerp(1f, Default_Segment_Stretch, easedProgress);
             }
             else if (Timer == 230)
             {
