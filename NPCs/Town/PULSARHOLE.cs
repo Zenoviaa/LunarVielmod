@@ -179,7 +179,12 @@ namespace Stellamod.NPCs.Town
 		}
 
 
-		public void Wait()
+        public override bool CheckActive()
+        {
+			return false;
+        }
+
+        public void Wait()
 		{
 			timer++;
 			if (timer > 50)
