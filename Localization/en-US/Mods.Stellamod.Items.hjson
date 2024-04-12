@@ -6729,3 +6729,22 @@ IshtarBlock: {
 	DisplayName: Ishtar Block
 	Tooltip: ""
 }
+
+
+Orion: {
+	DisplayName: Orion
+	Tooltip:
+		'''
+		Leaves behind a trail of exploding stars!
+		Like a fireworks show
+		'''
+}
+
+Aquarius: {
+	DisplayName: Aquarius
+	Tooltip:
+		'''
+		Calls forth an aura of powerful aquatic slashes
+		Periodically unleashes a large slash that summons homing bubbles!
+		'''
+}

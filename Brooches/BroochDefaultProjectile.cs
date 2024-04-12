@@ -43,13 +43,13 @@ namespace Stellamod.Brooches
 		// Here you can decide if your minion breaks things like grass or pots
 		public override bool? CanCutTiles()
 		{
-			return true;
+			return false;
 		}
 
 		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
 		public override bool MinionContactDamage()
 		{
-			return true;
+			return false;
 		}
 
 		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
