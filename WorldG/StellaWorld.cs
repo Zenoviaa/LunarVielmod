@@ -422,12 +422,17 @@ namespace Stellamod.WorldG
 
 		private void WorldGenManor(GenerationProgress progress, GameConfiguration configuration)
 		{
-			progress.Message = "Making astolfo your wife";
+			progress.Message = "Ereshkigal secretly hiding Sigfried";
 
 
 			int[] tileBlend = new int[]
 			{
 				TileID.RubyGemspark
+			};
+
+			int[] tileBlend2 = new int[]
+			{
+				TileID.Stone
 			};
 
 			bool placed = false;
@@ -477,10 +482,17 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx, smy + 350);
+					Point Loc2 = new Point(smx, smy + 100);
 					//StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
 					string path = "Struct/Underground/Manor";//
 
-                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+
+				
+
+
+
+
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                     StructureLoader.ProtectStructure(Loc, path);
                     foreach (int chestIndex in ChestIndexs)
 					{
@@ -566,39 +578,101 @@ namespace Stellamod.WorldG
 						}
 					}
 
-					Point Loc2 = new Point(smx + 10, smy + 380);
-					//
-
-					Point Loc22 = new Point(smx + 10, smy - 33);
-					//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
-				
-					Point Loc4 = new Point(smx + 233, smy + 45);
-					//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
-					//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
-
-					Point Loc5 = new Point(smx + 10, smy + 45);
-					//	WorldUtils.Gen(Loc5, new Shapes.Rectangle(220, 50), new Actions.SetTile(TileID.Dirt));
-
-
-
-					Point Loc3 = new Point(smx + 455, smy + 30);
-					//	WorldUtils.Gen(Loc3, new Shapes.Mound(40, 50), new Actions.SetTile(TileID.Dirt));
-					Point Loc6 = new Point(smx + 455, smy + 40);
-					//	WorldUtils.Gen(Loc6, new Shapes.Circle(40), new Actions.SetTile(TileID.Dirt));
-					//	Point resultPoint;
-					//	bool searchSuccessful = WorldUtils.Find(Loc, Searches.Chain(new Searches.Right(200), new GenCondition[]
-					//	{
-					//new Conditions.IsSolid().AreaAnd(10, 10),
-					//new Conditions.IsTile(TileID.Sand).AreaAnd(10, 10),
-					//	}), out resultPoint);
-					//		if (searchSuccessful)
-					//		{
-					//			WorldGen.TileRunner(resultPoint.X, resultPoint.Y, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(150, 150), TileID.Dirt);
-					//		}
+					
 					GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
 					//WorldGen.TileRunner(Loc2.X - 10, Loc2.Y - 60, WorldGen.genRand.Next(100, 100), WorldGen.genRand.Next(120, 120), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc2.Y, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
 					//WorldGen.TileRunner(Loc3.X - 20, Loc3.Y + 20, WorldGen.genRand.Next(40, 43), WorldGen.genRand.Next(100, 100), TileID.Grass);
+
+
+
+					string path2 = "Struct/Underground/Ishtar";//
+					int[] ChestIndexs2 = StructureLoader.ReadStruct(Loc2, path2, tileBlend2);
+					NPCs.Town.AlcadSpawnSystem.IshPinTile = Loc2;
+					NPCs.Town.AlcadSpawnSystem.EreshTile = Loc2;
+					NPCs.Town.AlcadSpawnSystem.PULSETile = Loc2;
+
+					StructureLoader.ProtectStructure(Loc2, path2);
+					foreach (int chestIndex in ChestIndexs2)
+					{
+						var chest = Main.chest[chestIndex];
+						// etc
+
+						// itemsToAdd will hold type and stack data for each item we want to add to the chest
+						var itemsToAdd = new List<(int type, int stack)>();
+
+						// Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+						int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+							Tuple.Create(ModContent.ItemType<IshtarCandle>(), 0.5)
+
+
+						// Choose no item with a high weight of 7.
+						);
+						if (specialItem != ItemID.None)
+						{
+							itemsToAdd.Add((specialItem, 1));
+						}
+						// Using a switch statement and a random choice to add sets of items.
+						switch (Main.rand.Next(5))
+						{
+							case 0:
+								itemsToAdd.Add((ModContent.ItemType<IshtarCard>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+								itemsToAdd.Add((ItemID.RagePotion, Main.rand.Next(1, 3)));
+								break;
+							case 1:
+								itemsToAdd.Add((ModContent.ItemType<ImperfectionStaff>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+								itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
+								break;
+							case 2:
+								itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+								itemsToAdd.Add((ItemID.FlipperPotion, Main.rand.Next(1, 3)));
+								break;
+							case 3:
+								itemsToAdd.Add((ModContent.ItemType<Vulcanius>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+								itemsToAdd.Add((ItemID.NightOwlPotion, Main.rand.Next(1, 3)));
+
+								break;
+							case 4:
+								itemsToAdd.Add((ItemID.JackOLanternMask, Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+								itemsToAdd.Add((ItemID.NightOwlPotion, Main.rand.Next(1, 3)));
+								break;
+
+
+
+
+						}
+
+						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+						int chestItemIndex = 0;
+						foreach (var itemToAdd in itemsToAdd)
+						{
+							Item item = new Item();
+							item.SetDefaults(itemToAdd.type);
+							item.stack = itemToAdd.stack;
+							chest.item[chestItemIndex] = item;
+							chestItemIndex++;
+							if (chestItemIndex >= 40)
+								break; // Make sure not to exceed the capacity of the chest
+						}
+					}
+
+
+
+
+
+
+
 					placed = true;
 				}
 
@@ -668,7 +742,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 600);
+					Point Loc = new Point(smx - 200, smy + 600);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/StoneTemple");
 					foreach (int chestIndex in ChestIndexs)

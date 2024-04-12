@@ -126,10 +126,10 @@ namespace Stellamod.NPCs.Town
 
 		public override ITownNPCProfile TownNPCProfile()
 		{
-			return new UnknownSignalPersonProfile();
+			return new IshtarPersonProfile();
 		}
 
-		public class UnknownSignalPersonProfile : ITownNPCProfile
+		public class IshtarPersonProfile : ITownNPCProfile
 		{
 			public int RollVariation() => 0;
 			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();

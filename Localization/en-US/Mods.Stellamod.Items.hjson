@@ -6729,3 +6729,21 @@ IshtarBlock: {
 	DisplayName: Ishtar Block
 	Tooltip: ""
 }
+
+Orion: {
+	DisplayName: Orion
+	Tooltip: ""
+}
+
+ImperfectionStaff: {
+	Tooltip: Imperfect for all the right reasons!
+	DisplayName: Imperfection Staff
+}
+
+IshtarCard: {
+	Tooltip: '''
+		Use with a combination of dusts to make spells :)
+		Hit an enemy with a powder, then switch to this weapon and hold the attack button for explosions!
+		'''
+	DisplayName: Ishtar Card
+}

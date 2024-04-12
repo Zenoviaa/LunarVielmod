@@ -34,7 +34,7 @@ namespace Stellamod.Buffs
 			player.blackout = true;
 			player.yoraiz0rDarkness = true;
 			
-				player.lifeRegen -= 50;
+				player.lifeRegen -= 150;
 				int dust = Dust.NewDust(player.position, player.width, player.height, DustID.BoneTorch);
 				Main.dust[dust].scale = 3.5f;
 				Main.dust[dust].noGravity = true;

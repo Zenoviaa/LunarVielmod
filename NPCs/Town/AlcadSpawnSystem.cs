@@ -11,6 +11,7 @@ using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc;
+using Stellamod.Helpers;
 
 namespace Stellamod.NPCs.Town
 {
@@ -28,6 +29,9 @@ namespace Stellamod.NPCs.Town
         public static Point FableTile;
         public static Point SireTile;
         public static Point IrrTile;
+        public static Point IshPinTile;
+        public static Point EreshTile;
+        public static Point PULSETile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -43,6 +47,10 @@ namespace Stellamod.NPCs.Town
         public static Point VelSpawnTileOffset => new Point(18, -23);
 
         public static Point IrrSpawnTileOffset => new Point(120, -22);
+
+        public static Point IshPinSpawnTileOffset => new Point(199, -286);
+        public static Point EreshSpawnTileOffset => new Point(90, -31);
+        public static Point PULSESpawnTileOffset => new Point(64, -23);
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -61,6 +69,11 @@ namespace Stellamod.NPCs.Town
 
         public static Vector2 IrrSpawnWorld => IrrTile.ToWorldCoordinates() + IrrSpawnTileOffset.ToWorldCoordinates();
 
+        public static Vector2 IshPinSpawnWorld => IshPinTile.ToWorldCoordinates() + IshPinSpawnTileOffset.ToWorldCoordinates();
+
+        public static Vector2 EreshSpawnWorld => EreshTile.ToWorldCoordinates() + EreshSpawnTileOffset.ToWorldCoordinates();
+        public static Vector2 PULSESpawnWorld => PULSETile.ToWorldCoordinates() + PULSESpawnTileOffset.ToWorldCoordinates();
+
         public static bool TownedGia;
         public override void SaveWorldData(TagCompound tag)
         {
@@ -77,6 +90,9 @@ namespace Stellamod.NPCs.Town
             tag["FableTile"] = FableTile;
             tag["SireTile"] = SireTile;
             tag["IrrTile"] = IrrTile;
+            tag["PULSETile"] = PULSETile;
+            tag["EreshTile"] = EreshTile;
+            tag["IshPinTile"] = IshPinTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -94,6 +110,9 @@ namespace Stellamod.NPCs.Town
             FableTile = tag.Get<Point>("FableTile");
             SireTile = tag.Get<Point>("SireTile");
             IrrTile = tag.Get<Point>("IrrTile");
+            IshPinTile = tag.Get<Point>("IshPinTile");
+            EreshTile = tag.Get<Point>("EreshTile");
+            PULSETile = tag.Get<Point>("PULSETile");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -110,6 +129,9 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(VelTile.ToVector2());
             writer.WriteVector2(SireTile.ToVector2());
             writer.WriteVector2(IrrTile.ToVector2());
+            writer.WriteVector2(PULSETile.ToVector2());
+            writer.WriteVector2(IshPinTile.ToVector2());
+            writer.WriteVector2(EreshTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -126,6 +148,9 @@ namespace Stellamod.NPCs.Town
             VelTile = reader.ReadVector2().ToPoint();
             SireTile = reader.ReadVector2().ToPoint();
             IrrTile = reader.ReadVector2().ToPoint();
+            IshPinTile = reader.ReadVector2().ToPoint();
+            EreshTile = reader.ReadVector2().ToPoint();
+            PULSETile = reader.ReadVector2().ToPoint();
         }
 
 
@@ -259,6 +284,22 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<IrradiaIdle>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<PULSARHOLE>()) && DownedBossSystem.downedZuiBoss)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)PULSESpawnWorld.X, (int)PULSESpawnWorld.Y,
+                        ModContent.NPCType<PULSARHOLE>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Ishtar>()) && DownedBossSystem.downedZuiBoss)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)IshPinSpawnWorld.X, (int)IshPinSpawnWorld.Y,
+                        ModContent.NPCType<Ishtar>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
             }
