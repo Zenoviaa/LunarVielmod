@@ -6663,9 +6663,18 @@ ManifestedBravery: {
 
 FrameStaff: {
 	DisplayName: Frame Staff
-		Tooltip:
+	Tooltip:
 		'''
 		Right click to summon a node at your cursor position
 		Then hold it to connect a laser between each of the nodes!
+		'''
+}
+
+Orion: {
+	DisplayName: Orion
+	Tooltip:
+		'''
+		Throws a comet that leaves behind exploding stars
+		I'm seeing stars
 		'''
 }
