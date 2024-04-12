@@ -960,3 +960,6 @@ TestNodeConnectorProj.DisplayName: Test Node Connector Proj
 TestNodeProj.DisplayName: Test Node Proj
 FrameStaffNodeProj.DisplayName: Frame Staff Node Proj
 FrameStaffConnectorProj.DisplayName: Frame Staff Connector Proj
+OrionStarProj.DisplayName: Orion Star Proj
+OrionProj.DisplayName: Orion Proj
+OrionStarBoom.DisplayName: Orion Star Boom
