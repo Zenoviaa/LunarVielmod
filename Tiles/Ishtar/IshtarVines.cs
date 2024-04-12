@@ -64,7 +64,7 @@ namespace Stellamod.Tiles.Ishtar
                 type = tileAbove.TileType;
             }
 
-            if (type == TileID.Stone || type == Type)
+            if (type == ModContent.TileType<IshtarMoss>() || type == Type)
             {
                 return true;
             }
