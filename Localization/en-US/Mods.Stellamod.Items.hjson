@@ -6730,11 +6730,6 @@ IshtarBlock: {
 	Tooltip: ""
 }
 
-Orion: {
-	DisplayName: Orion
-	Tooltip: ""
-}
-
 ImperfectionStaff: {
 	Tooltip: Imperfect for all the right reasons!
 	DisplayName: Imperfection Staff
@@ -6749,9 +6744,22 @@ IshtarCard: {
 	DisplayName: Ishtar Card
 }
 
+Orion: {
+	DisplayName: Orion
+	Tooltip:
+		'''
+		Leaves behind a trail of exploding stars!
+		Like a fireworks show
+		'''
+}
+
 Aquarius: {
 	DisplayName: Aquarius
-	Tooltip: ""
+	Tooltip:
+		'''
+		Calls forth an aura of powerful aquatic slashes
+		Periodically unleashes a large slash that summons homing bubbles!
+		'''
 }
 
 RazzleDazzle: {
