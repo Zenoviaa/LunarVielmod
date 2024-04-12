@@ -223,17 +223,17 @@ namespace Stellamod.Projectiles.Steins
 				switch (Main.rand.Next(11))
 				{
 					case 0:
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 3), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 						break;
 					case 1:
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 3), 0f, Projectile.owner, 0f, 0f);
 						break;
 					case 2:
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 5), 0f, Projectile.owner, 0f, 0f);
 						break;
 					case 3:
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
 						break;
 					case 4:
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
@@ -245,14 +245,14 @@ namespace Stellamod.Projectiles.Steins
 
 					case 6:
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 						break;
 
 					case 7:
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<WOW>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<GREAT>(), (int)(Projectile.damage * 5), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<AMAZING>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SEXY>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
@@ -263,7 +263,7 @@ namespace Stellamod.Projectiles.Steins
 						break;
 
 					case 9:
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 1), 0f, Projectile.owner, 0f, 0f);
+						Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<SOHOT>(), (int)(Projectile.damage * 4), 0f, Projectile.owner, 0f, 0f);
 						break;
 
 					case 10:
