@@ -6764,7 +6764,11 @@ Aquarius: {
 
 RazzleDazzle: {
 	DisplayName: Razzle Dazzle
-	Tooltip: ""
+	Tooltip:
+		'''
+		Every third shot fires a webbed ball that explodes into spiders!
+		Razzle Dazzle Dazzle Dazzle Razzle Dazzle
+		'''
 }
 
 IllureCard: {
