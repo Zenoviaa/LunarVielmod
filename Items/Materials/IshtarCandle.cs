@@ -16,8 +16,18 @@ namespace Stellamod.Items.Materials
             Item.rare = ModContent.RarityType<Helpers.GoldenSpecialRarity>();
             Item.maxStack = Item.CommonMaxStack;
             Item.DefaultToPlaceableTile(ModContent.TileType<IshtarCandles>());
-            Item.value = 150;
+            Item.accessory = true;
+            Item.value = Item.sellPrice(silver: 25);
+            Item.defense = 6;
+           
         }
+
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+
+            Lighting.AddLight(player.Center, Color.Purple.ToVector3() * 10.75f * Main.essScale);
+        }
+    
 
         public override void PostUpdate()
         {
