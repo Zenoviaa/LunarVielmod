@@ -742,7 +742,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(smx, smy + 550);
+					Point Loc = new Point(smx, smy + 450);
 
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/StoneTemple");
 					foreach (int chestIndex in ChestIndexs)

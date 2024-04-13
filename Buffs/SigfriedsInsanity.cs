@@ -17,7 +17,7 @@ namespace Stellamod.Buffs
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.lifeRegen -= 50;
+			npc.lifeRegen -= 250;
 			if (Main.rand.NextBool(2))
 			{
 				int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.BoneTorch);
@@ -34,7 +34,7 @@ namespace Stellamod.Buffs
 			player.blackout = true;
 			player.yoraiz0rDarkness = true;
 			
-				player.lifeRegen -= 150;
+				player.lifeRegen -= 250;
 				int dust = Dust.NewDust(player.position, player.width, player.height, DustID.BoneTorch);
 				Main.dust[dust].scale = 3.5f;
 				Main.dust[dust].noGravity = true;
