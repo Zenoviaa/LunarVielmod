@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Bow;
-using Stellamod.Projectiles.Gun;
-using Stellamod.Projectiles.Paint;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.GunHolster;
+using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -25,7 +24,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         None,
         Burn_Blast,
         Poison_Pistol,
-        Cannon,
+        Minty_Blast,
         Rocket_Launcher,
         Ravest_Blast
     }
@@ -34,15 +33,70 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     {
         public LeftGunHolsterState LeftHand;
         public RightGunHolsterState RightHand;
+
+        private void HolsterGun(Player player, int projectileType, int baseDamage, int knockBack)
+        {
+            //   player.damage
+            int newDamage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo((float)baseDamage);
+            if (player.HeldItem.type == ModContent.ItemType<GunHolster>()
+                && player.ownedProjectileCounts[projectileType] == 0)
+            {
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+                    projectileType, newDamage, knockBack, player.whoAmI);
+            }
+        }
+
+        public override void PostUpdateEquips()
+        {
+            base.PostUpdateEquips();
+            int baseDamage;
+            int knockback;
+
+            switch (RightHand)
+            {
+                //Do nothing, maybe shoot puff of smoke lmao
+                default:
+                case RightGunHolsterState.None:
+                    break;
+                case RightGunHolsterState.Burn_Blast:
+                    baseDamage = BurnBlast.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterBurnBlastProj>(), baseDamage, knockback);
+                    break;
+                case RightGunHolsterState.Poison_Pistol:
+
+                    break;
+                case RightGunHolsterState.Minty_Blast:
+                    break;
+                case RightGunHolsterState.Rocket_Launcher:
+                    break;
+                case RightGunHolsterState.Ravest_Blast:
+                    break;
+            }
+
+            switch (LeftHand)
+            {
+                default:
+                case LeftGunHolsterState.None:
+                    break;
+                case LeftGunHolsterState.Pulsing:
+
+                    break;
+                case LeftGunHolsterState.Eagle:
+                    baseDamage = Eagle.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterEagleProj>(), baseDamage, knockback);
+                    break;
+                case LeftGunHolsterState.Ms_Freeze:
+                    break;
+                case LeftGunHolsterState.Ravest_Blast:
+                    break;
+            }
+        }
     }
 
     internal class GunHolster : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Broken Wrath");
-        }
-
         public override void SetDefaults()
         {
             Item.damage = 23;
@@ -53,13 +107,14 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.useAnimation = 32;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
-            Item.value = Item.sellPrice(0, 0, 20, 0);
+            Item.value = Item.buyPrice(gold: 5);
             Item.rare = ItemRarityID.Blue;
-            Item.UseSound = SoundID.Item5;
             Item.autoReuse = true;
-            Item.shoot = ProjectileID.PurificationPowder;
+
             Item.shootSpeed = 4f;
             Item.useAmmo = AmmoID.Bullet;
+            Item.UseSound = null;
+            Item.noUseGraphic = true;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -83,9 +138,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     leftHand.OverrideColor = Color.DarkOrange;
                     break;
                 case LeftGunHolsterState.Ms_Freeze:
+                    leftHand.Text = "Left Hand: [Ms Freeze]";
                     leftHand.OverrideColor = Color.LightCyan;
                     break;
                 case LeftGunHolsterState.Ravest_Blast:
+                    leftHand.Text = "Left Hand: [Ravest Blast]";
                     leftHand.OverrideColor = Color.LightPink;
                     break;
             }
@@ -104,89 +161,108 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     rightHand.Text = "Right Hand: [Poison Pistol]";
                     rightHand.OverrideColor = Color.Green;
                     break;
-                case RightGunHolsterState.Cannon:
-                    rightHand.OverrideColor = Color.RosyBrown;
+                case RightGunHolsterState.Minty_Blast:
+                    rightHand.Text = "Right Hand: [Minty Blast]";
+                    rightHand.OverrideColor = Color.LightCyan;
                     break;
                 case RightGunHolsterState.Rocket_Launcher:
+                    rightHand.Text = "Right Hand: [Rocket Launcher]";
                     rightHand.OverrideColor = Color.LightGray;
                     break;
+                case RightGunHolsterState.Ravest_Blast:
+                    rightHand.Text = "Right Hand: [Ravest Blast]";
+                    rightHand.OverrideColor = Color.LightPink;
+                    break;
             }
+        
 
             tooltips.Add(leftHand);
             tooltips.Add(rightHand);
+
+            var line = new TooltipLine(Mod, "", "");
+            line = new TooltipLine(Mod, "WeaponType", "Gun Holster Weapon Type")
+            {
+                OverrideColor = ColorFunctions.GunHolsterWeaponType
+            };
+            tooltips.Add(line);
         }
+
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
+
+            Texture2D leftHandTexture = null;
+            Texture2D rightHandTexture = null;
+            Vector2 leftHandTextureSize = Vector2.Zero;
+            Vector2 rightHandTextureSize = Vector2.Zero;
+            const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
+            switch (gunPlayer.LeftHand)
+            {
+                case LeftGunHolsterState.Pulsing:
+                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}Pulsing").Value;
+                    leftHandTextureSize = new Vector2(46, 30);
+                    break;
+                case LeftGunHolsterState.Eagle:
+                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}Eagle").Value;
+                    leftHandTextureSize = new Vector2(56, 30);
+                    break;
+                case LeftGunHolsterState.Ms_Freeze:
+                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}MsFreeze").Value;
+                    leftHandTextureSize = new Vector2(62, 30);
+                    break;
+                case LeftGunHolsterState.Ravest_Blast:
+                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RavestBlast").Value;
+                    leftHandTextureSize = new Vector2(72, 38);
+                    break;
+            }
+
+            switch (gunPlayer.RightHand)
+            {
+                case RightGunHolsterState.Burn_Blast:
+                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}BurnBlast").Value;
+                    rightHandTextureSize = new Vector2(62, 38);
+                    break;
+                case RightGunHolsterState.Poison_Pistol:
+                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}PoisonPistol").Value;
+                    rightHandTextureSize = new Vector2(54, 38);
+                    break;
+                case RightGunHolsterState.Minty_Blast:
+                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}MintyBlast").Value;
+                    break;
+                case RightGunHolsterState.Rocket_Launcher:
+                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RocketLauncher").Value;
+                    rightHandTextureSize = new Vector2(48, 34);
+                    break;
+                case RightGunHolsterState.Ravest_Blast:
+                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RavestBlast").Value;
+                    rightHandTextureSize = new Vector2(72, 38);
+                    break;
+            }
+
+            Vector2 leftHandDrawOrigin = leftHandTextureSize / 2;
+            Vector2 rightHandDrawOrigin = rightHandTextureSize / 2;
+            if(gunPlayer.LeftHand != LeftGunHolsterState.None)
+            {
+                Vector2 drawPosition = position;
+                spriteBatch.Draw(leftHandTexture, drawPosition, null, drawColor, 0f, leftHandDrawOrigin, scale, SpriteEffects.None, 0);
+            }
+
+            if(gunPlayer.RightHand != RightGunHolsterState.None)
+            {
+                //Offset it a little
+                Vector2 drawPosition = position + new Vector2(8, 8);
+                spriteBatch.Draw(rightHandTexture, drawPosition, null, drawColor, 0f, rightHandDrawOrigin, scale, SpriteEffects.None, 0);
+            }
+
+            if (gunPlayer.LeftHand != LeftGunHolsterState.None || gunPlayer.RightHand != RightGunHolsterState.None)
+                return false;
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+
 
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2, 0);
-        }
-
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if(player.altFunctionUse == 2)
-            {
-                Shoot_SecondaryFire(player, source, position, velocity, type, damage, knockback);
-            }
-            else
-            {
-                Shoot_PrimaryFire(player, source, position, velocity, type, damage, knockback);
-            }
-
-            return false;
-        }
-
-        private void Shoot_PrimaryFire(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            GunPlayer gunPlayer = player.GetModPlayer<GunPlayer>();
-          
-            LeftGunHolsterState state = gunPlayer.LeftHand;
-            switch (state)
-            {
-                //Do nothing, maybe shoot puff of smoke lmao
-                default:
-                case LeftGunHolsterState.None:
-                    break;
-                case LeftGunHolsterState.Pulsing:
-                    Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<ClockworkBomb>(), damage, knockback, player.whoAmI);
-                    break;
-                case LeftGunHolsterState.Eagle:
-                    Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<CrysalizerArrow1>(), damage, knockback, player.whoAmI);
-                    break;
-                case LeftGunHolsterState.Ms_Freeze:
-                    break;
-                case LeftGunHolsterState.Ravest_Blast:
-                    break;
-            }
-        }
-
-        private void Shoot_SecondaryFire(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            GunPlayer gunPlayer = player.GetModPlayer<GunPlayer>();
-            RightGunHolsterState state = gunPlayer.RightHand;
-            switch (state)
-            {               
-                //Do nothing, maybe shoot puff of smoke lmao
-                default:
-                case RightGunHolsterState.None:
-                    break;
-                case RightGunHolsterState.Burn_Blast:
-                    Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<HeatedShot>(), damage, knockback, player.whoAmI);
-                    break;
-                case RightGunHolsterState.Poison_Pistol:
-                    Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<PhotobombProj>(), damage, knockback, player.whoAmI);
-                    break;
-                case RightGunHolsterState.Cannon:
-                    break;
-                case RightGunHolsterState.Rocket_Launcher:
-                    break;
-                case RightGunHolsterState.Ravest_Blast:
-                    break;
-            }
         }
     }
 }

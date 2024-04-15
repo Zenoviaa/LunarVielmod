@@ -20,6 +20,7 @@ using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
@@ -502,6 +503,7 @@ namespace Stellamod.NPCs.Town
 			.Add<BlankRune>()
 			.Add<BlankBrooch>()
 			.Add<BlankOrb>()
+			.Add<GunHolster>()
 			.Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)

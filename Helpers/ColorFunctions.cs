@@ -14,6 +14,7 @@ namespace Stellamod.Helpers
         public static Color SteinWeaponType => new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 0f);
 
         public static Color GreatswordWeaponType => new Color(Main.DiscoR, 150, 150, 0f);
+        public static Color GunHolsterWeaponType => new Color(0, 150, Main.DiscoB, 0f);
 
         public static Color Niivin => new Color(72, 67, 200);
         public static Color NextColor(this UnifiedRandom rand, params Color[] colors)

@@ -1912,11 +1912,6 @@ EaglesGrace: {
 	Tooltip: A special eagle gives you flight from a sacred nest of the fable
 }
 
-Eagle: {
-	Tooltip: ""
-	DisplayName: Eagle
-}
-
 GhostExcalibur: {
 	DisplayName: Ghost Excalibur
 	Tooltip: Summons an excalibur to fight for you!
@@ -6796,11 +6791,28 @@ PoisonPistol: {
 }
 
 GunHolster: {
-	Tooltip: ""
 	DisplayName: Gun Holster
+	Tooltip:
+		'''
+		Allows you to use two smaller guns at the same time
+		Right click to use your other gun
+		'''
 }
 
 BurnBlast: {
-	Tooltip: ""
 	DisplayName: Burn Blast
+	Tooltip:
+		'''
+		A heavier sidearm that shoots a powerful, splitting fireball 
+		Use to equip to your gun holster's right hand!
+		'''
+}
+
+Eagle: {
+	DisplayName: Eagle
+	Tooltip:
+		'''
+		A standard firearm
+		Use to equip to your gun holster's left hand!
+		'''
 }
