@@ -60,8 +60,20 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
     internal class Pulsing : MiniGun
-    {
+    {        
+        //Damage of this gun holster
+        public const int Base_Damage = 18;
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Pulsing;
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+
+            //Setting this to width and height of the texture cause idk
+            Item.damage = Base_Damage;
+            Item.width = 56;
+            Item.height = 30;
+        }
     }
 
     internal class Eagle : MiniGun
@@ -98,6 +110,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.width = 62;
             Item.height = 38;
         }
+
+       
     }
 
     internal class PoisonPistol : MiniGun

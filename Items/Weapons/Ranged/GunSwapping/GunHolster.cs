@@ -84,7 +84,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 case LeftGunHolsterState.None:
                     break;
                 case LeftGunHolsterState.Pulsing:
-
+                    baseDamage = Pulsing.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterPulsingProj>(), baseDamage, knockback);
                     break;
                 case LeftGunHolsterState.Eagle:
                     baseDamage = Eagle.Base_Damage;
@@ -92,6 +94,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterEagleProj>(), baseDamage, knockback);
                     break;
                 case LeftGunHolsterState.Ms_Freeze:
+
                     break;
                 case LeftGunHolsterState.Ravest_Blast:
                     break;
@@ -103,8 +106,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     {
         public override void SetDefaults()
         {
-            Item.damage = 23;
-            Item.DamageType = DamageClass.Ranged;
             Item.width = 62;
             Item.height = 36;
             Item.useTime = 32;
@@ -200,59 +201,28 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Vector2 leftHandTextureSize = Vector2.Zero;
             Vector2 rightHandTextureSize = Vector2.Zero;
             const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
-            switch (gunPlayer.LeftHand)
-            {
-                case LeftGunHolsterState.Pulsing:
-                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}Pulsing").Value;
-                    leftHandTextureSize = new Vector2(46, 30);
-                    break;
-                case LeftGunHolsterState.Eagle:
-                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}Eagle").Value;
-                    leftHandTextureSize = new Vector2(56, 30);
-                    break;
-                case LeftGunHolsterState.Ms_Freeze:
-                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}MsFreeze").Value;
-                    leftHandTextureSize = new Vector2(62, 30);
-                    break;
-                case LeftGunHolsterState.Ravest_Blast:
-                    leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RavestBlast").Value;
-                    leftHandTextureSize = new Vector2(72, 38);
-                    break;
-            }
 
-            switch (gunPlayer.RightHand)
-            {
-                case RightGunHolsterState.Burn_Blast:
-                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}BurnBlast").Value;
-                    rightHandTextureSize = new Vector2(62, 38);
-                    break;
-                case RightGunHolsterState.Poison_Pistol:
-                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}PoisonPistol").Value;
-                    rightHandTextureSize = new Vector2(54, 38);
-                    break;
-                case RightGunHolsterState.Minty_Blast:
-                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}MintyBlast").Value;
-                    break;
-                case RightGunHolsterState.Rocket_Launcher:
-                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RocketLauncher").Value;
-                    rightHandTextureSize = new Vector2(48, 34);
-                    break;
-                case RightGunHolsterState.Ravest_Blast:
-                    rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}RavestBlast").Value;
-                    rightHandTextureSize = new Vector2(72, 38);
-                    break;
-            }
 
-            Vector2 leftHandDrawOrigin = leftHandTextureSize / 2;
-            Vector2 rightHandDrawOrigin = rightHandTextureSize / 2;
+
+
+
             if(gunPlayer.LeftHand != LeftGunHolsterState.None)
             {
+                string textureName = gunPlayer.RightHand.ToString().Replace("_", "");
+                rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
+                rightHandTextureSize = rightHandTexture.Size();
+                Vector2 leftHandDrawOrigin = leftHandTextureSize / 2;
                 Vector2 drawPosition = position;
                 spriteBatch.Draw(leftHandTexture, drawPosition, null, drawColor, 0f, leftHandDrawOrigin, scale, SpriteEffects.None, 0);
             }
 
             if(gunPlayer.RightHand != RightGunHolsterState.None)
             {
+                string textureName = gunPlayer.LeftHand.ToString().Replace("_", "");
+                leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
+                leftHandTextureSize = leftHandTexture.Size();
+
+                Vector2 rightHandDrawOrigin = rightHandTextureSize / 2;
                 //Offset it a little
                 Vector2 drawPosition = position + new Vector2(8, 8);
                 spriteBatch.Draw(rightHandTexture, drawPosition, null, drawColor, 0f, rightHandDrawOrigin, scale, SpriteEffects.None, 0);
