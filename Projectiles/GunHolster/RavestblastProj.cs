@@ -75,7 +75,7 @@ namespace Stellamod.Projectiles.GunHolster
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
                     vector2 += -Vector2.UnitY.RotatedBy(j * 3.141591734f / 6f, default) * new Vector2(8f, 16f);
                     vector2 = vector2.RotatedBy(Projectile.rotation - 1.57079637f, default);
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.RainbowTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.CoralTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -110,7 +110,7 @@ namespace Stellamod.Projectiles.GunHolster
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, Projectile.scale, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor), 90f, origin, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -137,7 +137,7 @@ namespace Stellamod.Projectiles.GunHolster
             Lighting.AddLight(Projectile.Center, Color.Gold.ToVector3() * 1.75f * Main.essScale);
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RainbowTorch, 0f, 0f, 150, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CoralTorch, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
         }
