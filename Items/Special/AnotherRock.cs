@@ -17,6 +17,7 @@ namespace Stellamod.Items.Special
             Item.useAnimation = 100;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.rare = ItemRarityID.Blue;
+
         }
 
         public override bool? UseItem(Player player)
