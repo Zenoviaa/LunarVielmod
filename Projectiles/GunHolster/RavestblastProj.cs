@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -31,18 +32,26 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.aiStyle = 1;
             Projectile.timeLeft = 255;
             AIType = ProjectileID.Bullet;
-            Projectile.scale = 1f;
+            Projectile.scale = 0.1f;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             DrawOriginOffsetY = 0;
         }
-
+        
         public override bool PreAI()
         {
 
             Projectile.tileCollide = false;
-
+            if (++_frameTick >= 2)
+            {
+                _frameTick = 0;
+                if (++_frameCounter >= 16)
+                {
+                    _frameCounter = 0;
+                }
+            }
             return true;
+        
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -52,6 +61,8 @@ namespace Stellamod.Projectiles.GunHolster
 
         public override void AI()
         {
+
+            Projectile.scale *= 1.02f;
             Projectile.ai[1]++;
             Projectile.velocity *= 1.02f;
             if (Projectile.ai[1] == 1)
@@ -64,7 +75,7 @@ namespace Stellamod.Projectiles.GunHolster
                     Vector2 vector2 = Vector2.UnitX * -Projectile.width / 2f;
                     vector2 += -Vector2.UnitY.RotatedBy(j * 3.141591734f / 6f, default) * new Vector2(8f, 16f);
                     vector2 = vector2.RotatedBy(Projectile.rotation - 1.57079637f, default);
-                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.RainbowRod, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
+                    int num8 = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.RainbowTorch, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f);
                     Main.dust[num8].scale = 1.3f;
                     Main.dust[num8].noGravity = true;
                     Main.dust[num8].position = Projectile.Center + vector2;
@@ -81,16 +92,28 @@ namespace Stellamod.Projectiles.GunHolster
             }
 
 
-            if (++Projectile.frameCounter >= 2)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 16)
-                {
-                    Projectile.frame = 0;
-                }
-            }
+         
 
         }
+        private int _frameCounter;
+        private int _frameTick;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+
+            float width = 448;
+            float height = 225;
+            Vector2 origin = new Vector2(width / 2, height / 2);
+            int frameSpeed = 2;
+            int frameCount = 16;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture, drawPosition,
+                texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
+                (Color)GetAlpha(lightColor), 0f, origin, Projectile.scale, SpriteEffects.None, 0f);
+            return false;
+        }
+
 
         public override void OnKill(int timeLeft)
         {
@@ -114,7 +137,7 @@ namespace Stellamod.Projectiles.GunHolster
             Lighting.AddLight(Projectile.Center, Color.Gold.ToVector3() * 1.75f * Main.essScale);
             if (Main.rand.NextBool(5))
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RainbowRod, 0f, 0f, 150, Color.White, 1f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RainbowTorch, 0f, 0f, 150, Color.White, 1f);
                 Main.dust[dustnumber].velocity *= 0.3f;
             }
         }
