@@ -110,7 +110,7 @@ namespace Stellamod.Projectiles.GunHolster
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 90f, origin, Projectile.scale, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor),Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
 
