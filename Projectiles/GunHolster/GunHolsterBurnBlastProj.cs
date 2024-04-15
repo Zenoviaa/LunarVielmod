@@ -26,6 +26,7 @@ namespace Stellamod.Projectiles.GunHolster
 
         protected override void Shoot(Vector2 position, Vector2 direction)
         {
+            //Actually should the projectile
             float spread = 0.4f;
             for (int k = 0; k < 14; k++)
             {
@@ -33,12 +34,9 @@ namespace Stellamod.Projectiles.GunHolster
                 Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Player owner = Main.player[Projectile.owner];
-            int damage = Projectile.damage;
-            damage = (int)owner.GetTotalDamage(Projectile.DamageType).ApplyTo(damage);
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16, 
-                ModContent.ProjectileType<BurnBlastProj>(), damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<BurnBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
         }
