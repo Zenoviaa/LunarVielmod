@@ -55,7 +55,7 @@ namespace Stellamod.Projectiles.GunHolster
         }
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(130, 130, 130, 0) * (1f - Projectile.alpha / 50f);
+            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
         }
 
 
