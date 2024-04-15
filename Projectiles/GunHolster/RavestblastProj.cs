@@ -32,7 +32,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.aiStyle = 1;
             Projectile.timeLeft = 255;
             AIType = ProjectileID.Bullet;
-            Projectile.scale = 0.1f;
+            Projectile.scale = 0.2f;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             DrawOriginOffsetY = 0;
