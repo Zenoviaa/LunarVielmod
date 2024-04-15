@@ -1,29 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class GunHolsterEagleProj : GunHolsterProjectile
+    internal class GunHolsterRavestBlastRightProj : GunHolsterProjectile
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
 
             //Make sure this is the width/height of the texture or it won't draw correctly
-            Projectile.width = 56;
-            Projectile.height = 30;
+            Projectile.width = 62;
+            Projectile.height = 38;
 
-            //Higher is faster
-            AttackSpeed = 12;
+            //This number is in ticks
+            AttackSpeed = 72;
+            ShootCount = 3;
 
             //Offset it so it doesn't hold gun by weird spot
-            HolsterOffset = new Vector2(15, -6);
+            HolsterOffset = new Vector2(0, -6);
 
-            //Recoil
-            RecoilDistance = 3;
+            //Right handed gun
+            IsRightHand = true;
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
@@ -39,7 +39,7 @@ namespace Stellamod.Projectiles.GunHolster
 
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, ModContent.ProjectileType<RavestblastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
             int Sound = Main.rand.Next(1, 3);

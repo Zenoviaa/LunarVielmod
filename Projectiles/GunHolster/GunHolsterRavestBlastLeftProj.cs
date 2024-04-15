@@ -6,7 +6,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class GunHolsterEagleProj : GunHolsterProjectile
+    internal class GunHolsterRavestBlastLeftProj : GunHolsterProjectile
     {
         public override void SetDefaults()
         {
@@ -17,7 +17,8 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 30;
 
             //Higher is faster
-            AttackSpeed = 12;
+            AttackSpeed = 72;
+            ShootCount = 3;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
@@ -39,7 +40,7 @@ namespace Stellamod.Projectiles.GunHolster
 
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, ModContent.ProjectileType<RavestblastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
             int Sound = Main.rand.Next(1, 3);

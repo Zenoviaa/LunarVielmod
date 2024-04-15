@@ -22,6 +22,7 @@ namespace Stellamod.Projectiles.GunHolster
 
         protected float RecoilRotation = MathHelper.PiOver4;
         protected float RecoilDistance = 5;
+        protected float ShootCount;
 
 
         private float PrepTime => 4 / Owner.GetTotalAttackSpeed(Projectile.DamageType);
@@ -56,7 +57,7 @@ namespace Stellamod.Projectiles.GunHolster
         private float FireStartRotation;
         private float HideStartRotation;
         private float Recoil;
- 
+        
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -155,12 +156,27 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.rotation = MathHelper.Lerp(StartRotation, endRotation, easedProgress);
             SetGunPosition();
 
-            if (Timer == 1)
+            if(ShootCount > 1)
             {
-                Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
-                Vector2 position = Projectile.Center + direction * Projectile.width / 2;
-                Shoot(position, direction);
+                float shootTime = ExecTime / (float)ShootCount;
+                if (Timer % shootTime == 0)
+                {
+                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
+                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
+                    Shoot(position, direction);
+                } 
             }
+            else
+            {
+                if(Timer == 1)
+                {
+                    Vector2 direction = Owner.Center.DirectionTo(Main.MouseWorld);
+                    Vector2 position = Projectile.Center + direction * Projectile.width / 2;
+                    Shoot(position, direction);
+                }
+  
+            }
+
 
             Recoil = MathHelper.Lerp(0, RecoilDistance, Easing.SpikeOrb(progress));
             if (Timer >= ExecTime)

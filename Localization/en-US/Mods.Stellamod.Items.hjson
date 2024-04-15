@@ -6816,3 +6816,8 @@ Eagle: {
 		Use to equip to your gun holster's left hand!
 		'''
 }
+
+RavestBlast: {
+	Tooltip: ""
+	DisplayName: Ravest Blast
+}
