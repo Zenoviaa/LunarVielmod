@@ -52,6 +52,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             int baseDamage;
             int knockback;
 
+            //This is where you actually spawn the gun holsters, so that the player holds them
+            //We spawn the guns here cause otherwise the damage won't scale from your modifiers
             switch (RightHand)
             {
                 //Do nothing, maybe shoot puff of smoke lmao
@@ -59,6 +61,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 case RightGunHolsterState.None:
                     break;
                 case RightGunHolsterState.Burn_Blast:
+
+                    //Don't forget to set the damage
                     baseDamage = BurnBlast.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterBurnBlastProj>(), baseDamage, knockback);

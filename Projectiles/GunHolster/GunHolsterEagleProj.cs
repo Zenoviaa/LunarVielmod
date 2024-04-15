@@ -11,6 +11,8 @@ namespace Stellamod.Projectiles.GunHolster
         public override void SetDefaults()
         {
             base.SetDefaults();
+
+            //Make sure this is the width/height of the texture or it won't draw correctly
             Projectile.width = 56;
             Projectile.height = 30;
 
@@ -26,6 +28,7 @@ namespace Stellamod.Projectiles.GunHolster
 
         protected override void Shoot(Vector2 position, Vector2 direction)
         {
+            //Treat this like a normal shoot function
             float spread = 0.4f;
             for (int k = 0; k < 7; k++)
             {

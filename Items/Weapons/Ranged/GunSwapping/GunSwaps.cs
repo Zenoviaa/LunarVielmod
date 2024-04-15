@@ -35,6 +35,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         public override bool? UseItem(Player player)
         {
+            //Remember to code this slightly differently for the special sirestias one that can go on both hands
+            //Actually you could just make it right clickable lol, left click for primary hand, right click for secondary hand
+            //Don't allow more than one of course
             if(LeftHand != LeftGunHolsterState.None)
             {
                 player.GetModPlayer<GunPlayer>().LeftHand = LeftHand;
@@ -63,11 +66,16 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
     internal class Eagle : MiniGun
     {
+        //Damage of this gun holster
         public const int Base_Damage = 24;
+
+        //Which thing it sets
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Eagle;
         public override void SetDefaults()
         {
             base.SetDefaults();
+
+            //Setting this to width and height of the texture cause idk
             Item.damage = Base_Damage;
             Item.width = 56;
             Item.height = 30;
@@ -75,13 +83,18 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     }
 
     internal class BurnBlast : MiniGun
-    {
+    {       
+        //Damage of this gun holster
         public const int Base_Damage = 50;
+
+        //Which thing it sets
         public override RightGunHolsterState RightHand => RightGunHolsterState.Burn_Blast;
         public override void SetDefaults()
         {
             base.SetDefaults();
             Item.damage = Base_Damage;
+
+            //Setting this to width and height of the texture cause idk
             Item.width = 62;
             Item.height = 38;
         }
