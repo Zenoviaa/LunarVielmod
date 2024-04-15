@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class GunHolsterBurnBlastProj :  GunHolsterProjectile
+    internal class GunHolsterBurnBlastProj : GunHolsterProjectile
     {
         public override void SetDefaults()
         {
