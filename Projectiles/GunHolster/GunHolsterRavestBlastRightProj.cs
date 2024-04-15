@@ -12,7 +12,7 @@ namespace Stellamod.Projectiles.GunHolster
             base.SetDefaults();
 
             //Make sure this is the width/height of the texture or it won't draw correctly
-            Projectile.width = 62;
+            Projectile.width = 72;
             Projectile.height = 38;
 
             //This number is in ticks

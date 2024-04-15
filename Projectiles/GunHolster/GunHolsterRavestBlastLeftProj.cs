@@ -13,18 +13,15 @@ namespace Stellamod.Projectiles.GunHolster
             base.SetDefaults();
 
             //Make sure this is the width/height of the texture or it won't draw correctly
-            Projectile.width = 56;
-            Projectile.height = 30;
+            Projectile.width = 72;
+            Projectile.height = 38;
 
             //Higher is faster
             AttackSpeed = 48;
             ShootCount = 3;
 
             //Offset it so it doesn't hold gun by weird spot
-            HolsterOffset = new Vector2(15, -6);
-
-            //Recoil
-            RecoilDistance = 3;
+            HolsterOffset = new Vector2(0, -6);
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
