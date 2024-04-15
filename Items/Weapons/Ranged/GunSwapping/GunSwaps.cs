@@ -148,7 +148,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class  RavestBlast : MiniGun
     {        
         //Damage of this gun holster
-        public const int Base_Damage = 62;
+        public const int Base_Damage = 262;
 
         //Which thing it sets
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Ravest_Blast;
