@@ -17,7 +17,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 30;
 
             //Higher is faster
-            AttackSpeed = 72;
+            AttackSpeed = 48;
             ShootCount = 3;
 
             //Offset it so it doesn't hold gun by weird spot
