@@ -2,10 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.GunHolster;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -46,7 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         private void HolsterGun(Player player, int projectileType, int baseDamage, int knockBack)
         {
             //   player.damage
-            int newDamage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo((float)baseDamage);
+            int newDamage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(baseDamage);
             if (player.HeldItem.type == ModContent.ItemType<GunHolster>()
                 && player.ownedProjectileCounts[projectileType] == 0)
             {
@@ -208,70 +206,66 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         {
             base.ModifyTooltips(tooltips);
             GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-            var leftHand = new TooltipLine(Mod, "left", "");
-            var rightHand = new TooltipLine(Mod, "right", "");
-            switch (gunPlayer.LeftHand)
-            {
-                default:
-                    leftHand.Text = "Left Hand: [None]";
-                    leftHand.OverrideColor = Color.DarkGray;
-                    break;
-                case LeftGunHolsterState.Pulsing:
-                    leftHand.Text = "Left Hand: [Pulsing]";
-                    leftHand.OverrideColor = Color.LightGray;
-                    break;
-                case LeftGunHolsterState.Eagle:
-                    leftHand.Text = "Left Hand: [Eagle]";
-                    leftHand.OverrideColor = Color.DarkOrange;
-                    break;
-                case LeftGunHolsterState.Ms_Freeze:
-                    leftHand.Text = "Left Hand: [Ms Freeze]";
-                    leftHand.OverrideColor = Color.LightCyan;
-                    break;
-                case LeftGunHolsterState.Ravest_Blast:
-                    leftHand.Text = "Left Hand: [Ravest Blast]";
-                    leftHand.OverrideColor = Color.LightPink;
-                    break;
-            }
 
-            switch (gunPlayer.RightHand)
-            {
-                default:
-                    rightHand.Text = "Right Hand: [None]";
-                    rightHand.OverrideColor = Color.DarkGray;
-                    break;
-                case RightGunHolsterState.Burn_Blast:
-                    rightHand.Text = "Right Hand: [Burn Blast]";
-                    rightHand.OverrideColor = Color.Orange;
-                    break;
-                case RightGunHolsterState.Poison_Pistol:
-                    rightHand.Text = "Right Hand: [Poison Pistol]";
-                    rightHand.OverrideColor = Color.Green;
-                    break;
-                case RightGunHolsterState.Minty_Blast:
-                    rightHand.Text = "Right Hand: [Minty Blast]";
-                    rightHand.OverrideColor = Color.LightCyan;
-                    break;
-                case RightGunHolsterState.Rocket_Launcher:
-                    rightHand.Text = "Right Hand: [Rocket Launcher]";
-                    rightHand.OverrideColor = Color.LightGray;
-                    break;
-                case RightGunHolsterState.Ravest_Blast:
-                    rightHand.Text = "Right Hand: [Ravest Blast]";
-                    rightHand.OverrideColor = Color.LightPink;
-                    break;
-            }
-        
+  
 
-            tooltips.Add(leftHand);
-            tooltips.Add(rightHand);
-
-            var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "WeaponType", "Gun Holster Weapon Type")
+            var line = new TooltipLine(Mod, "WeaponType", "Gun Holster Weapon Type")
             {
                 OverrideColor = ColorFunctions.GunHolsterWeaponType
             };
             tooltips.Add(line);
+
+            var leftHand = new TooltipLine(Mod, "left", "");
+            var rightHand = new TooltipLine(Mod, "right", "");
+
+            const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
+            if (gunPlayer.LeftHand != LeftGunHolsterState.None)
+            {
+                string textureName = gunPlayer.LeftHand.ToString().Replace("_", "");
+                Texture2D texture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}").Value;
+                Color[] pixels = new Color[texture.Width * texture.Height];
+                texture.GetData(pixels);
+                Color lastColor = Color.White;
+                Color tooltipColor = Color.White;
+                for(int i = pixels.Length / 2; i < pixels.Length; i++)
+                {
+                    if (lastColor == Color.Black && pixels[i] != Color.Black)
+                    {
+                        tooltipColor = pixels[i];
+                        break;
+                    }
+                    lastColor = pixels[i];
+                }
+
+                string gunName = gunPlayer.LeftHand.ToString().Replace("_", " ");
+                leftHand.Text = $"Left Hand: [{gunName}]";
+                leftHand.OverrideColor = tooltipColor;
+                tooltips.Add(leftHand);
+            }
+
+            if (gunPlayer.RightHand != RightGunHolsterState.None)
+            {
+                string textureName = gunPlayer.RightHand.ToString().Replace("_", "");
+                Texture2D texture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}").Value;
+                Color[] pixels = new Color[texture.Width * texture.Height];
+                texture.GetData(pixels);
+                Color lastColor = Color.White;
+                Color tooltipColor = Color.White;
+                for (int i = pixels.Length / 2; i < pixels.Length; i++)
+                {
+                    if (lastColor == Color.Black && pixels[i] != Color.Black)
+                    {
+                        tooltipColor = pixels[i];
+                        break;
+                    }
+                    lastColor = pixels[i];
+                }
+
+                string gunName = gunPlayer.RightHand.ToString().Replace("_", " ");
+                rightHand.Text = $"Right Hand: [{gunName}]";
+                rightHand.OverrideColor = tooltipColor;
+                tooltips.Add(rightHand);
+            }
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

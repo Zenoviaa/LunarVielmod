@@ -362,7 +362,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class AssassinsRecharge : MiniGun
     {
         //Damage of this gun
-        public const int Base_Damage = 50;
+        public const int Base_Damage = 92;
 
         public override RightGunHolsterState RightHand => RightGunHolsterState.Assassins_Recharge;
         public override void SetDefaults()

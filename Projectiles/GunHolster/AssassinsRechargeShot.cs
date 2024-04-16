@@ -15,8 +15,7 @@ using System;
 
 using Terraria.Audio;
 
-
-namespace Stellamod.Projectiles.Bow
+namespace Stellamod.Projectiles.GunHolster
 {
     internal class AssassinsRechargeShot : ModProjectile
     {

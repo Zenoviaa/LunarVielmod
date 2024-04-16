@@ -6846,3 +6846,28 @@ STARBUST: {
 	DisplayName: STARBUST
 	Tooltip: A machine gun, but STARBOMBER style!
 }
+
+AssassinsRecharge: {
+	DisplayName: Assassins Recharge
+	Tooltip: ""
+}
+
+BubbleBussy: {
+	DisplayName: Bubble Bussy
+	Tooltip: ""
+}
+
+CinderNeedle: {
+	DisplayName: Cinder Needle
+	Tooltip: ""
+}
+
+Devolver: {
+	DisplayName: Devolver
+	Tooltip: ""
+}
+
+ShottyPitol: {
+	DisplayName: Shotty Pitol
+	Tooltip: ""
+}
