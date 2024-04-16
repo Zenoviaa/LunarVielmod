@@ -16,13 +16,13 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 44;
 
             //Higher is faster
-            AttackSpeed = 12;
+            AttackSpeed = 1;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
 
             //Recoil
-            RecoilDistance = 3;
+            RecoilDistance = 1;
 
             IsRightHand = true;
         }
@@ -34,13 +34,15 @@ namespace Stellamod.Projectiles.GunHolster
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = direction.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.MediumPurple, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.BlueViolet, 1);
 
             Player player = Main.player[Projectile.owner];
-            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Vector2 velocity = direction * 16;
+            velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 15);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+            ModContent.ProjectileType<AzurewrathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
             int Sound = Main.rand.Next(1, 3);
