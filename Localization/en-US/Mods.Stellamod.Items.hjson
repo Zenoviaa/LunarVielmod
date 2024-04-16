@@ -6813,7 +6813,7 @@ BurnBlast: {
 }
 
 Eagle: {
-	DisplayName: Eagle
+	DisplayName: Deagle
 	Tooltip:
 		'''
 		A standard firearm
