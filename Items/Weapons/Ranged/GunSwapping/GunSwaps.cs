@@ -269,7 +269,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 20;
+            Item.damage = 16;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterElectrifyingProj>();
         }
@@ -312,7 +312,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 70;
+            Item.damage = 270;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterDevolverProj>();
         }
@@ -324,7 +324,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 42;
+            Item.damage = 20;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCinderNeedleProj>();
         }
