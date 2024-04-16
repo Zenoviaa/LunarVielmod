@@ -6,6 +6,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Terraria;
@@ -51,7 +52,8 @@ namespace Stellamod.Items.Consumables
 				ModContent.ItemType<Weapons.Melee.Helios>(),
 				ModContent.ItemType<GothiviasCard>(),
 				ModContent.ItemType<Twirlers>(),
-				ModContent.ItemType<WeddingDay>()));
+				ModContent.ItemType<WeddingDay>(),
+				ModContent.ItemType<BurnBlast>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 			itemLoot.Add(ItemDropRule.Common(ItemID.TitaniumBar, minimumDropped: 4, maximumDropped: 25));
