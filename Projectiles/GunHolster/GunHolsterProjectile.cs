@@ -22,6 +22,7 @@ namespace Stellamod.Projectiles.GunHolster
 
         protected float RecoilRotation = MathHelper.PiOver4;
         protected float RecoilDistance = 5;
+        protected float RecoilRotationMini = MathHelper.ToRadians(15);
         protected float ShootCount;
 
 
@@ -110,14 +111,14 @@ namespace Stellamod.Projectiles.GunHolster
             {
                 if(Projectile.spriteDirection == -1)
                 {
-                    StartRotation = Projectile.rotation - MathHelper.ToRadians(15);
-                    FireStartRotation = StartRotation + MathHelper.ToRadians(15);
+                    StartRotation = Projectile.rotation - RecoilRotationMini;
+                    FireStartRotation = StartRotation + RecoilRotationMini;
                     HideStartRotation = StartRotation + RecoilRotation;
                 }
                 else
                 {
-                    StartRotation = Projectile.rotation + MathHelper.ToRadians(15);
-                    FireStartRotation = StartRotation - MathHelper.ToRadians(15);
+                    StartRotation = Projectile.rotation + RecoilRotationMini;
+                    FireStartRotation = StartRotation - RecoilRotationMini;
                     HideStartRotation = StartRotation - RecoilRotation;
                 }
 
