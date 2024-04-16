@@ -6782,7 +6782,11 @@ IllureCard: {
 
 Pulsing: {
 	DisplayName: Pulsing
-	Tooltip: Use to equip to your gun holster's left hand!
+	Tooltip:
+		'''
+		Use to equip to your gun holster's left hand!
+		OR right click to equip to your gun holster's right hand!
+		'''
 }
 
 PoisonPistol: {

@@ -27,7 +27,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         Poison_Pistol,
         Minty_Blast,
         Rocket_Launcher,
-        Ravest_Blast
+        Ravest_Blast,
+        Pulsing
     }
 
     internal class GunPlayer : ModPlayer
@@ -92,6 +93,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     baseDamage = RavestBlast.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterRavestBlastRightProj>(), baseDamage, knockback);
+                    break;
+
+                case RightGunHolsterState.Pulsing:
+                    baseDamage = Pulsing.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterPulsingProj>(), baseDamage, knockback);
                     break;
             }
 

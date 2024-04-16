@@ -107,7 +107,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         //Damage of this gun holster
         public const int Base_Damage = 18;
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Pulsing;
-
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Pulsing;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -127,6 +127,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
         //Which thing it sets
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Eagle;
+
         public override void SetDefaults()
         {
             base.SetDefaults();
