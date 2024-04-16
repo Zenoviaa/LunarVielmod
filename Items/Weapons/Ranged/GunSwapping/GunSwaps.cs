@@ -43,13 +43,20 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
             if (IsSpecial)
             {
+     
                 line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
                 tooltips.Add(line);
                 line = new TooltipLine(Mod, "RightHanded", "OR right click to equip to your gun holster's right hand!");
                 tooltips.Add(line);
+                if (TwoHands)
+                {
+                    line = new TooltipLine(Mod, "BothHanded", "Can be in both hands at the same time!");
+                    tooltips.Add(line);
+                }
             }
             else
             {
+    
                 if (LeftHand)
                 {
                     line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
