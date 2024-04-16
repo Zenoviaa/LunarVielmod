@@ -6876,3 +6876,28 @@ RobedSandstone: {
 	DisplayName: Robed Sandstone
 	Tooltip: ""
 }
+
+AzureWrath: {
+	DisplayName: Azure Wrath
+	Tooltip: ""
+}
+
+CarrotPatrol: {
+	DisplayName: Carrot Patrol
+	Tooltip: ""
+}
+
+MeredaX: {
+	DisplayName: Mereda X
+	Tooltip: ""
+}
+
+SrTetanus: {
+	DisplayName: Sr Tetanus
+	Tooltip: ""
+}
+
+TheReaving: {
+	DisplayName: The Reaving
+	Tooltip: ""
+}

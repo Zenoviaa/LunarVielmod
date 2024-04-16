@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.Gun
                 Vector2 targetPos = target.position - _offset + new Vector2(0.001f, 0.001f); 
                 Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
                 float dist = Vector2.Distance(Projectile.position, targetPos);
-                Projectile.velocity = directionToTarget * dist;
+                Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
             }
 
             bool detonate = Projectile.ai[2] == 1;

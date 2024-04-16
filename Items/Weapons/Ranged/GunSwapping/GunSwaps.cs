@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Projectiles.GunHolster;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -13,9 +14,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 {
     internal abstract class MiniGun : ModItem
     {
-        public virtual LeftGunHolsterState LeftHand { get; }
-        public virtual RightGunHolsterState RightHand { get; }
-        public bool IsSpecial => LeftHand != LeftGunHolsterState.None && RightHand != RightGunHolsterState.None;
+        public bool LeftHand;
+        public bool RightHand;
+        public bool TwoHands;
+        public int GunHolsterProjectile = -1;
+        public int GunHolsterProjectile2 = -1;
+        public bool IsSpecial => LeftHand && RightHand;
         public override void SetDefaults()
         {
             Item.width = 24;
@@ -46,12 +50,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             }
             else
             {
-                if (LeftHand != LeftGunHolsterState.None)
+                if (LeftHand)
                 {
                     line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
                     tooltips.Add(line);
                 }
-                if (RightHand != RightGunHolsterState.None)
+                if (RightHand )
                 {
                     line = new TooltipLine(Mod, "RightHanded", "Use to equip to your gun holster's right hand!");
                     tooltips.Add(line);
@@ -87,27 +91,27 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             {
                 if(player.altFunctionUse == 2)
                 {
-                    if (gunPlayer.LeftHand == LeftHand)
-                        gunPlayer.LeftHand = LeftGunHolsterState.None;
-                    gunPlayer.RightHand = RightHand;
+                    if (gunPlayer.LeftHand == Type && !TwoHands)
+                        gunPlayer.LeftHand = -1;
+                    gunPlayer.RightHand = Type;
                 }
                 else
                 {
-                    if (gunPlayer.RightHand == RightHand)
-                        gunPlayer.RightHand = RightGunHolsterState.None;
-                    gunPlayer.LeftHand = LeftHand;
+                    if (gunPlayer.RightHand == Type && !TwoHands)
+                        gunPlayer.RightHand = -1;
+                    gunPlayer.LeftHand = Type;
                 }
             }
             else
             {
-                if (LeftHand != LeftGunHolsterState.None)
+                if (LeftHand)
                 {
-                    gunPlayer.LeftHand = LeftHand;
+                    gunPlayer.LeftHand = Type;
                 }
 
-                if (RightHand != RightGunHolsterState.None)
+                if (RightHand)
                 {
-                    gunPlayer.RightHand = RightHand;
+                    gunPlayer.RightHand = Type;
                 }
             }
 
@@ -133,15 +137,15 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             if (IsSpecial)
             {
                 iconTexture = ModContent.Request<Texture2D>($"{Base_Path}LR").Value;
-            } else if(LeftHand != LeftGunHolsterState.None)
+            } else if(LeftHand)
             {
                 iconTexture = ModContent.Request<Texture2D>($"{Base_Path}L").Value;
-            } else if(RightHand != RightGunHolsterState.None)
+            } else if(RightHand)
             {
                 iconTexture = ModContent.Request<Texture2D>($"{Base_Path}R").Value;
             }
             Vector2 drawOrigin = iconTexture.Size() / 2;
-            Vector2 drawPosition = position + drawOrigin;
+            Vector2 drawPosition = position - new Vector2(drawOrigin.X, -drawOrigin.Y);
             spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
         }
     }
@@ -150,94 +154,84 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     {        
         //Damage of this gun holster
         public const int Base_Damage = 18;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Pulsing;
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Pulsing;
         public override void SetDefaults()
         {
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = Base_Damage;
+            Item.damage = 18;
             Item.width = 56;
             Item.height = 30;
             Item.value = Item.buyPrice(gold: 5);
+            LeftHand = true;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterPulsingProj>();
         }
     }
 
     internal class Eagle : MiniGun
     {
-        //Damage of this gun holster
-        public const int Base_Damage = 24;
-
-        //Which thing it sets
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Eagle;
-
         public override void SetDefaults()
         {
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = Base_Damage;
+            Item.damage = 24;
             Item.width = 56;
             Item.height = 30;
+
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterEagleProj>();
         }
     }
 
     internal class BurnBlast : MiniGun
     {       
-        //Damage of this gun holster
-        public const int Base_Damage = 50;
-
-        //Which thing it sets
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Burn_Blast;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 50;
 
             //Setting this to width and height of the texture cause idk
             Item.width = 62;
             Item.height = 38;
+
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterBurnBlastProj>();
         }       
     }
 
     internal class PoisonPistol : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 90;
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Poison_Pistol;
-
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 90;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterPoisonPistolProj>();
         }
     }
 
     internal class RocketLauncher : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 50;
-
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Rocket_Launcher;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 50;
             Item.value = Item.buyPrice(gold: 15);
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterRocketLauncherProj>();
         }
     }
 
     internal class MintyBlast : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 10;
-
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Minty_Blast;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 10;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMintyBlastProj>();
         }
 
         public override void AddRecipes()
@@ -253,57 +247,52 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
 
     internal class MsFreeze : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 20;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Ms_Freeze;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 20;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMsFreezeProj>();
         }
     }
 
     internal class Electrifying : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 20;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Electrifying;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 20;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterElectrifyingProj>();
         }
     }
 
     internal class  RavestBlast : MiniGun
     {        
-        //Damage of this gun holster
-        public const int Base_Damage = 262;
-
-        //Which thing it sets
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Ravest_Blast;
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Ravest_Blast;
-
         public override void SetDefaults()
         {
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = Base_Damage;
+            Item.damage = 262;
             Item.width = 56;
             Item.height = 30;
+            LeftHand = true;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterRavestBlastLeftProj>();
+            GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterRavestBlastRightProj>();
         }
     }
 
     internal class STARBUST : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 42;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.STARBUST;
+
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 42;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterSTARBUSTProj>();
         }
     }
 
@@ -311,64 +300,115 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class Devolver : MiniGun
     {
         //Damage of this gun
-        public const int Base_Damage = 42;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Devolver;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 42;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterDevolverProj>();
         }
     }
 
 
     internal class CinderNeedle : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 42;
-        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Cinder_Needle;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 42;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCinderNeedleProj>();
         }
     }
 
     internal class ShottyPitol : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 50;
-
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Shotty_Pitol;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 50;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterShottyPitolProj>();
         }
     }
 
     internal class BubbleBussy : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 50;
-
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Bubble_Bussy;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 50;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterBubbleBussyProj>();
         }
     }
 
     internal class AssassinsRecharge : MiniGun
     {
-        //Damage of this gun
-        public const int Base_Damage = 92;
-
-        public override RightGunHolsterState RightHand => RightGunHolsterState.Assassins_Recharge;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = Base_Damage;
+            Item.damage = 92;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterAssassinsRechargeProj>();
+        }
+    }
+
+    internal class CarrotPatrol : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 92;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCarrotPatrolProj>();
+        }
+    }
+
+    internal class MeredaX : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 92;
+            LeftHand = true;
+            RightHand = true;
+            TwoHands = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMeredaXLeftProj>();
+            GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterMeredaXRightProj>();
+        }
+    }
+
+    internal class SrTetanus : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 72;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterSrTetanusProj>();
+        }
+    }
+
+    internal class TheReaving : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 66;
+            LeftHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterTheReavingProj>();
+        }
+    }
+
+    internal class AzureWrath : MiniGun
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 75;
+            RightHand = true;
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterAzureWrathProj>();
         }
     }
 }

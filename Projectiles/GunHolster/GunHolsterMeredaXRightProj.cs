@@ -5,24 +5,26 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    internal class GunHolsterCinderNeedleProj : GunHolsterProjectile
+    internal class GunHolsterMeredaXRightProj : GunHolsterProjectile
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
 
             //Make sure this is the width/height of the texture or it won't draw correctly
-            Projectile.width = 62;
-            Projectile.height = 32;
+            Projectile.width = 68;
+            Projectile.height = 44;
 
             //Higher is faster
-            AttackSpeed = 6;
+            AttackSpeed = 12;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
 
             //Recoil
             RecoilDistance = 3;
+
+            IsRightHand = true;
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
@@ -35,14 +37,10 @@ namespace Stellamod.Projectiles.GunHolster
                 Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            for(int i = 0; i < Main.rand.Next(1, 3); i++)
-            {
-                Vector2 velocity = direction * 16;
-                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 15);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
-                    ModContent.ProjectileType<CinderNeedleProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }
 
+            Player player = Main.player[Projectile.owner];
+            player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
             int Sound = Main.rand.Next(1, 3);
