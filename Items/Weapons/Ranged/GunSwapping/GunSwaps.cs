@@ -253,4 +253,16 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.height = 30;
         }
     }
+
+    internal class STARBUST : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 42;
+        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.STARBUST;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
 }

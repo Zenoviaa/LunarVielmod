@@ -79,6 +79,11 @@ namespace Stellamod.Projectiles.GunHolster
                 && Main.mouseItem.type != type)
                 Projectile.Kill();
 
+            Player player = Main.player[Projectile.owner];
+            if (player.noItems || player.CCed || player.dead || !player.active)
+                Projectile.Kill();
+
+
             Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
             switch (State)
             {

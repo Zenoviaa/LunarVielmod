@@ -6849,3 +6849,8 @@ Electrifying: {
 	DisplayName: Electrifying
 	Tooltip: ""
 }
+
+STARBUST: {
+	DisplayName: S T A R B U S T
+	Tooltip: ""
+}

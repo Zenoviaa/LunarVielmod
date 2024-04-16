@@ -18,7 +18,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         Eagle,
         Ms_Freeze,
         Ravest_Blast,
-        Electrifying
+        Electrifying,
+        STARBUST
     }
 
     public enum RightGunHolsterState
@@ -137,6 +138,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     baseDamage = Electrifying.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterElectrifyingProj>(), baseDamage, knockback);
+                    break;
+
+                case LeftGunHolsterState.STARBUST:
+                    baseDamage = STARBUST.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterSTARBUSTProj>(), baseDamage, knockback);
                     break;
             }
         }
