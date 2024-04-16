@@ -406,7 +406,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 72;
+            Item.damage = 36;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterSrTetanusProj>();
         }

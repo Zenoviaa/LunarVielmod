@@ -3243,7 +3243,7 @@ namespace Stellamod.WorldG
 								break;
 
 							case 9:
-                                itemsToAdd.Add((ModContent.ItemType<Eagle>(), Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ModContent.ItemType<SrTetanus>(), Main.rand.Next(1, 1)));
                                 itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
                                 itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
                                 itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
