@@ -284,6 +284,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 262;
             Item.width = 56;
             Item.height = 30;
+            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             LeftHand = true;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterRavestBlastLeftProj>();
