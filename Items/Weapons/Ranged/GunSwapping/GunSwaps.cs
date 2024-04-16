@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -32,6 +33,22 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 OverrideColor = ColorFunctions.GunHolsterWeaponType
             };
             tooltips.Add(line);
+
+            if (!Main.LocalPlayer.HasItemInAnyInventory(ModContent.ItemType<GunHolster>()))
+            {
+                line = new TooltipLine(Mod, "WompWomp", "You do not have a Gun Holster...")
+                {
+                    OverrideColor = Color.Gray
+                };
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "WompWomp2", "Buy one from Delgrim!")
+                {
+                    OverrideColor = Color.Gray
+                };
+                tooltips.Add(line);
+            }
+           
         }
 
         public override bool AltFunctionUse(Player player)
@@ -99,6 +116,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = Base_Damage;
             Item.width = 56;
             Item.height = 30;
+            Item.value = Item.buyPrice(gold: 5);
         }
     }
 
@@ -135,14 +153,59 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             //Setting this to width and height of the texture cause idk
             Item.width = 62;
             Item.height = 38;
-        }
-
-       
+        }       
     }
 
     internal class PoisonPistol : MiniGun
     {
+        //Damage of this gun
+        public const int Base_Damage = 66;
         public override RightGunHolsterState RightHand => RightGunHolsterState.Poison_Pistol;
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+    internal class RocketLauncher : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 50;
+
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Rocket_Launcher;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+            Item.value = Item.buyPrice(gold: 15);
+        }
+    }
+
+    internal class MintyBlast : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 60;
+
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Minty_Blast;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+    internal class MsFreeze : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 20;
+        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Ms_Freeze;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
     }
 
     internal class  RavestBlast : MiniGun
@@ -163,6 +226,5 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.width = 56;
             Item.height = 30;
         }
-
     }
 }

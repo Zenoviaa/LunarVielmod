@@ -6781,13 +6781,13 @@ IllureCard: {
 }
 
 Pulsing: {
-	Tooltip: ""
 	DisplayName: Pulsing
+	Tooltip: Use to equip to your gun holster's left hand!
 }
 
 PoisonPistol: {
-	Tooltip: ""
 	DisplayName: Poison Pistol
+	Tooltip: Use to equip to your gun holster's right hand!
 }
 
 GunHolster: {
@@ -6818,6 +6818,25 @@ Eagle: {
 }
 
 RavestBlast: {
-	Tooltip: ""
 	DisplayName: Ravest Blast
+	Tooltip:
+		'''
+		Use to equip to your gun holster's left hand!
+		OR right click to equip to your gun holster's right hand!
+		'''
+}
+
+MsFreeze: {
+	DisplayName: Ms Freeze
+	Tooltip: Use to equip to your gun holster's left hand!
+}
+
+MintyBlast: {
+	DisplayName: Minty Blast
+	Tooltip: Use to equip to your gun holster's right hand!
+}
+
+RocketLauncher: {
+	DisplayName: Rocket Launcher
+	Tooltip: Use to equip to your gun holster's right hand!
 }

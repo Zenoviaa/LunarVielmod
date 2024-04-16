@@ -5,6 +5,7 @@ using Stellamod.Projectiles.GunHolster;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,6 +61,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 default:
                 case RightGunHolsterState.None:
                     break;
+
                 case RightGunHolsterState.Burn_Blast:
 
                     //Don't forget to set the damage
@@ -67,13 +69,25 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterBurnBlastProj>(), baseDamage, knockback);
                     break;
-                case RightGunHolsterState.Poison_Pistol:
 
+                case RightGunHolsterState.Poison_Pistol:
+                    baseDamage = PoisonPistol.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterPoisonPistolProj>(), baseDamage, knockback);
                     break;
+
                 case RightGunHolsterState.Minty_Blast:
+                    baseDamage = MintyBlast.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMintyBlastProj>(), baseDamage, knockback);
                     break;
+
                 case RightGunHolsterState.Rocket_Launcher:
+                    baseDamage = RocketLauncher.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterRocketLauncherProj>(), baseDamage, knockback);
                     break;
+
                 case RightGunHolsterState.Ravest_Blast:
                     baseDamage = RavestBlast.Base_Damage;
                     knockback = 1;
@@ -86,19 +100,25 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 default:
                 case LeftGunHolsterState.None:
                     break;
+
                 case LeftGunHolsterState.Pulsing:
                     baseDamage = Pulsing.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterPulsingProj>(), baseDamage, knockback);
                     break;
+
                 case LeftGunHolsterState.Eagle:
                     baseDamage = Eagle.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterEagleProj>(), baseDamage, knockback);
                     break;
-                case LeftGunHolsterState.Ms_Freeze:
 
+                case LeftGunHolsterState.Ms_Freeze:
+                    baseDamage = MsFreeze.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMsFreezeProj>(), baseDamage, knockback);
                     break;
+
                 case LeftGunHolsterState.Ravest_Blast:
                     baseDamage = RavestBlast.Base_Damage;
                     knockback = 1;
@@ -201,22 +221,13 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             GunPlayer gunPlayer = Main.LocalPlayer.GetModPlayer<GunPlayer>();
-
-            Texture2D leftHandTexture = null;
-            Texture2D rightHandTexture = null;
-            Vector2 leftHandTextureSize = Vector2.Zero;
-            Vector2 rightHandTextureSize = Vector2.Zero;
             const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
-
-
-
-
 
             if(gunPlayer.LeftHand != LeftGunHolsterState.None)
             {
                 string textureName = gunPlayer.LeftHand.ToString().Replace("_", "");
-                leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
-                leftHandTextureSize = leftHandTexture.Size();
+                Texture2D leftHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
+                Vector2 leftHandTextureSize = leftHandTexture.Size();
                 Vector2 leftHandDrawOrigin = leftHandTextureSize / 2;
 
                 Vector2 drawPosition = position;
@@ -227,8 +238,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             {
 
                 string textureName = gunPlayer.RightHand.ToString().Replace("_", "");
-                rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
-                rightHandTextureSize = rightHandTexture.Size();
+                Texture2D rightHandTexture = ModContent.Request<Texture2D>($"{Base_Path}{textureName}_Held").Value;
+                Vector2 rightHandTextureSize = rightHandTexture.Size();
                 Vector2 rightHandDrawOrigin = rightHandTextureSize / 2;
 
                 //Offset it a little
@@ -247,4 +258,6 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             return new Vector2(-2, 0);
         }
     }
+
+
 }
