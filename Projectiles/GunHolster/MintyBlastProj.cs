@@ -62,8 +62,6 @@ namespace Stellamod.Projectiles.GunHolster
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + direction * BeamLength;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(explosionCenter, 1024f, 32f);
-
 
                 for (int i = 0; i < 5; i++)
                 {

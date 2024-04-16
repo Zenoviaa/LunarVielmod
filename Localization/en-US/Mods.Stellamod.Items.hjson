@@ -6782,16 +6782,16 @@ IllureCard: {
 
 Pulsing: {
 	DisplayName: Pulsing
-	Tooltip:
-		'''
-		Use to equip to your gun holster's left hand!
-		OR right click to equip to your gun holster's right hand!
-		'''
+	Tooltip: A standard firearm
 }
 
 PoisonPistol: {
 	DisplayName: Venomous Spider's Shot
-	Tooltip: Use to equip to your gun holster's right hand!
+	Tooltip:
+		'''
+		Launches a condensed ball that explodes into spiders
+		Great for treating arachnophobia! Wait...
+		'''
 }
 
 GunHolster: {
@@ -6805,52 +6805,44 @@ GunHolster: {
 
 BurnBlast: {
 	DisplayName: Burn Blast
-	Tooltip:
-		'''
-		A heavier sidearm that shoots a powerful, splitting fireball 
-		Use to equip to your gun holster's right hand!
-		'''
+	Tooltip: "A heavier sidearm that shoots a powerful, splitting fireball "
 }
 
 Eagle: {
 	DisplayName: Deagle
-	Tooltip:
-		'''
-		A standard firearm
-		Use to equip to your gun holster's left hand!
-		'''
+	Tooltip: A more powerful, standard firearm
 }
 
 RavestBlast: {
 	DisplayName: Ravest Blast
-	Tooltip:
-		'''
-		Use to equip to your gun holster's left hand!
-		OR right click to equip to your gun holster's right hand!
-		'''
+	Tooltip: Shoots a three round burst of pulsing waves
 }
 
 MsFreeze: {
 	DisplayName: Ms Freeze
-	Tooltip: Use to equip to your gun holster's left hand!
+	Tooltip: Quickly fires frosty lasers!
 }
 
 MintyBlast: {
 	DisplayName: Mr. Frozo
-	Tooltip: Use to equip to your gun holster's right hand!
+	Tooltip: A chilling flamethrower
 }
 
 RocketLauncher: {
 	DisplayName: Rocket Launcher
-	Tooltip: Use to equip to your gun holster's right hand!
+	Tooltip: Shoots a rocket... it can hurt you though
 }
 
 Electrifying: {
 	DisplayName: Electrifying
-	Tooltip: ""
+	Tooltip:
+		'''
+		Quickly shoots electrifying lightning bolts
+		Electrifying lightning...
+		'''
 }
 
 STARBUST: {
-	DisplayName: S T A R B U S T
-	Tooltip: ""
+	DisplayName: STARBUST
+	Tooltip: A machine gun, but STARBOMBER style!
 }
