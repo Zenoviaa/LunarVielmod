@@ -504,6 +504,7 @@ namespace Stellamod.NPCs.Town
 			.Add<BlankBrooch>()
 			.Add<BlankOrb>()
 			.Add<GunHolster>()
+			.Add<Pulsing>()
 			.Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)
             .Add<GearGutter>(Condition.Hardmode)

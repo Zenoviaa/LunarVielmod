@@ -4,6 +4,7 @@ using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,6 +31,11 @@ namespace Stellamod.NPCs.Global
 				// This shop entry sells for 2 Defenders Medals.
 
 			};
+
+			if(shop.NpcType == NPCID.Demolitionist)
+			{
+				shop.Add(ModContent.ItemType<RocketLauncher>());
+			}
 
 			if (shop.NpcType == NPCID.Merchant)
 			{
