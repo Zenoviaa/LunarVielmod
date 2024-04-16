@@ -16,7 +16,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 30;
 
             //This number is in ticks
-            AttackSpeed = 60;
+            AttackSpeed = 2;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(0, -6);
@@ -29,16 +29,22 @@ namespace Stellamod.Projectiles.GunHolster
         {
             //Treat this like a normal shoot function
             float spread = 0.4f;
-            for (int k = 0; k < 14; k++)
+            for (int k = 0; k < 4; k++)
             {
                 Vector2 newDirection = direction.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Orange, Main.rand.NextFloat(0.4f, 0.8f));
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.LightCyan, Main.rand.NextFloat(0.4f, 0.8f));
             }
 
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 16,
-                ModContent.ProjectileType<BurnBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.White, 1);
+            for(int i = 0; i < Main.rand.Next(2, 5); i++)
+            {
+                Vector2 velocity = direction * 16;
+                velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity,
+                    ModContent.ProjectileType<MintyBlastProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/gun1"), Projectile.position);
         }
     }
