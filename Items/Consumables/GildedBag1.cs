@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -7,6 +8,7 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Creative;
@@ -58,7 +60,7 @@ namespace Stellamod.Items.Consumables
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<TrickPowder>());
 			}
 
-			if (Main.rand.NextBool(15))
+			if (Main.rand.NextBool(20))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MOTT>());
 			}
@@ -72,7 +74,16 @@ namespace Stellamod.Items.Consumables
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoneNail>());
 				}
 			}
-		
+
+			if (DownedBossSystem.downedZuiBoss)
+			{
+
+
+				if (Main.rand.NextBool(30))
+				{
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<MeredaX>());
+				}
+			}
 			if (Main.rand.NextBool(40))
 			{
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<VerstiDance>());

@@ -22,7 +22,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 28;
 
             //Higher is faster
-            AttackSpeed = 12;
+            AttackSpeed = 45;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
@@ -35,10 +35,10 @@ namespace Stellamod.Projectiles.GunHolster
         {
             //Treat this like a normal shoot function
             float spread = 0.4f;
-            for (int k = 0; k < 7; k++)
+            for (int k = 0; k < 20; k++)
             {
                 Vector2 newDirection = direction.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.OrangeRed, Main.rand.NextFloat(0.2f, 0.5f));
             }
             Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, ProjectileID.Bullet, Projectile.damage, Projectile.knockBack, Projectile.owner);
