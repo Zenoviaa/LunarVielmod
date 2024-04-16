@@ -31,6 +31,7 @@ namespace Stellamod.Projectiles.IgniterExplosions.Stein
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 30;
 			Projectile.scale = 1f;
+			Projectile.tileCollide = false;
 		}
 
 		public float Timer
