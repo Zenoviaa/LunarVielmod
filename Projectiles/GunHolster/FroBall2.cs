@@ -3,6 +3,7 @@ using ParticleLibrary;
 using Stellamod.Particles;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
@@ -37,6 +38,24 @@ namespace Stellamod.Projectiles.GunHolster
 		}
 		public float Timer2;
 
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			switch (Main.rand.Next(0, 4))
+			{
+				case 0:
+					target.AddBuff(BuffID.Frostburn, 120);
+					break;
+				case 1:
+					target.AddBuff(BuffID.Frostburn, 320);
+					break;
+				case 2:
+					target.AddBuff(BuffID.Frostburn2, 120);
+					break;
+				case 3:
+					target.AddBuff(BuffID.Frostburn, 60);
+					break;
+			}
+		}
 		public override void AI()
 		{
 			Timer2++;
