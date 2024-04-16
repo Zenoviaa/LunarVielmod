@@ -484,6 +484,7 @@
     <None Remove="Projectiles\Steins\SexyShot.png" />
     <None Remove="Projectiles\Steins\ShadingShot.png" />
     <None Remove="Projectiles\Steins\SHShot.png" />
+    <None Remove="Projectiles\Steins\SSShot.png" />
     <None Remove="Projectiles\Summons\MiracleSoul\MiracleSoulCollectibleProj.png" />
     <None Remove="Projectiles\Summons\Orbs\SineSireProj.png" />
     <None Remove="Projectiles\Summons\Starbombing.png" />

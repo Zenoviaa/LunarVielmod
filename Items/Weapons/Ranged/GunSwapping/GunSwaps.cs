@@ -163,7 +163,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class PoisonPistol : MiniGun
     {
         //Damage of this gun
-        public const int Base_Damage = 66;
+        public const int Base_Damage = 90;
         public override RightGunHolsterState RightHand => RightGunHolsterState.Poison_Pistol;
 
         public override void SetDefaults()

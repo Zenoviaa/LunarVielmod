@@ -24,6 +24,7 @@ using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
@@ -708,7 +709,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.FlipperPotion, Main.rand.Next(1, 3)));
 								break;
 							case 3:
-								itemsToAdd.Add((ModContent.ItemType<Vulcanius>(), Main.rand.Next(1, 1)));
+								itemsToAdd.Add((ModContent.ItemType<PoisonPistol>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								itemsToAdd.Add((ItemID.NightOwlPotion, Main.rand.Next(1, 3)));
