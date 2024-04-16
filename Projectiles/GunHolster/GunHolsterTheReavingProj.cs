@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles.GunHolster
                 newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
   
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, newVelocity, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, newVelocity * 12, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
         }

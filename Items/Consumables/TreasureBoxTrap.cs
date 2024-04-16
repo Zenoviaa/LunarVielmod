@@ -4,6 +4,7 @@ using Stellamod.Items.Accessories.Catacombs;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Terraria;
 using Terraria.GameContent;
@@ -44,6 +45,7 @@ namespace Stellamod.Items.Consumables
                 ModContent.ItemType<SpikedEmblem>(),
                 ModContent.ItemType<Panacea>(),
                 ModContent.ItemType<DungeonedRockCard>(),
+                ModContent.ItemType<Devolver>(),
                 ModContent.ItemType<Ragsaw>()));
 
         }
