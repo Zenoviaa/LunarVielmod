@@ -21,6 +21,8 @@ namespace Stellamod.Projectiles.GunHolster
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
 
+            IsRightHand = true;
+
             //Recoil
             RecoilDistance = 0;
         }

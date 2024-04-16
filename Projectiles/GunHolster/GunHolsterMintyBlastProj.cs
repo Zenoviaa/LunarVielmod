@@ -22,7 +22,7 @@ namespace Stellamod.Projectiles.GunHolster
             HolsterOffset = new Vector2(0, -6);
 
             //Right handed gun
-            IsRightHand = true;
+            IsRightHand = false;
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
