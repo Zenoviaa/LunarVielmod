@@ -5,6 +5,7 @@ using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.Utilis;
 using System;
@@ -151,6 +152,7 @@ namespace Stellamod.NPCs.Acidic
             if (Main.hardMode)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, 1, 1));
             }
             npcLoot.Add(ItemDropRule.Common(ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 4));
             npcLoot.Add(ItemDropRule.Common(ItemType<AcidStaketers>(), chanceDenominator: 30));

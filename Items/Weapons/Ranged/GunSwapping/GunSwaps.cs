@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Projectiles.GunHolster;
@@ -334,7 +335,8 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 50;
+            Item.damage = 9;
+            Item.value = Item.buyPrice(gold: 15);
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterShottyPitolProj>();
         }
@@ -348,6 +350,18 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 50;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterBubbleBussyProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ModContent.ItemType<AlcaricMush>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 30);
+            recipe.AddIngredient(ModContent.ItemType<DarkEssence>(), 9);
+            recipe.AddIngredient(ModContent.ItemType<AlcadizMetal>(), 9);
+            recipe.AddIngredient(ModContent.ItemType<WickofSorcery>(), 1);
+            recipe.Register();
         }
     }
 
