@@ -17,6 +17,7 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
@@ -377,6 +378,8 @@ namespace Stellamod.NPCs.Town
 			.Add(new Item(ItemID.Shuriken) { shopCustomPrice = Item.buyPrice(copper: 5) })
 			.Add(new Item(ItemID.BorealWood) { shopCustomPrice = Item.buyPrice(copper: 7) })
 			.Add(new Item(ItemID.ApplePie) { shopCustomPrice = Item.buyPrice(silver: 50) })
+			 .Add<AssassinsRecharge>(Condition.DownedGolem)
+
 			;
 			npcShop.Register(); // Name of this shop tab	
 
