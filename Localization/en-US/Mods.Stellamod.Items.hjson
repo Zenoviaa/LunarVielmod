@@ -6871,3 +6871,8 @@ ShottyPitol: {
 	DisplayName: Shotty Pitol
 	Tooltip: ""
 }
+
+RobedSandstone: {
+	DisplayName: Robed Sandstone
+	Tooltip: ""
+}
