@@ -80,7 +80,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 case RightGunHolsterState.Minty_Blast:
                     baseDamage = MintyBlast.Base_Damage;
                     knockback = 1;
-                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMintyBlastProj>(), baseDamage, knockback);
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMsFreezeProj>(), baseDamage, knockback);
                     break;
 
                 case RightGunHolsterState.Rocket_Launcher:
@@ -123,7 +123,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 case LeftGunHolsterState.Ms_Freeze:
                     baseDamage = MsFreeze.Base_Damage;
                     knockback = 1;
-                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMsFreezeProj>(), baseDamage, knockback);
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterMintyBlastProj>(), baseDamage, knockback);
                     break;
 
                 case LeftGunHolsterState.Ravest_Blast:

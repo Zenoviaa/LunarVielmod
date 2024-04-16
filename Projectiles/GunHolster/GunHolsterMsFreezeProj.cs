@@ -15,14 +15,14 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.width = 62;
             Projectile.height = 30;
 
-            //Higher is faster
-            AttackSpeed = 12;
+            //Higher is slower
+            AttackSpeed = 2;
 
             //Offset it so it doesn't hold gun by weird spot
             HolsterOffset = new Vector2(15, -6);
 
             //Recoil
-            RecoilDistance = 3;
+            RecoilDistance = 0;
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
@@ -32,12 +32,15 @@ namespace Stellamod.Projectiles.GunHolster
             for (int k = 0; k < 7; k++)
             {
                 Vector2 newDirection = direction.RotatedByRandom(spread);
-                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), newDirection * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.2f, 0.5f));
             }
-            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.DarkRed, 1);
+            Dust.NewDustPerfect(position, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, Color.Blue, 1);
 
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int useAmmoItemId, true);
+
+            projToShoot = Main.rand.Next(new int[] { ModContent.ProjectileType<FroBall2>(), ModContent.ProjectileType<FroBall1>() });
+
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, direction * 8, projToShoot, Projectile.damage, Projectile.knockBack, Projectile.owner);
 
 
@@ -50,6 +53,12 @@ namespace Stellamod.Projectiles.GunHolster
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"), Projectile.position);
             }
+
+
         }
+
+
+      
+
     }
 }
