@@ -238,7 +238,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
             Item.damage = 10;
             RightHand = true;
-            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMintyBlastProj>();
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMsFreezeProj>();
         }
 
         public override void AddRecipes()
@@ -259,7 +259,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
             Item.damage = 20;
             LeftHand = true;
-            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMsFreezeProj>();
+            GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMintyBlastProj>();
         }
     }
 
