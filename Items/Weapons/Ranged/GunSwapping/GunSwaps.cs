@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Ores;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -187,13 +190,23 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class MintyBlast : MiniGun
     {
         //Damage of this gun
-        public const int Base_Damage = 60;
+        public const int Base_Damage = 10;
 
         public override RightGunHolsterState RightHand => RightGunHolsterState.Minty_Blast;
         public override void SetDefaults()
         {
             base.SetDefaults();
             Item.damage = Base_Damage;
+        }
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 9);
+
+            recipe.Register();
         }
     }
 

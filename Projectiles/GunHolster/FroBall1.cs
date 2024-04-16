@@ -42,7 +42,7 @@ namespace Stellamod.Projectiles.GunHolster
 			Timer2++;
 			Projectile.velocity *= 0.99f;
 			Timer++;
-			if (Timer == 2)
+			if (Timer == 4)
 			{
 
 
