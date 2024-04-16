@@ -422,6 +422,7 @@
     <None Remove="Projectiles\GunHolster\BurnBlastProj.png" />
     <None Remove="Projectiles\GunHolster\FroBall1.png" />
     <None Remove="Projectiles\GunHolster\FroBall2.png" />
+    <None Remove="Projectiles\GunHolster\STARBULLING.png" />
     <None Remove="Projectiles\Gun\ClockworkBomb.png" />
     <None Remove="Projectiles\Gun\SpacticProj.png" />
     <None Remove="Projectiles\Gun\Venbullet.png" />
