@@ -582,30 +582,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-		public override void AddShops()
-		{
-			var npcShop = new NPCShop(Type, ShopName)
-			.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 5) })
-			.Add<Hitme>()
-			.Add<Hultinstein>()
-			.Add<VillagersBroochA>()
-			.Add<DriveConstruct>()
-			.Add<ArmorDrive>()
-			.Add<WeaponDrive>()
-			.Add<BlankCard>()
-			.Add<BlankCrossbow>()
-			.Add<BlankSafunai>()
-			.Add<BlankRune>()
-			.Add<BlankBrooch>()
-			.Add<BlankOrb>()
-			.Add<CogBomber>(Condition.Hardmode)
-			.Add<TheTingler>(Condition.Hardmode)
-			.Add<GearGutter>(Condition.Hardmode)
-			.Add<DelgrimsHammer>(Condition.Hardmode)
-			.Add(new Item(ItemID.Wire) { shopCustomPrice = Item.buyPrice(copper: 5) })
-			;
-			npcShop.Register(); // Name of this shop tab		
-		}
+		
 
 
 
