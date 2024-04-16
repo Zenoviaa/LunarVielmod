@@ -8,6 +8,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
@@ -131,9 +132,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
 			npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
-					ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 3, 1),
-					ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 3, 1, 40),
-					ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 3, 2, 5)
+					ItemDropRule.Common(ModContent.ItemType<FurihaMKIII>(), 4, 1),
+					ItemDropRule.Common(ModContent.ItemType<StarSilk>(), 4, 1, 40),
+					ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), 4, 2, 5),
+					ItemDropRule.Common(ModContent.ItemType<STARBUST>(), 4, 1, 1) 
 			));
 		}
 

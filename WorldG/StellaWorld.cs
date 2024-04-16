@@ -3156,7 +3156,7 @@ namespace Stellamod.WorldG
 							itemsToAdd.Add((specialItem, 1));
 						}
 						// Using a switch statement and a random choice to add sets of items.
-						switch (Main.rand.Next(9))
+						switch (Main.rand.Next(10))
 						{
 							case 0:
 								itemsToAdd.Add((ModContent.ItemType<GovheilPowder>(), Main.rand.Next(1, 1)));
@@ -3241,6 +3241,15 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
 								itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
 								break;
+
+							case 9:
+                                itemsToAdd.Add((ModContent.ItemType<Eagle>(), Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 15)));
+                                itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 33)));
+                                itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                                itemsToAdd.Add((ModContent.ItemType<LostScrap>(), Main.rand.Next(2, 10)));
+                                itemsToAdd.Add((ItemID.RegenerationPotion, Main.rand.Next(1, 7)));
+                                break;
 						}
 
 						// Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
@@ -6905,7 +6914,7 @@ namespace Stellamod.WorldG
                         if (tileType == ModContent.TileType<IlluriaChest>())
                         {
 							//Illura Chest Loot here
-							switch (Main.rand.Next(4))
+							switch (Main.rand.Next(5))
 							{
 								case 0:
 									//Illuria Brooch
@@ -6923,6 +6932,9 @@ namespace Stellamod.WorldG
                                     break;
 								case 3:
                                     itemsToAdd.Add((ModContent.ItemType<IllurianLoveLocket>(), 1));
+									break;
+								case 4:
+                                    itemsToAdd.Add((ModContent.ItemType<MsFreeze>(), 1));
 									break;
                             }
 
