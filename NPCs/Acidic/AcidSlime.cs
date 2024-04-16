@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.GameContent;
@@ -127,6 +128,7 @@ namespace Stellamod.NPCs.Acidic
             if (Main.hardMode)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SrTetanus>(), 20, 1, 1));
             }
 
             npcLoot.Add(ItemDropRule.Common(ItemID.Gel, minimumDropped: 1, maximumDropped: 2));

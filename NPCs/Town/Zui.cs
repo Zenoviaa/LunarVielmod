@@ -29,6 +29,7 @@ using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.Items.Armors.Vanity.Nyxia;
 using Terraria.DataStructures;
 using Stellamod.Items.Ammo;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 
 namespace Stellamod.NPCs.Town
 {
@@ -377,9 +378,11 @@ namespace Stellamod.NPCs.Town
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.SixQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThreeQuestsCompleted, -1);
 
+            var entitySource = NPC.GetSource_GiftOrReward();
+            Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<CarrotPatrol>(), 1);
 
 
-			ZuiQuestSystem.QuestsCompleted += 1;
+            ZuiQuestSystem.QuestsCompleted += 1;
             int DesertRuneItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<CompletedCollectorsBag>());
 			Main.LocalPlayer.inventory[DesertRuneItemIndex].TurnToAir();
             SendQuestPacket();
@@ -396,7 +399,8 @@ namespace Stellamod.NPCs.Town
 
 				var entitySource = NPC.GetSource_GiftOrReward();
 				Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-			}
+            
+            }
 			//Setting all previous quests to be complete, so it's backwards compatible with the old version.
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.ThirtyQuestsCompleted, -1);
 			NPC.SetEventFlagCleared(ref ZuiQuestSystem.TwentyQuestsCompleted, -1);

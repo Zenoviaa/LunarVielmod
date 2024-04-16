@@ -57,6 +57,7 @@ namespace Stellamod.NPCs.Global
 				// This item sells for the normal price.
 				shop.Add(ModContent.ItemType<FlamePowder>());
                 shop.Add(ModContent.ItemType<BasicGunParts>());
+				shop.Add(ModContent.ItemType<ShottyPitol>());
                 if (Main.hardMode)
                 {
 					shop.Add(ModContent.ItemType<RustlockPistol>());
