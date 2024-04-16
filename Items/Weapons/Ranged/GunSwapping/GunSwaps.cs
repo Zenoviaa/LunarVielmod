@@ -222,6 +222,18 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         }
     }
 
+    internal class Electrifying : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 20;
+        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Electrifying;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
     internal class  RavestBlast : MiniGun
     {        
         //Damage of this gun holster

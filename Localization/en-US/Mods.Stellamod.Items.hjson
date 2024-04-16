@@ -6844,3 +6844,8 @@ RocketLauncher: {
 	DisplayName: Rocket Launcher
 	Tooltip: Use to equip to your gun holster's right hand!
 }
+
+Electrifying: {
+	DisplayName: Electrifying
+	Tooltip: ""
+}
