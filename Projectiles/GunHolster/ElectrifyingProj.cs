@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.GunHolster
             Projectile.height = 16;
          
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 360;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = Projectile.timeLeft;
             Projectile.tileCollide = true;
@@ -90,6 +90,7 @@ namespace Stellamod.Projectiles.GunHolster
         public float WidthFunction(float completionRatio)
         {
             float fadeScale = Timer / 30;
+            fadeScale = MathHelper.Clamp(fadeScale, 0f, 1f);
             fadeScale = 1f - fadeScale;
             float baseWidth = Projectile.scale * 8 * fadeScale;
             return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
