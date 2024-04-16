@@ -25,6 +25,8 @@ namespace Stellamod.Projectiles.GunHolster
 
             //Recoil
             RecoilDistance = 0;
+            RecoilRotation = 0;
+            RecoilRotationMini = 0;
         }
 
         protected override void Shoot(Vector2 position, Vector2 direction)
