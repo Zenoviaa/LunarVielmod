@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Tech;
-using Stellamod.Items.Ores;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -36,6 +36,27 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                 OverrideColor = ColorFunctions.GunHolsterWeaponType
             };
             tooltips.Add(line);
+
+            if (IsSpecial)
+            {
+                line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
+                tooltips.Add(line);
+                line = new TooltipLine(Mod, "RightHanded", "OR right click to equip to your gun holster's right hand!");
+                tooltips.Add(line);
+            }
+            else
+            {
+                if (LeftHand != LeftGunHolsterState.None)
+                {
+                    line = new TooltipLine(Mod, "LeftHanded", "Use to equip to your gun holster's left hand!");
+                    tooltips.Add(line);
+                }
+                if (RightHand != RightGunHolsterState.None)
+                {
+                    line = new TooltipLine(Mod, "RightHanded", "Use to equip to your gun holster's right hand!");
+                    tooltips.Add(line);
+                }
+            }
 
             if (!Main.LocalPlayer.HasItemInAnyInventory(ModContent.ItemType<GunHolster>()))
             {
@@ -102,6 +123,26 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             //Right-Handed Cannon
             //Right-Handed Rocket Launcher
             return base.UseItem(player);
+        }
+
+        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Texture2D iconTexture = null;
+            const string Base_Path = "Stellamod/Items/Weapons/Ranged/GunSwapping/";
+
+            if (IsSpecial)
+            {
+                iconTexture = ModContent.Request<Texture2D>($"{Base_Path}LR").Value;
+            } else if(LeftHand != LeftGunHolsterState.None)
+            {
+                iconTexture = ModContent.Request<Texture2D>($"{Base_Path}L").Value;
+            } else if(RightHand != RightGunHolsterState.None)
+            {
+                iconTexture = ModContent.Request<Texture2D>($"{Base_Path}R").Value;
+            }
+            Vector2 drawOrigin = iconTexture.Size() / 2;
+            Vector2 drawPosition = position + drawOrigin;
+            spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
         }
     }
 
@@ -259,6 +300,71 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         //Damage of this gun
         public const int Base_Damage = 42;
         public override LeftGunHolsterState LeftHand => LeftGunHolsterState.STARBUST;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+
+    internal class Devolver : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 42;
+        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Devolver;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+
+    internal class CinderNeedle : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 42;
+        public override LeftGunHolsterState LeftHand => LeftGunHolsterState.Cinder_Needle;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+    internal class ShottyPitol : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 50;
+
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Shotty_Pitol;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+    internal class BubbleBussy : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 50;
+
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Bubble_Bussy;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = Base_Damage;
+        }
+    }
+
+    internal class AssassinsRecharge : MiniGun
+    {
+        //Damage of this gun
+        public const int Base_Damage = 50;
+
+        public override RightGunHolsterState RightHand => RightGunHolsterState.Assassins_Recharge;
         public override void SetDefaults()
         {
             base.SetDefaults();

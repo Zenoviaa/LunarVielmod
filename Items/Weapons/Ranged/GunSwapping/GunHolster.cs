@@ -19,7 +19,9 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         Ms_Freeze,
         Ravest_Blast,
         Electrifying,
-        STARBUST
+        STARBUST,
+        Cinder_Needle,
+        Devolver
     }
 
     public enum RightGunHolsterState
@@ -30,7 +32,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         Minty_Blast,
         Rocket_Launcher,
         Ravest_Blast,
-        Pulsing
+        Pulsing,
+        Bubble_Bussy,
+        Shotty_Pitol,
+        Assassins_Recharge
     }
 
     internal class GunPlayer : ModPlayer
@@ -102,6 +107,24 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterPulsingProj>(), baseDamage, knockback);
                     break;
+
+                case RightGunHolsterState.Bubble_Bussy:
+                    baseDamage = BubbleBussy.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterBubbleBussyProj>(), baseDamage, knockback);
+                    break;
+
+                case RightGunHolsterState.Shotty_Pitol:
+                    baseDamage = ShottyPitol.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterShottyPitolProj>(), baseDamage, knockback);
+                    break;
+
+                case RightGunHolsterState.Assassins_Recharge:
+                    baseDamage = AssassinsRecharge.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterAssassinsRechargeProj>(), baseDamage, knockback);
+                    break;
             }
 
             switch (LeftHand)
@@ -144,6 +167,18 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
                     baseDamage = STARBUST.Base_Damage;
                     knockback = 1;
                     HolsterGun(Player, ModContent.ProjectileType<GunHolsterSTARBUSTProj>(), baseDamage, knockback);
+                    break;
+
+                case LeftGunHolsterState.Cinder_Needle:
+                    baseDamage = CinderNeedle.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterCinderNeedleProj>(), baseDamage, knockback);
+                    break;
+
+                case LeftGunHolsterState.Devolver:
+                    baseDamage = Devolver.Base_Damage;
+                    knockback = 1;
+                    HolsterGun(Player, ModContent.ProjectileType<GunHolsterDevolverProj>(), baseDamage, knockback);
                     break;
             }
         }
