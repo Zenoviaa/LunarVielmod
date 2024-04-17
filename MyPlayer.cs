@@ -255,6 +255,7 @@ namespace Stellamod
         public NPC AssassinsSlashnpc;
         public bool StealthRune;
         public bool SingularityFragment;
+		public bool NiiviFight;
         public float StealthTime;
 
         public bool CorsageRune;
@@ -825,7 +826,10 @@ namespace Stellamod
             {
                 IrradiatedKilled = 0;
             }
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) || NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || 
+				NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || 
+				NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) || 
+				NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
                 SingularityFragment = true;
             }
@@ -839,7 +843,7 @@ namespace Stellamod
             }
 
 
-			if (SingularityFragment)
+			if (SingularityFragment || NiiviFight)
             {
                 if (Main.shimmerAlpha <= 1)
                 {

@@ -7,16 +7,28 @@ namespace Stellamod.NPCs.Bosses.Niivi
 {
     internal partial class Niivi
     {
+        public float LookDirection = -1;
+
         public float TargetHeadRotation;
         public float TargetSegmentRotation;
 
         public float OscTimer;
         public float OscDir = 1;
+
+        public float OrientationSpeed = 0.2f;
         private void UpdateOrientation()
         {
             //This makes it smoothly enter the thingy
-            HeadRotation = MathHelper.Lerp(HeadRotation, TargetHeadRotation, 0.2f);
-            SegmentTurnRotation = MathHelper.Lerp(SegmentTurnRotation, TargetSegmentRotation, 0.2f);
+            float targetHeadRotation = TargetHeadRotation;
+            if (LookDirection == -1)
+            {
+                targetHeadRotation += MathHelper.Pi;
+                targetHeadRotation = MathHelper.WrapAngle(targetHeadRotation);
+            }
+
+
+            HeadRotation = MathHelper.Lerp(HeadRotation, targetHeadRotation, 0.04f);
+            SegmentTurnRotation = MathHelper.Lerp(SegmentTurnRotation, TargetSegmentRotation, 0.04f);
 
             float duration = 300f;
             //Oscillate
@@ -41,7 +53,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void OrientArching()
         {
-            TargetSegmentRotation = -(MathHelper.PiOver4 / Total_Segments);
+            TargetSegmentRotation = (MathHelper.PiOver4 / Total_Segments) * 1.3f * -LookDirection;
             TargetHeadRotation = MathHelper.PiOver4;
         }
 
@@ -49,6 +61,20 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             TargetSegmentRotation = (MathHelper.PiOver4 / Total_Segments) / 3;
             TargetHeadRotation = 0;
+        }
+
+        private void FlipToDirection()
+        {
+            if (LookDirection < 0)
+            {
+                FlightDirection = -1;
+                StartSegmentDirection = Vector2.UnitX;
+            }
+            else
+            {
+                FlightDirection = 1;
+                StartSegmentDirection = -Vector2.UnitX;
+            }
         }
 
         private void LookAtTarget()
@@ -59,11 +85,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
             if(distanceToTarget < tiles.TilesToDistance())
             {
-                TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation();
+                TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation() * LookDirection;
             } else
             {
                 TargetHeadRotation = MathHelper.PiOver4;
             }
         }
+
     }
 }
