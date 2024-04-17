@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Ranged
         private int _attackStyle;
         public override void SetDefaults()
         {
-            Item.damage = 70;
+            Item.damage = 55;
             Item.crit = 4;
             Item.knockBack = 3f;
             Item.width = 62;
@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
             _attackStyle = newForm;
             if (_attackStyle == 1)
             {
-                Item.damage = 72;
+                Item.damage = 60;
                 Item.DamageType = DamageClass.Magic;
                 Item.mana = 4;
 

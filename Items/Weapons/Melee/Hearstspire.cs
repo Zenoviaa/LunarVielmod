@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Melee
         }
         public override void SetDefaults()
         {
-            Item.damage = 12;
+            Item.damage = 10;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;
@@ -102,7 +102,7 @@ namespace Stellamod.Items.Weapons.Melee
             recipe.AddTile(TileID.Anvils);
             recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 22);
             recipe.AddIngredient(ModContent.ItemType<GintzlMetal>(), 22);
-            recipe.AddIngredient(ItemID.LifeCrystal, 12);
+            recipe.AddIngredient(ItemID.LifeCrystal, 10);
             recipe.Register();
         }
     }

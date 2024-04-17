@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
         public int combowombo = 0;
         public override void SetDefaults()
         {
-            Item.damage = 20;
+            Item.damage = 23;
             Item.DamageType = DamageClass.Melee;
             Item.width = 0;
             Item.height = 0;

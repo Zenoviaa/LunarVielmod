@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
         public override void SetDefaults()
         {
-            Item.damage = 59;
+            Item.damage = 40;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 40;
             Item.noUseGraphic = true;

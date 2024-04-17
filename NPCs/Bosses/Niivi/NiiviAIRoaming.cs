@@ -6,8 +6,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
 {
     internal partial class Niivi
     {
-        //Number of tiles to fly off
-        public const float Max_Roaming_Time = 7200;
 
         public float RoamingDirection = -1f;
         public float RoamingSpeed = 2;
@@ -15,9 +13,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AIRoaming()
         {
+            float maxRoamingTime = 2400;
+            NPC.TargetClosest();
             //Fly to the left of the world and back
             RoamingTime++;
-            if(RoamingTime > Max_Roaming_Time)
+            if(RoamingTime > maxRoamingTime)
             {
                 RoamingTime = 0;
                 RoamingDirection = -RoamingDirection;
@@ -26,14 +26,18 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(RoamingDirection < 0)
             {
                 FlightDirection = -1;
+                LookDirection = -1;
                 StartSegmentDirection = Vector2.UnitX;
                 OrientStraight();
+                TargetHeadRotation = NPC.velocity.ToRotation();
             }
             else
             {
                 FlightDirection = 1;
+                LookDirection = 1;
                 StartSegmentDirection = -Vector2.UnitX;
                 OrientStraight();
+                TargetHeadRotation = NPC.velocity.ToRotation();
             }
 
             Vector2 targetVelocity = Vector2.UnitX * RoamingSpeed * RoamingDirection;  

@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Ranged
     {
         public override void SetDefaults()
         {
-            Item.damage = 14;
+            Item.damage = 12;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -62,7 +62,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             if (player.GetModPlayer<MyPlayer>().ArchariliteSC)
             {
-                Item.damage = 21;
+                Item.damage = 18;
                 Item.useTime = 25;
                 Item.shootSpeed = 55f;
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrowSC>(), damage, knockback, player.whoAmI);
@@ -77,7 +77,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             else
             {
-                Item.damage = 14;
+                Item.damage = 12;
                 Item.useTime = 31;
                 Item.shootSpeed = 40f;
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ArchariliteArrow>(), damage, knockback, player.whoAmI);

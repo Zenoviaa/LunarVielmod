@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Stellamod.NPCs.Bosses.Fenix;
+using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,6 +21,19 @@ namespace Stellamod.NPCs.Bosses.Niivi
             BossFight
         }
 
+        public enum BossActionState
+        {
+            Idle,
+            Frost_Breath,
+            Laser_Blast,
+            Star_Wrath,
+            Charge,
+            Thunderstorm,
+            Baby_Dragons,
+            Swoop_Out,
+            PrepareAttack
+        }
+
         public ActionState State
         {
             get
@@ -32,6 +48,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         ref float Timer => ref NPC.ai[1];
         ref float AttackTimer => ref NPC.ai[2];
+
+        BossActionState BossState;
+        BossActionState NextAttack;
+        int ScaleDamageCounter;
+        int AggroDamageCounter;
+
+
 
         public override void SetStaticDefaults()
         {
@@ -74,7 +97,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.knockBackResist = 0;
-            OrientArching();
+
+            NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
+
+
         }
 
         public override bool CheckActive()
@@ -90,9 +116,66 @@ namespace Stellamod.NPCs.Bosses.Niivi
             return false;
         }
 
+        private void ResetState(ActionState actionState)
+        {
+            State = actionState;
+            if(State == ActionState.BossFight)
+            {
+                // Custom boss bar
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().NiiviFight = true;
+                NPC.BossBar = ModContent.GetInstance<QueenBossBar>();
+                NPC.boss = true;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Niivi");
+            }
+            else
+            {
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().NiiviFight = false;
+                NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+                Music = -1;
+            }
+        }
+
+        private void ResetState(BossActionState bossActionState)
+        {
+            BossState = bossActionState;
+            Timer = 0;
+            AttackTimer = 0;
+            NPC.netUpdate = true;
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+
+            int lifeToGiveIllurineScale = NPC.lifeMax / 300;
+            int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
+            if (StellaMultiplayer.IsHost)
+            {
+                AggroDamageCounter += hit.Damage;
+                ScaleDamageCounter += hit.Damage;
+
+                int lifeToGive = State == ActionState.BossFight ? lifeToGiveIllurineScaleInBoss : lifeToGiveIllurineScale;
+                if (ScaleDamageCounter >= lifeToGive)
+                {
+                    Vector2 velocity = -Vector2.UnitY;
+                    velocity *= Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
+                        ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
+                    ScaleDamageCounter = 0;
+                }
+
+                if (AggroDamageCounter >= lifeToGiveIllurineScale * 15 && State != ActionState.BossFight)
+                {
+                    ResetState(ActionState.BossFight);
+                    ResetState(BossActionState.Idle);
+                    AggroDamageCounter = 0;
+                }
+            }
+        }
+
         public override void AI()
         {
-            NPC.TargetClosest();
             switch (State)
             {
                 case ActionState.Roaming:

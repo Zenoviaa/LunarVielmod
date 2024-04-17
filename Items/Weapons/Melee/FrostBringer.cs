@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 18;
+            Item.damage = 12;
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.width = 50;
@@ -60,9 +60,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 13);
             recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 8);
-            recipe.AddIngredient(ItemID.SnowBlock, 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

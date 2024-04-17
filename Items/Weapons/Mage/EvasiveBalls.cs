@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 11;
+			Item.damage = 8;
 			Item.mana = 2;
 			Item.width = 40;
 			Item.height = 40;
@@ -40,10 +40,10 @@ namespace Stellamod.Items.Weapons.Mage
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.BorealWood, 10);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();
-			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
+			recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 2);
+			recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 20);
 		}
 	}
