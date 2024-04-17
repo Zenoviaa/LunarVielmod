@@ -59,6 +59,7 @@ namespace Stellamod.Projectiles.Chains
                     Vector2 direction = Projectile.DirectionTo(player.Center);
                     direction = -direction;
                     player.velocity += direction * 8;
+                    player.wingTime = player.wingTimeMax;
                 } 
                 else if(distanceToPlayer > Circle_Radius + 64 && distanceToPlayer < Outer_Circle_Radius)
                 {
