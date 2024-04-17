@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Mage
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 30;
+			Item.damage = 25;
 			Item.mana = 5;
 			Item.width = 18;
 			Item.height = 21;
@@ -40,10 +40,9 @@ namespace Stellamod.Items.Weapons.Mage
             base.AddRecipes();
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
-			recipe.AddRecipeGroup(nameof(ItemID.Candle), 1);
+			recipe.AddRecipeGroup(nameof(ItemID.Torch), 1);
 			recipe.AddIngredient(ItemID.HellstoneBar, 12);
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 7);
-			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 7);
 			recipe.Register();
 		}
     }

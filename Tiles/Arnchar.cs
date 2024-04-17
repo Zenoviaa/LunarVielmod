@@ -29,7 +29,7 @@ namespace Stellamod.Tiles
 			DustType = DustID.Torch;;
 			HitSound = SoundID.DD2_CrystalCartImpact;
 			MineResist = 1f;
-			MinPick = 50;
+			MinPick = 20;
 			// name.SetDefault("Arnchar");
 			RegisterItemDrop(ModContent.ItemType<ArncharChunk>());
         }

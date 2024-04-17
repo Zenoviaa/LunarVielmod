@@ -27,7 +27,7 @@ namespace Stellamod.Items.Weapons.Mage
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
             Item.mana = 0;
-            Item.damage = 48;
+            Item.damage = 42;
         }
 
         public override void SetStaticDefaults()
@@ -61,7 +61,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
 
-            Item.damage = 43; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 39; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Magic;
             Item.width = 20; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item
