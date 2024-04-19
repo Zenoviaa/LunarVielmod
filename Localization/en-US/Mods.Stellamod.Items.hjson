@@ -2038,27 +2038,44 @@ AcidBody: {
 
 AcidHelm: {
 	DisplayName: Virulent Helm
-	Tooltip: Slightly increased Melee damage and crit strike chance!
+	Tooltip: 
+		Tooltip:
+		'''
+		Increased melee damage by 5%
+		Increased melee critical strike chance by 1%
+		'''
 }
 
 AcidLegs: {
 	DisplayName: Virulent Legs
-	Tooltip: Increased movement speed :P
+	Tooltip: Slightly increased movement speed :P
 }
 
 AcidMask: {
 	DisplayName: Virulent Mask
-	Tooltip: Increased Ranged damage and crit chance!
+	Tooltip: 
+		'''
+		Increased ranged damage by 5%
+		Increased ranged critical strike chance by 8%
+		'''
 }
 
 AcidRobe: {
 	DisplayName: Virulent Robe
-	Tooltip: Increased Magic damage and crit chance!
+	Tooltip:
+		'''
+		Increased magic damage by 5%
+		Increased magic critical strike chance by 6%
+		'''
 }
 
 AcidVisor: {
 	DisplayName: Virulent Visor
-	Tooltip: Increased Throwing damage and crit chance!
+	Tooltip:
+		'''
+		Increased throwing damage by 6%
+		Increased throwing critical strike chance by 7%
+		'''
 }
 
 AstrasilkBody: {
