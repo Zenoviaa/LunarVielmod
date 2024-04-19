@@ -2063,12 +2063,12 @@ AcidVisor: {
 
 AstrasilkBody: {
 	DisplayName: Astrasilk Body
-	Tooltip: ""
+	Tooltip: Increases magic critical strike chance by 15%
 }
 
 AstrasilkHead: {
 	DisplayName: Astrasilk Head
-	Tooltip: Increases Mana Regen by 4%
+	Tooltip: Slightly increases mana regeneration
 }
 
 AstrasilkLegs: {
