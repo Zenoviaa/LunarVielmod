@@ -9,12 +9,6 @@ namespace Stellamod.Items.Armors.AcidArmour
     [AutoloadEquip(EquipType.Head)]
     public class AcidRobe : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Acid Robe");
-			// Tooltip.SetDefault("Increases magic by 5% and magic critical strike chance by 6%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -34,15 +28,20 @@ namespace Stellamod.Items.Armors.AcidArmour
         {
             return body.type == Mod.Find<ModItem>("AcidBody").Type && legs.type == Mod.Find<ModItem>("AcidLegs").Type;
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
+
         public override void UpdateArmorSet(Player player)
         {
+            player.setBonus = "Stand still to emit a toxic aura!";
             player.manaCost -= 0.5F;
-            player.moveSpeed = 2f;
+            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
+            player.moveSpeed += 0.2f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();

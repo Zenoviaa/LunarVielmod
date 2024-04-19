@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
@@ -5,16 +7,102 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Astrasilk
 {
+    public class AstrasilkPlayer : ModPlayer
+    {
+        /*
+         * Astrasilk 
+            Player obtains five spinning stars around them,
+            Hitting an enemy, will get rid of one of the stars if all five stars are removed, a giant falling star will rain and hit the enemy
+            If you hit one enemy and hit a different enemy, all stars will come back
+         */
+
+        private int _starCount;
+        private int _lastHitEnemy;
+
+        private int StarProjType => ModContent.ProjectileType<AstrasilkStarProj>();
+        private int GigaStarProjType => ModContent.ProjectileType<AstrasilkGigaStarProj>();
+        private int OwnedStars => Player.ownedProjectileCounts[StarProjType];
+
+        public bool hasSetBonus;
+        public override void ResetEffects()
+        {
+            hasSetBonus = false;
+        }
+
+
+        public override void PostUpdateEquips()
+        {
+            if (!hasSetBonus)
+                return;
+
+            if(OwnedStars < _starCount)
+            {
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    StarProjType, 0, 1, Player.whoAmI);
+            }
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (!hasSetBonus)
+                return;
+
+            if (target.whoAmI != _lastHitEnemy)
+            {
+                ResetStarCount();
+            }
+            else
+            {
+                _starCount--;
+                KillOneStar();
+                if (_starCount == 0)
+                {
+                    //Big star
+                    float speed = 20;
+                    Vector2 spawnPosition = target.Center + new Vector2(0, -512);
+                    Vector2 velocity = spawnPosition.DirectionTo(target.Center).RotatedByRandom(MathHelper.PiOver4 / 64);
+                    velocity *= speed;
+
+                    int damage = 50;
+                    int knockback = 5;
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), spawnPosition, velocity,
+                        GigaStarProjType, damage, knockback, Player.whoAmI);
+                }
+            }
+            _lastHitEnemy = target.whoAmI;
+        }
+
+        private void ResetStarCount()
+        {
+            _starCount = 5;
+            foreach (Projectile proj in Main.ActiveProjectiles)
+            {
+                if (proj.owner != Player.whoAmI)
+                    continue;
+                if (proj.type != StarProjType)
+                    continue;
+                proj.Kill();
+            }
+        }
+
+        private void KillOneStar()
+        {
+            foreach (Projectile proj in Main.ActiveProjectiles)
+            {
+                if (proj.owner != Player.whoAmI)
+                    continue;
+                if (proj.type != StarProjType)
+                    continue;
+                proj.Kill();
+                break;
+            }
+        }
+    }
+
+
     [AutoloadEquip(EquipType.Head)]
     public class AstrasilkHead : ModItem
     {
-        public bool Spetalite = false;
-        public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Astrasilk Hat");
-			// Tooltip.SetDefault("Increases Mana Regen by 4%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -31,7 +119,8 @@ namespace Stellamod.Items.Armors.Astrasilk
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<AstrasilkBody>() && legs.type == ModContent.ItemType<AstrasilkLegs>();
+            return body.type == ModContent.ItemType<AstrasilkBody>() 
+                && legs.type == ModContent.ItemType<AstrasilkLegs>();
         }
 
         public override void ArmorSetShadows(Player player)
@@ -41,7 +130,8 @@ namespace Stellamod.Items.Armors.Astrasilk
 
         public override void UpdateArmorSet(Player player)
         {
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().Leather = true;
+            player.setBonus = "Stars orbit around you\nHit an enemy 5 times to rain down a gigantic star upon them!";
+            player.GetModPlayer<AstrasilkPlayer>().hasSetBonus = true;
         }
 
         public override void AddRecipes() 
