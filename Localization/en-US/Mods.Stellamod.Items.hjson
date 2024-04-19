@@ -2033,7 +2033,7 @@ WoodShield: {
 
 AcidBody: {
 	DisplayName: Virulent Body
-	Tooltip: Life regeneration is increased by a small amount.
+	Tooltip: Slightly increased life regeneration
 }
 
 AcidHelm: {
