@@ -63,7 +63,7 @@ namespace Stellamod.Items.Armors.Astrasilk
                     Vector2 velocity = spawnPosition.DirectionTo(target.Center).RotatedByRandom(MathHelper.PiOver4 / 64);
                     velocity *= speed;
 
-                    int damage = 50;
+                    int damage = 20;
                     int knockback = 5;
                     Projectile.NewProjectile(Player.GetSource_FromThis(), spawnPosition, velocity,
                         GigaStarProjType, damage, knockback, Player.whoAmI);
