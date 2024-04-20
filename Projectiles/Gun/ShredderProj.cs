@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.timeLeft = 180;
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 25;
+            Projectile.idStaticNPCHitCooldown = 12;
         }
 
         public override void AI()
