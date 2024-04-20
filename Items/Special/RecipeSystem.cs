@@ -29,15 +29,10 @@ namespace Stellamod.Items.Special
                     recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
 
-                if (recipe.TryGetResult(ItemID.TempleKey, out Item result3))
-                {
-                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
-                    recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 15);
-                    recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 3);
-                    recipe.AddIngredient(ModContent.ItemType<TempleKeyMold>(), 1);
-                    recipe.AddIngredient(ModContent.ItemType<TempleKeyPart>(), 1);
-                }
+              
             }
         }
+      
+
     }
 }
