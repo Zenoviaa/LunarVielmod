@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -29,7 +31,11 @@ namespace Stellamod.Items.Special
 
                 if (recipe.TryGetResult(ItemID.TempleKey, out Item result3))
                 {
+                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 5);
                     recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 15);
+                    recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 3);
+                    recipe.AddIngredient(ModContent.ItemType<TempleKeyMold>(), 1);
+                    recipe.AddIngredient(ModContent.ItemType<TempleKeyPart>(), 1);
                 }
             }
         }
