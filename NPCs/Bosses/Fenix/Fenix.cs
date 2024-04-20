@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.Size = new Vector2(63, 50);
 			NPC.damage = 1;
 			NPC.defense = 50;
-			NPC.lifeMax = 78900;
+			NPC.lifeMax = 79900;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
