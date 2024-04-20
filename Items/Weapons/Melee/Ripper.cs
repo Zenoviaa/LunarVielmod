@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Melee
 		private int _attackStyle;
 		public override void SetDefaults()
         {
-			Item.damage = 70;
+			Item.damage = 54;
 			Item.crit = 4;
 			Item.knockBack = 3f;
 			Item.width = 62;

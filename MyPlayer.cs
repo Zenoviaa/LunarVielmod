@@ -736,7 +736,19 @@ namespace Stellamod
 
 				Sirestiastalk = true;
 			}
-			
+			if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+			{
+
+				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+				//2. Create a new instance of your dialogue
+				SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
+
+				//3. Start it
+				dialogueSystem.StartDialogue(exampleDialogue);
+
+				Zuitalk = true;
+			}
 
 
 
@@ -2527,17 +2539,18 @@ namespace Stellamod
 		}
 
 		bool Sirestiastalk;
+		bool Zuitalk;
 		public override void SaveData(TagCompound tag)
 		{
 			tag["Sirestiastalk"] = Sirestiastalk;
-
+			tag["Zuitalk"] = Zuitalk;
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
 
 			Sirestiastalk = tag.GetBool("Sirestiastalk");
-
+			Zuitalk = tag.GetBool("Zuitalk");
 		}
 
 
