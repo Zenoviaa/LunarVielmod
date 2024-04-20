@@ -1100,7 +1100,7 @@ MorrowSword: {
 
 MorrowValswa: {
 	DisplayName: Fabled Valswa
-	Tooltip: Very bad sword don't use it, I warned you
+	Tooltip: A sword that shoots Fabled knives!
 }
 
 PalmThrower: {
