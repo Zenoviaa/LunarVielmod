@@ -6917,3 +6917,13 @@ TheReaving: {
 	DisplayName: The Reaving
 	Tooltip: ""
 }
+
+TempleKeyMold: {
+	DisplayName: Temple Key Mold
+	Tooltip: ""
+}
+
+TempleKeyPart: {
+	DisplayName: Temple Key Part
+	Tooltip: ""
+}
