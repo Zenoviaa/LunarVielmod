@@ -2038,7 +2038,7 @@ AcidBody: {
 
 AcidHelm: {
 	DisplayName: Virulent Helm
-	Tooltip: 
+	Tooltip:
 		'''
 		+5% melee damage
 		+1% melee critical strike chance
@@ -2052,7 +2052,7 @@ AcidLegs: {
 
 AcidMask: {
 	DisplayName: Virulent Mask
-	Tooltip: 
+	Tooltip:
 		'''
 		+5% ranged damage
 		+8% ranged critical strike chance

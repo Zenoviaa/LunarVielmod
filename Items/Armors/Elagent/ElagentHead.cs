@@ -25,6 +25,9 @@ namespace Stellamod.Items.Armors.Elagent
             if (!CanUseEffect(target))
                 return;
 
+            if (hit.DamageType != DamageClass.Summon)
+                return;
+
             //Angel stuff
             if (Main.rand.NextBool(50))
             {
