@@ -103,6 +103,26 @@ namespace Stellamod.Items.Armors.Astrasilk
     [AutoloadEquip(EquipType.Head)]
     public class AstrasilkHead : ModItem
     {
+
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Astolfo Wig");
+            /* Tooltip.SetDefault("Yummy kummy :3"
+				+ "\n+2% increased damage" +
+				"\n+35 Health" +
+				"\nIncreased Pickaxe Speed!"); */
+            ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+
+            // If your head equipment should draw hair while drawn, use one of the following:
+            // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
+            // ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
+            // ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
+            // ArmorIDs.Head.Sets.DrawBackHair[Item.headSlot] = true;
+            // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true; 
+        }
+
+
         public override void SetDefaults()
         {
             Item.width = 40;
