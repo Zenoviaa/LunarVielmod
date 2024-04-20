@@ -459,12 +459,12 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.HomeRunZui:
-					NPC.damage = 100;
+					NPC.damage = 200;
 					HomeRunZui();
 					break;
 
 				case ActionState.AnticipateDashZui:
-					NPC.damage = 210;
+					NPC.damage = 260;
 					SlasherZui();
 					break;
 
@@ -479,7 +479,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.SonicDashZui:
-					NPC.damage = 300;
+					NPC.damage = 310;
 					SonicZui();
 					break;
 
@@ -2049,14 +2049,14 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 
 
-			if (timer == 64 && ZuiSonic < 6)
+			if (timer == 64 && ZuiSonic < 8)
 			{
 				ResetTimers();
 				State = ActionState.SonicDashZui;
 				timer = 0;
 			}
 
-			if (timer == 64 && ZuiSonic >= 6)
+			if (timer == 64 && ZuiSonic >= 8)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				if (StellaMultiplayer.IsHost)
