@@ -23,8 +23,8 @@ namespace Stellamod.Projectiles.Spears
         public override void SetDefaults()
         {
             Projectile.penetrate = 5;
-            Projectile.width = 80;
-            Projectile.height = 80;
+            Projectile.width = 82;
+            Projectile.height = 82;
             Projectile.timeLeft = 660;
             Projectile.friendly = true;
             Projectile.hostile = false;
