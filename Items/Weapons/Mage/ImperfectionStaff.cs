@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
-            Item.damage = 130;
+            Item.damage = 102;
             Item.knockBack = 3;
             Item.mana = 4;
             Item.useTime = 45;
@@ -59,7 +59,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
 
-            Item.damage = 106; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 69; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Magic;
             Item.width = 20; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item
@@ -84,7 +84,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            float numberProjectiles = 7;
+            float numberProjectiles = 6;
             float rotation = MathHelper.ToRadians(14);
             position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
             for (int i = 0; i < numberProjectiles; i++)

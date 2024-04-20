@@ -167,7 +167,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = 18;
+            Item.damage = 15;
             Item.width = 56;
             Item.height = 30;
             Item.value = Item.buyPrice(gold: 5);
@@ -214,7 +214,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 90;
+            Item.damage = 70;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterPoisonPistolProj>();
         }
@@ -282,7 +282,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             base.SetDefaults();
 
             //Setting this to width and height of the texture cause idk
-            Item.damage = 262;
+            Item.damage = 202;
             Item.width = 56;
             Item.height = 30;
             Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
@@ -381,7 +381,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 92;
+            Item.damage = 82;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCarrotPatrolProj>();
         }
@@ -392,7 +392,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 92;
+            Item.damage = 86;
             LeftHand = true;
             RightHand = true;
             TwoHands = true;
@@ -417,7 +417,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 166;
+            Item.damage = 136;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterTheReavingProj>();
         }
