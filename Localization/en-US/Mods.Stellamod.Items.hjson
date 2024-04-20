@@ -5759,7 +5759,7 @@ HeatedVerliaBroochA: {
 	Tooltip:
 		'''
 		When hitting enemies, frost icings and golden showers will rain upon your enemies doing great damage!
-		+25% Damage to throwing and Ranged Weapons!
+		+15% Damage to throwing and Ranged Weapons!
 		'''
 	DisplayName: Radiated Sun and Moon Brooch
 }
