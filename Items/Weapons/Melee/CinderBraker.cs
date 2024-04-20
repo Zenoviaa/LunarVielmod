@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.knockBack = 7;
             Item.value = Item.sellPrice(0, 3, 20, 14);
             Item.rare = ItemRarityID.Blue;
-
+            Item.noUseGraphic = true;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<CBCustomSwingProjectile>();
             Item.shootSpeed = 8f;
