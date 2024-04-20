@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using ParticleLibrary;
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Particles;
 using Terraria;
 using Terraria.ID;
@@ -25,6 +26,7 @@ namespace Stellamod.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
+
             player.lifeRegen -= 16;
             player.manaRegen -= 8;
             player.blind = true;

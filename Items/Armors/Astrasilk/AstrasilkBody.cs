@@ -24,7 +24,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 
         public override void UpdateEquip(Player player)
         {
-            player.GetCritChance(DamageClass.Magic) += 25f;
+            player.GetCritChance(DamageClass.Magic) += 15f;
         }
 
         public override void AddRecipes()

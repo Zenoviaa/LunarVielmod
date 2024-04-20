@@ -369,11 +369,27 @@ namespace Stellamod.WorldG
 				}
 			}
 
+			//Purple Tree
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+                int Y = WorldGen.genRand.Next(0, Main.UnderworldLayer);
+                int yBelow = Y + 1;
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.Dirt)
+                {
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Ambient.TreeOver3>());
+
+                }
+            }
 
 
 
-		}
-		Point pointVeri;
+        }
+        Point pointVeri;
 		Point pointAlcadthingy;
 		private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
 		{

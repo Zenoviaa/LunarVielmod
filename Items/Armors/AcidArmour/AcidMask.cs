@@ -9,12 +9,6 @@ namespace Stellamod.Items.Armors.AcidArmour
     [AutoloadEquip(EquipType.Head)]
     public class AcidMask : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Acid Mask");
-			// Tooltip.SetDefault("Increases ranged ranged by 5% and ranged critical strike chance by 8%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -42,7 +36,9 @@ namespace Stellamod.Items.Armors.AcidArmour
 
         public override void UpdateArmorSet(Player player)
         {
-            player.moveSpeed = 2f;
+            player.setBonus = "Stand still to emit a toxic aura!";
+            player.moveSpeed += 0.2f;
+            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
         }
 
         public override void AddRecipes()

@@ -1,20 +1,60 @@
+using Microsoft.Xna.Framework;
+using Stellamod.Buffs;
 using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Armors.AcidArmour
 {
+    internal class AcidPlayer : ModPlayer
+    {
+        /*
+         * Immunity to acid water contamination, 
+standing still gives you an acid aura that stays where you were when you leave The aura will deal damage to enemies for a certain amount of time
+        */
+
+        private int _acidTimer;
+        public bool hasSetBonus;
+
+        public override void ResetEffects()
+        {
+            hasSetBonus = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (!hasSetBonus)
+                return;
+
+            //Immunity to contamination
+            Player.ClearBuff(ModContent.BuffType<AcidFlame>());
+            Player.ClearBuff(ModContent.BuffType<Irradiation>());
+
+            //Standing still for the acid aura
+            if(Player.velocity == Vector2.Zero 
+                && Player.ownedProjectileCounts[ModContent.ProjectileType<AcidAuraProj>()] == 0)
+            {
+                _acidTimer++;
+            }
+            else
+            {
+                _acidTimer = 0;
+            }
+
+            if(_acidTimer >= 30)
+            {
+                int damage = 18;
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    ModContent.ProjectileType<AcidAuraProj>(), damage, 1, Player.whoAmI);
+                _acidTimer = 0;
+            }
+        }
+    }
+
     [AutoloadEquip(EquipType.Head)]
     public class AcidHelm : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Acid Helm");
-            // Tooltip.SetDefault("Increases melee Damage by 5% and melee critical strike chance by 6%");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -40,13 +80,16 @@ namespace Stellamod.Items.Armors.AcidArmour
         }
         public override void UpdateArmorSet(Player player)
         {
+            player.setBonus = "Stand still to emit a toxic aura!";
             player.GetAttackSpeed(DamageClass.Melee) += 0.03f;
-            player.moveSpeed = 2f;
+            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
+            player.moveSpeed += 0.2f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }

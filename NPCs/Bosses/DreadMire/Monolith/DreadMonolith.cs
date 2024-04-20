@@ -92,7 +92,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
         public override void SetDefaults()
         {
             NPC.noTileCollide = true;
-            NPC.width = 108;
+            NPC.width = 100;
             NPC.height = 108;
             NPC.damage = 1;
             NPC.defense = 19;
@@ -116,7 +116,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            if (NPC.life <= 0)
+            if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
                 var EntitySource = NPC.GetSource_Death();
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2048f, 128f);
@@ -136,8 +136,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
                 for (int k = 0; k < 7; k++)
                 {
 
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch, 0.5f * hit.HitDirection, -2.5f, 0, default, 1.2f);
-                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch, 0.5f * hit.HitDirection, -2.5f, 0, default, 0.5f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, Color.Purple, 0.3f);
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, .34f);
                 }
             }
         }

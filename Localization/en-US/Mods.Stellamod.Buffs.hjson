@@ -637,3 +637,13 @@ SigfriedsInsanity: {
 	Description: Mods.Stellamod.Buffs.SigfriedsInsanity.Description
 	DisplayName: Sigfrieds Insanity
 }
+
+ShadeWrath: {
+	DisplayName: Shade Wrath
+	Description: You are filled with the power of the shadows!
+}
+
+ShadeWrathCooldown: {
+	DisplayName: Shade Wrath Cooldown
+	Description: Recharging your shade power...
+}

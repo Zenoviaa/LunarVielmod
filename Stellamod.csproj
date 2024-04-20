@@ -48,6 +48,8 @@
     <None Remove="Buffs\MiracleLiquid.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\SFBuff.png" />
+    <None Remove="Buffs\ShadeWrath.png" />
+    <None Remove="Buffs\ShadeWrathCooldown.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\SupernovaChained.png" />
@@ -115,6 +117,8 @@
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidBody_Body.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidHead_Head.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidLegs_Legs.png" />
+    <None Remove="Items\Armors\Astrasilk\AstrasilkGigaStarProj.png" />
+    <None Remove="Items\Armors\Astrasilk\AstrasilkStarProj.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianCloak.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianCloak_Body.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianHood.png" />
