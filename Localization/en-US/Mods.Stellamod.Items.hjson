@@ -6920,10 +6920,10 @@ TheReaving: {
 
 TempleKeyMold: {
 	DisplayName: Temple Key Mold
-	Tooltip: ""
+	Tooltip: The mold to help create the Temple key!
 }
 
 TempleKeyPart: {
 	DisplayName: Temple Key Part
-	Tooltip: ""
+	Tooltip: A part from Ereshkigal, she broke the key...
 }
