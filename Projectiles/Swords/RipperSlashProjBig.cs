@@ -42,7 +42,7 @@ namespace Stellamod.Projectiles.Swords
                 SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RipperSlash1");
                 soundStyle.PitchVariance = 0.5f;
                 SoundEngine.PlaySound(soundStyle, Projectile.position);
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 2f);
             }
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);

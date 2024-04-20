@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -56,19 +57,9 @@ namespace Stellamod.Projectiles.Summons
         {
             Projectile.Kill();
             SoundEngine.PlaySound(SoundID.Item109, Projectile.position);
-            for (int i = 0; i < 30; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
-            }
-
-            for (int i = 0; i < 15; i++)
-            {
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
-            }
-
             return false;
         }
+
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
         {
             width = (height = 8);
@@ -77,11 +68,10 @@ namespace Stellamod.Projectiles.Summons
         }
         public override void OnKill(int timeLeft)
         {
-
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenFairy, 0f, -2f, 0, default(Color), .8f);
+                var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<Dusts.GunFlash>(), (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), newColor: ColorFunctions.AcidFlame);
+                d.rotation = (d.position - Projectile.position).ToRotation() - MathHelper.PiOver4;
             }
 
             for (int i = 0; i < 15; i++)

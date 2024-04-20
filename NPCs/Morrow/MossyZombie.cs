@@ -167,7 +167,7 @@ namespace Stellamod.NPCs.Morrow
 				NPC.velocity.Y *= 0.5f;
 				for (int k = 0; k < 5; k++)
                 {
-					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenFairy, NPC.direction, -1f, 1, default, .61f);
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GreenMoss, NPC.direction, -1f, 1, default, .61f);
 				}
 					
 
