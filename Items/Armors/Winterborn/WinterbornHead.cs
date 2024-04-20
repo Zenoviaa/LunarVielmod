@@ -11,9 +11,16 @@ namespace Stellamod.Items.Armors.Winterborn
         public bool Spetalite = false;
         public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Winterborn Head");
-			// Tooltip.SetDefault("Increases Mana Regen by 4%");
-		}
+            // DisplayName.SetDefault("Winterborn Head");
+            // Tooltip.SetDefault("Increases Mana Regen by 4%");
+
+
+            //Drawing hair full
+            //ArmorIDs.Head.Sets.DrawFullHair[Type] = true;
+
+
+            ArmorIDs.Head.Sets.DrawHatHair[Type] = true;
+        }
 
         public override void SetDefaults()
         {
@@ -21,6 +28,7 @@ namespace Stellamod.Items.Armors.Winterborn
             Item.height = 30;
             Item.value = 10000;
             Item.rare = ItemRarityID.Blue;
+          
 
             Item.defense = 2;
         }
