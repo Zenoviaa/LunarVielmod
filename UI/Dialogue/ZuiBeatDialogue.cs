@@ -10,7 +10,7 @@ namespace Stellamod.UI.Dialogue
     internal class ZuiBeatDialogue : Dialogue
     {
         //The number of steps in this dialogue
-        public override int Length => 5;
+        public override int Length => 6;
 
         public override void Next(int index)
         {
@@ -39,6 +39,10 @@ namespace Stellamod.UI.Dialogue
 
                 case 4:
                     DialogueSystem.WriteText(GetLocalizedText("ZuiDialogue10"));
+                    break;
+
+                case 5:
+                    DialogueSystem.WriteText(GetLocalizedText("ZuiDialogue11"));
                     break;
             }
         }
