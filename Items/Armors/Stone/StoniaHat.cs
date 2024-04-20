@@ -18,7 +18,7 @@ namespace Stellamod.Items.Armors.Stone
 				+ "\n+3% Damage!" +
 				"\n+5 Penetration" +
 				"\n+5 Critical Strike Chance!"); */
-			ArmorIDs.Head.Sets.DrawHatHair[Type] = true;
+			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

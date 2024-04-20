@@ -17,7 +17,7 @@ namespace Stellamod.Items.Armors.Vanity.Verlia
 				+ "\n+2% increased damage" +
 				"\n+35 Health" +
 				"\nIncreased Pickaxe Speed!"); */
-			ArmorIDs.Head.Sets.DrawHatHair[Type] = true;
+			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// If your head equipment should draw hair while drawn, use one of the following:

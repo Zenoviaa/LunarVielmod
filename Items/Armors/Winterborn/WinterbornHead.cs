@@ -19,7 +19,7 @@ namespace Stellamod.Items.Armors.Winterborn
             //ArmorIDs.Head.Sets.DrawFullHair[Type] = true;
 
 
-            ArmorIDs.Head.Sets.DrawHatHair[Type] = true;
+            ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
         }
 
         public override void SetDefaults()
