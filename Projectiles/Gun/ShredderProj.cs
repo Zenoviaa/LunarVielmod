@@ -40,8 +40,8 @@ namespace Stellamod.Projectiles.Gun
             Projectile.height = 16;
             Projectile.timeLeft = 180;
             Projectile.penetrate = -1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 25;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 25;
         }
 
         public override void AI()
