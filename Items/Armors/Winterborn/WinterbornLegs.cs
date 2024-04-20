@@ -33,7 +33,6 @@ namespace Stellamod.Items.Armors.Winterborn
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.BorealWood, 6);
             recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 5);
-            recipe.AddIngredient(ItemID.SnowBlock, 2);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
