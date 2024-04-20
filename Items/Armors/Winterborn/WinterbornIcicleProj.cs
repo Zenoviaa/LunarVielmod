@@ -17,6 +17,7 @@ namespace Stellamod.Items.Armors.Winterborn
 {
     internal class WinterbornIcicleProj : ModProjectile
     {
+        private float _dustTimer;
         private float Health
         {
             get => Projectile.ai[0];
@@ -29,7 +30,14 @@ namespace Stellamod.Items.Armors.Winterborn
             set => Projectile.ai[1] = value;
         }
 
-        private Player Owner => Main.player[Projectile.owner]; 
+        private Player Owner => Main.player[Projectile.owner];
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 6;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 20;
@@ -52,12 +60,14 @@ namespace Stellamod.Items.Armors.Winterborn
                 Projectile.netUpdate = true;
             }
 
-            if(Timer % 8 == 0)
+            _dustTimer++;
+            if(_dustTimer >= 8)
             {
+                _dustTimer = 0;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GunFlash>(), newColor: Color.LightCyan, Scale: 0.6f);
                 Dust.NewDustPerfect(Projectile.position, 
-                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightCyan, 1f).noGravity = true;
+                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightCyan, 0.5f).noGravity = true;
             }
 
             AI_RotateAroundOwner();
@@ -74,9 +84,9 @@ namespace Stellamod.Items.Armors.Winterborn
             Vector2 rotatedCirclePosition = circleCenter + circleOffset.RotatedBy(degrees);
             Projectile.Center = rotatedCirclePosition;
 
-            float osc = MathF.Sin(offsetProgress) * 3;
+            float osc = MathF.Sin(offsetProgress) * 16;
             Projectile.Center += new Vector2(osc, 0).RotatedBy(degrees);
-            Projectile.rotation = Owner.Center.DirectionTo(Projectile.Center).ToRotation();
+            //Projectile.rotation = Owner.Center.DirectionTo(Projectile.Center).ToRotation();
         }
 
         private void AI_CollideWithProjectiles()
@@ -109,6 +119,12 @@ namespace Stellamod.Items.Armors.Winterborn
                     }
                 }
             }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightCyan, Color.Transparent, ref lightColor);
+            return base.PreDraw(ref lightColor);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
