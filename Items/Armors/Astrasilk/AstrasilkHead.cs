@@ -112,7 +112,7 @@ namespace Stellamod.Items.Armors.Astrasilk
 				"\n+35 Health" +
 				"\nIncreased Pickaxe Speed!"); */
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        
 
             // If your head equipment should draw hair while drawn, use one of the following:
             // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
