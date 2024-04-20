@@ -79,10 +79,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             {
                 Projectile.Kill();
             }
-            for (int i = 0; i < 30; i++)
-            {
-                Dust.NewDustPerfect(base.Projectile.Center, 74, (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), 0, default(Color), 1f).noGravity = true;
-            }
+
             for (int i = 0; i < 15; i++)
             {
                 Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GreenMoss, 0f, -2f, 0, default(Color), .8f);

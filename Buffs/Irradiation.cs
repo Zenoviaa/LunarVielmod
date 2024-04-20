@@ -24,8 +24,9 @@ namespace Stellamod.Buffs
             {
                 for (int i = 0; i < 1; i++)
                 {
-                    var d = Dust.NewDustPerfect(npc.Center, ModContent.DustType<Dusts.GunFlash>(), (Vector2.One * Main.rand.Next(1, 4)).RotatedByRandom(19.0), newColor: ColorFunctions.AcidFlame);
-                    d.rotation = (d.position - npc.position).ToRotation() - MathHelper.PiOver4;
+                    int d = Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Dusts.GlowDust>(), newColor: ColorFunctions.AcidFlame, Scale: 0.33f);
+                    Main.dust[d].rotation = (Main.dust[d].position - npc.position).ToRotation() - MathHelper.PiOver4;
+                    Main.dust[d].velocity *= 0.5f;
                 }
             }
         }
