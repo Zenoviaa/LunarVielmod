@@ -2,10 +2,12 @@
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Melee;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.NPCs.Global
 {
@@ -103,8 +105,18 @@ namespace Stellamod.NPCs.Global
 			if (npc.type == NPCID.Plantera)
             {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
-
-			}
+                List<IItemDropRule> rules = npcLoot.Get();
+                for (int i = 0; i < rules.Count; i++)
+                {
+                    IItemDropRule rule = rules[i];
+                    if (rule is CommonDrop commonDrop
+						&& commonDrop.itemId == ItemID.TempleKey)
+                    {
+                        npcLoot.Remove(rule);
+                    }
+                }
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
+            }
 
 			if (npc.type == NPCID.SkeletronPrime)
 			{

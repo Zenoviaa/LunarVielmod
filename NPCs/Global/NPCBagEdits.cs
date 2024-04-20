@@ -1,4 +1,6 @@
 ﻿using Stellamod.Items.Consumables;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -13,6 +15,21 @@ namespace Stellamod.NPCs.Global
             if(item.type == ItemID.WallOfFleshBossBag)
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CatacombsKey>()));
+            }
+
+            //This code checks for and removes a specific item
+            if(item.type == ItemID.PlanteraBossBag)
+            {
+                List<IItemDropRule> rules = itemLoot.Get();
+                for (int i = 0; i < rules.Count; i++)
+                {
+                    IItemDropRule rule = rules[i];
+                    if (rule is CommonDrop commonDrop && commonDrop.itemId == ItemID.TempleKey)
+                    {
+                        itemLoot.Remove(rule);
+                    }
+                }
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
         }
     }
