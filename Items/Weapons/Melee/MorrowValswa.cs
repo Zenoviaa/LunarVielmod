@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.value = Terraria.Item.sellPrice(0, 0, 1, 0);
 			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
-			Item.shootSpeed = 6f;
+			Item.shootSpeed = 12f;
 			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
 			Item.shoot = ModContent.ProjectileType<MVCustomSwingProjectile>();
