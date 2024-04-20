@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.Niivi;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,7 +17,7 @@ namespace Stellamod.Items.Armors.Elagent
 
         private bool CanUseEffect(NPC target)
         {
-            return hasSetBonus && !target.boss;
+            return hasSetBonus && !target.boss && target.type != ModContent.NPCType<Niivi>();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
