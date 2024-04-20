@@ -2078,17 +2078,17 @@ AcidVisor: {
 }
 
 AstrasilkBody: {
-	DisplayName: Astrasilk Body
+	DisplayName: Astrasilk Robe
 	Tooltip: +15% magic critical strike chance
 }
 
 AstrasilkHead: {
-	DisplayName: Astrasilk Head
+	DisplayName: Astrasilk Hat
 	Tooltip: Slightly increases mana regeneration
 }
 
 AstrasilkLegs: {
-	DisplayName: Astrasilk Legs
+	DisplayName: Astrasilk Leggings
 	Tooltip: Increases movement speed by 20%
 }
 
@@ -2113,32 +2113,32 @@ ElagentLegs: {
 }
 
 ForestCoreBody: {
-	DisplayName: Forest Core Body
+	DisplayName: Forest Core Chestplate
 	Tooltip: Increases ranged crit chance by 2%
 }
 
 ForestCoreHead: {
-	DisplayName: Forest Core Head
+	DisplayName: Forest Core Mask
 	Tooltip: Increases ranged damage by 2
 }
 
 ForestCoreLegs: {
-	DisplayName: Forest Core Legs
+	DisplayName: Forest Core Pants
 	Tooltip: Increases movement speed by 10%
 }
 
 HeavyMetalBody: {
-	DisplayName: Gintzl Body
+	DisplayName: Gintzl Chestplate
 	Tooltip: Just gives defense smh.
 }
 
 HeavyMetalHead: {
-	DisplayName: Gintzl Head
+	DisplayName: Gintzl Mask
 	Tooltip: It has a good summon set bonus, trust me.
 }
 
 HeavyMetalLegs: {
-	DisplayName: Gintzl Legs
+	DisplayName: Gintzl Pants
 	Tooltip: +5% Movement speed
 }
 
@@ -2148,7 +2148,7 @@ LeatherBody: {
 }
 
 LeatherHead: {
-	DisplayName: Leather Head
+	DisplayName: Leather Hat
 	Tooltip:
 		'''
 		4% increased ranged crit chance
@@ -2166,47 +2166,47 @@ LeatherLegs: {
 }
 
 ShadeWraithBody: {
-	DisplayName: Shade Wraith Body
+	DisplayName: Shade Wraith Chainplate
 	Tooltip: Increased endurance and life by 20!
 }
 
 ShadeWraithHead: {
-	DisplayName: Shade Wraith Head
+	DisplayName: Shade Wraith Mask
 	Tooltip: +2% Damage for all classes (except throwing)
 }
 
 ShadeWraithLegs: {
-	DisplayName: Shade Wraith Legs
+	DisplayName: Shade Wraith Pants
 	Tooltip: Slightly increased movement speed.
 }
 
 TerricBody: {
-	DisplayName: Terric Body
+	DisplayName: Terric Chestplate
 	Tooltip: +40 Health
 }
 
 TerricHead: {
-	DisplayName: Terric Head
+	DisplayName: Terric Hat
 	Tooltip: +13% Increased Magic Damage
 }
 
 TerricLegs: {
-	DisplayName: Terric Legs
+	DisplayName: Terric Trousers
 	Tooltip: Increased movement speed!
 }
 
 WinterbornBody: {
-	DisplayName: Winterborn Body
+	DisplayName: Winterborn Chestplate
 	Tooltip: +20 Health!
 }
 
 WinterbornHead: {
-	DisplayName: Winterborn Head
+	DisplayName: Winterborn Robin Mask
 	Tooltip: Increased Mana Regeneration
 }
 
 WinterbornLegs: {
-	DisplayName: Winterborn Legs
+	DisplayName: Winterborn Pants
 	Tooltip: 10% Increased movement speed!
 }
 
