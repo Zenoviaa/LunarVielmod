@@ -742,7 +742,7 @@ namespace Stellamod
 				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
 				//2. Create a new instance of your dialogue
-				SirestiasBeginDialogue exampleDialogue = new SirestiasBeginDialogue();
+				ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
 
 				//3. Start it
 				dialogueSystem.StartDialogue(exampleDialogue);

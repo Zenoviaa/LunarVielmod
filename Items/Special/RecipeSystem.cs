@@ -26,6 +26,11 @@ namespace Stellamod.Items.Special
                 {
                     recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
+
+                if (recipe.TryGetResult(ItemID.TempleKey, out Item result3))
+                {
+                    recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 15);
+                }
             }
         }
     }
