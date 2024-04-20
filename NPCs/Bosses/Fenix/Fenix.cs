@@ -1685,7 +1685,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			float speed = 1;
 			if (NPC.life < NPC.lifeMax / 2)
 			{
-				speed = 16f;
+				speed = 18f;
 			}
 			if (NPC.life > NPC.lifeMax / 2)
 			{
@@ -1986,7 +1986,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			float speed = 1;
 			if (NPC.life < NPC.lifeMax / 2)
 			{
-				speed = 13f;
+				speed = 16f;
 			}
 			if (NPC.life > NPC.lifeMax / 2)
 			{
@@ -2281,7 +2281,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			float speed = 1;
 			if (NPC.life < NPC.lifeMax / 2)
 			{
-				speed = 23f;
+				speed = 26f;
 			}
 			if (NPC.life > NPC.lifeMax / 2)
 			{
