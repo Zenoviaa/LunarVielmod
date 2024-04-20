@@ -2626,8 +2626,8 @@ AssassinsSlash: {
 }
 
 CinderBraker: {
-	DisplayName: Cinder Braker
-	Tooltip: A volley of cinder
+	DisplayName: Cinder Breaker 
+	Tooltip: A slashing sword that shoots swords!
 }
 
 DragonWaveFury: {
