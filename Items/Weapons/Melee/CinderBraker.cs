@@ -11,8 +11,18 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    class CinderBraker : ModItem
+    class CinderBraker : ClassSwapItem
     {
+
+        public int dir;
+
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 32;
+            Item.mana = 3;
+        }
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Cinder Braker");
@@ -27,25 +37,44 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
+            Item.knockBack = 7;
             Item.value = Item.sellPrice(0, 3, 20, 14);
             Item.rare = ItemRarityID.Blue;
 
             Item.autoReuse = true;
-            Item.shoot = ProjectileType<CinderBrakerSword>();
+            Item.shoot = ModContent.ProjectileType<CBCustomSwingProjectile>();
             Item.shootSpeed = 8f;
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            float numberProjectiles = 5;
+            // Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
+            int Sound = Main.rand.Next(1, 3);
+
+            float numberProjectiles = 3;
             float rotation = MathHelper.ToRadians(20);
             position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
             for (int i = 0; i < numberProjectiles; i++)
             {
                 Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
+                Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<CinderBrakerSword>(), damage, Item.knockBack, player.whoAmI);
             }
-            return false;
+
+            if (dir == -1)
+            {
+                dir = 1;
+            }
+            else if (dir == 1)
+            {
+                dir = -1;
+            }
+            else
+            {
+                dir = 1;
+            }
+
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
+            return false; // return false to prevent original projectile from being shot
         }
         public override void AddRecipes()
         {
