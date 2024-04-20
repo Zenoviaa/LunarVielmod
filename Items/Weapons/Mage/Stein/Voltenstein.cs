@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 		public override void SetDefaults()
 		{
-			Item.damage = 37;
+			Item.damage = 29;
 			Item.DamageType = DamageClass.Magic;
 			Item.width = 0;
 			Item.height = 0;
