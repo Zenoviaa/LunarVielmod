@@ -61,6 +61,8 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             NPC.frame.Y = frameHeight * frame;
         }
 
+        public bool DM = false;
+
         public override void AI()
         {
             NPC.damage = 0;
@@ -85,6 +87,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
             }
             Player playerT = Main.player[NPC.target];
             int distance = (int)(NPC.Center - playerT.Center).Length();
+
             if (distance > 3000f || playerT.dead)
             {
                 NPC.ai[0] = 0;
@@ -95,70 +98,79 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     NPC.active = false;
                 }
             }
-            if (NPC.ai[2] == 0)
-            {
-                NPC.ai[2] = 10;
-            }
-            p2 = NPC.life < NPC.lifeMax * 0.5f;
-            Main.GraveyardVisualIntensity = 0.4f;
-            if (NPC.ai[2] == 10)
-            {
-                if (NPC.alpha >= 0)
-                {
-                    NPC.alpha = 0;
-                }
-                NPC.ai[0]++;
-                if (Main.netMode != NetmodeID.Server)
-                {
-                    Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.GoldCoin);
-                    dust.velocity *= -1f;
-                    dust.scale *= .8f;
-                    dust.noGravity = true;
-                    Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
-                    vector2_1.Normalize();
-                    Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
-                    dust.velocity = vector2_2;
-                    vector2_2.Normalize();
-                    Vector2 vector2_3 = vector2_2 * 34f;
-                    dust.position = NPC.Center - vector2_3;
-                    NPC.netUpdate = true;
-                }
-                if (NPC.ai[0] == 110)
-                {
-                    CombatText.NewText(NPC.getRect(), Color.Gold, "I'll see you later at my shop! Fun time :)", true, false);
-                    var EntitySource = NPC.GetSource_Death();
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 90f);
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), NPC.position);
-                    for (int i = 0; i < 14; i++)
-                    {
-                        Dust.NewDustPerfect(base.NPC.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
-                    }
-                    for (int i = 0; i < 14; i++)
-                    {
-                        Dust.NewDustPerfect(base.NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
-                    }
-                    for (int i = 0; i < 14; i++)
-                    {
-                        Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
-                    }
-                    for (int j = 0; j < 26; j++)
-                    {
 
-                        int a = Gore.NewGore(EntitySource, new Vector2(NPC.Center.X + Main.rand.Next(-10, 10), NPC.Center.Y + Main.rand.Next(-10, 10)), NPC.velocity, 911);
-                        Main.gore[a].timeLeft = 20;
-                        Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
-                    }
-                    for (int i = 0; i < 40; i++)
-                    {
-                        Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
-                    }
 
-                    int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
-                    Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
-                    Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
-                    NPC.active = false;
+            if (DM)
+            {
+                if (NPC.ai[2] == 0)
+                {
+                    NPC.ai[2] = 10;
                 }
+                p2 = NPC.life < NPC.lifeMax * 0.5f;
+                Main.GraveyardVisualIntensity = 0.4f;
+                if (NPC.ai[2] == 10)
+                {
+                    if (NPC.alpha >= 0)
+                    {
+                        NPC.alpha = 0;
+                    }
+                    NPC.ai[0]++;
+                    if (Main.netMode != NetmodeID.Server)
+                    {
+                        Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.GoldCoin);
+                        dust.velocity *= -1f;
+                        dust.scale *= .8f;
+                        dust.noGravity = true;
+                        Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+                        vector2_1.Normalize();
+                        Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
+                        dust.velocity = vector2_2;
+                        vector2_2.Normalize();
+                        Vector2 vector2_3 = vector2_2 * 34f;
+                        dust.position = NPC.Center - vector2_3;
+                        NPC.netUpdate = true;
+                    }
+                    if (NPC.ai[0] == 110)
+                    {
+                        CombatText.NewText(NPC.getRect(), Color.Gold, "I'll see you later at my shop! Fun time :)", true, false);
+                        var EntitySource = NPC.GetSource_Death();
+                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 90f);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), NPC.position);
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
+                        }
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                        }
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                        }
+                        for (int j = 0; j < 26; j++)
+                        {
+
+                            int a = Gore.NewGore(EntitySource, new Vector2(NPC.Center.X + Main.rand.Next(-10, 10), NPC.Center.Y + Main.rand.Next(-10, 10)), NPC.velocity, 911);
+                            Main.gore[a].timeLeft = 20;
+                            Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
+                        }
+                        for (int i = 0; i < 40; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
+                        }
+
+                        int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
+                        Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
+                        Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
+                        NPC.active = false;
+                    }
+                }
+
             }
+            
+         
+           
         }
     }
 }

@@ -3346,7 +3346,7 @@ GovheilHolsterBroochA: {
 	Tooltip:
 		'''
 		Halves the mana cost of any magic weapon!
-		+15% Magic damage
+		+7% Magic damage
 		+2 Defense too!
 		'''
 }
