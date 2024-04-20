@@ -61,13 +61,13 @@ namespace Stellamod.Items.Armors.Winterborn
             }
 
             _dustTimer++;
-            if(_dustTimer >= 8)
+            if(_dustTimer >= 24)
             {
                 _dustTimer = 0;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
                     ModContent.DustType<GunFlash>(), newColor: Color.LightCyan, Scale: 0.6f);
                 Dust.NewDustPerfect(Projectile.position, 
-                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightCyan, 0.5f).noGravity = true;
+                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.LightCyan, 0.5f).noGravity = true;
             }
 
             AI_RotateAroundOwner();
