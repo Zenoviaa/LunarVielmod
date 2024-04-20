@@ -2626,7 +2626,7 @@ AssassinsSlash: {
 }
 
 CinderBraker: {
-	DisplayName: Cinder Breaker 
+	DisplayName: Cinder Breaker
 	Tooltip: A slashing sword that shoots swords!
 }
 
