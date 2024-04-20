@@ -2039,7 +2039,6 @@ AcidBody: {
 AcidHelm: {
 	DisplayName: Virulent Helm
 	Tooltip: 
-		Tooltip:
 		'''
 		+5% melee damage
 		+1% melee critical strike chance
