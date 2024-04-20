@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Mage
         public int Star;
         public override void SetDefaults()
         {
-            Item.damage = 15;
+            Item.damage = 9;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
