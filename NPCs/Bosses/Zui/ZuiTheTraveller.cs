@@ -123,7 +123,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			NPC.Size = new Vector2(27, 42);
 			NPC.damage = 1;
 			NPC.defense = 45;
-			NPC.lifeMax = 49250;
+			NPC.lifeMax = 51250;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
