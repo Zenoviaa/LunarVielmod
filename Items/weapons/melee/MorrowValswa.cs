@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Melee
 			Item.shootSpeed = 6f;
 			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing;
+			Item.shoot = ModContent.ProjectileType<MVCustomSwingProjectile>();
 		}
 		public override bool CanUseItem(Player player)
 		{
