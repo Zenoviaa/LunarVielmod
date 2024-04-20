@@ -161,7 +161,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
     internal class Pulsing : MiniGun
     {        
         //Damage of this gun holster
-        public const int Base_Damage = 18;
+        
         public override void SetDefaults()
         {
             base.SetDefaults();
