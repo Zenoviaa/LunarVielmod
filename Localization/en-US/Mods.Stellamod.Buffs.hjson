@@ -647,3 +647,8 @@ ShadeWrathCooldown: {
 	DisplayName: Shade Wrath Cooldown
 	Description: Recharging your shade power...
 }
+
+BabySwarmerMinionBuff: {
+	DisplayName: Baby Swarmer Minion Buff
+	Description: They're everywhere!
+}

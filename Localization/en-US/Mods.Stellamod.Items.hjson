@@ -6764,3 +6764,12 @@ StarSilk: {
 	Tooltip: Divine silk made of pure astral energy
 	DisplayName: Star Silk
 }
+
+BabySwarmerStaff: {
+	DisplayName: Baby Swarmer Staff
+	Tooltip:
+		'''
+		Summons a baby swarmer to fight for you!
+		Baby swarmers attack very quickly and only consume half a minion slot
+		'''
+}
