@@ -6753,11 +6753,6 @@ M38F30: {
 }
 
 StarSilk: {
-	Tooltip: ""
+	Tooltip: "Divine silk made of pure astral energy"
 	DisplayName: Star Silk
-}
-
-IrradiatedBar: {
-	Tooltip: ""
-	DisplayName: Irradiated Bar
 }
