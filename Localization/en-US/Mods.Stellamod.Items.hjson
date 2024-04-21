@@ -6776,7 +6776,8 @@ BabySwarmerStaff: {
 }
 
 RadiantsparkBoots: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		You'll need these! Given thanks from Zui!
 		Makes the wearer run super fast and leaves a golden trail that can hit on contact!
 		Zui's Mark is left on your back.

@@ -57,14 +57,14 @@ namespace Stellamod.Items.Accessories
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 53;
-			Projectile.height = 53;
+			Projectile.width = 106;
+			Projectile.height = 106;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = int.MaxValue;
-			Projectile.scale = 0.9f;
+	
 		
 		}
 
@@ -124,7 +124,7 @@ namespace Stellamod.Items.Accessories
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
-			float baseWidth = Projectile.scale * Projectile.width * 1.3f;
+			float baseWidth = Projectile.scale * (Projectile.width/ 2) * 1.3f;
 			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
 		}
 		public Color ColorFunction(float completionRatio)
