@@ -13,6 +13,10 @@ namespace Stellamod.Buffs.Charms
 			Main.buffNoTimeDisplay[Type] = true;
 		}
 
-		public override void Update(Player player, ref int buffIndex) { }
+		public override void Update(Player player, ref int buffIndex) {
+
+
+			player.statDefense += 40;
+		}
 	}
 }

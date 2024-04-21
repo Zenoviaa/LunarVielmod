@@ -6484,9 +6484,11 @@ GovheilPlatformBlock: {
 }
 
 ManifestedBravery: {
-	Tooltip: ''' Verlia's soul manifested at it's core. 
-	In the end she stood up against Fenix and you to save her village and her sister.
-	'''
+	Tooltip:
+		'''
+		Verlia's soul manifested at it's core. 
+		In the end she stood up against Fenix and you to save her village and her sister.
+		'''
 	DisplayName: Manifested Bravery
 }
 
