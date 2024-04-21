@@ -77,7 +77,7 @@ namespace Stellamod.Items.Accessories
 		public override void AI()
 		{
 			Player player = Main.player[Projectile.owner];
-			bool hasSetBonus = player.GetModPlayer<MyPlayer>().RadiantBomb;
+			bool hasSetBonus = player.GetModPlayer<MyPlayer>().GIBomb;
 			if (!hasSetBonus)
 			{
 				Projectile.Kill();
