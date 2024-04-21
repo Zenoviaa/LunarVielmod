@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Desert
             NPC.height = 34;
             NPC.damage = 54;
             NPC.defense = 8;
-            NPC.lifeMax = 90;
+            NPC.lifeMax = 333;
             NPC.HitSound = SoundID.NPCHit31;
             NPC.DeathSound = SoundID.NPCDeath34;
             NPC.value = 563f;
