@@ -6764,3 +6764,8 @@ StarSilk: {
 	Tooltip: Divine silk made of pure astral energy
 	DisplayName: Star Silk
 }
+
+RadiantsparkBoots: {
+	DisplayName: Radiantspark Boots
+	Tooltip: ""
+}
