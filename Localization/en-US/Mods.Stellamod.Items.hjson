@@ -139,11 +139,6 @@ PaperPaws: {
 		'''
 }
 
-Paper: {
-	DisplayName: Paper
-	Tooltip: It's paper idk what you expected
-}
-
 PlantH: {
 	DisplayName: Plant Heritage
 	Tooltip:
@@ -502,25 +497,6 @@ Bagitem: {
 		'''
 }
 
-Bouque: {
-	DisplayName: Bouque
-	Tooltip:
-		'''
-		A bag of flowers for the dear
-		Used in various recipes
-		'''
-}
-
-Candle: {
-	DisplayName: Candle
-	Tooltip:
-		'''
-		A candle but you cant place it :(
-		Why does it exist?
-		Used in many recipes
-		'''
-}
-
 Cinderscrap: {
 	DisplayName: Scrap of Cinder
 	Tooltip:
@@ -541,26 +517,6 @@ CondensedDirt: {
 		'''
 }
 
-DreasFlower: {
-	DisplayName: Sky Blue Dreas Flower
-	Tooltip:
-		'''
-		All the way from the Fabled temples..
-		Used for planting and harvesting
-		Best use for magical items and plants!
-		'''
-}
-
-Fabric: {
-	DisplayName: Alcadiz Fabric
-	Tooltip:
-		'''
-		All the way from the Alcadiz temples..
-		Strong as steel yet so fabric like, its pouring energy!
-		Best use for magical items!
-		'''
-}
-
 FlowerBatch: {
 	DisplayName: Flower Batch
 	Tooltip:
@@ -569,11 +525,6 @@ FlowerBatch: {
 		An object from harvesting
 		Best use for plants and some items!
 		'''
-}
-
-Hlos: {
-	DisplayName: Scrapped Handle
-	Tooltip: Used for making various weapons
 }
 
 MorrowRocks: {
@@ -618,11 +569,6 @@ EmptyMoonflameLantern: {
 		Freeze the flame
 		The dance at the Cathedral awaits at the top of the moonlight!
 		'''
-}
-
-FleshClot: {
-	DisplayName: Kaev Clot
-	Tooltip: Flesh-like substance obtained from blood enemies
 }
 
 HuntiacBlock: {
@@ -1248,7 +1194,11 @@ BoneNail: {
 
 WoodenCrossbow: {
 	DisplayName: Wooden Crossbow
-	Tooltip: ""
+	Tooltip:
+		'''
+		A simple crossbow that shoots 3 bolts
+		Hold down to shoot!
+		'''
 }
 
 Hornet: {
@@ -1449,7 +1399,7 @@ AlcadizPowder: {
 
 VerliaBossBag: {
 	DisplayName: Treasure Bag (Verlia)
-	Tooltip: ""
+	Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 }
 
 VerliaHat: {
@@ -1917,11 +1867,6 @@ GhostExcalibur: {
 	Tooltip: Summons an excalibur to fight for you!
 }
 
-GiftOfLife: {
-	DisplayName: Gift Of Life
-	Tooltip: ""
-}
-
 LeatherGlove: {
 	DisplayName: Leather Glove
 	Tooltip:
@@ -2285,89 +2230,9 @@ DreadFoil: {
 	Tooltip: Foil captured from Dreadmire!
 }
 
-FlareGem: {
-	DisplayName: Flare Gem
-	Tooltip: ""
-}
-
-FloralFungus: {
-	DisplayName: Floral Fungus
-	Tooltip: ""
-}
-
-GelatinOzze: {
-	DisplayName: Gelatin Ozze
-	Tooltip: '''Jellyfish are scary...	 Trust me...'''
-}
-
-AncientLizardMetal: {
-	DisplayName: Ancient Lizard Metal
-	Tooltip: ""
-}
-
-BlazefuryShard: {
-	DisplayName: Blazefury Shard
-	Tooltip: ""
-}
-
-ContamintSoul: {
-	DisplayName: Contamint Soul
-	Tooltip: ""
-}
-
-DreamerBar: {
-	DisplayName: Dreamer Bar
-	Tooltip: ""
-}
-
-DuskBars: {
-	DisplayName: Dusk Bars
-	Tooltip: ""
-}
-
 EldritchSoul: {
 	DisplayName: Eldritch Soul
-	Tooltip: ""
-}
-
-LightEssence: {
-	DisplayName: Light Essence
-	Tooltip: ""
-}
-
-PixieSilk: {
-	DisplayName: Pixie Silk
-	Tooltip: ""
-}
-
-PrimalTech: {
-	DisplayName: Primal Tech
-	Tooltip: ""
-}
-
-SolaiumBar: {
-	DisplayName: Solaium Bar
-	Tooltip: ""
-}
-
-SolarMirrorShard: {
-	DisplayName: Solar Mirror Shard
-	Tooltip: ""
-}
-
-StarlightEssence: {
-	DisplayName: Starlight Essence
-	Tooltip: ""
-}
-
-SteampunkBar: {
-	DisplayName: Steampunk Bar
-	Tooltip: ""
-}
-
-IrradiatedBar: {
-	DisplayName: Irradiated Bar
-	Tooltip: Deadly to the core.
+	Tooltip: "'The essence of abyssal creatures'"
 }
 
 Ivythorn: {
@@ -2375,44 +2240,23 @@ Ivythorn: {
 	Tooltip: A poisonous plant which weaves its way into entities
 }
 
-LivingAlloy: {
-	DisplayName: Living Alloy
-	Tooltip: ""
-}
-
 LostScrap: {
 	DisplayName: Lost Scrap
 	Tooltip: A shadow of a former extreme technological advancement
 }
 
-SingulariumBar: {
-	DisplayName: Singularium Bar
-	Tooltip: ""
-}
-
 SpacialDistortionFragments: {
 	DisplayName: Spacial Distortion Fragments
-	Tooltip: ""
-}
-
-StarSilk: {
-	DisplayName: Star Silk
-	Tooltip: Divine silk made of pure astral energy.
-}
-
-StormEssence: {
-	DisplayName: Storm Essence
-	Tooltip: ""
-}
-
-StormPlating: {
-	DisplayName: Storm Plating
-	Tooltip: ""
+	Tooltip:
+		'''
+		These dark fragments pulsate and distort space around them
+		Wait... so how are you holding it then?
+		'''
 }
 
 ArmorDrive: {
 	DisplayName: Armor Drive
-	Tooltip: ""
+	Tooltip: A key component in crafting tech-y armors!
 }
 
 BrokenTech: {
@@ -2425,34 +2269,9 @@ DriveConstruct: {
 	Tooltip: A rare find amongst travellers, and contains essence of the mechanical old world.
 }
 
-MagicDrive: {
-	DisplayName: Magic Drive
-	Tooltip: ""
-}
-
-MeleeDrive: {
-	DisplayName: Melee Drive
-	Tooltip: ""
-}
-
 MetallicOmniSource: {
 	DisplayName: Metallic Omni Source
 	Tooltip: A source of electronics that make everything work! From revived relics to power, this piece of hardware contains magical energy too!
-}
-
-RangerDrive: {
-	DisplayName: Ranger Drive
-	Tooltip: ""
-}
-
-SummonerDrive: {
-	DisplayName: Summoner Drive
-	Tooltip: ""
-}
-
-ToolDrive: {
-	DisplayName: Tool Drive
-	Tooltip: ""
 }
 
 UnknownCircuitry: {
@@ -2478,11 +2297,6 @@ WanderingFlame: {
 WinterbornShard: {
 	DisplayName: Winterborn Shard
 	Tooltip: Frozen to the core :P
-}
-
-CellConverterI: {
-	DisplayName: Cell Converter
-	Tooltip: ""
 }
 
 RunicTablel: {
@@ -2527,32 +2341,40 @@ DirtPickaxe: {
 
 Aneuriliac: {
 	DisplayName: Aneuriliac
-	Tooltip: ""
+	Tooltip:
+		'''
+		Rapidly vomits some mysterious projectile
+		Look, I have no clue what it is, don't ask me
+		'''
 }
 
 Astalaiya: {
 	DisplayName: Astalaiya
-	Tooltip: ""
+	Tooltip: Summons a flurry of colorful stars!
 }
 
 FungalFlace: {
 	DisplayName: Fungal Flace
-	Tooltip: ""
+	Tooltip:
+		'''
+		Unleash the power of nuclear flowers!
+		Wait, are they actually nuclear? Oh well, they still explode!
+		'''
 }
 
 JellyTome: {
 	DisplayName: Jelly Tome
-	Tooltip: ""
+	Tooltip: Shoots blasts of jelly :P
 }
 
 LeadGauntlets: {
 	DisplayName: Lead Gauntlets
-	Tooltip: ""
+	Tooltip: Shoots powerful fists of energy!
 }
 
 Pericarditis: {
 	DisplayName: Pericarditis
-	Tooltip: ""
+	Tooltip: Channels blood magic to fire a powerful bloody blast
 }
 
 ShadeHandTome: {
@@ -2562,22 +2384,25 @@ ShadeHandTome: {
 
 StaffOFlame: {
 	DisplayName: Staff O Flame
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a cute lil' flame
+		:3
+		'''
 }
 
 StaffoftheIrradiaflare: {
 	DisplayName: Staff of the Irradiaflare
-	Tooltip: ""
+	Tooltip:
+		'''
+		Channels the power of the acid to shoot a powerful acidic blast!
+		It's powerful, source: trust me bro
+		'''
 }
 
 StarFlowerStaff: {
 	DisplayName: Star Flower Staff
 	Tooltip: Shoot little balls of light
-}
-
-StormsWrath: {
-	DisplayName: Storms Wrath
-	Tooltip: ""
 }
 
 SunBlastStaff: {
@@ -2617,7 +2442,11 @@ WintersStom: {
 
 ArchariliteRaysword: {
 	DisplayName: Archarilite Raysword
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots a wave of energy
+		Becomes empowered by the Arnchar Super Charger!
+		'''
 }
 
 AssassinsSlash: {
@@ -2628,11 +2457,6 @@ AssassinsSlash: {
 CinderBraker: {
 	DisplayName: Cinder Breaker
 	Tooltip: A slashing sword that shoots swords!
-}
-
-DragonWaveFury: {
-	DisplayName: Dragon Wave Fury
-	Tooltip: ""
 }
 
 EventHorizon: {
@@ -2647,22 +2471,26 @@ FrostBringer: {
 
 IrradiatedGreatBlade: {
 	DisplayName: Irradiated Great Blade
-	Tooltip: ""
+	Tooltip:
+		'''
+		This blade is so great that it uh
+		Acidic waves!!
+		'''
 }
 
 Myocardia: {
 	DisplayName: Myocardia
-	Tooltip: Mwahaha.. Im dracula!
+	Tooltip: Mwahaha.. I'm dracula!
 }
 
 ScarecrowSaber: {
 	DisplayName: Scarecrow Saber
-	Tooltip: ""
+	Tooltip: Scare your enemies with a spread of 3 magical sabers!
 }
 
 SkyrageShasher: {
 	DisplayName: Skyrage Shasher
-	Tooltip: ""
+	Tooltip: Casts bouncing wind slashes
 }
 
 GladiatorSpear: {
@@ -2672,32 +2500,26 @@ GladiatorSpear: {
 
 Infernis: {
 	DisplayName: Infernis
-	Tooltip: ""
+	Tooltip:
+		'''
+		Throws a spear that eventually falls down and violent explodes
+		Flamin'
+		'''
 }
 
 StalkersTallon: {
 	DisplayName: Stalkers Tallon
-	Tooltip: ""
+	Tooltip: Shoots spectral versions of itself
 }
 
 TheIrradiaspear: {
 	DisplayName: The Irradiaspear
-	Tooltip: ""
-}
-
-TridentOfTheSeas: {
-	DisplayName: Trident Of The Seas
-	Tooltip: ""
-}
-
-VoidLance: {
-	DisplayName: Void Lance
-	Tooltip: ""
+	Tooltip: Shoots spectral versions of itself, but acidic!
 }
 
 StarKeeper: {
 	DisplayName: Star Keeper
-	Tooltip: ""
+	Tooltip: Summons aurorean stars to attack enemies
 }
 
 SwordOfGlactia: {
@@ -2712,7 +2534,7 @@ SwordOfTheJungleGoddess: {
 
 WoodenSaber: {
 	DisplayName: Wooden Saber
-	Tooltip: ""
+	Tooltip: Hit enemies explode with ivy
 }
 
 X3107: {
@@ -2722,17 +2544,21 @@ X3107: {
 
 ArchariliteEnergyShot: {
 	DisplayName: Archarilite Energy Shot
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots a spread of 3 arrows
+		Becomes empowered by the Arnchar Super Charger!
+		'''
 }
 
 AssassinsDischarge: {
 	DisplayName: Assassins Discharge
-	Tooltip: ""
+	Tooltip: A bow, specifically made for assassins...
 }
 
 BrokenWrath: {
 	DisplayName: Broken Wrath
-	Tooltip: ""
+	Tooltip: Shoots a bunch of scrap
 }
 
 CloudBow: {
@@ -2757,52 +2583,47 @@ DivineSniper: {
 
 Dragoniper: {
 	DisplayName: Dragoniper
-	Tooltip: ""
+	Tooltip: What is this
 }
 
 GraniteMagmum: {
 	DisplayName: Granite Magmum
-	Tooltip: ""
+	Tooltip: A granite-powered gun
 }
 
 IceWalker: {
 	DisplayName: Ice Walker
-	Tooltip: ""
+	Tooltip: Every third shot is an ice-powered arrow!
 }
 
 IrradieagleWrath: {
 	DisplayName: Irradieagle Wrath
-	Tooltip: ""
+	Tooltip: Shoots a spread of arrows
 }
 
 Irradishark: {
 	DisplayName: Irradishark
-	Tooltip: ""
+	Tooltip: Randomly shoots exploding acidic sharks
 }
 
 IvynShot: {
 	DisplayName: Ivyn Shot
-	Tooltip: ""
+	Tooltip: It's a bow, there's nothing else special about it
 }
 
 JackoShot: {
 	DisplayName: Jacko Shot
-	Tooltip: ""
+	Tooltip: It's a bow, there's nothing else special about it
 }
 
 JellyBow: {
 	DisplayName: Jelly Bow
-	Tooltip: ""
+	Tooltip: It's a nice bow, there's nothing else special about it
 }
 
 LAZER: {
-	DisplayName: L A Z E R
+	DisplayName: LAZER
 	Tooltip: I'm a lasering
-}
-
-M38F30: {
-	DisplayName: M38 F30
-	Tooltip: ""
 }
 
 RustlockPistol: {
@@ -2812,12 +2633,7 @@ RustlockPistol: {
 
 Rustvolver: {
 	DisplayName: Rustvolver
-	Tooltip: ""
-}
-
-SolarSpiner: {
-	DisplayName: Solar Spiner
-	Tooltip: ""
+	Tooltip: Just a rusty pistol, not sure why you'd use it, but it's here!
 }
 
 TecnoBlaster: {
@@ -2832,7 +2648,7 @@ TheRedSkull: {
 
 Tociflare: {
 	DisplayName: Tociflare
-	Tooltip: ""
+	Tooltip: Acidic flamethrower, uses gel for ammo
 }
 
 TychineGun: {
@@ -2842,32 +2658,27 @@ TychineGun: {
 
 VoidBlaster: {
 	DisplayName: Void Blaster
-	Tooltip: ""
-}
-
-VoidSkull: {
-	DisplayName: Void Skull
-	Tooltip: ""
+	Tooltip: A void-powered gun, it shoots, you guessed it, bullets!
 }
 
 WingedFury: {
 	DisplayName: Winged Fury
-	Tooltip: ""
-}
-
-Wingspand: {
-	DisplayName: Wingspand
-	Tooltip: ""
+	Tooltip: Sometimes shoots powerful sun-powered arrows!
 }
 
 ArncharRemote: {
 	DisplayName: Arnchar Remote
-	Tooltip: ""
+	Tooltip: Summons an arnchar robot to fight for you!
 }
 
 DripplerStaff: {
 	DisplayName: Drippler Staff
-	Tooltip: Drippy
+	Tooltip:
+		'''
+		Summons a drippler to fight for you!
+		Dripplers stick to enemies and spew blood everywhere
+		Drippy
+		'''
 }
 
 IrradiatedCreeperStaff: {
@@ -2940,12 +2751,12 @@ Bricks: {
 
 Cactius: {
 	DisplayName: Cactius
-	Tooltip: ""
+	Tooltip: Bounces off of tiles
 }
 
 GreyBricks: {
 	DisplayName: Gray Bricks
-	Tooltip: ""
+	Tooltip: Ah yes, the best weapon, a BRICK
 }
 
 Plantius: {
@@ -2960,7 +2771,7 @@ ZthoKnifes: {
 
 CyroBolt: {
 	DisplayName: Cyro Bolt
-	Tooltip: ""
+	Tooltip: Shoots ice bolts that uh, have some issues
 }
 
 LightSpand: {
@@ -3813,7 +3624,7 @@ LunarianVoidLegs: {
 
 SandStorm: {
 	DisplayName: Sand Storm
-	Tooltip: ""
+	Tooltip: Fires a mini sand tornado that explodes upon impact
 }
 
 ExploreMorrowedVillage: {
@@ -4370,7 +4181,7 @@ Yumiko: {
 
 FrostMonger: {
 	DisplayName: Frost Monger
-	Tooltip: ""
+	Tooltip: Slash through enemies near your cursor with the power of icey nights!
 }
 
 AlcadzianCard: {
@@ -4542,7 +4353,7 @@ LarveinGreatbow: {
 
 AlcarianYoyo: {
 	DisplayName: Alcarian Yoyo
-	Tooltip: ""
+	Tooltip: An alcad-powered yoyo that throws out projectiles randomly
 }
 
 Alcadius: {
@@ -6865,27 +6676,31 @@ STARBUST: {
 
 AssassinsRecharge: {
 	DisplayName: Assassins Recharge
-	Tooltip: ""
+	Tooltip: Fires a bolt with decent lifesteal!
 }
 
 BubbleBussy: {
 	DisplayName: Bubble Bussy
-	Tooltip: ""
+	Tooltip:
+		'''
+		Sticks to the ground and enemies and deals damage over time
+		Don't question it
+		'''
 }
 
 CinderNeedle: {
 	DisplayName: Cinder Needle
-	Tooltip: ""
+	Tooltip: Rapidly shoots fiery needles
 }
 
 Devolver: {
 	DisplayName: Devolver
-	Tooltip: ""
+	Tooltip: Shoots a very slow, but decently powered shot
 }
 
 ShottyPitol: {
 	DisplayName: Shotty Pitol
-	Tooltip: ""
+	Tooltip: Shoots a spread of bullets, like a mini shotgun!
 }
 
 RobedSandstone: {
@@ -6895,12 +6710,12 @@ RobedSandstone: {
 
 AzureWrath: {
 	DisplayName: Azure Wrath
-	Tooltip: ""
+	Tooltip: Quickly fires purple energy blasts!
 }
 
 CarrotPatrol: {
 	DisplayName: Carrot Patrol
-	Tooltip: ""
+	Tooltip: Shoots carrots that split into several small carrot shards upon impact
 }
 
 MeredaX: {
@@ -6910,7 +6725,11 @@ MeredaX: {
 
 SrTetanus: {
 	DisplayName: Sr Tetanus
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots bursts of two rusty and toxic projectiles
+		Yeah, you don't wanna get hit by this
+		'''
 }
 
 TheReaving: {
@@ -6926,4 +6745,19 @@ TempleKeyMold: {
 TempleKeyPart: {
 	DisplayName: Temple Key Part
 	Tooltip: A part from Ereshkigal, she broke the key...
+}
+
+M38F30: {
+	Tooltip: ""
+	DisplayName: M38 F30
+}
+
+StarSilk: {
+	Tooltip: ""
+	DisplayName: Star Silk
+}
+
+IrradiatedBar: {
+	Tooltip: ""
+	DisplayName: Irradiated Bar
 }

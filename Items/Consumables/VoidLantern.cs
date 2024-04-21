@@ -28,7 +28,6 @@ namespace Stellamod.Items.Consumables
 
 
             Item.noMelee = true;
-            Item.consumable = true;
             Item.autoReuse = false;
             Item.UseSound = SoundID.Item43;
             Item.rare = ItemRarityID.Orange;
