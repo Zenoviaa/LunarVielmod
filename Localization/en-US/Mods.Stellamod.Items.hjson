@@ -1046,7 +1046,7 @@ MorrowSword: {
 
 MorrowValswa: {
 	DisplayName: Fabled Valswa
-	Tooltip: A sword that shoots Fabled knives!
+	Tooltip: A sword that shoots fire-y sparks
 }
 
 PalmThrower: {
@@ -6720,7 +6720,10 @@ CarrotPatrol: {
 
 MeredaX: {
 	DisplayName: Mereda X
-	Tooltip: ""
+	Tooltip: '''
+		The only guns you can hold in both hands at the same time!
+		Looks like Ereshkigal turned this persom into a weapon too.
+		'''
 }
 
 SrTetanus: {
@@ -6734,7 +6737,7 @@ SrTetanus: {
 
 TheReaving: {
 	DisplayName: The Reaving
-	Tooltip: ""
+	Tooltip: We reave, we love, we lie.
 }
 
 TempleKeyMold: {
@@ -6753,6 +6756,6 @@ M38F30: {
 }
 
 StarSilk: {
-	Tooltip: "Divine silk made of pure astral energy"
+	Tooltip: Divine silk made of pure astral energy
 	DisplayName: Star Silk
 }
