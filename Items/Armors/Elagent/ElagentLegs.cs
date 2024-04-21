@@ -36,7 +36,7 @@ namespace Stellamod.Items.Armors.Elagent
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<StarSilk>(), 9);
             recipe.AddIngredient(ItemType<PearlescentScrap>(), 5);
-            recipe.AddIngredient(ItemID.Cloud, 6);
+            recipe.AddIngredient(ItemID.Feather, 1);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
