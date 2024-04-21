@@ -58,7 +58,7 @@ namespace Stellamod.Items.Accessories
 			player.GetModPlayer<DashPlayer3>().DashAccessoryEquipped = true;
 			//	player.GetDamage(DamageClass.Generic) *= 0.95f;
 			player.lifeRegen += 1;
-			player.GetDamage(DamageClass.Generic) *= 1.04f;
+			player.GetDamage(DamageClass.Generic) *= 1.05f;
 			player.maxRunSpeed *= 1.3f;
 			player.GetCritChance(DamageClass.Generic) *= 1.15f;
 			player.statLifeMax2 += 30;

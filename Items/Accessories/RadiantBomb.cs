@@ -149,7 +149,9 @@ namespace Stellamod.Items.Accessories
 			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
 			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
 
-			return false;
+
+			// just return false if you want only trail locked on player
+			return true;
 		}
 
 
