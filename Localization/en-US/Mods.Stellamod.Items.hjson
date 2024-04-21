@@ -6780,7 +6780,6 @@ RadiantsparkBoots: {
 		'''
 		You'll need these! Given thanks from Zui!
 		Makes the wearer run super fast and leaves a golden trail that can hit on contact!
-		Zui's Mark is left on your back.
 		Gives uses of Shadei with slightly reduced cooldown on dash!
 		Small amount of regeneration 
 		+30 Health!
@@ -6789,4 +6788,9 @@ RadiantsparkBoots: {
 		Yeah this should really help you in future battles.
 		'''
 	DisplayName: Radiantspark Boots
+}
+
+ZuiBomb: {
+	Tooltip: ""
+	DisplayName: Zui Bomb
 }

@@ -19,7 +19,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Accessories
 {
-	public class RadiantBomb : ModProjectile
+	public class GIBomb : ModProjectile
 	{
 		/*
 		 
@@ -64,8 +64,8 @@ namespace Stellamod.Items.Accessories
 			Projectile.penetrate = -1;
 			Projectile.ownerHitCheck = true;
 			Projectile.timeLeft = int.MaxValue;
-	
-		
+
+
 		}
 
 		public float Timer
@@ -124,12 +124,12 @@ namespace Stellamod.Items.Accessories
 		public PrimDrawer TrailDrawer { get; private set; } = null;
 		public float WidthFunction(float completionRatio)
 		{
-			float baseWidth = Projectile.scale * (Projectile.width/ 2) * 0.5f;
+			float baseWidth = Projectile.scale * (Projectile.width / 2) * 1.3f;
 			return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
 		}
 		public Color ColorFunction(float completionRatio)
 		{
-			return Color.Lerp(Color.SpringGreen, Color.Transparent, completionRatio) * 1f;
+			return Color.Lerp(Color.DarkGoldenrod, Color.Transparent, completionRatio) * 1f;
 		}
 		int counter = 1;
 		float alphaCounter = 1;
@@ -138,8 +138,8 @@ namespace Stellamod.Items.Accessories
 			Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
 			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(25f * alphaCounter), (int)(5f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
 			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(25f * alphaCounter), (int)(5f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f * 2), SpriteEffects.None, 0f);
-			
-			
+
+
 			Vector2 frameSize = Projectile.Frame().Size();
 
 

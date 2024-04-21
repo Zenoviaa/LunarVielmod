@@ -67,12 +67,12 @@ namespace Stellamod.Items.Accessories
 			player.lavaImmune = true;
 		
 			
-			player.GetModPlayer<MyPlayer>().RadiantBomb = true;
+			player.GetModPlayer<MyPlayer>().GIBomb = true;
 
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<RadiantBomb>()] == 0)
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<GIBomb>()] == 0)
 			{
 				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-					ModContent.ProjectileType<RadiantBomb>(), 70, 4, player.whoAmI);
+					ModContent.ProjectileType<GIBomb>(), 70, 4, player.whoAmI);
 			}
 		}
 

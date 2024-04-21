@@ -263,7 +263,9 @@ namespace Stellamod
 
         public bool DetonationRune;
 		public bool Towned = false;
+		public bool GIBomb = false;
 		public bool RadiantBomb = false;
+		public int RadiantBombCooldown = 0;
 
 		public bool ClamsPearl;
 
@@ -446,7 +448,24 @@ namespace Stellamod
 
                 }
             }
-        }
+
+			if (RadiantBomb && RadiantBombCooldown <= 0)
+			{
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GoldsSpawnEffect>(), 90, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<GoldsSlashProj>(), 90, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<GoldsSlashProj>(), 95, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<GoldsSlashProj>(), 95, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<GoldsSlashProj>(), 90, 1f, Player.whoAmI);
+				}
+
+				RadiantBombCooldown = 220;
+			}
+		}
 
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
@@ -622,7 +641,7 @@ namespace Stellamod
 			MasteryMagic = false;
 			WindRune = false;
 			RadiantBomb = false;
-
+			GIBomb = false;
 
 			if (SwordComboR <= 0)
 			{
