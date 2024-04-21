@@ -6795,3 +6795,8 @@ AntlionWings: {
 	DisplayName: Antlion Wings
 	Tooltip: ""
 }
+
+ZuiBomb: {
+	Tooltip: Every little while, when hitting an enemy, Zui's power will explode and do pretty good damage!
+	DisplayName: Zui Bomb
+}
