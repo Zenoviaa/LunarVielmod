@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Desert
             NPC.aiStyle = -1;
             NPC.damage = 42;
             NPC.defense = 8;
-            NPC.lifeMax = 170;
+            NPC.lifeMax = 400;
             NPC.HitSound = SoundID.NPCHit48;
             NPC.DeathSound = SoundID.DD2_SkeletonDeath;
             NPC.value = 563f;
@@ -47,7 +47,7 @@ namespace Stellamod.NPCs.Desert
             if (!Main.hardMode)
                 return 0;
           
-            return (SpawnCondition.DesertCave.Chance * 0.05f);
+            return (SpawnCondition.DesertCave.Chance * 0.05f) + (SpawnCondition.OverworldDayDesert.Chance * 0.05f);
         }
     }
 }
