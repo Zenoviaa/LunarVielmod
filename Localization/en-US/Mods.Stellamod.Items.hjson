@@ -6791,6 +6791,6 @@ RadiantsparkBoots: {
 }
 
 ZuiBomb: {
-	Tooltip: ""
+	Tooltip: After a little while, your attacks will explode with Zui's power! Her sigil will come with you!
 	DisplayName: Zui Bomb
 }
