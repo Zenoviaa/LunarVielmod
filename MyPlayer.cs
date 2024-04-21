@@ -263,6 +263,7 @@ namespace Stellamod
 
         public bool DetonationRune;
 		public bool Towned = false;
+		public bool RadiantBomb = false;
 
 		public bool ClamsPearl;
 
@@ -620,10 +621,10 @@ namespace Stellamod
             Leather = false;
 			MasteryMagic = false;
 			WindRune = false;
+			RadiantBomb = false;
 
 
-
-            if (SwordComboR <= 0)
+			if (SwordComboR <= 0)
 			{
 				SwordCombo = 0;
 				SwordComboR = 0;

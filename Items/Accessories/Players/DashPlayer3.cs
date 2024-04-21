@@ -7,18 +7,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories.Players
 {
-    public class DashPlayer2 : ModPlayer
+    public class DashPlayer3 : ModPlayer
 	{
 		// These indicate what direction is what in the timer arrays used
 		public const int DashDown = 0;
+		public const int DashUp = 1;
 		public const int DashRight = 2;
 		public const int DashLeft = 3;
 
-		public const int DashCooldown = 42; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+		public const int DashCooldown = 37; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
 		public const int DashDuration = 30; // Duration of the dash afterimage effect in frames
 
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-		public const float DashVelocity = 20f;
+		public const float DashVelocity = 23f;
 
 		// The direction the player has double tapped.  Defaults to -1 for no dash double tap
 		public int DashDir = -1;
@@ -48,6 +49,10 @@ namespace Stellamod.Items.Accessories.Players
 			{
 				DashDir = DashLeft;
 			}
+			else if (Player.controlUp && Player.releaseUp && Player.doubleTapCardinalTimer[DashUp] < 15)
+			{
+				DashDir = DashUp;
+			}
 			else
 			{
 				DashDir = -1;
@@ -66,6 +71,7 @@ namespace Stellamod.Items.Accessories.Players
 				switch (DashDir)
 				{
 					// Only apply the dash velocity if our current speed in the wanted direction is less than DashVelocity
+					case DashUp when Player.velocity.Y > -DashVelocity:
 					case DashDown when Player.velocity.Y < DashVelocity:
 						{
 							// Y-velocity is set here
@@ -75,6 +81,8 @@ namespace Stellamod.Items.Accessories.Players
 							newVelocity.Y = dashDirection * DashVelocity;
 							break;
 						}
+
+			
 					case DashLeft when Player.velocity.X > -DashVelocity:
 					case DashRight when Player.velocity.X < DashVelocity:
 						{
@@ -104,18 +112,18 @@ namespace Stellamod.Items.Accessories.Players
 			if (DashTimer > 0)
 			{ // dash is active
 				Vector2 newVelocity = Player.velocity;
-				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = true;
+				Player.GetModPlayer<ImmunityPlayer3>().HasStealiImmunityAcccc = true;
 				Player.armorEffectDrawShadowEOCShield = true;
 				for (int j = 0; j < 3; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<BurnParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<StarParticleYellow>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 
 				for (int j = 0; j < 1; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Player.Center, speed * 6, ParticleManager.NewInstance<GoldSparkleParticle>(), Color.AliceBlue, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Player.Center, speed * 6, ParticleManager.NewInstance<StarParticle>(), Main.DiscoColor, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 				Player.AddBuff(BuffID.Cursed, 1);
 
@@ -128,7 +136,7 @@ namespace Stellamod.Items.Accessories.Players
 		
 			if (DashTimer == 0)
             {
-				Player.GetModPlayer<ImmunityPlayer>().HasStealiImmunityAcc = false;
+				Player.GetModPlayer<ImmunityPlayer3>().HasStealiImmunityAcccc = false;
 				
 
 			}
