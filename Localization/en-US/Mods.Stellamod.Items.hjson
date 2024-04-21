@@ -6484,7 +6484,9 @@ GovheilPlatformBlock: {
 }
 
 ManifestedBravery: {
-	Tooltip: Verlia's soul manifested at it's core, in the end she stood up against Fenix to save her village and her sister.
+	Tooltip: ''' Verlia's soul manifested at it's core. 
+	In the end she stood up against Fenix and you to save her village and her sister.
+	'''
 	DisplayName: Manifested Bravery
 }
 
@@ -6720,7 +6722,8 @@ CarrotPatrol: {
 
 MeredaX: {
 	DisplayName: Mereda X
-	Tooltip: '''
+	Tooltip:
+		'''
 		The only guns you can hold in both hands at the same time!
 		Looks like Ereshkigal turned this persom into a weapon too.
 		'''
