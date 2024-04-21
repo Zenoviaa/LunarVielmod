@@ -150,7 +150,7 @@ namespace Stellamod.NPCs.Desert
 
 				NPC.velocity.X *= 1f;
 				NPC.velocity.Y *= 0.5f;
-				for (int k = 0; k < 2; k++)
+				for (int k = 0; k < 1; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
@@ -158,8 +158,8 @@ namespace Stellamod.NPCs.Desert
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
 					if (StellaMultiplayer.IsHost)
 					{
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY,
-							ProjectileID.GreekFire3, 15, 0f, Owner: Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY * 2,
+							ProjectileID.SandBallFalling, 15, 0f, Owner: Main.myPlayer);
                     }
 
 				}
