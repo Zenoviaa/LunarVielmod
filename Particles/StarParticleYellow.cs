@@ -13,7 +13,7 @@ namespace Stellamod.Particles
 		{
 			width = 34;
 			height = 34;
-			Scale = 1.5f;
+			Scale = 1.4f;
 			timeLeft = 40;
 			SpawnAction = Spawn;
 		}
@@ -21,7 +21,7 @@ namespace Stellamod.Particles
 		{
 
 
-			scale *= 1.05f;
+			scale *= 1.01f;
 
 			rotation += Utils.Clamp(velocity.X * 2f, -ai[0], ai[0]);
 

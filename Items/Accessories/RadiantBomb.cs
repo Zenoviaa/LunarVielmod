@@ -131,16 +131,20 @@ namespace Stellamod.Items.Accessories
 		{
 			return Color.Lerp(Color.DarkGoldenrod, Color.Transparent, completionRatio) * 1f;
 		}
-		int counter = 6;
-		float alphaCounter = 6;
+		int counter = 1;
+		float alphaCounter = 1;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
-			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
-			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f * 2), SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(25f * alphaCounter), (int)(5f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(25f * alphaCounter), (int)(5f * alphaCounter), 0), Projectile.rotation, new Vector2(106 / 2, 106 / 2), 0.2f * (counter + 0.3f * 2), SpriteEffects.None, 0f);
+			
+			
+			Vector2 frameSize = Projectile.Frame().Size();
+
 
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
 			TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
 			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
 			TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);

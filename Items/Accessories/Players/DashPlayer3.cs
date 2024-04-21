@@ -117,7 +117,7 @@ namespace Stellamod.Items.Accessories.Players
 				for (int j = 0; j < 3; j++)
 				{
 					Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<StarParticleYellow>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+					ParticleManager.NewParticle(Player.Center, speed * 4, ParticleManager.NewInstance<StarParticle>(), Color.DarkGoldenrod, Main.rand.NextFloat(0.2f, 0.8f));
 				}
 
 				for (int j = 0; j < 1; j++)
