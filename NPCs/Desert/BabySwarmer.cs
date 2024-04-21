@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.DropRules;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Weapons.Summon;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
@@ -137,6 +138,7 @@ namespace Stellamod.NPCs.Desert
         {
             npcLoot.Add(ItemDropRule.Common(ItemID.AntlionMandible, 3, 1, 2));
             npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<BabySwarmerStaff>(), 20, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new PlanteraDropRule(), ModContent.ItemType<AntlionWings>(), 40, 1, 1));
         }
     }
 }

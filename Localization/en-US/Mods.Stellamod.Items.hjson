@@ -6790,3 +6790,8 @@ RadiantsparkBoots: {
 		'''
 	DisplayName: Radiantspark Boots
 }
+
+AntlionWings: {
+	DisplayName: Antlion Wings
+	Tooltip: ""
+}
