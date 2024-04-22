@@ -122,6 +122,15 @@ namespace Stellamod
                 Asset<Effect> blackShader = this.Assets.Request<Effect>("Effects/Black");
                 Filters.Scene[ShaderRegistry.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
 
+                Asset<Effect> tintShader = this.Assets.Request<Effect>("Effects/Tint");
+                Filters.Scene[ShaderRegistry.Screen_Tint] = new Filter(new ScreenShaderData(tintShader, "ScreenPass"), EffectPriority.Medium);
+
+                Asset<Effect> distortionShader = this.Assets.Request<Effect>("Effects/NormalDistortion");
+                Filters.Scene[ShaderRegistry.Screen_NormalDistortion] = new Filter(new ScreenShaderData(distortionShader, "ScreenPass"), EffectPriority.Medium);
+
+                Asset<Effect> vignetteShader = this.Assets.Request<Effect>("Effects/Vignette");
+                Filters.Scene[ShaderRegistry.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
+
                 SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
                 SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
 

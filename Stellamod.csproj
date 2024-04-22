@@ -63,6 +63,9 @@
     <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
+    <None Remove="effects\NormalDistortion.fx" />
+    <None Remove="Effects\Tint.fx" />
+    <None Remove="effects\Vignette.fx" />
     <None Remove="Gores\Bricks1.png" />
     <None Remove="Gores\Bricks2.png" />
     <None Remove="Gores\GraniteProbe1.png" />
@@ -313,6 +316,7 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
+    <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer2.png" />

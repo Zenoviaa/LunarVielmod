@@ -1,7 +1,10 @@
 ﻿namespace Stellamod.Helpers
 {
-    internal class TextureRegistry
+    internal static class TextureRegistry
     {
-        public const string EmptyTexture = "Stellamod/Assets/Textures/Empty";
+        public static string EmptyTexture => "Stellamod/Assets/Textures/Empty";
+        public static string FlowerTexture => "Stellamod/Effects/Masks/Flower";
+        public static string CircleOutline => "Stellamod/Effects/Masks/Extra_67";
+        public static string NormalNoise1 => "Stellamod/Textures/NormalNoise1";
     }
 }

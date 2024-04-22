@@ -12,5 +12,8 @@
         public const string Glowing_Dust = "GlowingDust";
 
         public const string Screen_Black = "Black";
+        public const string Screen_Tint = "Tint";
+        public const string Screen_NormalDistortion = "NormalDistortion";
+        public const string Screen_Vignette = "Vignette";
     }
 }
