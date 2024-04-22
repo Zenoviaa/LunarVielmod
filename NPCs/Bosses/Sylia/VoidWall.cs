@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Shaders;
 using System;
+using Terraria.Graphics.Effects;
 
 namespace Stellamod.NPCs.Bosses.Sylia
 {
@@ -81,6 +82,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
         private int _frameTick;
         private int _frameCounter2;
         private int _frameTick2;
+        private float _blackProgress;
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -189,6 +191,19 @@ namespace Stellamod.NPCs.Bosses.Sylia
             ref float ai_State = ref NPC.ai[1];
             ref float ai_Cycle = ref NPC.ai[2];
 
+
+            _blackProgress += 0.01f;
+            FilterManager filterManager = Terraria.Graphics.Effects.Filters.Scene;
+            if (_blackProgress >= 1 && filterManager[ShaderRegistry.Screen_Black].IsActive())
+            {
+                filterManager.Deactivate(ShaderRegistry.Screen_Black);
+            }
+            else
+            {
+                filterManager[ShaderRegistry.Screen_Black].GetShader()
+                 .UseProgress(_blackProgress);
+            }
+ 
             Movement();
             PullPlayer();
 

@@ -87,91 +87,97 @@ namespace Stellamod
         public static int MedalCurrencyID;
         public override void Load()
         {
-
-            Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
-            Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["VampKnives:BasicTrail"] = new MiscShaderData(BasicTrailRef, "TrailPass");
-            GameShaders.Misc["VampKnives:LightningTrail"] = new MiscShaderData(LightningTrailRef, "TrailPass");
            
-            Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
-            GameShaders.Misc["Stellamod:SilhouetteShader"] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
-
-
-            Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["VampKnives:GenericLaserShader"] = new MiscShaderData(genericLaserShader, "TrailPass");
-
-
-            Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["VampKnives:LightBeamVertexShader"] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
-
-
-            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["VampKnives:ArtemisLaserShader"] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
-
-
-            Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["VampKnives:Fire"] = new MiscShaderData(shadowflameShader, "TrailPass");
-
-         //   Ref<Effect> NaxtrinShader = new(Assets.Request<Effect>("Effects/Primitives/NaxtrinSky", AssetRequestMode.ImmediateLoad).Value);
-         //   Filters.Scene["Stellamod:NaxtrinSky"] = new Filter(new ScreenShaderData(NaxtrinShader, "ShaderPass"), EffectPriority.VeryHigh);
-          //  Filters.Scene["Stellamod:NaxtrinSky"].Load();
-            SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
-            SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
-
-            SkyManager.Instance["Stellamod:NaxtrinSky2"] = new NaxtrinSky2();
-            SkyManager.Instance["Stellamod:NaxtrinSky2"].Load();
-
-            SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
-            SkyManager.Instance["Stellamod:AlcadSky"].Load();
-
-            SkyManager.Instance["Stellamod:SyliaSky"] = new SyliaSky();
-            SkyManager.Instance["Stellamod:SyliaSky"].Load();
-
-            SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
-            SkyManager.Instance["Stellamod:VillageSky"].Load();
-
-            // ...other Load stuff goes here
-            MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
-            Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Jellyfish1"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Ishtar"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.6f, -0.6f, -0.6f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Jellyfish2"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.475f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Mechanics"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Lab"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Gintzing"] = new Filter(new GintzeScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.4f, 0.6f).UseOpacity(0.275f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Caeva"] = new Filter(new CaevaScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.6f, 0.65f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
-
-            Filters.Scene["Stellamod:ChaosD"] = new Filter(new ChaosDScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.7f, 0.1f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:ChaosT"] = new Filter(new ChaosTScreenShaderData("FilterMiniTower").UseColor(0.6f, 0.2f, 0.75f).UseOpacity(0.375f), EffectPriority.Medium);
-            Filters.Scene["Stellamod:ChaosP"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.375f), EffectPriority.VeryHigh);
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             if (Main.netMode != NetmodeID.Server)
             {
+                Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
+                Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");
+                GameShaders.Misc[ShaderRegistry.VampKnives_Lightning_Trail] = new MiscShaderData(LightningTrailRef, "TrailPass");
+
+                Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
+                GameShaders.Misc[ShaderRegistry.Silhouette_Shader] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
+
+
+                Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_Generic_Laser_Shader] = new MiscShaderData(genericLaserShader, "TrailPass");
+
+
+                Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_Light_Beam_Vertex_Shader] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
+
+
+                Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_Artemis_Laser_Shader] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
+
+
+                Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");
+
+                Asset<Effect> glowingDustShader = this.Assets.Request<Effect>("Effects/GlowingDust");
+                GameShaders.Misc[ShaderRegistry.Glowing_Dust] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
+
+                Asset<Effect> blackShader = this.Assets.Request<Effect>("Effects/Black");
+                Filters.Scene[ShaderRegistry.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
+
+                SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
+                SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
+
+                SkyManager.Instance["Stellamod:NaxtrinSky2"] = new NaxtrinSky2();
+                SkyManager.Instance["Stellamod:NaxtrinSky2"].Load();
+
+                SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
+                SkyManager.Instance["Stellamod:AlcadSky"].Load();
+
+                SkyManager.Instance["Stellamod:SyliaSky"] = new SyliaSky();
+                SkyManager.Instance["Stellamod:SyliaSky"].Load();
+
+                SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
+                SkyManager.Instance["Stellamod:VillageSky"].Load();
+
+                // ...other Load stuff goes here
+                MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
+                Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Jellyfish1"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Ishtar"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.6f, -0.6f, -0.6f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Jellyfish2"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.475f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Mechanics"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Verlia"] = new Filter(new VerliaScreenShaderData("FilterMiniTower").UseColor(0.3f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Acid"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Lab"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Veriplant"] = new Filter(new VeriplantScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Gintzing"] = new Filter(new GintzeScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.4f, 0.6f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Caeva"] = new Filter(new CaevaScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.6f, 0.65f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
+
+                Filters.Scene["Stellamod:ChaosD"] = new Filter(new ChaosDScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.7f, 0.1f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:ChaosT"] = new Filter(new ChaosTScreenShaderData("FilterMiniTower").UseColor(0.6f, 0.2f, 0.75f).UseOpacity(0.375f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:ChaosP"] = new Filter(new ChaosPScreenShaderData("FilterMiniTower").UseColor(0.7f, 0.1f, 0.2f).UseOpacity(0.375f), EffectPriority.VeryHigh);
+
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
 
+                Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
+                SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
+
+                SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
+                Filters.Scene["Stellamod:GovheilSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
 
 
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.1f, 0, 0.3f).UseOpacity(0.9f), EffectPriority.VeryHigh);
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.5f, 0.2f, 0.7f).UseOpacity(0.65f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
 
-
-
+                Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
             }
-
-            Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
-            GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
 
 
 
@@ -181,11 +187,6 @@ namespace Stellamod
 
             //``````````````````````````````````````````````````````````````````````````````````````
 
-            Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
-            SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
-
-            SkyManager.Instance["Stellamod:GovheilSky"] = new GovheilSky();
-            Filters.Scene["Stellamod:GovheilSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
 
             //`````````````````````````````````````````````````````````````````````````````
 
@@ -335,10 +336,6 @@ namespace Stellamod
                  Main.tileSetsLoaded[TileID.GrayBrick] = false;
                 */
             }
-        }
-
-        internal class NPCs
-        {
         }
 
         private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
