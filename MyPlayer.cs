@@ -1373,7 +1373,7 @@ namespace Stellamod
 
 
 
-				for (int j = 0; j < 3; j++)
+				for (int j = 0; j < 1; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1387,7 +1387,7 @@ namespace Stellamod
 				}
 
 
-				for (int j = 0; j < 4; j++)
+				for (int j = 0; j < 2; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1400,7 +1400,7 @@ namespace Stellamod
 
 				}
 
-				for (int j = 0; j < 2; j++)
+				for (int j = 0; j < 1; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1517,7 +1517,7 @@ namespace Stellamod
 
 				
 
-				for (int j = 0; j < 6; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1500f, 1500f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
