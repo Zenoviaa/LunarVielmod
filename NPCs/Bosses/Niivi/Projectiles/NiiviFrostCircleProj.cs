@@ -54,6 +54,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     player.AddBuff(BuffID.Chilled, 2);
                     player.AddBuff(BuffID.Darkness, 2);
                     player.AddBuff(BuffID.Blackout, 2);
+                    player.AddBuff(BuffID.BrokenArmor, 2);
+                    player.AddBuff(BuffID.Daybreak, 2);
                 }
             }
         }
