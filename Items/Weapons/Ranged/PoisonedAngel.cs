@@ -52,10 +52,10 @@ namespace Stellamod.Items.Weapons.Ranged
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged;
-			Item.damage = 13;
+			Item.damage = 11;
 			Item.knockBack = 5f;
 			Item.noMelee = true;
-			Item.crit = 21;
+			Item.crit = 2;
 
 			// Gun Properties
 			Item.shoot = ModContent.ProjectileType<PoisonedAngelProj>();
