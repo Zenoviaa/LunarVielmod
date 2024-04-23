@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -49,15 +50,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float distance = Vector2.Distance(Projectile.Center, player.Center);
                 if(distance > CircleRadius)
                 {
-                    player.AddBuff(BuffID.Frostburn, 2);
-                    player.AddBuff(BuffID.Frostburn2, 2);
-                    player.AddBuff(BuffID.Chilled, 2);
-                    player.AddBuff(BuffID.Darkness, 2);
-                    player.AddBuff(BuffID.Blackout, 2);
-                    player.AddBuff(BuffID.BrokenArmor, 2);
-                    player.AddBuff(BuffID.OnFire, 2);
-                    player.AddBuff(BuffID.OnFire3, 2);
-                    player.AddBuff(BuffID.ShadowFlame, 2);
+                    player.AddBuff(ModContent.BuffType<FlamesOfIlluria>(), 2);
                 }
             }
         }

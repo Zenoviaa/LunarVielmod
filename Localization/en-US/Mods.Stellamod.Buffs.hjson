@@ -652,3 +652,8 @@ BabySwarmerMinionBuff: {
 	DisplayName: Baby Swarmer Minion Buff
 	Description: They're everywhere!
 }
+
+FlamesOfIlluria: {
+	Description: Mods.Stellamod.Buffs.FlamesOfIlluria.Description
+	DisplayName: Flames Of Illuria
+}
