@@ -99,7 +99,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             float osc = VectorHelper.Osc(0.75f, 1f);
 
             float width = Projectile.timeLeft / 60f;
-            return (Projectile.width * Projectile.scale) * osc * width * Size;
+            float easedWidth = Easing.InExpo(width);
+            return (Projectile.width * Projectile.scale) * osc * easedWidth * Size;
         }
 
         public Color ColorFunction(float completionRatio)
