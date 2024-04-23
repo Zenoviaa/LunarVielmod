@@ -3,11 +3,8 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.Particles;
-using Stellamod.UI.Dialogue;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Graphics.Effects;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
@@ -29,8 +26,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         int AttackCount;
         int AttackSide;
         bool Slowdown;
-        float TintOpacity;
         Vector2 AttackPos;
+        Vector2 LaserAttackPos;
         private void AIBossFight()
         {
             switch (BossState)
@@ -73,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(Timer >= 180)
             {
                 ResetState(BossActionState.PrepareAttack);
-                NextAttack = BossActionState.Frost_Breath;
+         
             }
 
             UpdateOrientation();
@@ -165,8 +162,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {                 
                     Vector2 velocity = Vector2.Zero;
                     int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                    Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
                         0, 0, Main.myPlayer);
+                    }
                 }
 
                 //Charge up
@@ -229,8 +229,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     int type = ModContent.ProjectileType<NiiviFrostBreathProj>();
                     int damage = NPC.ScaleFromContactDamage(0.25f);
                     float knockback = 1;
-                    Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
+
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
                         damage, knockback, Main.myPlayer);
+                    }
                 }
 
                 if(Timer >= length)
@@ -277,9 +281,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     velocity *= Main.rand.NextFloat(0.5f, 1f);
 
                     int damage = NPC.ScaleFromContactDamage(0.25f);
-                    float knockback = 1;
-                    Projectile.NewProjectile(EntitySource, spawnPos, velocity, type,
+                    float knockback = 1; 
+                    
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, spawnPos, velocity, type,
                         damage, knockback, Main.myPlayer);
+                    }
 
                     Timer = 0;
                     AttackCount++;
@@ -294,6 +302,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             } 
             else if (AttackTimer == 4)
             {
+                NextAttack = BossActionState.Laser_Blast;
                 ResetState(BossActionState.Swoop_Out);
             }
         }
@@ -389,7 +398,105 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_LaserBlast()
         {
+            /*
+             * Step 1: Look at target for a bit
+             * 
+             * Step 2: Charge begin charging massive laser, white particles come in and slowly build up
+             * 
+             * Step 3: Fire the laser, twice?, Nah maybe three times
+             */
 
+            if(AttackTimer == 0)
+            {
+                Timer++;
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+                if (Timer >= 60)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            } 
+            else if (AttackTimer == 1)
+            {
+                Timer++;
+
+
+                float progress = Timer / 60;
+                progress = MathHelper.Clamp(progress, 0, 1);
+                float sparkleSize = MathHelper.Lerp(0f, 4f, progress);
+                if (Timer % 4 == 0)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Particle p = ParticleManager.NewParticle(NPC.Center, Vector2.Zero,
+                            ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
+                        p.timeLeft = 8;
+                    }
+                }
+
+                //Rotate head 90-ish degrees upward
+                if (Timer < 60)
+                {
+                    LaserAttackPos = Target.Center;
+                    Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                    TargetHeadRotation = directionToTarget.ToRotation();
+
+                    //Slowly accelerate up while charging
+                    NPC.velocity *= 1.002f;
+
+                    //Charge up
+                    ChargeVisuals<StarParticle2>(Timer, 60);
+                }
+                else if (Timer == 61)
+                {
+                    Vector2 velocity = Vector2.Zero;
+                    int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, LaserAttackPos, velocity, type,
+                            0, 0, Main.myPlayer);
+                    }      
+                }
+                else if (Timer >= 120)
+                {
+                    //SHOOT LOL
+                    Vector2 fireDirection = TargetHeadRotation.ToRotationVector2();
+                    float distance = Vector2.Distance(NPC.Center, LaserAttackPos);
+
+                    int type = ModContent.ProjectileType<NiiviLaserBlastProj>();
+                    int damage = NPC.ScaleFromContactDamage(1f);
+                    float knockback = 1;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float size = 5.5f;
+                        float beamLength = distance;
+                        Projectile.NewProjectile(EntitySource, NPC.Center, fireDirection, type,
+                        damage, knockback, Main.myPlayer, 
+                            ai0: size, 
+                            ai1: beamLength);
+                    }
+
+                    for(int i = 0; i < 16; i++)
+                    {
+                        Vector2 particleVelocity = fireDirection * 16;
+                        particleVelocity = particleVelocity.RotatedByRandom(MathHelper.PiOver4 / 3);
+                        particleVelocity *= Main.rand.NextFloat(0.3f, 1f);
+                        ParticleManager.NewParticle(NPC.Center, particleVelocity,
+                            ParticleManager.NewInstance<StarParticle>(), Color.White, sparkleSize);
+                    }
+
+                    Timer = 0;
+                    AttackCount++;
+                }
+
+                if(AttackCount >= 3)
+                {
+                    NextAttack = BossActionState.Frost_Breath;
+                    ResetState(BossActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_StarWrath()

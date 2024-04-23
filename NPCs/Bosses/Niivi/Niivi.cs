@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         ref float AttackTimer => ref NPC.ai[2];
 
         BossActionState BossState;
-        BossActionState NextAttack;
+        BossActionState NextAttack = BossActionState.Frost_Breath;
         int ScaleDamageCounter;
         int AggroDamageCounter;
 

@@ -317,6 +317,7 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
+    <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer2.png" />

@@ -17,6 +17,7 @@ namespace Stellamod.Helpers
         private Vector2 _distortionScrollSpeed;
         private float _distortionBlend;
         private float _targetDistortionBlend;
+        private float _distortionTimer;
         private bool _useDistortion;
 
         //Tint Shader
@@ -43,17 +44,21 @@ namespace Stellamod.Helpers
             _useVignette = false;
         }
 
-        public void DistortScreen(string normalTexture, Vector2 scrollSpeed, float blend = 0.05f)
+        public void DistortScreen(string normalTexture, Vector2 scrollSpeed, float blend = 0.05f, float timer = -1f)
         {
             Texture2D texture = ModContent.Request<Texture2D>(normalTexture).Value;
-            DistortScreen(texture, scrollSpeed, blend);
+            DistortScreen(texture, scrollSpeed, blend, timer);
         }
 
-        public void DistortScreen(Texture2D normalTexture, Vector2 scrollSpeed, float blend = 0.05f)
+        public void DistortScreen(Texture2D normalTexture, Vector2 scrollSpeed, float blend = 0.05f, float timer = -1f)
         {
             _useDistortion = true;
             _distortionScrollSpeed = scrollSpeed;
             _targetDistortionBlend = blend;
+            if(timer != -1)
+            {
+                _distortionTimer = timer;
+            }
 
             var shaderData = FilterManager[ShaderRegistry.Screen_NormalDistortion].GetShader();
             shaderData.UseImage(normalTexture, index: 1);
@@ -117,6 +122,15 @@ namespace Stellamod.Helpers
 
         private void UpdateDistortion()
         {
+            if(_distortionTimer > 0)
+            {
+                _distortionTimer--;
+                if(_distortionTimer <= 0)
+                {
+                    _useDistortion = false;
+                }
+            }
+
             if (_useDistortion)
             {
                 if (!FilterManager[ShaderRegistry.Screen_NormalDistortion].IsActive())
