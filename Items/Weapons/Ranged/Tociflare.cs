@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Gun;
 using Terraria;
@@ -9,38 +10,41 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    public class Tociflare : ModItem
+    public class Tociflare : ClassSwapItem
 	{
-		public override void SetStaticDefaults()
-        {
+        public override DamageClass AlternateClass => DamageClass.Magic;
 
-            // DisplayName.SetDefault("Tociflare"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-		}
+        public override void SetClassSwappedDefaults()
+        {
+            Item.mana = 4;
+            Item.damage = 16;
+        }
 
         public override void SetDefaults()
         {
-            Item.damage = 40;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
-            Item.useTime = 27;
-            Item.useAnimation = 27;
+            Item.useTime = 4;
+            Item.useAnimation = 4;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 6;
             Item.value = 10000;
             Item.rare = ItemRarityID.Green;
-            Item.UseSound = SoundID.Item73;
+            Item.UseSound = SoundID.Item34;
             Item.shoot = ProjectileType<TociBolt4>();
             Item.useAmmo = AmmoID.Gel;
-            Item.shootSpeed = 25f;
+            Item.shootSpeed = 8;
             Item.autoReuse = true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<VirulentPlating>(), 30);
-            recipe.AddIngredient(ItemType<DreadFoil>(), 10);
-            recipe.AddIngredient(ItemType<VerianBar>(), 5);
+            recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 15);
+            recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 5);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
