@@ -21,7 +21,8 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             //Do if(IsSwapped) if you want to check for the alternate class
             //Stats to have when in the other class
-            Item.mana = 8;
+            Item.mana = 20;
+            Item.damage = 34;
         }
 
         public override void SetDefaults()

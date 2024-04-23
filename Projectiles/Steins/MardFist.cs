@@ -123,13 +123,13 @@ namespace Stellamod.Projectiles.Steins
 			{
 				if (!bounced)
 				{
-					player.itemTime = 165;
-					player.itemAnimation = 165;
+					player.itemTime = 185;
+					player.itemAnimation = 185;
 				}
 				if (bounced)
 				{
-					player.itemTime = 40;
-					player.itemAnimation = 40;
+					player.itemTime = 50;
+					player.itemAnimation = 50;
 				}
 				Projectile.Kill();
 			}

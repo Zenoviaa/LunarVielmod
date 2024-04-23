@@ -26,6 +26,7 @@
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Block.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
     <None Remove="Assets\Textures\AshedRE.png" />
+    <None Remove="Buffs\AbyssalFlame - Copy.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\Alcadded.png" />
@@ -48,6 +49,8 @@
     <None Remove="Buffs\MiracleLiquid.png" />
     <None Remove="Buffs\Rekin.png" />
     <None Remove="Buffs\SFBuff.png" />
+    <None Remove="Buffs\ShadeWrath.png" />
+    <None Remove="Buffs\ShadeWrathCooldown.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\SupernovaChained.png" />
@@ -61,6 +64,9 @@
     <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
+    <None Remove="effects\NormalDistortion.fx" />
+    <None Remove="Effects\Tint.fx" />
+    <None Remove="effects\Vignette.fx" />
     <None Remove="Gores\Bricks1.png" />
     <None Remove="Gores\Bricks2.png" />
     <None Remove="Gores\GraniteProbe1.png" />
@@ -115,6 +121,8 @@
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidBody_Body.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidHead_Head.png" />
     <None Remove="Items\Armors\Astrasilk - Copy\LunarianVoidLegs_Legs.png" />
+    <None Remove="Items\Armors\Astrasilk\AstrasilkGigaStarProj.png" />
+    <None Remove="Items\Armors\Astrasilk\AstrasilkStarProj.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianCloak.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianCloak_Body.png" />
     <None Remove="Items\Armors\Eldritchian\EldritchianHood.png" />
@@ -309,6 +317,8 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
+    <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
+    <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer2.png" />

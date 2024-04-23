@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Ores;
@@ -123,7 +124,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			NPC.Size = new Vector2(27, 42);
 			NPC.damage = 1;
 			NPC.defense = 45;
-			NPC.lifeMax = 49250;
+			NPC.lifeMax = 51250;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -459,12 +460,12 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.HomeRunZui:
-					NPC.damage = 100;
+					NPC.damage = 200;
 					HomeRunZui();
 					break;
 
 				case ActionState.AnticipateDashZui:
-					NPC.damage = 210;
+					NPC.damage = 260;
 					SlasherZui();
 					break;
 
@@ -479,7 +480,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 					break;
 
 				case ActionState.SonicDashZui:
-					NPC.damage = 300;
+					NPC.damage = 310;
 					SonicZui();
 					break;
 
@@ -2049,14 +2050,14 @@ namespace Stellamod.NPCs.Bosses.Zui
 			}
 
 
-			if (timer == 64 && ZuiSonic < 6)
+			if (timer == 64 && ZuiSonic < 8)
 			{
 				ResetTimers();
 				State = ActionState.SonicDashZui;
 				timer = 0;
 			}
 
-			if (timer == 64 && ZuiSonic >= 6)
+			if (timer == 64 && ZuiSonic >= 8)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				if (StellaMultiplayer.IsHost)
@@ -2171,6 +2172,7 @@ namespace Stellamod.NPCs.Bosses.Zui
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RadianuiBar>(), 1, 10, 40));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
 			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.ZuiBossRel>()));
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<ZuiBomb>()));
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CompletedFlowerBag>(), minimumDropped: 1, maximumDropped: 3));
 			npcLoot.Add(notExpertRule);

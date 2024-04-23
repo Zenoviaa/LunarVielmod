@@ -24,7 +24,7 @@ namespace Stellamod.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.moveSpeed += 0.9f;
+            player.moveSpeed += 0.4f;
         }
     }
     }

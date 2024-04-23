@@ -20,7 +20,7 @@ namespace Stellamod.Items.Weapons.Melee
 
         public override void SetDefaults()
         {
-            Item.damage = 12;
+            Item.damage = 10;
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.width = 50;

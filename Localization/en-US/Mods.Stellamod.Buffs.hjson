@@ -637,3 +637,23 @@ SigfriedsInsanity: {
 	Description: Mods.Stellamod.Buffs.SigfriedsInsanity.Description
 	DisplayName: Sigfrieds Insanity
 }
+
+ShadeWrath: {
+	DisplayName: Shade Wrath
+	Description: You are filled with the power of the shadows!
+}
+
+ShadeWrathCooldown: {
+	DisplayName: Shade Wrath Cooldown
+	Description: Recharging your shade power...
+}
+
+BabySwarmerMinionBuff: {
+	DisplayName: Baby Swarmer Minion Buff
+	Description: They're everywhere!
+}
+
+FlamesOfIlluria: {
+	Description: Mods.Stellamod.Buffs.FlamesOfIlluria.Description
+	DisplayName: Flames Of Illuria
+}

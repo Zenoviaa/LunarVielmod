@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.Size = new Vector2(63, 50);
 			NPC.damage = 1;
 			NPC.defense = 50;
-			NPC.lifeMax = 78900;
+			NPC.lifeMax = 79900;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
@@ -1682,7 +1682,17 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			timer++;
 			Player player = Main.player[NPC.target];
 			float ai1 = NPC.whoAmI;
-			float speed = 12f;
+			float speed = 1;
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+				speed = 18f;
+			}
+			if (NPC.life > NPC.lifeMax / 2)
+			{
+				speed = 12f;
+			}
+
+			
 			if (timer == 1)
 			{
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance2"), NPC.position);
@@ -1973,7 +1983,16 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			timer++;
 			Player player = Main.player[NPC.target];
 			float ai1 = NPC.whoAmI;
-			float speed = 9f;
+			float speed = 1;
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+				speed = 16f;
+			}
+			if (NPC.life > NPC.lifeMax / 2)
+			{
+				speed = 9f;
+			}
+
 			if (timer == 1)
 			{
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSwordsDance1"), NPC.position);
@@ -2259,7 +2278,15 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			timer++;
 			Player player = Main.player[NPC.target];
 			float ai1 = NPC.whoAmI;
-			float speed = 18f;
+			float speed = 1;
+			if (NPC.life < NPC.lifeMax / 2)
+			{
+				speed = 26f;
+			}
+			if (NPC.life > NPC.lifeMax / 2)
+			{
+				speed = 18f;
+			}
 			if (timer == 1)
 			{
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordHoldVerlia"), NPC.position);

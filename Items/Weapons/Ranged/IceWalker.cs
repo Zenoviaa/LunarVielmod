@@ -13,7 +13,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public int WinterboundArrow;
         public override void SetDefaults()
         {
-            Item.damage = 7;
+            Item.damage = 5;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -37,8 +37,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.BorealWood, 8);
             recipe.AddIngredient(ModContent.ItemType<WinterbornShard>(), 12);
-            recipe.AddIngredient(ItemID.SnowBlock, 7);
-            recipe.AddTile(TileID.Furnaces);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
         

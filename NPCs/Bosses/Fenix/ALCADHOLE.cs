@@ -152,7 +152,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 					{
 						Vector2 direction = npc.Center - NPC.Center;
 						direction.Normalize();
-						npc.velocity -= direction * 0.25f;
+						npc.velocity -= direction * 0.4f;
 					}
 				}
 			}

@@ -122,11 +122,9 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            int d = DustID.GreenFairy;
             int d1 = DustID.CursedTorch;
-            for (int k = 0; k < 30; k++)
+            for (int k = 0; k < 4; k++)
             {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default, .74f);
             }
 

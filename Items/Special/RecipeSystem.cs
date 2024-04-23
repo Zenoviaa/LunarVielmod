@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -26,7 +28,11 @@ namespace Stellamod.Items.Special
                 {
                     recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
+
+              
             }
         }
+      
+
     }
 }

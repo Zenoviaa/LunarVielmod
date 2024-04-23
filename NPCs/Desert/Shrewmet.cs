@@ -6,6 +6,17 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
+using Stellamod.NPCs.Bosses.StarrVeriplant;
+using System.IO;
+using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+
 
 namespace Stellamod.NPCs.Desert
 {
@@ -139,10 +150,65 @@ namespace Stellamod.NPCs.Desert
 				timer = 0;
 			}
 		}
+		public float ty = 0;
+		public float Spawner = 0;
+		private int attackCounter;
 
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(attackCounter);
+		}
 		public void Speed()
 		{
 			timer++;
+			Spawner++;
+			/*
+			Player players = Main.player[NPC.target];
+			if (Spawner == 2)
+
+			{
+
+
+
+				int distanceY = Main.rand.Next(-250, -250);
+				NPC.position.X = players.Center.X;
+				NPC.position.Y = players.Center.Y + distanceY;
+
+			}*/
+			ty++;
+
+
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				if (attackCounter > 0)
+				{
+					attackCounter--; // tick down the attack counter.
+				}
+
+				Player target = Main.player[NPC.target];
+
+			
+				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
+				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 300 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1))
+				{
+					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
+					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
+
+					int projectile = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 3,
+						ProjectileID.SandBallFalling, 15, 0, Main.myPlayer);
+					int projectile2 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 2,
+						ProjectileID.SandBallFalling, 15, 0, Main.myPlayer);
+					Main.projectile[projectile].timeLeft = 300;
+					Projectile ichor = Main.projectile[projectile];
+					ichor.hostile = true;
+					ichor.friendly = false;
+
+
+					attackCounter = 200;
+					NPC.netUpdate = true;
+				}
+			}
+		
 
 
 			if (timer > 50)
@@ -150,17 +216,13 @@ namespace Stellamod.NPCs.Desert
 
 				NPC.velocity.X *= 1f;
 				NPC.velocity.Y *= 0.5f;
-				for (int k = 0; k < 2; k++)
+				for (int k = 0; k < 1; k++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.GoldCoin, NPC.direction, -1f, 1, default, .61f);
 
 					float speedXB = NPC.velocity.X * Main.rand.NextFloat(-1f, 1f);
 					float speedY = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(-4, 4) * 0f;
-					if (StellaMultiplayer.IsHost)
-					{
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X, NPC.position.Y, speedXB * 3, speedY,
-							ProjectileID.GreekFire3, 15, 0f, Owner: Main.myPlayer);
-                    }
+					
 
 				}
 

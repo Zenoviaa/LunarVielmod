@@ -263,6 +263,9 @@ namespace Stellamod
 
         public bool DetonationRune;
 		public bool Towned = false;
+		public bool GIBomb = false;
+		public bool RadiantBomb = false;
+		public int RadiantBombCooldown = 0;
 
 		public bool ClamsPearl;
 
@@ -445,7 +448,24 @@ namespace Stellamod
 
                 }
             }
-        }
+
+			if (RadiantBomb && RadiantBombCooldown <= 0)
+			{
+				for (int d = 0; d < 4; d++)
+				{
+					float speedXa = Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-1f, 1f);
+					float speedYa = Main.rand.Next(10, 15) * 0.01f + Main.rand.Next(-1, 1);
+
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GoldsSpawnEffect>(), 490, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0.7f, speedYa * 0.6f, ModContent.ProjectileType<GoldsSlashProj>(), 400, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 0.5f, speedYa * 0.3f, ModContent.ProjectileType<GoldsSlashProj>(), 405, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 1.3f, speedYa * 0.3f, ModContent.ProjectileType<GoldsSlashProj>(), 405, 1f, Player.whoAmI);
+					Projectile.NewProjectile(Player.GetSource_OnHit(victim), (int)victim.Center.X, (int)victim.Center.Y, speedXa * 1f, speedYa * 1.5f, ModContent.ProjectileType<GoldsSlashProj>(), 401, 1f, Player.whoAmI);
+				}
+
+				RadiantBombCooldown = 220;
+			}
+		}
 
 
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
@@ -620,10 +640,10 @@ namespace Stellamod
             Leather = false;
 			MasteryMagic = false;
 			WindRune = false;
+			RadiantBomb = false;
+			GIBomb = false;
 
-
-
-            if (SwordComboR <= 0)
+			if (SwordComboR <= 0)
 			{
 				SwordCombo = 0;
 				SwordComboR = 0;
@@ -736,7 +756,19 @@ namespace Stellamod
 
 				Sirestiastalk = true;
 			}
-			
+			if (NPC.downedPlantBoss && Sirestiastalk && !Zuitalk)
+			{
+
+				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+				//2. Create a new instance of your dialogue
+				ZuiPlantDialogue exampleDialogue = new ZuiPlantDialogue();
+
+				//3. Start it
+				dialogueSystem.StartDialogue(exampleDialogue);
+
+				Zuitalk = true;
+			}
 
 
 
@@ -1341,7 +1373,7 @@ namespace Stellamod
 
 
 
-				for (int j = 0; j < 3; j++)
+				for (int j = 0; j < 1; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1355,7 +1387,7 @@ namespace Stellamod
 				}
 
 
-				for (int j = 0; j < 4; j++)
+				for (int j = 0; j < 2; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1368,7 +1400,7 @@ namespace Stellamod
 
 				}
 
-				for (int j = 0; j < 2; j++)
+				for (int j = 0; j < 1; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -1485,7 +1517,7 @@ namespace Stellamod
 
 				
 
-				for (int j = 0; j < 6; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1500f, 1500f), (Main.rand.NextFloat(-600f, 600f)));
 					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
@@ -2527,17 +2559,18 @@ namespace Stellamod
 		}
 
 		bool Sirestiastalk;
+		bool Zuitalk;
 		public override void SaveData(TagCompound tag)
 		{
 			tag["Sirestiastalk"] = Sirestiastalk;
-
+			tag["Zuitalk"] = Zuitalk;
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
 
 			Sirestiastalk = tag.GetBool("Sirestiastalk");
-
+			Zuitalk = tag.GetBool("Zuitalk");
 		}
 
 

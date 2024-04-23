@@ -9,12 +9,6 @@ namespace Stellamod.Items.Armors.AcidArmour
     [AutoloadEquip(EquipType.Head)]
     public class AcidVisor : ModItem
     {
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Acid Visor");
-			// Tooltip.SetDefault("Increases thrown Damage by 6% and thrown critical strike chance by 7%");
-		}
-
         public override void SetDefaults()
         {
             Item.width = 40;
@@ -42,8 +36,10 @@ namespace Stellamod.Items.Armors.AcidArmour
 
         public override void UpdateArmorSet(Player player)
         {
+            player.setBonus = "Stand still to emit a toxic aura!";
             player.ThrownVelocity += 3;
-            player.moveSpeed = 2f;
+            player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
+            player.moveSpeed += 0.2f;
         }
 
         public override void AddRecipes()

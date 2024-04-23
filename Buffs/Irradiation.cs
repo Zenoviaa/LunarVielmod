@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,11 +20,14 @@ namespace Stellamod.Buffs
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.lifeRegen -= 8;
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(3))
             {
-                int dust = Dust.NewDust(npc.position, npc.width, npc.height, DustID.GreenFairy);
-                Main.dust[dust].scale = 1.5f;
-                Main.dust[dust].noGravity = true;
+                for (int i = 0; i < 1; i++)
+                {
+                    int d = Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Dusts.GlowDust>(), newColor: ColorFunctions.AcidFlame, Scale: 0.33f);
+                    Main.dust[d].rotation = (Main.dust[d].position - npc.position).ToRotation() - MathHelper.PiOver4;
+                    Main.dust[d].velocity *= 0.5f;
+                }
             }
         }
 

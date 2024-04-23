@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -50,7 +50,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         ref float AttackTimer => ref NPC.ai[2];
 
         BossActionState BossState;
-        BossActionState NextAttack;
+        BossActionState NextAttack = BossActionState.Frost_Breath;
         int ScaleDamageCounter;
         int AggroDamageCounter;
 
@@ -81,9 +81,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override void SetDefaults()
         {
             //Stats
-            NPC.lifeMax = 126000;
-            NPC.defense = 24;
-            NPC.damage = 150;
+            NPC.lifeMax = 192000;
+            NPC.defense = 75;
+            NPC.damage = 240;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
 
@@ -122,14 +122,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(State == ActionState.BossFight)
             {
                 // Custom boss bar
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().NiiviFight = true;
                 NPC.BossBar = ModContent.GetInstance<QueenBossBar>();
                 NPC.boss = true;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Niivi");
             }
             else
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().NiiviFight = false;
                 NPC.BossBar = Main.BigBossProgressBar.NeverValid;
                 Music = -1;
             }
@@ -140,13 +138,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             BossState = bossActionState;
             Timer = 0;
             AttackTimer = 0;
+            AttackCount = 0;
             NPC.netUpdate = true;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            base.HitEffect(hit);
-
             int lifeToGiveIllurineScale = NPC.lifeMax / 300;
             int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
             if (StellaMultiplayer.IsHost)

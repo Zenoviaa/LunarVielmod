@@ -63,7 +63,7 @@ namespace Stellamod.Items.Consumables
 				ItemDropRule.Common(ModContent.ItemType<Yumiko>(), chanceDenominator: numResults),
 				ItemDropRule.Common(ModContent.ItemType<Nekomara>(), chanceDenominator: numResults),
 				ItemDropRule.Common(ModContent.ItemType<FenixxCard>(), chanceDenominator: numResults),
-				ItemDropRule.Common(ModContent.ItemType<Angelenthal>(), chanceDenominator: 15)
+				ItemDropRule.Common(ModContent.ItemType<Angelenthal>(), chanceDenominator: 45)
 				));
 
 

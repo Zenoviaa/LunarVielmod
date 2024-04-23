@@ -14,7 +14,7 @@ namespace Stellamod.Items.Accessories.Players
 		public const int DashRight = 2;
 		public const int DashLeft = 3;
 
-		public const int DashCooldown = 37; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+		public const int DashCooldown = 42; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
 		public const int DashDuration = 30; // Duration of the dash afterimage effect in frames
 
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph

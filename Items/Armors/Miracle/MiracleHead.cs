@@ -18,6 +18,8 @@ namespace Stellamod.Items.Armors.Miracle
         public override void SetStaticDefaults()
 		{
             ItemID.Sets.ItemNoGravity[Item.type] = true;
+
+            ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
         }
 
         public override void SetDefaults()
