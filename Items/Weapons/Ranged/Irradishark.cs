@@ -65,10 +65,10 @@ namespace Stellamod.Items.Weapons.Ranged
         {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Megashark);
-            recipe.AddIngredient(ModContent.ItemType<TychineGun>());
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
+			recipe.AddIngredient(ModContent.ItemType<TychineGun>());
 			recipe.AddIngredient(ModContent.ItemType<BasicGunParts>());
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 25);
-			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 3);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.Register();
         }
