@@ -25,7 +25,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.value = 100000;
 			Item.rare = ItemRarityID.Pink;
 			Item.UseSound = SoundID.Item36;
-			Item.autoReuse = false;
+			Item.autoReuse = true;
 			Item.shoot = ProjectileID.Bullet;
 			Item.shootSpeed = 35f;
 			Item.useAmmo = AmmoID.Bullet;

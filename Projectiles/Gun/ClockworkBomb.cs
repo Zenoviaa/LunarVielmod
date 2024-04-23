@@ -27,11 +27,10 @@ namespace Stellamod.Projectiles.Gun
         }
 
         public Vector3 HuntrianColorXyz;
-        public override bool PreDraw(ref Color lightColor)
+        public override void PostDraw(Color lightColor)
         {
-            DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, new Color(83, 254, 164), lightColor, 2);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(83, 254, 164), Color.Transparent, ref lightColor);
-            return base.PreDraw(ref lightColor);
+            Lighting.AddLight(Projectile.Center, Color.Teal.ToVector3() * 1.75f * Main.essScale);
+
         }
 
         public override void AI()
@@ -40,7 +39,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.ai[0]++;
             if(Projectile.ai[0] <= 2)
             {
-                Speeb = Main.rand.NextFloat(0.92f, 0.96f);
+                Speeb = Main.rand.NextFloat(0.92f, 0.94f);
             }
             Projectile.velocity *= Speeb;
             Projectile.rotation = Projectile.velocity.ToRotation();
@@ -56,7 +55,7 @@ namespace Stellamod.Projectiles.Gun
         {
             for (int i = 0; i < 14; i++)
             {
-                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.ForestGreen, 1f).noGravity = true;
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Teal, 1f).noGravity = true;
             }
 
             float damage = Projectile.damage;

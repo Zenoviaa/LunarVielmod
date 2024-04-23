@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
@@ -50,26 +51,9 @@ namespace Stellamod.Projectiles.Yoyo
 		{
 			if (Main.rand.NextBool(5))
 			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GoldCoin); // Makes the projectile emit dust.
-			}
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Teal, 1f).noGravity = true;
+            }
 		}
 		public float gh = 0;
-		public override void AI()
-		{
-			gh++;
-
-				if (gh == 20)
-            {
-
-				float speedXa = Main.rand.NextFloat(-9f, 9f);
-				float speedYa = Main.rand.NextFloat(-9f, 9f);
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa, speedYa, ProjectileID.PineNeedleFriendly, Projectile.damage / 4, 0f, Projectile.owner, 0f, 0f);
-
-
-				gh = 0;
-
-			}
-			
-		}
     }
 }

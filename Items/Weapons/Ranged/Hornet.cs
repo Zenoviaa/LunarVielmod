@@ -6,6 +6,7 @@ using Stellamod.Projectiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -73,8 +74,36 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 
 			type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<HornetLob>() });
-		}
-		public override void AddRecipes()
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+
+            float rot = velocity.ToRotation();
+            float spread = 0.4f;
+
+            Vector2 offset = new Vector2(1.3f, -0f * player.direction).RotatedBy(rot);
+            for (int k = 0; k < 15; k++)
+            {
+                Vector2 direction = offset.RotatedByRandom(spread);
+
+                Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 0.5f));
+            }
+
+
+            Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 1);
+            Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+
+
+
+            // Rotate the velocity randomly by 30 degrees at max.
+            Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(25));
+            newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+            Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
+
+
+            return false;
+        }
+        public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
 			recipe.AddTile(TileID.Anvils);
@@ -82,7 +111,6 @@ namespace Stellamod.Items.Weapons.Ranged
 			recipe.AddIngredient(ModContent.ItemType<VerianBar>(), 16);
 			recipe.AddIngredient(ModContent.ItemType<WeaponDrive>(), 4);
 			recipe.AddIngredient(ItemID.Minishark, 1);
-
 			recipe.Register();
 		}
 

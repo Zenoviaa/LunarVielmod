@@ -15,7 +15,7 @@ namespace Stellamod.Items.Weapons.Ranged
 	{
 		public override void SetDefaults() 
 		{
-			Item.damage = 29;
+			Item.damage = 25;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 84;
 			Item.height = 36;
@@ -47,9 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
 				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 
-
-
-			return true; // return false because we don't want tmodloader to shoot projectile
+            return true; // return false because we don't want tmodloader to shoot projectile
 		}
 
 		public override void AddRecipes()
