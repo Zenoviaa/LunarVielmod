@@ -55,14 +55,14 @@ namespace Stellamod.Items.Armors.Garbage
 			//Shadow Effect
 			if (Main.rand.NextBool(10))
 			{
-				int count = Main.rand.Next(6);
+				int count = Main.rand.Next(3);
 				for (int iz = 0; iz < count; iz++)
 				{
-					for (int i = 0; i < 8; i++)
+					for (int i = 0; i < 1; i++)
 					{
 						Dust.NewDustPerfect(player.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.PaleVioletRed, 0.5f).noGravity = true;
 					}
-					for (int i = 0; i < 8; i++)
+					for (int i = 0; i < 1; i++)
 					{
 						Dust.NewDustPerfect(player.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.Green, 0.5f).noGravity = true;
 					}
