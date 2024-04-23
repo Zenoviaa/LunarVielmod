@@ -26,6 +26,7 @@
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Block.png" />
     <None Remove="Assets\Biomes\StarbloomWaterStyle_Slope.png" />
     <None Remove="Assets\Textures\AshedRE.png" />
+    <None Remove="Buffs\AbyssalFlame - Copy.png" />
     <None Remove="Buffs\AbyssalFlame.png" />
     <None Remove="Buffs\AcidFlame.png" />
     <None Remove="Buffs\Alcadded.png" />

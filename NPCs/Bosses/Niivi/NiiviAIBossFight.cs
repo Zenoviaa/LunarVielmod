@@ -533,7 +533,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if(AttackCount >= 3)
                 {
-                    NextAttack = BossActionState.Frost_Breath;
+                    NextAttack = BossActionState.Star_Wrath;
                     ResetState(BossActionState.Swoop_Out);
                 }
             }
@@ -541,7 +541,47 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_StarWrath()
         {
+            if (AttackTimer == 0)
+            {
+                Timer++;
 
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+                if (Timer >= 60)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            } 
+            else if (AttackTimer == 1)
+            {
+                Timer++;
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+                if(Timer % 8 == 0 && StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<NiiviCometProj>();
+                    int damage = NPC.ScaleFromContactDamage(0.33f);
+                    int knockback = 1;
+
+                    float height = 768;
+                    Vector2 targetCenter = Target.Center;
+                    Vector2 cometOffset = -Vector2.UnitY * height + new Vector2(Main.rand.NextFloat(512, 1750), 0);
+                    Vector2 cometPos = targetCenter + cometOffset;
+
+                    float speed = 12;
+                    Vector2 velocity = new Vector2(-1, 1) * speed;
+                    Projectile.NewProjectile(EntitySource, cometPos, velocity,
+                        type, damage, knockback, Main.myPlayer);
+                }
+
+                if(Timer >= 360)
+                {
+                    NextAttack = BossActionState.Frost_Breath;
+                    ResetState(BossActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_Charge()
