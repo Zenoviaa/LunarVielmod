@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         int AttackCount;
         int AttackSide;
-        bool Slowdown;
+        bool DoAttack;
         Vector2 AttackPos;
         Vector2 LaserAttackPos;
         private void AIBossFight()
@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             NPC.TargetClosest();
             Timer++;
-            if(Timer >= 180)
+            if(Timer >= 15)
             {
                 ResetState(BossActionState.PrepareAttack);
          
@@ -173,6 +173,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 ChargeVisuals<SnowFlakeParticle>(Timer, 60);
                 if(Timer >= 60)
                 {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        int type = ModContent.ProjectileType<NiiviFrostCircleProj>();
+                        int damage = 0;
+                        int knockback = 0;
+                        Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, 
+                            type, damage, knockback, Main.myPlayer);
+                    }
+
                     Timer = 0;
                     AttackTimer++;
                 }
@@ -193,9 +202,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float amountToRotateBy = 3 * MathHelper.TwoPi / length;
                 amountToRotateBy = amountToRotateBy * AttackSide;
                 TargetHeadRotation += amountToRotateBy;
-        
+                        
                 Timer++;
-
                 if (Timer % 4 == 0)
                 {
                     float particleSpeed = 16;
@@ -313,21 +321,63 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(Timer == 1)
             {
                 OrientationSpeed = 0.03f;
-   
-                OrientStraight();
-                FlipToDirection();
-          
-                float swoopOutDistance = 768;
-                AttackPos = NPC.Center + (-AttackSide * Vector2.UnitX * swoopOutDistance);
-                NPC.velocity = NPC.Center.DirectionTo(AttackPos);
-                TargetHeadRotation = NPC.velocity.ToRotation();
+                NPC.velocity = -Vector2.UnitY * 0.02f;
+               // TargetHeadRotation = NPC.velocity.ToRotation();
             }
 
-            NPC.velocity *= 1.02f;
-            NPC.velocity.Y -= 0.05f;
-            if (Timer >= 120)
+            NPC.velocity *= 1.008f;
+            NPC.velocity.Y -= 0.001f;
+            if (Timer >= 60)
             {
                 ResetState(BossActionState.Idle);
+            }
+        }
+
+
+        private void AI_MoveToward(Vector2 targetCenter, float speed = 8)
+        {
+            //chase target
+            Vector2 directionToTarget = NPC.Center.DirectionTo(targetCenter);
+            float distanceToTarget = Vector2.Distance(NPC.Center, targetCenter);
+            if (distanceToTarget < speed)
+            {
+                speed = distanceToTarget;
+            }
+
+            Vector2 targetVelocity = directionToTarget * speed;
+
+            if (NPC.velocity.X < targetVelocity.X)
+            {
+                NPC.velocity.X++;
+                if (NPC.velocity.X >= targetVelocity.X)
+                {
+                    NPC.velocity.X = targetVelocity.X;
+                }
+            }
+            else if (NPC.velocity.X > targetVelocity.X)
+            {
+                NPC.velocity.X--;
+                if (NPC.velocity.X <= targetVelocity.X)
+                {
+                    NPC.velocity.X = targetVelocity.X;
+                }
+            }
+
+            if (NPC.velocity.Y < targetVelocity.Y)
+            {
+                NPC.velocity.Y++;
+                if (NPC.velocity.Y >= targetVelocity.Y)
+                {
+                    NPC.velocity.Y = targetVelocity.Y;
+                }
+            }
+            else if (NPC.velocity.Y > targetVelocity.Y)
+            {
+                NPC.velocity.Y--;
+                if (NPC.velocity.Y <= targetVelocity.Y)
+                {
+                    NPC.velocity.Y = targetVelocity.Y;
+                }
             }
         }
 
@@ -336,7 +386,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Timer++;
             if (Timer == 1)
             {
-                Slowdown = false;
+                DoAttack = false;
 
                 //Initialize Attack
                 NPC.TargetClosest();
@@ -355,7 +405,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 //Values
                 float offsetDistance = 384;
-                float hoverDistance = 180;
+                float hoverDistance = 90;
 
                 //Get the direction
                 Vector2 targetCenter = Target.Center + (AttackSide * Vector2.UnitX * offsetDistance) + new Vector2(0, -hoverDistance);
@@ -367,25 +417,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             if (AttackTimer == 0)
             {
-                float flySpeed = 2;
-                float distance = Vector2.Distance(NPC.Center, AttackPos);
-                if (distance <= flySpeed)
+                AI_MoveToward(AttackPos);
+                if(Timer >= 360 || Vector2.Distance(NPC.Center, AttackPos) <= 8)
                 {
-                    Slowdown = true;
-                }
-                else
-                {
-                    //Velocity
-                    Vector2 targetVelocity = NPC.Center.DirectionTo(AttackPos) * flySpeed;
-                    if(distance >= 384)
-                    {
-                        targetVelocity *= distance / 16;
-                    }
-                    NPC.velocity = targetVelocity;
+                    DoAttack = true;
                 }
             }
 
-            if (Slowdown)
+            if (DoAttack)
             {
                 AttackTimer++;
                 NPC.velocity *= 0.98f;
@@ -409,6 +448,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(AttackTimer == 0)
             {
                 Timer++;
+
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
