@@ -60,6 +60,12 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                     nodes.Add(npc);
                     npc.ai[1] = 1;
                 }
+
+                if(nodes.Count == 0)
+                {
+                    Projectile.Kill();
+                    return;
+                }
        
                 Nodes = nodes.ToArray();
                 NodesThatDied = new bool[Nodes.Length];
