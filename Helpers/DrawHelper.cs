@@ -87,7 +87,67 @@ namespace Stellamod.Helpers
                 }
             }
         }
+		public static void DrawSupernovaChains(Texture2D chainTexture, Vector2 startPos, Vector2 endPos, Rectangle animationFrame, float alpha)
+		{
+			SpriteBatch spriteBatch = Main.spriteBatch;
 
+			float time = Main.GlobalTimeWrappedHourly;
+			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+			float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
+			time %= 4f;
+			time /= 2f;
+
+			if (time >= 1f)
+			{
+				time = 2f - time;
+			}
+
+			time = time * 0.5f + 0.5f;
+
+			for (float k = 0f; k < 1f; k += 0.25f)
+			{
+				float radians = (k + timer) * MathHelper.TwoPi;
+				//Draw from center bottom of texture
+				Vector2 frameSize = animationFrame.Size();
+				Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
+
+				Vector2 position = endPos + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;
+
+				float rotation = (endPos - startPos).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+				float yScale = Vector2.Distance(endPos, startPos) / frameSize.Y; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+				Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+				Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+				chainLightColor = chainLightColor.MultiplyAlpha(alpha);
+
+				for (int j = 0; j < 2; j++)
+				{
+					spriteBatch.Draw(chainTexture, position - Main.screenPosition, animationFrame,
+						chainLightColor * 0.2f, rotation, origin, scale, SpriteEffects.None, 0);
+				}
+			}
+
+			{
+				//Draw from center bottom of texture
+				Vector2 frameSize = animationFrame.Size();
+				Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
+
+				Vector2 position = endPos;
+
+				float rotation = (endPos - startPos).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+				float yScale = Vector2.Distance(endPos, startPos) / frameSize.Y; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+				Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+				Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+				chainLightColor = chainLightColor.MultiplyAlpha(alpha);
+
+				for (int j = 0; j < 3; j++)
+				{
+					spriteBatch.Draw(chainTexture, position - Main.screenPosition, animationFrame,
+						chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+				}
+			}
+        }
         public static void DrawSupernovaChains(Texture2D chainTexture, Vector2[] oldPos, Rectangle animationFrame, float alpha)
 		{
             SpriteBatch spriteBatch = Main.spriteBatch;
