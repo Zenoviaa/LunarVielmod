@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 
 namespace Stellamod.Items.Test
 {
@@ -99,13 +100,13 @@ namespace Stellamod.Items.Test
                 switch (_useIndex)
                 {
                     case 0:
-                        Havoc.SetNextAttack(Havoc.ActionState.Charge);
+                        HavocSignal.NewSignal(Havoc.ActionState.Charge);
                         break;
                     case 1:
-                        Havoc.SetNextAttack(Havoc.ActionState.Laser);
+                        HavocSignal.NewSignal(Havoc.ActionState.Laser);
                         break;
                     case 2:
-                        Havoc.SetNextAttack(Havoc.ActionState.Laser_Big);
+                        HavocSignal.NewSignal(Havoc.ActionState.Laser_Big);
                         break;
                 }
                 return true;

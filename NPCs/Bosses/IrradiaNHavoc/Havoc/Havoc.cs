@@ -58,7 +58,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             }
         }
 
-        ActionState NextState;
         float Timer
         {
             get => NPC.ai[1];
@@ -175,7 +174,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         {
             writer.Write(LaserAttackDistance);
             writer.WriteVector2(ArenaCenter);
-            writer.Write((float)NextState);
             writer.Write(OrbitDistance);
         }
 
@@ -183,23 +181,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         {
             LaserAttackDistance = reader.ReadSingle();
             ArenaCenter = reader.ReadVector2();
-            NextState = (ActionState)reader.ReadSingle();
             OrbitDistance = reader.ReadSingle();
-        }
-
-        public static void SetNextAttack(ActionState nextState)
-        {
-            foreach(NPC npc in Main.ActiveNPCs)
-            {
-                if (npc.type != ModContent.NPCType<Havoc>())
-                    continue;
-
-                if(npc.ModNPC is Havoc havoc)
-                {
-                    havoc.NextState = nextState;
-                    npc.netUpdate = true;
-                }
-            }
         }
 
         private void ResetState(ActionState state)
@@ -209,25 +191,47 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             AttackTimer = 0;
         }
 
+        private ActionState ReceiveSignal()
+        {
+            foreach(NPC npc in Main.ActiveNPCs)
+            {
+                if (npc.type != ModContent.NPCType<HavocSignal>())
+                    continue;
+
+                float signal = npc.ai[0];
+                ActionState actionState = (ActionState)signal;
+                npc.Kill();
+                return actionState;
+            }
+
+            return ActionState.Idle;
+        }
+
+        private void AI_HandleSignal()
+        {
+            ActionState signal = ReceiveSignal();
+            if (signal != ActionState.Idle)
+            {
+                ResetState(signal);
+                NPC.netUpdate = true;
+            }
+        }
+
         private void AI_Idle()
         {
             DrawChargeTrail = false;
             NPC.TargetClosest();
+            
             OrbitDistance+=100;
             if(OrbitDistance >= 500)
             {
                 OrbitDistance = 500;
             }
+
             AI_MoveInOrbit();
+            AI_HandleSignal();
+
             NPC.rotation = NPC.velocity.ToRotation();
-
-            if(NextState != ActionState.Idle)
-            {
-                ResetState(NextState);
-                NextState = ActionState.Idle;
-                NPC.netUpdate = true;
-            }
-
             TargetSegmentStretch = 2;
             Head.Position = NPC.position;
             Head.Rotation = NPC.rotation;
