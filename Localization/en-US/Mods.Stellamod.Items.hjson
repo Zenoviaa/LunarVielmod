@@ -6800,3 +6800,8 @@ ZuiBomb: {
 	Tooltip: Every little while, when hitting an enemy, Zui's power will explode and do pretty good damage!
 	DisplayName: Zui Bomb
 }
+
+HavocSignaler: {
+	Tooltip: ""
+	DisplayName: Havoc Signaler
+}
