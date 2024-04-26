@@ -24,10 +24,20 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             set => Projectile.ai[0] = value;
         }
 
-        private float BounceTimer
+        private bool HasBounced
         {
-            get => Projectile.ai[1];
-            set => Projectile.ai[1] = value;
+            get => Projectile.ai[1] == 1;
+            set
+            {
+                if(value == true)
+                {
+                    Projectile.ai[1] = 1;
+                }
+                else
+                {
+                    Projectile.ai[1] = 0;
+                }
+            }
         }
 
         public override void SetStaticDefaults()
@@ -50,13 +60,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             Timer++;
-            if(Main.myPlayer == Projectile.owner && Main.rand.NextBool(120))
+            if(!HasBounced && Main.myPlayer == Projectile.owner && Main.rand.NextBool(600))
             {
                 //This should make them sometimes bounce upwards
                 Vector2 velocityOffset = -Vector2.UnitY * 8;
                 velocityOffset = velocityOffset.RotatedByRandom(MathHelper.PiOver4);
                 Projectile.velocity += velocityOffset;
-                BounceTimer = 15;
+                HasBounced = true;
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
@@ -64,7 +74,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Projectile.netUpdate = true;
             }
      
-            if(Timer % 4 == 0)
+            if(Timer % 7 == 0)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
@@ -76,7 +86,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if(Projectile.velocity.Y < 8)
             {
                 Projectile.velocity.Y += 0.05f;
-                BounceTimer--;
             }
 
             Projectile.rotation += 0.05f;

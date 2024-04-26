@@ -113,6 +113,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             //Return false for no Contact Damage
+            if (BossState == BossActionState.Charge)
+                return IsCharging;
             return false;
         }
 

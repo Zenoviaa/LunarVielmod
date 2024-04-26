@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
@@ -26,7 +27,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         int AttackCount;
         int AttackSide;
         bool DoAttack;
+        bool IsCharging;
         Vector2 AttackPos;
+        Vector2 ChargeDirection;
         Vector2 LaserAttackPos;
         private void AIBossFight()
         {
@@ -578,7 +581,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if(Timer >= 360)
                 {
-                    NextAttack = BossActionState.Frost_Breath;
+                    NextAttack = BossActionState.Charge;
                     ResetState(BossActionState.Swoop_Out);
                 }
             }
@@ -586,7 +589,70 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_Charge()
         {
+            NPC.rotation = 0;
+            Timer++;
+            if(Timer < 100)
+            {
+                OrientArching();
+                if (Timer == 1)
+                {
+                    NPC.TargetClosest();
+                }
 
+                NPC.velocity *= 0.8f;
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                TargetHeadRotation = directionToTarget.ToRotation();
+
+                LookDirection = DirectionToTarget;
+                FlipToDirection();
+            } 
+            else if (Timer < 150)
+            {
+                ChargeDirection = NPC.Center.DirectionTo(Target.Center);
+                NPC.velocity *= 0.3f;
+                TargetHeadRotation = MathHelper.Lerp(TargetHeadRotation, ChargeDirection.ToRotation(), 0.08f);
+                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
+                for (int i = 0; i < NPC.oldPos.Length; i++)
+                {
+                    NPC.oldPos[i] = NPC.position;
+                }
+
+                LookDirection = DirectionToTarget;
+                FlipToDirection();
+            }
+            else if (Timer < 180)
+            {
+                IsCharging = true;
+                TargetSegmentRotation = 0;
+                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
+
+                //DrawChargeTrail = true;
+                if (Timer == 151)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+                }
+                NPC.velocity = ChargeDirection * 40;
+            }
+            else if (Timer < 240)
+            {
+                IsCharging = false;
+                OrientArching();
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.Pi / 60);
+                NPC.velocity *= 0.96f;
+               
+            }
+            else
+            {
+                IsCharging = false;
+                Timer = 0;
+                AttackCount++;
+                if(AttackCount >= 3)
+                {
+                    NextAttack = BossActionState.Frost_Breath;
+                    ResetState(BossActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_Thunderstorm()
