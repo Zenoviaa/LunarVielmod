@@ -657,3 +657,23 @@ FlamesOfIlluria: {
 	Description: Mods.Stellamod.Buffs.FlamesOfIlluria.Description
 	DisplayName: Flames Of Illuria
 }
+
+ISHNYIREShow: {
+	DisplayName: I S H N Y I R E Show
+	Description: Mods.Stellamod.Buffs.ISHNYIREShow.Description
+}
+
+IshShow: {
+	DisplayName: Ish Show
+	Description: Mods.Stellamod.Buffs.IshShow.Description
+}
+
+VireShow: {
+	DisplayName: Vire Show
+	Description: Mods.Stellamod.Buffs.VireShow.Description
+}
+
+YireShow: {
+	DisplayName: Yire Show
+	Description: Mods.Stellamod.Buffs.YireShow.Description
+}

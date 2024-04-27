@@ -6805,3 +6805,13 @@ HavocSignaler: {
 	Tooltip: ""
 	DisplayName: Havoc Signaler
 }
+
+ManifestedCommitment: {
+	DisplayName: Manifested Commitment
+	Tooltip: ""
+}
+
+IshNYire: {
+	DisplayName: Ish N Yire
+	Tooltip: ""
+}
