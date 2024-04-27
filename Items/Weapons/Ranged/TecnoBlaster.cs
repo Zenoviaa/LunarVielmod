@@ -37,6 +37,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shootSpeed = 15f;
             Item.useAmmo = AmmoID.Bullet;
             Item.UseSound = SoundID.Item92;
+            Item.noMelee = true;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

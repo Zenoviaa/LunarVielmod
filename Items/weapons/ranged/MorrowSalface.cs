@@ -32,6 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ModContent.ProjectileType<SparrowProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
-		}
+            Item.noMelee = true;
+        }
 	}
 }

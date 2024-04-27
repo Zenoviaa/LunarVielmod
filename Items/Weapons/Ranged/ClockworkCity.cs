@@ -29,7 +29,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.autoReuse = true;
 			Item.shootSpeed = 50f;
 			Item.shoot = ModContent.ProjectileType<ClockworkBomb>();
-		}
+            Item.noMelee = true;
+        }
 
 		public override Vector2? HoldoutOffset()
 		{

@@ -42,7 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.value = Item.buyPrice(silver: 7);
             Item.noUseGraphic = true;
             Item.channel = true;
-
+            Item.noMelee = true;
 
         }
 

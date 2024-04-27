@@ -36,6 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shopCustomPrice = 23;
 			Item.shootSpeed = 5;
 			Item.useAmmo = AmmoID.Bullet;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

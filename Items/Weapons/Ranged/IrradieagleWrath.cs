@@ -32,7 +32,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.autoReuse = true;
 			Item.useAmmo = AmmoID.Arrow;
 			Item.scale = 0.5f;
-		}
+            Item.noMelee = true;
+        }
 
 		public override Vector2? HoldoutOffset()
 		{

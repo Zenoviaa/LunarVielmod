@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Pixie;
             Item.useAnimation = 70;
             Item.useTime = 70;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

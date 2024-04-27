@@ -28,6 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 24;
             Item.useTime = 24;
             Item.consumeAmmoOnLastShotOnly = true;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

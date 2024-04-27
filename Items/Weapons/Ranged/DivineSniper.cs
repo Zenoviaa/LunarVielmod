@@ -31,9 +31,9 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 35f;
 			Item.useAmmo = AmmoID.Bullet;
+            Item.noMelee = true;
 
-
-		}
+        }
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
