@@ -124,8 +124,8 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 5, speedY * 3, ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 2, speedY, ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 				*/
-				
-				
+				target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
+
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
 				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger2"));
 

@@ -159,15 +159,8 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
             Player player = Main.player[Projectile.owner];
 
             Vector2 oldMouseWorld = Main.MouseWorld;
-            if (!bounced)
-            {
-                player.velocity = Projectile.DirectionTo(oldMouseWorld) * -2f;
-                bounced = true;
-            }
 
-
-
-
+            target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
 
         }
@@ -209,25 +202,25 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(0, 2, 230, 50) * (1f - p));
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(100f), (p) => new Color(0, 2, 230, 50) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(50, 15, 250, 4) * (1f - p));
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(100f), (p) => new Color(50, 15, 250, 4) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
 
             }
             if (SwordSlash3 == null)
             {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(100f), (p) => new Color(100, 30, 5, 100));
+                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(150f), (p) => new Color(100, 30, 5, 50));
                 SwordSlash3.drawOffset = Projectile.Size / 2f;
 
             }
 
             if (SwordSlash4 == null)
             {
-                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(80f), (p) => new Color(105, 50, 10, 30) * (1f - p));
+                SwordSlash4 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass, (p) => new Vector2(140f), (p) => new Color(105, 50, 10, 30) * (1f - p));
                 SwordSlash4.drawOffset = Projectile.Size / 2.2f;
 
             }

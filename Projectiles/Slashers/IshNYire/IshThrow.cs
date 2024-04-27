@@ -147,7 +147,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 						{
 							Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Pink, 1f).noGravity = true;
 						}
-						target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
+						target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 						break;
 
 					case 8:
@@ -189,7 +189,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 				switch (Main.rand.Next(2))
 				{
 					case 0:
-						target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
+						target.SimpleStrikeNPC(Projectile.damage * 3, 1, crit: false, Projectile.knockBack);
 					//	Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
 
@@ -207,7 +207,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 						break;
 
 					case 1:
-						target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
+						target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
 					//	Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 						for (int i = 0; i < 26; i++)
 						{
@@ -221,7 +221,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 
 				}
 
-				target.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, 1);
+				target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, 1);
 				Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
 
 

@@ -18,7 +18,7 @@ using Stellamod.Projectiles.Crossbows.Eckasect;
 using Stellamod.Projectiles.Crossbows.Ultras;
 
 using Terraria.GameContent.Creative;
-
+using Stellamod.Projectiles.Magic;
 
 namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 {
@@ -74,8 +74,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 			Item.width = 16;
 			Item.height = 16;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.useTime = 9;
-			Item.useAnimation = 18;
+			Item.useAnimation = 30;
+			Item.useTime = 15;
 			Item.shootSpeed = 1f;
 			Item.knockBack = 4f;
 			Item.UseSound = SoundID.Item116;
@@ -117,8 +117,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
 					Item.shootSpeed = 1f;
-					Item.useAnimation = 20;
-					Item.useTime = 10;
+					Item.useAnimation = 30;
+					Item.useTime = 15;
 					Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
 					Item.channel = false;
 					return true;
@@ -142,8 +142,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
 					Item.shootSpeed = 1f;
-					Item.useAnimation = 20;
-					Item.useTime = 10;
+					Item.useAnimation = 30;
+					Item.useTime = 15;
 
 					Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
 					Item.channel = false;
@@ -389,14 +389,49 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<YireProj>(), damage, knockback, player.whoAmI, 1, dir);
 
 
-					float numberProjectiles = 2;
+					float numberProjectiles = 3;
 					float rotation = MathHelper.ToRadians(20);
 					position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
 					for (int i = 0; i < numberProjectiles; i++)
 					{
 						Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-						Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.WandOfSparkingSpark, damage, Item.knockBack, player.whoAmI);
+						Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 10, perturbedSpeed.Y * 10, ModContent.ProjectileType<XexShot>(), damage / 10, Item.knockBack, player.whoAmI);
+
+
+
 					}
+
+
+					float rot = velocity.ToRotation();
+					float spread = 0.9f;
+				
+
+					Vector2 offset = new Vector2(0.2f, -0.1f * player.direction).RotatedBy(rot);
+					for (int k = 0; k < 15; k++)
+					{
+						Vector2 direction = offset.RotatedByRandom(spread);
+
+						Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(15), 125, new Color(150, 80, 40), Main.rand.NextFloat(0.2f, 2f));
+					}
+
+
+					for (int k = 0; k < 15; k++)
+					{
+						Vector2 direction = offset.RotatedByRandom(spread);
+
+						Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, new Color(15, 8, 150), Main.rand.NextFloat(0.2f, 2f));
+					}
+
+
+					int numProjectiles = Main.rand.Next(1, 6);
+					for (int p = 0; p < numProjectiles; p++)
+					{
+
+
+						Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), new Vector2(0, 0), 125, new Color(150, 80, 40), 2);
+						Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, new Color(60, 55, 50) * 0.5f, Main.rand.NextFloat(0.5f, 1));
+					}
+
 				}
 
 				if (player.HasBuff<ISHNYIREShow>())
