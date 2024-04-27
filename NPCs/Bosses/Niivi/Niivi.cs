@@ -191,5 +191,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     break; 
             }
         }
+
+        public override void OnKill()
+        {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.UnTintScreen();
+            shaderSystem.UnDistortScreen();
+            shaderSystem.UnVignetteScreen();
+        }
     }
 }

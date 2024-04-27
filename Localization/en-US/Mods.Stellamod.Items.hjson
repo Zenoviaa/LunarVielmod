@@ -6805,3 +6805,12 @@ HavocSignaler: {
 	Tooltip: ""
 	DisplayName: Havoc Signaler
 }
+
+IcelockLongbow: {
+
+	DisplayName: Icelock Longbow
+	Tooltip: 
+		'''
+		Shoots more arrows with each shot, eventually firing off a powerful star!
+		'''
+}

@@ -3,78 +3,45 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
-using Stellamod.Projectiles;
 using Stellamod.Trails;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
+namespace Stellamod.Projectiles.Bow
 {
-    internal class NiiviCometProj : ModProjectile
+    internal class IcelockArrow : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
         public PrimDrawer TrailDrawer { get; private set; } = null;
-
         private float Timer
         {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
 
-        private bool HasBounced
-        {
-            get => Projectile.ai[1] == 1;
-            set
-            {
-                if(value == true)
-                {
-                    Projectile.ai[1] = 1;
-                }
-                else
-                {
-                    Projectile.ai[1] = 0;
-                }
-            }
-        }
-
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 16;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+            // DisplayName.SetDefault("Archarilite Arrow");
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
         public override void SetDefaults()
         {
             Projectile.width = 32;
             Projectile.height = 32;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
-            Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             Timer++;
-            if(!HasBounced && Main.myPlayer == Projectile.owner && Main.rand.NextBool(600))
-            {
-                //This should make them sometimes bounce upwards
-                Vector2 velocityOffset = -Vector2.UnitY * 8;
-                velocityOffset = velocityOffset.RotatedByRandom(MathHelper.PiOver4);
-                Projectile.velocity += velocityOffset;
-                HasBounced = true;
-
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2"), Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 0,
-                     ModContent.ProjectileType<AlcadizBombExplosion>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
-                Projectile.netUpdate = true;
-            }
-     
-            if(Timer % 7 == 0)
+            if (Timer % 7 == 0)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
                 Color[] colors = new Color[] { Color.LightCyan, Color.Cyan, Color.Blue, Color.White };
@@ -83,13 +50,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, color, scale);
             }
 
-            if(Projectile.velocity.Y < 8)
-            {
-                Projectile.velocity.Y += 0.05f;
-            }
-
-            Projectile.rotation += 0.05f;
-            Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
         }
 
         public float WidthFunction(float completionRatio)
@@ -111,10 +71,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
         }
 
-
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(BuffID.Frostburn2, 120);
+            target.AddBuff(BuffID.Frostburn, 120);
+        }
 
         public override bool PreDraw(ref Color lightColor)
-        {           
+        {
             //Draw the texture
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
@@ -150,11 +114,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 32; i++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.White, scale);
+                ParticleManager.NewParticle<StarParticle>(Projectile.Center, velocity, Color.White, scale);
             }
         }
     }

@@ -33,6 +33,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.channel = true;
             Item.scale = 1f;
             Item.consumeAmmoOnLastShotOnly = true;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

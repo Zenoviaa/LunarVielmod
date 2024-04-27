@@ -28,6 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.autoReuse = true;
             Item.shootSpeed = 12f;
             Item.shoot = ModContent.ProjectileType<CogBomb>();
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

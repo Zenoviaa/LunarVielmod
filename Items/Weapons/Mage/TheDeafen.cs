@@ -31,9 +31,9 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shoot = ProjectileType<DeafenProj>();
 			Item.shootSpeed = 6f;
 			Item.mana = 24;
+            Item.noMelee = true;
 
-
-		}
+        }
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-2, 0);
