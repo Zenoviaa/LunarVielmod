@@ -94,6 +94,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 30);
+            recipe.AddIngredient(ItemID.Ectoplasm, 12);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }

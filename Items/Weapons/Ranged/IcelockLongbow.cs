@@ -75,6 +75,7 @@ namespace Stellamod.Items.Weapons.Ranged
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<IllurineScale>(), 18);
+            recipe.AddIngredient(ItemID.Ectoplasm, 8);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
