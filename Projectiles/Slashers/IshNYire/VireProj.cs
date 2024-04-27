@@ -83,9 +83,9 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 			Projectile.timeLeft = 2;
 
 			if (Slam)
-				Owner.itemTime = (Owner.itemAnimation = 20) / 2;
+				Owner.itemTime = ((Owner.itemAnimation = 20) / 2);
 			else if (PreSlam)
-				Owner.itemTime = (Owner.itemAnimation = 5) / 2;
+				Owner.itemTime = ((Owner.itemAnimation = 5) / 2);
 
 			ThrowOutAI();
 
@@ -233,7 +233,7 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 			float[] rotation = new float[Projectile.oldRot.Length];
 			for (int i = 0; i < rotation.Length; i++)
 			{
-				rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
+				rotation[i] = Projectile.oldRot[i] + MathHelper.ToRadians(45);
 			}
 
 

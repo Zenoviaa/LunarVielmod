@@ -100,7 +100,6 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 		{
 			Player player = Main.player[Projectile.owner];
 			Vector2 oldMouseWorld = Main.MouseWorld;
-			player.GetModPlayer<SteinPlayer>().HasHitDance = true;
 
 
 

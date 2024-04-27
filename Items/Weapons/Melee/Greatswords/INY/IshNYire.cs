@@ -74,7 +74,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 			Item.width = 16;
 			Item.height = 16;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.useTime = Item.useAnimation = 18;
+			Item.useTime = 9;
+			Item.useAnimation = 18;
 			Item.shootSpeed = 1f;
 			Item.knockBack = 4f;
 			Item.UseSound = SoundID.Item116;
@@ -115,10 +116,9 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.mana = 20;
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
-					Item.shootSpeed = 10f;
+					Item.shootSpeed = 1f;
 					Item.useAnimation = 20;
 					Item.useTime = 10;
-					Item.consumeAmmoOnLastShotOnly = true;
 					Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
 					Item.channel = false;
 					return true;
@@ -141,10 +141,10 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.mana = 20;
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
-					Item.shootSpeed = 10f;
+					Item.shootSpeed = 1f;
 					Item.useAnimation = 20;
 					Item.useTime = 10;
-					Item.consumeAmmoOnLastShotOnly = true;
+
 					Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
 					Item.channel = false;
 					return true;
