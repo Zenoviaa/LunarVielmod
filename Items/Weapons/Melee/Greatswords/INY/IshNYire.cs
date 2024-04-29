@@ -381,7 +381,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 				if (player.HasBuff<IshShow>())
 				{
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<IshThrow>(), damage, knockback, player.whoAmI, 1, dir);
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<IshThrow>(), damage / 2, knockback, player.whoAmI, 1, dir);
 				}
 
 				if (player.HasBuff<YireShow>())
