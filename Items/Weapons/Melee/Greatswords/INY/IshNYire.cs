@@ -216,7 +216,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.mana = 20;
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
-					Item.shootSpeed = 10f;
+					Item.shootSpeed = 1f;
 					Item.useAnimation = 30;
 					Item.useTime = 30;
 					Item.consumeAmmoOnLastShotOnly = true;
