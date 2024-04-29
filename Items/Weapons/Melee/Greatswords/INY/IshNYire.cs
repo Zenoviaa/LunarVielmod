@@ -456,7 +456,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 						for (int i = 0; i < 1; i++)
 						{
 							Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 5, perturbedSpeed.Y * 5, ModContent.ProjectileType<YireBoomer>(), damage, Item.knockBack, player.whoAmI);
+							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 6, perturbedSpeed.Y * 6, ModContent.ProjectileType<YireBoomer>(), damage, Item.knockBack, player.whoAmI);
 
 
 
@@ -477,7 +477,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 						for (int i = 0; i < 1; i++)
 						{
 							Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 5, perturbedSpeed.Y  * 5, ModContent.ProjectileType<IshBoomer>(), damage, Item.knockBack, player.whoAmI);
+							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 6, perturbedSpeed.Y  * 6, ModContent.ProjectileType<IshBoomer>(), damage, Item.knockBack, player.whoAmI);
 
 
 
