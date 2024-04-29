@@ -20,6 +20,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
@@ -513,7 +514,7 @@ namespace Stellamod.NPCs.Town
 								break;
 
 							case 2:
-
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
 								break;
 
 						}

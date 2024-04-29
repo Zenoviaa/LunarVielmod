@@ -2,6 +2,7 @@
 
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
@@ -48,6 +49,10 @@ namespace Stellamod.Items.Consumables
             Recipe recipe4 = CreateRecipe();
             recipe4.AddIngredient(ModContent.ItemType<RavestBlast>(), 1);
             recipe4.Register();
+
+            Recipe recipe5 = CreateRecipe();
+            recipe5.AddIngredient(ModContent.ItemType<IshNYire>(), 1);
+            recipe5.Register();
         }
     }
 }
