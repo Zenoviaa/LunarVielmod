@@ -6838,8 +6838,5 @@ IshNYire: {
 
 AzuretoothNecklace: {
 	DisplayName: Azuretooth Necklace
-	Tooltip:
-		'''
-		Channels the energy of Illuria to summon homing spectral dragons!
-		'''
+	Tooltip: Channels the energy of Illuria to summon homing spectral dragons!
 }
