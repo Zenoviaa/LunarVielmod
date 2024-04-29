@@ -55,6 +55,7 @@
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
+    <None Remove="Buffs\Whipfx\ColdheartAnklebiterDebuff.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
@@ -527,6 +528,7 @@
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />
+    <None Remove="Projectiles\Whips\ColdheartAnklebiterIcicleProj.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="Textures\Backglow.png" />

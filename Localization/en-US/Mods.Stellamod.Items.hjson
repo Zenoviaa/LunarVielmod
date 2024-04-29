@@ -6840,3 +6840,14 @@ AzuretoothNecklace: {
 	DisplayName: Azuretooth Necklace
 	Tooltip: Channels the energy of Illuria to summon homing spectral dragons!
 }
+
+ColdheartAnklebiter: {
+	DisplayName: Coldheart Anklebiter
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Strike enemies to chill them!
+		Enemies hit by summons explode with icicles
+		'''
+}
