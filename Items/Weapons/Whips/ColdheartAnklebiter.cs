@@ -17,7 +17,7 @@ namespace Stellamod.Items.Weapons.Whips
             Item.width = 50;
             Item.height = 54;
             Item.DefaultToWhip(ModContent.ProjectileType<ColdheartAnklebiterProj>(), 82, 3, 24);
-            Item.rare = ItemRarityID.LightPurple;
+            Item.rare = ItemRarityID.Lime;
             Item.value = Item.sellPrice(gold: 5);
         }
 
