@@ -6823,7 +6823,8 @@ ManifestedCommitment: {
 
 IshNYire: {
 	DisplayName: Ish N Yire
-	Tooltip: '''
+	Tooltip:
+		'''
 		Cursed under the reign of Ereshkigal
 		Has 4 Modes!
 		---------------------------
@@ -6831,6 +6832,6 @@ IshNYire: {
 		Ish Mode: Throw a high-damage spinning sword that will shred enemies apart!
 		Yire Mode: A slashing sword best used in super long ranges or super close ranges for extreme damage!
 		Ish N Yire Mode: Throws Boomerang swords into enemies for easy pickens. Does great damage at all ranges!
-		
+
 		'''
 }
