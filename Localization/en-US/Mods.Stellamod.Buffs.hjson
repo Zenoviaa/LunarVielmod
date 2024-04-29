@@ -677,3 +677,8 @@ YireShow: {
 	DisplayName: Yire Show
 	Description: Mods.Stellamod.Buffs.YireShow.Description
 }
+
+ColdheartAnklebiterDebuff: {
+	DisplayName: Coldheart Anklebiter Debuff
+	Description: Mods.Stellamod.Buffs.ColdheartAnklebiterDebuff.Description
+}
