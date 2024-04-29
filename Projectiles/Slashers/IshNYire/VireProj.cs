@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -107,7 +108,8 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
 
-
+			if (Main.rand.NextBool(10))
+				target.AddBuff(ModContent.BuffType<SigfriedsInsanity>(), 180);
 
 
 			if (Slam)

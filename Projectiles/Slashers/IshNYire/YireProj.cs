@@ -160,8 +160,39 @@ namespace Stellamod.Projectiles.Slashers.IshNYire
 
             Vector2 oldMouseWorld = Main.MouseWorld;
 
-            target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
+            target.SimpleStrikeNPC(Projectile.damage * 7, 1, crit: false, Projectile.knockBack);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16f);
+
+
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowDust>(), 0f, -2f, 0, default(Color), 1.5f);
+                Main.dust[num].noGravity = true;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                {
+                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                }
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkSlateBlue, 0.7f).noGravity = true;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 100, Color.Gray, 0.4f).noGravity = true;
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, DustID.CoralTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.6f).noGravity = true;
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, DustID.CoralTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.2f).noGravity = false;
+            }
+
 
         }
 

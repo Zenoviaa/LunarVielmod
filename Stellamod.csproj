@@ -487,10 +487,12 @@
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\IshBoomer.png" />
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2.png" />
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2_Chain.png" />
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2_Glow.png" />
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2_White.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\YireBoomer.png" />
     <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />

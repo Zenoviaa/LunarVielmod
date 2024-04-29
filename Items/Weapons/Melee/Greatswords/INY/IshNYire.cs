@@ -86,7 +86,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 100;
+			Item.damage = 75;
 			Item.value = Item.sellPrice(0, 2, 50, 0);
 			Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
 		}
@@ -217,8 +217,8 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 					Item.useTurn = true;
 					Item.DamageType = DamageClass.Melee;
 					Item.shootSpeed = 10f;
-					Item.useAnimation = 20;
-					Item.useTime = 20;
+					Item.useAnimation = 30;
+					Item.useTime = 30;
 					Item.consumeAmmoOnLastShotOnly = true;
 					Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/GallinLock2");
 					//GallinLock2
@@ -391,11 +391,11 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 					float numberProjectiles = 3;
 					float rotation = MathHelper.ToRadians(20);
-					position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
+					position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 15f;
 					for (int i = 0; i < numberProjectiles; i++)
 					{
 						Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-						Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 10, perturbedSpeed.Y * 10, ModContent.ProjectileType<XexShot>(), damage / 10, Item.knockBack, player.whoAmI);
+						Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 8, perturbedSpeed.Y * 8, ModContent.ProjectileType<XexShot>(), damage / 4, Item.knockBack, player.whoAmI);
 
 
 
@@ -403,10 +403,10 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 
 					float rot = velocity.ToRotation();
-					float spread = 0.9f;
+					float spread = 2f;
 				
 
-					Vector2 offset = new Vector2(0.2f, -0.1f * player.direction).RotatedBy(rot);
+					Vector2 offset = new Vector2(0.01f, -0.01f * player.direction).RotatedBy(rot);
 					for (int k = 0; k < 15; k++)
 					{
 						Vector2 direction = offset.RotatedByRandom(spread);
@@ -436,8 +436,54 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords.INY
 
 				if (player.HasBuff<ISHNYIREShow>())
 				{
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EckasectExecutorHold>(), damage, knockback, player.whoAmI, 1, dir);
-					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ExecutionRay>(), damage / 2, knockback, player.whoAmI, 1, dir);
+
+
+
+		
+
+					Vector2 direction = velocity.RotatedBy(Main.rand.NextFloat(-0.2f, 0.2f));
+					if (alternate == 0)
+					{
+						
+						alternate = 1;
+
+					
+
+
+						float numberProjectiles = 3;
+						float rotation = MathHelper.ToRadians(20);
+						position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 15f;
+						for (int i = 0; i < 1; i++)
+						{
+							Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
+							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 5, perturbedSpeed.Y * 5, ModContent.ProjectileType<YireBoomer>(), damage, Item.knockBack, player.whoAmI);
+
+
+
+						}
+
+					}
+					else if (alternate == 1)
+					{
+
+						alternate = 0;
+
+					
+
+
+						float numberProjectiles = 3;
+						float rotation = MathHelper.ToRadians(20);
+						position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 15f;
+						for (int i = 0; i < 1; i++)
+						{
+							Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
+							Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X * 5, perturbedSpeed.Y  * 5, ModContent.ProjectileType<IshBoomer>(), damage, Item.knockBack, player.whoAmI);
+
+
+
+						}
+
+					}
 				}
 			}
 
