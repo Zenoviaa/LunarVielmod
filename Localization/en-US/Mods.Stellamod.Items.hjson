@@ -6866,3 +6866,8 @@ Opinine: {
 	Tooltip: Shoot from the heavens, built with radiance!
 	DisplayName: Opinine
 }
+
+WaterGun: {
+	Tooltip: ""
+	DisplayName: Water Gun
+}
