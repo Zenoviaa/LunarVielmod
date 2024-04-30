@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -36,10 +37,24 @@ namespace Stellamod.Projectiles.Summons
             Projectile.penetrate = -1;
             Projectile.stepSpeed = 1f;
             Projectile.alpha = 255;
+            Projectile.scale = 0;
         }
 
         public override void AI()
         {
+            float timeLeft = Projectile.timeLeft;
+            if(timeLeft > 250)
+            {
+                float progress = (280f - timeLeft) / 30f;
+                float easedProgress = Easing.OutCirc(progress);
+                Projectile.scale = 1 * easedProgress;
+            } 
+            else if (timeLeft < 30)
+            {
+                float progress = timeLeft / 30f;
+                float easedProgress = Easing.OutCirc(progress);
+                Projectile.scale = 1 * easedProgress;
+            }
 
             Projectile.rotation += 0.12f;
             Projectile.velocity.X *= 0.0f;
@@ -85,7 +100,6 @@ namespace Stellamod.Projectiles.Summons
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.GoldFlame, speed * 11, Scale: 3f);
-                ;
                 d.noGravity = true;
             }
         }
@@ -105,17 +119,11 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool PreDraw(ref Color lightColor)
         {
-
             Color drawColor = new(255, 255, 255, 0);
-
             Main.EntitySpriteDraw(VorTexture.Value, Projectile.Center - Main.screenPosition,
                           VorTexture.Value.Bounds, drawColor, Projectile.rotation,
-                          VorTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0);
-            return true;
+                          VorTexture.Size() * 0.5f, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
-
-
-
-
     }
 }
