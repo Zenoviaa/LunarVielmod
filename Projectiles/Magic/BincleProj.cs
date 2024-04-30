@@ -49,7 +49,7 @@ namespace Stellamod.Projectiles.Magic
 				float speedX = Projectile.velocity.X * 12;
 				float speedY = Projectile.velocity.Y * 12;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + 90, Projectile.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
 				It = 0;
             }
 
@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Magic
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position
+			Projectile.Center = playerCenter - new Vector2(90, 0).RotatedBy(swordRotation);
 
 			if (++Projectile.frameCounter >= 2)
 			{
