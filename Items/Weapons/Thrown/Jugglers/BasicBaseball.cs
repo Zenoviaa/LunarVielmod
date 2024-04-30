@@ -40,10 +40,5 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.shoot = ModContent.ProjectileType<BasicBaseballProj>();
             Item.shootSpeed = 24;
         }
-
-        public override bool CanUseItem(Player player)
-        {
-            return base.CanUseItem(player) && player.ownedProjectileCounts[Item.shoot] == 0;
-        }
     }
 }

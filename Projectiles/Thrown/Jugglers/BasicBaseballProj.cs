@@ -101,7 +101,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
             //Don't take too long or else you lose your combo
             Timer++;
-            if(Timer >= 600)
+            if(Timer >= 598)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
                 Juggler.ResetJuggle();
@@ -120,7 +120,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.timeLeft = 600;
-            Projectile.velocity = -Projectile.velocity * 2;
+            Projectile.velocity = -Projectile.velocity / 2;
             Projectile.velocity += -Vector2.UnitY * 8;
             Projectile.friendly = false;
             State = ActionState.Fall;
