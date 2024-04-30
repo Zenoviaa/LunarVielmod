@@ -6870,3 +6870,8 @@ WaterGun: {
 	Tooltip: ""
 	DisplayName: Water Gun
 }
+
+DogmaBalls: {
+	DisplayName: Dogma Balls
+	Tooltip: ""
+}
