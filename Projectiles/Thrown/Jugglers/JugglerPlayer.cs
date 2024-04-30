@@ -11,11 +11,11 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         };
 
         public float DamageBonus;
-        public int HitCount;
+        public int CatchCount;
         public void ResetJuggle()
         {
             DamageBonus = 0f;
-            HitCount = 0;
+            CatchCount = 0;
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
@@ -33,7 +33,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             if (!isLegal)
                 return;
 
-            HitCount++;
             modifiers.ScalingBonusDamage += DamageBonus;
         }
     }
