@@ -301,6 +301,7 @@
     <None Remove="Items\Weapons\Summon\X3144.png" />
     <None Remove="Items\Weapons\Summon\XScissor.png" />
     <None Remove="Items\Weapons\Summon\XScissorMinion.png" />
+    <None Remove="Items\Weapons\Thrown\Jugglers\BasicBaseball.png" />
     <None Remove="Items\Weapons\Thrown\LarvaedSpear.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
@@ -527,6 +528,7 @@
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
+    <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />

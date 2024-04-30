@@ -6880,3 +6880,13 @@ Tulahal: {
 	Tooltip: Create a flaming hurricane from the old irradiated power of the Govheil. Control the wind and flame.
 	DisplayName: Tulahal
 }
+
+BasicBaseball: {
+	DisplayName: Basic Baseball
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		Stacks infinitely
+		'''
+}
