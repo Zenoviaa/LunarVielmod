@@ -6851,3 +6851,8 @@ ColdheartAnklebiter: {
 		Enemies hit by summons explode with icicles
 		'''
 }
+
+WaterGun: {
+	Tooltip: ""
+	DisplayName: Water Gun
+}
