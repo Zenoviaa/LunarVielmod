@@ -41,6 +41,7 @@ namespace Stellamod.Trails
         public static Asset<Texture2D> SpikyTrail2 => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SpikyTrail2");
         public static Asset<Texture2D> LightningTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/LightningTrail");
         public static Asset<Texture2D> SimpleTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SimpleTrail");
+        public static Asset<Texture2D> SmoothTrailInverted => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SmoothTrailInverted");
 
 
         public static Asset<Texture2D> CrystalNoise => ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Noise/Crystals");
