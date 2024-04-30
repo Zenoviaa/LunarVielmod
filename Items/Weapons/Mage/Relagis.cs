@@ -10,13 +10,13 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Mage
 {
 
-    public class Bincle : ClassSwapItem
+    public class Regalis : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
 
         public override void SetClassSwappedDefaults()
         {
-            Item.damage = 115;
+            Item.damage = 85;
             Item.mana = 0;
             Item.useAmmo = AmmoID.Bullet;
         }
@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Mage
 
         public override void SetDefaults()
         {
-            Item.damage = 100;
+            Item.damage = 80;
             Item.DamageType = DamageClass.Magic;
             Item.width = 32;
             Item.mana = 7;
@@ -44,7 +44,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.rare = ItemRarityID.Orange;
             Item.autoReuse = false;
             Item.shootSpeed = 30f;
-            Item.shoot = ModContent.ProjectileType<BincleProj>();
+            Item.shoot = ModContent.ProjectileType<RadiantOrb>();
             Item.scale = 0.8f;
             Item.noMelee = true; // The projectile will do the damage and not the item
             Item.value = Item.buyPrice(gold: 95);
@@ -59,10 +59,8 @@ namespace Stellamod.Items.Weapons.Mage
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<IshtarCandle>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<Regalis>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
-            recipe.AddIngredient(ModContent.ItemType<AuroreanStarI>(), 250);
+            recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
+            recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 20);
             recipe.Register();
         }
 

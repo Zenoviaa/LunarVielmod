@@ -4,24 +4,24 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic
 {
-	public class BincleProj : ModProjectile
+	public class RadiantOrb : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("SalfaCirle");
-			Main.projFrames[Projectile.type] = 24;
+			Main.projFrames[Projectile.type] = 72;
 		}
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
 			Projectile.DamageType = DamageClass.Magic;
-			Projectile.width = 250;
-			Projectile.height = 250;
+			Projectile.width = 99;
+			Projectile.height = 99;
 			Projectile.penetrate = -1;
 			Projectile.scale = 1f;
 			DrawOriginOffsetY = 0;
 			Projectile.damage = 0;
-			Projectile.timeLeft = 48;
+			Projectile.timeLeft = 72;
 
 		}
 		public override bool PreAI()
@@ -44,16 +44,16 @@ namespace Stellamod.Projectiles.Magic
 			Player player = Main.player[Projectile.owner];
 
 			if (It >= 6)
-            {
+			{
 
 				float speedX = Projectile.velocity.X * 12;
 				float speedY = Projectile.velocity.Y * 12;
 
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<BrincShot>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, speedX, speedY, ModContent.ProjectileType<GoldenHoes>(), (int)(Projectile.damage), 0f, Projectile.owner, 0f, 0f);
 				It = 0;
-            }
+			}
 
-		
+
 			if (player.noItems || player.CCed || player.dead || !player.active)
 				Projectile.Kill();
 
@@ -74,12 +74,12 @@ namespace Stellamod.Projectiles.Magic
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(120, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(150, 0).RotatedBy(swordRotation);
 
-			if (++Projectile.frameCounter >= 2)
+			if (++Projectile.frameCounter >= 1)
 			{
 				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= 24)
+				if (++Projectile.frame >= 72)
 				{
 					Projectile.frame = 0;
 				}

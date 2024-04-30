@@ -448,6 +448,7 @@
     <None Remove="Projectiles\Magic\CandleShotProj1.png" />
     <None Remove="Projectiles\Magic\CandleShotProj2.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
+    <None Remove="Projectiles\Magic\GoldenHoes.png" />
     <None Remove="Projectiles\Magic\ImperfectionProj.png" />
     <None Remove="Projectiles\Magic\LampShot.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />

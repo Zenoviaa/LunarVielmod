@@ -6853,6 +6853,6 @@ ColdheartAnklebiter: {
 }
 
 Bincle: {
-	Tooltip: Destruction of all the Bincles, use your magical instrument to shoot sparks.
-	DisplayName: Bincle
+	Tooltip: Destruction of all the Bincles, use your magical mirror to shoot sparks.
+	DisplayName: Bincle Fracture
 }
