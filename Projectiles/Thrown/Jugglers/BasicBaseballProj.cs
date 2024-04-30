@@ -90,11 +90,12 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
             if (IsTouchingPlayer())
             {
-                int combatText = CombatText.NewText(Juggler.Player.getRect(), Color.White, $"x{Juggler.HitCount}", true);
+                int combatText = CombatText.NewText(Juggler.Player.getRect(), Color.White, $"x{Juggler.CatchCount + 1}", true);
                 CombatText numText = Main.combatText[combatText];
                 numText.lifeTime = 60;
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
+                Juggler.CatchCount++;
                 Juggler.DamageBonus += 0.5f;
                 Projectile.Kill();
             }
@@ -117,10 +118,20 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             return base.OnTileCollide(oldVelocity);
         }
 
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            if (Projectile.friendly)
+            {
+                Juggler.ResetJuggle();
+            }
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.timeLeft = 600;
-            Projectile.velocity = -Projectile.velocity / 2;
+            Vector2 bounceVelocity = -Projectile.velocity / 2;
+            Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
             Projectile.velocity += -Vector2.UnitY * 8;
             Projectile.friendly = false;
             State = ActionState.Fall;
