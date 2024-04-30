@@ -1,18 +1,14 @@
-﻿using Stellamod.Projectiles.Thrown;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Items.Materials;
+using Stellamod.Projectiles.Thrown;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Items.Materials;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class DogmaBalls : ModItem
+    internal class DogmaBalls : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Melee;
 
         public override void SetDefaults()
         {
