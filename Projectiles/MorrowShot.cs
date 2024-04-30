@@ -33,12 +33,12 @@ namespace Stellamod.Projectiles
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
-		public override bool PreAI()
-		{
-			int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f);
-			Main.dust[moredust].scale = 0.5f;
-			return true;
-		}
+	//	public override bool PreAI()
+	//	{
+			//int moredust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, DustID.SilverCoin, 0f, 0f);
+		//	Main.dust[moredust].scale = 0.5f;
+		//	return true;
+	//	}
 
 		public override void AI()
 		{

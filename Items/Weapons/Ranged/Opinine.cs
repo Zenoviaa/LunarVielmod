@@ -1,17 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Bow;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class GintzlsSteed : ModItem
+    internal class Opinine : ModItem
     {
         public override void SetDefaults()
         {
-            Item.damage = 10;
+            Item.damage = 110;
             Item.width = 50;
             Item.height = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -34,11 +36,28 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemType<GintzlMetal>(), 11);
-            recipe.AddTile(TileID.Anvils);
+            recipe.AddIngredient(ItemType<RadianuiBar>(), 20);
+            recipe.AddTile(TileID.MythrilAnvil);
             recipe.Register();
         }
 
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+
+
+            int numProjectiles = Main.rand.Next(1, 2);
+            for (int p = 0; p < numProjectiles; p++)
+            {
+                // Rotate the velocity randomly by 30 degrees at max.
+                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(5));
+                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
+                Projectile.NewProjectileDirect(source, position, newVelocity, ModContent.ProjectileType<GoldenBaha>(), damage, knockback, player.whoAmI);
+            }
+
+
+            return false;
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, 0f);

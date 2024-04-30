@@ -1,5 +1,6 @@
 ﻿using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
+using Stellamod.Items.Quest.BORDOC;
 using Stellamod.Projectiles.Crossbows.Ultras;
 using Stellamod.Projectiles.Magic;
 using Terraria;
@@ -10,7 +11,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Mage
 {
 
-    public class Regalis : ClassSwapItem
+    public class Relagis : ClassSwapItem
     {
         public override DamageClass AlternateClass => DamageClass.Ranged;
 
@@ -37,8 +38,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.width = 32;
             Item.mana = 7;
             Item.height = 25;
-            Item.useTime = 46;
-            Item.useAnimation = 46;
+            Item.useTime = 69;
+            Item.useAnimation = 70;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
             Item.rare = ItemRarityID.Orange;
@@ -61,6 +62,7 @@ namespace Stellamod.Items.Weapons.Mage
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.ChlorophyteBar, 10);
             recipe.AddIngredient(ModContent.ItemType<RadianuiBar>(), 20);
+            recipe.AddIngredient(ModContent.ItemType<RottenHeart>(), 1);
             recipe.Register();
         }
 

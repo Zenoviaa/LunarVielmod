@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Magic
 			else
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
 
-			Projectile.Center = playerCenter + new Vector2(150, 0).RotatedBy(swordRotation);
+			Projectile.Center = playerCenter + new Vector2(65, 0).RotatedBy(swordRotation);
 
 			if (++Projectile.frameCounter >= 1)
 			{
