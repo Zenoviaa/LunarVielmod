@@ -6851,3 +6851,8 @@ ColdheartAnklebiter: {
 		Enemies hit by summons explode with icicles
 		'''
 }
+
+Bincle: {
+	Tooltip: Destruction of all the Bincles, use your magical instrument to shoot sparks.
+	DisplayName: Bincle
+}
