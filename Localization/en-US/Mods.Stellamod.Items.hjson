@@ -6875,3 +6875,8 @@ DogmaBalls: {
 	DisplayName: Dogma Balls
 	Tooltip: ""
 }
+
+Tulahal: {
+	Tooltip: ""
+	DisplayName: Tulahal
+}
