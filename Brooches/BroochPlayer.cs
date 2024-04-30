@@ -287,7 +287,7 @@ namespace Stellamod.Brooches
                     KeepBroochAlive<GovheilHolsterBrooch, GovheilB>(ref hasGovheilHolsterBrooch);
                     KeepBroochAlive<GintzlBrooch, GintBroo>(ref hasGintzlBrooch);
                     KeepBroochAlive<VillagersBrooch, VillagersB>(ref hasVillagersBrooch);
-                    Player.GetDamage(DamageClass.Generic) *= 1.15f;
+                   
                 }
 
                 if (hasIllurianBrooch)
