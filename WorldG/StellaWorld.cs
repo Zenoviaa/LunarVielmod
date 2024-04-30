@@ -472,7 +472,7 @@ namespace Stellamod.WorldG
 					Point Loc22 = new Point(smx +10, smy - 33);
 		//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
 					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
-					pointVeri = new Point(smx + 10, smy + 470);
+					pointVeri = new Point(smx + 10, smy + 500);
 					Point Loc4 = new Point(smx + 233, smy + 45);
 				//	WorldUtils.Gen(Loc2, new Shapes.Mound(60, 90), new Actions.SetTile(TileID.Dirt));
 				//	WorldUtils.Gen(Loc4, new Shapes.Rectangle(220, 105), new Actions.SetTile(TileID.Dirt));
