@@ -64,6 +64,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case BossActionState.Baby_Dragons:
                     AI_BabyDragons();
                     break;
+                case BossActionState.Calm_Down:
+                    AI_CalmDown();
+                    break;
             }
             UpdateOrientation();
         }
@@ -71,6 +74,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Idle()
         {
             NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                //Despawn basically
+                ResetState(BossActionState.Calm_Down);
+            }
             Timer++;
             if(Timer >= 15)
             {
@@ -97,6 +105,19 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     ParticleManager.NewParticle<T>(pos, vel, Color.White, 1f);
                 }
             }
+        }
+
+        private void AI_CalmDown()
+        {
+            Timer++;
+            if(Timer >= 60)
+            {
+                ResetState(ActionState.Roaming);
+                ResetState(BossActionState.Idle);
+            }
+
+            UpdateOrientation();
+            NPC.velocity *= 0.98f;
         }
 
         private void AI_FrostBreath()

@@ -68,11 +68,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
             float distanceToHome = Vector2.Distance(NPC.Center, home);
 
             //Set orientation
-            FlightDirection = 1;
-            LookDirection = 1;
-            StartSegmentDirection = -Vector2.UnitX;
-            OrientStraight();
-            TargetHeadRotation = NPC.velocity.ToRotation();
+            if(directionToHome.X > 0)
+            {
+                FlightDirection = 1;
+                LookDirection = 1;
+                StartSegmentDirection = -Vector2.UnitX;
+                OrientStraight();
+                TargetHeadRotation = NPC.velocity.ToRotation();
+
+            }
+            else
+            {
+                FlightDirection = -1;
+                LookDirection = -1;
+                StartSegmentDirection = Vector2.UnitX;
+                OrientStraight();
+                TargetHeadRotation = NPC.velocity.ToRotation();
+            }
 
 
             float speed = MathHelper.Min(RoamingSpeed, distanceToHome);

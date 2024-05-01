@@ -31,7 +31,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Thunderstorm,
             Baby_Dragons,
             Swoop_Out,
-            PrepareAttack
+            PrepareAttack,
+            Calm_Down
         }
 
         public ActionState State
@@ -130,7 +131,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else
             {
-                NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+                NPC.boss = false;
+                NPC.BossBar = null;
                 Music = -1;
             }
         }
