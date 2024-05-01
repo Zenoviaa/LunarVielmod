@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -131,9 +133,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else
             {
+                Timer = 0;
+                AttackTimer = 0;
+                AttackCount = 0;
+                NextAttack = BossActionState.Frost_Breath;
+                Music = -1;
+
                 NPC.boss = false;
                 NPC.BossBar = null;
-                Music = -1;
+                NPC.netUpdate = true;
             }
         }
 
@@ -200,6 +208,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             shaderSystem.UnTintScreen();
             shaderSystem.UnDistortScreen();
             shaderSystem.UnVignetteScreen();
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<PureHeart>()));
         }
     }
 }

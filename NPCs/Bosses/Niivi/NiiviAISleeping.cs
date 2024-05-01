@@ -2,11 +2,6 @@
 using ParticleLibrary;
 using Stellamod.NPCs.Town;
 using Stellamod.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.NPCs.Bosses.Niivi
@@ -19,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (Main.dayTime)
             {
                 SleepingTimer = 0;
-                State = ActionState.Roaming;
+                ResetState(ActionState.Roaming);
             }
             else
             {
@@ -30,6 +25,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 //Go sleep
                 Vector2 sleepPos = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 164);
                 NPC.Center = Vector2.Lerp(NPC.Center, sleepPos, 0.01f);
+                NPC.velocity *= 0.9f;
                 TargetSegmentRotation = -MathHelper.PiOver4 / 80;
                 TargetHeadRotation = 0;
                 SleepingTimer++;

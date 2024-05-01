@@ -10,8 +10,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public float RoamingDirection = -1f;
         public float RoamingSpeed = 2;
-        public float RoamingTime;
-
         private void AIRoaming()
         {
             if (!Main.dayTime)
@@ -20,42 +18,34 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else
             {
-                AIRoaming_Fly();
+                AIRoaming_FlyAroundTree();
             }
         }
 
-        private void AIRoaming_Fly()
+        private void AIRoaming_FlyAroundTree()
         {
-            float maxRoamingTime = 2400;
-            NPC.TargetClosest();
-            //Fly to the left of the world and back
-            RoamingTime++;
-            if (RoamingTime > maxRoamingTime)
-            {
-                RoamingTime = 0;
-                RoamingDirection = -RoamingDirection;
-            }
-
-            if (RoamingDirection < 0)
-            {
-                FlightDirection = -1;
-                LookDirection = -1;
-                StartSegmentDirection = Vector2.UnitX;
-                OrientStraight();
-                TargetHeadRotation = NPC.velocity.ToRotation();
-            }
-            else
+            float orbitDistance = 2000;
+            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 1024);
+            Vector2 direction = home.DirectionTo(NPC.Center);
+            direction = direction.RotatedBy(MathHelper.TwoPi / 2000);
+            Vector2 targetCenter = home + direction * orbitDistance;
+            Vector2 directionToTargetCenter = NPC.Center.DirectionTo(targetCenter);
+            AI_MoveToward(targetCenter, 2);
+            OrientArching();
+            if (directionToTargetCenter.X > 0)
             {
                 FlightDirection = 1;
                 LookDirection = 1;
                 StartSegmentDirection = -Vector2.UnitX;
-                OrientStraight();
-                TargetHeadRotation = NPC.velocity.ToRotation();
+     
             }
-
-            Vector2 targetVelocity = Vector2.UnitX * RoamingSpeed * RoamingDirection;
-            targetVelocity += new Vector2(0, VectorHelper.Osc(-1, 1));
-            NPC.velocity = targetVelocity;
+            else
+            {
+                FlightDirection = -1;
+                LookDirection = -1;
+                StartSegmentDirection = Vector2.UnitX;
+                TargetHeadRotation = -MathHelper.PiOver4 + MathHelper.Pi;
+            }
 
             UpdateOrientation();
             LookAtTarget();
@@ -94,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             if (distanceToHome <= 1)
             {
-                State = ActionState.Sleeping;
+                ResetState(ActionState.Sleeping);
             }
 
             UpdateOrientation();
