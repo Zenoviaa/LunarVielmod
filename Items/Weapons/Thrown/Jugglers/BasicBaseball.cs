@@ -32,7 +32,6 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.useAnimation = 22;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
-            Item.value = 10000;
             Item.rare = ItemRarityID.Blue;
             Item.crit = 16;
             Item.UseSound = SoundID.Item1;

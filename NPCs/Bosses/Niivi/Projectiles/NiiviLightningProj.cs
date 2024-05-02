@@ -106,7 +106,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 return;
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
+            TrailRegistry.LaserShader.UseColor(Color.White);
             TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
 
             BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
