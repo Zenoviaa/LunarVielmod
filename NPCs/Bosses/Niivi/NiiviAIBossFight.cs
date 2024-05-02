@@ -12,7 +12,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
 {
     internal partial class Niivi
     {
-        int LightningDamage => 240;
+        //Damage Values
+        int P1_LightningDamage => 240;
+        int P1_FrostBreathDamage => 120;
+        int P1_StarWrathDamage => 40;
+        int P1_LaserDamage => 500;
 
         Player Target => Main.player[NPC.target];
         IEntitySource EntitySource => NPC.GetSource_FromThis();
@@ -261,7 +265,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
 
                     int type = ModContent.ProjectileType<NiiviFrostBreathProj>();
-                    int damage = NPC.ScaleFromContactDamage(0.25f);
+                    int damage = P1_FrostBreathDamage;
                     float knockback = 1;
 
                     if (StellaMultiplayer.IsHost)
@@ -314,7 +318,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     Vector2 spawnPos = NPC.Center + Main.rand.NextVector2Circular(128, 128);
                     velocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    int damage = NPC.ScaleFromContactDamage(0.25f);
+                    int damage = P1_FrostBreathDamage / 2;
                     float knockback = 1; 
                     
                     if (StellaMultiplayer.IsHost)
@@ -532,7 +536,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     float distance = Vector2.Distance(NPC.Center, LaserAttackPos);
 
                     int type = ModContent.ProjectileType<NiiviLaserBlastProj>();
-                    int damage = NPC.ScaleFromContactDamage(1f);
+                    int damage = P1_LaserDamage;
                     float knockback = 1;
                     if (StellaMultiplayer.IsHost)
                     {
@@ -588,7 +592,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if(Timer % 8 == 0 && StellaMultiplayer.IsHost)
                 {
                     int type = ModContent.ProjectileType<NiiviCometProj>();
-                    int damage = NPC.ScaleFromContactDamage(0.33f);
+                    int damage = P1_StarWrathDamage;
                     int knockback = 1;
 
                     float height = 768;
@@ -726,7 +730,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     Vector2 pos = Target.Center + Target.velocity * 48;
                     pos += new Vector2(Main.rand.NextFloat(-64, 64), 0);
                     Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
-                        ModContent.ProjectileType<NiiviThundercloudProj>(), LightningDamage, 2, Main.myPlayer);
+                        ModContent.ProjectileType<NiiviThundercloudProj>(), P1_LightningDamage, 2, Main.myPlayer);
                 }
 
                 if(Timer >= 90)
@@ -747,7 +751,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Vector2 pos = Target.Center + Target.velocity * 48;
                     Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
-                        ModContent.ProjectileType<NiiviLightningRayWarnProj>(), LightningDamage, 2, Main.myPlayer);
+                        ModContent.ProjectileType<NiiviLightningRayWarnProj>(), P1_LightningDamage, 2, Main.myPlayer);
                 }
 
                 if(Timer >= 90)

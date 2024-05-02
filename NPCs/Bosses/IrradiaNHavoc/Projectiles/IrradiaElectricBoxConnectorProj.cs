@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,24 +10,26 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
     internal class IrradiaElectricBoxConnectorProj : ModProjectile
     {
-
+        private ref float Timer => ref Projectile.ai[0];
         bool ConnectToStart => true;
         bool Init;
 
         NPC[] Nodes;
         List<Point> Connections;
         List<Point> ConnectionsToRemove;
+        List<Vector2[]> LightningPos;
         bool[] NodesThatDied;
 
         int FrameTick;
         int FrameCounter;
 
 
+        internal PrimitiveTrail BeamDrawer;
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.timeLeft = 720;
+            Projectile.timeLeft = 3600;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
@@ -44,13 +47,19 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
         private void AI_FillPoints()
         {
+            Timer++;
             if (!Init)
             {
+                LightningPos = new List<Vector2[]>();
                 ConnectionsToRemove = new List<Point>();
                 Connections = new List<Point>();
                 var nodes = new List<NPC>();
-                foreach (var npc in Main.ActiveNPCs)
+
+                for(int i = 0; i < Main.maxNPCs; i++)
                 {
+                    NPC npc = Main.npc[i];
+                    if (!npc.active)
+                        continue;
                     if (npc.type != ModContent.NPCType<IrradiaElectricBoxNode>())
                         continue;
                     //Already connected
@@ -104,18 +113,54 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 Connections.Remove(removeConnection);
             }
             ConnectionsToRemove.Clear();
+
+
+            if(Timer % 3 == 0)
+            {
+                LightningPos.Clear();
+                for (int i = 0; i < Connections.Count; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Vector2 position = Nodes[Connections[i].Y].Center;
+                        Vector2 previousPosition = Nodes[Connections[i].X].Center;
+                        List<Vector2> points = new List<Vector2>();
+
+                        Vector2 currentPosition = previousPosition;
+
+                        float distanceToPosition = Vector2.Distance(currentPosition, position);
+                        points.Add(previousPosition);
+
+                        while (distanceToPosition > 16)
+                        {
+                            Vector2 directionToPosition = currentPosition.DirectionTo(position);
+                            Vector2 direction = directionToPosition.RotatedByRandom(MathHelper.ToRadians(9));
+                            float distance = Main.rand.NextFloat(2, 64);
+                            if (distance >= distanceToPosition)
+                                distance = distanceToPosition;
+
+                            currentPosition = currentPosition + direction * distance;
+                            points.Add(currentPosition);
+                            distanceToPosition = Vector2.Distance(currentPosition, position);
+                        }
+
+                        points.Add(position);
+                        LightningPos.Add(points.ToArray());
+                    }
+                }
+            }
         }
 
 
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * 8;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+            return 3.5f + Easing.SpikeCirc(completionRatio) * baseWidth;
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            Color startColor = Color.Yellow;
+            Color startColor = Color.Orange;
             Color endColor = Color.Transparent;
             return Color.Lerp(startColor, endColor, completionRatio);
         }
@@ -145,13 +190,16 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Rectangle animationFrame = chainTexture.AnimationFrame(
                 ref FrameCounter, ref FrameTick, frameTime, frameCount, true);
 
-            for (int i = 0; i < Connections.Count; i++)
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            TrailRegistry.LaserShader.UseColor(Color.Orange);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
+
+            for(int i = 0; i < LightningPos.Count; i++)
             {
-                Vector2 position = Nodes[Connections[i].Y].Center;
-                Vector2 previousPosition = Nodes[Connections[i].X].Center;
-                DrawHelper.DrawSupernovaChains(chainTexture, previousPosition, position, animationFrame, Projectile.alpha / 255f);
+                BeamDrawer.DrawPixelated(LightningPos[i], -Main.screenPosition, LightningPos[i].Length);
             }
-          
+
+            Main.spriteBatch.ExitShaderRegion();
             return false;
         }
     }
