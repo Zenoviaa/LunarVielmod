@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>Stellamod</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -320,6 +318,8 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
+    <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
+    <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
@@ -459,6 +459,7 @@
     <None Remove="Projectiles\Magic\Poyashot2.png" />
     <None Remove="Projectiles\Magic\RhamenthalProjHold.png" />
     <None Remove="Projectiles\Magic\SparkBallsP.png" />
+    <None Remove="Projectiles\Magic\TorrentialLanceBubbleProj.png" />
     <None Remove="Projectiles\Meatball4.png" />
     <None Remove="Projectiles\Paint\InkingSProj2.png" />
     <None Remove="Projectiles\Paint\InkingSThrow.png" />
@@ -547,7 +548,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />

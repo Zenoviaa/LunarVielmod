@@ -87,7 +87,7 @@ namespace Stellamod.Projectiles.Magic
             alphaCounter += 0.04f;
             Projectile.rotation += 0.3f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             for (int i = 0; i < 15; i++)
