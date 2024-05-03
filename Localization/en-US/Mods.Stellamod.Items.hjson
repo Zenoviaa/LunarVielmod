@@ -2428,7 +2428,12 @@ TomeOfTheSingularity: {
 
 TorrentialLance: {
 	DisplayName: Torrential Lance
-	Tooltip: ""
+	Tooltip:
+		'''
+		Use it to lance through your enemies! 
+		Leaves behind bubbles after hitting an enemy
+		You'll be invincible for a bit, be careful though, you're vulnerable at the end of the dash
+		'''
 }
 
 VoidsGrasp: {
