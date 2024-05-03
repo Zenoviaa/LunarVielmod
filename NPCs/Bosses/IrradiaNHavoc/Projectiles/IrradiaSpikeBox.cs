@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -46,6 +45,11 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         public override bool CheckActive()
         {
             return false;
+        }
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            return true;
         }
     }
 }
