@@ -248,6 +248,7 @@ namespace Stellamod
 		public bool ZoneLab;
 		public bool ZoneIlluria;
 		public bool ZoneIshtar;
+		public bool ZoneVeil;
 
 		public float AssassinsSlashes;
         public float AssassinsTime;
@@ -714,7 +715,7 @@ namespace Stellamod
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", NPC.AnyNPCs(ModContent.NPCType<LuminullSpiritCrystal>()));
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosP", EventWorld.ChaosT && Player.ZoneUnderworldHeight);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Caeva", NPC.AnyNPCs(ModContent.NPCType<Caeva>()));
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
@@ -1486,6 +1487,10 @@ namespace Stellamod
 				}
 			}
 
+
+
+
+
 			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && (ZoneAcid || ZoneGovheil || ZoneVeri) && !ZoneLab)
 			{
 				Main.windPhysicsStrength = 90;
@@ -1526,6 +1531,28 @@ namespace Stellamod
 					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
 					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
 					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<CrystalParticle2>(), Color.Orange, Main.rand.NextFloat(0.2f, 0.8f));
+				}
+			}
+
+
+
+			if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneVeil)
+			{
+				Main.GraveyardVisualIntensity = 0.1f;
+				Main.windPhysicsStrength = 50;
+
+
+
+
+				for (int j = 0; j < 3; j++)
+				{
+					RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1500f, 1500f), (Main.rand.NextFloat(-600f, 600f)));
+					RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
+					RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
+
+					Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
+					Vector2 speed2 = Main.rand.NextVector2Circular(0.1f, 0.1f);
+					ParticleManager.NewParticle(Player.Center - RandomOrig, speed2 * 3, ParticleManager.NewInstance<BoreParticle>(), Color.Orange, Main.rand.NextFloat(0.1f, 0.9f));
 				}
 			}
 

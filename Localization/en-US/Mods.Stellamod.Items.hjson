@@ -6890,3 +6890,23 @@ BasicBaseball: {
 		Stacks infinitely
 		'''
 }
+
+Volcant: {
+	Tooltip: ""
+	DisplayName: Volcant
+}
+
+SmallVeilPottery: {
+	Tooltip: ""
+	DisplayName: Small Veil Pottery
+}
+
+Catagrass: {
+	DisplayName: Catagrass
+	Tooltip: ""
+}
+
+RobedCatastone: {
+	DisplayName: Robed Catastone
+	Tooltip: ""
+}

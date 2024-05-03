@@ -99,7 +99,7 @@ namespace Stellamod
             MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
             LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
             IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
-            VeilCount = tileCounts[ModContent.TileType<VeilBrickTile>()];
+            VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
             IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()];
         }
     }

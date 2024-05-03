@@ -20,6 +20,7 @@ using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
+using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
@@ -616,6 +617,7 @@ namespace Stellamod.WorldG
 								itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
 								break;
 							case 1:
+								itemsToAdd.Add((ModContent.ItemType<Volcant>(), Main.rand.Next(1, 1)));
 								itemsToAdd.Add((ModContent.ItemType<VerianBar>(), Main.rand.Next(1, 10)));
 								itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
 								itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
