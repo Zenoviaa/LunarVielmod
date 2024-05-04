@@ -32,6 +32,7 @@ namespace Stellamod.NPCs.Town
         public static Point IshPinTile;
         public static Point EreshTile;
         public static Point PULSETile;
+        public static Point LiberatTile;
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -51,6 +52,8 @@ namespace Stellamod.NPCs.Town
         public static Point IshPinSpawnTileOffset => new Point(199, -286);
         public static Point EreshSpawnTileOffset => new Point(90, -31);
         public static Point PULSESpawnTileOffset => new Point(64, -23);
+
+        public static Point LiberatSpawnTileOffset => new Point(176, -316);
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -74,6 +77,8 @@ namespace Stellamod.NPCs.Town
         public static Vector2 EreshSpawnWorld => EreshTile.ToWorldCoordinates() + EreshSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 PULSESpawnWorld => PULSETile.ToWorldCoordinates() + PULSESpawnTileOffset.ToWorldCoordinates();
 
+        public static Vector2 LiberatSpawnWorld => LiberatTile.ToWorldCoordinates() + LiberatSpawnTileOffset.ToWorldCoordinates();
+
         public static bool TownedGia;
         public override void SaveWorldData(TagCompound tag)
         {
@@ -93,6 +98,7 @@ namespace Stellamod.NPCs.Town
             tag["PULSETile"] = PULSETile;
             tag["EreshTile"] = EreshTile;
             tag["IshPinTile"] = IshPinTile;
+            tag["LibTile"] = LiberatTile;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -113,6 +119,7 @@ namespace Stellamod.NPCs.Town
             IshPinTile = tag.Get<Point>("IshPinTile");
             EreshTile = tag.Get<Point>("EreshTile");
             PULSETile = tag.Get<Point>("PULSETile");
+            LiberatTile = tag.Get<Point>("LibTile");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -132,6 +139,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(PULSETile.ToVector2());
             writer.WriteVector2(IshPinTile.ToVector2());
             writer.WriteVector2(EreshTile.ToVector2());
+            writer.WriteVector2(LiberatTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -151,6 +159,7 @@ namespace Stellamod.NPCs.Town
             IshPinTile = reader.ReadVector2().ToPoint();
             EreshTile = reader.ReadVector2().ToPoint();
             PULSETile = reader.ReadVector2().ToPoint();
+            LiberatTile = reader.ReadVector2().ToPoint();
         }
 
 
