@@ -6915,3 +6915,14 @@ RobedCatastone: {
 	DisplayName: Robed Catastone
 	Tooltip: ""
 }
+
+SpikedLobber: {
+	DisplayName: Spiked Lobber
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		After a combo of 5, it spews out spikes when bouncing
+		Stacks infinitely
+		'''
+}
