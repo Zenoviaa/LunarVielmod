@@ -13,10 +13,10 @@ namespace Stellamod.Assets.Biomes
 
 
 		// Select all the scenery
-		 // Sets a water style for when inside this biome
+		// Sets a water style for when inside this biome
 
-
-		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/VeilBackgroundStyle");
+		public override int Music => -1;
+        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/VeilBackgroundStyle");
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
 		// Select Music

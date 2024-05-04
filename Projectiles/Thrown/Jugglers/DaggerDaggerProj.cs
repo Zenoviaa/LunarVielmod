@@ -76,7 +76,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         private void AI_Thrown()
         {
-            Projectile.velocity.Y += 0.05f;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
         }
 
@@ -203,7 +202,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public Color ColorFunctionAura(float completionRatio)
         {
-            return Color.Red * VectorHelper.Osc(0.5f, 1f, 3);
+            return Color.Red * VectorHelper.Osc(0.5f, 1f, 3) * 0.33f;
         }
 
         public override bool PreDraw(ref Color lightColor)

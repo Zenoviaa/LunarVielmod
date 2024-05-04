@@ -37,11 +37,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
-            {
-                Projectile.velocity.Y -= 12f;
-            }
-
             if(Timer > 60)
             {
                 Projectile.velocity *= 0.98f;
@@ -60,7 +55,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 Vector2 targetVelocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
                 if (closestNPC != null)
                 {
-                    targetVelocity = Projectile.Center.DirectionTo(closestNPC.Center) * 2;
+                    targetVelocity = Projectile.Center.DirectionTo(closestNPC.Center) * 12;
                 }
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, targetVelocity, ModContent.ProjectileType<DaggerDaggerKnifeProj>(),

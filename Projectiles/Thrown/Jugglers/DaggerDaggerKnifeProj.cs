@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void AI()
         {
-            Projectile.velocity *= 1.075f;
+            Projectile.velocity *= 1.025f;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
         }
 
