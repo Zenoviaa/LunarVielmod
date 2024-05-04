@@ -94,7 +94,20 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 CombatText numText = Main.combatText[combatText];
                 numText.lifeTime = 60;
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/JuggleCatch1");
+                soundStyle.PitchVariance = 0.15f;
+                switch (Main.rand.Next(2))
+                {
+                    
+                    case 0:
+                        SoundEngine.PlaySound(soundStyle, Projectile.position);
+                        break;
+                    case 1:
+                        soundStyle = new SoundStyle("Stellamod/Assets/Sounds/JuggleCatch2");
+                        SoundEngine.PlaySound(soundStyle, Projectile.position);
+                        break;
+                }
+
                 Juggler.CatchCount++;
                 Juggler.DamageBonus += 0.25f;
                 Projectile.Kill();

@@ -14,6 +14,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
 using Terraria;
@@ -390,7 +391,8 @@ namespace Stellamod.NPCs.Town
 				{
 					shopCustomPrice = Item.sellPrice(copper: 2)
 				})
-				.Add(new Item(ModContent.ItemType<DiariBroochA>())
+                .Add(new Item(ModContent.ItemType<DaggerDagger>()) { shopCustomPrice = 100, shopSpecialCurrency = Stellamod.MedalCurrencyID }, CustomConditions.PostFenix)
+                .Add(new Item(ModContent.ItemType<DiariBroochA>())
 				{
 					shopCustomPrice = 1,
 					shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
@@ -534,6 +536,8 @@ namespace Stellamod.NPCs.Town
 						shopCustomPrice = 10,
 						shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
+
+				
 				;
 
 

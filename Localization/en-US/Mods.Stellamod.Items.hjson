@@ -6931,9 +6931,20 @@ StickyCards: {
 	DisplayName: Magic Cards
 	Tooltip:
 		'''
-		After hitting an enemy, the ball bounces off
+		After hitting an enemy, the card bounces off
 		Catch the card to gain a damage bonus to your next throw!
 		Attaches a line of aura to your card, which drags it back to you!
 		Stacks infinitely
+		'''
+}
+
+DaggerDagger: {
+	DisplayName: Dagger Dagger
+	Tooltip:
+		'''
+		After hitting an enemy, the knife bounces off
+		Catch the knife to empower your next knife!
+		Empowered knives shoot powerful knives at nearby enemies
+		Knife
 		'''
 }
