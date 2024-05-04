@@ -208,6 +208,11 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunctionAura, ColorFunctionAura, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
+
             Vector2 textureSize = new Vector2(42, 46);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SpikyTrail1);
             TrailDrawer.WidthFunc = WidthFunctionAura;
