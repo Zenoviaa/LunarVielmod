@@ -781,7 +781,10 @@ namespace Stellamod.WorldG
 		{
 			progress.Message = "Creating life near spawn :)";
 
-
+			int[] tileBlend = new int[]
+			{
+				TileID.RubyGemspark
+			};
 
 			bool placed = false;
 			int attempts = 0;
@@ -835,8 +838,9 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx, smy + 450);
-
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/StoneTemple");
+					string path = "Struct/Underground/StoneGolem";//
+					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+					StructureLoader.ProtectStructure(Loc, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
