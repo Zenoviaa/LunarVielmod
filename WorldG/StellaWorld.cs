@@ -7471,7 +7471,7 @@ namespace Stellamod.WorldG
 
 				for (int da = 0; da < 1; da++)
 				{
-					Point Loc = new Point(towerX, towerY + 10);
+					Point Loc = new Point(towerX, towerY + 14);
 
 				
 				
