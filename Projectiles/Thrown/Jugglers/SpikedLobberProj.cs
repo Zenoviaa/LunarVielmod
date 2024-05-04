@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             }
             else
             {
-                Projectile.velocity.Y += 0.04f;
+                Projectile.velocity.Y += 0.01f;
             }
 
             Projectile.velocity *= 0.95f;
