@@ -3886,10 +3886,12 @@ namespace Stellamod.WorldG
 
 					StructureLoader.ReadStruct(pointLil, "Struct/Underground/Catacombz", tileBlend);
 
-					Point Loc2 = new Point(smx + 10, smy + 380);
-					WorldGen.digTunnel(Loc2.X - 10, Loc2.Y + 10, 1, 0, 1, 10, false);
 
-					Point Loc22 = new Point(smx + 10, smy - 33);
+					Point Loc22 = new Point(pointLil.X, pointLil.Y - 330);
+
+					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
+					
+			
 					//			WorldUtils.Gen(Loc22, new Shapes.Rectangle(240, -40), new Actions.ClearTile(true));
 
 					pointVeri = new Point(smx + 10, smy + 500);
