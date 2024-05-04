@@ -100,7 +100,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
 				tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Govheil Castle", WorldGenGovheilCastle));
 				tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Stone Castle", WorldGenStoneCastle));
-				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Bridget", WorldGenBridget));
+				tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Veil Underground", WorldGenVU));
 				tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Veldris", WorldGenVeldris));
 				tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Cathedral", WorldGenCathedral));
 				tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Underworld rework", WorldGenUnderworldSpice));
@@ -120,7 +120,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 28, new PassLegacy("World Gen SigfriedTower", WorldGenTS));
                 tasks.Insert(CathedralGen2 + 29, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
                 tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTC));
-				tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Veil Underground", WorldGenVU));
+				tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 			}
 
 
@@ -3718,7 +3718,7 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 10000000)
 			{
 				// Select a place in the first 6th of the world, avoiding the oceans
-				int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 2) + 300, (Main.maxTilesX - 1000)); // from 50 since there's a unaccessible area at the world's borders
+				int smx = WorldGen.genRand.Next( 300, ((Main.maxTilesX / 2) + 1000)); // from 50 since there's a unaccessible area at the world's borders
 																										  // 50% of choosing the last 6th of the world
 																										  // Choose which side of the world to be on randomly
 				///if (WorldGen.genRand.NextBool())
@@ -3742,7 +3742,8 @@ namespace Stellamod.WorldG
 				}
 				Tile tile = Main.tile[smx, smy];
 				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if (!(tile.TileType == TileID.Dirt || tile.TileType == TileID.Grass))
+				if (!(tile.TileType == TileID.IceBlock
+					|| tile.TileType == TileID.SnowBlock))
 				{
 					continue;
 				}
@@ -3777,7 +3778,7 @@ namespace Stellamod.WorldG
 
 					}
 					
-					pointLil = new Point(smx + 80, smy + 300);
+					pointLil = new Point(smx + 80, smy + 330);
 
 
 					//This code just places
