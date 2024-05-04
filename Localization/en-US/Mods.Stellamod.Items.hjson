@@ -6943,8 +6943,8 @@ DaggerDagger: {
 	Tooltip:
 		'''
 		After hitting an enemy, the knife bounces off
-		Catch the knife to empower your next knife!
-		Empowered knives shoot powerful knives at nearby enemies
+		Catch the knife to gain a damage bonus to your next throw!
+		Right click to throw a charged knife that lifesteals
 		Knife
 		'''
 }

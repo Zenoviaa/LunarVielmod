@@ -26,11 +26,10 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 46;
+            Projectile.width = Projectile.height = 32;
             Projectile.tileCollide = true;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.penetrate = -1;
             Projectile.timeLeft = 180;
         }
 
@@ -61,6 +60,12 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, targetVelocity, ModContent.ProjectileType<DaggerDaggerKnifeProj>(),
                     Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            Owner.Heal(10);
         }
 
         public override bool PreDraw(ref Color lightColor)

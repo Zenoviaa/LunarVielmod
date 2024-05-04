@@ -22,14 +22,14 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Item.damage = 48;
+            Item.damage = 100;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;
             Item.noUseGraphic = true;
             Item.value = Item.buyPrice(gold: 5);
-            Item.useTime = 60;
-            Item.useAnimation = 60;
+            Item.useTime = 120;
+            Item.useAnimation = 120;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.rare = ItemRarityID.Blue;

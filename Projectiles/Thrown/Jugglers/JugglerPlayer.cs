@@ -10,6 +10,8 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             ModContent.ProjectileType<BasicBaseballProj>(),
             ModContent.ProjectileType<SpikedLobberProj>(),
             ModContent.ProjectileType<StickyCardsProj>(),
+            ModContent.ProjectileType<DaggerDaggerProj>(),
+            ModContent.ProjectileType<DaggerDaggerProj2>(),
         };
 
         public float DamageBonus;

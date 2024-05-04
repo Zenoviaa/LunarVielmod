@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 46;
+            Projectile.width = Projectile.height = 32;
             Projectile.tileCollide = true;
             Projectile.friendly = true;
             Projectile.hostile = false;
@@ -141,6 +141,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                         break;
                 }
                 Juggler.CatchCount++;
+                Juggler.DamageBonus += 0.25f;
                 Projectile.Kill();
             }
 
@@ -149,7 +150,25 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             if (Timer >= 598)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dirt"), Projectile.position);
+                Juggler.ResetJuggle();
                 Projectile.Kill();
+            }
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Juggler.ResetJuggle();
+
+            //Play womp womp sound or something 
+            return base.OnTileCollide(oldVelocity);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            if (Projectile.friendly)
+            {
+                Juggler.ResetJuggle();
             }
         }
 

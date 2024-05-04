@@ -103,7 +103,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordOfGlactia1"), Projectile.position);
                 Juggler.CatchCount++;
-                Juggler.DamageBonus += 0.33f;
+                Juggler.DamageBonus += 1f;
                 Projectile.Kill();
             }
        
@@ -179,6 +179,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
             Projectile.timeLeft = 600;
             Vector2 bounceVelocity = -Projectile.velocity / 2;
+            Projectile.tileCollide = false;
             Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4);
             Projectile.velocity += -Vector2.UnitY * 8;
             Projectile.friendly = false;

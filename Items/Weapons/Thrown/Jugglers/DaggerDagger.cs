@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Item.damage = 175;
+            Item.damage = 232;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;
@@ -42,21 +42,30 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.shootSpeed = 15;
         }
 
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            JugglerPlayer jugglerPlayer = player.GetModPlayer<JugglerPlayer>();
-            if(jugglerPlayer.CatchCount > 0)
+            if(player.altFunctionUse == 2)
             {
-                type = ModContent.ProjectileType<DaggerDaggerProj2>();
-                jugglerPlayer.CatchCount--;
+                JugglerPlayer jugglerPlayer = player.GetModPlayer<JugglerPlayer>();
+                if (jugglerPlayer.CatchCount > 0)
+                {
+                    velocity *= 2;
+                    type = ModContent.ProjectileType<DaggerDaggerProj2>();
+                    jugglerPlayer.CatchCount--;
 
-                int combatText = CombatText.NewText(player.getRect(), Color.White, $"x{jugglerPlayer.CatchCount + 1}", true);
-                CombatText numText = Main.combatText[combatText];
-                numText.lifeTime = 60;
+                    int combatText = CombatText.NewText(player.getRect(), Color.White, $"x{jugglerPlayer.CatchCount + 1}", true);
+                    CombatText numText = Main.combatText[combatText];
+                    numText.lifeTime = 60;
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeProg"), position);
+                }
             }
+
         }
     }
 }
