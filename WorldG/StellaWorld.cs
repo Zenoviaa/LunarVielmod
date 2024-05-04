@@ -3887,7 +3887,7 @@ namespace Stellamod.WorldG
 					StructureLoader.ReadStruct(pointLil, "Struct/Underground/Catacombz", tileBlend);
 
 
-					Point Loc22 = new Point(pointLil.X, pointLil.Y - 335);
+					Point Loc22 = new Point(pointLil.X + 40, pointLil.Y - 335);
 
 					StructureLoader.ReadStruct(Loc22, "Struct/Morrow/Morrowtop");
 					
