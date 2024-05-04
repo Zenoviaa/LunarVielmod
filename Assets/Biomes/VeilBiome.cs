@@ -20,7 +20,7 @@ namespace Stellamod.Assets.Biomes
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
 		// Select Music
-		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
 
 
 
