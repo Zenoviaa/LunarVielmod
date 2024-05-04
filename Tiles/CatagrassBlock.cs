@@ -18,7 +18,7 @@ namespace Stellamod.Tiles
 			DustType = DustID.Firework_Yellow;
 			RegisterItemDrop(ModContent.ItemType<Items.Materials.Catagrass>());
 
-			AddMapEntry(new Color(25, 42, 25));
+			AddMapEntry(new Color(205, 242, 245));
 
 			// TODO: implement
 			// SetModTree(new Trees.ExampleTree());
