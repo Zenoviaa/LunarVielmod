@@ -10,5 +10,7 @@
         public static string VoxTexture3 => "Stellamod/Assets/Effects/VoxTexture3";
 
         public static string VoxTexture4 => "Stellamod/Assets/Effects/VoxTexture5";
+
+        public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
     }
 }

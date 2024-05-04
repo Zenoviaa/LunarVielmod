@@ -6926,3 +6926,14 @@ SpikedLobber: {
 		Stacks infinitely
 		'''
 }
+
+StickyCards: {
+	DisplayName: Magic Cards
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the card to gain a damage bonus to your next throw!
+		Attaches a line of aura to your card, which drags it back to you!
+		Stacks infinitely
+		'''
+}
