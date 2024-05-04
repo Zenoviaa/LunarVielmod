@@ -22,7 +22,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
 
         public override void SetDefaults()
         {
-            Item.damage = 32;
+            Item.damage = 48;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;
             Item.height = 24;
@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SpikedLobberProj>();
-            Item.shootSpeed = 28;
+            Item.shootSpeed = 35;
         }
     }
 }
