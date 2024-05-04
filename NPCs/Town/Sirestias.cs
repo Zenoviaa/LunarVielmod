@@ -28,6 +28,7 @@ using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
 using System.Linq;
@@ -480,9 +481,9 @@ namespace Stellamod.NPCs.Town
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-							
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
 
-								break;
+                                break;
 
 							case 1:
 								
