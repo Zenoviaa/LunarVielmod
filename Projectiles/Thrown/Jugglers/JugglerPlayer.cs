@@ -8,7 +8,8 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
         private int[] _legalProjectiles = new int[]
         {
             ModContent.ProjectileType<BasicBaseballProj>(),
-            ModContent.ProjectileType<SpikedLobberProj>()
+            ModContent.ProjectileType<SpikedLobberProj>(),
+            ModContent.ProjectileType<StickyCardsProj>(),
         };
 
         public float DamageBonus;
