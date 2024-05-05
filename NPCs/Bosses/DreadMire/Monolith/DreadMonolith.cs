@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Particles;
 using System;
@@ -73,6 +74,11 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             Lighting.AddLight(NPC.Center, 1.6f * num, 0.4f * num, 0.8f * num);
         }
 
+        public override bool CheckActive()
+        {
+            //Returning false here makes it's not despawn
+            return false;
+        }
 
         public override void FindFrame(int frameHeight)
         {
@@ -139,6 +145,24 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, Color.Purple, 0.3f);
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, .34f);
                 }
+            }
+        }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            int monolithNumber = (int)NPC.ai[1];
+            switch (monolithNumber)
+            {
+                case 0:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith1, -1);
+                    break;
+                case 1:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith2, -1);
+                    break;
+                case 2:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith3, -1);
+                    break;
             }
         }
 

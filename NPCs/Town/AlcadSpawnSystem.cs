@@ -12,6 +12,7 @@ using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.DreadMire.Monolith;
 
 namespace Stellamod.NPCs.Town
 {
@@ -33,6 +34,11 @@ namespace Stellamod.NPCs.Town
         public static Point EreshTile;
         public static Point PULSETile;
         public static Point LiberatTile;
+        
+        public static Point DreadMonolithTile1;
+        public static Point DreadMonolithTile2;
+        public static Point DreadMonolithTile3;
+
         public static Point MerenaSpawnTileOffset => new Point(174, -119);
         public static Point LonelySorceressTileOffset => new Point(189, -129);
         public static Point UnderworldRiftTileOffset => new Point(70, -21);
@@ -54,6 +60,21 @@ namespace Stellamod.NPCs.Town
         public static Point PULSESpawnTileOffset => new Point(64, -23);
 
         public static Point LiberatSpawnTileOffset => new Point(176, -316);
+
+
+        //Dread Monoliths
+        public static Vector2 DreadMonolithWorld1 => DreadMonolithTile1.ToWorldCoordinates();
+        public static Vector2 DreadMonolithWorld2 => DreadMonolithTile2.ToWorldCoordinates();
+        public static Vector2 DreadMonolithWorld3 => DreadMonolithTile3.ToWorldCoordinates();
+
+        public static Point DreadMonolithTileOffset => new Point(7, -9);
+
+
+
+        public static Vector2 DreadMonolithSpawnWorld1 => DreadMonolithTile1.ToWorldCoordinates() + DreadMonolithTileOffset.ToWorldCoordinates();
+        public static Vector2 DreadMonolithSpawnWorld2 => DreadMonolithTile2.ToWorldCoordinates() + DreadMonolithTileOffset.ToWorldCoordinates();
+        public static Vector2 DreadMonolithSpawnWorld3 => DreadMonolithTile3.ToWorldCoordinates() + DreadMonolithTileOffset.ToWorldCoordinates();
+
         public static Vector2 AlcadWorld => AlcadTile.ToWorldCoordinates();
         public static Vector2 MerenaSpawnWorld => AlcadTile.ToWorldCoordinates() + MerenaSpawnTileOffset.ToWorldCoordinates();
         public static Vector2 LonelySorceressSpawnWorld => AlcadTile.ToWorldCoordinates() + LonelySorceressTileOffset.ToWorldCoordinates();
@@ -99,6 +120,9 @@ namespace Stellamod.NPCs.Town
             tag["EreshTile"] = EreshTile;
             tag["IshPinTile"] = IshPinTile;
             tag["LibTile"] = LiberatTile;
+            tag["DreadMonolithTile1"] = DreadMonolithTile1;
+            tag["DreadMonolithTile2"] = DreadMonolithTile2;
+            tag["DreadMonolithTile3"] = DreadMonolithTile3;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -120,6 +144,9 @@ namespace Stellamod.NPCs.Town
             EreshTile = tag.Get<Point>("EreshTile");
             PULSETile = tag.Get<Point>("PULSETile");
             LiberatTile = tag.Get<Point>("LibTile");
+            DreadMonolithTile1 = tag.Get<Point>("DreadMonolithTile1");
+            DreadMonolithTile2 = tag.Get<Point>("DreadMonolithTile2");
+            DreadMonolithTile3 = tag.Get<Point>("DreadMonolithTile3");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -140,6 +167,9 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(IshPinTile.ToVector2());
             writer.WriteVector2(EreshTile.ToVector2());
             writer.WriteVector2(LiberatTile.ToVector2());
+            writer.WriteVector2(DreadMonolithTile1.ToVector2());
+            writer.WriteVector2(DreadMonolithTile2.ToVector2());
+            writer.WriteVector2(DreadMonolithTile3.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -160,6 +190,9 @@ namespace Stellamod.NPCs.Town
             EreshTile = reader.ReadVector2().ToPoint();
             PULSETile = reader.ReadVector2().ToPoint();
             LiberatTile = reader.ReadVector2().ToPoint();
+            DreadMonolithTile1 = reader.ReadVector2().ToPoint();
+            DreadMonolithTile2 = reader.ReadVector2().ToPoint();
+            DreadMonolithTile3 = reader.ReadVector2().ToPoint();
         }
 
 
@@ -197,6 +230,7 @@ namespace Stellamod.NPCs.Town
                 Player player = Main.player[i];
                 if (!player.active)
                     continue;
+
 
                 if (!NPC.AnyNPCs(ModContent.NPCType<Merena>()))
                 {
@@ -311,8 +345,48 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<Ishtar>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
+
+                else  if (!DownedBossSystem.downedDreadMonolith1 && !IsDreadMonolithAlive(0))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)DreadMonolithSpawnWorld1.X, (int)DreadMonolithSpawnWorld1.Y,
+                        ModContent.NPCType<DreadMonolith>(), ai1: 0);
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!DownedBossSystem.downedDreadMonolith2 && !IsDreadMonolithAlive(1))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)DreadMonolithSpawnWorld2.X, (int)DreadMonolithSpawnWorld2.Y,
+                        ModContent.NPCType<DreadMonolith>(), ai1: 1);
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!DownedBossSystem.downedDreadMonolith3 && !IsDreadMonolithAlive(2))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)DreadMonolithSpawnWorld3.X, (int)DreadMonolithSpawnWorld3.Y,
+                        ModContent.NPCType<DreadMonolith>(), ai1: 2);
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
             }
         }
+
+        private bool IsDreadMonolithAlive(int number)
+        {
+            for(int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (!npc.active)
+                    continue;
+                if (npc.type != ModContent.NPCType<DreadMonolith>())
+                    continue;
+                if (npc.ai[1] == number)
+                    return true;
+            }
+            return false;
+        }
+
         public override void PostUpdateNPCs()
         {
             if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
@@ -320,7 +394,5 @@ namespace Stellamod.NPCs.Town
                 TownedGia = true;
             }
         }
-
-
     }
 }

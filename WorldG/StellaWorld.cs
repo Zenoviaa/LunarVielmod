@@ -122,7 +122,8 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTC));
 				tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-			}
+                tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
+            }
 
 
 			
@@ -4088,9 +4089,8 @@ namespace Stellamod.WorldG
 					pointAlcadthingy = new Point(smx - 10, smyy - 60);
 					rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
-					structures.AddProtectedStructure(rectangle);
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital2");
-					structures.AddProtectedStructure(rectangle);
+                    StructureLoader.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital2");
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Alcad/RoyalCapital2");
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];
@@ -4259,9 +4259,8 @@ namespace Stellamod.WorldG
 
 					rectangle.Location = Loc;
 					// NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
-					structures.AddProtectedStructure(rectangle);
+					StructureLoader.ProtectStructure(Loc, "Struct/Overworld/Illuria");
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Overworld/Illuria");
-					structures.AddProtectedStructure(rectangle);
 					NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
 					foreach (int chestIndex in ChestIndexs)
 					{
@@ -8155,7 +8154,124 @@ namespace Stellamod.WorldG
 		}
 
 
+		private void WorldGenDreadMonoliths(GenerationProgress progress, GameConfiguration configuration)
+		{
+            progress.Message = "Dreading..";
+			int[] tileBlend = new int[]
+			{
+				TileID.RubyGemspark
+			};
 
+            bool placed = false;
+            int attempts = 0;
+
+            while (!placed && attempts++ < 100000)
+            {
+                // Select a place in the first 6th of the world, avoiding the oceans
+                int towerX = WorldGen.genRand.Next(NPCs.Town.AlcadSpawnSystem.AlcadTile.X + 400, NPCs.Town.AlcadSpawnSystem.AlcadTile.X + 800); // from 50 since there's a unaccessible area at the world's borders
+                int towerY = (int)Main.worldSurface - 200;
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
+                {
+                    towerY++;
+                }
+
+                // If we went under the world's surface, try again
+                if (towerY > Main.worldSurface)
+                {
+                    continue;
+                }
+
+                //Try to put the structure here and protect it
+                string path = "Struct/Overworld/DreadMonolith";
+                Point Loc = new Point(towerX, towerY - 105);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
+
+                for (int da = 0; da < 1; da++)
+				{
+					StructureLoader.ReadStruct(Loc, path, tileBlend);
+					NPCs.Town.AlcadSpawnSystem.DreadMonolithTile1 = Loc;
+					placed = true;
+                }
+            }
+
+
+            placed = false;
+            while (!placed && attempts++ < 100000)
+            {
+                // Select a place in the first 6th of the world, avoiding the oceans
+                int towerX = WorldGen.genRand.Next(NPCs.Town.AlcadSpawnSystem.IlluriaTile.X - 800, NPCs.Town.AlcadSpawnSystem.IlluriaTile.X - 400); // from 50 since there's a unaccessible area at the world's borders
+                int towerY = (int)Main.worldSurface - 200;
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
+                {
+                    towerY++;
+                }
+
+                // If we went under the world's surface, try again
+                if (towerY > Main.worldSurface)
+                {
+                    continue;
+                }
+
+                //Try to put the structure here and protect it
+                string path = "Struct/Overworld/DreadMonolith";
+                Point Loc = new Point(towerX, towerY - 105);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
+
+                for (int da = 0; da < 1; da++)
+                {
+                    StructureLoader.ReadStruct(Loc, path, tileBlend);
+                    NPCs.Town.AlcadSpawnSystem.DreadMonolithTile2 = Loc;
+                    placed = true;
+                }
+            }
+
+
+            placed = false;
+            while (!placed && attempts++ < 100000)
+            {
+				// Select a place in the first 6th of the world, avoiding the oceans
+				int center = Main.maxTilesX / 2;
+                int towerX = WorldGen.genRand.Next(center - 300, center + 300); // from 50 since there's a unaccessible area at the world's borders
+                int towerY = (int)Main.worldSurface - 200;
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(towerX, towerY) && towerY <= Main.worldSurface)
+                {
+                    towerY++;
+                }
+
+                // If we went under the world's surface, try again
+                if (towerY > Main.worldSurface)
+                {
+                    continue;
+                }
+
+                //Try to put the structure here and protect it
+                string path = "Struct/Overworld/DreadMonolith";
+                Point Loc = new Point(towerX, towerY - 125);
+                if (!StructureLoader.TryPlaceAndProtectStructure(Loc, path))
+                {
+                    continue;
+                }
+
+                for (int da = 0; da < 1; da++)
+                {
+                    StructureLoader.ReadStruct(Loc, path, tileBlend);
+                    NPCs.Town.AlcadSpawnSystem.DreadMonolithTile3 = Loc;
+                    placed = true;
+                }
+            }
+        }
 
 		const string SavestringX = "Savestring1";
 					const string SavestringY = "Savestring2";
