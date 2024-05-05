@@ -121,6 +121,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 29, new PassLegacy("World Gen AzurerinTower", WorldGenTA));
                 tasks.Insert(CathedralGen2 + 30, new PassLegacy("World Gen CozmireTower", WorldGenTC));
 				tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
+				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
 			}
 
 
@@ -132,9 +133,25 @@ namespace Stellamod.WorldG
 		}
 
 
+		private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
+		{
+			progress.Message = "The Veiled people planting trees!";
+			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.4f) * 6E-02); k++)
+			{
+				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+				int Y = WorldGen.genRand.Next(0, Main.UnderworldLayer);
+				int yBelow = Y + 1;
+				if (!WorldGen.SolidTile(X, yBelow))
+					continue;
 
+				if (Main.tile[X, yBelow].TileType == ModContent.TileType<CatagrassBlock>())
+				{
+					WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Fable.FableTreeSapling>());
+				}
+			}
+		}
 
-		private void WorldGenAmbience(GenerationProgress progress, GameConfiguration configuration)
+			private void WorldGenAmbience(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Golden Ambience ruining the world";
 			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)

@@ -6,6 +6,7 @@ using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -53,6 +54,10 @@ namespace Stellamod.Items.Consumables
             Recipe recipe5 = CreateRecipe();
             recipe5.AddIngredient(ModContent.ItemType<IshNYire>(), 1);
             recipe5.Register();
+
+            Recipe recipe6 = CreateRecipe();
+            recipe6.AddIngredient(ModContent.ItemType<StickyCards>(), 1);
+            recipe6.Register();
         }
     }
 }
