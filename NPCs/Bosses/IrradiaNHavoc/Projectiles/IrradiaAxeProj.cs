@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Trails;
 using System.Security.Cryptography.Pkcs;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -68,6 +69,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                         ModContent.ProjectileType<IrradiaAxeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - velocityRotated * 1200, velocityRotated,
                         ModContent.ProjectileType<IrradiaAxeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Axing") { Pitch = Main.rand.NextFloat(-1f, 1f) });
                     Timer2 = 1;
                     AlphaTimer = 0;
                 } else
@@ -78,6 +80,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                         ModContent.ProjectileType<IrradiaAxeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - velocityRotated * 1200, velocityRotated,
                         ModContent.ProjectileType<IrradiaAxeLaserProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Axing") { Pitch = Main.rand.NextFloat(-1f, 1f) });
                     Timer2 = 0;
                     AlphaTimer = 0;
                 }
