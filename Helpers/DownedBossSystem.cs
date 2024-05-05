@@ -40,7 +40,7 @@ namespace Stellamod.Helpers
 		public static bool downedSupernovaFragmentBoss = false;
 		public static bool downedNiiviBoss = false;
 		public static bool downedGothiviaBoss = false;
-		public static bool downedEreshkegalBoss = false;
+		public static bool downedEreshBoss = false;
 		public static bool downedLumiBoss = false;
 		public static bool downedVoidBoss = false;
 
@@ -73,7 +73,7 @@ namespace Stellamod.Helpers
 			downedSupernovaFragmentBoss = false;
 			downedNiiviBoss = false;
 			downedGothiviaBoss = false;
-			downedEreshkegalBoss = false;
+			downedEreshBoss = false;
 			downedLumiBoss = false;
 			downedVoidBoss = false;
         }
@@ -113,7 +113,7 @@ namespace Stellamod.Helpers
 			tag["downedSupernovaFragmentBoss"] = downedSupernovaFragmentBoss;
 			tag["downedNiiviBoss"] = downedNiiviBoss;
 			tag["downedGothiviaBoss"] = downedGothiviaBoss;
-			tag["downedEreshkegalBoss"] = downedEreshkegalBoss;
+			tag["downedEreshBoss"] = downedEreshBoss;
 			tag["downedLumiBoss"] = downedLumiBoss;
 			tag["downedVoidBoss"] = downedVoidBoss;
         }
@@ -147,7 +147,7 @@ namespace Stellamod.Helpers
 			downedSupernovaFragmentBoss = tag.GetBool("downedSupernovaFragmentBoss");
 			downedNiiviBoss = tag.GetBool("downedNiiviBoss");
 			downedGothiviaBoss = tag.GetBool("downedGothiviaBoss");
-			downedEreshkegalBoss = tag.GetBool("downedEreshkegalBoss");
+			downedEreshBoss = tag.GetBool("downedEreshBoss");
 			downedLumiBoss = tag.GetBool("downedLumiBoss");
 			downedVoidBoss = tag.GetBool("downedVoidBoss");
         }
@@ -196,7 +196,7 @@ namespace Stellamod.Helpers
 			{
 				[0] = downedNiiviBoss,
 				[1] = downedGothiviaBoss,
-				[2] = downedEreshkegalBoss,
+				[2] = downedEreshBoss,
 				[3] = downedLumiBoss,
 				[4] = downedVoidBoss
             });
@@ -238,7 +238,7 @@ namespace Stellamod.Helpers
 			flags = reader.ReadByte();
 			downedNiiviBoss = flags[0];
 			downedGothiviaBoss = flags[1];
-			downedEreshkegalBoss = flags[2];
+			downedEreshBoss = flags[2];
 			downedLumiBoss = flags[3];
 			downedVoidBoss = flags[4];
         }

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Particles;
 using System;
@@ -12,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -146,6 +148,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, .34f);
                 }
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadFragment>()));
         }
 
         public override void OnKill()

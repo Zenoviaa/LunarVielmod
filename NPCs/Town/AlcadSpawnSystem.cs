@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Town
 
         public static Point LiberatSpawnTileOffset => new Point(176, -316);
 
-        public static Point JovhiaSpawnTileOffset => new Point(156, -316);
+        public static Point JhoviaSpawnTileOffset => new Point(156, -316);
 
         //Dread Monoliths
         public static Vector2 DreadMonolithWorld1 => DreadMonolithTile1.ToWorldCoordinates();
