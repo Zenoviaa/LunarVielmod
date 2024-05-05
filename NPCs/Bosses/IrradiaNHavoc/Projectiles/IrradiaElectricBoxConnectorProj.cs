@@ -176,7 +176,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
                 if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
                     return true;
             }
-            return base.Colliding(projHitbox, targetHitbox);
+
+            return false;
         }
 
         public override bool PreDraw(ref Color lightColor)
