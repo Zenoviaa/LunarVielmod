@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void AI()
         {
-            UpdateFrame(0.5f, 1, 55);
+            UpdateFrame(0.8f, 1, 55);
             Timer++;
             if(Timer >= 110)
             {

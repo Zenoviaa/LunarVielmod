@@ -466,7 +466,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
                 float minSpeed = 3;
-                float maxSpeed = 9;
+                float maxSpeed = 6;
                 float speed = MathHelper.Lerp(minSpeed, maxSpeed, Timer / 120);
                 Vector2 velocityToTarget = directionToTarget * speed;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.5f);
@@ -495,7 +495,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_TP_Out"), NPC.position);
             }
@@ -566,7 +566,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
                 }
             }
 
@@ -750,7 +750,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
                 }
                 Animation = AnimationState.PowerUp;
             }

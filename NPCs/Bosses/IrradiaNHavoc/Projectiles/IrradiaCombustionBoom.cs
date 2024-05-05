@@ -21,7 +21,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 			Projectile.tileCollide = false;
 			Projectile.localNPCHitCooldown = -1;
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.hostile = true;
+			Projectile.hostile = false;
 			Projectile.width = 252;
 			Projectile.height = 252;
 			Projectile.penetrate = -1;
