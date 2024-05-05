@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Consumables;
@@ -8,10 +9,12 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -162,9 +165,68 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.rotation, drawOrigin, NPC.scale, effects, 0f);
         }
 
+        private void PreDrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            SpriteEffects Effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+
+            Vector2 frameOrigin = NPC.frame.Size();
+            Vector2 offset = new Vector2(NPC.width - frameOrigin.X - 15, NPC.height - DrawRectangle.Height + 8);
+            Vector2 DrawPos = NPC.position - screenPos + frameOrigin + offset;
+
+            float time = Main.GlobalTimeWrappedHourly;
+            float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
+
+            time %= 4f;
+            time /= 2f;
+
+            if (time >= 1f)
+            {
+                time = 2f - time;
+            }
+
+            time = time * 0.5f + 0.5f;
+
+            for (float i = 0f; i < 1f; i += 0.25f)
+            {
+                float radians = (i + timer) * MathHelper.TwoPi;
+
+                spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 1).RotatedBy(radians) * time,DrawRectangle, new Color(99, 39, 51, 0), 0, frameOrigin, NPC.scale, Effects, 0);
+            }
+
+            for (float i = 0f; i < 1f; i += 0.34f)
+            {
+                float radians = (i + timer) * MathHelper.TwoPi;
+
+                spriteBatch.Draw(texture, DrawPos + new Vector2(0f, 1).RotatedBy(radians) * time, DrawRectangle, new Color(255, 8, 55, 0), 0, frameOrigin, NPC.scale, Effects, 0);
+            }
+
+            Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
+            int spOff = NPC.alpha / 6;
+            for (float j = -(float)Math.PI; j <= (float)Math.PI / 3f; j += (float)Math.PI / 3f)
+            {
+                spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(NPC.rotation + j) - Main.screenPosition, DrawRectangle, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, DrawRectangle.Size() / 2f, base.NPC.scale, Effects, 0f);
+            }
+            spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center - Main.screenPosition, DrawRectangle, NPC.GetAlpha(lightColor), NPC.rotation, DrawRectangle.Size() / 2f, NPC.scale, Effects, 0f);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            for (int k = 0; k < NPC.oldPos.Length; k++)
+            {
+                Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+                Color color = NPC.GetAlpha(Color.Lerp(new Color(255, 8, 55), new Color(99, 39, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, DrawRectangle.Size() / 2, NPC.scale, Effects, 0f);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
+            PreDrawAfterImage(spriteBatch, screenPos, drawColor);
             int frameTime = 8;
             int startFrame;
             int endFrame;
