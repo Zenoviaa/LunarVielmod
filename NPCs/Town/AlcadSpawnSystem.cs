@@ -34,7 +34,8 @@ namespace Stellamod.NPCs.Town
         public static Point EreshTile;
         public static Point PULSETile;
         public static Point LiberatTile;
-        
+        public static Point JhoviaTile;
+
         public static Point DreadMonolithTile1;
         public static Point DreadMonolithTile2;
         public static Point DreadMonolithTile3;
@@ -61,6 +62,7 @@ namespace Stellamod.NPCs.Town
 
         public static Point LiberatSpawnTileOffset => new Point(176, -316);
 
+        public static Point JovhiaSpawnTileOffset => new Point(156, -316);
 
         //Dread Monoliths
         public static Vector2 DreadMonolithWorld1 => DreadMonolithTile1.ToWorldCoordinates();
@@ -100,6 +102,8 @@ namespace Stellamod.NPCs.Town
 
         public static Vector2 LiberatSpawnWorld => LiberatTile.ToWorldCoordinates() + LiberatSpawnTileOffset.ToWorldCoordinates();
 
+        public static Vector2 JhoviaSpawnWorld => JhoviaTile.ToWorldCoordinates() + JhoviaSpawnTileOffset.ToWorldCoordinates();
+
         public static bool TownedGia;
         public override void SaveWorldData(TagCompound tag)
         {
@@ -120,6 +124,7 @@ namespace Stellamod.NPCs.Town
             tag["EreshTile"] = EreshTile;
             tag["IshPinTile"] = IshPinTile;
             tag["LibTile"] = LiberatTile;
+            tag["JTile"] = JhoviaTile;
             tag["DreadMonolithTile1"] = DreadMonolithTile1;
             tag["DreadMonolithTile2"] = DreadMonolithTile2;
             tag["DreadMonolithTile3"] = DreadMonolithTile3;
@@ -144,6 +149,7 @@ namespace Stellamod.NPCs.Town
             EreshTile = tag.Get<Point>("EreshTile");
             PULSETile = tag.Get<Point>("PULSETile");
             LiberatTile = tag.Get<Point>("LibTile");
+            JhoviaTile = tag.Get<Point>("JTile");
             DreadMonolithTile1 = tag.Get<Point>("DreadMonolithTile1");
             DreadMonolithTile2 = tag.Get<Point>("DreadMonolithTile2");
             DreadMonolithTile3 = tag.Get<Point>("DreadMonolithTile3");
@@ -170,6 +176,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(DreadMonolithTile1.ToVector2());
             writer.WriteVector2(DreadMonolithTile2.ToVector2());
             writer.WriteVector2(DreadMonolithTile3.ToVector2());
+            writer.WriteVector2(JhoviaTile.ToVector2());
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -190,6 +197,7 @@ namespace Stellamod.NPCs.Town
             EreshTile = reader.ReadVector2().ToPoint();
             PULSETile = reader.ReadVector2().ToPoint();
             LiberatTile = reader.ReadVector2().ToPoint();
+            JhoviaTile = reader.ReadVector2().ToPoint();
             DreadMonolithTile1 = reader.ReadVector2().ToPoint();
             DreadMonolithTile2 = reader.ReadVector2().ToPoint();
             DreadMonolithTile3 = reader.ReadVector2().ToPoint();
