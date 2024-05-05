@@ -38,7 +38,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         {
             NPC.width = 72;
             NPC.height = 68;
-            NPC.lifeMax = 1500;
+            NPC.lifeMax = 1000;
             NPC.damage = 30;
             NPC.defense = 20;
             NPC.timeLeft = 720;
