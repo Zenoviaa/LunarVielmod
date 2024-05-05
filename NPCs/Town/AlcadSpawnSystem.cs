@@ -332,7 +332,7 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
-                else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()) && !NPC.AnyNPCs(ModContent.NPCType<StartIrradia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
