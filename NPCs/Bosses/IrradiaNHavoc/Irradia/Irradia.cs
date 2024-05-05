@@ -1004,19 +1004,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 }
             }
 
-            if (timer == 60)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                }
-            }
 
             if (timer == 120)
             {
