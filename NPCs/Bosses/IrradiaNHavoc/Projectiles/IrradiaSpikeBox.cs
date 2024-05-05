@@ -8,7 +8,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
     {
         public override void SetDefaults()
         {
-            NPC.lifeMax = 1000;
+            NPC.lifeMax = 500;
             NPC.width = 64;
             NPC.height = 64;
             NPC.damage = 120;

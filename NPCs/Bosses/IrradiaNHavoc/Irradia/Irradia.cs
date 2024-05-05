@@ -408,8 +408,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 		{
 			p2 = NPC.life < NPC.lifeMax * 0.5f;
             bee--;
-			//Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
-
+            //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
+            NPC.damage = 0;
 			GothiviaStartPosTime++;
 
             if (GothiviaStartPosTime <= 1)

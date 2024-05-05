@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         public override void OnKill(int timeLeft)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<IrradiaCombustionBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<IrradiaCombustionBoom>(), 0, Projectile.knockBack, Projectile.owner);
 
 
 
