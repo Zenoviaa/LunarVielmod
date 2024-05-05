@@ -668,23 +668,23 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     switch (Main.rand.Next(6))
                     {
                         case 0:
-                            NPC.velocity.Y -= 12.0f;
-                            NPC.velocity.X -= 9;
+                            NPC.velocity.Y -= 6.0f;
+                            NPC.velocity.X -= 18;
 
                             Jumpin = 2;
                             break;
 
                         case 1:
                             NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 9;
+                            NPC.velocity.X -= 18;
 
 
 							Jumpin = 1;
                             break;
 
                         case 2:
-                            NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X -= 9;
+                            NPC.velocity.Y -= 10.0f;
+                            NPC.velocity.X -= 18;
                           
 							Jumpin = 3;
 
@@ -692,23 +692,23 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
 
                         case 3:
-                            NPC.velocity.Y -= 12.0f;
-                            NPC.velocity.X += 9;
+                            NPC.velocity.Y -= 6.0f;
+                            NPC.velocity.X += 18;
 
                             Jumpin = 5;
                             break;
 
                         case 4:
                             NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 9;
+                            NPC.velocity.X += 18;
 
 
                             Jumpin = 4;
                             break;
 
                         case 5:
-                            NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X += 9;
+                            NPC.velocity.Y -= 10.0f;
+                            NPC.velocity.X += 18;
 
                             Jumpin = 6;
 
@@ -728,7 +728,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     switch (Main.rand.Next(3))
                     {
                         case 0:
-                            NPC.velocity.Y -= 12.0f;
+                            NPC.velocity.Y -= 6.0f;
                             NPC.velocity.X -= 0;
 
                             Jumpin = 2;
@@ -736,15 +736,15 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 9;
+                            NPC.velocity.X += 18;
 
 
                             Jumpin = 0;
                             break;
 
                         case 2:
-                            NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X += 18;
+                            NPC.velocity.Y -= 10.0f;
+                            NPC.velocity.X += 30;
 
                             Jumpin = 6;
 
@@ -767,8 +767,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                             break;
 
                         case 1:
-                            NPC.velocity.Y += 12.0f;
-                            NPC.velocity.X += 9;
+                            NPC.velocity.Y += 6.0f;
+                            NPC.velocity.X += 18;
 
 
                             Jumpin = 0;
@@ -776,7 +776,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 2:
                             NPC.velocity.Y += 1.0f;
-                            NPC.velocity.X += 18;
+                            NPC.velocity.X += 30;
 
                             Jumpin = 4;
 
@@ -792,15 +792,15 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     switch (Main.rand.Next(3))
                     {
                         case 0:
-                            NPC.velocity.Y += 18.0f;
+                            NPC.velocity.Y += 9.0f;
                             NPC.velocity.X -= 0;
 
                             Jumpin = 1;
                             break;
 
                         case 1:
-                            NPC.velocity.Y += 0f;
-                            NPC.velocity.X += 18;
+                            NPC.velocity.Y -= 2f;
+                            NPC.velocity.X += 30;
 
 
                             Jumpin = 6;
@@ -808,7 +808,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 2:
                             NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X += 18;
+                            NPC.velocity.X += 30;
 
                             Jumpin = 5;
 
@@ -832,7 +832,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 9;
+                            NPC.velocity.X -= 18;
 
 
                             Jumpin = 0;
@@ -840,7 +840,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 2:
                             NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 30;
 
                             Jumpin = 3;
 
@@ -864,7 +864,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y += 12.0f;
-                            NPC.velocity.X -= 9;
+                            NPC.velocity.X -= 18;
 
 
                             Jumpin = 0;
@@ -872,7 +872,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 2:
                             NPC.velocity.Y += 1.0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 30;
 
                             Jumpin = 1;
 
@@ -898,7 +898,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y += 0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 30;
 
 
                             Jumpin = 3;
@@ -906,7 +906,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 2:
                             NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 30;
 
                             Jumpin = 2;
 
@@ -990,38 +990,38 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         {
             NPC.spriteDirection = NPC.direction;
             timer++;
-            if (timer == 1)
+            if (timer == 60)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.3f, speedYa - 1 * 0,
                         ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 0.3f, speedYa - 1 * 0,
                         ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
                 }
             }
 
 
-            if (timer == 120)
+            if (timer == 180)
             {
                 if (StellaMultiplayer.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.3f, speedYa - 1 * 0,
                         ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 1, speedYa - 1 * 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 0.3f, speedYa - 1 * 0,
                         ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
                 }
             }
 
          
 
-            if (timer == 180)
+            if (timer == 240)
             {
 
              
@@ -1049,7 +1049,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 }
             }
 
-            if (timer == 180)
+            if (timer == 300)
             {
 
 
