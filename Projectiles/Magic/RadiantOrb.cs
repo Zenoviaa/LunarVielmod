@@ -37,6 +37,23 @@ namespace Stellamod.Projectiles.Magic
 		}
 
 		public int It = 0;
+
+		public override bool PreDraw(ref Color lightColor)
+		{
+			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+
+			float width = 99;
+			float height = 99;
+			Vector2 origin = new Vector2(width / 2, height / 2);
+			int frameSpeed = 1;
+			int frameCount = 72;
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			spriteBatch.Draw(texture, drawPosition,
+				texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
+				(Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
+			return false;
+		}
 		public override void AI()
 		{
 
