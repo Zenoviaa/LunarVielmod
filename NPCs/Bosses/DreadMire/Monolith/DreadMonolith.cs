@@ -22,7 +22,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
 {
-
+    [AutoloadBossHead]
     public class DreadMonolith : ModNPC
     {
         private int _radiusCounter;
@@ -32,6 +32,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 14;
+            NPCID.Sets.ActsLikeTownNPC[Type] = true;
         }
 
         private void OnlyTakeDamageWhenClose()
@@ -82,6 +83,36 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             return false;
         }
 
+        public override ITownNPCProfile TownNPCProfile()
+        {
+            return new DreadMonolithPersonProfile();
+        }
+
+        public class DreadMonolithPersonProfile : ITownNPCProfile
+        {
+            public int RollVariation() => 0;
+            public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+            public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+            {
+                if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith");
+
+                if (npc.altTexture == 1)
+                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith_Head");
+
+                return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith");
+            }
+
+            public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith_Head");
+        }
+
+        public override bool CanChat()
+        {
+            return false;
+        }
+
+
         public override void FindFrame(int frameHeight)
         {
             NPC.frameCounter += 0.2f;
@@ -112,6 +143,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
             NPC.noGravity = true;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

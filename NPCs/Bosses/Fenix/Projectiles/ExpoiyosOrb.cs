@@ -198,7 +198,10 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 					break;
 			}
 		}
-
+        public override bool? CanFallThroughPlatforms()
+        {
+            return true;
+        }
 
 
         public override void OnKill()
