@@ -35,13 +35,6 @@ namespace Stellamod.Projectiles.Magic
 			Projectile.timeLeft = 72;
 
 		}
-		public override bool PreAI()
-		{
-
-			Projectile.tileCollide = false;
-
-			return true;
-		}
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
@@ -62,9 +55,31 @@ namespace Stellamod.Projectiles.Magic
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			spriteBatch.Draw(texture, drawPosition,
 				texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-				(Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
+				(Color)GetAlpha(lightColor), 0f, origin, 1.8f, SpriteEffects.None, 0f);
 			return false;
 		}
+
+		public float Timer
+		{
+			get => Projectile.ai[0];
+			set => Projectile.ai[0] = value;
+		}
+
+		public override bool PreAI()
+		{
+			if (++_frameTick >= 1)
+			{
+				_frameTick = 0;
+				if (++_frameCounter >= 72)
+				{
+					_frameCounter = 0;
+				}
+			}
+
+			Projectile.tileCollide = false;
+			return true;
+		}
+
 		public override void AI()
 		{
 
