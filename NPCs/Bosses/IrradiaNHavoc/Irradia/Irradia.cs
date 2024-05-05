@@ -589,7 +589,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                  //  NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y + 20, ModContent.NPCType<Havoc.Havoc>());
+                 
                 }
             }
 

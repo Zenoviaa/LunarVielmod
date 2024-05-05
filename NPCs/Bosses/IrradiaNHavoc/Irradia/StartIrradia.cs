@@ -205,7 +205,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
 				//2. Create a new instance of your dialogue
-				VerliasDialogue exampleDialogue = new IrradiaDialogue();
+				IrradiaDialogue exampleDialogue = new IrradiaDialogue();
 
 				//3. Start it
 				dialogueSystem.StartDialogue(exampleDialogue);

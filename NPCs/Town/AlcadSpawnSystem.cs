@@ -14,6 +14,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Monolith;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 
 namespace Stellamod.NPCs.Town
 {
@@ -331,7 +332,7 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
-                else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<IrradiaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<Irradia>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
