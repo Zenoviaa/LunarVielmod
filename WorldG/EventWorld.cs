@@ -219,27 +219,6 @@ namespace Stellamod.WorldG
             }
         }
 
-        private void TryForceBloodmoon()
-        {
-            if (!Main.dayTime && !Aurorean && !HasHadBloodMoon && DownedBossSystem.downedDaedusBoss)
-            {
-                HasHadBloodMoon = true;
-                string message = "The Moon has turned red for tonight! The Govheil Castle calls you...";
-                if (Main.netMode == NetmodeID.Server)
-                {
-                    NetworkText txt = NetworkText.FromLiteral(message);
-                    ChatHelper.BroadcastChatMessage(txt, new Color(234, 16, 50));
-                }
-                else
-                {
-                    Main.NewText(message, 234, 16, 50);
-                }
-
-                Main.bloodMoon = true;
-                NetMessage.SendData(MessageID.WorldData);
-            }
-        }
-
         public static bool ChaosD;
         public static bool ChaosP;
         public static bool ChaosT;
@@ -249,7 +228,6 @@ namespace Stellamod.WorldG
         {
             TrySpawnGintzeArmy();
             TrySpawnAuroreanStarfall();
-            TryForceBloodmoon();
             SpawnAuroreanStars();
 
 
@@ -324,8 +302,6 @@ namespace Stellamod.WorldG
                 }
             }
         }
-
-        private static void ResetEventWorld() { }
 
         public override void ClearWorld()
         {

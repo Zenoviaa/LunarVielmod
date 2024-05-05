@@ -6948,3 +6948,13 @@ DaggerDagger: {
 		Knife
 		'''
 }
+
+DreadFragment: {
+	Tooltip: ""
+	DisplayName: Dread Fragment
+}
+
+DreadMedalion: {
+	Tooltip: ""
+	DisplayName: Dread Medalion
+}
