@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
@@ -37,9 +38,17 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 14;
         }
-
+        public int Ty = 0;
         public override void AI()
         {
+            Ty++;
+
+           if (Ty == 2)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ElectricShuffle"), Projectile.position);
+            }
+
+
             AI_FillPoints();
         }
 

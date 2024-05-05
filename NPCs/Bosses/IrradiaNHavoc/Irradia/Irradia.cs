@@ -404,6 +404,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 		//int Timer2 = 0;
 		float timert = 0;
 		public float Spawner = 0;
+
+        public bool Elect = false;
 		public override void AI()
 		{
 			p2 = NPC.life < NPC.lifeMax * 0.5f;
@@ -619,16 +621,21 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             Player player = Main.player[NPC.target];
             if (timer == 1)
             {
-
-                if (StellaMultiplayer.IsHost)
+                if (Elect)
                 {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), player.position.X, player.position.Y, speedXa * 0, speedYa * 0,
-                        ModContent.ProjectileType<IrradiaElectricBoxConnectorProj>(), 1, 0f, Owner: Main.myPlayer);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
+                        float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
+                        float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), player.position.X, player.position.Y, speedXa * 0, speedYa * 0,
+                            ModContent.ProjectileType<IrradiaElectricBoxConnectorProj>(), 1, 0f, Owner: Main.myPlayer);
 
+                    }
+
+                    Elect = false;
                 }
+              
 
 
                 if (StellaMultiplayer.IsHost)
@@ -952,6 +959,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y - 250, speedXb - 2 * 2, speedYb - 2 * 2,
                         ModContent.ProjectileType<IrradiaBuilds>(), 1, 0f, Main.myPlayer, 0f, ai1);
+
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BuildingSomething"), NPC.position);
                 }
 
             }
@@ -1116,6 +1125,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 recharge = 0;
             }
 
+
+            Elect = true;
             if (timer == 240)
             {
 

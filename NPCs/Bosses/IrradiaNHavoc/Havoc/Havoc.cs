@@ -270,6 +270,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             {
                 if (Timer == 1)
                 {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), NPC.position);
                     NPC.TargetClosest();
                 }
 

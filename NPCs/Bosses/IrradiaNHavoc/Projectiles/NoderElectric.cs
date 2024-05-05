@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
@@ -35,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<IrradiaCombustionBoom>(), 0, Projectile.knockBack, Projectile.owner);
 
-
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Built"), Projectile.position);
 
             if (StellaMultiplayer.IsHost)
             {
