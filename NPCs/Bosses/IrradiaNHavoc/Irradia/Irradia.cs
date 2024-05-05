@@ -7,6 +7,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
@@ -1323,13 +1324,13 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
-				ModContent.ItemType<Items.Weapons.Melee.Helios>(),
 				ModContent.ItemType<GothiviasCard>(),
 				ModContent.ItemType<Twirlers>(),
-				ModContent.ItemType<WeddingDay>()));
+                ModContent.ItemType<BurnBlast>(),
+                ModContent.ItemType<WeddingDay>()));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ItemID.TitaniumBar, minimumDropped: 4, maximumDropped: 25));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ManifestedCommitment>(), minimumDropped: 1, maximumDropped: 1));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
 			// Boss masks are spawned with 1/7 chance
