@@ -156,3 +156,20 @@ ZuiDialogue9:
 	'''
 ZuiDialogue10: I used to be friends with her until she dropped me for that guy, she started to obsess really badly over him. Even in the state he is in now that temple is still locked.
 ZuiDialogue11: Anyway since I think you're ready, I'll give her a call and allow her to cast some magic on you or something, just don't get on her bad side, she can solo you. You can ask about your other targets there. I marked the location but you might need a key.
+
+IrradiaDialogue1:
+	'''
+	What, what... -- That's Verlia's soul. What did you do to her. 
+	'''
+
+	IrradiaDialogue2:
+	'''
+	No, no not like this, not from you of all people. I've spent my years sitting here to wait for them and you out of all things come to me with her soul in hand?? A damn monster you are. 
+	'''
+
+	IrradiaDialogue3:
+	'''
+	I will mangle your corpse and showcase it for everyone to see, Gothivia will return and you'll be the first one to hang. I'll show you what harming my friend does for you.
+	HAVOC. 
+	Engage...
+	'''
