@@ -586,7 +586,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y + 20, ModContent.NPCType<Havoc.Havoc>());
+                  //  NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 600, (int)NPC.Center.Y + 20, ModContent.NPCType<Havoc.Havoc>());
                 }
             }
 
@@ -605,7 +605,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             timer++;
 
 
-            if (timer == 5)
+            if (timer == 50)
             {
                 ResetTimers();
                 State = ActionState.CallHavoc;
@@ -1043,8 +1043,8 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 1, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaAxeProj>(), 34, 0f, Owner: Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.5f, speedYa - 1 * 0,
+                        ModContent.ProjectileType<IrradiaAxeProj>(), 24, 0f, Owner: Main.myPlayer);
 
                 }
             }
@@ -1067,7 +1067,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             recharge++;
 
-            if (recharge == 80)
+            if (recharge == 120)
             {
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1082,7 +1082,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 recharge = 0;
             }
 
-            if (timer == 240)
+            if (timer == 241)
             {
 
                 recharge = 0;
@@ -1101,7 +1101,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             recharge++;
 
-            if (recharge == 20)
+            if (recharge == 40)
             {
                 if (StellaMultiplayer.IsHost)
                 {
