@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             }
 
             LifeTimer++;
-            if(LifeTimer>= 240)
+            if(LifeTimer>= 320)
             {
                 NPC.Kill();
             }
