@@ -1052,7 +1052,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.5f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaAxeProj>(), 24, 0f, Owner: Main.myPlayer);
+                        ModContent.ProjectileType<IrradiaAxeProj>(), 18, 0f, Owner: Main.myPlayer);
 
                 }
             }
