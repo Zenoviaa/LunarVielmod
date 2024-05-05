@@ -19,6 +19,9 @@ namespace Stellamod.Projectiles.Magic
 			// DisplayName.SetDefault("SalfaCirle");
 			Main.projFrames[Projectile.type] = 72;
 		}
+
+		private int _frameCounter;
+		private int _frameTick;
 		public override void SetDefaults()
 		{
 			Projectile.friendly = false;
