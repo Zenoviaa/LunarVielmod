@@ -729,7 +729,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     {
                         case 0:
                             NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X -= 0;
+                            NPC.velocity.X += 20;
 
                             Jumpin = 2;
                             break;
@@ -761,7 +761,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     {
                         case 0:
                             NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X -= 0;
+                            NPC.velocity.X += 30;
 
                             Jumpin = 1;
                             break;
@@ -793,7 +793,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                     {
                         case 0:
                             NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X -= 0;
+                            NPC.velocity.X += 20;
 
                             Jumpin = 1;
                             break;
@@ -832,7 +832,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 30;
 
 
                             Jumpin = 0;
@@ -864,14 +864,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
                         case 1:
                             NPC.velocity.Y += 12.0f;
-                            NPC.velocity.X -= 18;
+                            NPC.velocity.X -= 20;
 
 
                             Jumpin = 0;
                             break;
 
                         case 2:
-                            NPC.velocity.Y += 1.0f;
+                            NPC.velocity.Y += 4.0f;
                             NPC.velocity.X -= 30;
 
                             Jumpin = 1;
@@ -1049,7 +1049,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                 }
             }
 
-            if (timer == 300)
+            if (timer == 420)
             {
 
 

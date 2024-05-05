@@ -458,7 +458,60 @@ namespace Stellamod
 			);
 		}
 
-		private void DoSyliaIntegration()
+
+        private void DoIrradiaIntegration()
+        {
+
+            string internalName8 = "GothiviatheSunGoddess";
+
+            // The NPC type of the boss
+            int bossType8 = ModContent.NPCType<NPCs.Bosses.IrradiaNHavoc.Irradia.Irradia>();
+
+            // Value inferred from boss progression, see the wiki for details
+            float weight8 = 8.3f;
+
+            // Used for tracking checklist progress
+            Func<bool> downed8 = () => DownedBossSystem.downedIrradiaBoss;
+
+            // If the boss should show up on the checklist in the first place and when (here, always)
+            Func<bool> available8 = () => true;
+
+            // "collectibles" like relic, trophy, mask, pet
+            List<int> collection8 = new List<int>()
+            {
+                ModContent.ItemType<Items.Placeable.IrradiaBossRel>(),
+
+            };
+
+            // The item used to summon the boss with (if available)
+            int summonItem8 = ModContent.ItemType<Items.Materials.ManifestedBravery>();
+
+            // Information for the player so he knows how to encounter the boss
+
+            // The boss does not have a custom despawn message, so we omit it
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Give Irradia a [i:{summonItem8}] at a bottom of the Govheil Castle, underneath the Virulent.");
+            bossChecklistMod.Call(
+                "LogBoss",
+                Mod,
+                internalName8,
+                weight8,
+                downed8,
+                bossType8,
+                new Dictionary<string, object>()
+                {
+                    ["spawnItems"] = summonItem8,
+                    ["spawnInfo"] = spawnConditionText
+                    // Other optional arguments as needed are inferred from the wiki
+                }
+            );
+        }
+
+
+
+        private void DoSyliaIntegration()
 		{
 
 			string internalName = nameof(Sylia);
@@ -838,7 +891,7 @@ namespace Stellamod
 			DoSunStalkerIntegration();
 			DoSingularityFragmentIntegration();
 			DoVerliaIntegration();
-			DoGothiviaIntegration();
+			DoIrradiaIntegration();
 			DoSyliaIntegration();
 			DoStoneGolemIntegration();
 			DoSTARIntegration();
