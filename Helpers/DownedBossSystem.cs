@@ -33,7 +33,18 @@ namespace Stellamod.Helpers
 		public static bool downedCogwork = false;
 		public static bool downedAzurewrathBoss = false;
 
-		private static void ResetFlags()
+		public static bool downedDreadMonolith1 = false;
+        public static bool downedDreadMonolith2 = false;
+        public static bool downedDreadMonolith3 = false;
+
+		public static bool downedSupernovaFragmentBoss = false;
+		public static bool downedNiiviBoss = false;
+		public static bool downedGothiviaBoss = false;
+		public static bool downedEreshkegalBoss = false;
+		public static bool downedLumiBoss = false;
+		public static bool downedVoidBoss = false;
+
+        private static void ResetFlags()
 		{
             downedVeriBoss = false;
             downedJackBoss = false;
@@ -55,7 +66,17 @@ namespace Stellamod.Helpers
             downedCogwork = false;
 			downedNESTBoss = false;
 			downedAzurewrathBoss = false;
-		}
+			downedDreadMonolith1 = false;
+			downedDreadMonolith2 = false;
+			downedDreadMonolith3 = false;
+
+			downedSupernovaFragmentBoss = false;
+			downedNiiviBoss = false;
+			downedGothiviaBoss = false;
+			downedEreshkegalBoss = false;
+			downedLumiBoss = false;
+			downedVoidBoss = false;
+        }
 
         public override void ClearWorld()
         {
@@ -86,7 +107,16 @@ namespace Stellamod.Helpers
 			tag["downedZuiBoss"] = downedZuiBoss;
 			tag["downedNESTBoss"] = downedNESTBoss;
 			tag["downedAzurBoss"] = downedAzurewrathBoss;
-		}
+            tag["downedDreadMonolith1"] = downedDreadMonolith1;
+            tag["downedDreadMonolith2"] = downedDreadMonolith2;
+            tag["downedDreadMonolith3"] = downedDreadMonolith3;
+			tag["downedSupernovaFragmentBoss"] = downedSupernovaFragmentBoss;
+			tag["downedNiiviBoss"] = downedNiiviBoss;
+			tag["downedGothiviaBoss"] = downedGothiviaBoss;
+			tag["downedEreshkegalBoss"] = downedEreshkegalBoss;
+			tag["downedLumiBoss"] = downedLumiBoss;
+			tag["downedVoidBoss"] = downedVoidBoss;
+        }
 
 		public override void LoadWorldData(TagCompound tag)
 		{
@@ -111,7 +141,16 @@ namespace Stellamod.Helpers
 			downedPandorasBox = tag.GetBool("downedPandorasBox");
 			downedBlazingSerpent = tag.GetBool("downedBlazingSerpent");
 			downedAzurewrathBoss = tag.GetBool("downedAzurBoss");
-		}
+            downedDreadMonolith1 = tag.GetBool("downedDreadMonolith1");
+            downedDreadMonolith2 = tag.GetBool("downedDreadMonolith2");
+            downedDreadMonolith3 = tag.GetBool("downedDreadMonolith3");
+			downedSupernovaFragmentBoss = tag.GetBool("downedSupernovaFragmentBoss");
+			downedNiiviBoss = tag.GetBool("downedNiiviBoss");
+			downedGothiviaBoss = tag.GetBool("downedGothiviaBoss");
+			downedEreshkegalBoss = tag.GetBool("downedEreshkegalBoss");
+			downedLumiBoss = tag.GetBool("downedLumiBoss");
+			downedVoidBoss = tag.GetBool("downedVoidBoss");
+        }
 
 		public override void NetSend(BinaryWriter writer)
 		{
@@ -146,8 +185,21 @@ namespace Stellamod.Helpers
                 [0] = downedPandorasBox,
 				[1] = downedZuiBoss,
 				[2] = downedNESTBoss,
-				[3] = downedAzurewrathBoss
-			});	
+				[3] = downedAzurewrathBoss,
+				[4] = downedDreadMonolith1,
+				[5] = downedDreadMonolith2,
+				[6] = downedDreadMonolith3,
+				[7] = downedSupernovaFragmentBoss
+            });
+
+			writer.Write(new BitsByte
+			{
+				[0] = downedNiiviBoss,
+				[1] = downedGothiviaBoss,
+				[2] = downedEreshkegalBoss,
+				[3] = downedLumiBoss,
+				[4] = downedVoidBoss
+            });
 		}
 
 		public override void NetReceive(BinaryReader reader)
@@ -178,6 +230,17 @@ namespace Stellamod.Helpers
 			downedZuiBoss = flags[1];
 			downedNESTBoss = flags[2];
 			downedAzurewrathBoss = flags[3];
-		}
+			downedDreadMonolith1 = flags[4];
+			downedDreadMonolith2 = flags[5];
+			downedDreadMonolith3 = flags[6];
+			downedSupernovaFragmentBoss = flags[7];
+
+			flags = reader.ReadByte();
+			downedNiiviBoss = flags[0];
+			downedGothiviaBoss = flags[1];
+			downedEreshkegalBoss = flags[2];
+			downedLumiBoss = flags[3];
+			downedVoidBoss = flags[4];
+        }
 	}
 }
