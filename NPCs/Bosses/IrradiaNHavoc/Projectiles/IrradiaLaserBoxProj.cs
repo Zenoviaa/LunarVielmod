@@ -28,6 +28,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
         public override void AI()
         {
+            Projectile.velocity *= 1.01f;
             if(Projectile.timeLeft > 60)
             {
                 Timer++;

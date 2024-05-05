@@ -20,6 +20,12 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             set => NPC.ai[1] = value;
         }
 
+        private float LifeTimer
+        {
+            get => NPC.ai[2];
+            set => NPC.ai[2] = value;
+        }
+
         public override void SetStaticDefaults()
         {
             NPCID.Sets.TrailCacheLength[Type] = 8;
@@ -58,6 +64,12 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
             if(Timer == 120)
             {
                 Timer = 0;
+            }
+
+            LifeTimer++;
+            if(LifeTimer>= 240)
+            {
+                NPC.Kill();
             }
         }
     }

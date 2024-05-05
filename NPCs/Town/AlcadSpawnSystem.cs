@@ -13,6 +13,7 @@ using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Monolith;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 
 namespace Stellamod.NPCs.Town
 {
@@ -335,6 +336,9 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<IrradiaIdle>());
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
+                        ModContent.NPCType<Havoc>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 

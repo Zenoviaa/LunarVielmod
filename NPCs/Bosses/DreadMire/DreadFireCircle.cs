@@ -155,7 +155,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             direction.Normalize();
             direction *= 9f;
             int parent = (int)NPC.ai[0];
-            if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<DreadMire>())
+            if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<DreadMireR>())
             {
                 NPC.netUpdate = true;
                 NPC.active = false;

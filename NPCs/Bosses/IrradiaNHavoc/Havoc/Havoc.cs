@@ -134,6 +134,10 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             Segments[4].TexturePath = $"{BaseTexturePath}HavocTail";
         }
 
+        public override bool CheckActive()
+        {
+            return false;
+        }
 
         public override void AI()
         {
