@@ -30,7 +30,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
             Projectile.timeLeft = 360;
             Projectile.alpha = 255;
             Projectile.hide = true;
-            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()

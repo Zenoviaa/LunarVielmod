@@ -685,8 +685,21 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         public PrimDrawer TrailDrawer { get; private set; } = null;
         internal PrimitiveTrail BeamDrawer;
         Vector2 HitboxFixer = new Vector2(90, 90) / 2;
+        int warningFrameCounter;
+        int warningFrameTick;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if(State == ActionState.Charge)
+            {
+                Texture2D warningTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/IrradiaNHavoc/Havoc/Projectiles/HavocWarnChargeProj").Value;
+                Player target = Main.player[NPC.target];
+                Vector2 drawPosition = target.Center - screenPos;
+                Vector2 drawOffset = new Vector2(0, -16);
+
+                spriteBatch.Draw(warningTexture, drawPosition + drawOffset, warningTexture.AnimationFrame(ref warningFrameCounter, ref warningFrameTick, 4, 4, true), Color.White, 0, warningTexture.Size() / 2, 1f, SpriteEffects.None, 0);
+                Lighting.AddLight(target.Center + drawOffset, Color.Red.ToVector3() * 2.25f);
+            }
+
             if (TrailDrawer == null)
             {
                 TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
