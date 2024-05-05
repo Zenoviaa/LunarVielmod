@@ -229,6 +229,7 @@ namespace Stellamod.NPCs.Town
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Irradia>()) ||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
 
         }
@@ -337,6 +338,11 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<IrradiaIdle>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Havoc>()))
+                {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)IrrSpawnWorld.X, (int)IrrSpawnWorld.Y,
                         ModContent.NPCType<Havoc>());
