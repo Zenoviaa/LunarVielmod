@@ -30,14 +30,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.TrailCacheLength[Type] = 8;
+            NPCID.Sets.TrailCacheLength[Type] = 32;
             NPCID.Sets.TrailingMode[Type] = 4;
         }
 
         public override void SetDefaults()
         {
-            NPC.width = 38;
-            NPC.height = 40;
+            NPC.width = 72;
+            NPC.height = 68;
             NPC.lifeMax = 1500;
             NPC.damage = 30;
             NPC.defense = 20;

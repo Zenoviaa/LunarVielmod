@@ -304,8 +304,8 @@
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
-    <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
+    <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramV2.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMireZapwarnBig - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />

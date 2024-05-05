@@ -172,7 +172,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
-            Vector2 frameOrigin = NPC.frame.Size();
+            Vector2 frameOrigin = DrawRectangle.Size();
             Vector2 offset = new Vector2(NPC.width - frameOrigin.X - 15, NPC.height - DrawRectangle.Height + 8);
             Vector2 DrawPos = NPC.position - screenPos + frameOrigin + offset;
 
@@ -204,11 +204,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             }
 
             Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
+            /*
             int spOff = NPC.alpha / 6;
             for (float j = -(float)Math.PI; j <= (float)Math.PI / 3f; j += (float)Math.PI / 3f)
             {
                 spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center + new Vector2(0f, -2f) + new Vector2(4f + NPC.alpha * 0.25f + spOff, 0f).RotatedBy(NPC.rotation + j) - Main.screenPosition, DrawRectangle, Color.FromNonPremultiplied(255 + spOff * 2, 255 + spOff * 2, 255 + spOff * 2, 100 - base.NPC.alpha), base.NPC.rotation, DrawRectangle.Size() / 2f, base.NPC.scale, Effects, 0f);
             }
+            */
             spriteBatch.Draw((Texture2D)TextureAssets.Npc[NPC.type], NPC.Center - Main.screenPosition, DrawRectangle, NPC.GetAlpha(lightColor), NPC.rotation, DrawRectangle.Size() / 2f, NPC.scale, Effects, 0f);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -217,7 +219,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
                 Color color = NPC.GetAlpha(Color.Lerp(new Color(255, 8, 55), new Color(99, 39, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, DrawRectangle.Size() / 2, NPC.scale, Effects, 0f);
+                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(DrawRectangle), color, NPC.rotation, DrawRectangle.Size() / 2, NPC.scale, Effects, 0f);
             }
 
             spriteBatch.End();
@@ -357,7 +359,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                 }
                 Animation = AnimationState.PowerUp;
             }
@@ -493,7 +495,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             {
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramSmall>());
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Dreadmire_TP_Out"), NPC.position);
             }
@@ -564,7 +566,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                 }
             }
 
@@ -748,7 +750,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 var entitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagram>());
+                    NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                 }
                 Animation = AnimationState.PowerUp;
             }
