@@ -970,7 +970,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             if (timer == 50)
             {
             
-                switch (Main.rand.Next(4))
+                switch (Main.rand.Next(6))
                 {
                     case 0:
                         State = ActionState.STARTAXE;
@@ -986,6 +986,16 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
                         break;
 
                     case 3:
+                        State = ActionState.STARTSPIKE;
+
+                        break;
+
+                    case 4:
+                        State = ActionState.STARTNODES;
+
+                        break;
+
+                    case 5:
                         State = ActionState.STARTSPIKE;
 
                         break;
@@ -1015,19 +1025,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             }
 
 
-            if (timer == 180)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.3f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 0.3f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 34, 0f, Owner: Main.myPlayer);
-                }
-            }
+          
 
          
 
