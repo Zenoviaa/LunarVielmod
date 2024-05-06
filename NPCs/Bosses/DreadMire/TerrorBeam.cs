@@ -26,7 +26,6 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
             Projectile.alpha = 255;
-            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()
@@ -89,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
             TrailRegistry.GenericLaserVertexShader.UseColor(Color.PaleVioletRed);
-            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.BulbTrail);
+            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.CrystalTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

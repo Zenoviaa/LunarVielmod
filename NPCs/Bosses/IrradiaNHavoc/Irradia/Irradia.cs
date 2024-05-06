@@ -129,7 +129,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			NPC.Size = new Vector2(40, 45);
 			NPC.damage = 1;
 			NPC.defense = 20;
-			NPC.lifeMax = 13500;
+			NPC.lifeMax = 17000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;

@@ -25,7 +25,7 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             // DisplayName.SetDefault("Shadow Wraith");
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 15;
-            Main.npcFrameCount[NPC.type] = 3;
+            Main.npcFrameCount[NPC.type] = 4;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -38,8 +38,8 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
 
         public override void SetDefaults()
 		{
-            NPC.width = 25;
-            NPC.height = 20;
+            NPC.width = 24;
+            NPC.height = 30;
             NPC.damage = 20;
 			NPC.defense = 2;
 			NPC.lifeMax = 50;
@@ -54,6 +54,11 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
             NPC.noGravity = true;
         }
 
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
+        }
+
         int frame = 0;
         public override void FindFrame(int frameHeight)
         {
@@ -64,17 +69,12 @@ namespace Stellamod.NPCs.Overworld.ShadowWraith
                 NPC.frameCounter = 0;
             }
 
-            if (frame >= 3)
+            if (frame >= 4)
             {
                 frame = 0;
             }
 
             NPC.frame.Y = frameHeight * frame;
-        }
-
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            return SpawnCondition.OverworldNightMonster.Chance * 0.5f;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

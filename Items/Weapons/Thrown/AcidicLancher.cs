@@ -1,4 +1,5 @@
 using Stellamod.Items.Materials;
+using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Projectiles.Thrown;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +17,7 @@ namespace Stellamod.Items.Weapons.Thrown
 
 		public override void SetDefaults()
 		{
-			Item.damage = 47;
+			Item.damage = 39;
 			Item.DamageType = DamageClass.Throwing;
 			Item.width = 40;
 			Item.height = 40;
@@ -39,7 +40,7 @@ namespace Stellamod.Items.Weapons.Thrown
 		{
 			Recipe recipe = CreateRecipe(300);
 			recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 10);
-			recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<DreadFoil>(), 1);
 			recipe.AddIngredient(ModContent.ItemType<AlcadizScrap>(), 3);
 			recipe.AddTile(TileID.Anvils);
 			recipe.Register();

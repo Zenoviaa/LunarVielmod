@@ -22,30 +22,15 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void SetDefaults()
         {
-            Projectile.CloneDefaults(ProjectileID.Bullet);
-            AIType = ProjectileID.Bullet;
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.DamageType = DamageClass.Throwing;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 240;
         }
 
         public override void AI()
         {
-            base.Projectile.spriteDirection = (base.Projectile.direction = (base.Projectile.velocity.X > 0f).ToDirectionInt());
-            if (base.Projectile.spriteDirection == 1)
-            {
-                base.Projectile.rotation += MathHelper.ToRadians(45f);
-                base.DrawOffsetX = -26;
-                base.DrawOriginOffsetX = 13f;
-                base.DrawOriginOffsetY = 2;
-            }
-            if (base.Projectile.spriteDirection == -1)
-            {
-                base.Projectile.rotation += MathHelper.ToRadians(45f);
-                base.DrawOffsetX = -26;
-                base.DrawOriginOffsetX = 13f;
-                base.DrawOriginOffsetY = 2;
-            }
+            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
         public override Color? GetAlpha(Color lightColor)
