@@ -6950,7 +6950,6 @@ DaggerDagger: {
 }
 
 DreadFragment: {
-
 	DisplayName: Dread Fragment
 	Tooltip:
 		'''
@@ -6960,7 +6959,6 @@ DreadFragment: {
 }
 
 DreadMedalion: {
-
 	DisplayName: Dread Medalion
 	Tooltip:
 		'''
