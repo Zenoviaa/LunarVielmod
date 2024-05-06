@@ -1380,7 +1380,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			{
 				Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
 			}
-			NPC.SetEventFlagCleared(ref DownedBossSystem.downedGothBoss, -1);
+			NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
 		}
 
 	}
