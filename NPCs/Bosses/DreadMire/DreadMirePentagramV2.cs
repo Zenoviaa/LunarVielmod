@@ -33,6 +33,13 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             NPC.dontTakeDamage = true;
+            NPC.alpha = 255;
+
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -85,8 +92,9 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         public override void AI()
         {
             UpdateFrame(0.8f, 1, 55);
+            NPC.alpha -= 10;
             Timer++;
-            if(Timer >= 110)
+            if(Timer >= 43)
             {
                 NPC.Kill();
             }

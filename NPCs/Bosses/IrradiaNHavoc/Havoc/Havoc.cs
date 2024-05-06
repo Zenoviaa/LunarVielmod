@@ -109,7 +109,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             NPC.height = 90;
             NPC.lifeMax = 1000;
             NPC.damage = ChargeDamage;
-            NPC.boss = true;
             NPC.dontTakeDamage = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;

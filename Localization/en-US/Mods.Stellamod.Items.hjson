@@ -6950,11 +6950,21 @@ DaggerDagger: {
 }
 
 DreadFragment: {
-	Tooltip: ""
+
 	DisplayName: Dread Fragment
+	Tooltip:
+		'''
+		Contains a fragment of Dread Mire's power
+		With enough of these, perhaps you could anger her...
+		'''
 }
 
 DreadMedalion: {
-	Tooltip: ""
+
 	DisplayName: Dread Medalion
+	Tooltip:
+		'''
+		Use at night to call down Dread Mire to fight you!
+		Overflowing with Dread
+		'''
 }

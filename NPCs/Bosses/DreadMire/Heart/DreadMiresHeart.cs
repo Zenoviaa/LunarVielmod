@@ -153,7 +153,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                 Disappear();
             }
             NPC.rotation = NPC.velocity.X * 0.05f;
-            Lighting.AddLight((int)(NPC.Center.X / 16), (int)(NPC.Center.Y / 16), 0.46f, 0.32f, .1f);
+            Lighting.AddLight(NPC.Center, Color.DarkRed.ToVector3() * 2.25f * Main.essScale);
             if (NPC.ai[2] == 0)
             {
                 NPC.ai[0]++;
@@ -304,8 +304,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Heart
                             {
                                 Vector2 direction = Main.player[NPC.target].Center - NPC.Center;
                                 direction.Normalize();
-                                direction.X = direction.X * Main.rand.Next(10, 12);
-                                direction.Y = direction.Y * Main.rand.Next(10, 12);
+                                direction.X = direction.X * Main.rand.Next(25, 28);
+                                direction.Y = direction.Y * Main.rand.Next(25, 28);
                                 NPC.alpha = 60;
                                 NPC.velocity.X = direction.X;
                                 NPC.velocity.Y = direction.Y;
