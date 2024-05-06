@@ -50,7 +50,6 @@ namespace Stellamod.Items.Consumables
         {
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
-				ModContent.ItemType<Weapons.Melee.Helios>(),
                 ModContent.ItemType<GothiviasCard>(),
 				ModContent.ItemType<Twirlers>(),
 				ModContent.ItemType<WeddingDay>(),
