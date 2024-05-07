@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.INest;
+using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -50,9 +52,9 @@ namespace Stellamod.Projectiles.Magic
         public override void OnKill(int timeLeft)
         {
             var entitySource = Projectile.GetSource_Death();
-            NPC.NewNPC(entitySource, (int)Projectile.position.X, (int)Projectile.position.Y + 30, ModContent.NPCType<IRNDeathBomb>());
+            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
         }
         public override Color? GetAlpha(Color lightColor) => Color.White;
 

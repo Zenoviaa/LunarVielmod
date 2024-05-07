@@ -49,7 +49,7 @@ namespace Stellamod.NPCs.Bosses.INest.IEagle
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 64f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
         }
         public override Color? GetAlpha(Color lightColor) => Color.White;
 
