@@ -2194,7 +2194,19 @@ namespace Stellamod.NPCs.Bosses.Zui
             }
         }
 
-		public void ResetTimers()
+        public override bool? CanFallThroughPlatforms()
+        {
+            if (State == ActionState.SonicGroundpound && NPC.HasValidTarget && Main.player[NPC.target].Top.Y > NPC.Bottom.Y)
+            {
+                // If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
+                return true;
+            }
+
+            return false;
+            // You could also return null here to apply vanilla behavior (which is the same as false for custom AI)
+        }
+
+        public void ResetTimers()
 		{
 			if (StellaMultiplayer.IsHost)
 			{

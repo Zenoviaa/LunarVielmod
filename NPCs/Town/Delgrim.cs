@@ -23,6 +23,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
 using System.Linq;
@@ -503,7 +504,8 @@ namespace Stellamod.NPCs.Town
 			.Add<BlankRune>()
 			.Add<BlankBrooch>()
 			.Add<BlankOrb>()
-			.Add<GunHolster>()
+            .Add<BasicBaseball>(CustomConditions.PostSingularity)
+            .Add<GunHolster>()
 			.Add<Pulsing>()
 			.Add<CogBomber>(Condition.Hardmode)
             .Add<TheTingler>(Condition.Hardmode)

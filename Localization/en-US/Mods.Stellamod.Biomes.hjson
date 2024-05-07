@@ -112,3 +112,8 @@ IshtarBiome: {
 	TownNPCDialogueName: the Ishtar Biome
 	DisplayName: Ishtar Biome
 }
+
+VeilBiome: {
+	TownNPCDialogueName: the Veil Biome
+	DisplayName: Veil Biome
+}

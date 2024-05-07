@@ -109,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                     if (StellaMultiplayer.IsHost)
                     {
                         Utilities.NewProjectileBetter(LightPos.X, LightPos.Y, 0, 10,
-                            ModContent.ProjectileType<TerrorBeam>(), 150, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
+                            ModContent.ProjectileType<TerrorBeam>(), 300, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
                         Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0,
                             ModContent.ProjectileType<DreadSpawnEffect>(), 40, 1, Owner: Main.myPlayer);
                     }

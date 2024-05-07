@@ -48,6 +48,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             SegmentPosOsc = new Vector2(0, sinOsc);
             SegmentRotationOsc = rotOsc;
+            if (State == ActionState.Sleeping)
+            {
+                SegmentPosOsc *= 0.2f;
+                SegmentRotationOsc *= 0.2f;
+            }
+           
 
         }
 

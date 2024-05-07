@@ -35,6 +35,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useTime = 6; // one third of useAnimation
             Item.reuseDelay = 100;
             Item.consumeAmmoOnLastShotOnly = true;
+            Item.noMelee = true;
         }
    
 

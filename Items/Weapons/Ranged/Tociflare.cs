@@ -37,6 +37,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAmmo = AmmoID.Gel;
             Item.shootSpeed = 8;
             Item.autoReuse = true;
+            Item.noMelee = true;
         }
 
         public override void AddRecipes()

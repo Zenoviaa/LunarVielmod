@@ -133,7 +133,18 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
 
             WingDrawIndex = _segmentIndex - Body_Segments - 1;
-            Rectangle drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
+            Rectangle drawRectangle;
+            switch (State)
+            {
+                default:
+                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
+                    break;
+                case ActionState.Sleeping:
+                    WingFrameCounter = 7;
+                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
+                    break;
+            }
+
             Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
             DrawSegment(spriteBatch, NiiviWingBack, NiiviWingSize, drawColor,
                 drawOrigin: wingDrawOrigin,

@@ -1,10 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using ReLogic.Content;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Animations;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
@@ -20,16 +29,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         public Vector2 Velocity;
         public float Rotation;
     }
+
     internal class Havoc : ModNPC
     {
-        private const float Default_Segment_Stretch = 2;
-        private enum ActionState
+        //Damage Values
+        private int ChargeDamage => 300;
+        private int LaserMiniDamage => 200;
+        private int LaserBigDamage => 500;
+
+        public enum ActionState
         {
             Idle,
             Charge,
             Laser,
-            Laser_Big,
-            Circle
+            Laser_Big
         }
 
         //AI
@@ -51,15 +64,24 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             set => NPC.ai[1] = value;
         }
 
-        float OrbitTimer;
+        float AttackTimer
+        {
+            get => NPC.ai[2];
+            set => NPC.ai[2] = value;
+        }
+
+        float LaserAttackDistance;
+        float OrbitDistance = 500;
         Vector2 ArenaCenter;
 
         //Draw Code
         //Segment Positions;
         HavocSegment[] Segments;
 
-        float SegmentStretch = Default_Segment_Stretch;
-        float StartSegmentStretch;
+        float SegmentStretch = 2;
+        float TargetSegmentStretch = 2;
+        float ChargeTrailOpacity;
+        bool DrawChargeTrail;
 
 
         //Attacks
@@ -73,13 +95,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
         private HavocSegment BodyMiddle => Segments[2];
         private HavocSegment BodyBack => Segments[3];
         private HavocSegment BodyTail => Segments[4];
+
+        public override void SetStaticDefaults()
+        {
+            NPCID.Sets.TrailCacheLength[Type] = 32;
+            NPCID.Sets.TrailingMode[Type] = 3;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+        }
+
         public override void SetDefaults()
         {
             NPC.width = 90;
             NPC.height = 90;
             NPC.lifeMax = 1000;
-            NPC.damage = 100;
-            NPC.boss = true;
+            NPC.damage = ChargeDamage;
             NPC.dontTakeDamage = true;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -104,12 +133,17 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             Segments[4].TexturePath = $"{BaseTexturePath}HavocTail";
         }
 
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
         public override void AI()
         {
- 
-            if(ArenaCenter == default(Vector2))
+            if (ArenaCenter == default(Vector2) && StellaMultiplayer.IsHost)
             {
                 ArenaCenter = NPC.position;
+                NPC.netUpdate = true;
             }
 
             switch (State)
@@ -126,9 +160,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
                 case ActionState.Laser_Big:
                     AI_LaserBig();
                     break;
-                case ActionState.Circle:
-                    AI_Circle();
-                    break;
             }
 
             //This controls how far apart the segments are
@@ -138,93 +169,152 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
 
             //Set head position and rotation
             //If using the worm like movement, don't forget to set the head position and rotation before calling that MoveSegments function
+            UpdateSegmentStretch();
+        }
 
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(LaserAttackDistance);
+            writer.WriteVector2(ArenaCenter);
+            writer.Write(OrbitDistance);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            LaserAttackDistance = reader.ReadSingle();
+            ArenaCenter = reader.ReadVector2();
+            OrbitDistance = reader.ReadSingle();
+        }
+
+        private void ResetState(ActionState state)
+        {
+            State = state;
+            Timer = 0;
+            AttackTimer = 0;
+        }
+
+        private ActionState ReceiveSignal()
+        {
+            foreach(NPC npc in Main.ActiveNPCs)
+            {
+                if (npc.type != ModContent.NPCType<HavocSignal>())
+                    continue;
+
+                float signal = npc.ai[0];
+                ActionState actionState = (ActionState)signal;
+                npc.Kill();
+                return actionState;
+            }
+
+            return ActionState.Idle;
+        }
+
+        private void AI_HandleSignal()
+        {
+            ActionState signal = ReceiveSignal();
+            if (signal != ActionState.Idle)
+            {
+                ResetState(signal);
+                NPC.netUpdate = true;
+            }
         }
 
         private void AI_Idle()
         {
+            DrawChargeTrail = false;
             NPC.TargetClosest();
-
-            //Orbit Around
-            float orbitDistance = 500;
-            float speed = 20;
-            OrbitTimer += 0.01f;
-            Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
-            Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
-            NPC.velocity = targetVelocity;
-            NPC.rotation = targetVelocity.ToRotation();
-            SegmentStretch = MathHelper.Lerp(SegmentStretch, Default_Segment_Stretch, 0.03f);
-
-            Timer++;
-            if(Timer >= 500)
+            
+            OrbitDistance+=100;
+            if(OrbitDistance >= 500)
             {
-                State = ActionState.Charge;
-                Timer = 0;
+                OrbitDistance = 500;
             }
 
+            AI_MoveInOrbit();
+            AI_HandleSignal();
+
+            NPC.rotation = NPC.velocity.ToRotation();
+            TargetSegmentStretch = 2;
             Head.Position = NPC.position;
             Head.Rotation = NPC.rotation;
             MoveSegmentsLikeWorm();
+        }
+
+        private void AI_MoveInOrbit()
+        {
+            //Orbit Around
+            Vector2 direction = ArenaCenter.DirectionTo(NPC.Center);
+            direction = direction.RotatedBy(MathHelper.TwoPi / 720);
+            Vector2 targetCenter = ArenaCenter + direction * OrbitDistance;
+            AI_MoveToward(targetCenter, 4);
+        }
+
+        private void UpdateSegmentStretch()
+        {
+            SegmentStretch = MathHelper.Lerp(SegmentStretch, TargetSegmentStretch, 0.04f);
+        }
+
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return State == ActionState.Charge;
         }
 
         private void AI_Charge()
         {
             Player target = Main.player[NPC.target];
             Timer++;
-
-            float orbitDistance = MathHelper.Lerp(500, 300, Timer / 150);
             if (Timer < 100)
             {
                 if (Timer == 1)
                 {
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), NPC.position);
                     NPC.TargetClosest();
-                    StartSegmentStretch = SegmentStretch;
                 }
 
                 //Ease in
-                float progress = Timer / 100;
-                float easedProgress = Easing.InOutCubic(progress);
-                SegmentStretch = MathHelper.Lerp(StartSegmentStretch, 1f, easedProgress);
-
+                TargetSegmentStretch = 1f;
                 ChargeDirection = NPC.Center.DirectionTo(target.Center);
 
-               
-                float speed = 20;
-                OrbitTimer += 0.02f;
-                Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
-                Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
-                NPC.velocity = targetVelocity;
+                AI_MoveInOrbit();
                 NPC.velocity *= 0.8f;
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
-            } 
+            }
             else if (Timer < 150)
             {
                 ChargeDirection = NPC.Center.DirectionTo(target.Center);
-                float speed = 20;
-                OrbitTimer += 0.02f;
-                Vector2 targetCenter = MovementHelper.OrbitAround(ArenaCenter, Vector2.UnitY, orbitDistance, OrbitTimer);
-                Vector2 targetVelocity = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, speed);
-                NPC.velocity = targetVelocity;
+                AI_MoveInOrbit();
                 NPC.velocity *= 0.3f;
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, ChargeDirection.ToRotation(), 0.08f);
-            } 
-            else if(Timer == 151)
-            {
-                NPC.velocity = ChargeDirection * 40;
-            } 
-            else if (Timer < 230)
-            {
-                float timer = Timer - 151;
-                float maxTimer = 230 - 151;
-
-                float progress = timer / maxTimer;
-                float easedProgress = Easing.InOutCubic(progress);
-                SegmentStretch = MathHelper.Lerp(1f, Default_Segment_Stretch, easedProgress);
+                for (int i = 0; i < NPC.oldPos.Length; i++)
+                {
+                    NPC.oldPos[i] = NPC.position;
+                }
             }
-            else if (Timer == 230)
+            else if (Timer < 180)
             {
-                State = ActionState.Idle;
-                Timer = 0;
+                DrawChargeTrail = true;
+          
+
+                if (Timer == 151)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+                }
+                NPC.velocity = ChargeDirection * 40;
+            }
+            else if (Timer < 240)
+            {
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.Pi / 60);
+                NPC.velocity *= 0.96f;
+                NPC.rotation = NPC.velocity.ToRotation();
+                TargetSegmentStretch = 1;
+            }
+            else
+            {
+  
+                ResetState(ActionState.Idle);
             }
 
             Head.Position = NPC.position;
@@ -232,19 +322,267 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             MoveSegmentsLikeWorm();
         }
 
+
+        private void AI_MoveToward(Vector2 targetCenter, float speed = 8)
+        {
+            //chase target
+            Vector2 directionToTarget = NPC.Center.DirectionTo(targetCenter);
+            float distanceToTarget = Vector2.Distance(NPC.Center, targetCenter);
+            if (distanceToTarget < speed)
+            {
+                speed = distanceToTarget;
+            }
+
+            Vector2 targetVelocity = directionToTarget * speed;
+
+            if (NPC.velocity.X < targetVelocity.X)
+            {
+                NPC.velocity.X++;
+                if (NPC.velocity.X >= targetVelocity.X)
+                {
+                    NPC.velocity.X = targetVelocity.X;
+                }
+            }
+            else if (NPC.velocity.X > targetVelocity.X)
+            {
+                NPC.velocity.X--;
+                if (NPC.velocity.X <= targetVelocity.X)
+                {
+                    NPC.velocity.X = targetVelocity.X;
+                }
+            }
+
+            if (NPC.velocity.Y < targetVelocity.Y)
+            {
+                NPC.velocity.Y++;
+                if (NPC.velocity.Y >= targetVelocity.Y)
+                {
+                    NPC.velocity.Y = targetVelocity.Y;
+                }
+            }
+            else if (NPC.velocity.Y > targetVelocity.Y)
+            {
+                NPC.velocity.Y--;
+                if (NPC.velocity.Y <= targetVelocity.Y)
+                {
+                    NPC.velocity.Y = targetVelocity.Y;
+                }
+            }
+        }
+
         private void AI_Laser()
         {
+            Vector2 arenaLeft = ArenaCenter + new Vector2(-4000, 0);
+            if (AttackTimer == 0)
+            {  
+                float distanceToLeft = Vector2.Distance(NPC.Center, arenaLeft);
+                AI_MoveToward(arenaLeft, 32);
+                if (distanceToLeft <= 16)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        LaserAttackDistance = Main.rand.NextFloat(16, 750);
+                        TargetSegmentStretch = Main.rand.NextFloat(2, 5);
+                        NPC.netUpdate = true;
+                    }
+        
+            
+                    AttackTimer++;
+                }
+            } 
+            else if (AttackTimer == 1)
+            {
+                //Delay before he charges
+                NPC.velocity *= 0.8f;
+                Timer++;
+                if(Timer >= 45)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } 
+            else if (AttackTimer == 2)
+            {
+                float speed = 32;
+                Vector2 arenaCenterOffset = ArenaCenter + new Vector2(288, 0);
+                float distanceToTarget = Vector2.Distance(NPC.Center, arenaCenterOffset);
+                AI_MoveToward(arenaCenterOffset, speed);
+                if(distanceToTarget <= LaserAttackDistance)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } 
+            else if (AttackTimer == 3)
+            {
+                if(NPC.velocity.Length() <= 1f)
+                {
+                    NPC.velocity = Vector2.UnitX;
+                }
+                else
+                {
+                    NPC.velocity *= 0.94f;
+                }
+                
+            
+                Timer++;
 
+                if(Timer == 1)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_WaveCharge");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+
+
+                }
+      
+                //Visuals
+                for (int i = 1; i < Segments.Length- 1; i++)
+                {
+                    var segment = Segments[i];
+                    float progress = Timer / 60;
+                    float minParticleSpawnSpeed = 8;
+                    float maxParticleSpawnSpeed = 2;
+                    int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
+                    if (Timer % particleSpawnSpeed == 0)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            Vector2 pos = segment.Center + Main.rand.NextVector2CircularEdge(168, 168);
+                            Vector2 vel = (segment.Center - pos).SafeNormalize(Vector2.Zero) * 4;
+                            Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, 0, Color.OrangeRed);
+                        }
+                    }
+                }
+
+                if(Timer >= 60)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } 
+            else if (AttackTimer == 4)
+            {
+                Timer++;
+                if(Timer == 0)
+                {
+                    NPC.velocity = Vector2.UnitX;
+        
+                }
+
+                if(Timer == 1)
+                {
+                    for (int i = 1; i < Segments.Length - 1; i++)
+                    {
+                        var segment = Segments[i];
+                        Vector2 velocity = Vector2.UnitY;
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            int type = ModContent.ProjectileType<HavocLaserWarnProj>();
+                            Vector2 pos = segment.Center;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, velocity,
+                                type, LaserMiniDamage, 0, Main.myPlayer);
+                        }
+                    }
+                }
+
+               
+                NPC.velocity *= 1.02f;
+                if(Timer >= 120)
+                {
+                    ResetState(ActionState.Idle);
+                }
+            }
+
+            float velocityRotation = NPC.velocity.ToRotation();
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, velocityRotation, 0.08f);
+            Head.Position = NPC.position;
+            Head.Rotation = NPC.rotation;
+            MoveSegmentsLikeWorm();
         }
 
         private void AI_LaserBig()
         {
+            Player target = Main.player[NPC.target];
+            if (AttackTimer == 0)
+            {
+                NPC.TargetClosest();
+                Timer++;
+                if(Timer == 1)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge2");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+                }
 
-        }
+                TargetSegmentStretch = 1;
+                AI_MoveInOrbit();
+                NPC.rotation = NPC.velocity.ToRotation();
 
-        private void AI_Circle()
-        {
+                //Charge Particles
+                float progress = OrbitDistance / 500;
+                float minParticleSpawnSpeed = 8;
+                float maxParticleSpawnSpeed = 2;
+                int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
+                if (Timer % particleSpawnSpeed == 0)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
+                        Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
+                        Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, 0, Color.OrangeRed);
+                    }
+                }
 
+                OrbitDistance-=2;
+                if (OrbitDistance <= 0)
+                {
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            } 
+            else if (AttackTimer == 1)
+            {
+                NPC.velocity *= 0.98f;
+                if(Timer == 1)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+
+        
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        int type = ModContent.ProjectileType<HavocLaserBigProj>();
+                        int damage = LaserBigDamage;
+                        int knockback = 1;
+                        Vector2 pos = NPC.Center;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                            type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                    }
+                }
+                
+                if(Timer % 2 == 0)
+                {
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.position, 1024, 16);
+                    Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(64, 64);
+                    Vector2 vel = NPC.rotation.ToRotationVector2() * 8;
+                    float scale = Main.rand.NextFloat(2.5f, 3.75f);
+                    Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), vel, 0, Color.OrangeRed, scale).noGravity = true;
+                    if (Main.rand.NextBool(10))
+                    {
+                        Dust.NewDustPerfect(pos, ModContent.DustType<TSmokeDust>(), vel, 0, Color.OrangeRed, scale / 2).noGravity=true;
+                    }
+                }
+
+                NPC.rotation += MathHelper.TwoPi / 360;
+                Timer++;
+                if(Timer >= 360)
+                {
+                    ResetState(ActionState.Idle);
+                }
+            }
+
+            Head.Position = NPC.position;
+            Head.Rotation = NPC.rotation;
+            MoveSegmentsLikeWorm();
         }
 
         public override void PostAI()
@@ -253,18 +591,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             for (int i = 0; i < Segments.Length; i++)
             {
                 Segments[i].Position += Segments[i].Velocity;
-            }
-        }
-
-        private void MoveSegmentsInLine(Vector2 direction)
-        {
-            for(int i = 1; i < Segments.Length; i++)
-            {
-                ref HavocSegment segment = ref Segments[i];
-                ref HavocSegment frontSegment = ref Segments[i - 1];
-                Vector2 offset = direction * segment.Size.X * SegmentStretch;
-                Vector2 targetPosition = frontSegment.Position + offset;
-                segment.Position = Vector2.Lerp(segment.Position, targetPosition, 0.5f);
             }
         }
 
@@ -331,10 +657,58 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
         }
 
+
+        public float WidthFunctionCharge(float completionRatio)
+        {
+            return NPC.width * NPC.scale / 0.75f * (1f- completionRatio);
+        }
+
+        public Color ColorFunctionCharge(float completionRatio)
+        {
+            if (!DrawChargeTrail)
+            {
+                ChargeTrailOpacity -= 0.05f;
+                if (ChargeTrailOpacity <= 0)
+                    ChargeTrailOpacity = 0;
+            }
+            else
+            {
+                ChargeTrailOpacity += 0.05f;
+                if (ChargeTrailOpacity >= 1)
+                    ChargeTrailOpacity = 1;
+            }
+
+            Color color = Color.Lerp(Color.Orange, Color.Red, 0.2f);
+            return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f) * ChargeTrailOpacity * (1f - completionRatio);
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
         internal PrimitiveTrail BeamDrawer;
         Vector2 HitboxFixer = new Vector2(90, 90) / 2;
+        int warningFrameCounter;
+        int warningFrameTick;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if(State == ActionState.Charge)
+            {
+                Texture2D warningTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/IrradiaNHavoc/Havoc/Projectiles/HavocWarnChargeProj").Value;
+                Player target = Main.player[NPC.target];
+                Vector2 drawPosition = target.Center - screenPos;
+                Vector2 drawOffset = new Vector2(0, -16);
+
+                spriteBatch.Draw(warningTexture, drawPosition + drawOffset, warningTexture.AnimationFrame(ref warningFrameCounter, ref warningFrameTick, 4, 4, true), Color.White, 0, warningTexture.Size() / 2, 1f, SpriteEffects.None, 0);
+                Lighting.AddLight(target.Center + drawOffset, Color.Red.ToVector3() * 2.25f);
+            }
+
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
+
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
+            Vector2 size = new Vector2(90, 90);
+            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
+
             //Draw Chain
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);

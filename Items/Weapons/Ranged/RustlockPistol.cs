@@ -18,7 +18,7 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override void SetDefaults()
 		{
-			Item.damage = 45;
+			Item.damage = 30;
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 56;
 			Item.height = 56;
@@ -34,6 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shopCustomPrice = 23;
 			Item.shootSpeed = 15;
 			Item.useAmmo = AmmoID.Bullet;
+            Item.noMelee = true;
         }
 
     }

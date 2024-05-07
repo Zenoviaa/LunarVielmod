@@ -15,7 +15,7 @@ namespace Stellamod.Assets.Biomes
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Starbloom");
 
 		// Sets how the Scene Effect associated with this biome will be displayed with respect to vanilla Scene Effects. For more information see SceneEffectPriority & its values.
-		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeMedium; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;

@@ -20,6 +20,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Melee.Greatswords;
+using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Melee.Safunais;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
@@ -27,6 +28,7 @@ using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Stellamod.Items.Weapons.Whips;
 using System.Collections.Generic;
 using System.Linq;
@@ -479,9 +481,9 @@ namespace Stellamod.NPCs.Town
 						switch (Main.rand.Next(3))
 						{
 							case 0:
-							
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
 
-								break;
+                                break;
 
 							case 1:
 								
@@ -513,7 +515,7 @@ namespace Stellamod.NPCs.Town
 								break;
 
 							case 2:
-
+								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
 								break;
 
 						}

@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>Stellamod</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -55,6 +53,7 @@
     <None Remove="Buffs\Starbombin.png" />
     <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
+    <None Remove="Buffs\Whipfx\ColdheartAnklebiterDebuff.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
     <None Remove="Buffs\Whipfx\SineSireDebuff.png" />
@@ -251,6 +250,7 @@
     <None Remove="Items\Weapons\Ranged\TychineGun.png" />
     <None Remove="Items\Weapons\Ranged\VoidBlaster.png" />
     <None Remove="Items\Weapons\Ranged\VoidSkull.png" />
+    <None Remove="Items\Weapons\Ranged\WaterGun.png" />
     <None Remove="Items\Weapons\Ranged\WingedFury.png" />
     <None Remove="Items\Weapons\Ranged\Wingspand.png" />
     <None Remove="Items\Weapons\Summon\AlcadWandMinionBuff.png" />
@@ -299,12 +299,13 @@
     <None Remove="Items\Weapons\Summon\X3144.png" />
     <None Remove="Items\Weapons\Summon\XScissor.png" />
     <None Remove="Items\Weapons\Summon\XScissorMinion.png" />
+    <None Remove="Items\Weapons\Thrown\Jugglers\BasicBaseball.png" />
     <None Remove="Items\Weapons\Thrown\LarvaedSpear.png" />
     <None Remove="Localization\en-US\Mods.Stellamod.Dialogue.hjson" />
     <None Remove="NPCs\Bosses\DaedusRework\DaedusR_Head_Boss.png" />
     <None Remove="NPCs\Bosses\DaedusRework\DRay - Copy.png" />
-    <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagram - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramMid - Copy.png" />
+    <None Remove="NPCs\Bosses\DreadMire\DreadMirePentagramV2.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadMireZapwarnBig - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffect - Copy.png" />
     <None Remove="NPCs\Bosses\DreadMire\DreadSpawnEffectSmol.png" />
@@ -317,6 +318,9 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
+    <None Remove="NPCs\Bosses\IrradiaNHavoc\Irradia\StartIrradia.png" />
+    <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
+    <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
@@ -447,6 +451,7 @@
     <None Remove="Projectiles\Magic\CandleShotProj1.png" />
     <None Remove="Projectiles\Magic\CandleShotProj2.png" />
     <None Remove="Projectiles\Magic\GoldenHBalls.png" />
+    <None Remove="Projectiles\Magic\GoldenHoes.png" />
     <None Remove="Projectiles\Magic\ImperfectionProj.png" />
     <None Remove="Projectiles\Magic\LampShot.png" />
     <None Remove="Projectiles\Magic\LightSpandProg.png" />
@@ -455,6 +460,7 @@
     <None Remove="Projectiles\Magic\Poyashot2.png" />
     <None Remove="Projectiles\Magic\RhamenthalProjHold.png" />
     <None Remove="Projectiles\Magic\SparkBallsP.png" />
+    <None Remove="Projectiles\Magic\TorrentialLanceBubbleProj.png" />
     <None Remove="Projectiles\Meatball4.png" />
     <None Remove="Projectiles\Paint\InkingSProj2.png" />
     <None Remove="Projectiles\Paint\InkingSThrow.png" />
@@ -482,9 +488,17 @@
     <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_Glow.png" />
     <None Remove="Projectiles\Safunai\Rinavine\RinavineProj_White.png" />
     <None Remove="Projectiles\ScissorianSlash2.png" />
+    <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj.png" />
+    <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj2.png" />
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\IshBoomer.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\VireProj2.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\VireProj2_Chain.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\VireProj2_Glow.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\VireProj2_White.png" />
+    <None Remove="Projectiles\Slashers\IshNYire\YireBoomer.png" />
     <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />
@@ -516,9 +530,11 @@
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
+    <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
     <None Remove="Projectiles\VoidRain.png" />
     <None Remove="Projectiles\VRay.png" />
     <None Remove="Projectiles\WataBoom2.png" />
+    <None Remove="Projectiles\Whips\ColdheartAnklebiterIcicleProj.png" />
     <None Remove="Projectiles\Whips\LaceratorProj.png" />
     <None Remove="Projectiles\ZuiRay.png" />
     <None Remove="Textures\Backglow.png" />
@@ -533,7 +549,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Accord.Fuzzy" Version="3.8.0" />
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />

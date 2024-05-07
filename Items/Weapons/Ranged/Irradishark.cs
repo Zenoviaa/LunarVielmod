@@ -30,7 +30,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Item11;
             Item.autoReuse = true;
             Item.useAmmo = AmmoID.Bullet;
-		}
+            Item.noMelee = true;
+        }
 
 		public override Vector2? HoldoutOffset()
 		{

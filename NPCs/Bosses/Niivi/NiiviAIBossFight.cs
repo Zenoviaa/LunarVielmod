@@ -4,6 +4,7 @@ using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
@@ -11,6 +12,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
 {
     internal partial class Niivi
     {
+        //Damage Values
+        int P1_LightningDamage => 240;
+        int P1_FrostBreathDamage => 120;
+        int P1_StarWrathDamage => 40;
+        int P1_LaserDamage => 500;
+
         Player Target => Main.player[NPC.target];
         IEntitySource EntitySource => NPC.GetSource_FromThis();
         float DirectionToTarget
@@ -26,7 +33,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         int AttackCount;
         int AttackSide;
         bool DoAttack;
+        bool IsCharging;
         Vector2 AttackPos;
+        Vector2 ChargeDirection;
         Vector2 LaserAttackPos;
         private void AIBossFight()
         {
@@ -59,6 +68,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case BossActionState.Baby_Dragons:
                     AI_BabyDragons();
                     break;
+                case BossActionState.Calm_Down:
+                    AI_CalmDown();
+                    break;
             }
             UpdateOrientation();
         }
@@ -66,6 +78,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Idle()
         {
             NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                //Despawn basically
+                ResetState(BossActionState.Calm_Down);
+            }
             Timer++;
             if(Timer >= 15)
             {
@@ -92,6 +109,19 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     ParticleManager.NewParticle<T>(pos, vel, Color.White, 1f);
                 }
             }
+        }
+
+        private void AI_CalmDown()
+        {
+            Timer++;
+            if(Timer >= 60)
+            {
+                ResetState(ActionState.Roaming);
+                ResetState(BossActionState.Idle);
+            }
+
+            UpdateOrientation();
+            NPC.velocity *= 0.98f;
         }
 
         private void AI_FrostBreath()
@@ -235,7 +265,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
 
                     int type = ModContent.ProjectileType<NiiviFrostBreathProj>();
-                    int damage = NPC.ScaleFromContactDamage(0.25f);
+                    int damage = P1_FrostBreathDamage;
                     float knockback = 1;
 
                     if (StellaMultiplayer.IsHost)
@@ -288,7 +318,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     Vector2 spawnPos = NPC.Center + Main.rand.NextVector2Circular(128, 128);
                     velocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    int damage = NPC.ScaleFromContactDamage(0.25f);
+                    int damage = P1_FrostBreathDamage / 2;
                     float knockback = 1; 
                     
                     if (StellaMultiplayer.IsHost)
@@ -506,7 +536,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     float distance = Vector2.Distance(NPC.Center, LaserAttackPos);
 
                     int type = ModContent.ProjectileType<NiiviLaserBlastProj>();
-                    int damage = NPC.ScaleFromContactDamage(1f);
+                    int damage = P1_LaserDamage;
                     float knockback = 1;
                     if (StellaMultiplayer.IsHost)
                     {
@@ -562,7 +592,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if(Timer % 8 == 0 && StellaMultiplayer.IsHost)
                 {
                     int type = ModContent.ProjectileType<NiiviCometProj>();
-                    int damage = NPC.ScaleFromContactDamage(0.33f);
+                    int damage = P1_StarWrathDamage;
                     int knockback = 1;
 
                     float height = 768;
@@ -578,7 +608,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if(Timer >= 360)
                 {
-                    NextAttack = BossActionState.Frost_Breath;
+                    NextAttack = BossActionState.Charge;
                     ResetState(BossActionState.Swoop_Out);
                 }
             }
@@ -586,12 +616,151 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_Charge()
         {
+            NPC.rotation = 0;
+            Timer++;
+            if(Timer < 100)
+            {
+                OrientArching();
+                if (Timer == 1)
+                {
+                    NPC.TargetClosest();
+                }
 
+                NPC.velocity *= 0.8f;
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                TargetHeadRotation = directionToTarget.ToRotation();
+
+                LookDirection = DirectionToTarget;
+                FlipToDirection();
+            } 
+            else if (Timer < 150)
+            {
+                ChargeDirection = NPC.Center.DirectionTo(Target.Center);
+                NPC.velocity *= 0.3f;
+                TargetHeadRotation = MathHelper.Lerp(TargetHeadRotation, ChargeDirection.ToRotation(), 0.08f);
+                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
+                for (int i = 0; i < NPC.oldPos.Length; i++)
+                {
+                    NPC.oldPos[i] = NPC.position;
+                }
+
+                LookDirection = DirectionToTarget;
+                FlipToDirection();
+            }
+            else if (Timer < 180)
+            {
+                IsCharging = true;
+                TargetSegmentRotation = 0;
+                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
+
+                //DrawChargeTrail = true;
+                if (Timer == 151)
+                {
+                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
+                    SoundEngine.PlaySound(soundStyle, NPC.position);
+                }
+                NPC.velocity = ChargeDirection * 40;
+            }
+            else if (Timer < 240)
+            {
+                IsCharging = false;
+                OrientArching();
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.Pi / 60);
+                NPC.velocity *= 0.96f;
+               
+            }
+            else
+            {
+                IsCharging = false;
+                Timer = 0;
+                AttackCount++;
+                if(AttackCount >= 3)
+                {
+                    NextAttack = BossActionState.Thunderstorm;
+                    ResetState(BossActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_Thunderstorm()
         {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            //Aight, this shouldn't be too hard to do
+            //She flies up and rains down lightning
+            if (AttackTimer == 0)
+            {
+                Timer++;
 
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+                if (Timer >= 60)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            } else if (AttackTimer == 1)
+            {
+                Timer++;
+                shaderSystem.TintScreen(Color.Black, 0.5f);
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+
+                NPC.velocity *= 1.05f;
+                if(Timer >= 60)
+                {
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            } else if (AttackTimer == 2)
+            {
+                NPC.velocity *= 0.98f;
+                Timer++;
+
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+
+                if (Timer == 1)
+                {
+                    LaserAttackPos = Target.Center;
+                }
+
+                if(Timer > 30 && Timer % 15 == 0 && StellaMultiplayer.IsHost)
+                {
+                    Vector2 pos = Target.Center + Target.velocity * 48;
+                    pos += new Vector2(Main.rand.NextFloat(-64, 64), 0);
+                    Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
+                        ModContent.ProjectileType<NiiviThundercloudProj>(), P1_LightningDamage, 2, Main.myPlayer);
+                }
+
+                if(Timer >= 90)
+                {
+                    AttackCount++;
+                    Timer = 0;
+                }
+                if(AttackCount >= 4)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } else if (AttackTimer == 3)
+            {
+                NPC.velocity *= 0.98f;
+                Timer++;
+                if(Timer == 45 && StellaMultiplayer.IsHost)
+                {
+                    Vector2 pos = Target.Center + Target.velocity * 48;
+                    Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
+                        ModContent.ProjectileType<NiiviLightningRayWarnProj>(), P1_LightningDamage, 2, Main.myPlayer);
+                }
+
+                if(Timer >= 90)
+                {
+                    shaderSystem.UnTintScreen();
+                    NextAttack = BossActionState.Frost_Breath;
+                    ResetState(BossActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_BabyDragons()

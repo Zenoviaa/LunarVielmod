@@ -30,7 +30,7 @@ namespace Stellamod.Backgrounds
 
 		public override int ChooseFarTexture()
 		{
-			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/MarrowBiomeSurfaceMid");
+			return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/IceyBiomeBackground");
 			
 		}
 

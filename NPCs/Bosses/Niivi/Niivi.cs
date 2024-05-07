@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,7 +33,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Thunderstorm,
             Baby_Dragons,
             Swoop_Out,
-            PrepareAttack
+            PrepareAttack,
+            Calm_Down
         }
 
         public ActionState State
@@ -81,8 +84,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override void SetDefaults()
         {
             //Stats
-            NPC.lifeMax = 192000;
-            NPC.defense = 75;
+            NPC.lifeMax = 232000;
+            NPC.defense = 90;
             NPC.damage = 240;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
@@ -113,6 +116,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             //Return false for no Contact Damage
+            if (BossState == BossActionState.Charge)
+                return IsCharging;
             return false;
         }
 
@@ -128,8 +133,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else
             {
-                NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+                Timer = 0;
+                AttackTimer = 0;
+                AttackCount = 0;
+                NextAttack = BossActionState.Frost_Breath;
                 Music = -1;
+
+                NPC.boss = false;
+                NPC.BossBar = null;
+                NPC.netUpdate = true;
             }
         }
 
@@ -188,6 +200,20 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     AIBossFight();
                     break; 
             }
+        }
+
+        public override void OnKill()
+        {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.UnTintScreen();
+            shaderSystem.UnDistortScreen();
+            shaderSystem.UnVignetteScreen();
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<PureHeart>()));
         }
     }
 }

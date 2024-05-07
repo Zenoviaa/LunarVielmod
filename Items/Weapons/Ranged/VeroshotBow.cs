@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Bow;
@@ -32,6 +33,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.channel = true;
             Item.scale = 1f;
             Item.consumeAmmoOnLastShotOnly = true;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

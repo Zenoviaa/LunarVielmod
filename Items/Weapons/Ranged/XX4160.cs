@@ -39,7 +39,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 35f;
             Item.useAmmo = AmmoID.Bullet;
-
+            Item.noMelee = true;
 
         }
 

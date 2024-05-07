@@ -12,7 +12,7 @@ namespace Stellamod.Helpers
         public static Color OrbWeaponType => new Color(0, Main.DiscoG, 150, 0f);
 
         public static Color SteinWeaponType => new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 0f);
-
+        public static Color JugglerWeaponType => new Color(Main.DiscoR, 0, Main.DiscoB, 0f);
         public static Color GreatswordWeaponType => new Color(Main.DiscoR, 150, 150, 0f);
         public static Color GunHolsterWeaponType => new Color(0, 150, Main.DiscoB, 0f);
 

@@ -66,7 +66,7 @@ MorrowedBroochA: {
 	Tooltip:
 		'''
 		+2 Defense
-		+10% increased ranged damage
+		+2% increased ranged damage
 		+25% increased arrow damage
 		Use the power of the deep dark fable..
 		'''
@@ -2428,7 +2428,12 @@ TomeOfTheSingularity: {
 
 TorrentialLance: {
 	DisplayName: Torrential Lance
-	Tooltip: ""
+	Tooltip:
+		'''
+		Use it to lance through your enemies! 
+		Leaves behind bubbles after hitting an enemy
+		You'll be invincible for a bit, be careful though, you're vulnerable at the end of the dash
+		'''
 }
 
 VoidsGrasp: {
@@ -5623,7 +5628,6 @@ GovheilWarriorBroochA: {
 		Halves the mana cost of any magic weapon!
 		+15% Magic damage
 		+6 Defense too!
-		+12% Damage!
 		Auto-Swing!
 		'''
 }
@@ -6799,4 +6803,166 @@ AntlionWings: {
 ZuiBomb: {
 	Tooltip: Every little while, when hitting an enemy, Zui's power will explode and do pretty good damage!
 	DisplayName: Zui Bomb
+}
+
+HavocSignaler: {
+	Tooltip: ""
+	DisplayName: Havoc Signaler
+}
+
+IcelockLongbow: {
+	DisplayName: Icelock Longbow
+	Tooltip: Shoots more arrows with each shot, eventually firing off a powerful star!
+}
+
+Chillrend: {
+	DisplayName: Chillrend
+	Tooltip: ""
+}
+
+ManifestedCommitment: {
+	DisplayName: Manifested Commitment
+	Tooltip: Down to the very core, Irradia was commmitted to restoring her castle waiting for Verlia and Gothivia to come back.
+}
+
+IshNYire: {
+	DisplayName: Ish N Yire
+	Tooltip:
+		'''
+		Cursed under the reign of Ereshkigal
+		Has 4 Modes!
+		---------------------------
+		Dual Vire Mode: Swings dual chains that do high damage, best used in medium range situations and crowds!
+		Ish Mode: Throw a high-damage spinning sword that will shred enemies apart!
+		Yire Mode: A slashing sword best used in super long ranges or super close ranges for extreme damage!
+		Ish N Yire Mode: Throws Boomerang swords into enemies for easy pickens. Does great damage at all ranges!
+
+		'''
+}
+
+AzuretoothNecklace: {
+	DisplayName: Azuretooth Necklace
+	Tooltip: Channels the energy of Illuria to summon homing spectral dragons!
+}
+
+ColdheartAnklebiter: {
+	DisplayName: Coldheart Anklebiter
+	Tooltip:
+		'''
+		{$CommonItemTooltip.SummonTagDamage}
+		{$CommonItemTooltip.Whips}
+		Strike enemies to chill them!
+		Enemies hit by summons explode with icicles
+		'''
+}
+
+Bincle: {
+	Tooltip: Destruction of all the Bincles, use your magical mirror to shoot sparks.
+	DisplayName: Bincle Fracture
+}
+
+Relagis: {
+	Tooltip: Zui's light fills you up.
+	DisplayName: Relagis
+}
+
+Opinine: {
+	Tooltip: Shoot from the heavens, built with radiance!
+	DisplayName: Opinine
+}
+
+WaterGun: {
+	Tooltip: ""
+	DisplayName: Water Gun
+}
+
+DogmaBalls: {
+	DisplayName: Dogma Balls
+	Tooltip: ""
+}
+
+Tulahal: {
+	Tooltip: Create a flaming hurricane from the old irradiated power of the Govheil. Control the wind and flame.
+	DisplayName: Tulahal
+}
+
+BasicBaseball: {
+	DisplayName: Basic Baseball
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		Stacks infinitely
+		'''
+}
+
+Volcant: {
+	Tooltip: ""
+	DisplayName: Volcant
+}
+
+SmallVeilPottery: {
+	Tooltip: ""
+	DisplayName: Small Veil Pottery
+}
+
+Catagrass: {
+	DisplayName: Catagrass
+	Tooltip: ""
+}
+
+RobedCatastone: {
+	DisplayName: Robed Catastone
+	Tooltip: ""
+}
+
+SpikedLobber: {
+	DisplayName: Spiked Lobber
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		After a combo of 5, it spews out spikes when bouncing
+		Stacks infinitely
+		'''
+}
+
+StickyCards: {
+	DisplayName: Magic Cards
+	Tooltip:
+		'''
+		After hitting an enemy, the card bounces off
+		Catch the card to gain a damage bonus to your next throw!
+		Attaches a line of aura to your card, which drags it back to you!
+		Stacks infinitely
+		'''
+}
+
+DaggerDagger: {
+	DisplayName: Dagger Dagger
+	Tooltip:
+		'''
+		After hitting an enemy, the knife bounces off
+		Catch the knife to gain a damage bonus to your next throw!
+		Right click to throw a charged knife that lifesteals
+		Knife
+		'''
+}
+
+DreadFragment: {
+	DisplayName: Dread Fragment
+	Tooltip:
+		'''
+		Contains a fragment of Dread Mire's power
+		With enough of these, perhaps you could anger her...
+		'''
+}
+
+DreadMedalion: {
+	DisplayName: Dread Medalion
+	Tooltip:
+		'''
+		Use at night to call down Dread Mire to fight you!
+		Overflowing with Dread
+		'''
 }

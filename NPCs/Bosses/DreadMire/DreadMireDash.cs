@@ -15,6 +15,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     internal class DreadMireDash : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Sun Death");
@@ -37,10 +38,27 @@ namespace Stellamod.NPCs.Bosses.DreadMire
         {
             Projectile.velocity *= 1.01f;
             Projectile.spriteDirection = Projectile.direction;
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] == 2)
+            Timer++;
+            if (Timer == 2)
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + 1.57f + 3.14f;
+            }
+
+
+            if(Timer % 6 == 0 && Main.myPlayer == Projectile.owner)
+            {
+                Vector2 velocity;
+                if (Main.rand.NextBool(2))
+                {
+                    velocity = Projectile.velocity.RotatedBy(MathHelper.PiOver2);
+                }
+                else
+                {
+                    velocity = Projectile.velocity.RotatedBy(-MathHelper.PiOver2);
+                }
+                velocity *= 0.3f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                    ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
             Dust dust = Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<RuneDust>());

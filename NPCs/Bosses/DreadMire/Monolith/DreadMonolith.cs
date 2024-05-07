@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.Particles;
 using System;
@@ -11,6 +13,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -19,7 +22,7 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
 {
-
+    [AutoloadBossHead]
     public class DreadMonolith : ModNPC
     {
         private int _radiusCounter;
@@ -29,6 +32,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 14;
+            NPCID.Sets.ActsLikeTownNPC[Type] = true;
         }
 
         private void OnlyTakeDamageWhenClose()
@@ -73,6 +77,41 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             Lighting.AddLight(NPC.Center, 1.6f * num, 0.4f * num, 0.8f * num);
         }
 
+        public override bool CheckActive()
+        {
+            //Returning false here makes it's not despawn
+            return false;
+        }
+
+        public override ITownNPCProfile TownNPCProfile()
+        {
+            return new DreadMonolithPersonProfile();
+        }
+
+        public class DreadMonolithPersonProfile : ITownNPCProfile
+        {
+            public int RollVariation() => 0;
+            public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+            public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+            {
+                if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith");
+
+                if (npc.altTexture == 1)
+                    return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith_Head");
+
+                return ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith");
+            }
+
+            public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("Stellamod/NPCs/Bosses/DreadMire/Monolith/DreadMonolith_Head");
+        }
+
+        public override bool CanChat()
+        {
+            return false;
+        }
+
 
         public override void FindFrame(int frameHeight)
         {
@@ -104,6 +143,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
             NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
             NPC.noGravity = true;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -139,6 +179,30 @@ namespace Stellamod.NPCs.Bosses.DreadMire.Monolith
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, Color.Purple, 0.3f);
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Blood, 2.5f * hit.HitDirection, -2.5f, 0, default, .34f);
                 }
+            }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npcLoot);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DreadFragment>()));
+        }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            int monolithNumber = (int)NPC.ai[1];
+            switch (monolithNumber)
+            {
+                case 0:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith1, -1);
+                    break;
+                case 1:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith2, -1);
+                    break;
+                case 2:
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedDreadMonolith3, -1);
+                    break;
             }
         }
 

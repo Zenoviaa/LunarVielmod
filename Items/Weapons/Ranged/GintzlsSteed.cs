@@ -28,13 +28,14 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.useAnimation = 12;
             Item.useTime = 4; // one third of useAnimation
             Item.reuseDelay = 14;
+            Item.noMelee = true;
         }
 
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemType<GintzlMetal>(), 11);
-            recipe.AddTile(TileID.HeavyWorkBench);
+            recipe.AddTile(TileID.Anvils);
             recipe.Register();
         }
 

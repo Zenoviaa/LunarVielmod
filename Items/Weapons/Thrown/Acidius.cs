@@ -38,7 +38,7 @@ namespace Stellamod.Items.Weapons.Thrown
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.BorealWood, 10);
+            recipe.AddIngredient(ModContent.ItemType<LostScrap>(), 10);
             recipe.AddIngredient(ModContent.ItemType<Plantius>(), 1);
             recipe.AddIngredient(ModContent.ItemType<VirulentPlating>(), 15);
             recipe.AddTile(TileID.WorkBenches);

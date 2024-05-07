@@ -180,6 +180,12 @@ namespace Stellamod.NPCs.Event.Luminull
                 }
             }
         }
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            return true;
+        }
+
         public override void AI()
         {
             NPC.ai[1]++;

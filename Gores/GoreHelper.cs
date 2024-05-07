@@ -14,5 +14,6 @@ namespace Stellamod.Gores
         public static int TypeSplashOrange => ModContent.Find<ModGore>("Stellamod/SplashOrange").Type;
         public static int TypeSplashRed => ModContent.Find<ModGore>("Stellamod/SplashRed").Type;
         public static int TypeSplashYellow => ModContent.Find<ModGore>("Stellamod/SplashYellow").Type;
+        public static int TypePaper => ModContent.Find<ModGore>("Stellamod/Paper").Type;
     }
 }

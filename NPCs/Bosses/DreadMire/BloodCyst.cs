@@ -134,11 +134,12 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return Main.bloodMoon && !Main.dayTime && 
+            return 0f;
+           /* return Main.bloodMoon && !Main.dayTime && 
                 !NPC.AnyNPCs(ModContent.NPCType<BloodCyst>()) &&
                 !NPC.AnyNPCs(ModContent.NPCType<BloodCystDead>()) &&
                 !NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) && 
-                !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;
+                !NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()) ? 1.013f : 0f;*/
         }
 
 

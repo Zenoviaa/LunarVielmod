@@ -318,7 +318,7 @@ namespace Stellamod.NPCs.Town
 		private void Quest_TomeStart()
         {
 			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
-			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abyss. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
+			Main.npcChatText = $"OHH Great lmao. Ok we have one more thing we need to do. Legend has it an old thief of this Royal Capital stole an extremely special Carian tome, they stay deep underground hidden far away underneath the abysm. Even if the rumors arent true I'd love for you to find this scroll, it may take years...";
 			var entitySource = NPC.GetSource_GiftOrReward();
 			Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<MakeUltimateScroll>(), 1);
 		}
@@ -480,8 +480,8 @@ namespace Stellamod.NPCs.Town
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
-			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 7) })
-            .Add(new Item(ItemID.FallenStar) { shopCustomPrice = Item.buyPrice(silver: 5) })
+			.Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(copper: 50) })
+            .Add(new Item(ItemID.FallenStar) { shopCustomPrice = Item.buyPrice(silver: 75) })
             .Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
 			.Add(new Item(ModContent.ItemType<BurnedCarianTome>()))
 			.Add<WickofSorcery>(MerenaQuestSystem.ShopConditionTome)

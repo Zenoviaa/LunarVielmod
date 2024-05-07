@@ -35,7 +35,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.shoot = ModContent.ProjectileType<GraniteMagmumProj>();
 			Item.shootSpeed = 4f;
 			Item.useAmmo = AmmoID.Bullet;
-		}
+            Item.noMelee = true;
+        }
 
 		public override Vector2? HoldoutOffset()
 		{

@@ -14,6 +14,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
     public class DreadFireCircle : ModNPC
     {
+        private float CircleTimer;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Dread Fire");
@@ -122,12 +123,10 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.noTileCollide = true;
             NPC.damage = 15;
             NPC.alpha = 255;
-            NPC.buffImmune[BuffID.Confused] = true;
-            NPC.buffImmune[BuffID.Poisoned] = true;
-            NPC.buffImmune[BuffID.Venom] = true;
             NPC.dontCountMe = true;
             NPC.dontTakeDamage = true;
             NPC.lifeMax = 2700;
+            NPC.aiStyle = -1;
         }
 
         public override bool PreAI()
@@ -155,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             direction.Normalize();
             direction *= 9f;
             int parent = (int)NPC.ai[0];
-            if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<DreadMire>())
+            if (parent < 0 || parent >= Main.maxNPCs || !Main.npc[parent].active || Main.npc[parent].type != ModContent.NPCType<DreadMireR>())
             {
                 NPC.netUpdate = true;
                 NPC.active = false;
@@ -236,8 +235,18 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 NPC.active = false;
             }
             NPC.ai[1] += .03f;
+
+            CircleTimer++;
+            if(CircleTimer % 125 == 0 && StellaMultiplayer.IsHost)
+            {
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Main.player[NPC.target].Center);
+                Vector2 velocity = directionToTarget * 8;
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                    ModContent.ProjectileType<DreadFireHand>(), 28, 1, Main.myPlayer);
+            }
             return false;
         }
+
 
         public override bool CheckActive()
         {

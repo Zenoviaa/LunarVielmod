@@ -27,6 +27,9 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Summon.Orbs;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.Items.Weapons.Whips;
+using Stellamod.NPCs.Bosses.INest;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
+using Stellamod.NPCs.Bosses.Zui;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -236,8 +239,20 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 
 				if (Main.LocalPlayer.HasItem(ModContent.ItemType<ManifestedBravery>()))
 				{
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y - 5,
+                            ModContent.NPCType<StartIrradia>());
+                    }
+                    else
+                    {
+                        if (Main.netMode == NetmodeID.SinglePlayer)
+                            return;
 
-				}
+                        StellaMultiplayer.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
+                            ModContent.NPCType<StartIrradia>(), (int)NPC.Center.X, (int)NPC.Center.Y - 5);
+                    }
+                }
 				else
 				{
 
@@ -297,10 +312,26 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc
 			}
 		}
 
+        public override void AI()
+        {
+            timer++;
+            NPC.CheckActive();
+            NPC.spriteDirection = NPC.direction;
 
 
 
-		public override void AddShops()
+            if (NPC.AnyNPCs(ModContent.NPCType<Irradia.Irradia>()))
+            {
+
+                NPC.Kill();
+            }
+
+
+
+        }
+
+
+        public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
 			.Add(new Item(ItemID.WaterBolt) { shopCustomPrice = Item.buyPrice(gold: 5) })

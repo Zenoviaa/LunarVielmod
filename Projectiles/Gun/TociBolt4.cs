@@ -39,10 +39,6 @@ namespace Stellamod.Projectiles.Gun
             Timer++;
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.05f;
-            if (Main.rand.NextBool(32))
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.ToxicBubble);
-            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

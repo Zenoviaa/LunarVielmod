@@ -90,10 +90,14 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
 
             float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
             Player closestplayer = FindClosestNPC(maxDetectRadius);
-            if (Projectile.Center.X >= closestplayer.Center.X && moveSpeed >= -90) // flies to players x position
-                moveSpeed--;
-            else if (Projectile.Center.X <= closestplayer.Center.X && moveSpeed <= 90)
-                moveSpeed++;
+            if (closestplayer != null)
+            {
+                if (Projectile.Center.X >= closestplayer.Center.X && moveSpeed >= -90) // flies to players x position
+                    moveSpeed--;
+                else if (Projectile.Center.X <= closestplayer.Center.X && moveSpeed <= 90)
+                    moveSpeed++;
+            }
+
 
             Projectile.velocity.X = moveSpeed * 0.05f;
             closestplayer.RotatedRelativePoint(Projectile.Center);

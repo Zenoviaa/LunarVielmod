@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Mage
 			Item.shoot = ProjectileType<ShriekerProg>();
 			Item.shootSpeed = 6f;
 			Item.mana = 34;
-
+            Item.noMelee = true;
 
         }
         public override void AddRecipes()

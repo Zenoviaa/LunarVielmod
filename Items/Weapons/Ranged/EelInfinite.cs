@@ -32,6 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.shootSpeed = 1;
             Item.value = Item.sellPrice(gold: 2);
             Item.UseSound = SoundID.DD2_LightningAuraZap;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()

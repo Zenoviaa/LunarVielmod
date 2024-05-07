@@ -53,7 +53,8 @@ namespace Stellamod.Items.Weapons.Summon.Orbs
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if(player.HeldItem.type == ModContent.ItemType<AuroreanStarball>() && player.ownedProjectileCounts[ModContent.ProjectileType<AuroreanStarballProj>()]==0)
+            if(player.HeldItem.type == ModContent.ItemType<AuroreanStarball>() && 
+                player.ownedProjectileCounts[ModContent.ProjectileType<AuroreanStarballProj>()]==0)
             {
                 var projectile = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.Zero, 
                     ModContent.ProjectileType<AuroreanStarballProj>(), Item.damage, Item.knockBack, player.whoAmI);

@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.UseSound = SoundID.Pixie;
             Item.useAnimation = 70;
             Item.useTime = 70;
+            Item.noMelee = true;
         }
 
         public override Vector2? HoldoutOffset()
@@ -90,22 +91,17 @@ namespace Stellamod.Items.Weapons.Ranged
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
-        
-
-
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.AddIngredient(ItemID.Marble, 60);
+            recipe.AddIngredient(ItemID.ChlorophyteBar, 12);
             recipe.AddIngredient(ModContent.ItemType<BasicGunParts>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PearlescentScrap>(), 12);
-            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 6);
+            recipe.AddIngredient(ModContent.ItemType<MetallicOmniSource>(), 4);
             recipe.AddIngredient(ItemID.SoulofLight, 5);
             recipe.AddIngredient(ItemID.Firefly, 3);
             recipe.Register();
         }
-
-
     }
 }
