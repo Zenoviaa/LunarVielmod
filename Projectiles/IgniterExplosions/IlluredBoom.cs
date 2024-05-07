@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override bool PreAI()
         {
-            if (++_frameTick >= 1)
+            if (++_frameTick >= 2)
             {
                 _frameTick = 0;
                 if (++_frameCounter >= 32)

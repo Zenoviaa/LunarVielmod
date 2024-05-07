@@ -6969,7 +6969,8 @@ DreadMedalion: {
 
 ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
-	Tooltip: '''
+	Tooltip:
+		'''
 		Throw magical dust on them!
 		An explosion of the Illure.
 		After hitting an enemy with this, use an igniter card weapon!
@@ -6978,7 +6979,8 @@ ArtoriaIllurePowder: {
 
 EreshkinPowder: {
 	DisplayName: Ereshkin Powder
-	Tooltip: '''
+	Tooltip:
+		'''
 		Throw magical dust on them!
 		A sparkly drawing dust that does many times damage as the igniter!
 		After hitting an enemy with this, use an igniter card weapon!
@@ -6987,7 +6989,8 @@ EreshkinPowder: {
 
 MushyPowder: {
 	DisplayName: Mushy Powder
-	Tooltip: '''
+	Tooltip:
+		'''
 		Throw magical dust on them!
 		A mushy powder that explode
 		After hitting an enemy with this, use an igniter card weapon!
