@@ -340,6 +340,16 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 AI_RandomLasers();
             }
 
+            if (InPhase2 && !_phase2Special)
+            {
+                ResetState(ActionState.Heart_Phase);
+                _phase2Special = true;
+            }
+            else if (InPhase3 && !_phase3Special)
+            {
+                ResetState(ActionState.Heart_Phase);
+                _phase3Special = true;
+            }
 
             switch (State)
             {
@@ -467,58 +477,45 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Animation = AnimationState.Idle;
             if(Timer >= 30)
             {
-                if(InPhase2 && !_phase2Special)
+                List<ActionState> possibleAttacks = new List<ActionState>();
+                switch (PreviousState)
                 {
-                    ResetState(ActionState.Heart_Phase);
-                    _phase2Special = true;
+                    default:
+                        possibleAttacks.Add(ActionState.Charge);
+                        break;
+                    case ActionState.Charge:
+                        possibleAttacks.Add(ActionState.Dash);
+                        possibleAttacks.Add(ActionState.Shoot_Bombs);
+                        break;
+                    case ActionState.Dash:
+                        possibleAttacks.Add(ActionState.Summon_Skulls);
+                        possibleAttacks.Add(ActionState.Shoot_Bombs);
+                        break;
+                    case ActionState.Shoot_Bombs:
+                        possibleAttacks.Add(ActionState.Summon_Skulls);
+                        if (InPhase2)
+                        {
+                            possibleAttacks.Add(ActionState.Laser_Rain);
+                        }
+                        break;
+                    case ActionState.Summon_Skulls:
+                        possibleAttacks.Add(ActionState.Charge);
+                        if (InPhase3)
+                        {
+                            possibleAttacks.Add(ActionState.Final_Laser);
+                        }
+                        break;
+                    case ActionState.Laser_Rain:
+                        possibleAttacks.Add(ActionState.Charge);
+                        possibleAttacks.Add(ActionState.Dash);
+                        if (InPhase3)
+                        {
+                            possibleAttacks.Add(ActionState.Final_Laser);
+                        }
+                        break;
                 }
-                else if(InPhase3 && !_phase3Special)
-                {
-                    ResetState(ActionState.Heart_Phase);
-                    _phase3Special = true;
-                }
-                else
-                {
-                    List<ActionState> possibleAttacks = new List<ActionState>();
-                    switch (PreviousState)
-                    {
-                        default:
-                            possibleAttacks.Add(ActionState.Charge);
-                            break;
-                        case ActionState.Charge:
-                            possibleAttacks.Add(ActionState.Dash);
-                            possibleAttacks.Add(ActionState.Shoot_Bombs);
-                            break;
-                        case ActionState.Dash:
-                            possibleAttacks.Add(ActionState.Summon_Skulls);
-                            possibleAttacks.Add(ActionState.Shoot_Bombs);
-                            break;
-                        case ActionState.Shoot_Bombs:
-                            possibleAttacks.Add(ActionState.Summon_Skulls);
-                            if (InPhase2)
-                            {
-                                possibleAttacks.Add(ActionState.Laser_Rain);
-                            }
-                            break;
-                        case ActionState.Summon_Skulls:
-                            possibleAttacks.Add(ActionState.Charge);
-                            if (InPhase3)
-                            {
-                                possibleAttacks.Add(ActionState.Final_Laser);
-                            }
-                            break;
-                        case ActionState.Laser_Rain:
-                            possibleAttacks.Add(ActionState.Charge);
-                            possibleAttacks.Add(ActionState.Dash);
-                            if (InPhase3)
-                            {
-                                possibleAttacks.Add(ActionState.Final_Laser);
-                            }
-                            break;
-                    }
 
-                    ResetState(possibleAttacks[Main.rand.Next(0, possibleAttacks.Count)]);
-                }
+                ResetState(possibleAttacks[Main.rand.Next(0, possibleAttacks.Count)]);
             }
         }
 
@@ -656,6 +653,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             Animation = AnimationState.TwoHandsUp;
 
             NPC.alpha += 5;
+            NPC.velocity *= 0.9f;
             Timer++;
             if(Timer == 1)
             {
