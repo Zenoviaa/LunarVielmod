@@ -37,7 +37,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<MushyPowderProj>();
             Item.autoReuse = true;
-            Item.shootSpeed = 12f;
+            Item.shootSpeed = 8f;
             Item.crit = 2;
             Item.UseSound = SoundID.Grass;
         }
