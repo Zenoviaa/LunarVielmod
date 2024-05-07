@@ -754,8 +754,8 @@ namespace Stellamod.WorldG
 
 								break;
 							case 4:
-								itemsToAdd.Add((ItemID.JackOLanternMask, Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ModContent.ItemType<EreshkinPowder>(), Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								itemsToAdd.Add((ItemID.NightOwlPotion, Main.rand.Next(1, 3)));
 								break;
