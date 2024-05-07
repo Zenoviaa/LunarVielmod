@@ -438,7 +438,7 @@ namespace Stellamod.Projectiles.IgniterEx
 
 
 
-            if (npc.active && npc.HasBuff<FlameDust>())
+            if (npc.active && npc.HasBuff<MushyBuff>())
             {
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/HeatExplosion"));
@@ -467,11 +467,11 @@ namespace Stellamod.Projectiles.IgniterEx
                             Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
                             Projectile.scale = 1.5f;
                             ShakeModSystem.Shake = 10;
-                            npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
-                            npc.SimpleStrikeNPC(Projectile.damage * 12, 1, crit: false, Projectile.knockBack);
+                            npc.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
+                            npc.SimpleStrikeNPC(Projectile.damage * 10, 1, crit: false, Projectile.knockBack);
                             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<MushyBoom>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 
 
 
@@ -513,6 +513,79 @@ namespace Stellamod.Projectiles.IgniterEx
             }
 
 
+            if (npc.active && npc.HasBuff<IlluBuff>())
+            {
+
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/HeatExplosion"));
+                for (int j = 0; j < 20; j++)
+                {
+                    Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+                    ParticleManager.NewParticle(Projectile.Center, speed * 4, ParticleManager.NewInstance<BurnParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+                    target.AddBuff(BuffID.OnFire, 720);
+                    target.AddBuff(ModContent.BuffType<EXPtime>(), 1000);
+
+                    Projectile.timeLeft = 250;
+                    Timer++;
+                    if (Timer == 150)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Burnbefore"));
+
+                    }
+
+
+                    if (Timer == 170)
+                    {
+                        Vector2 velocity = npc.velocity;
+                        if (npc.active && npc.HasBuff<EXPtime>())
+                        {
+                            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"));
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.position, velocity * 0, ProjectileID.DaybreakExplosion, Projectile.damage, Projectile.knockBack);
+                            Projectile.scale = 1.5f;
+                            ShakeModSystem.Shake = 10;
+                            npc.SimpleStrikeNPC(Projectile.damage * 29, 1, crit: false, Projectile.knockBack);
+                            npc.SimpleStrikeNPC(Projectile.damage * 29, 1, crit: false, Projectile.knockBack);
+                            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
+                            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<IlluredBoom>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
+
+
+
+                        }
+
+                        if (player.GetModPlayer<MyPlayer>().LuckyW)
+                        {
+                            if (Main.rand.NextBool(3))
+                            {
+                                CombatText.NewText(player.getRect(), Color.YellowGreen, "STRIKE!!", true, false);
+                                npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
+                                npc.SimpleStrikeNPC(Projectile.damage * 24, 1, crit: false, Projectile.knockBack);
+                            }
+
+                        }
+                        if (player.GetModPlayer<MyPlayer>().MagicTomeDusts)
+                        {
+
+
+                            npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
+                            npc.SimpleStrikeNPC(Projectile.damage * 20, 1, crit: false, Projectile.knockBack);
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Vector2.Zero,
+                                ModContent.ProjectileType<KaBoomMagic>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+
+
+
+                        }
+
+                    }
+                    if (Timer == 200)
+                    {
+                        Projectile.Kill();
+                        npc.RequestBuffRemoval(ModContent.BuffType<Dusted>());
+
+                    }
+
+
+                }
+            }
 
 
 
