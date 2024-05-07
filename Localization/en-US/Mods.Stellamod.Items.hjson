@@ -6897,7 +6897,7 @@ BasicBaseball: {
 }
 
 Volcant: {
-	Tooltip: ""
+	Tooltip: A fiery Greatsword to swing out your enemies' knees.
 	DisplayName: Volcant
 }
 
@@ -6964,5 +6964,32 @@ DreadMedalion: {
 		'''
 		Use at night to call down Dread Mire to fight you!
 		Overflowing with Dread
+		'''
+}
+
+ArtoriaIllurePowder: {
+	DisplayName: Artoria Illure Powder
+	Tooltip: '''
+		Throw magical dust on them!
+		An explosion of the Illure.
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+EreshkinPowder: {
+	DisplayName: Ereshkin Powder
+	Tooltip: '''
+		Throw magical dust on them!
+		A sparkly drawing dust that does many times damage as the igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+MushyPowder: {
+	DisplayName: Mushy Powder
+	Tooltip: '''
+		Throw magical dust on them!
+		A mushy powder that explode
+		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }

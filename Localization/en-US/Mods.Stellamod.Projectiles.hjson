@@ -1048,6 +1048,7 @@ ChillrendProj2.DisplayName: Chillrend Proj2
 Freidhit4.DisplayName: Freidhit4
 XexShot.DisplayName: Xex Shot
 IshBoomer.DisplayName: Ish Boomer
+IshBoom.DisplayName: Ish Boom
 YireBoomer.DisplayName: Yire Boomer
 AzuretoothDragon.DisplayName: Azuretooth Dragon
 AzuretoothNecklaceHold.DisplayName: Azuretooth Necklace Hold
@@ -1091,3 +1092,9 @@ Noder.DisplayName: Noder
 IrradiaBuilds.DisplayName: Irradia Builds
 DreadSineSkull.DisplayName: Dread Sine Skull
 DreadFireHand.DisplayName: Dread Fire Hand
+IlluredBoom.DisplayName: Illured Boom
+IrradiatedBoom.DisplayName: Irradiated Boom
+MushyBoom.DisplayName: Mushy Boom
+IlluPowderProj.DisplayName: Illu Powder Proj
+IshyPowderProj.DisplayName: Ishy Powder Proj
+MushyPowderProj.DisplayName: Mushy Powder Proj
