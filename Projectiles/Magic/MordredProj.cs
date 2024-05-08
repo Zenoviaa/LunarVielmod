@@ -179,21 +179,7 @@ namespace Stellamod.Projectiles.Magic
                 Moved = true;
             }
 
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-
-                if (npc.active && !npc.friendly && !npc.boss)
-                {
-                    float distance = Vector2.Distance(Projectile.Center, npc.Center);
-                    if (distance <= 200)
-                    {
-                        Vector2 direction = npc.Center - Projectile.Center;
-                        direction.Normalize();
-                        npc.velocity -= direction * 0.5f;
-                    }
-                }
-            }
+         
 
             Vector2 ParOffset;
             if (Projectile.ai[1] >= 40)
@@ -235,7 +221,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
-            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y - 150, 0, 0, ModContent.ProjectileType<MalachoBoom>(), Projectile.damage * 2, 1, Projectile.owner);
+            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y - 200, 0, 0, ModContent.ProjectileType<MalachoBoom>(), Projectile.damage * 2, 1, Projectile.owner);
             Projectile ichor = Main.projectile[fireball];
             ichor.hostile = false;
             ichor.friendly = true;
