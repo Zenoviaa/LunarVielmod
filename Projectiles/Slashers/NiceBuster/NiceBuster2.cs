@@ -1,24 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.UI.Systems;
-using Terraria.Audio;
-using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
+using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace Stellamod.Projectiles.Slashers.NiceBuster
 {
-	public class NiceBuster2 : ModProjectile
+    public class NiceBuster2 : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -87,19 +78,9 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
 
 
-            float maxDetectRadius = 1f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 18f; // The speed at which the projectile moves towards the target
-
-
-			
-			if (Timer2 < 15)
-			{
-				maxDetectRadius = 2000f;
-				Projectile.rotation = Projectile.DirectionTo(npcToHomeTo.Center).ToRotation() - MathHelper.PiOver2;
-			}
-
-
-
+            float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
+            float projSpeed = 18f; // The speed at which the projectile moves towards the target
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
             NPC closestNPC = FindClosestNPC(maxDetectRadius);
             // Trying to find NPC closest to the projectile
 
@@ -109,7 +90,6 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 			// If found, change the velocity of the projectile and turn it in the direction of the target
 			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
 			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
-
 		}
 
 		// Finding the closest NPC to attack within maxDetectDistance range
