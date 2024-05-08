@@ -7010,3 +7010,8 @@ WiggleDiggle: {
 	DisplayName: Wiggle Diggle
 	Tooltip: It squiggles, it wiggles, it diggles!
 }
+
+NiceBusterr: {
+	DisplayName: Nice Busterr
+	Tooltip: ""
+}
