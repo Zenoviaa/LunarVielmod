@@ -12,6 +12,7 @@ using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 
 namespace Stellamod.NPCs.Catacombs
@@ -40,6 +41,7 @@ namespace Stellamod.NPCs.Catacombs
             Projectile.tileCollide = true;
             Projectile.timeLeft = int.MaxValue;
             BeamPoints = new List<Vector2>();
+            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()
