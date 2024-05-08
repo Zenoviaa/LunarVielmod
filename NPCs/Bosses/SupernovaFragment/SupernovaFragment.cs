@@ -14,6 +14,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
@@ -160,7 +161,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             {
                 MaxAttac = 4;
             }
-
+            NPC.AddBuff(BuffType<StarSuper>(), 10);
             var entitySource = NPC.GetSource_FromThis();
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
@@ -261,8 +262,13 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
 
                                         }
+                                        // Icreasian disk
+                                        if (StellaMultiplayer.IsHost)
+                                        {
+                                            var entitySource2 = NPC.GetSource_FromThis();
+                                            NPC.NewNPC(entitySource2, (int)NPC.Center.X , (int)NPC.Center.Y, ModContent.NPCType<IncresianDisc>());
+                                        }
 
-      
 
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
@@ -360,7 +366,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         NPC.ai[0]++;
                         if (PH2TP)
                         {
-                            NPC.velocity *= 0.90f;
+                            NPC.velocity *= 0.92f;
                         }
                         else
                         {

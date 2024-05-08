@@ -55,6 +55,7 @@
     <None Remove="Buffs\ShadeWrathCooldown.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
+    <None Remove="Buffs\StarSuper.png" />
     <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\Whipfx\ColdheartAnklebiterDebuff.png" />

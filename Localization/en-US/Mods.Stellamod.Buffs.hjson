@@ -702,3 +702,8 @@ RibbonWrapped: {
 	DisplayName: Ribbon Wrapped
 	Description: Mods.Stellamod.Buffs.RibbonWrapped.Description
 }
+
+StarSuper: {
+	Description: Mods.Stellamod.Buffs.StarSuper.Description
+	DisplayName: Star Super
+}
