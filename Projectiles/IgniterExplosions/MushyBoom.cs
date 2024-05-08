@@ -77,12 +77,15 @@ namespace Stellamod.Projectiles.IgniterExplosions
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color.White), 0f, origin, 4f, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor), 0f, origin, 4f, SpriteEffects.None, 0f);
             return false;
         }
 
-      
 
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
+        }
 
     }
 
