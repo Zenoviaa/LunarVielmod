@@ -6996,3 +6996,12 @@ MushyPowder: {
 		After hitting an enemy with this, use an igniter card weapon!
 		'''
 }
+
+RibbonStaff: {
+	DisplayName: Ribbon Staff
+	Tooltip:
+		'''
+		Hold it out to wrap your enemies nicely in a bow, locking their movement for a bit
+		Release to cause them to explode into confetti and streamers!
+		'''
+}

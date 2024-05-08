@@ -45,7 +45,7 @@ namespace Stellamod.Helpers
                 for (int i = 1; i < oldPos.Length; i++)
                 {
                     //Draw from center bottom of texture
-                    Vector2 frameSize = new Vector2(8, 16);
+                    Vector2 frameSize = new Vector2(animationFrame.Width, animationFrame.Height);
                     Vector2 origin = new Vector2(frameSize.X / 2, frameSize.Y);
 
                     Vector2 position = oldPos[i] + new Vector2(0f, 8f * rotationOffset).RotatedBy(radians) * time;

@@ -697,3 +697,8 @@ MushyBuff: {
 	DisplayName: Mushy Buff
 	Description: Mods.Stellamod.Buffs.MushyBuff.Description
 }
+
+RibbonWrapped: {
+	DisplayName: Ribbon Wrapped
+	Description: Mods.Stellamod.Buffs.RibbonWrapped.Description
+}

@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.height = 60;
             NPC.damage = 2;
             NPC.defense = 33;
-            NPC.lifeMax = 80000;
+            NPC.lifeMax = 61000;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             NPC.value = 60f;
