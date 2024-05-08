@@ -21,12 +21,12 @@ namespace Stellamod.Assets.Biomes
 
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TheGreatIlluria");
 
+        public override SceneEffectPriority Priority => SceneEffectPriority.BossLow;
 
 
 
-
-		// Populate the Bestiary Filter
-		public override string BestiaryIcon => base.BestiaryIcon;
+        // Populate the Bestiary Filter
+        public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 
