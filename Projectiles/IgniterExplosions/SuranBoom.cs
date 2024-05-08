@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.width = 129;
             Projectile.height = 129;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 76;
+            Projectile.timeLeft = 38;
             Projectile.scale = 1f;
         }
 
@@ -51,7 +51,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
 
         public override bool PreAI()
         {
-            if (++_frameTick >= 2)
+            if (++_frameTick >= 1)
             {
                 _frameTick = 0;
                 if (++_frameCounter >= 38)
@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             float width = 129;
             float height = 129;
             Vector2 origin = new Vector2(width / 2, height / 2);
-            int frameSpeed = 2;
+            int frameSpeed = 1;
             int frameCount = 38;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
