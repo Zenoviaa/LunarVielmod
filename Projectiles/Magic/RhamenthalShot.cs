@@ -47,7 +47,7 @@ namespace Stellamod.Projectiles.Magic
             if (greb == 5)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<KaBoomFenix>(), 100, 0f, Projectile.owner, 0f, 0f);
+                    ModContent.ProjectileType<KaBoomFenix>(), Projectile.damage / 2, 0f, Projectile.owner, 0f, 0f);
              
                 for (int i = 0; i < 5; i++)
                 {
