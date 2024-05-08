@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Projectiles.Spears;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -18,7 +20,22 @@ namespace Stellamod.Items.Weapons.Mage
             ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
 
+            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
+            var line = new TooltipLine(Mod, "", "");
+
+            line = new TooltipLine(Mod, "Alcarishasd", "Greatsword Weapon Type")
+            {
+                OverrideColor = ColorFunctions.GreatswordWeaponType
+            };
+            tooltips.Add(line);
+
+
+
+
+        }
 
         public override void SetDefaults()
         {
@@ -29,8 +46,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.knockBack = 8;
-            Item.value = Item.sellPrice(0, 10, 1, 29);
-            Item.rare = ItemRarityID.Orange;
+            Item.value = Item.sellPrice(0, 29, 50, 0);
+            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.autoReuse = true;
             Item.useTurn = true;
             Item.DamageType = DamageClass.Magic;
