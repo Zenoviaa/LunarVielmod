@@ -79,7 +79,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
             return false;
         }
 
-       
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return new Color(255, 255, 255, 0);
+        }
 
 
     }

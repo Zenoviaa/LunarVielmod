@@ -88,11 +88,11 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 
 
             float maxDetectRadius = 1f; // The maximum radius at which a projectile can detect a target
-			float projSpeed = 15f; // The speed at which the projectile moves towards the target
+			float projSpeed = 18f; // The speed at which the projectile moves towards the target
 
 
 			
-			if (Timer2 < 25)
+			if (Timer2 < 15)
 			{
 				maxDetectRadius = 2000f;
 				Projectile.rotation = Projectile.DirectionTo(npcToHomeTo.Center).ToRotation() - MathHelper.PiOver2;
