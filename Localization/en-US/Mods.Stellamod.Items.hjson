@@ -7018,5 +7018,8 @@ NiceBusterr: {
 
 Mordred: {
 	DisplayName: Mordred
-	Tooltip: ""
+	Tooltip: '''
+		I picked this one up randomly on an excursion! - Sirestias
+		May be an old relic or someone's weapon. Either way it's not belonging with you.
+		'''
 }
