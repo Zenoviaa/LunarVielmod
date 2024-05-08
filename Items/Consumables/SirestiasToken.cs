@@ -1,6 +1,7 @@
 ﻿
 
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Greatswords.INY;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -58,6 +59,10 @@ namespace Stellamod.Items.Consumables
             Recipe recipe6 = CreateRecipe();
             recipe6.AddIngredient(ModContent.ItemType<StickyCards>(), 1);
             recipe6.Register();
+
+            Recipe recipe7 = CreateRecipe();
+            recipe7.AddIngredient(ModContent.ItemType<Mordred>(), 1);
+            recipe7.Register();
         }
     }
 }

@@ -7015,3 +7015,8 @@ NiceBusterr: {
 	DisplayName: Nice Buster
 	Tooltip: We aren't nice around these parts.
 }
+
+Mordred: {
+	DisplayName: Mordred
+	Tooltip: ""
+}
