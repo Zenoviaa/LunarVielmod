@@ -52,7 +52,7 @@ namespace Stellamod.Items.Weapons.Melee
             // Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
             int Sound = Main.rand.Next(1, 3);
 
-            float numberProjectiles = 2;
+            float numberProjectiles = 1;
             float rotation = MathHelper.ToRadians(20);
             position += Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 45f;
             for (int i = 0; i < numberProjectiles; i++)
