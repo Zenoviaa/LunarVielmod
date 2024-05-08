@@ -219,7 +219,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune"), Projectile.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
             var EntitySource = Projectile.GetSource_FromThis();
             int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y - 216, 0, 0, ModContent.ProjectileType<MalachoBoom>(), Projectile.damage * 2, 1, Projectile.owner);
             Projectile ichor = Main.projectile[fireball];
@@ -229,7 +229,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, Projectile.position);
             Projectile.ownerHitCheck = true;
 
-            int radius = 150;
+            int radius = 250;
 
             // Damage enemies within the splash radius
             for (int i = 0; i < Main.npc.Length; i++)
