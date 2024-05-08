@@ -22,12 +22,12 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
-            Item.damage = 76;
+            Item.damage = 80;
             Item.width = 96;
             Item.height = 42;
             Item.DamageType = DamageClass.Ranged;
-            Item.useAnimation = 42;
-            Item.useTime = 42;
+            Item.useAnimation = 50;
+            Item.useTime = 50;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.UseSound = SoundID.DD2_KoboldExplosion;
             Item.knockBack = 2;
