@@ -7005,3 +7005,8 @@ RibbonStaff: {
 		Release to cause them to explode into confetti and streamers!
 		'''
 }
+
+WiggleDiggle: {
+	DisplayName: Wiggle Diggle
+	Tooltip: It squiggles, it wiggles, it diggles!
+}

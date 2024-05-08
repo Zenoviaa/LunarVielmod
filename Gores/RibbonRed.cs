@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Stellamod.Gores
 {
-    internal class RibbonRed : ModGore
+    internal abstract class RibbonGore : ModGore
     {
         public override void OnSpawn(Gore gore, IEntitySource source)
         {
@@ -18,8 +17,18 @@ namespace Stellamod.Gores
 
         public override bool Update(Gore gore)
         {
-            gore.velocity.X *= 0.98f;
+            gore.velocity *= 0.98f;
             return base.Update(gore);
         }
     }
+
+    internal class RibbonRed : RibbonGore { }
+
+    internal class RibbonYellow : RibbonGore { }
+
+    internal class RibbonBlue : RibbonGore { }
+
+    internal class RibbonWhite : RibbonGore { }
+
+    internal class RibbonPink : RibbonGore { }
 }

@@ -255,6 +255,7 @@
     <None Remove="Items\Weapons\Ranged\VoidBlaster.png" />
     <None Remove="Items\Weapons\Ranged\VoidSkull.png" />
     <None Remove="Items\Weapons\Ranged\WaterGun.png" />
+    <None Remove="Items\Weapons\Ranged\WiggleDiggle.png" />
     <None Remove="Items\Weapons\Ranged\WingedFury.png" />
     <None Remove="Items\Weapons\Ranged\Wingspand.png" />
     <None Remove="Items\Weapons\Summon\AlcadWandMinionBuff.png" />
