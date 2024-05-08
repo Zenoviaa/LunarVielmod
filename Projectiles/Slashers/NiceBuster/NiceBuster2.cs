@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc.active)
+                if (npc.CanBeChasedBy())
                 {
                     float distanceToPlayer = Vector2.Distance(Projectile.position, npc.position);
                     if (distanceToPlayer < closestDistance || npcToHomeTo == null)
