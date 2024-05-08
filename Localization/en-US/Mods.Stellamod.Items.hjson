@@ -7008,10 +7008,10 @@ RibbonStaff: {
 
 WiggleDiggle: {
 	DisplayName: Wiggle Diggle
-	Tooltip: It squiggles, it wiggles, it diggles!
+	Tooltip: It squiggles, it wiggles, it diggles! Become the clown
 }
 
 NiceBusterr: {
-	DisplayName: Nice Busterr
-	Tooltip: ""
+	DisplayName: Nice Buster
+	Tooltip: We aren't nice around these parts.
 }
