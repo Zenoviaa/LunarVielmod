@@ -238,7 +238,7 @@ namespace Stellamod.Projectiles.Magic
                 if (target.active && !target.friendly && Vector2.Distance(Projectile.Center, target.Center) < radius)
                 {
                     int damage = Projectile.damage * 2;
-                    target.SimpleStrikeNPC(Projectile.damage, 0);
+                    target.SimpleStrikeNPC(Projectile.damage * 3, 0);
                 }
             }
 
