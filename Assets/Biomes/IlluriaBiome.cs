@@ -19,7 +19,7 @@ namespace Stellamod.Assets.Biomes
 
 		// Select Music
 
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TheGreatIlluria");
 
 
 
