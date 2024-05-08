@@ -34,6 +34,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.Lime;
             Item.shoot = ModContent.ProjectileType<WiggleDiggleProj>();
             Item.shootSpeed = 19;
+
         }
 
         public override Vector2? HoldoutOffset()
@@ -43,6 +44,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ConfettiShot1");
             soundStyle.PitchVariance = 0.3f;
             soundStyle.Volume = 0.8f;
