@@ -59,24 +59,6 @@ namespace Stellamod.Projectiles.Slashers.NiceBuster
 			Projectile.velocity *= 1.04f;
 
 			Timer++;
-            NPC npcToHomeTo = null;
-            float closestDistance = 0;
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (npc.CanBeChasedBy())
-                {
-                    float distanceToPlayer = Vector2.Distance(Projectile.position, npc.position);
-                    if (distanceToPlayer < closestDistance || npcToHomeTo == null)
-                    {
-                        closestDistance = distanceToPlayer;
-                        npcToHomeTo = npc;
-                    }
-                }
-            }
-
-
-
 
             float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
             float projSpeed = 18f; // The speed at which the projectile moves towards the target
