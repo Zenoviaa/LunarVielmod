@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
 using Stellamod.Projectiles.Summons;
 using Terraria;
 using Terraria.Audio;
@@ -132,14 +133,14 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     NPC.Center = target.Center;
 
 
-                  
+                    if (!target.active && target.type == ModContent.NPCType<SupernovaFragment>())
+                    {
+                        NPC.Kill();
+                    }
 
                 }
 
-                if (!target.active)
-                {
-                    NPC.Kill();
-                }
+               
 
             }
 
