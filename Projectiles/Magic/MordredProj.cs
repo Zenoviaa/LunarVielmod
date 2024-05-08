@@ -235,7 +235,7 @@ namespace Stellamod.Projectiles.Magic
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune"), Projectile.position);
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 120f);
             var EntitySource = Projectile.GetSource_FromThis();
-            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<MalachoBoom>(), Projectile.damage * 2, 1, Projectile.owner);
+            int fireball = Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y - 150, 0, 0, ModContent.ProjectileType<MalachoBoom>(), Projectile.damage * 2, 1, Projectile.owner);
             Projectile ichor = Main.projectile[fireball];
             ichor.hostile = false;
             ichor.friendly = true;
