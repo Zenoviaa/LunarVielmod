@@ -32,7 +32,8 @@ namespace Stellamod.Items.Weapons.Thrown.Jugglers
             Item.useAnimation = 80;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
-            Item.rare = ItemRarityID.Blue;
+            Item.value = Item.sellPrice(0, 29, 50, 0);
+            Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
             Item.crit = 16;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;

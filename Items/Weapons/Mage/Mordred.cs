@@ -20,22 +20,7 @@ namespace Stellamod.Items.Weapons.Mage
             ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-
-            // Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-            var line = new TooltipLine(Mod, "", "");
-
-            line = new TooltipLine(Mod, "Alcarishasd", "Greatsword Weapon Type")
-            {
-                OverrideColor = ColorFunctions.GreatswordWeaponType
-            };
-            tooltips.Add(line);
-
-
-
-
-        }
+     
 
         public override void SetDefaults()
         {
