@@ -436,6 +436,7 @@
     <None Remove="Projectiles\Crossbows\WoodenCrossbowBolt - Copy.png" />
     <None Remove="Projectiles\DevilsPeakSwordProj.png" />
     <None Remove="Projectiles\DevilsPeakSwordProj2.png" />
+    <None Remove="Projectiles\FabelFire.png" />
     <None Remove="Projectiles\GunHolster\AssassinsRechargeShot.png" />
     <None Remove="Projectiles\GunHolster\AzurewrathProj.png" />
     <None Remove="Projectiles\GunHolster\BurnBlastProj.png" />

@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
+using Stellamod.Particles;
 using Stellamod.Utilis;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,6 +41,31 @@ namespace Stellamod.NPCs.Morrow
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.aiStyle = 0;
 		}
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
+            {
+                var entitySource = NPC.GetSource_FromThis();
+                int Gore1 = ModContent.Find<ModGore>("Stellamod/RBeetle1").Type;
+				int Gore2 = ModContent.Find<ModGore>("Stellamod/RBeetle2").Type;
+				int Gore3 = ModContent.Find<ModGore>("Stellamod/RBeetle3").Type;
+				int Gore4 = ModContent.Find<ModGore>("Stellamod/RBeetle4").Type;
+                int Gore5 = ModContent.Find<ModGore>("Stellamod/RBeetle5").Type;
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, Gore1);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, Gore2);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, Gore3);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, Gore4);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, Gore5);
+            }
+            else
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
+                    ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+                }
+            }
+        }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {

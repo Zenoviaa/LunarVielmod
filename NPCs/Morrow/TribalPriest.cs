@@ -9,6 +9,7 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -63,18 +64,23 @@ namespace Stellamod.NPCs.Morrow
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
 		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
-			{
-				return 0.1f;
-			}
-		
-			
-			return 0f;
-		}
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            Player player = spawnInfo.Player;
+            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
+            {
+                return spawnInfo.Player.ZoneFable() ? 0.5f : 0f;
+            }
 
-		public override void AI()
+            if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+            {
+                return SpawnCondition.Underground.Chance * 0.1f;
+            }
+
+            return 0f;
+        }
+
+        public override void AI()
 		{
 			switch (State)
 			{
