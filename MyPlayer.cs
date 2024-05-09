@@ -24,6 +24,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.STARBOMBER;
@@ -861,8 +862,9 @@ namespace Stellamod
             }
             if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || 
 				NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || 
-				NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) || 
-				NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
+				NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Sun>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
                 SingularityFragment = true;
             }
