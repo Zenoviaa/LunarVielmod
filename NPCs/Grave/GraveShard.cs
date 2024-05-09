@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using ReLogic.Content;
+using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
@@ -16,6 +17,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 using static Terraria.ModLoader.ModContent;
 
 
@@ -34,7 +36,17 @@ namespace Stellamod.NPCs.Grave
             NPCID.Sets.ActsLikeTownNPC[Type] = true;
         }
 
-
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (spawnInfo.Player.ZoneGraveyard)
+            {
+                return 0.5f;
+            }
+                
+            //You can't be in the surface and underground at the same time so this should work
+            //0.05f should make it 20 less common than normal spawns.
+            return 0;
+        }
         public override void AI()
         {
 
