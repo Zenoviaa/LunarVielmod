@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.Magic
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * 384;
+            float baseWidth = Projectile.scale * 194;
             float timeLeft = Projectile.timeLeft;
             float progress = timeLeft / Lifetime;
             float easedProgress = Easing.SpikeCirc(1f - progress);
@@ -106,7 +106,7 @@ namespace Stellamod.Projectiles.Magic
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
             TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.FadedStreak);
 
             BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
             Main.spriteBatch.ExitShaderRegion();
