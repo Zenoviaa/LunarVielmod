@@ -419,12 +419,20 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		private Vector2 originalHitbox;
         private void FinishTeleport()
         {
+
+
             if (_teleportX != 0 || _teleportY != 0)
             {
+
                 NPC.position.X = _teleportX;
                 NPC.position.Y = _teleportY;
                 _teleportX = 0;
                 _teleportY = 0;
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
+                }
             }
         }
 
@@ -482,7 +490,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                     myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 
                     ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    screenShaderSystem.FlashTintScreen(Color.White, 1f, 5);
+                    screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
 
 					if (StellaMultiplayer.IsHost)
 					{
@@ -1003,11 +1011,17 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				NPC.scale = 0f;
-				for (int j = 0; j < 25; j++)
-				{
-					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
+                }
+
+                for (int j = 0; j < 25; j++)
+                {
+                    Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), speedg * 7, newColor: Color.Pink);
+                }
 
                 ResetTimers();
 				if (StellaMultiplayer.IsHost)
@@ -1111,10 +1125,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				SoundEngine.PlaySound(SoundID.Item92, NPC.position);
 				if (StellaMultiplayer.IsHost)
 				{
-                    float speedXa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + speedXa, NPC.position.Y + speedYa + 110, speedXa, speedYa - 1 * 1, 
-						ModContent.ProjectileType<STARROCKET>(), 25, 0f, Owner: Main.myPlayer);
+					Vector2 randPosOffset = Main.rand.NextVector2Circular(64, 64);
+					Vector2 randVelocity = Main.rand.NextVector2CircularEdge(15, 15);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(),NPC.Center + randPosOffset, randVelocity,
+                        ModContent.ProjectileType<STARROCKET>(), 25, 0f, Owner: Main.myPlayer);
 
                 }
 
@@ -1157,14 +1171,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if (timer > 303)
 			{
-			
-				for (int j = 0; j < 50; j++)
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
+                }
+
+                for (int j = 0; j < 48; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
+					Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), speedg * 7, newColor: Color.Pink);
 				}
+
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				NPC.scale = 0f;
                 ResetTimers();
@@ -1462,11 +1480,17 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			if (timer > 720)
 			{
 				NPC.damage = 0;
-				for (int j = 0; j < 50; j++)
-				{
-					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
-					ParticleManager.NewParticle(NPC.Center, speedg * 7, ParticleManager.NewInstance<AVoidParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-				}
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<STARTELEPORTBOOM>(), 0, 0, Main.myPlayer);
+                }
+
+                for (int j = 0; j < 48; j++)
+                {
+                    Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), speedg * 7, newColor: Color.Pink);
+                }
 
                 ResetTimers();
                 State = ActionState.TeleportStar;
