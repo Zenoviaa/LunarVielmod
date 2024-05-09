@@ -74,7 +74,7 @@ namespace Stellamod.NPCs.Town
         public static Vector2 DreadMonolithWorld2 => DreadMonolithTile2.ToWorldCoordinates();
         public static Vector2 DreadMonolithWorld3 => DreadMonolithTile3.ToWorldCoordinates();
 
-        public static Point DreadMonolithTileOffset => new Point(7, -9);
+        public static Point DreadMonolithTileOffset => new Point(8, -9);
 
 
 
