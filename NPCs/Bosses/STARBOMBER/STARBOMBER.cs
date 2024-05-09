@@ -11,6 +11,7 @@ using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Tiles.Furniture;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
