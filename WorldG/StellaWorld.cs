@@ -3018,8 +3018,18 @@ namespace Stellamod.WorldG
 			while (!placed && attempts++ < 1000000)
 			{
 
-
+		
 				int abysmx = WorldGen.genRand.Next(700, Main.maxTilesX - 700); // from 50 since there's a unaccessible area at the world's borders
+				
+				//This code makes it avoid teh center
+				int distanceBetween = Math.Abs(Main.spawnTileX - abysmx);
+				for(int i = 0; i < 1000; i++)
+				{
+                    abysmx = WorldGen.genRand.Next(700, Main.maxTilesX - 700);
+                    distanceBetween = Math.Abs(Main.spawnTileX - abysmx);
+					if (distanceBetween > 900)
+						break;
+                }
 
 				// Select a place in the first 6th of the world, avoiding the oceans
 				int abysmy = ((Main.maxTilesY / 2));
