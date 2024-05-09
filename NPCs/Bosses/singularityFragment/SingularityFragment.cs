@@ -862,9 +862,8 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             Lighting.AddLight(NPC.Center, Color.LightBlue.ToVector3() * 1.25f * Main.essScale);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
-            Vector2 frameOrigin = NPC.frame.Size();
-            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + (NPC.scale * 4), NPC.height - NPC.frame.Height + 0);
-            Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
+            Vector2 frameSize = NPC.frame.Size();
+            Vector2 drawPos = NPC.Center - screenPos + frameSize / 2;// + offset;
 
             float time = Main.GlobalTimeWrappedHourly;
             float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
@@ -883,14 +882,14 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
 
-                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(93, 203, 243, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(93, 203, 243, 50), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
 
-                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(59, 72, 168, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(59, 72, 168, 77), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
 
             return true;
