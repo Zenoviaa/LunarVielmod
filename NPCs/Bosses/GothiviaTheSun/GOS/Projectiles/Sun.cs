@@ -109,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 		public float Shooting = 0f;
 
 		int bee = 1100;
-		int bee2 = 535;
+		int bee2 = 560;
 		public int rippleCount = 20;
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
