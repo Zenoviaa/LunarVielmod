@@ -172,7 +172,7 @@ namespace Stellamod.NPCs.Catacombs
 
 
                 int bossType = bosses[Main.rand.Next(0, bosses.Length)];
-                if (StellaMultiplayer.IsHost)
+                if (StellaMultiplayer.IsHost && bossType != 2)
                 {
                     //Main.NewText("Jack has awoken!", Color.Gold);
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
