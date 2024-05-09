@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.IgniterExplosions;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -68,6 +70,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		{
 
 			timer++;
+			if(timer == 1 && StellaMultiplayer.IsHost)
+			{
+				Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+					ModContent.ProjectileType<SPARKLYSTARBOOM>(), 0, 0, Main.myPlayer);
+			}
+
 			NPC.spriteDirection = NPC.direction;
 			Shooting++;
 

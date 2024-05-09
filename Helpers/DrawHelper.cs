@@ -261,6 +261,25 @@ namespace Stellamod.Helpers
 
 		public static PrimDrawer TrailDrawer { get; private set; } = null;
 
+        public static void DrawLineTelegraph(Vector2 drawPos, Color drawColor, Vector2 velocity, float drawScale = 1f, SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Vector2 drawOrigin = lineTexture.Size() / 2;
+			float rotation = velocity.ToRotation() + MathHelper.PiOver2;
+            spriteBatch.Draw(lineTexture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, spriteEffects, 0);
+        }
+
+
+        public static void DrawLineTelegraph(Vector2 drawPos, Color drawColor, float rotation, float drawScale = 1f, SpriteEffects spriteEffects = SpriteEffects.None)
+		{
+			SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Vector2 drawOrigin = lineTexture.Size() / 2;
+            spriteBatch.Draw(lineTexture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, spriteEffects, 0);
+        }
+
+
 		/// <summary>
 		/// Draws a simple trail using "VampKnives:BasicTrail"
 		/// <br></br>Don't forget to set the trailing cache and trailing modes on your projectile!

@@ -103,7 +103,7 @@ namespace Stellamod.Projectiles
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), Projectile.position);
 
             MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-            myPlayer.ShakeAtPosition(Projectile.position, 6000, 128);
+            myPlayer.ShakeAtPosition(Projectile.position, 6000, 48);
 
             for (int i = 0; i < 14; i++)
             {

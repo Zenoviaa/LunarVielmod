@@ -346,6 +346,7 @@
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidFlame - Copy.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SINESTAR.png" />
+    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SPARKLYSTARBOOM.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
     <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARNBIG.png" />

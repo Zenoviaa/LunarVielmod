@@ -1,4 +1,5 @@
 ﻿
+using Accord.Statistics.Distributions.Univariate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
@@ -27,6 +28,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         private bool CheckSize;
 
         int chargetimer = 0;
+        private float AlphaTimer=1f;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shiffting Skull");
@@ -37,8 +39,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         
         public override void SetDefaults()
         {
-            NPC.width = 84;
-            NPC.height = 44;
+            NPC.width = 44;
+            NPC.height = 84;
             NPC.damage = 1;
             NPC.defense = 10;
             NPC.lifeMax = 20000;
@@ -82,6 +84,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (shootbreak < 60)
             {
+                AlphaTimer -= 0.1f;
+                if (AlphaTimer <= 0)
+                    AlphaTimer = 0;
                 if (Shooting >= 6)
                 {
                     if (StellaMultiplayer.IsHost)
@@ -96,6 +101,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                     }
 
                     Shooting = 0;
+                }
+            }
+            else
+            {
+                AlphaTimer += .02f;
+                if(AlphaTimer >= 1)
+                {
+                    AlphaTimer = 1;
                 }
             }
 
@@ -125,11 +138,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (npc.HasValidTarget)
             {
-                Player player = Main.player[NPC.target];
-
-            
-
-             
+                Player player = Main.player[NPC.target];  
                 // First, calculate a Vector pointing towards what you want to look at
                 Vector2 vectorFromNpcToPlayer = player.Center - npc.Center;
                 // Second, use the ToRotation method to turn that Vector2 into a float representing a rotation in radians.
@@ -141,30 +150,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             }
             return true;
         }
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            int d = 1;
-            int d1 = DustID.BlueCrystalShard;
-            for (int k = 0; k < 30; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d, 2.5f * hit.HitDirection, -2.5f, 0, Color.White, 0.7f);
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, d1, 2.5f * hit.HitDirection, -2.5f, 0, default(Color), .74f);
-            }
-            if (NPC.life <= 0)
-            {
 
-                for (int i = 0; i < 20; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SomethingRed, 0f, -2f, 0, default(Color), .8f);
-                    Main.dust[num].noGravity = true;
-                    Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                    Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                    if (Main.dust[num].position != NPC.Center)
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                }
-            }
+
+        public Color? GetLineAlpha(Color lightColor)
+        {
+            return new Color(
+                Color.White.R,
+                Color.White.G,
+                Color.White.B, 0) * (1f - NPC.alpha / 50f);
         }
 
-     
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+            Color lineDrawColor = (Color)GetLineAlpha(drawColor);
+            lineDrawColor *= AlphaTimer;
+
+            Vector2 drawOrigin = lineTexture.Size() / 2;
+
+            float drawScale = NPC.scale;
+            float rot = NPC.rotation;
+            Main.spriteBatch.Draw(lineTexture, NPC.Center - Main.screenPosition, null, 
+                lineDrawColor, rot, Vector2.Zero, drawScale, SpriteEffects.None, 0);
+            return base.PreDraw(spriteBatch, screenPos, drawColor);
+        }
     }
 }

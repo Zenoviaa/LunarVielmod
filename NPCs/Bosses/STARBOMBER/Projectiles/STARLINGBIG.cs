@@ -35,8 +35,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 		public ActionState State = ActionState.Wait;
 		public override void SetDefaults()
 		{
-			NPC.width = 46;
-			NPC.height = 50;
+			NPC.width = 126;
+			NPC.height = 126;
 			NPC.damage = 50;
 			NPC.defense = 30;
 			NPC.lifeMax = 9000;
@@ -60,24 +60,60 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			{
 				Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BoneTorch, 1, -1f, 1, default, .61f);
 			}
-
-
 		}
+
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
 		{
-			Vector2 center = NPC.Center + new Vector2(0f, NPC.height * -0.1f);
-			Lighting.AddLight(NPC.Center, Color.LightBlue.ToVector3() * 1.25f * Main.essScale);
-			// This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
-			Vector2 direction = Main.rand.NextVector2CircularEdge(NPC.width * 0.6f, NPC.height * 0.6f);
-			float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
-			Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Color drawColor = new Color(Color.Pink.R, Color.Pink.G, Color.Pink.B, 0);
+			Vector2 center = NPC.Center;// - new Vector2(50, 50);
+            Vector2 lineDrawPos = center - screenPos;
+            if (invisibilityTimer <= 40)
+			{
+				float alphaProgress = invisibilityTimer / 40f;
+				float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+				drawColor *= easedAlphaProgress;
+				DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, -20));
+            }
+
+			if(invisibilityTimer > 40 && invisibilityTimer <= 140)
+            {
+                float alphaProgress = (invisibilityTimer - 40) / 100f;
+                float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+                drawColor *= easedAlphaProgress;
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, -20));
+
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(0, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(0, -20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, 0));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 0));
+            }
 
 
+            if (invisibilityTimer > 140 && invisibilityTimer <= 220)
+            {
+                float alphaProgress = (invisibilityTimer - 140) / 80f;
+                float easedAlphaProgress = Easing.SpikeCirc(alphaProgress);
+                drawColor *= easedAlphaProgress;
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, -20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, -20));
 
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(0, 20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(0, -20));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(-20, 0));
+                DrawHelper.DrawLineTelegraph(lineDrawPos, drawColor, new Vector2(20, 0));
+            }
+
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 			Vector2 frameOrigin = NPC.frame.Size();
-			Vector2 offset = new Vector2(NPC.width - frameOrigin.X + (NPC.scale * 4), NPC.height - NPC.frame.Height + 0);
-			Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
+			Vector2 drawPos = NPC.Center - screenPos;
 
 			float time = Main.GlobalTimeWrappedHourly;
 			float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
@@ -96,14 +132,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
 
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug).RotatedBy(radians) * time, NPC.frame, new Color(77, 113, 255, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug).RotatedBy(radians) * time, NPC.frame, new Color(77, 113, 255, 50), NPC.rotation, frameOrigin / 2, NPC.scale, Effects, 0);
 			}
 
 			for (float i = 0f; i < 1f; i += 0.34f)
 			{
 				float radians = (i + timer) * MathHelper.TwoPi;
 
-				spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug * 2).RotatedBy(radians) * time, NPC.frame, new Color(254, 77, 77, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(0f, DaedusDrug * 2).RotatedBy(radians) * time, NPC.frame, new Color(254, 77, 77, 77), NPC.rotation, frameOrigin / 2, NPC.scale, Effects, 0);
 			}
 
 			return false;
@@ -137,13 +173,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				{
 
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, 20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, -20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, -20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 50, NPC.Center.Y - 50, 20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
                 }
 
@@ -169,22 +205,22 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				if (StellaMultiplayer.IsHost)
 				{
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y , 0, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X , NPC.Center.Y , 0, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y , -20, 0,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X , NPC.Center.Y, 20, 0,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
                 }
 
@@ -211,24 +247,24 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
 
 
 
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, 20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 0, -20,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, -20,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, -20, 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, -20, 0,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X - 200, NPC.Center.Y - 200, 20, 0,
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 20, 0,
                         ModContent.ProjectileType<STARDREAM>(), 40, 0f, Owner: Main.myPlayer);
                 }
 
@@ -267,7 +303,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 				if (StellaMultiplayer.IsHost)
 				{
-					NPC.NewNPC(entitySource, (int)NPC.Center.X - 200, (int)NPC.Center.Y - 200, ModContent.NPCType<STARLING>());
+					Vector2 pos = NPC.Center;
+					pos.X -= 200;
+					pos.Y -= 200;
+					Projectile.NewProjectile(entitySource, pos, Vector2.Zero, ModContent.ProjectileType<STARLINGPRESPAWN>(), 1, 1, Main.myPlayer);
                 }
 			}
 

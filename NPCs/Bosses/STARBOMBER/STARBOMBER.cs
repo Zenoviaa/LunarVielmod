@@ -10,6 +10,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Particles;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
@@ -73,6 +74,11 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         bool DrawChargeTrail;
 		bool DesperationPhase;
 		float DesperationTimer;
+		private int StarFieldFrameCounter;
+		private int StarFieldFrameTick;
+		private float StarFieldTimer;
+		private bool StarFieldOffset;
+		private bool DrawStarField;
 
         // Current frame
         public int frameCounter;
@@ -249,7 +255,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             }
 
 			Color color = Color.Pink;
-            return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f) * ChargeTrailOpacity * (1f - completionRatio);
+            return color * ChargeTrailOpacity * (1f - completionRatio);
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -384,8 +390,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			return false;
 		}
 
-		//Custom function so that I don't have to copy and paste the same thing in FindFrame
-		
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+
+
+			float starFieldColorProgress = StarFieldTimer / 60f;
+			string texturePath = "Stellamod/NPCs/Bosses/STARBOMBER/Projectiles/STARFIELD";
+			Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
+			Rectangle animationFrame = texture.AnimationFrame(ref StarFieldFrameCounter, ref StarFieldFrameTick, 1, 30, true);
+			Color starFieldDrawColor = new Color(Color.White.R, Color.White.G, Color.White.B, 0) * starFieldColorProgress;
+			float starFieldScale = 1;
+			float starFieldRotation = 0;
+
+			Vector2 starFieldDrawPos = NPC.Center - screenPos;
+			if (StarFieldOffset)
+			{
+				starFieldDrawPos += new Vector2(0, -80);
+			}
+
+            spriteBatch.Draw(texture, starFieldDrawPos, animationFrame, starFieldDrawColor, starFieldRotation, 
+				animationFrame.Size() / 2, starFieldScale, SpriteEffects.None, 0);
+        }
+
+        //Custom function so that I don't have to copy and paste the same thing in FindFrame
+
 
         int bee = 220;
 		private Vector2 originalHitbox;
@@ -413,8 +441,25 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 
         public override void AI()
-		{
-			if (DesperationPhase)
+        {
+            if (DrawStarField)
+            {
+                StarFieldTimer++;
+                if (StarFieldTimer >= 60)
+                {
+                    StarFieldTimer = 60;
+                }
+            }
+            else
+            {
+                StarFieldTimer--;
+                if (StarFieldTimer <= 0)
+                {
+                    StarFieldTimer = 0;
+                }
+            }
+
+            if (DesperationPhase)
 			{
 				DesperationTimer++;
 				if(DesperationTimer % 8 == 0)
@@ -432,10 +477,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 }
 
 				if(DesperationTimer >= 462)
-				{
+                {
+                    MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                    myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
+
                     ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     screenShaderSystem.FlashTintScreen(Color.White, 1f, 5);
 
+					if (StellaMultiplayer.IsHost)
+					{
+						Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+							ModContent.ProjectileType<STARBOMBERBOOM>(), 50, 2, Main.myPlayer);
+					}
 
                     for (int i = 0; i < 80; i++)
                     {
@@ -478,7 +531,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			FinishResetTimers();
 			FinishTeleport();
-			switch (State)
+
+			//Defaults
+            DrawStarField = true;
+            StarFieldOffset = false;
+
+            switch (State)
 			{
 				case ActionState.BomberStar:
 					NPC.damage = 0;
@@ -495,12 +553,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 						float progress = (180f - bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
 						Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
 					}
-					BombStar();
+
+                    StarFieldOffset = true;
+                    BombStar();
 					break;
 
 
 
 				case ActionState.StartStar:
+					StarFieldOffset = true;
 					NPC.damage = 0;
 					counter++;
 					NPC.noTileCollide = false;
@@ -509,7 +570,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					break;
 
 				case ActionState.IdleStar:
-					NPC.damage = 0;
+                    StarFieldOffset = true;
+                    NPC.damage = 0;
 					counter++;
 					NPC.noTileCollide = false;
 					NPC.noGravity = false;
@@ -517,7 +579,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					break;
 
 				case ActionState.BreakdownStar:
-					NPC.damage = 0;
+                    DrawStarField = false;
+                    NPC.damage = 0;
 					counter++;
 					NPC.noTileCollide = false;
 					NPC.noGravity = false;
@@ -525,6 +588,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					break;
 
 				case ActionState.GunStar:
+					StarFieldOffset = true;
 					NPC.damage = 0;
 					counter++;
 					NPC.noTileCollide = false;
@@ -536,13 +600,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					NPC.damage = 0;
 					counter++;
 
-					
+					DrawStarField = false;
 					NPC.noTileCollide = false;
 					NPC.noGravity = false;
 					FallStar();
 					break;
 
 				case ActionState.LaserdrillStar:
+					StarFieldOffset = true;
 					NPC.damage = 0;
 					counter++;
 					NPC.noTileCollide = false;
@@ -579,22 +644,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 					NPC.damage = 100;
 					counter++;
 					NPC.noTileCollide = true;
-					NPC.noGravity = true;
-
-
-					
+					NPC.noGravity = true;				
 					TeleportRageStar();
 					break;
 
 
-
-
-
-
 				case ActionState.TeleportStar:
-					NPC.damage = 0;
-					counter++;
-					
+                    DrawStarField = false;
+                    NPC.damage = 0;
+					counter++;	
 					TeleportStar();
 					break;
 
@@ -783,10 +841,28 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 		}
 
-		private void BombStar()
+        private void ChargeVisuals(float timer, float maxTimer)
+        {
+            float progress = timer / maxTimer;
+            float minParticleSpawnSpeed = 8;
+            float maxParticleSpawnSpeed = 2;
+            int particleSpawnSpeed = (int)MathHelper.Lerp(minParticleSpawnSpeed, maxParticleSpawnSpeed, progress);
+            if (timer % particleSpawnSpeed == 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(168, 168);
+                    Vector2 vel = (NPC.Center - pos).SafeNormalize(Vector2.Zero) * 4;
+                    ParticleManager.NewParticle<AVoidParticle>(pos, vel, Color.RoyalBlue, 0.2f);
+                }
+            }
+        }
+
+        private void BombStar()
 		{
 			timer++;
-			if (timer == 2)
+			ChargeVisuals(timer, 120);
+			if (timer == 120)
 			{
 				if (StellaMultiplayer.IsHost)
                 {
@@ -795,7 +871,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARIGNITE"));
 			}
-			if (timer > 360)
+
+			if (timer > 540)
 			{
 				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
