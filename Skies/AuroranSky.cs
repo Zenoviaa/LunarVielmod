@@ -53,7 +53,7 @@ namespace Stellamod.Skies
             if (maxDepth >= 3.40282347E+38f && minDepth < 3.40282347E+38f)
             {
                 Texture2D Tex = ModContent.Request<Texture2D>("Stellamod/Assets/Effects/SkyGradient1").Value;
-                Texture2D Tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/Effects/SkyGradient2").Value;
+                Texture2D Tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/Effects/SkyGradient3").Value;
 
                 spriteBatch.Draw(Tex, new Rectangle(0, 0 - (int)screenPosition.Y, screenWidth, 3000), null, Color.LightPink * Intensity * 0.4f, 0, Vector2.Zero, SpriteEffects.None, 0);
                 for (int i = 0; i < 2; i++)
