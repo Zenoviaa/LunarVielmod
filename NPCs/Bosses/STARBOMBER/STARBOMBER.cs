@@ -470,6 +470,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (DesperationPhase)
 			{
+				DesperationTimer++;
+
                 Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
                 Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
                 if (Main.rand.NextBool(2))
