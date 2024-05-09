@@ -173,7 +173,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                     {
                         Vector2 direction = npcs.Center - NPC.Center;
                         direction.Normalize();
-                        npcs.velocity -= direction * 0.1f;
+                        npcs.velocity -= direction * 0.2f;
                     }
                 }
             }
