@@ -55,9 +55,9 @@ namespace Stellamod.Skies
                 Texture2D Tex = ModContent.Request<Texture2D>("Stellamod/Assets/Effects/SkyGradient1").Value;
                 Texture2D Tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/Effects/SkyGradient2").Value;
 
-                spriteBatch.Draw(Tex, new Rectangle(0, 0 - (int)screenPosition.Y, screenWidth, 3000), null, Color.LightPink * Intensity * 0.3f, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(Tex, new Rectangle(0, 0 - (int)screenPosition.Y, screenWidth, 3000), null, Color.LightPink * Intensity * 0.4f, 0, Vector2.Zero, SpriteEffects.None, 0);
                 for (int i = 0; i < 2; i++)
-                    spriteBatch.Draw(Tex2, new Rectangle(0, -30, screenWidth, screenHeight), null, Color.BlueViolet * Intensity * 0.5f, 0, Vector2.Zero, SpriteEffects.None, 0);
+                    spriteBatch.Draw(Tex2, new Rectangle(0, -30, screenWidth, screenHeight), null, Color.BlueViolet * Intensity * 0.6f, 0, Vector2.Zero, SpriteEffects.None, 0);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Stellamod.Skies
         public override Color OnTileColor(Color inColor)
         {
             Vector4 value = inColor.ToVector4();
-            return new Color(Vector4.Lerp(value, Vector4.One, Intensity * 0.5f));
+            return new Color(Vector4.Lerp(value, Vector4.One, Intensity * 0.6f));
         }
     }
 }
