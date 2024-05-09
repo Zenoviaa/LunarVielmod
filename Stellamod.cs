@@ -40,6 +40,7 @@ namespace Stellamod
             Instance = this;
 
         }
+      
         public ModPacket GetPacket(MessageType type, int capacity)
         {
             ModPacket packet = GetPacket(capacity + 1);
@@ -92,6 +93,15 @@ namespace Stellamod
 
             if (Main.netMode != NetmodeID.Server)
             {
+
+
+                if (!Main.dedServ)
+                {
+                    Filters.Scene["Stellamod:VeilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                    SkyManager.Instance["Stellamod:VeilSky"] = new AuroranSky();
+                }
+
+
                 Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
                 Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
                 GameShaders.Misc[ShaderRegistry.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");

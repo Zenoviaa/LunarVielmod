@@ -710,8 +710,8 @@ namespace Stellamod
         public override void PostUpdateMiscEffects()
 		{
 
-			
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
+            Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
@@ -2602,8 +2602,8 @@ namespace Stellamod
 			Zuitalk = tag.GetBool("Zuitalk");
 		}
 
-
-		private void AddForegroundOrBackground()
+      
+        private void AddForegroundOrBackground()
 		{
 			if (ZoneIlluria || ZoneIshtar)
 			{
