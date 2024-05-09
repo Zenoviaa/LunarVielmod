@@ -599,12 +599,12 @@ namespace Stellamod.WorldG
 					string path = "Struct/Underground/Manor";//
 
 
-				
 
 
 
 
-					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+                    NPCs.Town.AlcadSpawnSystem.OrdinTile = Loc;
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                     StructureLoader.ProtectStructure(Loc, path);
                     foreach (int chestIndex in ChestIndexs)
 					{
