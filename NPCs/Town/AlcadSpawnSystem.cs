@@ -117,6 +117,7 @@ namespace Stellamod.NPCs.Town
         public static Vector2 OrdinSpawnWorld => OrdinTile.ToWorldCoordinates() + OrdinSpawnTileOffset.ToWorldCoordinates();
 
         public static bool TownedGia;
+        public static bool TownedMardenth;
         public override void SaveWorldData(TagCompound tag)
         {
             base.SaveWorldData(tag);
@@ -127,6 +128,7 @@ namespace Stellamod.NPCs.Town
             tag["LabTile"] = LabTile;
             tag["GiaTile"] = GiaTile;
             tag["TownedGia"] = TownedGia;
+            tag["TownedMar"] = TownedMardenth;
             tag["IlluriaTile"] = IlluriaTile;
             tag["VelTile"] = VelTile;
             tag["FableTile"] = FableTile;
@@ -154,6 +156,7 @@ namespace Stellamod.NPCs.Town
             LabTile = tag.Get<Point>("LabTile");
             GiaTile = tag.Get<Point>("GiaTile");
             TownedGia = tag.GetBool("TownedGia");
+            TownedMardenth = tag.GetBool("TownedMardenth");
             IlluriaTile = tag.Get<Point>("IlluriaTile");
             VelTile = tag.Get<Point>("VelTile");
             FableTile = tag.Get<Point>("FableTile");
@@ -179,6 +182,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(MechanicsTownTile.ToVector2());
             writer.WriteVector2(LabTile.ToVector2());
             writer.Write(TownedGia);
+            writer.Write(TownedMardenth);
             writer.WriteVector2(GiaTile.ToVector2());
             writer.WriteVector2(IlluriaTile.ToVector2());
             writer.WriteVector2(FableTile.ToVector2());
@@ -205,6 +209,7 @@ namespace Stellamod.NPCs.Town
             MechanicsTownTile = reader.ReadVector2().ToPoint();
             LabTile = reader.ReadVector2().ToPoint();
             TownedGia = reader.ReadBoolean();
+            TownedMardenth = reader.ReadBoolean();
             GiaTile = reader.ReadVector2().ToPoint();
             IlluriaTile = reader.ReadVector2().ToPoint();
             FableTile = reader.ReadVector2().ToPoint();
@@ -367,6 +372,14 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)LiberatSpawnWorld.X, (int)LiberatSpawnWorld.Y,
+                        ModContent.NPCType<Mardenth>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
                 else if (!NPC.AnyNPCs(ModContent.NPCType<PULSARHOLE>()) && DownedBossSystem.downedZuiBoss)
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -429,6 +442,11 @@ namespace Stellamod.NPCs.Town
             if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
             {
                 TownedGia = true;
+            }
+
+            if (NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
+            {
+                TownedMardeth = true;
             }
         }
     }

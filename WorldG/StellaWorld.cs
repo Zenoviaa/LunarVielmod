@@ -4077,10 +4077,11 @@ namespace Stellamod.WorldG
 
 				
 					NPCs.Town.AlcadSpawnSystem.LiberatTile = pointLil;
-					//
+                    NPCs.Town.AlcadSpawnSystem.JhoviaTile = pointLil;
+                    //
 
-					//This code just places
-					int width = 253;
+                    //This code just places
+                    int width = 253;
 					int height = 50;
 					ShapeData shapeData = new ShapeData();
 
