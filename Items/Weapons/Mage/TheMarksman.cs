@@ -20,8 +20,8 @@ namespace Stellamod.Items.Weapons.Mage
             Item.staff[Item.type] = true;
             Item.damage = 52;
             Item.mana = 50;
-            Item.width = 18;
-            Item.height = 21;
+            Item.width = 50;
+            Item.height = 50;
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -33,7 +33,7 @@ namespace Stellamod.Items.Weapons.Mage
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<MarksmanLightningProj>();
-            Item.shootSpeed = 4f;
+            Item.shootSpeed = 15f;
             Item.crit = 4;
         }
 
