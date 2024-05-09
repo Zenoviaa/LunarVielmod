@@ -24,6 +24,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         public override void SetDefaults()
         {
+
             Item.damage = 20;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
@@ -34,7 +35,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.knockBack = 6;
             Item.value = 100000;
             Item.rare = ItemRarityID.Green;
-            Item.autoReuse = false;
+            Item.autoReuse = true;
             Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 35f;
             Item.useAmmo = AmmoID.Bullet;

@@ -1,23 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Buffs;
-using Stellamod.DropRules;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Quest.Merena;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
 using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
-using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,9 +20,9 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER
 {
@@ -75,8 +69,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 		}
 
-		// Current frame
-		public int frameCounter;
+        float ChargeTrailOpacity;
+        bool DrawChargeTrail;
+		bool DesperationPhase;
+		float DesperationTimer;
+
+        // Current frame
+        public int frameCounter;
 		// Current frame's progress
 		public int frameTick;
 		// Current state's timer
@@ -97,8 +96,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			Main.npcFrameCount[Type] = 62;
 
-			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-			NPCID.Sets.TrailingMode[NPC.type] = 0;
+			NPCID.Sets.TrailCacheLength[NPC.type] = 24;
+			NPCID.Sets.TrailingMode[NPC.type] = 3;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
@@ -127,8 +126,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
+        {
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<STARBOMBERBossRel>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
 			npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
@@ -139,15 +139,27 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			));
 		}
 
-		public override void SetDefaults()
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+
+			if (NPC.life <= 0)
+			{
+				DesperationPhase = true;
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
+                NPC.life = 1;
+            }
+		
+        }
+
+        public override void SetDefaults()
 		{
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
 			NPC.defense = 40;
 			NPC.lifeMax = 10500;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.knockBackResist = 0f;
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
 			NPC.value = Item.buyPrice(gold: 40);
@@ -212,7 +224,32 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         }
 
 		public float squish = 0f;
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public float WidthFunctionCharge(float completionRatio)
+        {
+            return (NPC.width * NPC.scale / 0.75f * (1f - completionRatio)) * 0.5f;
+        }
+
+        public Color ColorFunctionCharge(float completionRatio)
+        {
+            if (!DrawChargeTrail)
+            {
+                ChargeTrailOpacity -= 0.05f;
+                if (ChargeTrailOpacity <= 0)
+                    ChargeTrailOpacity = 0;
+            }
+            else
+            {
+                ChargeTrailOpacity += 0.05f;
+                if (ChargeTrailOpacity >= 1)
+                    ChargeTrailOpacity = 1;
+            }
+
+			Color color = Color.Pink;
+            return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f) * ChargeTrailOpacity * (1f - completionRatio);
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 			SpriteEffects effects = SpriteEffects.None;
@@ -220,40 +257,49 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			Rectangle rect;
 			originalHitbox = new Vector2(0, 60);
 
-			///Animation Stuff for Verlia
-			/// 1 - 2 Summon Start
-			/// 3 - 7 Summon Idle / Idle
-			/// 8 - 11 Summon down
-			/// 12 - 19 Hold UP
-			/// 20 - 30 Sword UP
-			/// 31 - 35 Sword Slash Simple
-			/// 36 - 45 Hold Sword
-			/// 46 - 67 Barrage 
-			/// 68 - 75 Explode
-			/// 76 - 80 Appear
-			/// 133 width
-			/// 92 height
+            ///Animation Stuff for Verlia
+            /// 1 - 2 Summon Start
+            /// 3 - 7 Summon Idle / Idle
+            /// 8 - 11 Summon down
+            /// 12 - 19 Hold UP
+            /// 20 - 30 Sword UP
+            /// 31 - 35 Sword Slash Simple
+            /// 36 - 45 Hold Sword
+            /// 46 - 67 Barrage 
+            /// 68 - 75 Explode
+            /// 76 - 80 Appear
+            /// 133 width
+            /// 92 height
 
 
-			///Animation Stuff for Veribloom
-			/// 1 = Idle
-			/// 2 = Blank
-			/// 2 - 8 Appear Pulse
-			/// 9 - 19 Pulse Buff Att
-			/// 20 - 26 Disappear Pulse
-			/// 27 - 33 Appear Winding
-			/// 34 - 38 Wind Up
-			/// 39 - 45 Dash
-			/// 46 - 52 Slam Appear
-			/// 53 - 58 Slam
-			/// 59 - 64 Spin
-			/// 80 width
-			/// 89 height
-			/// 
+            ///Animation Stuff for Veribloom
+            /// 1 = Idle
+            /// 2 = Blank
+            /// 2 - 8 Appear Pulse
+            /// 9 - 19 Pulse Buff Att
+            /// 20 - 26 Disappear Pulse
+            /// 27 - 33 Appear Winding
+            /// 34 - 38 Wind Up
+            /// 39 - 45 Dash
+            /// 46 - 52 Slam Appear
+            /// 53 - 58 Slam
+            /// 59 - 64 Spin
+            /// 80 width
+            /// 89 height
+            /// 
 
 
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
 
-			switch (State)
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
+            Vector2 size = new Vector2(206, 129);
+            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
+
+
+            switch (State)
 			{
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -286,6 +332,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				case ActionState.SpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					
 					break;
 
 				case ActionState.DropdownSpinStar:
@@ -363,6 +410,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         public override void AI()
 		{
+			if (DesperationPhase)
+			{
+				DesperationTimer++;
+				if(DesperationTimer % 8 == 0)
+				{
+					Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
+					if (Main.rand.NextBool(4))
+					{
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Electric, newColor: Color.Gray);
+                    }
+
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Firework_Pink, newColor: Color.Gray);
+                    }
+                }
+
+				if(DesperationTimer >= 500)
+				{
+					//Death Effect here
+					NPC.Kill();
+				}
+			}
+
 			NPC.velocity *= 0.97f;
 			bee--;
 			if (bee == 0)
@@ -878,7 +949,43 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			Voiden++;
 			missue++;
 			Player player = Main.player[NPC.target];
-			NPC.velocity *= 0.96f;
+			Vector2 directionToPlayer = NPC.Center.DirectionTo(player.Center);
+			Vector2 velocityToPlayer = directionToPlayer * 4;
+			float movementSpeed = 3;
+			if(NPC.velocity.X < velocityToPlayer.X )
+			{
+				NPC.velocity.X += 0.2f;
+				if(NPC.velocity.X > movementSpeed)
+				{
+					NPC.velocity.X = movementSpeed;
+                }
+			}
+			else
+			{
+                NPC.velocity.X -= 0.2f;
+                if (NPC.velocity.X < -movementSpeed)
+                {
+                    NPC.velocity.X = -movementSpeed;
+                }
+            }
+
+            if (NPC.velocity.Y < velocityToPlayer.Y)
+            {
+                NPC.velocity.Y += 0.2f;
+                if (NPC.velocity.Y > movementSpeed)
+                {
+                    NPC.velocity.Y = movementSpeed;
+                }
+            }
+            else
+            {
+                NPC.velocity.Y -= 0.2f;
+                if (NPC.velocity.Y < -movementSpeed)
+                {
+                    NPC.velocity.Y = -movementSpeed;
+                }
+            }
+
 			if (timer == 5)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
@@ -908,14 +1015,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 
-			if (missue == 25)
+			if (missue == 50)
             {
+				SoundEngine.PlaySound(SoundID.Item92, NPC.position);
 				if (StellaMultiplayer.IsHost)
 				{
                     float speedXa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + speedXa, NPC.position.Y + speedYa + 110, speedXa, speedYa - 1 * 1, 
-						ProjectileID.SaucerMissile, 25, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<STARROCKET>(), 25, 0f, Owner: Main.myPlayer);
 
                 }
 
@@ -1098,7 +1206,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				NPC.ai[3] = Main.rand.Next(1);
 				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
 				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180))) ;
-				Vector2 angle = new Vector2((float)0, (float)angley);
+				Vector2 angle = new Vector2(0, (float)angley);
 				Vector2 dashDirection = (player.Center - (angle * distance)) - NPC.Center;
 				float dashDistance = dashDirection.Length();
 				dashDirection.Normalize();
@@ -1185,50 +1293,57 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		private void SpinStar()
 		{
 			timer++;
-			spinst++;
+
 			constshoot++;
 
 		
 			Player player = Main.player[NPC.target];
-		
-			NPC.noTileCollide = true;
-			NPC.noGravity = true;
+	
+			if(timer == 1 || timer == 241 || timer == 482)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), NPC.position);
+			}
 
-			float speed = 8f;
 
-			int distance = Main.rand.Next(2, 2);
-			NPC.ai[3] = Main.rand.Next(1);
-			double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-			double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-			Vector2 angle = new Vector2((float)anglex, (float)angley);
-			Vector2 dashDirection = (player.Center - (angle * distance)) - NPC.Center;
-			float dashDistance = dashDirection.Length();
-			dashDirection.Normalize();
-			dashDirection *= speed;
-			NPC.velocity = dashDirection;
-			ShakeModSystem.Shake = 3;
-			if (spinst < 60)
+			if(timer == 60 || timer == 300 || timer == 540)
+			{
+				Vector2 directionToPlayer = NPC.Center.DirectionTo(player.Center);
+				Vector2 targetVelocity = directionToPlayer * 64;
+				NPC.velocity = targetVelocity;
+			}
+
+			if(timer >= 60)
+			{
+				NPC.damage = 100;
+                NPC.noTileCollide = true;
+                NPC.noGravity = true;
+            }
+
+			if(timer > 60 && timer < 240 || (timer > 300 && timer < 480) || (timer > 540))
+			{
+				DrawChargeTrail = true;
+				NPC.velocity *= 0.99f;
+				if (spinst == 0)
+					spinst = 1;
+
+				if(player.Center.Y < NPC.Center.Y)
+				{
+					spinst = -1;
+				}else if (player.Center.Y > NPC.Center.Y)
+				{
+					spinst = 1;
+				}
+
+				NPC.velocity.Y += 0.4f * spinst;
+			}
+			else
             {
-				 speed = 8f;			
-			}
+                DrawChargeTrail = false;
+                NPC.noTileCollide = false;
+            }
+			NPC.rotation = NPC.velocity.X * 0.05f;
 
-			if (spinst < 100 && spinst > 60)
-			{
-				speed = 12f;
-			}
-
-
-			if (spinst < 180 && spinst > 100)
-			{
-				 speed = 8f;
-			}
-
-			if (spinst < 240 && spinst > 180)
-			{
-				 speed = 12f;
-			}
-
-			if (constshoot == 70)
+            if (constshoot == 70)
             {
 				if (StellaMultiplayer.IsHost)
 				{
@@ -1253,8 +1368,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 }
 			}
 
-			if (timer > 240)
+			if (timer > 720)
 			{
+				NPC.damage = 0;
 				for (int j = 0; j < 50; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);

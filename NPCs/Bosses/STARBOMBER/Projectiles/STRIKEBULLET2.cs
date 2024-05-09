@@ -36,7 +36,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Projectile.friendly = false;
 			Projectile.ignoreWater = true;
 			Projectile.timeLeft = 500;
-			Projectile.tileCollide = true;
+			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.hostile = true;
 		}

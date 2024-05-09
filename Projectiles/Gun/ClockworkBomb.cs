@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Terraria;
@@ -10,6 +11,7 @@ namespace Stellamod.Projectiles.Gun
 {
     internal class ClockworkBomb : ModProjectile
     {
+        float Speeb;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
@@ -25,42 +27,35 @@ namespace Stellamod.Projectiles.Gun
         }
 
         public Vector3 HuntrianColorXyz;
-        public override bool PreDraw(ref Color lightColor)
+        public override void PostDraw(Color lightColor)
         {
-            DrawHelper.DrawDimLight(Projectile, HuntrianColorXyz.X, HuntrianColorXyz.Y, HuntrianColorXyz.Z, new Color(83, 254, 164), lightColor, 2);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, new Color(83, 254, 164), Color.Transparent, ref lightColor);
-            return base.PreDraw(ref lightColor);
+            Lighting.AddLight(Projectile.Center, Color.Teal.ToVector3() * 1.75f * Main.essScale);
+
         }
 
         public override void AI()
         {
             //Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1; 
-            Projectile.velocity *= 0.92f;
+            Projectile.ai[0]++;
+            if(Projectile.ai[0] <= 2)
+            {
+                Speeb = Main.rand.NextFloat(0.92f, 0.94f);
+            }
+            Projectile.velocity *= Speeb;
             Projectile.rotation = Projectile.velocity.ToRotation();
             if(Projectile.velocity.Length() <= 0.1f && Projectile.active)
             {
                 Projectile.Kill();
             }
 
-            Visuals();
-        }
 
-        private void Visuals()
-        {
-            if (Main.rand.NextBool(5))
-            {
-                int d = Dust.NewDust(Projectile.Center, 4, 4, DustID.GemEmerald);
-                Main.dust[d].noGravity = true;
-            }
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 14; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemEmerald, speed, Scale: 1f);
-                d.noGravity = true;
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Teal, 1f).noGravity = true;
             }
 
             float damage = Projectile.damage;
@@ -74,11 +69,11 @@ namespace Stellamod.Projectiles.Gun
             int Sound = Main.rand.Next(1, 3);
             if (Sound == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity1"), Projectile.position);
             }
             else
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DeathShotBomb2"), Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity2"), Projectile.position);
             }
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 2f);

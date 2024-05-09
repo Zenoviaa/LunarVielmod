@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Assets.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Particles;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -63,16 +65,20 @@ namespace Stellamod.NPCs.Morrow
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			
-			if (spawnInfo.Player.ZoneJungle)
+			Player player = spawnInfo.Player;
+			if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon))
 			{
-				return SpawnCondition.Cavern.Chance * 0.3f;
-
+				return spawnInfo.Player.ZoneFable() ? 1.0f : 0f;
 			}
 
+			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
+			{
+				return SpawnCondition.Underground.Chance * 0.3f;
+			}
 
-			return SpawnCondition.Underground.Chance * 0f;
+			return 0f;
 		}
+
 		public override void AI()
 		{
 			switch (State)

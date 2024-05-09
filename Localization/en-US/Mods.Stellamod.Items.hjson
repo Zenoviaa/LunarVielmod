@@ -6967,6 +6967,11 @@ DreadMedalion: {
 		'''
 }
 
+SkullBreaker: {
+	DisplayName: Skull Breaker
+	Tooltip: ""
+}
+
 ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
 	Tooltip:
@@ -7023,4 +7028,14 @@ Mordred: {
 		I picked this one up randomly on an excursion! - Sirestias
 		May be an old relic or someone's weapon. Either way it's not belonging with you.
 		'''
+}
+
+TheMarksman: {
+	Tooltip: ""
+	DisplayName: The Marksman
+}
+
+STARBOMBERBossRel: {
+	Tooltip: ""
+	DisplayName: S T A R B O M B E R Boss Rel
 }

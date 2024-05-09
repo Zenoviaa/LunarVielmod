@@ -1,10 +1,22 @@
 ﻿
-using Microsoft.Xna.Framework;
+
 using Stellamod.Brooches;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using ReLogic.Content;
+using Stellamod.NPCs.Bosses.DreadMire.Heart;
+using Stellamod.Particles;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
+
 
 namespace Stellamod.NPCs.Town
 {
@@ -37,8 +49,8 @@ namespace Stellamod.NPCs.Town
 		public sealed override void SetDefaults()
 		{
 			Projectile.originalDamage = (int)0f;
-			Projectile.width = 125;
-			Projectile.height = 125;
+			Projectile.width = 126;
+			Projectile.height = 124;
 			Projectile.tileCollide = false; // Makes the minion go through tiles freely
 											// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
@@ -70,9 +82,24 @@ namespace Stellamod.NPCs.Town
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
 			Visuals();
+            Player player = Main.player[Projectile.owner];
+            int distance = (int)(Projectile.position - player.Center).Length();
+            if (distance > 80f)
+            {
+                Projectile.spriteDirection = Projectile.direction;
+            }
+            else
+            {
+                Projectile.spriteDirection = player.direction;
+            }
 
-		
-			if (!owner.GetModPlayer<BroochPlayer>().hasCelestia)
+            if (!owner.GetModPlayer<BroochPlayer>().hasCelestia)
+            {
+                Projectile.Kill();
+                return;
+            }
+
+            if (!owner.GetModPlayer<BroochPlayer>().hasCelestia)
 			{
 				Projectile.Kill();
 				return;
@@ -96,8 +123,53 @@ namespace Stellamod.NPCs.Town
 
 
 		}
+        public virtual string GlowTexturePath => Texture + "_Glow";
+        private Asset<Texture2D> _glowTexture;
+        public Texture2D GlowTexture => (_glowTexture ??= (RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
+        /* public override void PostDraw(Color lightColor)
+         {
+             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+             int projFrames = Main.projFrames[Projectile.type];
+             int frameHeight = texture.Height / projFrames;
+             int startY = frameHeight * Projectile.frame;
 
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
+             Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+             Vector2 drawOrigin = sourceRectangle.Size() / 2f;
+
+
+             float num108 = 4;
+             float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
+             float num106 = 0f;
+             Color color1 = Color.White * num107 * .8f;
+             var effects = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+             Main.spriteBatch.Draw(
+                 GlowTexture,
+                 Projectile.position - Main.screenPosition + drawOrigin,
+                 sourceRectangle,
+                 color1,
+                 Projectile.rotation,
+                 drawOrigin,
+                 Projectile.scale,
+                 effects,
+                 0
+             );
+             SpriteEffects spriteEffects3 = Projectile.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+             Vector2 vector33 = new Vector2(Projectile.position.X, Projectile.position.Y) - Main.screenPosition - Projectile.velocity;
+             Color color29 = new Color(127 - Projectile.alpha, 127 - Projectile.alpha, 127 - Projectile.alpha, 0).MultiplyRGBA(Color.Teal);
+             for (int num103 = 0; num103 < 4; num103++)
+             {
+                 Color color28 = color29;
+                 color28 = Projectile.GetAlpha(color28);
+                 color28 *= 1f - num107;
+                 Vector2 vector29 = Projectile.position + (num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition * num103;
+                 Main.spriteBatch.Draw(GlowTexture, vector29 + drawOrigin, sourceRectangle, color28, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects3, 0f);
+             }
+
+
+
+        } */
+
+        private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
 		{
 			Vector2 idlePosition = owner.Center;
 			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
@@ -110,7 +182,7 @@ namespace Stellamod.NPCs.Town
 			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
 
 			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
+			vectorToIdlePosition = idlePosition - Projectile.position;
 			distanceToIdlePosition = vectorToIdlePosition.Length();
 
 			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 2000f)
@@ -163,7 +235,7 @@ namespace Stellamod.NPCs.Town
 			if (owner.HasMinionAttackTargetNPC)
 			{
 				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
+				float between = Vector2.Distance(npc.Center, Projectile.position);
 
 				// Reasonable distance away so it doesn't target across multiple screens
 				if (between < 2000f)
@@ -183,8 +255,8 @@ namespace Stellamod.NPCs.Town
 
 					if (npc.CanBeChasedBy())
 					{
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
+						float between = Vector2.Distance(npc.Center, Projectile.position);
+						bool closest = Vector2.Distance(Projectile.position, targetCenter) > between;
 						bool inRange = between < distanceFromTarget;
 						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
 						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
@@ -266,7 +338,7 @@ namespace Stellamod.NPCs.Town
 			}
 
 			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
+			Lighting.AddLight(Projectile.position, Color.White.ToVector3() * 0.78f);
 		}
 	}
 

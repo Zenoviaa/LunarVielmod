@@ -7,7 +7,7 @@ namespace Stellamod.Items.Accessories
 
 {
     public class AcidStaketers : ModItem
-    {    
+    {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Toxic Striders");
@@ -27,5 +27,7 @@ namespace Stellamod.Items.Accessories
             player.moveSpeed += 0.4f;
         }
     }
-    }
+}
+
+
 

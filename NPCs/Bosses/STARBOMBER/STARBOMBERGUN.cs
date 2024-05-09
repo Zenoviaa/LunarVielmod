@@ -59,46 +59,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             NPC.velocity *= 0.96f;
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
-
-
             if (Shooter == 2)
             {
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARGUN"));
             }
+
             if (Shooter < 170)
             {
-
                 for (int j = 0; j < 2; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 2f);
-                    ParticleManager.NewParticle(NPC.Center, speed * 3, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
+                    ParticleManager.NewParticle(NPC.Center, speed * 3,
+                        ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
                 }
-
-
-
-
-
-
-
             }
 
             if (Shooter > 170)
             {
-
                 Shooting++;
                 shootbreak++;
-
-            
-
-
-
-
             }
+
             if (shootbreak < 60)
             {
-                if (Shooting == 6)
+                if (Shooting >= 6)
                 {
                     if (StellaMultiplayer.IsHost)
                     {
@@ -111,54 +95,28 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                             ModContent.ProjectileType<BULLET>(), 47, 0f, Owner: Main.myPlayer);
                     }
 
-
                     Shooting = 0;
                 }
-
             }
 
-
-            if (shootbreak > 120)
+            //BREAK TIME IS OVER
+            //Reset
+            if(shootbreak > 120)
             {
-                if (Shooting == 6)
-                {
-                    float speedYb = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-                    float speedXBb = NPC.velocity.X * Main.rand.NextFloat(-.3f, -.3f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
-
-                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARSHOOT"));
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 2, speedYb - 2 * 2, ModContent.ProjectileType<BULLET>(), 47, 0f, 0, 0f, 0f);
-
-                    Shooting = 0;
-                }
-
-            }
-
-           
-
-            
-
+                shootbreak = 0;
+            }      
+          
             NPC.rotation = NPC.DirectionTo(player.Center).ToRotation() - MathHelper.PiOver2;
-
-
             if (Shooter > 530)
             {
-              
-
                 for (int j = 0; j < 50; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(1f, 3f);
                     ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<ShadeParticle>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
-
-
                 }
+
                 NPC.Kill();
             }
-
-
-           
-                
-            
         }
 
         public override bool PreAI()

@@ -269,7 +269,12 @@ namespace Stellamod.Helpers
 		/// <param name="widthFunction"></param>
 		/// <param name="colorFunction"></param>
 		/// <param name="trailTexture"></param>
-		public static void DrawSimpleTrail(Projectile projectile, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
+		public static void DrawSimpleTrail(Projectile projectile, 
+			PrimDrawer.WidthTrailFunction widthFunction, 
+			PrimDrawer.ColorTrailFunction colorFunction, 
+			Asset<Texture2D> trailTexture,
+			Vector2? frameSize = null,
+			Vector2? offset = null)
 		{
             if (TrailDrawer == null)
             {
@@ -279,10 +284,27 @@ namespace Stellamod.Helpers
 			TrailDrawer.WidthFunc = widthFunction;
 			TrailDrawer.ColorFunc = colorFunction;
 			GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(trailTexture);
-			TrailDrawer.DrawPrims(projectile.oldPos, projectile.Size * 0.5f - Main.screenPosition, 155);
-		}
 
-		public static void DrawSimpleTrail(NPC npc, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
+			Vector2 trailOffset;
+			if(frameSize != null)
+			{
+                trailOffset = (Vector2)frameSize * 0.5f - Main.screenPosition;
+            }
+			else
+			{
+                trailOffset = projectile.Size * 0.5f - Main.screenPosition;
+            }
+
+			if(offset != null)
+			{
+				trailOffset += (Vector2)offset;
+			}
+
+            TrailDrawer.DrawPrims(projectile.oldPos, trailOffset, 155);
+        }
+
+
+        public static void DrawSimpleTrail(NPC npc, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
 		{
 			if (TrailDrawer == null)
 			{

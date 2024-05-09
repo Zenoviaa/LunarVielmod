@@ -16,4 +16,5 @@ namespace Stellamod.Items.Placeable
     public class GintzeBossRel : BossRelicItem { public override int TileType => ModContent.TileType<GintzeBossRelic>(); }
     public class ZuiBossRel : BossRelicItem { public override int TileType => ModContent.TileType<ZuiBossRelic>(); }
     public class NestBossRel : BossRelicItem { public override int TileType => ModContent.TileType<NestBossRelic>(); }
+    public class STARBOMBERBossRel : BossRelicItem { public override int TileType => ModContent.TileType<STARBOMBERBossRelic>(); }
 }

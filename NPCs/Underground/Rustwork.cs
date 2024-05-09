@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets.Biomes;
 using Stellamod.Items.Materials.Tech;
 using Stellamod.Items.Ores;
 using Stellamod.NPCs.Catacombs.Trap.Cogwork;
@@ -125,6 +126,8 @@ namespace Stellamod.NPCs.Underground
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
+            if (spawnInfo.Player.InModBiome<DrakonicManor>() || spawnInfo.Player.InModBiome<CindersparkBiome>())
+                return 0;
             return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
         }
 

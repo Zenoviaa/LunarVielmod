@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Ranged
             float spread = 0.4f;
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol3"));
 
-            Vector2 offset = new Vector2(2, -0.1f * player.direction).RotatedBy(rot);
+            Vector2 offset = new Vector2(2, -0f * player.direction).RotatedBy(rot);
             for (int k = 0; k < 15; k++)
             {
                 Vector2 direction = offset.RotatedByRandom(spread);

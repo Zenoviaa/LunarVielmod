@@ -1,6 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
 using Stellamod.Assets.Biomes;
 using Stellamod.Utilis;
 using Terraria;
@@ -60,7 +61,30 @@ namespace Stellamod.NPCs.Bosses.Jack
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 1.75f * Main.essScale);
             NPC.spriteDirection = NPC.direction;
         }
-
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
+            {
+                for (int i = 0; i < 50; i++)
+                {
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    {
+                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
+                    Main.dust[num].noGravity = false;
+                }
+            }
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;

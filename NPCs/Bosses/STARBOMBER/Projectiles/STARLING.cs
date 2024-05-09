@@ -151,5 +151,10 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 				timer = 0;
 			}
 		}
-	}
+
+        public override bool? CanFallThroughPlatforms()
+        {
+			return true;
+        }
+    }
 }

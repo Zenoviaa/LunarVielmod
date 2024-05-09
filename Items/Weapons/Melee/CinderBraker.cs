@@ -78,13 +78,14 @@ namespace Stellamod.Items.Weapons.Melee
         }
         public override void AddRecipes()
         {
+            /*
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.Gladius, 1);
             recipe.AddIngredient(ItemType<Cinderscrap>(), 25);
             recipe.AddIngredient(ItemType<WanderingFlame>(), 15);
             recipe.AddIngredient(ItemType<DarkEssence>(), 5);
             recipe.AddTile(TileID.Anvils);
-            recipe.Register();
+            recipe.Register();*/
         }
     }
 }

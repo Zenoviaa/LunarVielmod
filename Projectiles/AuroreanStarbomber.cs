@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ParticleLibrary;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.STARBOMBER;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -15,6 +19,7 @@ namespace Stellamod.Projectiles
 {
     internal class AuroreanStarbomber : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         bool Moved;
         public override void SetStaticDefaults()
         {
@@ -94,13 +99,34 @@ namespace Stellamod.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            var entitySource = Projectile.GetSource_FromAI();
             SpawnStarBomber();
-            for (int i = 0; i < 150; i++)
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), Projectile.position);
+
+            MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+            myPlayer.ShakeAtPosition(Projectile.position, 6000, 128);
+
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.FlashTintScreen(Color.White, 1f, 5);
+            for (int i = 0; i < 14; i++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.BoneTorch, speed * 3, Scale: 3f);
-                d.noGravity = true;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), 
+                    (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Pink, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 80; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), 
+                    (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                //Get a random velocity
+                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+
+                //Get a random
+                float randScale = Main.rand.NextFloat(0.5f, 1.5f);
+                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.White, randScale);
             }
         }
 
@@ -129,6 +155,25 @@ namespace Stellamod.Projectiles
         {
             return Color.Lerp(Color.PaleGoldenrod, Color.Goldenrod, completionRatio) * 0.7f;
         }
+
+        public float WidthFunction2(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width * 1.0f;
+            return MathHelper.SmoothStep(baseWidth, 0.35f, completionRatio);
+        }
+
+        public Color ColorFunction2(float completionRatio)
+        {
+            return Color.Lerp(Color.Pink, Color.Transparent, completionRatio) * 0.7f;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Vector2 frameSize = new Vector2(132, 150);
+            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction2, ColorFunction2, TrailRegistry.StarTrail, frameSize: frameSize);
+            return base.PreDraw(ref lightColor);
+        }
+
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
@@ -139,9 +184,7 @@ namespace Stellamod.Projectiles
             Lighting.AddLight(Projectile.Center, Color.HotPink.ToVector3() * 2.0f * Main.essScale);
 
         }
-
     }
-
 }
 
 
