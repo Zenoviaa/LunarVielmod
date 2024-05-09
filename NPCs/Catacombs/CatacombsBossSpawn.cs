@@ -172,14 +172,17 @@ namespace Stellamod.NPCs.Catacombs
 
 
                 int bossType = bosses[Main.rand.Next(0, bosses.Length)];
-                if (StellaMultiplayer.IsHost && bossType != 2)
+                if (StellaMultiplayer.IsHost)
                 {
-                    //Main.NewText("Jack has awoken!", Color.Gold);
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), 
+
+			if(_bossType != 2)
+			{
+                    		Projectile.NewProjectile(NPC.GetSource_FromThis(), 
                         (int)NPC.Center.X + offset.X, 
                         (int)NPC.Center.Y + offset.Y, 0, 0,
                         ModContent.ProjectileType<CatacombsBeamBarrier>(), 100, 1, Main.myPlayer);
+			}
                     Main.npc[npcID].netUpdate2 = true;
                 }
 
