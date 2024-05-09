@@ -169,7 +169,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 				gr = 0;
             }
 
-			if (bee2 <= 240)
+			if (bee2 <= 320)
 			{
 				HHH = true;
 			}
