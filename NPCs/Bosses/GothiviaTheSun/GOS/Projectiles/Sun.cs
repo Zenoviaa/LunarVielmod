@@ -153,7 +153,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
 
-			if (gr == 40 && !HHH)
+			if (gr == 50 && !HHH)
 			{
 
                 if (StellaMultiplayer.IsHost)
