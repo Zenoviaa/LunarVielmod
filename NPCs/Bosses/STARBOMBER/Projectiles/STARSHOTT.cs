@@ -21,7 +21,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 16;
 			Projectile.scale = 0.6f;
-		}
+            Projectile.tileCollide = false;
+        }
 
 		public float Timer
 		{
@@ -45,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
 		public override bool PreAI()
 		{
-			Projectile.tileCollide = false;
+
 			if (++Projectile.frameCounter >= 2)
 			{
 				Projectile.frameCounter = 0;

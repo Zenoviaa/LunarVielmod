@@ -40,7 +40,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			{
 				if(Main.myPlayer == Projectile.owner)
 				{
-                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<STARBOMBERGUN>());
+                    NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y,
+						ModContent.NPCType<STARBOMBERGUN>());
                 }
 	
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work

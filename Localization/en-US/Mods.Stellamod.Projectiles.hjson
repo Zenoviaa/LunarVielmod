@@ -1098,10 +1098,8 @@ MushyBoom.DisplayName: Mushy Boom
 IlluPowderProj.DisplayName: Illu Powder Proj
 IshyPowderProj.DisplayName: Ishy Powder Proj
 MushyPowderProj.DisplayName: Mushy Powder Proj
-<<<<<<< HEAD
 SkullSaw.DisplayName: Skull Saw
 FabelFire.DisplayName: Fabel Fire
-=======
 RibbonBoom.DisplayName: Ribbon Boom
 RibbonStaffStart.DisplayName: Ribbon Staff Start
 RibbonStaffHold.DisplayName: Ribbon Staff Hold
@@ -1115,4 +1113,3 @@ CatacombsBeamBarrier.DisplayName: Catacombs Beam Barrier
 MalachoBoom.DisplayName: Malacho Boom
 MordredProj.DisplayName: Mordred Proj
 NotNiceBuster.DisplayName: Not Nice Buster
->>>>>>> ed02a0ae9d5c565ea271161244492454c5af20e6

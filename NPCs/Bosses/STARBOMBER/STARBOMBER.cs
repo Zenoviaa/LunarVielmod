@@ -1,23 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
-using Stellamod.Buffs;
-using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
-using Stellamod.NPCs.Bosses.StarrVeriplant.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
 using Stellamod.Particles;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
-using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +19,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER
 {
@@ -145,9 +135,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			NPC.damage = 1;
 			NPC.defense = 40;
 			NPC.lifeMax = 10500;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.knockBackResist = 0f;
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
+            NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
 			NPC.value = Item.buyPrice(gold: 40);
@@ -878,7 +868,43 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			Voiden++;
 			missue++;
 			Player player = Main.player[NPC.target];
-			NPC.velocity *= 0.96f;
+			Vector2 directionToPlayer = NPC.Center.DirectionTo(player.Center);
+			Vector2 velocityToPlayer = directionToPlayer * 4;
+			float movementSpeed = 3;
+			if(NPC.velocity.X < velocityToPlayer.X )
+			{
+				NPC.velocity.X += 0.2f;
+				if(NPC.velocity.X > movementSpeed)
+				{
+					NPC.velocity.X = movementSpeed;
+                }
+			}
+			else
+			{
+                NPC.velocity.X -= 0.2f;
+                if (NPC.velocity.X < -movementSpeed)
+                {
+                    NPC.velocity.X = -movementSpeed;
+                }
+            }
+
+            if (NPC.velocity.Y < velocityToPlayer.Y)
+            {
+                NPC.velocity.Y += 0.2f;
+                if (NPC.velocity.Y > movementSpeed)
+                {
+                    NPC.velocity.Y = movementSpeed;
+                }
+            }
+            else
+            {
+                NPC.velocity.Y -= 0.2f;
+                if (NPC.velocity.Y < -movementSpeed)
+                {
+                    NPC.velocity.Y = -movementSpeed;
+                }
+            }
+
 			if (timer == 5)
 			{
 				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/STARLAUGH"));
@@ -908,14 +934,15 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 
 
-			if (missue == 25)
+			if (missue == 50)
             {
+				SoundEngine.PlaySound(SoundID.Item92, NPC.position);
 				if (StellaMultiplayer.IsHost)
 				{
                     float speedXa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
                     float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-10, 10);
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + speedXa, NPC.position.Y + speedYa + 110, speedXa, speedYa - 1 * 1, 
-						ProjectileID.SaucerMissile, 25, 0f, Owner: Main.myPlayer);
+						ModContent.ProjectileType<STARROCKET>(), 25, 0f, Owner: Main.myPlayer);
 
                 }
 
@@ -1098,7 +1125,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				NPC.ai[3] = Main.rand.Next(1);
 				double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
 				double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180))) ;
-				Vector2 angle = new Vector2((float)0, (float)angley);
+				Vector2 angle = new Vector2(0, (float)angley);
 				Vector2 dashDirection = (player.Center - (angle * distance)) - NPC.Center;
 				float dashDistance = dashDirection.Length();
 				dashDirection.Normalize();
@@ -1185,50 +1212,55 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		private void SpinStar()
 		{
 			timer++;
-			spinst++;
+
 			constshoot++;
 
 		
 			Player player = Main.player[NPC.target];
-		
-			NPC.noTileCollide = true;
-			NPC.noGravity = true;
+	
+			if(timer == 1 || timer == 241 || timer == 482)
+			{
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), NPC.position);
+			}
 
-			float speed = 8f;
 
-			int distance = Main.rand.Next(2, 2);
-			NPC.ai[3] = Main.rand.Next(1);
-			double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-			double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-			Vector2 angle = new Vector2((float)anglex, (float)angley);
-			Vector2 dashDirection = (player.Center - (angle * distance)) - NPC.Center;
-			float dashDistance = dashDirection.Length();
-			dashDirection.Normalize();
-			dashDirection *= speed;
-			NPC.velocity = dashDirection;
-			ShakeModSystem.Shake = 3;
-			if (spinst < 60)
+			if(timer == 60 || timer == 300 || timer == 540)
+			{
+				Vector2 directionToPlayer = NPC.Center.DirectionTo(player.Center);
+				Vector2 targetVelocity = directionToPlayer * 64;
+				NPC.velocity = targetVelocity;
+			}
+
+			if(timer >= 60)
+			{
+				NPC.damage = 100;
+                NPC.noTileCollide = true;
+                NPC.noGravity = true;
+            }
+
+			if(timer > 60 && timer < 240 || (timer > 300 && timer < 480) || (timer > 540))
+			{
+				NPC.velocity *= 0.99f;
+				if (spinst == 0)
+					spinst = 1;
+
+				if(player.Center.Y < NPC.Center.Y)
+				{
+					spinst = -1;
+				}else if (player.Center.Y > NPC.Center.Y)
+				{
+					spinst = 1;
+				}
+
+				NPC.velocity.Y += 0.4f * spinst;
+			}
+			else
             {
-				 speed = 8f;			
-			}
+                NPC.noTileCollide = false;
+            }
+			NPC.rotation = NPC.velocity.X * 0.05f;
 
-			if (spinst < 100 && spinst > 60)
-			{
-				speed = 12f;
-			}
-
-
-			if (spinst < 180 && spinst > 100)
-			{
-				 speed = 8f;
-			}
-
-			if (spinst < 240 && spinst > 180)
-			{
-				 speed = 12f;
-			}
-
-			if (constshoot == 70)
+            if (constshoot == 70)
             {
 				if (StellaMultiplayer.IsHost)
 				{
@@ -1253,8 +1285,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                 }
 			}
 
-			if (timer > 240)
+			if (timer > 720)
 			{
+				NPC.damage = 0;
 				for (int j = 0; j < 50; j++)
 				{
 					Vector2 speedg = Main.rand.NextVector2CircularEdge(1f, 1f);

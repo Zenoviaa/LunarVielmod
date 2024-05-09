@@ -6967,11 +6967,11 @@ DreadMedalion: {
 		'''
 }
 
-<<<<<<< HEAD
 SkullBreaker: {
 	DisplayName: Skull Breaker
 	Tooltip: ""
-=======
+}
+
 ArtoriaIllurePowder: {
 	DisplayName: Artoria Illure Powder
 	Tooltip:
@@ -7028,5 +7028,4 @@ Mordred: {
 		I picked this one up randomly on an excursion! - Sirestias
 		May be an old relic or someone's weapon. Either way it's not belonging with you.
 		'''
->>>>>>> ed02a0ae9d5c565ea271161244492454c5af20e6
 }
