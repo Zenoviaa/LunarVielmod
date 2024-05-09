@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -9,6 +10,7 @@ using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -66,8 +69,13 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 		}
 
-		// Current frame
-		public int frameCounter;
+        float ChargeTrailOpacity;
+        bool DrawChargeTrail;
+		bool DesperationPhase;
+		float DesperationTimer;
+
+        // Current frame
+        public int frameCounter;
 		// Current frame's progress
 		public int frameTick;
 		// Current state's timer
@@ -88,8 +96,8 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			Main.npcFrameCount[Type] = 62;
 
-			NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-			NPCID.Sets.TrailingMode[NPC.type] = 0;
+			NPCID.Sets.TrailCacheLength[NPC.type] = 24;
+			NPCID.Sets.TrailingMode[NPC.type] = 3;
 
 			// Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
 			// Automatically group with other bosses
@@ -131,7 +139,19 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			));
 		}
 
-		public override void SetDefaults()
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+
+			if (NPC.life <= 0)
+			{
+				DesperationPhase = true;
+				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
+                NPC.life = 1;
+            }
+		
+        }
+
+        public override void SetDefaults()
 		{
 			NPC.Size = new Vector2(96, 65);
 			NPC.damage = 1;
@@ -204,7 +224,32 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
         }
 
 		public float squish = 0f;
-		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public float WidthFunctionCharge(float completionRatio)
+        {
+            return (NPC.width * NPC.scale / 0.75f * (1f - completionRatio)) * 0.5f;
+        }
+
+        public Color ColorFunctionCharge(float completionRatio)
+        {
+            if (!DrawChargeTrail)
+            {
+                ChargeTrailOpacity -= 0.05f;
+                if (ChargeTrailOpacity <= 0)
+                    ChargeTrailOpacity = 0;
+            }
+            else
+            {
+                ChargeTrailOpacity += 0.05f;
+                if (ChargeTrailOpacity >= 1)
+                    ChargeTrailOpacity = 1;
+            }
+
+			Color color = Color.Pink;
+            return color * NPC.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f) * ChargeTrailOpacity * (1f - completionRatio);
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 			SpriteEffects effects = SpriteEffects.None;
@@ -212,40 +257,49 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			Rectangle rect;
 			originalHitbox = new Vector2(0, 60);
 
-			///Animation Stuff for Verlia
-			/// 1 - 2 Summon Start
-			/// 3 - 7 Summon Idle / Idle
-			/// 8 - 11 Summon down
-			/// 12 - 19 Hold UP
-			/// 20 - 30 Sword UP
-			/// 31 - 35 Sword Slash Simple
-			/// 36 - 45 Hold Sword
-			/// 46 - 67 Barrage 
-			/// 68 - 75 Explode
-			/// 76 - 80 Appear
-			/// 133 width
-			/// 92 height
+            ///Animation Stuff for Verlia
+            /// 1 - 2 Summon Start
+            /// 3 - 7 Summon Idle / Idle
+            /// 8 - 11 Summon down
+            /// 12 - 19 Hold UP
+            /// 20 - 30 Sword UP
+            /// 31 - 35 Sword Slash Simple
+            /// 36 - 45 Hold Sword
+            /// 46 - 67 Barrage 
+            /// 68 - 75 Explode
+            /// 76 - 80 Appear
+            /// 133 width
+            /// 92 height
 
 
-			///Animation Stuff for Veribloom
-			/// 1 = Idle
-			/// 2 = Blank
-			/// 2 - 8 Appear Pulse
-			/// 9 - 19 Pulse Buff Att
-			/// 20 - 26 Disappear Pulse
-			/// 27 - 33 Appear Winding
-			/// 34 - 38 Wind Up
-			/// 39 - 45 Dash
-			/// 46 - 52 Slam Appear
-			/// 53 - 58 Slam
-			/// 59 - 64 Spin
-			/// 80 width
-			/// 89 height
-			/// 
+            ///Animation Stuff for Veribloom
+            /// 1 = Idle
+            /// 2 = Blank
+            /// 2 - 8 Appear Pulse
+            /// 9 - 19 Pulse Buff Att
+            /// 20 - 26 Disappear Pulse
+            /// 27 - 33 Appear Winding
+            /// 34 - 38 Wind Up
+            /// 39 - 45 Dash
+            /// 46 - 52 Slam Appear
+            /// 53 - 58 Slam
+            /// 59 - 64 Spin
+            /// 80 width
+            /// 89 height
+            /// 
 
 
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
 
-			switch (State)
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
+            Vector2 size = new Vector2(206, 129);
+            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
+
+
+            switch (State)
 			{
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -356,6 +410,30 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
         public override void AI()
 		{
+			if (DesperationPhase)
+			{
+				DesperationTimer++;
+				if(DesperationTimer % 8 == 0)
+				{
+					Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
+					if (Main.rand.NextBool(4))
+					{
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Electric, newColor: Color.Gray);
+                    }
+
+                    if (Main.rand.NextBool(4))
+                    {
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Firework_Pink, newColor: Color.Gray);
+                    }
+                }
+
+				if(DesperationTimer >= 500)
+				{
+					//Death Effect here
+					NPC.Kill();
+				}
+			}
+
 			NPC.velocity *= 0.97f;
 			bee--;
 			if (bee == 0)
@@ -1243,6 +1321,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if(timer > 60 && timer < 240 || (timer > 300 && timer < 480) || (timer > 540))
 			{
+				DrawChargeTrail = true;
 				NPC.velocity *= 0.99f;
 				if (spinst == 0)
 					spinst = 1;
@@ -1259,6 +1338,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			}
 			else
             {
+                DrawChargeTrail = false;
                 NPC.noTileCollide = false;
             }
 			NPC.rotation = NPC.velocity.X * 0.05f;

@@ -22,6 +22,7 @@ namespace Stellamod.Helpers
 
         //Tint Shader
         private bool _useTint;
+        private float _tintTimer;
         private float _tintOpacity;
         private Color _tintColor;
         private float _targetTintOpacity;
@@ -70,6 +71,14 @@ namespace Stellamod.Helpers
             _useDistortion = false;
         }
 
+        public void FlashTintScreen(Color color, float targetOpacity, float time)
+        {
+            _useTint = true;
+            _tintColor = color;
+            _tintOpacity = _targetTintOpacity;
+            _targetTintOpacity = targetOpacity;
+            _tintTimer = time;
+        }
         public void TintScreen(Color color, float targetOpacity)
         {
             _useTint = true;
@@ -187,6 +196,15 @@ namespace Stellamod.Helpers
                 if(_tintOpacity >= _targetTintOpacity)
                 {
                     _tintOpacity = _targetTintOpacity;
+                }
+
+                if(_tintTimer > 0)
+                {
+                    _tintTimer--;
+                    if(_tintTimer <= 0)
+                    {
+                        _useTint = false;
+                    }
                 }
 
                 var shaderData = FilterManager[ShaderRegistry.Screen_Tint].GetShader();

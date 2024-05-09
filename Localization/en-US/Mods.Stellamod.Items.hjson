@@ -7029,3 +7029,13 @@ Mordred: {
 		May be an old relic or someone's weapon. Either way it's not belonging with you.
 		'''
 }
+
+TheMarksman: {
+	Tooltip: ""
+	DisplayName: The Marksman
+}
+
+STARBOMBERBossRel: {
+	Tooltip: ""
+	DisplayName: S T A R B O M B E R Boss Rel
+}
