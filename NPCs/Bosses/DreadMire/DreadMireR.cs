@@ -340,15 +340,18 @@ namespace Stellamod.NPCs.Bosses.DreadMire
                 AI_RandomLasers();
             }
 
-            if (InPhase2 && !_phase2Special)
+            if (InPhase2 && !_phase2Special && State != ActionState.Heart_Phase)
             {
                 ResetState(ActionState.Heart_Phase);
                 _phase2Special = true;
+                return;
             }
-            else if (InPhase3 && !_phase3Special)
+           
+            if (InPhase3 && !_phase3Special && State != ActionState.Heart_Phase)
             {
                 ResetState(ActionState.Heart_Phase);
                 _phase3Special = true;
+                return;
             }
 
             switch (State)

@@ -470,17 +470,17 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             if (DesperationPhase)
 			{
 				DesperationTimer++;
-				if(DesperationTimer % 8 == 0)
+				if(DesperationTimer % 6 == 0)
 				{
 					Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
 					if (Main.rand.NextBool(4))
 					{
-                        Dust.NewDust(NPC.position, 206, 129, DustID.Electric, newColor: Color.Gray);
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Electric, newColor: Color.Gray, Scale: 2f);
                     }
 
                     if (Main.rand.NextBool(4))
                     {
-                        Dust.NewDust(NPC.position, 206, 129, DustID.Firework_Pink, newColor: Color.Gray);
+                        Dust.NewDust(NPC.position, 206, 129, DustID.Firework_Pink, newColor: Color.Gray, Scale: 3f);
                     }
                 }
 
