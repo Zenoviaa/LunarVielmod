@@ -123,6 +123,7 @@ namespace Stellamod.WorldG
 				tasks.Insert(CathedralGen2 + 31, new PassLegacy("World Gen Bridget", WorldGenBridget));
 				tasks.Insert(CathedralGen2 + 32, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
                 tasks.Insert(CathedralGen2 + 33, new PassLegacy("World Gen Dread Monoliths", WorldGenDreadMonoliths));
+                tasks.Insert(CathedralGen2 + 34, new PassLegacy("World Gen Graving", WorldGenGraving));
             }
 
 
@@ -754,8 +755,8 @@ namespace Stellamod.WorldG
 
 								break;
 							case 4:
-								itemsToAdd.Add((ItemID.JackOLanternMask, Main.rand.Next(1, 1)));
-								itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ModContent.ItemType<EreshkinPowder>(), Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
 								itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
 								itemsToAdd.Add((ItemID.NightOwlPotion, Main.rand.Next(1, 3)));
 								break;
@@ -1106,7 +1107,184 @@ namespace Stellamod.WorldG
 		}
 
 
-		private void WorldGenWindmills(GenerationProgress progress, GameConfiguration configuration)
+        private void WorldGenGraving(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "You aren't escaping the Kill Pillars";
+
+
+			int smx = 0;
+            bool placed = false;
+            int attempts = 0;
+            while (!placed && attempts++ < 10000000)
+            {
+                // Select a place in the first 6th of the world, avoiding the oceans
+               ; // from 50 since there's a unaccessible area at the world's borders
+                switch (Main.rand.Next(2))
+                {
+
+
+                    case 0:
+						{
+                           smx = WorldGen.genRand.Next(300, (Main.maxTilesX / 2) - 550);
+                        }
+					
+
+
+                     
+                        break;
+
+                    case 1:
+						{
+                            smx = WorldGen.genRand.Next((Main.maxTilesX / 2) + 500, (Main.maxTilesX) - 300);
+                        }
+					
+
+
+                     
+                        break;
+
+                }                                                                                        // 50% of choosing the last 6th of the world
+                                                                                                         // Choose which side of the world to be on randomly
+                ///if (WorldGen.genRand.NextBool())
+                ///{
+                ///	towerX = Main.maxTilesX - towerX;
+                ///}
+
+                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                int smy = ((int)(Main.worldSurface - 200));
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                {
+                    smy++;
+                }
+
+                // If we went under the world's surface, try again
+                if (smy > Main.worldSurface - 20)
+                {
+                    continue;
+                }
+                Tile tile = Main.tile[smx, smy];
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                if (!(tile.TileType == TileID.Dirt
+                    || tile.TileType == ModContent.TileType<VeriplantGrass>()
+                    || tile.TileType == TileID.Grass
+                    || tile.TileType == TileID.Stone))
+                {
+                    continue;
+                }
+
+
+                // place the Rogue
+                //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
+                //Main.npc[num].homeTileX = -1;
+                //	Main.npc[num].homeTileY = -1;
+                //	Main.npc[num].direction = 1;
+                //	Main.npc[num].homeless = true;
+
+
+
+                for (int da = 0; da < 1; da++)
+                {
+                    Point Loc = new Point(smx, smy + 3);
+
+                    string path = "Struct/Overworld/Graving";
+
+                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
+                    StructureLoader.ProtectStructure(Loc, path);
+                    NPCs.Town.AlcadSpawnSystem.DaedenTile = Loc;
+                    foreach (int chestIndex in ChestIndexs)
+                    {
+                        var chest = Main.chest[chestIndex];
+                        // etc
+
+                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                        var itemsToAdd = new List<(int type, int stack)>();
+
+                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+                            Tuple.Create(ModContent.ItemType<Ivythorn>(), 0.5)
+
+
+                        // Choose no item with a high weight of 7.
+                        );
+                        if (specialItem != ItemID.None)
+                        {
+                            itemsToAdd.Add((specialItem, 1));
+                        }
+                        // Using a switch statement and a random choice to add sets of items.
+                        switch (Main.rand.Next(4))
+                        {
+                            case 0:
+                                itemsToAdd.Add((ModContent.ItemType<PerfectionStaff>(), Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                                itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                break;
+                            case 1:
+                                itemsToAdd.Add((ItemID.CordageGuide, Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                                itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                                itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                break;
+                            case 2:
+                                itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                                itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 50)));
+                                itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                break;
+                            case 3:
+                                itemsToAdd.Add((ItemID.SlimeStaff, Main.rand.Next(1, 1)));
+                                itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                                itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                                itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
+                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+
+                                break;
+
+
+
+
+
+                        }
+
+                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                        int chestItemIndex = 0;
+                        foreach (var itemToAdd in itemsToAdd)
+                        {
+                            Item item = new Item();
+                            item.SetDefaults(itemToAdd.type);
+                            item.stack = itemToAdd.stack;
+                            chest.item[chestItemIndex] = item;
+                            chestItemIndex++;
+                            if (chestItemIndex >= 40)
+                                break; // Make sure not to exceed the capacity of the chest
+                        }
+                    }
+                }
+
+                for (int da = 0; da < 1; da++)
+                {
+                    Point Loc2 = new Point(smx, smy + 19);
+                    WorldUtils.Gen(Loc2, new Shapes.Rectangle(150, 20), new Actions.SetTile(TileID.Dirt));
+
+
+
+                }
+                placed = true;
+
+
+            }
+
+        }
+
+
+        private void WorldGenWindmills(GenerationProgress progress, GameConfiguration configuration)
 		{
 			progress.Message = "Adding life to the world!";
 
@@ -1800,9 +1978,13 @@ namespace Stellamod.WorldG
 			StructureMap structures = GenVars.structures;
 			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ocean/SunAlter2");
 			progress.Message = "Bird building alters";
+            
+			int[] tileBlend = new int[]
+        {
+                TileID.RubyGemspark
+        };
 
-
-			for (int k = 0; k < 1; k++)
+            for (int k = 0; k < 1; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
@@ -1853,11 +2035,11 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy + 5);
-						rectangle.Location = Loc;
-						structures.AddProtectedStructure(rectangle);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ocean/SunAlter2");
-						foreach (int chestIndex in ChestIndexs)
+						Point Loc = new Point(smx, smy + 10);
+                        string path = "Struct/Ocean/SunAlter2";//                 
+                        StructureLoader.ProtectStructure(Loc, path);
+                        int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+                        foreach (int chestIndex in ChestIndexs)
 						{
 							var chest = Main.chest[chestIndex];
 							// etc

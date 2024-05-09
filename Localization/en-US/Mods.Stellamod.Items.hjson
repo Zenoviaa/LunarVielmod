@@ -6897,7 +6897,7 @@ BasicBaseball: {
 }
 
 Volcant: {
-	Tooltip: ""
+	Tooltip: A fiery Greatsword to swing out your enemies' knees.
 	DisplayName: Volcant
 }
 
@@ -6967,7 +6967,66 @@ DreadMedalion: {
 		'''
 }
 
+<<<<<<< HEAD
 SkullBreaker: {
 	DisplayName: Skull Breaker
 	Tooltip: ""
+=======
+ArtoriaIllurePowder: {
+	DisplayName: Artoria Illure Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		An explosion of the Illure.
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+EreshkinPowder: {
+	DisplayName: Ereshkin Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A sparkly drawing dust that does many times damage as the igniter!
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+MushyPowder: {
+	DisplayName: Mushy Powder
+	Tooltip:
+		'''
+		Throw magical dust on them!
+		A mushy powder that explode
+		After hitting an enemy with this, use an igniter card weapon!
+		'''
+}
+
+RibbonStaff: {
+	DisplayName: Ribbon Staff
+	Tooltip:
+		'''
+		Hold it out to wrap your enemies nicely in a bow, locking their movement for a bit
+		Release to cause them to explode into confetti and streamers!
+		'''
+}
+
+WiggleDiggle: {
+	DisplayName: Wiggle Diggle
+	Tooltip: It squiggles, it wiggles, it diggles! Become the clown
+}
+
+NiceBusterr: {
+	DisplayName: Nice Buster
+	Tooltip: We aren't nice around these parts.
+}
+
+Mordred: {
+	DisplayName: Mordred
+	Tooltip:
+		'''
+		I picked this one up randomly on an excursion! - Sirestias
+		May be an old relic or someone's weapon. Either way it's not belonging with you.
+		'''
+>>>>>>> ed02a0ae9d5c565ea271161244492454c5af20e6
 }

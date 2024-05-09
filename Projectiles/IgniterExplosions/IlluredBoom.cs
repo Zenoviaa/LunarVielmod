@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.width = 126;
             Projectile.height = 126;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 64;
+            Projectile.timeLeft = 32;
             Projectile.scale = 1f;
         }
 
@@ -70,7 +70,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             float width = 126;
             float height = 126;
             Vector2 origin = new Vector2(width / 2, height / 2);
-            int frameSpeed = 2;
+            int frameSpeed = 1;
             int frameCount = 32;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,

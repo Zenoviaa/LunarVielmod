@@ -486,9 +486,9 @@ namespace Stellamod.NPCs.Town
                                 break;
 
 							case 1:
-								
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
 
-								break;
+                                break;
 
 							case 2:
 

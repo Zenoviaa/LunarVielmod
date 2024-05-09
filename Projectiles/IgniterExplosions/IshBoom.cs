@@ -16,7 +16,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("FrostShotIN");
-            Main.projFrames[Projectile.type] = 60;
+            Main.projFrames[Projectile.type] = 61;
         }
 
         private int _frameCounter;
@@ -29,7 +29,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.width = 100;
             Projectile.height = 100;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 61;
             Projectile.scale = 1f;
         }
 
@@ -54,7 +54,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             if (++_frameTick >= 1)
             {
                 _frameTick = 0;
-                if (++_frameCounter >= 60)
+                if (++_frameCounter >= 61)
                 {
                     _frameCounter = 0;
                 }
@@ -71,18 +71,17 @@ namespace Stellamod.Projectiles.IgniterExplosions
             float height = 100;
             Vector2 origin = new Vector2(width / 2, height / 2);
             int frameSpeed = 1;
-            int frameCount = 60;
+            int frameCount = 61;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, 4f, SpriteEffects.None, 0f);
+                (Color.White), 0f, origin, 4f, SpriteEffects.None, 0f);
+
+            //(Color.White)
             return false;
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(255, 255, 255, 0) * (1f - Projectile.alpha / 50f);
-        }
+       
 
 
     }

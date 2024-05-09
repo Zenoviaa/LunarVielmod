@@ -49,11 +49,13 @@
     <None Remove="Buffs\MiracleBoost.png" />
     <None Remove="Buffs\MiracleLiquid.png" />
     <None Remove="Buffs\Rekin.png" />
+    <None Remove="Buffs\RibbonWrapped.png" />
     <None Remove="Buffs\SFBuff.png" />
     <None Remove="Buffs\ShadeWrath.png" />
     <None Remove="Buffs\ShadeWrathCooldown.png" />
     <None Remove="Buffs\ShadowBoost.png" />
     <None Remove="Buffs\Starbombin.png" />
+    <None Remove="Buffs\StarSuper.png" />
     <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
     <None Remove="Buffs\Whipfx\ColdheartAnklebiterDebuff.png" />
@@ -254,6 +256,7 @@
     <None Remove="Items\Weapons\Ranged\VoidBlaster.png" />
     <None Remove="Items\Weapons\Ranged\VoidSkull.png" />
     <None Remove="Items\Weapons\Ranged\WaterGun.png" />
+    <None Remove="Items\Weapons\Ranged\WiggleDiggle.png" />
     <None Remove="Items\Weapons\Ranged\WingedFury.png" />
     <None Remove="Items\Weapons\Ranged\Wingspand.png" />
     <None Remove="Items\Weapons\Summon\AlcadWandMinionBuff.png" />
@@ -450,6 +453,7 @@
     <None Remove="Projectiles\HallowRain.png" />
     <None Remove="Projectiles\IgniterExplosions\CombustionBoomMini.png" />
     <None Remove="Projectiles\IgniterExplosions\FireBoom.png" />
+    <None Remove="Projectiles\IgniterExplosions\RibbonBoom.png" />
     <None Remove="Projectiles\IgniterExplosions\SiriusBoom.png" />
     <None Remove="Projectiles\InfusedSlimeBolt.png" />
     <None Remove="Projectiles\Magic\CandleShotProj1.png" />
@@ -506,6 +510,8 @@
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2_Glow.png" />
     <None Remove="Projectiles\Slashers\IshNYire\VireProj2_White.png" />
     <None Remove="Projectiles\Slashers\IshNYire\YireBoomer.png" />
+    <None Remove="Projectiles\Slashers\NiceBuster\NotNiceBuster.png" />
+    <None Remove="Projectiles\Slashers\NiceBuster\NotNiceBuster_Glow.png" />
     <None Remove="Projectiles\Slashers\Voyager\InkBullet1.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyaBullet.png" />
     <None Remove="Projectiles\Slashers\Voyager\VoyagerProjThrow.png" />

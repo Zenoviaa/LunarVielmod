@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Powders
 			Player player = Main.player[Projectile.owner];
 			player.AddBuff(ModContent.BuffType<UseIgniter>(), 720);
 			target.AddBuff(ModContent.BuffType<Dusted>(), 720);
-			target.AddBuff(ModContent.BuffType<IshyBuff>(), 720);
+			target.AddBuff(ModContent.BuffType<IlluBuff>(), 720);
 			base.OnHitNPC(target, hit, damageDone);
 		}
 	}

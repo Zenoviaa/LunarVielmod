@@ -153,14 +153,17 @@ namespace Stellamod.NPCs.Catacombs
                 };
 
                 int[] bosses;
+                Vector2 offset = Vector2.Zero;
                 switch (_bossType)
                 {
                     default:
                     case 0:
                         bosses = fireBosses;
+                        offset = new Vector2(32 * 16, -1 * 16);
                         break;
                     case 1:
                         bosses = trapBosses;
+                        offset = new Vector2(-25 * 16, -30 * 16);
                         break;
                     case 2:
                         bosses = waterBosses;
@@ -173,9 +176,14 @@ namespace Stellamod.NPCs.Catacombs
                 {
                     //Main.NewText("Jack has awoken!", Color.Gold);
                     int npcID = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, bossType);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), 
+                        (int)NPC.Center.X + offset.X, 
+                        (int)NPC.Center.Y + offset.Y, 0, 0,
+                        ModContent.ProjectileType<CatacombsBeamBarrier>(), 100, 1, Main.myPlayer);
                     Main.npc[npcID].netUpdate2 = true;
                 }
 
+         
 
                 NPC.Kill();
                 ai_Timer = 0;

@@ -670,9 +670,9 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Interact with the Old Guard's Shrine.");
+			LocalizedText spawnConditionText = Language.GetText($"Interact with the Old Guard's Shrine. After using the rock in your Starter bag.");
 			bossChecklistMod.Call(
-				"LogBoss",
+                "LogMiniBoss",
 				Mod,
 				internalName,
 				weight,

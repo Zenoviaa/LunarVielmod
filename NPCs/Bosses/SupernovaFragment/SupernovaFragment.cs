@@ -14,6 +14,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.Jack;
 using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.singularityFragment.Phase1;
+using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.NPCs.Bosses.SunStalker;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
@@ -64,7 +65,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.height = 60;
             NPC.damage = 2;
             NPC.defense = 33;
-            NPC.lifeMax = 80000;
+            NPC.lifeMax = 61000;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
             NPC.value = 60f;
@@ -160,7 +161,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             {
                 MaxAttac = 4;
             }
-
+            NPC.AddBuff(BuffType<StarSuper>(), 10);
             var entitySource = NPC.GetSource_FromThis();
             Player player = Main.player[NPC.target];
             bool expertMode = Main.expertMode;
@@ -261,8 +262,13 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
 
                                         }
+                                        // Icreasian disk
+                                        if (StellaMultiplayer.IsHost)
+                                        {
+                                            var entitySource2 = NPC.GetSource_FromThis();
+                                            NPC.NewNPC(entitySource2, (int)NPC.Center.X , (int)NPC.Center.Y, ModContent.NPCType<IncresianDisc>());
+                                        }
 
-      
 
                                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode"), NPC.position);
                                         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1212f, 62f);
@@ -360,7 +366,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                         NPC.ai[0]++;
                         if (PH2TP)
                         {
-                            NPC.velocity *= 0.90f;
+                            NPC.velocity *= 0.92f;
                         }
                         else
                         {
@@ -743,7 +749,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
         public override void OnKill()
         {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSOMBoss, -1);
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSupernovaFragmentBoss, -1);
 
         }
 
@@ -758,9 +764,9 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             Lighting.AddLight(NPC.Center, Color.Orange.ToVector3() * 1.25f * Main.essScale);
             Texture2D texture = Request<Texture2D>(Texture).Value;
 
-            Vector2 frameOrigin = NPC.frame.Size();
-            Vector2 offset = new Vector2(NPC.width - frameOrigin.X + NPC.scale * 2, NPC.height - NPC.frame.Height + 0);
-            Vector2 drawPos = NPC.position - screenPos + frameOrigin + offset;
+
+            Vector2 frameSize = NPC.frame.Size();
+            Vector2 drawPos = NPC.Center - screenPos + frameSize / 2;
 
             float time = Main.GlobalTimeWrappedHourly;
             float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
@@ -779,14 +785,14 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
 
-                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(255, 233, 197, 50), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, NPC.frame, new Color(255, 233, 197, 50), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
 
             for (float i = 0f; i < 1f; i += 0.34f)
             {
                 float radians = (i + timer) * MathHelper.TwoPi;
 
-                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(244, 142, 72, 77), NPC.rotation, frameOrigin, NPC.scale, Effects, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 16f).RotatedBy(radians) * time, NPC.frame, new Color(244, 142, 72, 77), NPC.rotation, frameSize, NPC.scale, Effects, 0);
             }
 
             return true;

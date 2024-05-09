@@ -1314,6 +1314,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			// ItemDropRule.MasterModeCommonDrop for the relic
 
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 3, 7));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Twirlers>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedCommitment>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
 			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
@@ -1324,7 +1325,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
 				ModContent.ItemType<GothiviasCard>(),
-				ModContent.ItemType<Twirlers>(),
                 ModContent.ItemType<BurnBlast>(),
                 ModContent.ItemType<WeddingDay>()));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));

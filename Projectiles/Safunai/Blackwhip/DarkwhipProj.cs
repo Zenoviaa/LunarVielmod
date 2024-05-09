@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -87,7 +88,7 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 			for (int j = 0; j < 1; j++)
 			{
 				Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-				ParticleManager.NewParticle(Projectile.Center, speed * 2, ParticleManager.NewInstance<HeatwaveTrailParticle2>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+				ParticleManager.NewParticle(Projectile.Center, speed * 2, ParticleManager.NewInstance<BurnParticle4>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
 
 
 			}
@@ -135,14 +136,50 @@ namespace Stellamod.Projectiles.Safunai.Blackwhip
 
 
 		}
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			ShakeModSystem.Shake = 4;
-			SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-				ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
-		}
+
+            float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
+            float speedY = Projectile.velocity.Y * Main.rand.NextFloat(.2f, .3f) * 0.01f;
+          
+
+            if (Slam)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+               ModContent.ProjectileType<AlcaricMushBoom>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+                SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath);
+                for (int i = 0; i < 14; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 14; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Purple, 1f).noGravity = true;
+                }
+
+            }
+            else
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"));
+                ShakeModSystem.Shake = 4;
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<LumiDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 170, Color.Purple, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Black, 0.5f).noGravity = true;
+                }
+            }
+
+
+
+        }
+
+      
+		
 
 		private Vector2 GetSwingPosition(float progress)
 		{

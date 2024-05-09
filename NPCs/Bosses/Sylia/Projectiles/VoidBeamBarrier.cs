@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -34,6 +35,7 @@ namespace Stellamod.NPCs.Bosses.Sylia.Projectiles
             Projectile.tileCollide = true;
             Projectile.timeLeft = int.MaxValue;
             BeamPoints = new List<Vector2>();
+            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()

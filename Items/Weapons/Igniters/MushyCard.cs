@@ -68,7 +68,6 @@ namespace Stellamod.Items.Weapons.Igniters
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ModContent.ItemType<Mushroom>(), 150);
 			recipe.AddIngredient(ItemID.Mushroom, 5);
-			recipe.AddIngredient(ModContent.ItemType<LuminullSpiritFragments>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<GraftedSoul>(), 10);
 			recipe.AddIngredient(ModContent.ItemType<BlankCard>(), 1);
 			recipe.AddTile(TileID.MythrilAnvil);
