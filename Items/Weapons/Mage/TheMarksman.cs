@@ -1,15 +1,9 @@
-﻿using Stellamod.Projectiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Projectiles.Magic;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Projectiles.Magic;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
 
 namespace Stellamod.Items.Weapons.Mage
 {
@@ -18,7 +12,7 @@ namespace Stellamod.Items.Weapons.Mage
         public override void SetDefaults()
         {
             Item.staff[Item.type] = true;
-            Item.damage = 52;
+            Item.damage = 21;
             Item.mana = 50;
             Item.width = 50;
             Item.height = 50;

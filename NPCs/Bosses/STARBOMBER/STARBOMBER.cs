@@ -144,8 +144,12 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 			if (NPC.life <= 0)
 			{
-				DesperationPhase = true;
-				SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
+				if (!DesperationPhase)
+				{
+                    DesperationPhase = true;
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/STARDEATH"));
+                }
+
                 NPC.life = 1;
             }
 		
@@ -226,7 +230,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		public float squish = 0f;
         public float WidthFunctionCharge(float completionRatio)
         {
-            return (NPC.width * NPC.scale / 0.75f * (1f - completionRatio)) * 0.5f;
+            return (NPC.width * NPC.scale / 0.75f * (1f - completionRatio)) * 0.4f;
         }
 
         public Color ColorFunctionCharge(float completionRatio)
@@ -427,7 +431,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
                     }
                 }
 
-				if(DesperationTimer >= 500)
+				if(DesperationTimer >= 462)
 				{
 					//Death Effect here
 					NPC.Kill();
