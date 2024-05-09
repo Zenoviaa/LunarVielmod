@@ -1,22 +1,12 @@
-﻿
-using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Particles;
-using Stellamod.Utilis;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 
 namespace Stellamod.NPCs.Bosses.STARBOMBER
 {
