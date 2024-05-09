@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
@@ -117,8 +118,9 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
-		{
-			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
+        {
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<STARBOMBERBossRel>()));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 20, 100));
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<STARCORE>(), 1, 1, 2));
 			npcLoot.Add(ItemDropRule.AlwaysAtleastOneSuccess(
@@ -276,6 +278,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 				case ActionState.SpinStar:
 					rect = new(0, 55 * 129, 206, 7 * 129);
 					spriteBatch.Draw(texture, NPC.Center - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect), drawColor, 0f, texture.AnimationFrame(ref frameCounter, ref frameTick, 1, 7, rect).Size() / 2, NPC.scale, effects, 0f);
+					
 					break;
 
 				case ActionState.DropdownSpinStar:
