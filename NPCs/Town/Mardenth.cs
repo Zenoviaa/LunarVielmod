@@ -394,7 +394,7 @@ namespace Stellamod.NPCs.Town
 			var npcShop = new NPCShop(Type, ShopName)
 
 
-			.Add<EDR>(Condition.DownedEyeOfCthulhu)
+			.Add<TheMarksman>(Condition.DownedEyeOfCthulhu)
             .Add<MardenthMask>(CustomConditions.PostDaedus)
             .Add<MardenthRobe>(CustomConditions.PostDaedus)
             .Add<MardenthPants>(CustomConditions.PostDaedus)
