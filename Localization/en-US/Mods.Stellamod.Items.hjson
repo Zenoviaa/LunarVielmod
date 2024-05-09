@@ -7031,11 +7031,26 @@ Mordred: {
 }
 
 TheMarksman: {
-	Tooltip: ""
+	Tooltip: Use your cursor to summon electricity from the power of the veil!
 	DisplayName: The Marksman
 }
 
 STARBOMBERBossRel: {
 	Tooltip: ""
-	DisplayName: S T A R B O M B E R Boss Rel
+	DisplayName: STARBOMBER Boss Relic
+}
+
+MardenthMask: {
+	DisplayName: Mardenth Mask
+	Tooltip: +10 Health but 10% reduced damage!
+}
+
+MardenthPants: {
+	DisplayName: Mardenth Pants
+	Tooltip: 5% Increased movement speed
+}
+
+MardenthRobe: {
+	DisplayName: Mardenth Robe
+	Tooltip: +20 Health and some spicy looks.
 }
