@@ -1978,9 +1978,13 @@ namespace Stellamod.WorldG
 			StructureMap structures = GenVars.structures;
 			Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ocean/SunAlter2");
 			progress.Message = "Bird building alters";
+            
+			int[] tileBlend = new int[]
+        {
+                TileID.RubyGemspark
+        };
 
-
-			for (int k = 0; k < 1; k++)
+            for (int k = 0; k < 1; k++)
 			{
 				bool placed = false;
 				int attempts = 0;
@@ -2031,11 +2035,11 @@ namespace Stellamod.WorldG
 
 					for (int da = 0; da < 1; da++)
 					{
-						Point Loc = new Point(smx, smy + 5);
-						rectangle.Location = Loc;
-						structures.AddProtectedStructure(rectangle);
-						int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ocean/SunAlter2");
-						foreach (int chestIndex in ChestIndexs)
+						Point Loc = new Point(smx, smy + 10);
+                        string path = "Struct/Ocean/SunAlter2";//                 
+                        StructureLoader.ProtectStructure(Loc, path);
+                        int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
+                        foreach (int chestIndex in ChestIndexs)
 						{
 							var chest = Main.chest[chestIndex];
 							// etc
