@@ -7041,16 +7041,16 @@ STARBOMBERBossRel: {
 }
 
 MardenthMask: {
-	DisplayName: Mardenth Mask
+	DisplayName: Mardenth's Veiled Mask
 	Tooltip: +10 Health but 10% reduced damage!
 }
 
 MardenthPants: {
-	DisplayName: Mardenth Pants
+	DisplayName: Mardenth's Great Pants
 	Tooltip: 5% Increased movement speed
 }
 
 MardenthRobe: {
-	DisplayName: Mardenth Robe
+	DisplayName: Mardenth's Super Robe
 	Tooltip: +20 Health and some spicy looks.
 }
