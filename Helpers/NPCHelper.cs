@@ -66,6 +66,8 @@ namespace Stellamod.Helpers
             for (int k = 0; k < Main.maxNPCs; k++)
             {
                 NPC target = Main.npc[k];
+                if (!target.active)
+                    continue;
 
                 // Check if NPC able to be targeted. It means that NPC is
                 // 1. active (alive)

@@ -50,11 +50,11 @@ namespace Stellamod.NPCs.Morrow
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.Player.InModBiome<MorrowUndergroundBiome>())
-			{
-				return 0.5f;
-			}
-			return 0f;
+            if (spawnInfo.Player.InModBiome<FableBiome>())
+            {
+                return SpawnCondition.Overworld.Chance * 0.5f;
+            }
+            return 0f;
 		}
 		int invisibilityTimer;
 		int invsTimer;
