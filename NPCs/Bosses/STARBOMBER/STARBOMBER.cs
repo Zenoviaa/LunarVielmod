@@ -469,22 +469,20 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
             if (DesperationPhase)
 			{
-				DesperationTimer++;
-				if(DesperationTimer % 6 == 0)
-				{
-					Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
-					if (Main.rand.NextBool(4))
-					{
-                        Dust.NewDust(NPC.position, 206, 129, DustID.Electric, newColor: Color.Gray, Scale: 2f);
-                    }
-
-                    if (Main.rand.NextBool(4))
-                    {
-                        Dust.NewDust(NPC.position, 206, 129, DustID.Firework_Pink, newColor: Color.Gray, Scale: 3f);
-                    }
+                Dust.NewDust(NPC.position, 206, 129, ModContent.DustType<TSmokeDust>(), newColor: Color.Gray);
+                Vector2 velocity = Main.rand.NextVector2Circular(64, 64);
+                if (Main.rand.NextBool(2))
+                {
+                    Dust.NewDust(NPC.position, 206, 129, DustID.BoneTorch, velocity.X, velocity.Y, newColor: Color.Gray, Scale: 2f);
                 }
 
-				if(DesperationTimer >= 462)
+                if (Main.rand.NextBool(2))
+                {
+                    velocity = Main.rand.NextVector2Circular(64, 64);
+                    Dust.NewDust(NPC.position, 206, 129, DustID.Torch, velocity.X, velocity.Y, newColor: Color.Gray, Scale: 3f);
+                }
+
+                if (DesperationTimer >= 462)
                 {
                     MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                     myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
