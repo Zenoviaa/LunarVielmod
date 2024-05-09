@@ -446,7 +446,7 @@ namespace Stellamod.NPCs.Town
 
             if (NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
             {
-                TownedMardeth = true;
+                TownedMardenth = true;
             }
         }
     }
