@@ -433,8 +433,18 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 
 				if(DesperationTimer >= 462)
 				{
-					//Death Effect here
-					NPC.Kill();
+                    ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    screenShaderSystem.FlashTintScreen(Color.White, 1f, 5);
+
+
+                    for (int i = 0; i < 80; i++)
+                    {
+                        Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
+                            (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                    }
+
+                    //Death Effect here
+                    NPC.Kill();
 				}
 			}
 

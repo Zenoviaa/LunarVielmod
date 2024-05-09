@@ -30,12 +30,6 @@ namespace Stellamod.NPCs.Grave
 
         private Vector2 BloodCystPos;
 
-
-        public override void SetStaticDefaults()
-        {
-            NPCID.Sets.ActsLikeTownNPC[Type] = true;
-        }
-
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.Player.ZoneGraveyard)

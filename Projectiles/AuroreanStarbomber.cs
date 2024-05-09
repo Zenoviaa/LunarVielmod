@@ -105,8 +105,6 @@ namespace Stellamod.Projectiles
             MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
             myPlayer.ShakeAtPosition(Projectile.position, 6000, 128);
 
-            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 1f, 5);
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), 
