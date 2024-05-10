@@ -369,6 +369,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                                 Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 2f).noGravity = false;
                                             }
                                             PH2TP = false;
+                                            Superpull = false;
                                             SingularityPhaze = 2;
                                         }
                                     }
