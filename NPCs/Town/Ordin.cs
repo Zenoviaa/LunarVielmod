@@ -262,7 +262,7 @@ namespace Stellamod.NPCs.Town
 					case 0:
 						SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Bliss2")); // Reforge/Anvil sound
 
-						Main.npcChatText = $"Thy is so resilient, unhand me from these this trecherous nagging and take take this for thy shall not be astute to your prescence no longer.";
+						Main.npcChatText = $"Thy is so resilient, unhand me from these this trecherous nagging and take this for thy shall not be astute to your prescence no longer.";
 
 						var entitySource = NPC.GetSource_GiftOrReward();
 						Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SigfriedsPhotoAlbum>(), 1);
