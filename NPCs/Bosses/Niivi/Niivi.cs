@@ -123,7 +123,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.knockBackResist = 0;
 
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
-
+            //Bleh
 
         }
 
