@@ -372,6 +372,14 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
+                else if (!NPC.AnyNPCs(ModContent.NPCType<Ordin>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)OrdinSpawnWorld.X, (int)OrdinSpawnWorld.Y,
+                        ModContent.NPCType<Ordin>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
