@@ -3324,10 +3324,7 @@ StarbloomDirtBlock: {
 
 FurihaMKIII: {
 	DisplayName: Furiha MKIII
-	Tooltip:
-		'''
-		Randomly spews out lasers with a fashionable pattern to boot!
-		'''
+	Tooltip: Randomly spews out lasers with a fashionable pattern to boot!
 }
 
 M61X: {
@@ -4342,10 +4339,7 @@ BookOfSkullsII: {
 
 DreadGauntlets: {
 	DisplayName: Dread Gauntlets
-	Tooltip:
-		'''
-		Shoots powerful fists of energy, filled with dread
-		'''
+	Tooltip: Shoots powerful fists of energy, filled with dread
 }
 
 ScytheOfSouls: {
@@ -6823,10 +6817,7 @@ IcelockLongbow: {
 
 Chillrend: {
 	DisplayName: Chillrend
-	Tooltip:
-		'''
-		The final slash spins the sword around and creates an icey vortex
-		'''
+	Tooltip: The final slash spins the sword around and creates an icey vortex
 }
 
 ManifestedCommitment: {
@@ -6882,7 +6873,7 @@ Opinine: {
 
 WaterGun: {
 	DisplayName: Water Gun
-	Tooltip: 
+	Tooltip:
 		'''
 		Shoots a constant stream of water!
 		Extra fun at parties
