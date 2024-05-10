@@ -376,7 +376,7 @@ namespace Stellamod.NPCs.Town
 
 					.Add(new Item(ModContent.ItemType<Helios>())
 					{
-						shopCustomPrice = 1,
+						shopCustomPrice = 3,
 						shopSpecialCurrency = Stellamod.MOCCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					});
 
