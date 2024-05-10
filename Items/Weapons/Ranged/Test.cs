@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
 using Stellamod.Projectiles;
@@ -46,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<TornadoTestProj>();
+			Item.shoot = ModContent.ProjectileType<NiiviTornadoProj>();
 			Item.shootSpeed = 1f;
 		}
 

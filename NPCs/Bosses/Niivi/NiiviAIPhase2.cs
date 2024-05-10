@@ -101,12 +101,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     int type = ModContent.ProjectileType<NiiviLaserContinuousProj>();
                     int damage = P1_LaserDamage;
                     float knockback = 1;
+                    NPC.rotation = HeadRotation;
                     if (StellaMultiplayer.IsHost)
                     {
                         Projectile.NewProjectile(EntitySource, NPC.Center, fireDirection, type,
                         damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);
                     }
-                    NPC.rotation = HeadRotation;
+              
 
                     ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     shaderSystem.TintScreen(Color.White, 0.3f);

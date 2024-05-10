@@ -68,6 +68,8 @@
     <None Remove="Dusts\PaintBlob2.png" />
     <None Remove="Dusts\RuneDust.png" />
     <None Remove="Dusts\SmokeDust.png" />
+    <None Remove="Dusts\TSmokeTornadoDust.png" />
+    <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="effects\NormalDistortion.fx" />
     <None Remove="Effects\Tint.fx" />
     <None Remove="effects\Vignette.fx" />
@@ -423,6 +425,7 @@
     <None Remove="Particles\MoonTrailParticle2.png" />
     <None Remove="Particles\morrowstar2.png" />
     <None Remove="Particles\SpinewBigOrange.png" />
+    <None Remove="Particles\TornadoParticle.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
     <None Remove="Projectiles\BloodWaterProj.png" />
     <None Remove="Projectiles\Bow\CrysalizerExplosion - Copy.png" />

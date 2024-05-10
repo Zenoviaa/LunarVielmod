@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     {
                         Vector2 direction = npc.Center - Projectile.Center;
                         direction.Normalize();
-                        npc.velocity -= direction * 0.4f;
+                        npc.velocity -= direction * 0.15f;
                     }
                 }
             }
