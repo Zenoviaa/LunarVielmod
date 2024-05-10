@@ -16,15 +16,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
-        private List<Vector2> TornadoPos;
         private float LifeTime => 600;
-        private float Scale = 4f;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 32;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = (int)LifeTime;
         }
