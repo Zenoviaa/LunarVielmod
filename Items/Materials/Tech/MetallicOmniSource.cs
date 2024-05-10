@@ -27,8 +27,8 @@ namespace Stellamod.Items.Materials.Tech
         {
             Recipe recipe = CreateRecipe(2);
             recipe.AddIngredient(ItemType<ArncharChunk>(), 1);
-            recipe.AddIngredient(ItemType<BrokenTech>(), 3);
-            recipe.AddIngredient(ItemType<UnknownCircuitry>(), 3);
+            recipe.AddIngredient(ItemType<BrokenTech>(), 2);
+            recipe.AddIngredient(ItemType<UnknownCircuitry>(), 2);
             recipe.AddIngredient(ItemType<DriveConstruct>(), 3);
             recipe.AddIngredient(ItemID.CrystalShard, 1);
             recipe.AddTile(TileID.Anvils);
