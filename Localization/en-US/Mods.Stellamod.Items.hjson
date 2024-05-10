@@ -7059,3 +7059,13 @@ NiiviBossRel: {
 	DisplayName: Niivi Boss Rel
 	Tooltip: ""
 }
+
+ManifestedAnxiety: {
+	Tooltip: ""
+	DisplayName: Manifested Anxiety
+}
+
+SigfriedsPhotoAlbum: {
+	Tooltip: ""
+	DisplayName: Sigfrieds Photo Album
+}
