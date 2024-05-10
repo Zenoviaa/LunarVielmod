@@ -384,7 +384,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             _segmentIndex = 0;
             NextSegmentPos = NPC.Center - screenPos;
-            NextSegmentRot = NPC.rotation;
+            NextSegmentRot = 0;
 
             //Draw4 Head
             SetSegmentPosition(NiiviHeadSize);

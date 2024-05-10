@@ -1,18 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.Fenix;
+using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
+    [AutoloadBossHead]
     internal partial class Niivi : ModNPC
     {
         public enum ActionState
@@ -34,7 +35,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Baby_Dragons,
             Swoop_Out,
             PrepareAttack,
-            Calm_Down
+            Calm_Down,
+            Frost_Breath_V2,
+            Laser_Blast_V2,
+            Star_Wrath_V2,
+            Charge_V2,
+            Thunderstorm_V2
         }
 
         public ActionState State
@@ -56,8 +62,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
         BossActionState NextAttack = BossActionState.Frost_Breath;
         int ScaleDamageCounter;
         int AggroDamageCounter;
+        bool Spawned;
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write((float)BossState);
+            writer.Write((float)NextAttack);
+            writer.Write(ScaleDamageCounter);
+            writer.Write(AggroDamageCounter);
+        }
 
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            BossState = (BossActionState)reader.ReadSingle();
+            NextAttack = (BossActionState)reader.ReadSingle();
+            ScaleDamageCounter = reader.ReadInt32();
+            AggroDamageCounter = reader.ReadInt32();
+        }
 
         public override void SetStaticDefaults()
         {
@@ -67,7 +88,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPCID.Sets.TrailCacheLength[Type] = Total_Segments;
             NPCID.Sets.TrailingMode[Type] = 2;
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Sylia/SyliaPreview";
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Niivi/NiiviPreview";
             drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
             drawModifiers.PortraitPositionYOverride = 0f;
         }
@@ -92,7 +113,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             //It won't be considered a boss or take up slots until the fight actually starts
             //So the values are like this for now
-            NPC.boss = false;
+            NPC.boss = true;
             NPC.npcSlots = 0f;
             NPC.aiStyle = -1;
 
@@ -127,7 +148,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(State == ActionState.BossFight)
             {
                 // Custom boss bar
-                NPC.BossBar = ModContent.GetInstance<QueenBossBar>();
+                NPC.BossBar = ModContent.GetInstance<NiiviBossBar>();
                 NPC.boss = true;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Niivi");
             }
@@ -185,6 +206,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override void AI()
         {
+            if (!Spawned)
+            {
+                NPC.boss = false;
+                Spawned = true;
+            }
+
             switch (State)
             {
                 case ActionState.Roaming:
@@ -204,6 +231,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         public override void OnKill()
         {
+            ResetShaders();
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNiiviBoss, -1);
+        }
+
+        private void ResetShaders()
+        {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             shaderSystem.UnTintScreen();
             shaderSystem.UnDistortScreen();
@@ -214,6 +247,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<PureHeart>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NiiviBossRel>()));
         }
     }
 }

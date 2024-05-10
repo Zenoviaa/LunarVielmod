@@ -98,7 +98,7 @@ namespace Stellamod.Projectiles.Gun
                 if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
                     return true;
             }
-            return base.Colliding(projHitbox, targetHitbox);
+            return false;
         }
 
         internal PrimitiveTrail BeamDrawer;

@@ -13,14 +13,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
     internal partial class Niivi
     {
         //Damage Values
-        int P1_LightningDamage => 240;
-        int P1_FrostBreathDamage => 120;
-        int P1_StarWrathDamage => 40;
-        int P1_LaserDamage => 500;
+        private int P1_LightningDamage => 240;
+        private int P1_FrostBreathDamage => 120;
+        private int P1_StarWrathDamage => 40;
+        private int P1_LaserDamage => 500;
 
-        Player Target => Main.player[NPC.target];
-        IEntitySource EntitySource => NPC.GetSource_FromThis();
-        float DirectionToTarget
+
+        private Player Target => Main.player[NPC.target];
+        private IEntitySource EntitySource => NPC.GetSource_FromThis();
+        private float DirectionToTarget
         {
             get
             {
@@ -30,15 +31,46 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
-        int AttackCount;
-        int AttackSide;
-        bool DoAttack;
-        bool IsCharging;
-        Vector2 AttackPos;
-        Vector2 ChargeDirection;
-        Vector2 LaserAttackPos;
+
+        //Phase Switches
+        private bool InPhase2 => NPC.life <= (NPC.lifeMax * 0.66f);
+        private bool TriggeredPhase2;
+
+        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.22f);
+        private bool TriggeredPhase3;
+
+        private bool InPhase4 => NPC.life <= (NPC.lifeMax * 0.01f);
+        private bool TriggeredPhase4;
+
+        private int AttackCount;
+        private int AttackSide;
+        private bool DoAttack;
+        private bool IsCharging;
+        private Vector2 AttackPos;
+        private Vector2 ChargeDirection;
+        private Vector2 LaserAttackPos;
+
+        private void AI_PhaseSwaps()
+        {
+            //Trigger Phase 2
+            if (InPhase2 && !TriggeredPhase2)
+            {
+                AI_Phase2_Reset();
+                TriggeredPhase2 = true;
+                return;
+            }
+
+            if(InPhase3 && !TriggeredPhase3)
+            {
+                AI_Phase3_Reset();
+                TriggeredPhase3 = true;
+                return;
+            }
+        }
+
         private void AIBossFight()
         {
+            AI_PhaseSwaps();
             switch (BossState)
             {
                 case BossActionState.Idle:
@@ -70,6 +102,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     break;
                 case BossActionState.Calm_Down:
                     AI_CalmDown();
+                    break;
+
+                //Phase 2
+                case BossActionState.Frost_Breath_V2:
+                    AI_FrostBreath_V2();
+                    break;
+                case BossActionState.Thunderstorm_V2:
+                    AI_Thunderstorm_V2();
+                    break;
+                case BossActionState.Laser_Blast_V2:
+                    AI_LaserBlast_V2();
+                    break;
+                case BossActionState.Star_Wrath_V2:
+                    AI_StarWrath_V2();
+                    break;
+                case BossActionState.Charge_V2:
+                    AI_Charge_V2();
                     break;
             }
             UpdateOrientation();
@@ -232,7 +281,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float amountToRotateBy = 3 * MathHelper.TwoPi / length;
                 amountToRotateBy = amountToRotateBy * AttackSide;
                 TargetHeadRotation += amountToRotateBy;
-                        
+
                 Timer++;
                 if (Timer % 4 == 0)
                 {

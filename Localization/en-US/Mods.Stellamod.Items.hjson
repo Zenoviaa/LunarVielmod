@@ -7054,3 +7054,8 @@ MardenthRobe: {
 	DisplayName: Mardenth's Super Robe
 	Tooltip: +20 Health and some spicy looks.
 }
+
+NiiviBossRel: {
+	DisplayName: Niivi Boss Rel
+	Tooltip: ""
+}

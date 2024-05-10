@@ -17,6 +17,7 @@ using Stellamod.NPCs.Catacombs.Water.WaterJellyfish;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.Zui;
+using Stellamod.NPCs.Bosses.Niivi;
 
 namespace Stellamod
 {
@@ -865,6 +866,48 @@ namespace Stellamod
 		}
 
 
+		private void DoNiiviIntegration()
+		{
+            string internalName = nameof(Niivi);
+
+            // The NPC type of the boss
+            int bossType = ModContent.NPCType<Niivi>();
+
+            // Value inferred from boss progression, see the wiki for details
+            float weight = 17.1f;
+
+            // Used for tracking checklist progress
+            Func<bool> downed = () => DownedBossSystem.downedNiiviBoss;
+
+
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Niivi/NiiviPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Deal enough damage to Niivi to anger her, you may find her flying around The Great Illuria! -or sleeping...");
+            bossChecklistMod.Call(
+                "LogBoss",
+                Mod,
+                internalName,
+                weight,
+                downed,
+                bossType,
+                new Dictionary<string, object>()
+                {
+                    ["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
+            );
+        }
+
 
 		private void DoBossChecklistIntegration()
 		{
@@ -903,6 +946,7 @@ namespace Stellamod
 			DoSparnIntegration();
 			DoZuiIntegration();
 			DoNESTIntegration();
+			DoNiiviIntegration();
 		}
 	}
 }
