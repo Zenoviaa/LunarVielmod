@@ -3324,7 +3324,10 @@ StarbloomDirtBlock: {
 
 FurihaMKIII: {
 	DisplayName: Furiha MKIII
-	Tooltip: ""
+	Tooltip:
+		'''
+		Randomly spews out lasers with a fashionable pattern to boot!
+		'''
 }
 
 M61X: {
@@ -4339,7 +4342,10 @@ BookOfSkullsII: {
 
 DreadGauntlets: {
 	DisplayName: Dread Gauntlets
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots powerful fists of energy, filled with dread
+		'''
 }
 
 ScytheOfSouls: {
@@ -6817,7 +6823,10 @@ IcelockLongbow: {
 
 Chillrend: {
 	DisplayName: Chillrend
-	Tooltip: ""
+	Tooltip:
+		'''
+		The final slash spins the sword around and creates an icey vortex
+		'''
 }
 
 ManifestedCommitment: {
@@ -6872,13 +6881,21 @@ Opinine: {
 }
 
 WaterGun: {
-	Tooltip: ""
 	DisplayName: Water Gun
+	Tooltip: 
+		'''
+		Shoots a constant stream of water!
+		Extra fun at parties
+		'''
 }
 
 DogmaBalls: {
 	DisplayName: Dogma Balls
-	Tooltip: ""
+	Tooltip:
+		'''
+		Throws a BOOK filled with Illurian propaganda
+		Randomly summons words that inflict a variety of debuffs
+		'''
 }
 
 Tulahal: {
@@ -7037,7 +7054,7 @@ TheMarksman: {
 
 STARBOMBERBossRel: {
 	Tooltip: ""
-	DisplayName: STARBOMBER Boss Relic
+	DisplayName: STARBOMBER Relic
 }
 
 MardenthMask: {
@@ -7056,7 +7073,7 @@ MardenthRobe: {
 }
 
 NiiviBossRel: {
-	DisplayName: Niivi Boss Rel
+	DisplayName: Niivi Relic
 	Tooltip: ""
 }
 
