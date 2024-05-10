@@ -7061,11 +7061,11 @@ NiiviBossRel: {
 }
 
 ManifestedAnxiety: {
-	Tooltip: ""
+	Tooltip: Marked from fear and anxiety Dreadmire falls, but alas her dread lingers around the world.
 	DisplayName: Manifested Anxiety
 }
 
 SigfriedsPhotoAlbum: {
-	Tooltip: ""
+	Tooltip: A photobook of all pictures of Sigfried, tied down by ancient magic not even you can open.
 	DisplayName: Sigfrieds Photo Album
 }

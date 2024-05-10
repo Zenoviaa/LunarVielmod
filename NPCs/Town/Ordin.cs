@@ -171,24 +171,17 @@ namespace Stellamod.NPCs.Town
 				chat.Add(Language.GetTextValue("Shes got some great cogs", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("BRMMMM"));
-			chat.Add(Language.GetTextValue("Everyone always uses me but never asked how I'm able to talk.. "));
-			chat.Add(Language.GetTextValue("I don't care I need to gamble"));
-			chat.Add(Language.GetTextValue("My armors are the best in the lands"), 5.0);
-			chat.Add(Language.GetTextValue("Sirestias and Aimacra game by recently and they laughed at me because they thought my shop was useless"), 2.0);
-			chat.Add(Language.GetTextValue("Im always feeling hot!"), 0.1);
-			chat.Add(Language.GetTextValue("Heh, nobody is as good as me"), 0.1);
-			chat.Add(Language.GetTextValue("Burning Burning, heat and heat"), 0.1);
-			chat.Add(Language.GetTextValue("I'm inpenetrable"), 0.1);
-			chat.Add(Language.GetTextValue("Damn we have some hot shit here"), 0.1);
-			chat.Add(Language.GetTextValue("Only I know that Gothivia has so many barriers between her and the rest of the world, nobody will be able to kill her."), 0.1);
-			chat.Add(Language.GetTextValue("Those idiot gintze have made a horrible decision, now they can't use my armors I made for them."), 0.1);
-
+			chat.Add(Language.GetTextValue("Remove yourself from my sight"));
+			chat.Add(Language.GetTextValue("You walk like an infant with no tucas"));
+			chat.Add(Language.GetTextValue("What a pitiful endearment, praise to the ones above."));
+			chat.Add(Language.GetTextValue("..."), 5.0);
+			chat.Add(Language.GetTextValue("You are not fit to become a god"), 2.0);
+			chat.Add(Language.GetTextValue("Oh Sigfried, return in good health or I shall slay you with my own hands from such a succubus!"), 0.1);
 			NumberOfTimesTalkedTo++;
-			if (NumberOfTimesTalkedTo >= 20)
+			if (NumberOfTimesTalkedTo >= 10)
 			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("KRMMMKTEYYYMMMM BRMMMMM"));
+				chat.Add(Language.GetTextValue("Bring me their Manifestations"));
 			}
 
 			return chat; // chat is implicitly cast to a string.
