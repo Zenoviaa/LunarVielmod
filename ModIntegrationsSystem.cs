@@ -874,7 +874,7 @@ namespace Stellamod
             int bossType = ModContent.NPCType<Niivi>();
 
             // Value inferred from boss progression, see the wiki for details
-            float weight = 17.1f;
+            float weight = 18.1f;
 
             // Used for tracking checklist progress
             Func<bool> downed = () => DownedBossSystem.downedNiiviBoss;
