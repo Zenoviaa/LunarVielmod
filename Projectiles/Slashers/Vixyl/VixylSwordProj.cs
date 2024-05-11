@@ -59,10 +59,6 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             if (!_init && Main.myPlayer == Projectile.owner)
             {
                 SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-                for(int i = 0; i < Projectile.oldPos.Length; i++)
-                {
-                    Projectile.oldPos[i] = Projectile.position;
-                }
                 _init = true;
                 Projectile.alpha = 255;
                 Projectile.timeLeft = SwingTime + EndSwingTime;
