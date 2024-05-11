@@ -191,7 +191,7 @@ namespace Stellamod
                 MOCCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfCommittment(ModContent.ItemType<ManifestedCommitment>(), 999L, "Manifestation Of Committment"));
 
                 //Humility Azurerin
-                //MOHCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedLove>(), 999L, "Manifestation Of Love"));
+                MOHCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedHumility>(), 999L, "Manifestation Of Humility"));
 
                 //Love Gothivia
                 MOLCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedLove>(), 999L, "Manifestation Of Love"));
