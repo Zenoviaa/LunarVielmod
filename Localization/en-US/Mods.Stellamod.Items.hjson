@@ -7096,3 +7096,8 @@ Vixyl: {
 		For a short time after parrying, you do a flurry of swipes just like Verlia!
 		'''
 }
+
+ManifestedHumility: {
+	Tooltip: ""
+	DisplayName: Manifested Humility
+}

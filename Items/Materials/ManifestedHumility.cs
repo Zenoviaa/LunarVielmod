@@ -23,7 +23,7 @@ namespace Stellamod.Items.Materials
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.Purple);
+            DrawHelper.DrawGlowInInventory(Item, spriteBatch, position, Color.DeepSkyBlue);
             return true;
         }
 
