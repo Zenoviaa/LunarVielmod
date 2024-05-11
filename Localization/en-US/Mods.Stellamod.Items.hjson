@@ -7086,3 +7086,13 @@ IceCubeMaker: {
 		Stay frosty~
 		'''
 }
+
+Vixyl: {
+	DisplayName: Vixyl
+	Tooltip:
+		'''
+		Perfectly time your slash and get hit to parry an attack!
+		Parrying negates all damage and does a powerful slash
+		For a short time after parrying, you do a flurry of swipes just like Verlia!
+		'''
+}

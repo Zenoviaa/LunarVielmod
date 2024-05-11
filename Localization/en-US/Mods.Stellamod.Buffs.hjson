@@ -707,3 +707,8 @@ StarSuper: {
 	Description: Mods.Stellamod.Buffs.StarSuper.Description
 	DisplayName: Star Super
 }
+
+VixylDodgeBuff: {
+	DisplayName: Sonata of the Moon
+	Description: Check out my Verlia cosplay!
+}

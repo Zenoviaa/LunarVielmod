@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Town;
 using System;
 using System.Collections.Generic;
@@ -99,8 +100,10 @@ namespace Stellamod
 			byte player;
 			switch (id)
 			{
-
-				case MessageType.BossSpawnFromClient:
+                case MessageType.Dodge:
+                    VixylPlayer.HandleExampleDodgeMessage(reader, whoAmI);
+                    break;
+                case MessageType.BossSpawnFromClient:
 					if (Main.netMode == NetmodeID.Server)
 					{
 						player = reader.ReadByte();

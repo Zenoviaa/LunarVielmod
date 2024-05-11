@@ -58,6 +58,7 @@
     <None Remove="Buffs\StarSuper.png" />
     <None Remove="Buffs\SupernovaChained.png" />
     <None Remove="Buffs\VialedUp.png" />
+    <None Remove="Buffs\VixylDodgeBuff.png" />
     <None Remove="Buffs\Whipfx\ColdheartAnklebiterDebuff.png" />
     <None Remove="Buffs\Whipfx\DarkWhipDebuff.png" />
     <None Remove="Buffs\Whipfx\LaceratorDebuff.png" />
