@@ -56,7 +56,7 @@ namespace Stellamod.Items.Weapons.Melee
 
             //Spawn the big verlia slash projectile here
             //Setting the immune time
-            Player.SetImmuneTimeForAllTypes(90);
+            Player.SetImmuneTimeForAllTypes(60);
             if (Player.whoAmI != Main.myPlayer)
             {
                 return;
@@ -112,7 +112,7 @@ namespace Stellamod.Items.Weapons.Melee
         {
             Item.width = 60;
             Item.height = 60;
-            Item.damage = 42;
+            Item.damage = 34;
             Item.DamageType = DamageClass.Generic;
 
             Item.useTime = 36;
@@ -134,17 +134,17 @@ namespace Stellamod.Items.Weapons.Melee
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             VixylPlayer vixylPlayer = player.GetModPlayer<VixylPlayer>();
-            if(vixylPlayer.parryCooldown <= 0)
-            {
-                vixylPlayer.parryTimer = 18;
-                //Normal slash
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSheethe"), position);
-            }
-            else
+            if(player.HasBuff(ModContent.BuffType<VixylDodgeBuff>()))
             {
                 //Verli spam slashes
                 type = ModContent.ProjectileType<VixylSlashProj>();
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordHoldVerlia"), position);
+            } 
+            else if (vixylPlayer.parryCooldown <= 0 && !player.immune)
+            {
+                vixylPlayer.parryTimer = 18;
+                //Normal slash
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSheethe"), position);
             }
         }
     }

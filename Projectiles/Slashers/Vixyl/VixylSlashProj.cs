@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -8,11 +7,9 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
 {
     internal class VixylSlashProj : ModProjectile
     {
-        private int _frameCounter;
-        private int _frameTick;
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Projectile.type] = 10;
+            Main.projFrames[Projectile.type] = 36;
         }
 
         public override void SetDefaults()
@@ -22,8 +19,8 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 30;
-            Projectile.localNPCHitCooldown = 3;
+            Projectile.timeLeft = 72;
+            Projectile.localNPCHitCooldown = 6;
             Projectile.usesLocalNPCImmunity = true;
         }
 
@@ -33,31 +30,36 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             set => Projectile.ai[0] = value;
         }
 
-        public override bool PreAI()
+        float trueFrame = 0;
+        public void UpdateFrame(float speed, int minFrame, int maxFrame)
         {
-            if (++_frameTick >= 1)
+            trueFrame += speed;
+            if (trueFrame < minFrame)
             {
-                _frameTick = 0;
-                if (++_frameCounter >= 10)
-                {
-                    _frameCounter = 0;
-                }
+                trueFrame = minFrame;
             }
-            return true;
+            if (trueFrame > maxFrame)
+            {
+                trueFrame = minFrame;
+            }
         }
 
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
             Projectile.Center = owner.Center;
+            owner.immune = true;
+            owner.SetImmuneTimeForAllTypes(3);
 
             //Lighting
-
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);
+
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+            UpdateFrame(0.4f, 1, 36);
         }
 
+        
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);
@@ -68,15 +70,15 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
-            float width = 500;
-            float height = 500;
-            Vector2 origin = new Vector2(width / 2, height / 2);
-            int frameSpeed = 1;
-            int frameCount = 10;
+            Rectangle rectangle = new Rectangle(0, 0, 256, 285);
+            rectangle.X = ((int)trueFrame % 6) * rectangle.Width;
+            rectangle.Y = (((int)trueFrame - ((int)trueFrame % 6)) / 6) * rectangle.Height;
+
+            Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
-                texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, 1.5f, SpriteEffects.None, 0f);
+               rectangle,
+                (Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
             return false;
         }
     }
