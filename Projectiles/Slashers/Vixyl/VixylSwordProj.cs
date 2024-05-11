@@ -138,15 +138,10 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
 
 
         public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
-
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
-
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SimpleTrail").Value;
-
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
@@ -164,15 +159,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
 
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(255, 255, 255, 4) * (1f - p));
-                SwordSlash2.drawOffset = Projectile.Size / 1.9f;
-            }
-
             Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
-
-
             float[] rotation = new float[Projectile.oldRot.Length];
             for (int i = 0; i < rotation.Length; i++)
             {
@@ -181,8 +168,6 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
 
 
             SwordSlash.Draw(Projectile.oldPos, rotation);
-            SwordSlash2.Draw(Projectile.oldPos, rotation);
-
 
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
