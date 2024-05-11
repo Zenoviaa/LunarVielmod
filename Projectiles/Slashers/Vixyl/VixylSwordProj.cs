@@ -59,7 +59,10 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             if (!_init && Main.myPlayer == Projectile.owner)
             {
                 SwingTime = (int)(SwingTime / player.GetAttackSpeed(DamageClass.Melee));
-
+                for(int i = 0; i < Projectile.oldPos.Length; i++)
+                {
+                    Projectile.oldPos[i] = Projectile.position;
+                }
                 _init = true;
                 Projectile.alpha = 255;
                 Projectile.timeLeft = SwingTime + EndSwingTime;
@@ -145,18 +148,11 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
-
-            /*
-            Texture2D Texture2 = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(Texture2, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Texture2.Width / 2, Texture2.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(190) * (1f - p), (p) => 
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(160) * (1f - p), (p) => 
                 new Color(Color.White.R, Color.White.G, Color.White.B, 50) * (1f - p));
-                SwordSlash.drawOffset = Projectile.Size / 1.8f;
+                SwordSlash.drawOffset = Projectile.Size / 2f;
             }
 
             Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
@@ -166,9 +162,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
 
-
             SwordSlash.Draw(Projectile.oldPos, rotation);
-
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
             int startY = frameHeight * Projectile.frame;
