@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork, 0f, -2f, 0, default(Color), 1.5f);
                     Main.dust[num].noGravity = true;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
                     Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
@@ -80,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.FlameBurst, 0f, -2f, 0, default(Color), 1.5f);
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.InfernoFork, 0f, -2f, 0, default(Color), 1.5f);
                     Main.dust[num].noGravity = false;
                 }
             }

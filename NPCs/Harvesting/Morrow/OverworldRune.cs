@@ -126,7 +126,7 @@ namespace Stellamod.NPCs.Harvesting.Morrow
         {
             if (spawnInfo.Player.ZoneForest)
             {
-                return SpawnCondition.Overworld.Chance * SpawnRates.Rune_Spawn_Chance;
+                return SpawnCondition.Overworld.Chance * SpawnRates.Rune_Spawn_Chance * 5;
             }
             return 0f;
         }

@@ -7077,3 +7077,12 @@ SigfriedsPhotoAlbum: {
 	Tooltip: A photobook of all pictures of Sigfried, tied down by ancient magic not even you can open.
 	DisplayName: Sigfrieds Photo Album
 }
+
+IceCubeMaker: {
+	DisplayName: Ice Cube Machine
+	Tooltip:
+		'''
+		Shoots a blast of ice cubes that bounce off of each other and enemies!
+		Stay frosty~
+		'''
+}
