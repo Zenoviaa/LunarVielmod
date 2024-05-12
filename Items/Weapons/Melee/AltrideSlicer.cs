@@ -13,9 +13,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-	public class AltrideSlicer : ModItem
-	{
-		public override void SetStaticDefaults()
+	public class AltrideSlicer : ClassSwapItem
+    {
+        //Alternate class you want it to change to
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        //Defaults for the other class
+        public override void SetClassSwappedDefaults()
+        {
+            //Do if(IsSwapped) if you want to check for the alternate class
+            //Stats to have when in the other class
+            Item.mana = 5;
+            Item.damage = 32;
+        }
+        public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Frost Swing");
 			/* Tooltip.SetDefault("Shoots one bone bolt to swirl and kill your enemies after attacking!" +
