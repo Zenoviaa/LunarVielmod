@@ -9,7 +9,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Projectile.type] = 36;
+            Main.projFrames[Projectile.type] = 6;
         }
 
         public override void SetDefaults()
@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
 
             // The multiplication here wasn't doing anything
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-            UpdateFrame(0.4f, 1, 36);
+            UpdateFrame(0.8f, 1, 36);
         }
 
         
@@ -70,15 +70,18 @@ namespace Stellamod.Projectiles.Slashers.Vixyl
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
-            Rectangle rectangle = new Rectangle(0, 0, 256, 285);
+            Rectangle rectangle = new Rectangle(0, 0, 285, 256);
             rectangle.X = ((int)trueFrame % 6) * rectangle.Width;
             rectangle.Y = (((int)trueFrame - ((int)trueFrame % 6)) / 6) * rectangle.Height;
 
             Vector2 origin = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
             SpriteBatch spriteBatch = Main.spriteBatch;
+            float drawRotation = Projectile.rotation;
+            float drawScale = 2f;
+
             spriteBatch.Draw(texture, drawPosition,
                rectangle,
-                (Color)GetAlpha(lightColor), 0f, origin, 2f, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor), drawRotation, origin, drawScale, SpriteEffects.None, 0f);
             return false;
         }
     }
