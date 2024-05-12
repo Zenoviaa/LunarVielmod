@@ -113,7 +113,7 @@ namespace Stellamod
 
 
 
-                    Filters.Scene["Stellamod:GreenSunSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+                    Filters.Scene["Stellamod:GreenSunSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 1f, 0.3f).UseOpacity(0.275f), EffectPriority.VeryHigh);
                     SkyManager.Instance["Stellamod:GreenSunSky"] = new GreenSunSky();
                 }
 
