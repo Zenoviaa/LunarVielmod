@@ -33,12 +33,15 @@ namespace Stellamod.Projectiles
 			Projectile.ownerHitCheck = true;
 			Projectile.extraUpdates = 1;
 			Projectile.timeLeft = 300;
+			Projectile.light = 0.78f;
 		}
+
 		public float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+
 		public override bool PreAI()
 		{
 			if (++Projectile.frameCounter >= 5)

@@ -750,6 +750,9 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 HavocSegment segment = Segments[i];
+              /*  if (!segment.HasGlowTexture)
+                    continue;
+              */
                 Vector2 drawPosition = segment.Position - screenPos + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
