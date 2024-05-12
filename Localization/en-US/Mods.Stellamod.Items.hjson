@@ -7068,11 +7068,6 @@ NiiviBossRel: {
 	Tooltip: ""
 }
 
-GraveShaper: {
-	DisplayName: Grave Shaper
-	Tooltip: ""
-}
-
 ManifestedAnxiety: {
 	Tooltip: Marked from fear and anxiety Dreadmire falls, but alas her dread lingers around the world.
 	DisplayName: Manifested Anxiety
@@ -7105,4 +7100,9 @@ Vixyl: {
 ManifestedHumility: {
 	Tooltip: ""
 	DisplayName: Manifested Humility
+}
+
+GraveShaper: {
+	DisplayName: Grave Shaper
+	Tooltip: ""
 }
