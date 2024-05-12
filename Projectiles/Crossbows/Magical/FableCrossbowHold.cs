@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
 				
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
 				Timer = 0;
 			}
 			Player player = Main.player[Projectile.owner];
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CrossbowPull"), Projectile.position);
 
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<MeltaCircle>(), Projectile.damage * 1, 0f, Projectile.owner, 0f, 0f);
 			}
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Crossbows.Magical
 			{
 				ShakeModSystem.Shake = 8; 
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"), Projectile.position);
 		
 			}
 

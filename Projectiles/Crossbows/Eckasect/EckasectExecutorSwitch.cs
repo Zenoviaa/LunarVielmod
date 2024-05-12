@@ -53,7 +53,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 				ParticleManager.NewParticle(Projectile.Center, speed2 * 5, ParticleManager.NewInstance<BurnParticle3>(), Color.RoyalBlue, Main.rand.NextFloat(0.2f, 0.8f));
 
 			}
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"));
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);
 			Projectile.Kill();
 
 		}

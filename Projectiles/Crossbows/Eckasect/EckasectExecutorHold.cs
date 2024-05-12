@@ -77,7 +77,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			if (Timer < 3)
 			{
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Executor1"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Executor1"), Projectile.position);
 
 			}
 

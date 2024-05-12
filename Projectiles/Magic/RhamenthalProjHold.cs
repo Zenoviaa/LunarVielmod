@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Magic
 				// Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
 
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CyroBolt2"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CyroBolt2"), Projectile.position);
 				Timer = 0;
 			}
 			Player player = Main.player[Projectile.owner];
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Magic
 				float speedX = Projectile.velocity.X * 10;
 				float speedY = Projectile.velocity.Y * 7;
 
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CorsageRune1"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CorsageRune1"), Projectile.position);
 			}
 
 			if (Timer == 1)
@@ -99,7 +99,7 @@ namespace Stellamod.Projectiles.Magic
 				float speedX = Projectile.velocity.X * 30;
 				float speedY = Projectile.velocity.Y * 30;
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ModContent.ProjectileType<RhamenthalShot>(), (int)(Projectile.damage * 15), 0f, Projectile.owner, 0f, 0f);
-				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Rhamenthal"));
+				SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Rhamenthal"), Projectile.position);
 				ShakeModSystem.Shake = 9;
 			}
 

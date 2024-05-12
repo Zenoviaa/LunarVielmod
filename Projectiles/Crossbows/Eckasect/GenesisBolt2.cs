@@ -74,7 +74,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
 			float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisBoom1>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
 			
 			NPC npc = target;
 			if (npc.active && !npc.HasBuff<Sected>())
@@ -126,7 +126,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 			ShakeModSystem.Shake = 4;
 			float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
 			float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"));
+			SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ModContent.ProjectileType<GenesisBoom1>(), (int)(Projectile.damage * 2), 0f, Projectile.owner, 0f, 0f);
 			Projectile.Kill();
 			return false;

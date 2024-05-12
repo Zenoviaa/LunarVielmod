@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 
 			if(Timer % 10 == 0)
 			{
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.1f });
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.1f }, Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position + Projectile.velocity.SafeNormalize(Vector2.Zero) * 25, Projectile.velocity, 
 					ModContent.ProjectileType<TraumatizingRay>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 1);
             }
