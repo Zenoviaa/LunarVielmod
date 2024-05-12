@@ -326,6 +326,14 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NekoNeko.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody1_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody2_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody3_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody4_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody5_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnake_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_Glow.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_White.png" />
     <None Remove="NPCs\Bosses\INest\VoidBeam.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Irradia\StartIrradia.png" />
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaAxeFlameArrow.png" />
