@@ -1,20 +1,14 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
-namespace Stellamod.NPCs.Underground
+namespace Stellamod.NPCs.Ishtar
 {
-    internal class AbandonedMinorSummon : ModNPC
+    internal class StalkerSpawner : ModNPC
     {
         private bool _spawn;
-        public override void SetStaticDefaults()
-        {
-            Main.npcFrameCount[NPC.type] = 16;
-        }
-
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             NPC.width = 32;
@@ -34,14 +28,14 @@ namespace Stellamod.NPCs.Underground
         {
             if (!_spawn && StellaMultiplayer.IsHost)
             {
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y, 
-                    ModContent.NPCType<AbandonedMinor>());
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X + 30, (int)NPC.Center.Y,
+                    ModContent.NPCType<Stalker>());
 
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y, 
-                    ModContent.NPCType<AbandonedMinor>());
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 30, (int)NPC.Center.Y,
+                    ModContent.NPCType<Stalker>());
 
-                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 45, (int)NPC.Center.Y, 
-                    ModContent.NPCType<AbandonedMinor>());
+                NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X - 45, (int)NPC.Center.Y,
+                    ModContent.NPCType<Stalker>());
                 _spawn = true;
                 NPC.Kill();
             }
@@ -50,7 +44,7 @@ namespace Stellamod.NPCs.Underground
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             //5x less common than normal mechanical enemies
-            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo) * 0.2f;
+            return SpawnRates.GetIshtarEnemySpawnChance(spawnInfo);
         }
     }
 }

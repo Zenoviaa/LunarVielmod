@@ -127,7 +127,7 @@ namespace Stellamod.NPCs.Underground
         {
             //You can't be in the surface and underground at the same time so this should work
             //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Cavern.Chance * SpawnRates.Flower_Spawn_Chance);
+            return SpawnRates.GetFlowerSpawnChance(spawnInfo);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
