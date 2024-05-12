@@ -162,21 +162,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             UpdateFrame(0.3f, 1, 40);
             bee2--;
 
-            for (int i = 0; i < Main.maxPlayers; i++)
-            {
-                Player npcs = Main.player[i];
-
-                if (npcs.active)
-                {
-                    float distance = Vector2.Distance(NPC.Center, npcs.Center);
-                    if (distance <= 4000)
-                    {
-                        Vector2 direction = npcs.Center - NPC.Center;
-                        direction.Normalize();
-                        npcs.velocity -= direction * 0.2f;
-                    }
-                }
-            }
+          
 
           
 

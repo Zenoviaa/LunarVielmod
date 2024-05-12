@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Projectiles.Magic;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -43,7 +45,11 @@ namespace Stellamod.Items.Weapons.Mage
             return new Vector2(-5f, 0f);
         }
 
-
-
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, position);
+            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, position);
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
     }
 }

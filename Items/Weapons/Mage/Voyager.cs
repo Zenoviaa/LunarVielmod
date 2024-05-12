@@ -57,7 +57,7 @@ namespace Stellamod.Items.Weapons.Mage
             if (player.GetModPlayer<MyPlayer>().SwordCombo >= 2)
             {
                 type = ModContent.ProjectileType<VoyagerProjThrow>();
-                damage *= 5;
+                damage *= 3;
                 SoundEngine.PlaySound(SoundID.Item34, player.position);
             }
         }

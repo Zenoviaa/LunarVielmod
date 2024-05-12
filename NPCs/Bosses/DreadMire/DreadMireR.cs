@@ -956,6 +956,8 @@ namespace Stellamod.NPCs.Bosses.DreadMire
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedAnxiety>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<DreadmireBag>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.DreadBossRel>()));

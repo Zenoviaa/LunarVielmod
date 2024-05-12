@@ -1122,4 +1122,13 @@ SunLaserProj.DisplayName: Sun Laser Proj
 STARTELEPORTBOOM.DisplayName: S T A R T E L E P O R T B O O M
 NiiviLaserContinuousProj.DisplayName: Niivi Laser Continuous Proj
 NiiviLaserSpikeProj.DisplayName: Niivi Laser Spike Proj
+<<<<<<< HEAD
 GraveShaperProj.DisplayName: Grave Shaper Proj
+=======
+NiiviTornadoProj.DisplayName: Niivi Tornado Proj
+DustNadoProj.DisplayName: Dust Nado Proj
+IceCubeMakerProj.DisplayName: Ice Cube Maker Proj
+VixylSwordProj.DisplayName: Vixyl Sword Proj
+VixylSlashProj.DisplayName: Vixyl Slash Proj
+VixylParryProj.DisplayName: Vixyl Parry Proj
+>>>>>>> a55ba495ea8a12b86ff2e0e95c1b482cb9d74426

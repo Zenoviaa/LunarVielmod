@@ -176,9 +176,7 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<DrakonicManor>() || spawnInfo.Player.InModBiome<CindersparkBiome>())
-                return 0;
-            return (SpawnCondition.Cavern.Chance * SpawnRates.Mechanical_Enemy_Spawn_Chance);
+            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

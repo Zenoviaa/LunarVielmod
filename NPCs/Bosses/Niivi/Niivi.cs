@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -6,6 +7,7 @@ using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -110,7 +112,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.damage = 240;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
-
             //It won't be considered a boss or take up slots until the fight actually starts
             //So the values are like this for now
             NPC.boss = true;
@@ -123,6 +124,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.knockBackResist = 0;
 
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
+            TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
             //Bleh
 
         }
@@ -147,6 +149,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             State = actionState;
             if(State == ActionState.BossFight)
             {
+                TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Niivi/Niivi_Head_Boss");
                 // Custom boss bar
                 NPC.BossBar = ModContent.GetInstance<NiiviBossBar>();
                 NPC.boss = true;
@@ -154,6 +157,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else
             {
+                TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
                 Timer = 0;
                 AttackTimer = 0;
                 AttackCount = 0;

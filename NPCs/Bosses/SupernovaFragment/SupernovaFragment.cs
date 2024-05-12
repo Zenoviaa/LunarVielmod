@@ -47,6 +47,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public int SingularityPhaze = 0;
         public static Vector2 SingularityPos;
         public static Vector2 SingularityStart;
+        public bool Superpull = false;
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 30;
@@ -152,6 +153,27 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
         public override void AI()
         {
             Spawner++;
+            if (!Superpull)
+            {
+                for (int i = 0; i < Main.maxPlayers; i++)
+                {
+                    Player npcs = Main.player[i];
+
+                    if (npcs.active)
+                    {
+                        float distancee = Vector2.Distance(NPC.Center, npcs.Center);
+                        if (distancee <= 4000)
+                        {
+                            Vector2 direction = npcs.Center - NPC.Center;
+                            direction.Normalize();
+                            npcs.velocity -= direction * 0.2f;
+                        }
+                    }
+                }
+            }
+           
+
+
             PH2 = NPC.life < NPC.lifeMax * 0.6f;
             if (PH2)
             {
@@ -312,10 +334,12 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                         if(SingularityPhaze == 1)
                                         {
                                             _invincible = true;
+                                            Superpull = true;
                                         }
                                         if (SingularityPhaze == 2)
                                         {
                                             _invincible = false;
+                                            Superpull = false;
                                         }
 
                                         Attack = Main.rand.Next(1, 6);
@@ -345,6 +369,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
                                                 Dust.NewDustPerfect(NPC.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default, 2f).noGravity = false;
                                             }
                                             PH2TP = false;
+                                            Superpull = false;
                                             SingularityPhaze = 2;
                                         }
                                     }

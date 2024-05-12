@@ -134,7 +134,7 @@ namespace Stellamod
 			string internalName3 = "BloodGoddessDreadmire";
 
 			// The NPC type of the boss
-			int bossType3 = ModContent.NPCType<NPCs.Bosses.DreadMire.DreadMire>();
+			int bossType3 = ModContent.NPCType<NPCs.Bosses.DreadMire.DreadMireR>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight3 = 2.6f;
@@ -156,7 +156,7 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Kill a blood cyst during a blood moon!");
+			LocalizedText spawnConditionText = Language.GetText($"Destroy 3 dread monoliths to create a Dread medallion and summon her during night.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -874,7 +874,7 @@ namespace Stellamod
             int bossType = ModContent.NPCType<Niivi>();
 
             // Value inferred from boss progression, see the wiki for details
-            float weight = 17.1f;
+            float weight = 18.1f;
 
             // Used for tracking checklist progress
             Func<bool> downed = () => DownedBossSystem.downedNiiviBoss;

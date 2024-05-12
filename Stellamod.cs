@@ -86,6 +86,17 @@ namespace Stellamod
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
+ 
+      
+        
+        public static int MOKCurrencyID;
+        public static int MOPCurrencyID;
+
+        public static int MOBCurrencyID;
+        public static int MOACurrencyID;
+        public static int MOCCurrencyID;
+        public static int MOHCurrencyID;
+        public static int MOLCurrencyID;
         public override void Load()
         {
            
@@ -156,8 +167,36 @@ namespace Stellamod
                 SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
                 SkyManager.Instance["Stellamod:VillageSky"].Load();
 
-                // ...other Load stuff goes here
+                // Currencies
+
+
+
+
+
+
+
+
+
+
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
+
+
+                //Anxuety Dreadmire
+                MOACurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfAnxiety(ModContent.ItemType<ManifestedAnxiety>(), 999L, "Manifestation Of Anxiety"));
+
+                //Bravery Verlia
+                MOBCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfBravery(ModContent.ItemType<ManifestedBravery>(), 999L, "Manifestation Of Bravery"));
+
+                //Committment Irradia
+                MOCCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfCommittment(ModContent.ItemType<ManifestedCommitment>(), 999L, "Manifestation Of Committment"));
+
+                //Humility Azurerin
+                MOHCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedHumility>(), 999L, "Manifestation Of Humility"));
+
+                //Love Gothivia
+                MOLCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Manifestments.ManifestmentOfLove(ModContent.ItemType<ManifestedLove>(), 999L, "Manifestation Of Love"));
+
+                //----------------------------------------------- Shaders
                 Filters.Scene["Stellamod:Daedussss"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Jellyfish1"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.3f, -0.3f, -0.3f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Ishtar"] = new Filter(new DaedusScreenShaderData("FilterMiniTower").UseColor(-0.6f, -0.6f, -0.6f).UseOpacity(0.375f), EffectPriority.Medium);

@@ -49,11 +49,8 @@ namespace Stellamod.NPCs.Underground
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.InModBiome<DrakonicManor>() || spawnInfo.Player.InModBiome<CindersparkBiome>())
-                return 0;
-            //You can't be in the surface and underground at the same time so this should work
-            //0.05f should make it 20 less common than normal spawns.
-            return (SpawnCondition.Cavern.Chance * 0.2f);
+            //5x less common than normal mechanical enemies
+            return SpawnRates.GetMechanicalEnemySpawnChance(spawnInfo) * 0.2f;
         }
     }
 }

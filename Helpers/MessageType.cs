@@ -11,7 +11,7 @@
 		BoonData,
 		CompleteMerenaQuest,
 		CompleteZuiQuest,
-		CreatePortal
+		CreatePortal,
 	}
 
 	public enum QuestMessageType : byte
