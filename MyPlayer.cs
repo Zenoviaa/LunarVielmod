@@ -250,8 +250,9 @@ namespace Stellamod
 		public bool ZoneIlluria;
 		public bool ZoneIshtar;
 		public bool ZoneVeil;
+        public bool ZoneGreenSun;
 
-		public float AssassinsSlashes;
+        public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
         public NPC AssassinsSlashnpc;
@@ -713,6 +714,7 @@ namespace Stellamod
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosT", NPC.AnyNPCs(ModContent.NPCType<LuminullSpiritCrystal>()));

@@ -33,6 +33,10 @@ namespace Stellamod.WorldG
         public static bool AuroreanSpawn;
         public static bool Aurorean;
 
+        //GreenSun--------------------------
+
+        public static bool GreenSun;
+
         //-----------------------------------
         public static bool HasHadBloodMoon;
         public static void GintzeWin()
@@ -56,6 +60,7 @@ namespace Stellamod.WorldG
             writer.Write(GintzingBoss);
             writer.Write(AuroreanSpawn);
             writer.Write(Aurorean);
+            writer.Write(GreenSun);
             writer.Write(HasHadBloodMoon);
         }
 
@@ -68,6 +73,7 @@ namespace Stellamod.WorldG
             GintzingBoss = reader.ReadBoolean();
             AuroreanSpawn = reader.ReadBoolean();
             Aurorean = reader.ReadBoolean();
+            GreenSun = reader.ReadBoolean();
             HasHadBloodMoon = reader.ReadBoolean();
         }
 
@@ -230,7 +236,17 @@ namespace Stellamod.WorldG
             TrySpawnAuroreanStarfall();
             SpawnAuroreanStars();
 
-
+            if (!GreenSun)
+            {
+                string message = "Gothivia has made a return to seek you.";
+                if (DownedBossSystem.downedIrradiaBoss)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
+                    NetworkText txt = NetworkText.FromLiteral(message);
+                    ChatHelper.BroadcastChatMessage(txt, new Color(34, 121, 100));
+                    GreenSun = true;
+                }
+            }
             /*
             if (!ChaosD)
             {
@@ -306,6 +322,7 @@ namespace Stellamod.WorldG
         public override void ClearWorld()
         {
             HasHadBloodMoon = false;
+            GreenSun = false;
             Aurorean = false;
             Gintzing = false;
             GintzingBoss = false;
@@ -316,6 +333,7 @@ namespace Stellamod.WorldG
 
         public override void LoadWorldData(TagCompound tag)
         {
+            GreenSun = tag.GetBool("GreenSun");
             HasHadBloodMoon = tag.GetBool("HasHadBloodmoon");
             Aurorean = tag.GetBool("Aurorean");
             Gintzing = tag.GetBool("Gintzing");
@@ -329,6 +347,7 @@ namespace Stellamod.WorldG
         {
             tag["HasHadBloodmoon"] = HasHadBloodMoon;
             tag["Aurorean"] = Aurorean;
+            tag["GreenSun"] = GreenSun;
             tag["Gintzing"] = Gintzing;
             tag["GintzingBoss"] = GintzingBoss;
             tag["GintzeKills"] = GintzeKills;
