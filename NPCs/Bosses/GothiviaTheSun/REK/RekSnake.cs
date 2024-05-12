@@ -101,6 +101,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             NPC.knockBackResist = 0f;
             NPC.boss = true;
 
+            // The following code assigns a music track to the boss in a simple way.
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Rek");
+            }
+
             //Initialize Segments
             int bodySegments = 4;
             int bodFrontExtraSegments = 7;
