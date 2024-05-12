@@ -7059,3 +7059,8 @@ NiiviBossRel: {
 	DisplayName: Niivi Boss Rel
 	Tooltip: ""
 }
+
+GraveShaper: {
+	DisplayName: Grave Shaper
+	Tooltip: ""
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.GameContent;
@@ -23,11 +24,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
         {
             Projectile.width = 12;
             Projectile.height = 12;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
             Projectile.penetrate = 10;
             Projectile.timeLeft = 900;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.damage = 45;
             Projectile.aiStyle = -1;
             Projectile.scale = 1.0f;
@@ -41,7 +42,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.27f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(45f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.27f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 1.75f * Main.essScale);
         }
 
 
@@ -73,6 +73,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia
             {
                 Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height,
                     DustID.Dirt, 0, 60, 206);
+            }
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
             }
         }
 

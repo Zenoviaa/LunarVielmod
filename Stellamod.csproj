@@ -419,6 +419,7 @@
     <None Remove="Particles\GoldRingParticle3.png" />
     <None Remove="Particles\GoldSparkleParticle2.png" />
     <None Remove="Particles\GoldSparkleParticle3.png" />
+    <None Remove="Particles\GraveSpin.png" />
     <None Remove="Particles\IcingParticle.png" />
     <None Remove="Particles\MoonTrailParticle2.png" />
     <None Remove="Particles\morrowstar2.png" />
