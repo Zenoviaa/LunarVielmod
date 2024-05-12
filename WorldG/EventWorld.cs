@@ -238,7 +238,7 @@ namespace Stellamod.WorldG
 
             if (!GreenSun)
             {
-                string message = "Gothivia has made a return to seek you.";
+                string message = "Gothivia has made a return, the skies enlighten and the sun burns bright.";
                 if (DownedBossSystem.downedIrradiaBoss)
                 {
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/CHAOS"));
