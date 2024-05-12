@@ -27,7 +27,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.height = 16;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
             BeamPoints = new List<Vector2>();
