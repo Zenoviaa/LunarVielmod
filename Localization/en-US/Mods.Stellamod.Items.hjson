@@ -7106,3 +7106,8 @@ GraveShaper: {
 	DisplayName: Grave Shaper
 	Tooltip: ""
 }
+
+CleanestCleaver: {
+	DisplayName: Cleanest Cleaver
+	Tooltip: ""
+}
