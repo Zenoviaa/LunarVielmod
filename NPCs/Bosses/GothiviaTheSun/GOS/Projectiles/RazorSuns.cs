@@ -69,6 +69,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
             Projectile.rotation = Projectile.velocity.ToRotation();
             Timer++;
+
+            float ai1 = Projectile.whoAmI;
+
+            if (Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<RazorRingSun>(), 40, 1, Main.myPlayer, 0f, ai1);
+                }
+            }
+
             ai_Counter++;
 
             float maxDetectDistance = 2000;

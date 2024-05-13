@@ -66,6 +66,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void AI()
         {
             Timer++;
+            float ai1 = Projectile.whoAmI;
+
+            if (Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<RazorRingFire>(), 40, 1, Main.myPlayer, 0f, ai1);
+                }
+            }
 
             Projectile.rotation = Projectile.velocity.ToRotation();
 
