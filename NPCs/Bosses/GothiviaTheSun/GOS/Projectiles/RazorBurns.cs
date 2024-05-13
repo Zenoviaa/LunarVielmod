@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 12;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25; // The length of old position to be recorded
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 35; // The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
 
@@ -75,8 +75,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             if (player != null)
             {
-                float moveSpeed = 12;
-                float accel = 0.4f;
+                float moveSpeed = 16;
+                float accel = 0.5f;
                 AI_Movement(player.Center, moveSpeed, accel);
             }
             //Lighting
@@ -246,10 +246,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         {
             Main.spriteBatch.End();
 
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
-            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WhiteTrail").Value;
+            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
+            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
+            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
+            var TrailTex4 = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/WaterTrail").Value;
             Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
 
 
