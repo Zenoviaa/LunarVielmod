@@ -76,11 +76,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         }
 
         //Damage Numbers
-        private int DamageBeamerFireBall => 120;
-        private int DamagePopoutEyeMiniLaser => 180;
-        private int DamageFireShockWave => 200;
-        private int DamageBlowtorch => 200;
-        private int DamageBlowtorchBlast => 75;
+        private int DamageBeamerFireBall => 60;
+        private int DamagePopoutEyeMiniLaser => 90;
+        private int DamageFireShockWave => 100;
+        private int DamageBlowtorch => 100;
+        private int DamageBlowtorchBlast => 50;
 
         private ref float Timer => ref NPC.ai[1];
         private ref float AttackTimer => ref NPC.ai[2];
