@@ -304,7 +304,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             MakeLikeWorm();
             if (Timer >= 60)
             {
-                ResetState(ActionState.EyePopout);
+                ResetState(ActionState.Beamer);
             }
         }
 
