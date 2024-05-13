@@ -103,6 +103,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 0.78f);
         }
 
+
         public Color? GetLineAlpha(Color lightColor)
         {
             return new Color(

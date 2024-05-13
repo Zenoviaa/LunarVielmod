@@ -16,16 +16,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         private ref float Timer => ref NPC.ai[0];
         private NPC Owner
         {
-            get
-            {
-                return Main.npc[(int)NPC.ai[1]];
-            }
-            set
-            {
-                NPC.ai[1] = value.whoAmI;
-            }
+            get => Main.npc[(int)NPC.ai[1]];
+            set => NPC.ai[1] = value.whoAmI;
         }
         private ref float AttackTimer => ref NPC.ai[2];
+        private ref float OrbitTimer => ref NPC.ai[3];
 
         private Vector2 LaserDirection;
         private Player Target => Main.player[NPC.target];
@@ -61,27 +56,49 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         private void AI_Attack()
         {
-
-            Timer++;
-            AttackTimer--;
-            if (Timer % 220 == 0)
+            switch (AttackTimer)
             {
-                LaserDirection = NPC.Center.DirectionTo(Target.Center);
-                LaserDirection = LaserDirection.RotatedBy(MathHelper.PiOver2);
-                AttackTimer = 90;
-                if (StellaMultiplayer.IsHost)
-                {
-                    int damage = 150;
-                    int knockback = 1;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, LaserDirection,
-                        ModContent.ProjectileType<RekFireEyeLaserProj>(), damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);
-                }
+                case 0:
+                    Timer++;
+                    if(Timer >= 360)
+                    {
+                        LaserDirection = NPC.Center.DirectionTo(Target.Center);
+                        LaserDirection = LaserDirection.RotatedBy(MathHelper.PiOver2);
+                      
+                        AttackTimer++;
+                        Timer = 0;
+                    }
+                    break;
+                case 1:
+                    Timer++;
+                    if(Timer >= 60)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            int damage = 150;
+                            int knockback = 1;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, LaserDirection,
+                                ModContent.ProjectileType<RekFireEyeLaserProj>(), damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                        AttackTimer++;
+                        Timer = 0;
+                    }
+                    break;
+                case 2:
+                    Timer++;
+                    if(Timer >= 90)
+                    {
+                        AttackTimer = 0;
+                        Timer = 0;
+                    }
+                    break;
             }
         }
 
         private void AI_Orbit()
         {
-            float radiusProgress = MathHelper.Clamp(Timer / 60f, 0, 1);
+            OrbitTimer++;
+            float radiusProgress = MathHelper.Clamp(OrbitTimer / 60f, 0, 1);
             float easedRadiusProgress = Easing.OutCubic(radiusProgress);
             float radius = 252 * easedRadiusProgress;
 
@@ -92,7 +109,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 Vector2 targetCenter = Owner.Center + offset.RotatedBy(progress * MathHelper.TwoPi) * radius;
                 NPC.Center = Vector2.Lerp(NPC.Center, targetCenter, 0.05f);
             }
-        
         }
 
         public override void FindFrame(int frameHeight)
@@ -113,6 +129,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             return Color.Orange * (1f - completionRatio);
         }
 
+        public Color? GetLineAlpha(Color lightColor)
+        {
+            return new Color(
+                Color.White.R,
+                Color.White.G,
+                Color.White.B, 0) * (1f - NPC.alpha / 50f);
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (TrailDrawer == null)
@@ -123,6 +147,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 frameSize = new Vector2(200, 200);
             TrailDrawer.DrawPrims(NPC.oldPos, frameSize * 0.5f - screenPos, 155);
+
+            //Draw Telegraph Line like on the axe
+            if(AttackTimer == 1)
+            {
+                float progress = Timer / 60f;
+                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+                Color lineDrawColor = (Color)GetLineAlpha(drawColor);
+                lineDrawColor *= progress;
+
+                Vector2 lineDrawOrigin = lineTexture.Size() / 2;
+                float lineDrawScale = NPC.scale;
+                float lineDrawRotation = LaserDirection.ToRotation() + MathHelper.PiOver2;
+                spriteBatch.Draw(lineTexture, NPC.Center - Main.screenPosition, null,
+                    lineDrawColor,
+                    lineDrawRotation,
+                    lineDrawOrigin,
+                    lineDrawScale, SpriteEffects.None, 0);
+            }
 
 
             SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
