@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
-        private float BlowtorchDistance => 384;
+        private float BlowtorchDistance => 512;
 
         //Draw Code
         private Vector2[] LinePos;
@@ -38,6 +38,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
+
                 //Effects
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
@@ -53,10 +54,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Projectile.scale = 1f;
             }
 
+            float progress = Timer / 60f;
+            float easedProgress = Easing.OutExpo(progress);
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * BlowtorchDistance, i / 8f));
+                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * BlowtorchDistance * easedProgress, i / 8f));
             }
             LinePos = points.ToArray();
         }
