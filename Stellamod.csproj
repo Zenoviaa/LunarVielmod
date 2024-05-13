@@ -580,7 +580,6 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
-    <Folder Include="NPCs\Bosses\GothiviaTheSun\REK\Projectiles\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Swords\Slashes\" />

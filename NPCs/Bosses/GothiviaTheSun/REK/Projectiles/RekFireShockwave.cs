@@ -8,16 +8,17 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Visual
+
+namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class CircleExplosionProj : ModProjectile,
+    internal class RekFireShockWave : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture
         public override string Texture => TextureRegistry.EmptyTexture;
 
         //AI
-        private float LifeTime => 32f;
+        private float LifeTime => 45f;
         private ref float Timer => ref Projectile.ai[0];
         private float Progress
         {
@@ -34,29 +35,29 @@ namespace Stellamod.Projectiles.Visual
         private bool SpawnDustCircle;
 
         //Trailing
-        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.FadedStreak;
-        private MiscShaderData FrontTrailShader => TrailRegistry.LaserShader;
+        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WhispyTrail;
+        private MiscShaderData FrontTrailShader => TrailRegistry.FireVertexShader;
 
-        private Asset<Texture2D> BackTrailTexture => TrailRegistry.SimpleTrail;
+        private Asset<Texture2D> BackTrailTexture => TrailRegistry.FadedStreak;
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
         private float StartRadius => 4;
-        private float EndRadius => 128;
+        private float EndRadius => 768;
         private float Width => 32;
 
         //Colors
-        private Color FrontCircleStartDrawColor => Color.White;
-        private Color FrontCircleEndDrawColor => Color.White;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.LightGoldenrodYellow, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.LightGoldenrodYellow, Color.DarkGoldenrod, 0.7f);
+        private Color FrontCircleStartDrawColor => Color.OrangeRed;
+        private Color FrontCircleEndDrawColor => Color.OrangeRed;
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Orange, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Orange;
         private Vector2[] CirclePos;
 
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.hostile = false;
+            Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = (int)LifeTime;
             Projectile.tileCollide = false;
@@ -69,31 +70,13 @@ namespace Stellamod.Projectiles.Visual
         {
             Timer++;
             AI_ExpandCircle();
-            AI_DustCircle();
         }
 
         private void AI_ExpandCircle()
         {
             float easedProgess = Easing.InOutCirc(Progress);
-            float radius = MathHelper.Lerp(StartRadius, EndRadius, easedProgess);
+            float radius = MathHelper.Lerp(StartRadius, EndRadius, Progress);
             DrawCircle(radius);
-        }
-
-        private void AI_DustCircle()
-        {
-            if (!SpawnDustCircle && Timer >= 15)
-            {
-                for (int i = 0; i < 48; i++)
-                {
-                    Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
-                    Vector2 pos = Projectile.Center + rand;
-                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
-                        newColor: BackCircleStartDrawColor, 
-                        Scale: Main.rand.NextFloat(0.3f, 0.6f));
-                    d.noGravity = true;
-                }
-                SpawnDustCircle = true;
-            }
         }
 
         public override bool ShouldUpdatePosition()
@@ -137,11 +120,26 @@ namespace Stellamod.Projectiles.Visual
                 default:
                 case 0:
                     //Front Trail
-                    return Color.Transparent;
+                    return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio);
                 case 1:
                     //Back Trail
                     return Color.Transparent;
             }
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            //This damages everything in the trail
+            Vector2[] positions = CirclePos;
+            float collisionPoint = 0;
+            for (int i = 1; i < positions.Length; i++)
+            {
+                Vector2 position = positions[i];
+                Vector2 previousPosition = positions[i - 1];
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
+                    return true;
+            }
+            return false;
         }
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)

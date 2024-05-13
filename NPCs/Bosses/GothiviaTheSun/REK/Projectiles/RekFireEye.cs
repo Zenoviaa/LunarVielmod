@@ -1,0 +1,134 @@
+﻿
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using Terraria;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
+{
+    internal class RekFireEye : ModNPC
+    {
+        public PrimDrawer TrailDrawer { get; private set; } = null;
+        private ref float Timer => ref NPC.ai[0];
+        private NPC Owner
+        {
+            get
+            {
+                return Main.npc[(int)NPC.ai[1]];
+            }
+            set
+            {
+                NPC.ai[1] = value.whoAmI;
+            }
+        }
+        private ref float AttackTimer => ref NPC.ai[2];
+
+        private Vector2 LaserDirection;
+        private Player Target => Main.player[NPC.target];
+        public override void SetStaticDefaults()
+        {
+            Main.npcFrameCount[Type] = 32;
+            NPCID.Sets.TrailCacheLength[Type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 2;
+        }
+
+        public override void SetDefaults()
+        {
+            NPC.width = 200;
+            NPC.height = 200;
+            NPC.lifeMax = 1000;
+            NPC.damage = 200;
+            NPC.defense = 70;
+            NPC.dontTakeDamage = true;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.scale = 0f;
+        }
+
+        public override void AI()
+        {
+            float progress = MathHelper.Clamp(Timer / 60, 0, 1);
+            float easedProgress = Easing.OutCubic(progress);
+            NPC.scale = MathHelper.Lerp(0f, 1f, easedProgress);
+            NPC.TargetClosest();
+            AI_Orbit();
+            AI_Attack();
+        }
+
+        private void AI_Attack()
+        {
+
+            Timer++;
+            AttackTimer--;
+            if (Timer % 220 == 0)
+            {
+                LaserDirection = NPC.Center.DirectionTo(Target.Center);
+                LaserDirection = LaserDirection.RotatedBy(MathHelper.PiOver2);
+                AttackTimer = 90;
+                if (StellaMultiplayer.IsHost)
+                {
+                    int damage = 150;
+                    int knockback = 1;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, LaserDirection,
+                        ModContent.ProjectileType<RekFireEyeLaserProj>(), damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);
+                }
+            }
+        }
+
+        private void AI_Orbit()
+        {
+            float radiusProgress = MathHelper.Clamp(Timer / 60f, 0, 1);
+            float easedRadiusProgress = Easing.OutCubic(radiusProgress);
+            float radius = 252 * easedRadiusProgress;
+
+            Vector2 offset = -Vector2.UnitY;
+            float progress = Timer / 240f;
+            if(AttackTimer <= 0)
+            {
+                Vector2 targetCenter = Owner.Center + offset.RotatedBy(progress * MathHelper.TwoPi) * radius;
+                NPC.Center = Vector2.Lerp(NPC.Center, targetCenter, 0.05f);
+            }
+        
+        }
+
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frameCounter += 0.6f;
+            NPC.frameCounter %= Main.npcFrameCount[NPC.type];
+            int frame = (int)NPC.frameCounter;
+            NPC.frame.Y = frame * frameHeight;
+        }
+
+        public float WidthFunction(float completionRatio)
+        {
+            return NPC.width * NPC.scale * (1f - completionRatio) * 2f;
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Orange * (1f - completionRatio);
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
+
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
+            Vector2 frameSize = new Vector2(200, 200);
+            TrailDrawer.DrawPrims(NPC.oldPos, frameSize * 0.5f - screenPos, 155);
+
+
+            SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            spriteBatch.Draw(texture, new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + new Vector2(0, NPC.gfxOffY), NPC.frame, new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f), NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0);
+            return false;
+        }
+    }
+}
