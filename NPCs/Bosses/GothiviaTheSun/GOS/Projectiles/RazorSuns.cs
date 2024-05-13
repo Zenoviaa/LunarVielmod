@@ -18,6 +18,7 @@ using Stellamod.Items.Accessories.Players;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Visual;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
@@ -28,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 12;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20; // The length of old position to be recorded
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25; // The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
    
@@ -40,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.friendly = false;
             Projectile.penetrate = 8;
             Projectile.hostile = true;
-            Projectile.timeLeft = 90000;
+            Projectile.timeLeft = 1080;
             Projectile.localNPCHitCooldown = 6;
             Projectile.usesLocalNPCImmunity = true;
         }
@@ -76,8 +77,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             if (player != null)
             {
-                float moveSpeed = 11;
-                float accel = 0.45f;
+                float moveSpeed = 12;
+                float accel = 0.4f;
                 AI_Movement(player.Center, moveSpeed, accel);
             }
             //Lighting
@@ -152,12 +153,67 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Vector2 bounceVelocity = -Projectile.velocity * 1.7f;
                     Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
                     Projectile.penetrate -= 1;
-                   
+
+                    var EntitySource = Projectile.GetSource_Death();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                       
+
+
+                        Projectile.NewProjectile(EntitySource, Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<GothCircleExplosionProj>(),
+                            Projectile.damage, 1, Main.myPlayer, 0, 0);
+                    }
+
+                    for (int isd = 0; i < 32; isd++)
+                    {
+                        Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
+                    }
+
+                    for (int isd = 0; i < 32; isd++)
+                    {
+                        Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                    }
+
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+
+
                 }
             }
         }
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                //Get a random velocity
+                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+
+                //Get a random
+                float randScale = Main.rand.NextFloat(0.5f, 1.5f);
+                ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity, Color.White, randScale);
+            }
+            var EntitySource = Projectile.GetSource_Death();
+            if (StellaMultiplayer.IsHost)
+            {
+                float knockback = 1;
 
 
+                Projectile.NewProjectile(EntitySource, Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<GothCircleExplosionProj>(),
+                    Projectile.damage, 1, Main.myPlayer, 0, 0);
+            }
+
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
+        }
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(200, 200, 200, 0) * (1f - Projectile.alpha / 50f);

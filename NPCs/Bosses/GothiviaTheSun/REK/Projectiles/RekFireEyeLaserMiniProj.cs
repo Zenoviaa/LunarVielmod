@@ -54,7 +54,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.White);
+            BeamDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
             BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
             Main.spriteBatch.ExitShaderRegion();

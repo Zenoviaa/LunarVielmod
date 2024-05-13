@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -654,7 +655,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
               
             }
 
-            if(Timer % (int)(720 / (float)Segments.Length) == 0)
+            if(Timer % (int)((720 * 2) / (float)Segments.Length) == 0)
             {
                 Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
                 Vector2 laserVelocity = laserDirection * 40;
@@ -662,6 +663,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 {
                     float knockback = 1;
                     Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity, ModContent.ProjectileType<RekFireEyeLaserMiniProj>(),
+                        DamagePopoutEyeMiniLaser, knockback);
+
+                    Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity * 0, ModContent.ProjectileType<CircleExplosionProj>(),
                         DamagePopoutEyeMiniLaser, knockback);
                 }
 
@@ -711,7 +715,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 {
                     float knockback = 1;
                     Projectile.NewProjectile(EntitySource, segment.Center, velocity,
-                        ModContent.ProjectileType<RekFireBallProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);           
+                        ModContent.ProjectileType<RekFireBallProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
+
+                    Projectile.NewProjectile(EntitySource, segment.Center, velocity * 0,
+                        ModContent.ProjectileType<SmallCircleExplosionProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
                 }
 
                 for (int i = 0; i < 8; i++)

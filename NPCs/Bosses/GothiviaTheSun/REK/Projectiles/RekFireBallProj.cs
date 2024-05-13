@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 8;
+            ProjectileID.Sets.TrailCacheLength[Type] = 5;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
@@ -68,14 +68,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio);
+            return Color.Lerp(Color.Orange, Color.DarkCyan, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);   
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Orange);
+            BeamDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
             BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
 
