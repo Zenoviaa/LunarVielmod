@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.height = 175;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
-            Projectile.penetrate = 8;
+            Projectile.penetrate = 6;
             Projectile.hostile = true;
             Projectile.timeLeft = 1080;
             Projectile.localNPCHitCooldown = 6;
@@ -151,22 +151,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Vector2 bounceVelocity = -Projectile.velocity * 1.7f;
                     Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
                     Projectile.penetrate -= 1;
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
 
-
-
-
-
-                    for (int inn = 0; i < 38; inn++)
+                    for (int inn = 0; inn < 38; inn++)
                     {
                         Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
                     }
 
-                    for (int inn = 0; i < 28; inn++)
+                    for (int inn = 0; inn < 28; inn++)
                     {
                         Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                     }
 
-                    for (int inn = 0; i < 16; inn++)
+                    for (int inn = 0; inn < 16; inn++)
                     {
                         //Get a random velocity
                         Vector2 velocity2 = Main.rand.NextVector2Circular(4, 4);
@@ -185,38 +182,41 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                     }
 
+
+
+
                 }
             }
         }
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 14; i++)
+            for (int inn = 0; inn < 38; inn++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int inn = 0; inn < 28; inn++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int inn = 0; inn < 16; inn++)
             {
                 //Get a random velocity
-                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+                Vector2 velocity2 = Main.rand.NextVector2Circular(4, 4);
 
                 //Get a random
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
-                ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity, Color.White, randScale);
+                ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity2, Color.White, randScale);
             }
             var entitySource = Projectile.GetSource_FromThis();
             if (StellaMultiplayer.IsHost)
             {
-               
+
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<GothCircleExplosionProj>(), 40, 1, Main.myPlayer, 0, 0);
-               
-                 
+
+
             }
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
