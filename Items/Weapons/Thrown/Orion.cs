@@ -23,7 +23,7 @@ namespace Stellamod.Items.Weapons.Thrown
         {
             Item.width = 44;
             Item.height = 58;
-            Item.damage = 800;
+            Item.damage = 450;
             Item.DamageType = DamageClass.Throwing;
             Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
 

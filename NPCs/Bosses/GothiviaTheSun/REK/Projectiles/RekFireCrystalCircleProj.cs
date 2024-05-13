@@ -8,16 +8,17 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Visual
+
+namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    internal class CircleExplosionProj : ModProjectile,
+    internal class RekFireCrystalCircleProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture
         public override string Texture => TextureRegistry.EmptyTexture;
 
         //AI
-        private float LifeTime => 32f;
+        private float LifeTime => 540f;
         private ref float Timer => ref Projectile.ai[0];
         private float Progress
         {
@@ -34,22 +35,22 @@ namespace Stellamod.Projectiles.Visual
         private bool SpawnDustCircle;
 
         //Trailing
-        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.FadedStreak;
+        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WhispyTrail;
         private MiscShaderData FrontTrailShader => TrailRegistry.LaserShader;
 
         private Asset<Texture2D> BackTrailTexture => TrailRegistry.SimpleTrail;
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
-        private float StartRadius => 4;
-        private float EndRadius => 128;
+        private float StartRadius => 384;
+        private float EndRadius => 4;
         private float Width => 32;
 
         //Colors
-        private Color FrontCircleStartDrawColor => Color.White;
-        private Color FrontCircleEndDrawColor => Color.White;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.LightGoldenrodYellow, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.LightGoldenrodYellow, Color.DarkGoldenrod, 0.7f);
+        private Color FrontCircleStartDrawColor => Color.OrangeRed;
+        private Color FrontCircleEndDrawColor => Color.OrangeRed;
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Orange, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Orange;
         private Vector2[] CirclePos;
 
         public override void SetDefaults()
@@ -69,31 +70,13 @@ namespace Stellamod.Projectiles.Visual
         {
             Timer++;
             AI_ExpandCircle();
-            AI_DustCircle();
         }
 
         private void AI_ExpandCircle()
         {
             float easedProgess = Easing.InOutCirc(Progress);
-            float radius = MathHelper.Lerp(StartRadius, EndRadius, easedProgess);
+            float radius = MathHelper.Lerp(StartRadius, EndRadius, Progress);
             DrawCircle(radius);
-        }
-
-        private void AI_DustCircle()
-        {
-            if (!SpawnDustCircle && Timer >= 15)
-            {
-                for (int i = 0; i < 48; i++)
-                {
-                    Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
-                    Vector2 pos = Projectile.Center + rand;
-                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
-                        newColor: BackCircleStartDrawColor, 
-                        Scale: Main.rand.NextFloat(0.3f, 0.6f));
-                    d.noGravity = true;
-                }
-                SpawnDustCircle = true;
-            }
         }
 
         public override bool ShouldUpdatePosition()
@@ -149,6 +132,7 @@ namespace Stellamod.Projectiles.Visual
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
             float easedProgess = Easing.OutCubic(Progress);
 
+            /*
             //Back Trail   
             DrawMode = 1;
             BeamDrawer.SpecialShader = BackTrailShader;
@@ -156,7 +140,7 @@ namespace Stellamod.Projectiles.Visual
                 Color.Lerp(BackCircleStartDrawColor, BackCircleEndDrawColor, easedProgess));
             BeamDrawer.SpecialShader.SetShaderTexture(BackTrailTexture);
             BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-
+            */
             //Front Trail
             DrawMode = 0;
             BeamDrawer.SpecialShader = FrontTrailShader;

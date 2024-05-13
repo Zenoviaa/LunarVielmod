@@ -3,6 +3,7 @@ using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -163,6 +164,7 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
 
         public override bool PreDraw(ref Color lightColor)
         {
+
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
