@@ -10,11 +10,14 @@ using Stellamod.Items.Weapons.Igniters;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
+using Stellamod.NPCs.Bosses.Fenix.Projectiles;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -236,13 +239,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (ThreeQ && !FourQ && !NoWings)
             {
                 Vector2 drawPosition = NPC.Center - screenPos;
-                Vector2 origin = new Vector2(144, 82);
+                Vector2 origin = new Vector2(166, 96);
                 Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/Gwings3Q").Value;
                 int wingFrameSpeed = 1;
                 int wingFrameCount = 60;
                 spriteBatch.Draw(syliaWingsTexture, drawPosition,
                     syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
-                    drawColor, 0f, origin, 1f, effects, 0f);
+                    drawColor, 0f, origin, 2f, effects, 0f);
 
             }
 
@@ -250,13 +253,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (FourQ && !ThreeQ && !NoWings)
             {
                 Vector2 drawPosition = NPC.Center - screenPos;
-                Vector2 origin = new Vector2(144, 82);
+                Vector2 origin = new Vector2(166, 96);
                 Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/Gwings4Q").Value;
                 int wingFrameSpeed = 1;
                 int wingFrameCount = 60;
                 spriteBatch.Draw(syliaWingsTexture, drawPosition,
                     syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
-                    drawColor, 0f, origin, 1f, effects, 0f);
+                    drawColor, 0f, origin, 2f, effects, 0f);
 
             }
 
@@ -543,12 +546,28 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.damage = 0;
                     counter++;
                     FourQ = true;
+                    ThreeQ = false;
                     ReallyIdleGoth();
                     NPC.aiStyle = -1;
                     break;
 
+                case ActionState.StartGoth:
+                    NPC.damage = 0;
+                    counter++;
+                    FourQ = true;
+                    ThreeQ = false;
+                    IdleGoth();
+                    NPC.aiStyle = -1;
+                    break;
 
-
+                case ActionState.Dichotamy:
+                    NPC.damage = 0;
+                    counter++;
+                    ThreeQ = true;
+                    FourQ = false;
+                    Dichotamy();
+                    NPC.aiStyle = -1;
+                    break;
 
                 //----------- Irradia stuff under
 
@@ -706,11 +725,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                         break;
 
                     case 1:
-                        State = ActionState.BoostBounce1;
+                        State = ActionState.Dichotamy;
                         break;
 
                     case 2:
-                        State = ActionState.Archery;
+                        State = ActionState.Dichotamy;
 
                         break;
 
@@ -726,31 +745,64 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         {
             NPC.spriteDirection = NPC.direction;
             timer++;
-
+            Player player = Main.player[NPC.target];
+            float ai1 = NPC.whoAmI;
             if (timer == 1)
             {
                 if (StellaMultiplayer.IsHost)
                 {
-
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+  
                 }
             }
 
             if (timer == 80)
             {
+                ShakeModSystem.Shake = 5;
+
                 if (StellaMultiplayer.IsHost)
                 {
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+
+                    float numberProjectiles = 3;
+                    float rotation = MathHelper.ToRadians(20);
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 5, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
+
+
+
+                    }
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 5, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorSuns>(), 600, 1, Main.myPlayer, 0, 0);
+
+
+
+                    }
+
 
                 }
+              
+                        //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+                    
+
+                
+               
             }
 
 
-            if (timer == 60)
+            if (timer == 150)
             {
                 ResetTimers();
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        State = ActionState.Dichotamy;
+                        State = ActionState.Archery;
                         break;
 
                     case 1:

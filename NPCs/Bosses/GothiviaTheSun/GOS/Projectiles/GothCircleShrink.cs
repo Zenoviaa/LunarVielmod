@@ -37,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WaterTrail;
         private MiscShaderData FrontTrailShader => TrailRegistry.LaserShader;
 
-        private Asset<Texture2D> BackTrailTexture => TrailRegistry.WhispyTrail;
+        private Asset<Texture2D> BackTrailTexture => TrailRegistry.SimpleTrail;
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
@@ -48,8 +48,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
         private Color FrontCircleEndDrawColor => Color.Black;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.LightGoldenrodYellow, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.Black, Color.DarkGoldenrod, 0.7f);
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.White, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Lerp(Color.Black, Color.Black, 0.7f);
         private Vector2[] CirclePos;
 
         public override void SetDefaults()
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.tileCollide = false;
 
             //Points on the circle
-            CirclePos = new Vector2[5];
+            CirclePos = new Vector2[8];
         }
 
         public override void AI()
