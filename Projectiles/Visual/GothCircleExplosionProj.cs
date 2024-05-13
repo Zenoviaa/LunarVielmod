@@ -48,8 +48,8 @@ namespace Stellamod.Projectiles.Visual
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
         private Color FrontCircleEndDrawColor => Color.Turquoise;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.SpringGreen, Color.LightGoldenrodYellow, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.LightGoldenrodYellow, Color.DarkGoldenrod, 0.7f);
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Turquoise, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Lerp(Color.SpringGreen, Color.Turquoise, 0.7f);
         private Vector2[] CirclePos;
 
         public override void SetDefaults()

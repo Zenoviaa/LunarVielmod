@@ -19,6 +19,7 @@ using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
+using Stellamod.NPCs.Bosses.Caeva;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
@@ -154,16 +155,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
                     Projectile.penetrate -= 1;
 
-                    var EntitySource = Projectile.GetSource_Death();
-                    if (StellaMultiplayer.IsHost)
-                    {
-                       
-
-
-                        Projectile.NewProjectile(EntitySource, Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<GothCircleExplosionProj>(),
-                            Projectile.damage, 1, Main.myPlayer, 0, 0);
-                    }
-
+                  
                     for (int isd = 0; i < 32; isd++)
                     {
                         Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
@@ -201,14 +193,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 float randScale = Main.rand.NextFloat(0.5f, 1.5f);
                 ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity, Color.White, randScale);
             }
-            var EntitySource = Projectile.GetSource_Death();
+            var entitySource = Projectile.GetSource_FromThis();
             if (StellaMultiplayer.IsHost)
             {
-                float knockback = 1;
+               
 
-
-                Projectile.NewProjectile(EntitySource, Projectile.Center, Projectile.velocity * 0, ModContent.ProjectileType<GothCircleExplosionProj>(),
-                    Projectile.damage, 1, Main.myPlayer, 0, 0);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<GothCircleExplosionProj>(), 40, 1, Main.myPlayer, 0, 0);
+               
+                 
             }
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);

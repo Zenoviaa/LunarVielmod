@@ -90,7 +90,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
             TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WhispyTrail);
+            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WaterTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();
