@@ -423,22 +423,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     break;
 
                 case ActionState.Invisible:
-                    rect = new(0, 55 * 96, 166, 1 * 96);
+                    rect = new(0, 54 * 96, 166, 1 * 96);
                     spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
                     break;
 
                 case ActionState.BonfireLeft:
-                    rect = new(0, 55 * 96, 166, 1 * 96);
+                    rect = new(0, 54 * 96, 166, 1 * 96);
                     spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
                     break;
 
                 case ActionState.BonfireRight:
-                    rect = new(0, 55 * 96, 166, 1 * 96);
+                    rect = new(0, 54 * 96, 166, 1 * 96);
                     spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
                     break;
 
                 case ActionState.TheZoomer:
-                    rect = new(0, 56 * 96, 166, 1 * 96);
+                    rect = new(0, 55 * 96, 166, 1 * 96);
                     spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 400, 1, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
                     break;
 
