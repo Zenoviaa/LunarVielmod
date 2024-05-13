@@ -223,6 +223,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             GothiviaOrbitRadius = 384;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return State == ActionState.Dash;
+        }
+
         public override void AI()
         {
             FinishResetTimers();
@@ -531,7 +536,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 MakeLikeWorm();
             }
 
-
             if (Timer == 90)
             {
                 //Turn on the trail and roar!!!
@@ -561,6 +565,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
    
             if(Timer > 120 && Timer < 240)
             {
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                NPC.velocity += directionToTarget;
                 for (int i = 0; i < Segments.Length; i++)
                 {
                     var segment = Segments[i];
