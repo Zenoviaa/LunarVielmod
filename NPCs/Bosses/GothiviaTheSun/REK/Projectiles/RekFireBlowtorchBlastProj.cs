@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
@@ -17,24 +18,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
-        private float BlowtorchDistance => 512;
+        private float LifeTime => 60f;
+        private float BlowtorchDistance => 1024;
 
         //Draw Code
         private Vector2[] LinePos;
         public override void SetDefaults()
         {
-            Projectile.width = 72;
+            Projectile.width = 512;
             Projectile.height = 16;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = (int)LifeTime;
             Projectile.hide = true;
             LinePos = new Vector2[5];
         }
         public override void AI()
         {
             Timer++;
-            if(Timer == 1)
+            if(Timer == LifeTime / 2)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
@@ -44,6 +46,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.FlashTintScreen(Color.Orange, 0.05f, 30f);
+                screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 30);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16f);
             }
 
@@ -54,14 +57,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Projectile.scale = 1f;
             }
 
-            float progress = Timer / 60f;
-            float easedProgress = Easing.OutExpo(progress);
-            List<Vector2> points = new();
-            for (int i = 0; i <= 8; i++)
+            if(Timer > LifeTime / 2)
             {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * BlowtorchDistance * easedProgress, i / 8f));
+                float progress = (Timer - LifeTime / 2) / LifeTime;
+                float easedProgress = Easing.OutExpo(progress);
+                List<Vector2> points = new();
+                for (int i = 0; i <= 8; i++)
+                {
+                    points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * easedProgress
+                        * BlowtorchDistance, i / 8f));
+                }
+                LinePos = points.ToArray();
             }
-            LinePos = points.ToArray();
+
         }
 
         public override bool ShouldUpdatePosition()
@@ -78,9 +86,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public float WidthFunction(float completionRatio)
         {
             float mult = 1;
-            if (Projectile.timeLeft < 60)
+            if (Projectile.timeLeft < LifeTime / 3f)
             {
-                mult = Projectile.timeLeft / (float)60;
+                mult = Projectile.timeLeft / (float)LifeTime / 3f;
             }
             return Projectile.width * Projectile.scale * 1.3f * mult * MathF.Sin((1f - completionRatio) * 0.5f);
         }
@@ -110,6 +118,27 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if(Timer < LifeTime / 2f)
+            {
+                float progress = Timer / (LifeTime / 2f);
+                Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/Extra_47").Value;
+                Color lineDrawColor = new Color(
+                    Color.White.R,
+                    Color.White.G,
+                    Color.White.B, 0) * (1f - Projectile.alpha / 50f);
+                lineDrawColor *= progress;
+
+                Vector2 lineDrawOrigin = lineTexture.Size();
+                float lineDrawScale = 1f;
+                float lineDrawRotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Main.spriteBatch.Draw(lineTexture, Projectile.Center - Main.screenPosition, null,
+                    lineDrawColor,
+                    lineDrawRotation,
+                    lineDrawOrigin,
+                    lineDrawScale, SpriteEffects.None, 0);
+
+            }
+
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
             BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));

@@ -53,9 +53,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void AI()
         {
-            float progress = MathHelper.Clamp(Timer / 60, 0, 1);
-            float easedProgress = Easing.OutCubic(progress);
-            NPC.scale = MathHelper.Lerp(0f, 1f, easedProgress);
+            NPC.scale = MathHelper.Lerp(NPC.scale, 1f, 0.1f);
             NPC.TargetClosest();
             if (!Owner.active)
             {
@@ -168,7 +166,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 Color lineDrawColor = (Color)GetLineAlpha(drawColor);
                 lineDrawColor *= progress;
 
-                Vector2 lineDrawOrigin = lineTexture.Size() / 2;
+                Vector2 lineDrawOrigin = lineTexture.Size();
                 float lineDrawScale = NPC.scale;
                 float lineDrawRotation = LaserDirection.ToRotation() + MathHelper.PiOver2;
                 spriteBatch.Draw(lineTexture, NPC.Center - Main.screenPosition, null,

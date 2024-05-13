@@ -706,6 +706,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             offset *= (float)(Math.Cos(Timer * 3 * (Math.PI / 180)) * (distance / 3));
 
             NPC.velocity = initialSpeed + offset;
+            if (InPhase2)
+            {
+                NPC.velocity *= 1.25f;
+            }
+
             NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
             if(Timer >= 720)
@@ -1050,7 +1055,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public float WidthFunctionCharge(float completionRatio)
         {
-            return NPC.width * NPC.scale * (1f - completionRatio) * 2f;
+            return NPC.width * NPC.scale * (1f - completionRatio) * 1.2f;
         }
 
         public Color ColorFunctionCharge(float completionRatio)
@@ -1068,7 +1073,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     ChargeTrailOpacity = 1;
             }
 
-            return Color.Orange * ChargeTrailOpacity * (1f - completionRatio);
+            return Color.Lerp(Color.Orange, Color.RoyalBlue, (1f - completionRatio)) * ChargeTrailOpacity;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1080,6 +1085,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 size = new Vector2(90, 90);
+            TrailDrawer.Shader = TrailRegistry.FireVertexShader;
             TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
