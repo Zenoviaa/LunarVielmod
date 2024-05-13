@@ -114,7 +114,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
 		public float distortStrength = 300f;
-		int gr = 158;
+		int gr = 118;
 		public bool HHH = false;
 		public override void AI()
 		{
@@ -146,14 +146,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 }
 				invisibilityTimer = 0;
 			}
-			NPC.rotation -= 0.1f;
+			NPC.rotation -= 0.2f;
 			UpdateFrame(0.4f, 1, 288);
 			bee2--;
 			gr++;
 
 
 
-			if (gr == 160 && !HHH)
+			if (gr == 120 && !HHH)
 			{
 
                 if (StellaMultiplayer.IsHost)

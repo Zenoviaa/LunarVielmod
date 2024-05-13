@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             }
 
             float distance = 300;
-            Projectile.rotation -= 0.02f;
+            Projectile.rotation -= 0.03f;
             Projectile.Center = Owner.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * distance;
             Projectile.velocity = Projectile.rotation.ToRotationVector2();
             // Fade in.
