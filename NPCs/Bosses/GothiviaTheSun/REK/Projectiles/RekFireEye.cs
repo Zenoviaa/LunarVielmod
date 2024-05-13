@@ -44,12 +44,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.scale = 0f;
         }
 
+        public override bool CheckActive()
+        {
+            if (Owner.active)
+                return false;
+            return true;
+        }
+
         public override void AI()
         {
             float progress = MathHelper.Clamp(Timer / 60, 0, 1);
             float easedProgress = Easing.OutCubic(progress);
             NPC.scale = MathHelper.Lerp(0f, 1f, easedProgress);
             NPC.TargetClosest();
+            if (!Owner.active)
+            {
+                NPC.Kill();
+            }
+
             AI_Orbit();
             AI_Attack();
         }

@@ -64,7 +64,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             EyePopout,
             Beamer,
             Ouroboros,
-            Crystal
+            Crystal,
+            Death
         }
 
    
@@ -266,6 +267,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     break;
                 case ActionState.Crystal:
                     AI_Crystal();
+                    break;
+                case ActionState.Death:
+                    AI_Death();
                     break;
             }
         }
@@ -864,6 +868,56 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             }
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+                if(State != ActionState.Death)
+                {
+                    ResetState(ActionState.Death);
+                }
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            if(Timer % 2 == 0)
+            {
+                int randSegment = Main.rand.Next(0, Segments.Length);
+                Color color;
+                switch (Main.rand.Next(2))
+                {
+                    default:
+                    case 0:
+                        color = Color.White;
+                        break;
+                    case 1:
+                        color = Color.Orange;
+                        break;
+                }
+                StartSegmentGlow(randSegment, color);
+            }
+
+            SegmentStretch = MathHelper.Lerp(0.66f, 0.1f, Timer / 300f);
+            GlowWhite(0.5f);
+            NPC.velocity *= 0.98f;
+            NPC.rotation = NPC.velocity.ToRotation();
+            MakeLikeWorm();
+            if(Timer >= 300)
+            {
+                //DIE NOWWWW!!!
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
+
+                ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
+
+                NPC.Kill();
+            }
+        }
 
         public override void OnKill()
         {
