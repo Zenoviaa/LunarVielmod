@@ -39,6 +39,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         }
     }
 
+    [AutoloadBossHead]
     internal class RekSnake : ModNPC
     {
         //Draw Code
@@ -108,7 +109,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             NPC.aiStyle = -1;
             NPC.knockBackResist = 0f;
             NPC.boss = true;
-
+            NPC.BossBar = ModContent.GetInstance<RekBossBar>();
 
             // The following code assigns a music track to the boss in a simple way.
             if (!Main.dedServ)
@@ -835,6 +836,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 StopSegmentGlow();
                 ResetState(ActionState.Idle);
             }
+        }
+
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedRekBoss, -1);
         }
 
         #region Draw Code
