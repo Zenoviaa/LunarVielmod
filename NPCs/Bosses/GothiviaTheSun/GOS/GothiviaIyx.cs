@@ -13,6 +13,7 @@ using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.Fenix.Projectiles;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
@@ -153,7 +154,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.scale = 1f;
-            NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
+            NPC.BossBar = ModContent.GetInstance<RekBossBar>();
 
             // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
