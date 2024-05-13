@@ -42,7 +42,7 @@ namespace Stellamod.Projectiles.Visual
 
         //Radius
         private float StartRadius => 4;
-        private float EndRadius => 256;
+        private float EndRadius => 312;
         private float Width => 48;
 
         //Colors

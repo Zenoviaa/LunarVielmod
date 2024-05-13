@@ -27,6 +27,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
     {
 
         private ref float ai_Counter => ref Projectile.ai[0];
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 12;
@@ -47,11 +48,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.usesLocalNPCImmunity = true;
         }
 
-        public float Timer
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
+     
 
         float trueFrame = 0;
         public void UpdateFrame(float speed, int minFrame, int maxFrame)
@@ -71,7 +68,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         {
 
             Projectile.rotation = Projectile.velocity.ToRotation();
-
+            Timer++;
             ai_Counter++;
 
             float maxDetectDistance = 2000;
@@ -140,7 +137,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                    ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
+                    ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity, Color.White, scale);
 
                     SoundStyle soundStyle = SoundID.NPCHit11;
                     soundStyle.Pitch = 0.5f;
@@ -155,19 +152,38 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
                     Projectile.penetrate -= 1;
 
-                  
-                    for (int isd = 0; i < 32; isd++)
+
+
+
+
+                    for (int inn = 0; i < 38; inn++)
                     {
                         Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Turquoise, 1f).noGravity = true;
                     }
 
-                    for (int isd = 0; i < 32; isd++)
+                    for (int inn = 0; i < 28; inn++)
                     {
                         Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                     }
 
-                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
+                    for (int inn = 0; i < 16; inn++)
+                    {
+                        //Get a random velocity
+                        Vector2 velocity2 = Main.rand.NextVector2Circular(4, 4);
 
+                        //Get a random
+                        float randScale = Main.rand.NextFloat(0.5f, 1.5f);
+                        ParticleManager.NewParticle<BoreParticle>(Projectile.Center, velocity2, Color.White, randScale);
+                    }
+                    var entitySource = Projectile.GetSource_FromThis();
+                    if (StellaMultiplayer.IsHost)
+                    {
+
+
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<GothCircleExplosionProj>(), 40, 1, Main.myPlayer, 0, 0);
+
+
+                    }
 
                 }
             }
