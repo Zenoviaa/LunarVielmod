@@ -43,7 +43,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         //Radius
         private float StartRadius => 418;
         private float EndRadius => 4;
-        private float Width => 52;
+        private float Width => 80;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
@@ -62,7 +62,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.tileCollide = false;
 
             //Points on the circle
-            CirclePos = new Vector2[8];
+            CirclePos = new Vector2[64];
         }
 
         public override void AI()
