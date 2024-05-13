@@ -6,6 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -32,7 +33,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         //Draw Code
         private PrimitiveTrail BeamDrawer;
         private int DrawMode;
-        private bool SpawnDustCircle;
 
         //Trailing
         private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WhispyTrail;
@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         //Radius
         private float StartRadius => 4;
         private float EndRadius => 768;
-        private float Width => 32;
+        private float Width => 96;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.OrangeRed;
@@ -69,6 +69,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void AI()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                //Shockwave Push
+                float shockwavePushDistance = 1024;
+                for(int i = 0; i < Main.maxPlayers; i++)
+                {
+                    Player player = Main.player[i];
+                    if (!player.active)
+                        continue;
+                    if(Vector2.Distance(player.Center, Projectile.Center) <= shockwavePushDistance)
+                    {
+                        Vector2 directionToPlayer = Projectile.Center.DirectionTo(player.Center);
+                        Vector2 pushVelocity = directionToPlayer * 16f;
+                        player.velocity += pushVelocity;
+                    }
+                }
+            }
+
             AI_ExpandCircle();
         }
 
@@ -82,6 +100,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override bool ShouldUpdatePosition()
         {
             return false;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire3, 60);
         }
 
         private void DrawCircle(float radius)
