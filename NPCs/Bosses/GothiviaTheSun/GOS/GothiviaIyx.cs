@@ -1033,7 +1033,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
             if (timer == 90)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
             }
 
             if (timer > 90 && timer < 470)
@@ -1333,7 +1333,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 51)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
+
                 switch (Main.rand.Next(2))
                 {
                     case 0:
@@ -1401,7 +1403,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
                 switch (Main.rand.Next(2))
                 {
                     case 0:
@@ -1469,7 +1472,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
                 switch (Main.rand.Next(2))
                 {
                     case 0:
@@ -2006,7 +2010,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GreenSunsBoomProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLong") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLonger") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
 
                 if (StellaMultiplayer.IsHost)
@@ -2081,7 +2085,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<SunsBoomProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLong") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSunLonger") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 }
                 if (StellaMultiplayer.IsHost)
                 {
