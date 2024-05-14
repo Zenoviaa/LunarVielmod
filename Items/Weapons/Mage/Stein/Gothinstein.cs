@@ -97,20 +97,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
 		}
 
 
-		public override void AddRecipes()
-		{
-			Recipe recipe = CreateRecipe();
-			recipe.AddTile(TileID.LunarCraftingStation);
-
-			recipe.AddIngredient(ModContent.ItemType<ManifestedLove>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Hultinstein>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Friedstein>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Iknoctstein>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Mardenstein>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<Voltenstein>(), 1);
-
-			recipe.Register();
-		}
+		
 
 
 	}

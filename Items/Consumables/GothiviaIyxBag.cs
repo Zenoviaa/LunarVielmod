@@ -5,10 +5,12 @@ using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Terraria;
 using Terraria.GameContent;
@@ -19,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Consumables
 {
-    public class GothiviaBag : ModItem
+    public class GothiviaIyxBag : ModItem
 	{
 
 		public override void SetStaticDefaults()
@@ -50,13 +52,14 @@ namespace Stellamod.Items.Consumables
         {
 			itemLoot.Add(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<GothiviasCard>(),
+                ModContent.ItemType<Gothinstein>(),
+				ModContent.ItemType<WeddingDay>(),
 				ModContent.ItemType<BurnBlast>()));
-			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
+			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1900));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-			itemLoot.Add(ItemDropRule.Common(ItemID.TitaniumBar, minimumDropped: 4, maximumDropped: 25));
-			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Irradia>()));
-            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<IrradiaBossRel>()));
+			itemLoot.Add(ItemDropRule.Common(ItemID.LunarBar, minimumDropped: 4, maximumDropped: 25));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<GothiviaIyx>()));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GothiviaBossRel>()));
         }
 
 		// Below is code for the visuals

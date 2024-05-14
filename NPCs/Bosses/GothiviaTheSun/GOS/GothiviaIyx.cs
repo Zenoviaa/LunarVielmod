@@ -7,6 +7,7 @@ using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -3181,7 +3182,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaIyxBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
@@ -3189,7 +3190,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<GothiviasCard>(),
+                ModContent.ItemType<Gothinstein>(),
                 ModContent.ItemType<BurnBlast>(),
                 ModContent.ItemType<WeddingDay>()));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
