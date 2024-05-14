@@ -688,7 +688,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     break;
 
                 case ActionState.TheZoomer:
-                    NPC.damage = 600;
+                    NPC.damage = 1600;
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
@@ -965,7 +965,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer < 50 && NPC.HasValidTarget)
             {
                 Vector2 targetCenter = target.Center;
-                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -332);
+                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -300);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                 NPC.netUpdate = true;
 
@@ -1002,13 +1002,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-            if (timer > 50 && timer < 55)
+            if (timer > 50 && timer < 56)
             {
 
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    int distance = Main.rand.Next(2, 2);
+                    int distance = Main.rand.Next(4, 4);
                     NPC.ai[3] = Main.rand.Next(1);
                     NPC.netUpdate = true;
 
@@ -1075,7 +1075,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    int distance = Main.rand.Next(2, 2);
+                    int distance = Main.rand.Next(4, 4);
                     NPC.ai[3] = Main.rand.Next(1);
                     NPC.netUpdate = true;
 
@@ -1138,13 +1138,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-            if (timer < 5)
+            if (timer < 10)
             {
 
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    int distance = Main.rand.Next(2, 2);
+                    int distance = Main.rand.Next(4, 4);
                     NPC.ai[3] = Main.rand.Next(1);
                     NPC.netUpdate = true;
 
