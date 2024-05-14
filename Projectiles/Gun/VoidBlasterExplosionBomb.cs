@@ -74,12 +74,12 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool PreDraw(ref Color lightColor)
         {
-            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireVertexShader);
+            FireDrawer ??= new PrimitiveTrailCopy(SunWidthFunction, SunColorFunction, null, true, TrailRegistry.FireWhiteVertexShader);
 
 
-            TrailRegistry.FireVertexShader.UseColor(Color.DodgerBlue);
-            TrailRegistry.FireVertexShader.UseSaturation(0.45f);
-            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.CrystalNoise);
+            TrailRegistry.FireWhiteVertexShader.UseColor(Color.DodgerBlue);
+            TrailRegistry.FireWhiteVertexShader.UseSaturation(0.45f);
+            TrailRegistry.FireWhiteVertexShader.SetShaderTexture(TrailRegistry.CrystalNoise);
 
             List<float> rotationPoints = new();
             List<Vector2> drawPoints = new();

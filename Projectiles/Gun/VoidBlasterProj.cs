@@ -101,15 +101,19 @@ namespace Stellamod.Projectiles.Gun
             }
             else if(target != Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC)
             {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHitsTime = 0;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits = 0;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = target;
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
+                if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits < 6)
+                {
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHitsTime = 0;
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits = 0;
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = target;
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
+                }
+
             }
             else
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits++;
-                if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits >= 6)
+                if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits >= 7)
                 {
                     var EntitySource = Projectile.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, 1, Projectile.owner, 0, 0);

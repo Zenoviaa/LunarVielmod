@@ -68,7 +68,7 @@ namespace Stellamod.Items.Weapons.Ranged
             float rot = velocity.ToRotation();
             float spread = 0.4f;
 
-            Vector2 offset = new Vector2(2.2f, -0.2f * player.direction).RotatedBy(rot);
+            Vector2 offset = new Vector2(1.3f, 0f * player.direction).RotatedBy(rot);
             for (int k = 0; k < 7; k++)
             {
                 Vector2 direction = offset.RotatedByRandom(spread);

@@ -52,7 +52,7 @@ namespace Stellamod.Projectiles.Gun
                 }
                 for (int i = 0; i < 30; i++)
                 {
-                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, Main.rand.Next(1, 2)).noGravity = true;
+                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DodgerBlue, 1.5f).noGravity = true;
                 }
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits = 0;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = null;
