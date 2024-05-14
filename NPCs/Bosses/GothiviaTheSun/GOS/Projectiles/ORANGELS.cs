@@ -11,12 +11,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
+namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
     public class ORANGELS : ModProjectile, IPixelPrimitiveDrawer
     {
 
-        public override string Texture => TextureRegistry.EmptyTexture;
+        
         internal PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
@@ -91,14 +91,14 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.FireVertexShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.GenericLaserVertexShader);
 
             Color middleColor = Color.Lerp(Color.White, Color.OrangeRed, 0.6f);
             Color middleColor2 = Color.Lerp(Color.White, Color.DarkGoldenrod, 0.5f);
             Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 120);
 
-            TrailRegistry.FireVertexShader.UseColor(Color.Orange);
-            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.WaterTrail);
+            TrailRegistry.GenericLaserVertexShader.UseColor(Color.Orange);
+            TrailRegistry.GenericLaserVertexShader.SetShaderTexture(TrailRegistry.WaterTrail);
 
             List<float> originalRotations = new();
             List<Vector2> points = new();

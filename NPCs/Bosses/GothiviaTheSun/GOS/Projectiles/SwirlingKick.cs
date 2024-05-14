@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
+namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 {
     public class SwirlingKick : ModProjectile
     {

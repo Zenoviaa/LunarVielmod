@@ -5,6 +5,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Projectiles.Summons;
 using Stellamod.Projectiles.Visual;
+using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -38,8 +39,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public ActionState State = ActionState.Wait;
         public override void SetDefaults()
         {
-            NPC.width = 300;
-            NPC.height = 300;
+            NPC.width = 750;
+            NPC.height = 450;
             NPC.damage = 910;
             NPC.defense = 30;
             NPC.lifeMax = 500000;
@@ -123,12 +124,23 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             float ai1 = NPC.whoAmI;
-
+            Vector2 LightPos;
 
             Shooting++;
             if (Shooting == 1)
             {
-                int type = ModContent.ProjectileType<SunsSuckingProj>();
+                LightPos.X = NPC.Center.X;
+                LightPos.Y = NPC.Center.Y;
+                var EntitySource = NPC.GetSource_FromThis();
+                if (StellaMultiplayer.IsHost)
+                {
+                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 1800, 0, 10,
+                        ModContent.ProjectileType<ORANGELS>(), 1500, 0f, owner: Main.myPlayer);
+
+                }
+
+
+                int type = ModContent.ProjectileType<GreenSunsSuckingProj>();
                 int damage = 10;
                 int knockback = 1;
                 Vector2 pos = NPC.Center;
@@ -137,11 +149,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
 
-
-                float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<ORANGELS>(), 1400, 0f, Main.myPlayer, 0f, ai1);
-
+          
 
 
 
@@ -177,7 +185,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 gr = 0;
             }
 
-            if (bee2 <= 250)
+            if (bee2 <= 90)
             {
                 HHH = true;
             }

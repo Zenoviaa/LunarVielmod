@@ -621,6 +621,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     ThreeQ = false;
                     NoWings = false;
                     ReallyIdleGoth();
+                    NPC.noGravity = true;
                     NPC.aiStyle = -1;
                     break;
 
@@ -631,6 +632,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     DrawChargeTrail = false;
                     ThreeQ = false;
                     IdleGoth();
+                    NPC.noGravity = true;
                     NoWings = false;
                     NPC.velocity.Y *= 0.96f;
                     NPC.aiStyle = -1;
@@ -641,6 +643,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
+                    NPC.noGravity = true;
                     NoWings = false;
                     NPC.velocity.Y *= 0.96f;
                     Dichotamy();
@@ -652,6 +655,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
+                    NPC.noGravity = true;
                     NoWings = false;
                     NPC.velocity.Y *= 0.96f;
                     Archery();
@@ -665,6 +669,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     FourQ = true;
                     DrawChargeTrail = false;
                     NoWings = false;
+                    NPC.noGravity = true;
                     NPC.velocity *= 0.96f;
                     BoostBoom1();
                     NPC.aiStyle = -1;
@@ -702,6 +707,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     FourQ = false;
                     DrawChargeTrail = true;
                     NPC.velocity *= 0.9f;
+                    NPC.noGravity = true;
                     TheY();
                     NPC.aiStyle = -1;
                     break;
@@ -713,6 +719,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     FourQ = false;
                     DrawChargeTrail = true;
                     NoWings = false;
+                    NPC.noGravity = true;
                     NPC.velocity *= 0.96f;
                     Wangler();
                     NPC.aiStyle = -1;
@@ -771,25 +778,27 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 case ActionState.BonfireLeft:
-                    NPC.damage = 1600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = false;
                     DrawChargeTrail = true;
                     NoWings = true;
-                    NPC.velocity *= 0.9f;
+                    NPC.noGravity = false;
+               
                     BonfireGreen();
                     NPC.aiStyle = -1;
                     break;
 
                 case ActionState.BonfireRight:
-                    NPC.damage = 1600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = false;
                     DrawChargeTrail = true;
                     NoWings = true;
-                    NPC.velocity *= 0.9f;
+                   
+                    NPC.noGravity = false;
                     BonfireOrange();
                     NPC.aiStyle = -1;
                     break;
@@ -925,15 +934,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         {
             NPC.spriteDirection = NPC.direction;
             timer++;
-
-            if (timer == 1)
+            Player target = Main.player[NPC.target];
+            if (timer == 1 && NPC.HasValidTarget)
             {
-                if (StellaMultiplayer.IsHost)
-                {
+               
+                Vector2 targetCenter = target.Center;
+                Vector2 targetHoverCenter = targetCenter + new Vector2(312, 0);
+                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+                NPC.netUpdate = true;
 
-                }
+                float hoverSpeed = 5;
+                float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
             }
-           
+
+
+
             if (timer < 50)
             {
                 NPC.velocity.Y -= 0.08f;
@@ -1007,7 +1023,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.rotation = NPC.velocity.ToRotation();
                 float movementSpeed = 40;
                 float size = 812;
-                float figureEightSpeed = 0.07f;
+                float figureEightSpeed = 0.06f;
 
                 float t = timer * figureEightSpeed;
                 float scale = 2 / (3 - MathF.Cos(2 * t));
@@ -1066,7 +1082,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             
                 if (StellaMultiplayer.IsHost)
                 {
-                    int distanceY = Main.rand.Next(-300, -300);
+                    int distanceY = Main.rand.Next(-900, -600);
                     int distanceYa = Main.rand.Next(-100, -100);
                     NPC.position.X = target.Center.X + distanceY;
                     NPC.position.Y = target.Center.Y + distanceYa;
@@ -1081,10 +1097,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer > 110)
             {
-                NPC.velocity.Y += 0.2f;
+                NPC.velocity.Y += 0.5f;
             }
 
-            if (timer < 30)
+            if (timer < 10)
             {
 
 
@@ -1170,7 +1186,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    int distanceY = Main.rand.Next(300, 300);
+                    int distanceY = Main.rand.Next(600, 900);
                     int distanceYa = Main.rand.Next(-100, -100);
                     NPC.position.X = target.Center.X + distanceY;
                     NPC.position.Y = target.Center.Y + distanceYa;
@@ -1185,10 +1201,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer > 110)
             {
-                NPC.velocity.Y += 0.2f;
+                NPC.velocity.Y += 0.5f;
             }
 
-            if (timer < 30)
+            if (timer < 10)
             {
 
 
@@ -1935,7 +1951,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         }
 
 
-        NPC someNpc;
+  
         private void GreenSuns()
         {
             NPC.spriteDirection = NPC.direction;
@@ -1961,32 +1977,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             
             }
-            float speed = 15;
+       
 
 
             if (timer < 560 && timer > 4)
             {
+                
+                    circleDistance = 415;
+                    movementSpeed = 10;
+                    circleSpeed = 2;
 
-                float maxDetectDistance = 20000;
-                int npcType = ModContent.NPCType<Sun2>();
-                NPC[] npcs = NPCHelper.FindNPCsInRange(NPC.position, maxDetectDistance, npcType);
-                if (npcs.Length > 0)
-                {
-                    NPC someNpc = npcs[Main.rand.Next(0, npcs.Length)];
-                }
+                _circleDegrees += circleSpeed;
+                float circleRadians = MathHelper.ToRadians(_circleDegrees);
+                Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+                Vector2 circlePosition = player.Center + offsetFromPlayer;
 
-                int distance = Main.rand.Next(4, 4);
-                NPC.ai[3] = Main.rand.Next(1);
-                NPC.netUpdate = true;
+                //This is just how quickly the NPC will move to the circle position
+                //This number should be higher than the circle speed
 
-                double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-                double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-                Vector2 angle = new Vector2((float)anglex, (float)angley);
-                dashDirection = (someNpc.Center - (angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
-                dashDirection.Normalize();
-                dashDirection *= speed;
-                NPC.velocity = dashDirection;
+                NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
 
             }
       
@@ -2035,32 +2044,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
             }
-            float speed = 15;
+        
 
 
             if (timer < 560 && timer > 4)
             {
 
-                float maxDetectDistance = 20000;
-                int npcType = ModContent.NPCType<Sun>();
-                NPC[] npcs = NPCHelper.FindNPCsInRange(NPC.position, maxDetectDistance, npcType);
-                if (npcs.Length > 0)
-                {
-                    NPC someNpc = npcs[Main.rand.Next(0, npcs.Length)];
-                }
+                circleDistance = 415;
+                movementSpeed = 10;
+                circleSpeed = 2;
 
-                int distance = Main.rand.Next(4, 4);
-                NPC.ai[3] = Main.rand.Next(1);
-                NPC.netUpdate = true;
+                _circleDegrees += circleSpeed;
+                float circleRadians = MathHelper.ToRadians(_circleDegrees);
+                Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+                Vector2 circlePosition = player.Center + offsetFromPlayer;
 
-                double anglex = Math.Sin(NPC.ai[3] * (Math.PI / 180));
-                double angley = Math.Abs(Math.Cos(NPC.ai[3] * (Math.PI / 180)));
-                Vector2 angle = new Vector2((float)anglex, (float)angley);
-                dashDirection = (someNpc.Center - (angle * distance)) - NPC.Center;
-                dashDistance = dashDirection.Length();
-                dashDirection.Normalize();
-                dashDirection *= speed;
-                NPC.velocity = dashDirection;
+                //This is just how quickly the NPC will move to the circle position
+                //This number should be higher than the circle speed
+
+                NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
 
             }
 
