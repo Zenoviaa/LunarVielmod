@@ -33,10 +33,11 @@ namespace Stellamod.Projectiles.Gun
         }
 
         private float alphaCounter = 5;
+        private NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public override void AI()
         {
 
-            Projectile.Center = Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC.Center;
+            Projectile.Center = Owner.Center;
             Projectile.ai[0]++;
             if (Projectile.ai[0] == 2)
             {

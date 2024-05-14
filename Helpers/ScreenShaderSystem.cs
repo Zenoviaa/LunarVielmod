@@ -10,7 +10,9 @@ namespace Stellamod.Helpers
         //Vignette Shader
         private bool _useVignette;
         private float _vignetteStrength;
+        private float _vignetteOpacity;
         private float _targetVignetteStrength;
+        private float _targetVignetteOpacity;
 
         //Distortion Shader
         private Vector2 _distortionScroll;
@@ -34,9 +36,10 @@ namespace Stellamod.Helpers
         /// Negative strength makes it white, positive strength makes it black
         /// </summary>
         /// <param name="strength"></param>
-        public void VignetteScreen(float strength)
+        public void VignetteScreen(float strength, float opacity = 1f)
         {
             _useVignette = true;
+            _targetVignetteOpacity = opacity;
             _targetVignetteStrength = strength;
         }
 
@@ -108,16 +111,20 @@ namespace Stellamod.Helpers
                 }
 
                 _vignetteStrength = MathHelper.Lerp(_vignetteStrength, _targetVignetteStrength, 0.1f);
+                _vignetteOpacity = MathHelper.Lerp(_vignetteOpacity, _targetVignetteOpacity, 0.1f);
                 var shaderData = FilterManager[ShaderRegistry.Screen_Vignette].GetShader();
                 shaderData.UseProgress(_vignetteStrength);
+                shaderData.UseOpacity(_vignetteOpacity);
             }
             else
             {
                 if(_vignetteStrength != 0)
                 {
+                    _vignetteOpacity = MathHelper.Lerp(_targetVignetteOpacity, 0, 0.1f);
                     _vignetteStrength = MathHelper.Lerp(_vignetteStrength, 0, 0.1f);
                     var shaderData = FilterManager[ShaderRegistry.Screen_Vignette].GetShader();
                     shaderData.UseProgress(_vignetteStrength);
+                    shaderData.UseOpacity(_vignetteOpacity);
                 } 
                 else
                 {

@@ -40,9 +40,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.height = 175;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
-            Projectile.penetrate = 6;
+            Projectile.penetrate = 5;
             Projectile.hostile = true;
-            Projectile.timeLeft = 1080;
+            Projectile.timeLeft = 812;
             Projectile.localNPCHitCooldown = 6;
             Projectile.usesLocalNPCImmunity = true;
         }
@@ -148,10 +148,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                     float scale = Main.rand.NextFloat(0.3f, 0.5f);
                     ParticleManager.NewParticle<SnowFlakeParticle>(Projectile.Center, velocity, Color.White, scale);
 
-                    SoundStyle soundStyle = SoundID.NPCHit11;
-                    soundStyle.Pitch = 0.5f;
-                    soundStyle.PitchVariance = 0.15f;
-                    SoundEngine.PlaySound(soundStyle, Projectile.position);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
+
+
 
                     Vector2 directionToProjectile = Projectile.Center.DirectionTo(p.Center);
                     p.velocity = directionToProjectile * 16;

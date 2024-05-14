@@ -251,6 +251,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 PoppedOutEye = true;
             }
 
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.EncourageDespawn(120);
+                    NPC.velocity += -Vector2.UnitY;
+                    NPC.rotation = NPC.velocity.ToRotation();
+                    MakeLikeWorm();
+                    return;
+                }
+            }
+
             switch (State)
             {
                 case ActionState.Idle:
@@ -590,6 +603,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             if(Timer == 240)
             {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekClappbackStart"), NPC.position);
                 StartSegmentGlow(Color.White);
             }
 
@@ -1263,10 +1277,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 {
                     spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
-
             }
-
-
         }
         #endregion
     }

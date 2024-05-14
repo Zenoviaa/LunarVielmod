@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 
 namespace Stellamod.Helpers
@@ -47,6 +48,45 @@ namespace Stellamod.Helpers
             }
 
             return (int)(damage * damageMultiplier * factor);
+        }
+
+        public static NPC[] FindNPCsInRange(Vector2 position, float maxDetectDistance, int npcType)
+        {
+            List<NPC> npcs = new List<NPC>();
+            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+
+            // Loop through all NPCs(max always 200)
+            for (int k = 0; k < Main.maxNPCs; k++)
+            {
+                NPC target = Main.npc[k];
+                if (!target.active)
+                    continue;
+                if (target.type != npcType)
+                    continue;
+                // Check if NPC able to be targeted. It means that NPC is
+                // 1. active (alive)
+                // 2. chaseable (e.g. not a cultist archer)
+                // 3. max life bigger than 5 (e.g. not a critter)
+                // 4. can take damage (e.g. moonlord core after all it's parts are downed)
+                // 5. hostile (!friendly)
+                // 6. not immortal (e.g. not a target dummy)
+                if (target.CanBeChasedBy())
+                {
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, position);
+
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        npcs.Add(target);
+                    }
+                }
+            }
+
+            return npcs.ToArray();
         }
 
         /// <summary>

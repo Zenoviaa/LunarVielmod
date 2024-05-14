@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.Projectiles.Summons;
+using Stellamod.Projectiles.Visual;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -126,6 +127,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 			Shooting++;
 			if (Shooting == 1)
             {
+                
+
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 shaderSystem.TintScreen(Color.DarkTurquoise, 0.2f);

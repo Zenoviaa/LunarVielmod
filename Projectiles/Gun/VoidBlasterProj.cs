@@ -116,7 +116,8 @@ namespace Stellamod.Projectiles.Gun
                 if (Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterHits >= 7)
                 {
                     var EntitySource = Projectile.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+                    Projectile.NewProjectile(EntitySource, target.Center.X, target.Center.Y, 0, 0, 
+                        ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, 1, Projectile.owner, 0, ai1: target.whoAmI);
                     int Sound = Main.rand.Next(1, 3);
                     if (Sound == 1)
                     {

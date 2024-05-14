@@ -27,7 +27,12 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float2 dist = coords - float2(0.5f, 0.5f);
     float magnitude = length(dist);
     magnitude = magnitude * uProgress;
-    return color - (color * magnitude);
+    
+    //Lerp to the color
+    float4 baseColor = color;
+    float4 vignetteColor = color - (color * magnitude);
+    float4 adjustedColor = float4(lerp(baseColor.xyz, vignetteColor.xyz, uOpacity), lerp(color.w, vignetteColor.w, uOpacity));
+    return adjustedColor;
 }
 
 technique Technique1

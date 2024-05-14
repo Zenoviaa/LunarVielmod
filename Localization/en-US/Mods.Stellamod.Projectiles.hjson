@@ -1152,9 +1152,23 @@ VoidBlasterExsplosion.DisplayName: Void Blaster Exsplosion
 VoidBlasterProj.DisplayName: Void Blaster Proj
 VoidBlasterSpawnEffect.DisplayName: Void Blaster Spawn Effect
 FigureEightTestProj.DisplayName: Figure Eight Test Proj
-CleanestCleaverProg.DisplayName: Cleanest Cleaver Prog
-CircleExplosionProj.DisplayName: Circle Explosion Proj
-GothCircleExplosionProj.DisplayName: Goth Circle Explosion Proj
-GothCircleExplosionProj2.DisplayName: Goth Circle Explosion Proj2
+KickboomSun.DisplayName: Kickboom Sun
+KickboomBurn.DisplayName: Kickboom Burn
+GothBlastExplosionProj2.DisplayName: Goth Blast Explosion Proj2
+GothBlastExplosionProj.DisplayName: Goth Blast Explosion Proj
 SmallCircleExplosionProj.DisplayName: Small Circle Explosion Proj
-VoidBlasterExplosionBombVoid.DisplayName: Void Blaster Explosion Bomb Void
+GothCircleExplosionProj2.DisplayName: Goth Circle Explosion Proj2
+GothCircleExplosionProj.DisplayName: Goth Circle Explosion Proj
+CircleExplosionProj.DisplayName: Circle Explosion Proj
+CleanestCleaverProg.DisplayName: Cleanest Cleaver Prog
+BlinkingStar.DisplayName: Blinking Star
+WingRazor.DisplayName: Wing Razor
+GreenSunsBoomProj.DisplayName: Green Suns Boom Proj
+GreenSunsSuckingProj.DisplayName: Green Suns Sucking Proj
+ExampleSinSwingProj.DisplayName: Example Sin Swing Proj
+SunsBoomProj.DisplayName: Suns Boom Proj
+SunsSuckingProj.DisplayName: Suns Sucking Proj
+GothDarkBlastProj.DisplayName: Goth Dark Blast Proj
+SwirlingKick.DisplayName: Swirling Kick
+GREENLS.DisplayName: G R E E N L S
+ORANGELS.DisplayName: O R A N G E L S

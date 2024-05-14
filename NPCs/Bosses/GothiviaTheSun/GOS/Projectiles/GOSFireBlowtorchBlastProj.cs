@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             if(Timer == LifeTime / 2)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<SmallCircleExplosionProj>(), 0, 0, Projectile.owner);
+                    ModContent.ProjectileType<GothCircleExplosionProj2>(), 0, 0, Projectile.owner);
 
                 //Effects
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.Projectiles.Summons;
+using Stellamod.Projectiles.Visual;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -114,7 +115,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 		public int rippleSize = 5;
 		public int rippleSpeed = 15;
 		public float distortStrength = 300f;
-		int gr = 38;
+		int gr = 58;
 		public bool HHH = false;
 		public override void AI()
 		{
@@ -126,6 +127,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 			Shooting++;
 			if (Shooting == 1)
             {
+                
+
+
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 shaderSystem.TintScreen(Color.DarkOrange, 0.2f);
@@ -153,7 +157,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
 
-			if (gr == 40 && !HHH)
+			if (gr == 60 && !HHH)
 			{
 
                 if (StellaMultiplayer.IsHost)

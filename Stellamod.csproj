@@ -327,6 +327,8 @@
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NekoNeko.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\NiceBuster_Glow.png" />
     <None Remove="NPCs\Bosses\Fenix\Projectiles\Slashers.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\GOS\Projectiles\GREENLS.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\GOS\Projectiles\ORANGELS.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody1_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody2_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody3_White.png" />
@@ -516,6 +518,7 @@
     <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj.png" />
     <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj2.png" />
+    <None Remove="Projectiles\Slashers\ExampleSinSwingProj.png" />
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
