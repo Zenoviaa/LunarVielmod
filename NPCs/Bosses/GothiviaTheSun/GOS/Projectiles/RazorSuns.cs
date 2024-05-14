@@ -41,9 +41,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.height = 175;
             Projectile.tileCollide = false;
             Projectile.friendly = false;
-            Projectile.penetrate = 6;
+            Projectile.penetrate = 5;
             Projectile.hostile = true;
-            Projectile.timeLeft = 1080;
+            Projectile.timeLeft = 812;
             Projectile.localNPCHitCooldown = 6;
             Projectile.usesLocalNPCImmunity = true;
         }

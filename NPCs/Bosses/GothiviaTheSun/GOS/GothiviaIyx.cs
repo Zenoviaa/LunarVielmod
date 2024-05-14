@@ -876,7 +876,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
 
-            FigureEightStartCenter = target.Center;
+            FigureEightStartCenter = Vector2.Lerp(FigureEightStartCenter, target.Center, 0.07f);
 
 
             if (timer == 1)
@@ -954,7 +954,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
-
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
 
 
@@ -963,7 +963,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer < 50 && NPC.HasValidTarget)
             {
                 Vector2 targetCenter = target.Center;
-                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -256);
+                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -312);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                 NPC.netUpdate = true;
 
@@ -974,11 +974,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 26f;
+                speed = 20f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
-                speed = 20f;
+                speed = 16f;
             }
 
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -1180,7 +1180,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
-  
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+
                 }
             }
 
