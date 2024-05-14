@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     if(Vector2.Distance(player.Center, Projectile.Center) <= shockwavePushDistance)
                     {
                         Vector2 directionToPlayer = Projectile.Center.DirectionTo(player.Center);
-                        Vector2 pushVelocity = directionToPlayer * 16f;
+                        Vector2 pushVelocity = directionToPlayer * 24f;
                         player.velocity += pushVelocity;
                     }
                 }

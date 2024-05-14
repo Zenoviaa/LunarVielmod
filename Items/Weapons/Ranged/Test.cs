@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noMelee = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<NiiviTornadoProj>();
+			Item.shoot = ModContent.ProjectileType<FigureEightTestProj>();
 			Item.shootSpeed = 1f;
 		}
 

@@ -556,6 +556,7 @@
     <None Remove="Projectiles\Swords\Ripper\RipperSwordProj.png" />
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
+    <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
     <None Remove="Projectiles\VoidRain.png" />
