@@ -30,6 +30,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -3251,5 +3252,40 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
         }
 
+    }
+
+
+    public class GothiviaSkyPlayer : ModPlayer
+    {
+        public override void PostUpdateMiscEffects()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
+            {
+                ActivateGothSky();
+
+            }
+            else
+            {
+                DeActivateGothSky();
+            }
+        }
+
+        private void ActivateGothSky()
+        {
+            if (!SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Activate("Stellamod:NaxtrinSky2", targetCenter);
+            }
+        }
+
+        private void DeActivateGothSky()
+        {
+            if (SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Deactivate("Stellamod:NaxtrinSky2", targetCenter);
+            }
+        }
     }
 }

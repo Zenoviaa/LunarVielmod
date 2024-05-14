@@ -24,6 +24,7 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
@@ -737,7 +738,9 @@ namespace Stellamod
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Veriplant", ZoneVeri);
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Gintzing", EventWorld.Gintzing);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Daedussss", NPC.AnyNPCs(ModContent.NPCType<DaedusR>()));
-			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
+
+
+            base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish1", NPC.AnyNPCs(ModContent.NPCType<GoliathJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Jellyfish2", NPC.AnyNPCs(ModContent.NPCType<GoliathCryogenicJellyfish>()));
 			base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
@@ -883,7 +886,6 @@ namespace Stellamod
             if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) || 
 				NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) || 
 				NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
-                NPC.AnyNPCs(ModContent.NPCType<Sun>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
                 SingularityFragment = true;
