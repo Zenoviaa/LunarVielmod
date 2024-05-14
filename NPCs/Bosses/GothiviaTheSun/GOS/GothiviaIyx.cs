@@ -18,13 +18,16 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -121,21 +124,32 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             // DisplayName.SetDefault("Verlia of The Moon");
 
             Main.npcFrameCount[Type] = 61;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 24;
+            NPCID.Sets.TrailingMode[NPC.type] = 3;
 
             // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-            // Influences how the NPC looks in the Bestiary
-
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
             {
-                PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
-                PortraitPositionYOverride = 0f,
-            };
+                SpecificallyImmuneTo = new int[] {
+                    BuffID.Poisoned,
 
+                    BuffID.Confused // Most NPCs have this
+				}
+            };
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/STARBOMBER/STARBOMBERPreview";
+            drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
 
@@ -214,8 +228,47 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
         }
 
+        float ChargeTrailOpacity;
+        bool DrawChargeTrail;
+        public Color ColorFunctionCharge(float completionRatio)
+        {
+            if (!DrawChargeTrail)
+            {
+                ChargeTrailOpacity -= 0.05f;
+                if (ChargeTrailOpacity <= 0)
+                    ChargeTrailOpacity = 0;
+            }
+            else
+            {
+                ChargeTrailOpacity += 0.05f;
+                if (ChargeTrailOpacity >= 1)
+                    ChargeTrailOpacity = 1;
+            }
+
+            Color color = Color.Turquoise;
+            return color * ChargeTrailOpacity * (1f - completionRatio);
+        }
+
+        public float WidthFunctionCharge(float completionRatio)
+        {
+            return (((NPC.width * NPC.scale) * 2) / 0.75f * (1f - completionRatio)) * 0.4f;
+        }
+
+        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+
+
+            if (TrailDrawer == null)
+            {
+                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
+            }
+
+            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WaterTrail);
+            Vector2 size = new Vector2(206, 129);
+            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
+
+
             Player player = Main.player[NPC.target];
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             SpriteEffects effects = SpriteEffects.None;
@@ -585,6 +638,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.aiStyle = -1;
                     break;
 
+                case ActionState.BoostBounce1:
+                    NPC.damage = 600;
+                    counter++;
+                    ThreeQ = true;
+                    FourQ = false;
+                    NPC.velocity.Y *= 0.96f;
+                    BoostBoom1();
+                    NPC.aiStyle = -1;
+                    break;
+
 
 
                 //----------- Irradia stuff under
@@ -758,7 +821,39 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         }
 
 
+        private void BoostBoom1()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            Player target = Main.player[NPC.target];
+            if (timer == 1)
+            {
+              
+               
 
+                
+
+                if (timer < 30 && NPC.HasValidTarget)
+                {
+                    Vector2 targetCenter = target.Center;
+                    Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
+                    NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+                    NPC.netUpdate = true;
+
+                    float hoverSpeed = 5;
+                    float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
+                }
+            }
+
+
+
+            if (timer == 60)
+            {
+                ResetTimers();
+                State = ActionState.StartGoth;
+            }
+        }
 
         private void Dichotamy()
         {
@@ -1122,7 +1217,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     Arrows+= 1;
                     timer = 0;
                 }
-                if (Arrows >= 10)
+                if (Arrows >= 3)
                 {
 
                     ResetTimers();
