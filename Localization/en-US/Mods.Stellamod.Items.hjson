@@ -7111,3 +7111,13 @@ CleanestCleaver: {
 	DisplayName: Cleanest Cleaver
 	Tooltip: ""
 }
+
+GothiviaIyxBag: {
+	DisplayName: Gothivia Iyx Bag
+	Tooltip: ""
+}
+
+GothiviaBossRel: {
+	DisplayName: Gothivia Boss Rel
+	Tooltip: ""
+}

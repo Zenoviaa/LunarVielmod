@@ -205,13 +205,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 				DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
 
 				//2. Create a new instance of your dialogue
-				IrradiaDialogue exampleDialogue = new IrradiaDialogue();
+				GothiviaDialogue exampleDialogue = new GothiviaDialogue();
 
 				//3. Start it
 				dialogueSystem.StartDialogue(exampleDialogue);
 
 
-				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 12f);
+				Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
 				NPC.netUpdate = true;
 			}
 

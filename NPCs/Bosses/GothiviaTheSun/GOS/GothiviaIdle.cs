@@ -38,7 +38,9 @@ using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 {
-   // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
+    // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
+    [AutoloadBossHead]
+
     public class GothiviaIdle : ModNPC
     {
         private bool _resetTimers;
