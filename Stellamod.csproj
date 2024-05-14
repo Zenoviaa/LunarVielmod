@@ -516,6 +516,7 @@
     <None Remove="Projectiles\ScissorianSlash2.png" />
     <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj.png" />
     <None Remove="Projectiles\Slashers\Chillrend\ChillrendProj2.png" />
+    <None Remove="Projectiles\Slashers\ExampleSinSwingProj.png" />
     <None Remove="Projectiles\Slashers\GrailAxe\GrailShot.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosP.png" />
     <None Remove="Projectiles\Slashers\Helios\HeliosProj.png" />
