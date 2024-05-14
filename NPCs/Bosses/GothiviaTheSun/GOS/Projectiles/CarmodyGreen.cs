@@ -174,7 +174,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 if (StellaMultiplayer.IsHost)
                 {
                     int type = ModContent.ProjectileType<GothDarkBlastProj>();
-                    int damage = 800;
+                    int damage = 50;
                     int knockback = 1;
                     Vector2 pos = NPC.Center;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, direction,
