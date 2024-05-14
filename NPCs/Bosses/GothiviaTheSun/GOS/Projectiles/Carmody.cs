@@ -169,19 +169,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
+
             if (gr == 80 && !HHH)
             {
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    int type = ModContent.ProjectileType<GothDarkBlastProj>();
-                    int damage = 50;
-                    int knockback = 1;
-                    Vector2 pos = NPC.Center;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, direction,
-                        type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothDarkBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
                 }
-
                 gr = 0;
             }
 
