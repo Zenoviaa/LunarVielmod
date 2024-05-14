@@ -1067,7 +1067,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public float WidthFunctionCharge(float completionRatio)
         {
-            return NPC.width * NPC.scale * (1f - completionRatio) * 1.2f;
+            return NPC.width * NPC.scale * (1f - completionRatio) * 2f;
         }
 
         public Color ColorFunctionCharge(float completionRatio)
