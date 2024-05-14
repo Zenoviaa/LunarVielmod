@@ -46,9 +46,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool CheckActive()
         {
-            if (Owner.active)
-                return false;
-            return true;
+            return false;
         }
 
         public override void AI()

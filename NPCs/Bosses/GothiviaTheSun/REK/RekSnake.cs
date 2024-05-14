@@ -918,8 +918,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
+                screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 5);
+                screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 15);
 
+                if (StellaMultiplayer.IsHost)
+                {
+                    for(float i = 0; i < 8; i++)
+                    {
+                        float progress = i / 8f;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 direction = rot.ToRotationVector2();
+                        Projectile.NewProjectile(EntitySource, NPC.Center, direction,
+                            ModContent.ProjectileType<RekFireBlowtorchBlastDeathProj>(), 0, 0, Main.myPlayer);
+                    }
+                }
                 NPC.Kill();
             }
         }
