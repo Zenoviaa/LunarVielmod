@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
 using Stellamod.Projectiles.Summons;
+using Stellamod.Projectiles.Visual;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -126,6 +127,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 			Shooting++;
 			if (Shooting == 1)
             {
+                int type = ModContent.ProjectileType<GreenSunsBoomProj>();
+                int damage = 10;
+                int knockback = 1;
+                Vector2 pos = NPC.Center;
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, NPC.rotation.ToRotationVector2(),
+                 type, damage, knockback, Main.myPlayer, 0, ai1: NPC.whoAmI);
+
+
 
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 shaderSystem.TintScreen(Color.DarkTurquoise, 0.2f);

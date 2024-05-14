@@ -666,6 +666,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.aiStyle = -1;
                     break;
 
+
+
                 case ActionState.BoostBounce2:
                     NPC.damage = 600;
                     counter++;
@@ -710,6 +712,28 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     break;
 
 
+                case ActionState.SunExplosionCharge1:
+                    NPC.damage = 600;
+                    counter++;
+                    ThreeQ = false;
+                    FourQ = true;
+                    DrawChargeTrail = false;
+                    NPC.velocity *= 0.96f;
+                    SunchargeGreen();
+                    NPC.aiStyle = -1;
+                    break;
+
+
+                case ActionState.SunExplosionCharge2:
+                    NPC.damage = 600;
+                    counter++;
+                    ThreeQ = false;
+                    FourQ = true;
+                    DrawChargeTrail = false;
+                    NPC.velocity *= 0.96f;
+                    SunchargeOrange();
+                    NPC.aiStyle = -1;
+                    break;
 
                 //----------- Irradia stuff under
 
@@ -945,9 +969,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
        
             if (timer == 480)
             {
-                NPC.velocity *= 0.3f;
+                NPC.velocity *= 0.2f;
                 ResetTimers();
-                State = ActionState.StartGoth;
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        State = ActionState.SunExplosionCharge1;
+                        break;
+
+                    case 1:
+                        State = ActionState.SunExplosionCharge2;
+                        break;
+
+                }
                 NPC.rotation = 0;
             }
         }
@@ -1185,21 +1219,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if (NPC.life < NPC.lifeMax / 2)
                 {
-                    switch (Main.rand.Next(4))
+                    switch (Main.rand.Next(3))
                     {
                         case 0:
                             State = ActionState.StartGoth;
                             break;
 
                         case 1:
-                            State = ActionState.Kick;
-                            break;
-
-                        case 2:
                             State = ActionState.TheZoomer;
                             break;
 
-                        case 3:
+                        case 2:
                             State = ActionState.TheZoomer;
                             break;
                     }
@@ -1446,29 +1476,176 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (Wtimes >= 4)
                 {
                     ResetTimers();
-                    switch (Main.rand.Next(2))
+                    if (NPC.life > NPC.lifeMax / 2)
                     {
-                        case 0:
-                            State = ActionState.BoostBounce1;
-                            break;
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                State = ActionState.BoostBounce1;
+                                break;
 
-                        case 1:
-                            State = ActionState.BoostBounce1;
-                            //BonfireRight and Left
-                            break;
+                            case 1:
+                                State = ActionState.BoostBounce1;
+                                //BonfireRight and Left
+                                break;
 
-                        case 2:
-                            State = ActionState.BoostBounce1;
-                            break;
+                            case 2:
+                                State = ActionState.BoostBounce1;
+                                break;
 
+
+                        }
 
                     }
-                 
-                  
+
+
+                    if (NPC.life < NPC.lifeMax / 2)
+                    {
+                        switch (Main.rand.Next(2))
+                        {
+                            case 0:
+                                State = ActionState.BonfireLeft;
+                                break;
+
+                            case 1:
+                                State = ActionState.BonfireRight;
+                                //BonfireRight and Left
+                                break;
+
+
+
+
+                        }
+
+                    }
+
+
+
                 }
 
                 NPC.velocity *= 0.3f;
 
+            }
+        }
+
+        private void SunchargeGreen()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            Player player = Main.player[NPC.target];
+            float ai1 = NPC.whoAmI;
+            if (timer == 1)
+            {
+                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GreenSunsSuckingProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
+
+
+                }
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+
+                }
+            }
+
+            if (timer < 80)
+            {
+                ShakeModSystem.Shake = 5;
+
+               
+
+                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+
+
+
+
+            }
+
+
+            if (timer == 120)
+            {
+                ResetTimers();
+                switch (Main.rand.Next(1))
+                {
+                    case 0:
+                        State = ActionState.Suns1;
+                        break;
+
+
+
+
+
+                }
+            }
+        }
+
+        private void GreenSuns()
+        {
+            NPC.spriteDirection = NPC.direction;
+            timer++;
+            Player player = Main.player[NPC.target];
+            float ai1 = NPC.whoAmI;
+            if (timer == 1)
+            {
+               
+
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    var entitySource = NPC.GetSource_FromThis();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Sun2>());
+                      
+                    }
+
+                }
+
+            
+            }
+
+
+            if (timer < 560)
+            {
+
+                float maxDetectDistance = 20000;
+                int npcType = ModContent.NPCType<Sun2>();
+                NPC[] npcs = NPCHelper.FindNPCsInRange(NPC.position, maxDetectDistance, npcType);
+                if (npcs.Length > 0)
+                {
+                    NPC someNpc = npcs[Main.rand.Next(0, npcs.Length)];
+                }
+
+
+
+            }
+      
+
+
+            if (timer == 590)
+            {
+                ResetTimers();
+                switch (Main.rand.Next(1))
+                {
+                    case 0:
+                        State = ActionState.ReallyStartGoth;
+                        break;
+
+
+
+
+
+                }
             }
         }
 
@@ -1481,6 +1658,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float ai1 = NPC.whoAmI;
             if (timer == 1)
             {
+                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                shaderSystem.VignetteScreen(2f);
+
                 if (StellaMultiplayer.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
@@ -1506,14 +1686,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if (StellaMultiplayer.IsHost)
                 {
-                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                    ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    shaderSystem.UnVignetteScreen();
 
+
+                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                   
                     float numberProjectiles = 3;
                     float rotation = MathHelper.ToRadians(20);
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * -3, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -1849,26 +2033,54 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 {
 
                     ResetTimers();
-                    switch (Main.rand.Next(4))
+                   
+
+                    if (NPC.life > NPC.lifeMax / 2)
                     {
-                        case 0:
-                            State = ActionState.BoostBounce1;
-                            break;
+                        switch (Main.rand.Next(4))
+                        {
+                            case 0:
+                                State = ActionState.BoostBounce1;
+                                break;
 
-                        case 1:
-                            State = ActionState.Kick;
-                            break;
+                            case 1:
+                                State = ActionState.Kick;
+                                break;
                             //BonefireRight
-                        case 2:
-                            State = ActionState.BoostBounce1;
-                            //BonfireLeft
-                            break;
+                            case 2:
+                                State = ActionState.BoostBounce1;
+                                //BonfireLeft
+                                break;
 
-                        case 3:
-                            State = ActionState.Kick;
-                            //Kick
-                            break;
+                            case 3:
+                                State = ActionState.Kick;
+                                //Kick
+                                break;
 
+
+                        }
+                    }
+
+                    if (NPC.life < NPC.lifeMax / 2)
+                    {
+                        switch (Main.rand.Next(4))
+                        {
+                            case 0:
+                                State = ActionState.BonfireLeft;
+                                break;
+
+                            case 1:
+                                State = ActionState.BonfireRight;
+                                break;
+
+                            case 2:
+                                State = ActionState.TheZoomer;
+                                break;
+
+                            case 3:
+                                State = ActionState.Kick;
+                                break;
+                        }
 
                     }
                 }
