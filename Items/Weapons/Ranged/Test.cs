@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
@@ -18,6 +19,7 @@ namespace Stellamod.Items.Weapons.Ranged
 {
     public class Test : ModItem
 	{
+		private int _dir = 1;
 		public override void SetStaticDefaults()
 		{
 			/* Tooltip.SetDefault("Meatballs" +
@@ -45,9 +47,10 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.damage = 19;
 			Item.knockBack = 0;
 			Item.noMelee = true;
+			Item.noUseGraphic = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<FigureEightTestProj>();
+			Item.shoot = ModContent.ProjectileType<ExampleSinSwingProj>();
 			Item.shootSpeed = 1f;
 		}
 
@@ -57,5 +60,12 @@ namespace Stellamod.Items.Weapons.Ranged
 		{
 			return new Vector2(2f, -2f);
 		}
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            _dir = -_dir;
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: _dir);
+            return false;
+        }
     }
 }
