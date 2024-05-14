@@ -661,7 +661,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     ThreeQ = false;
                     FourQ = true;
                     DrawChargeTrail = false;
-                    NPC.velocity.Y *= 0.96f;
+                    NPC.velocity *= 0.96f;
                     BoostBoom1();
                     NPC.aiStyle = -1;
                     break;
@@ -671,7 +671,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
-                    NPC.velocity.Y *= 0.96f;
+                    NPC.velocity *= 0.96f;
                     BoostBoom2();
                     NPC.aiStyle = -1;
                     break;
@@ -682,7 +682,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
-                    NPC.velocity.Y *= 0.9f;
+                    NPC.velocity *= 0.8f;
                     BoostBoom3();
                     NPC.aiStyle = -1;
                     break;
@@ -948,22 +948,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             timer++;
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
-            if (timer == 1)
+            if (timer == 2)
             {
-                float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
-
+                }
 
             }
           
             if (timer < 50 && NPC.HasValidTarget)
             {
                 Vector2 targetCenter = target.Center;
-                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -312);
+                Vector2 targetHoverCenter = targetCenter + new Vector2(0, -332);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                 NPC.netUpdate = true;
 
@@ -1121,10 +1123,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 switch (Main.rand.Next(2))
                 {
                     case 0:
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj2>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomBurn>(), 700, 0f, Main.myPlayer, 0f, ai1);
                         break;
 
                     case 1:
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<GothBlastExplosionProj>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<KickboomSun>(), 700, 0f, Main.myPlayer, 0f, ai1);
                         break;
 
@@ -1161,7 +1165,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 45)
             {
-                NPC.velocity *= 0.3f;
+                NPC.velocity *= 0.2f;
                 ResetTimers();
                 State = ActionState.StartGoth;
             }
@@ -1180,6 +1184,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+
+
+                }
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
                 }
