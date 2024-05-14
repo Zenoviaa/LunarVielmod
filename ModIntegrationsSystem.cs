@@ -416,13 +416,13 @@ namespace Stellamod
 			string internalName8 = "GothiviatheSunGoddess";
 
 			// The NPC type of the boss
-			int bossType8 = ModContent.NPCType<NPCs.Bosses.GothiviaNRek.Gothivia.Gothiviab>();
+			int bossType8 = ModContent.NPCType<NPCs.Bosses.GothiviaTheSun.GOS.GothiviaIyx>();
 
-			// Value inferred from boss progression, see the wiki for details
-			float weight8 = 8.4f;
+            // Value inferred from boss progression, see the wiki for details
+            float weight8 = 18.4f;
 
-			// Used for tracking checklist progress
-			Func<bool> downed8 = () => DownedBossSystem.downedGothBoss;
+            // Used for tracking checklist progress
+            Func<bool> downed8 = () => DownedBossSystem.downedGothBoss;
 
 			// If the boss should show up on the checklist in the first place and when (here, always)
 			Func<bool> available8 = () => true;
@@ -443,7 +443,7 @@ namespace Stellamod
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem8}] at a shrine in the Govheil Castle, underneath the Virulent.");
+			LocalizedText spawnConditionText = Language.GetText($"After killing her friend Irradia, Green sun will start and she will await your arrival, kill Rek to challenge her.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -950,6 +950,7 @@ namespace Stellamod
                 }
             );
         }
+
 
 
 		private void DoBossChecklistIntegration()

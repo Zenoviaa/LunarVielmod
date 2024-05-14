@@ -194,7 +194,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.scale = 1f;
-            NPC.BossBar = ModContent.GetInstance<RekBossBar>();
+            NPC.BossBar = ModContent.GetInstance<GothiviaBossBar>();
 
             // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
