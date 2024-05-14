@@ -18,7 +18,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
-        private float LifeTime => 50f;
+        private float LifeTime => 60f;
         private float BlowtorchDistance => 3096;
 
         //Draw Code
@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Black, Color.White, completionRatio);
+            return Color.Lerp(Color.White, Color.Black, completionRatio);
         }
 
 
@@ -139,7 +139,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
             }
 
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.FireVertexShader);
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
             BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.Black, 0.3f));
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);

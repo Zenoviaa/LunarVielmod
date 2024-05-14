@@ -70,7 +70,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         {
             // Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
 
-            SpriteEffects effects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects effects = SpriteEffects.None;
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
@@ -169,7 +169,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
 
-            
+            /*
             if (gr == 80 && !HHH)
             {
 
@@ -180,6 +180,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
                 gr = 0;
             }
+            */
 
             if (bee2 <= 90)
             {
