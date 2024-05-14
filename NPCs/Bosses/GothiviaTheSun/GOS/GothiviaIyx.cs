@@ -790,7 +790,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -798,7 +798,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 600, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 5, ModContent.ProjectileType<RazorSuns>(), 600, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -848,8 +848,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-
-
+        private float _circleDegrees;
+        float movementSpeed = 5;
+        float circleSpeed = 2;
+        float circleDistance = 350;
 
 
 
@@ -858,47 +860,128 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         {
             NPC.spriteDirection = NPC.direction;
             timer++;
-            Player player = Main.player[NPC.target];
+            Player target = Main.player[NPC.target];
+
+
+            Vector2 velocity = NPC.Center.DirectionTo(target.Center) * 10;
+
+
             float ai1 = NPC.whoAmI;
-            if (timer == 1)
+            if (timer == 3)
+            {
+                circleDistance = 270;
+            }
+            if (timer == 80)
+            {
+                movementSpeed = 12;
+                circleSpeed = 3;
+            }
+
+
+            if (timer == 170)
+            {
+                movementSpeed = 25;
+             
+            }
+
+            if (timer == 210)
+            {
+                movementSpeed = 16;
+            }
+
+
+            if (timer == 240)
+            {
+                movementSpeed = 12;
+                circleSpeed = 2;
+                
+            }
+
+
+            if (timer > 50)
             {
 
-                /*
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                _circleDegrees += circleSpeed;
+                float circleRadians = MathHelper.ToRadians(_circleDegrees);
+                Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+                Vector2 circlePosition = target.Center + offsetFromPlayer;
 
-                }
-                */
+                //This is just how quickly the NPC will move to the circle position
+                //This number should be higher than the circle speed
 
+                NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
+
+            }
+
+            if (timer < 80 && timer > 134)
+            {
+
+                _circleDegrees += circleSpeed;
+                float circleRadians = MathHelper.ToRadians(_circleDegrees);
+                Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+                Vector2 circlePosition = target.Center + offsetFromPlayer;
+
+                //This is just how quickly the NPC will move to the circle position
+                //This number should be higher than the circle speed
+
+                NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
+
+            }
+
+            if (timer < 164 && timer > 224)
+            {
+
+                _circleDegrees += circleSpeed;
+                float circleRadians = MathHelper.ToRadians(_circleDegrees);
+                Vector2 offsetFromPlayer = new Vector2(circleDistance, 0).RotatedBy(circleRadians);
+                Vector2 circlePosition = target.Center + offsetFromPlayer;
+
+                //This is just how quickly the NPC will move to the circle position
+                //This number should be higher than the circle speed
+
+                NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
+
+            }
+
+            NPC.velocity *= 0.96f;
+
+
+            if (timer < 30)
+            {
+                NPC.TargetClosest();
             }
 
             if (timer == 60)
             {
                 ShakeModSystem.Shake = 5;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
-                
-                    Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                   
+                }
 
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            for (int i = 0; i < 1; i++)
-                            {
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        for (int i = 0; i < 1; i++)
+                        {
                             if (StellaMultiplayer.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
                             }
 
-                            }
-                            break;
+                        }
+                        break;
 
-                        case 1:
-                            for (int i = 0; i < 1; i++)
-                            {
+                    case 1:
+                        for (int i = 0; i < 1; i++)
+                        {
                             if (StellaMultiplayer.IsHost)
                             {
                                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
@@ -910,9 +993,114 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                         break;
 
 
-                    
-                  
-                  
+
+
+
+
+
+                }
+
+            }
+
+                if (timer == 154)
+                {
+                    ShakeModSystem.Shake = 5;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
+
+                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+
+                }
+                switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            for (int i = 0; i < 1; i++)
+                            {
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                                }
+
+                            }
+                            break;
+
+                        case 1:
+                            for (int i = 0; i < 1; i++)
+                            {
+                                if (StellaMultiplayer.IsHost)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                                }
+
+
+                            }
+                            break;
+
+
+
+
+
+
+
+                    }
+
+                    //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+
+
+
+
+                }
+
+            if (timer == 248)
+            {
+                ShakeModSystem.Shake = 5;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
+
+                Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+
+                }
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        for (int i = 0; i < 1; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                            }
+
+                        }
+                        break;
+
+                    case 1:
+                        for (int i = 0; i < 1; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                            }
+
+
+                        }
+                        break;
+
+
+
+
+
 
 
                 }
@@ -925,11 +1113,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
 
 
-            if (timer == 94)
+            if (timer == 282)
             {
 
 
-                if(Arrows < 10)
+                if(Arrows < 3)
                 {
                     Arrows+= 1;
                     timer = 0;

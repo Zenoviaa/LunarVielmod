@@ -85,7 +85,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             if (player != null)
             {
                 float moveSpeed = 16;
-                float accel = 0.5f;
+                float accel = 0.6f;
                 AI_Movement(player.Center, moveSpeed, accel);
             }
             //Lighting
