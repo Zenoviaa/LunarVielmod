@@ -137,8 +137,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             return false;
         }
 
-        public override bool? CanDamage() => Time >= 60f;
-
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             base.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);

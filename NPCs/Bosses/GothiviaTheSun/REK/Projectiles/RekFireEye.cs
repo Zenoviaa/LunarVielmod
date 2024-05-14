@@ -46,6 +46,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.boss = true;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+
         public override void AI()
         {
             NPC.scale = MathHelper.Lerp(NPC.scale, 1f, 0.1f);
@@ -81,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     break;
                 case 1:
                     Timer++;
-                    NPC.Center = Vector2.Lerp(NPC.Center, Target.Center + new Vector2(0, -512), 0.1f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, Target.Center + new Vector2(0, -384), 0.1f);
                     if(Timer >= 60)
                     {
                         if (StellaMultiplayer.IsHost)
