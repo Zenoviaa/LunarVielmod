@@ -430,7 +430,7 @@ namespace Stellamod
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection8 = new List<int>()
 			{
-				ModContent.ItemType<Items.Placeable.IrradiaBossRel>(),
+				ModContent.ItemType<Items.Placeable.GothiviaBossRel>(),
 
 			};
 
