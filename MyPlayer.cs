@@ -304,6 +304,14 @@ namespace Stellamod
         public bool TericGram = false;
 
 		public bool HasAlcaliteSet;
+
+
+
+
+		public NPC VoidBlasterNPC;
+        public int VoidBlasterHits;
+        public int VoidBlasterHitsTime;
+
         public void ShakeAtPosition(Vector2 position, float distance, float strength)
         {
             shakeDrama = strength * (1f - base.Player.Center.Distance(position) / distance) * 0.5f;
@@ -774,7 +782,17 @@ namespace Stellamod
 				Zuitalk = true;
 			}
 
+			if(VoidBlasterHits >= 0)
+			{
+				VoidBlasterHitsTime++;
+				if(VoidBlasterHitsTime >= 100)
+				{
+					VoidBlasterHits = 0;
+                    VoidBlasterHitsTime = 0;
 
+                }
+
+			}
 
 
 			if (Aurorean >= 0.5f)
