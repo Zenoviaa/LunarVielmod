@@ -712,7 +712,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     break;
 
                 case ActionState.TheZoomer:
-                    NPC.damage = 1600;
                     counter++;
                     ThreeQ = true;
                     FourQ = false;
@@ -1019,9 +1018,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
              
             }
+            if (timer < 50)
+            {
+                NPC.damage = 0;
+            }
         
             if (timer < 50 && NPC.HasValidTarget)
             {
+
+               
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
@@ -1038,6 +1043,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer > 90 && timer < 470)
             {
+                NPC.damage = 1600;
                 NPC.rotation = NPC.velocity.ToRotation();
                 float movementSpeed = 40;
                 float size = 812;
