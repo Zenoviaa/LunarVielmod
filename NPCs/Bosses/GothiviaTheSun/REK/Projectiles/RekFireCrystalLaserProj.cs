@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 using Stellamod.UI.Systems;
 using Stellamod.Dusts;
 using Terraria.ID;
+using Terraria.Audio;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
@@ -61,6 +62,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                 {
                     Dust.NewDustPerfect(pos, ModContent.DustType<TSmokeDust>(), vel, 0, Color.OrangeRed, scale / 2).noGravity = true;
                 }
+            }
+            if(Time == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser"), Projectile.position);
             }
 
             if (!Owner.active)
