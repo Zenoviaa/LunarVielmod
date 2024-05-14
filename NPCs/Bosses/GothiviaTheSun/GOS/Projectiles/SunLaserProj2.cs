@@ -110,7 +110,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
         }
 
-        public override bool? CanDamage() => Time >= 60f;
+        public override bool? CanDamage() => Time >= 70f;
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

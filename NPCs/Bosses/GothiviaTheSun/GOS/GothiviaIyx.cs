@@ -1609,7 +1609,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 28f;
+                speed = 25f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
