@@ -440,13 +440,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 Vector2 directionToPlayer = NPC.Center.DirectionTo(Target.Center);
                 Vector2 targetVelocity = directionToPlayer * speed;
                 NPC.velocity = targetVelocity;
-          
-
 
                 //Turn on the trail and roar!!!
                 DrawChargeTrail = true;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 64f);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
                 StopSegmentGlow();
             }
 
@@ -566,7 +564,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 //Turn on the trail and roar!!!
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(NPC.Center, 1024f, 64f);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
+            
                 //Explode
                 for (int i = 0; i < Segments.Length; i++)
                 {
@@ -643,7 +642,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RekFireShockWave>(),
                         DamageFireShockWave, knockback);
                 }
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekShockwave"), NPC.position);
                 NPC.velocity = -Vector2.UnitY;
             }
 
@@ -699,7 +699,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
                 Vector2 laserVelocity = laserDirection * 40;
-
+      
                 if (!InPhase2 && StellaMultiplayer.IsHost)
                 {
                     float knockback = 1;
@@ -841,6 +841,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 {
                     if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
                     {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/REKEAT"), NPC.position);
                         if (StellaMultiplayer.IsHost)
                         {
                             float rot = targetSegment.Rotation - MathHelper.PiOver2;
@@ -1042,6 +1043,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if(Timer >= 300)
             {
                 //DIE NOWWWW!!!
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekDeath"), NPC.position);
+
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 

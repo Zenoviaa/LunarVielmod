@@ -53,6 +53,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.TargetClosest();
  
             Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekSummon"), NPC.position);
+            }
 
             float frequency = 0.2f;
             float amplitude = 1;
@@ -75,9 +79,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
             if(Timer == 540)
             {
-                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
-                SoundEngine.PlaySound(soundStyle, NPC.position);
-
                 int damage = 150;
                 int knockback = 2;
                 if (StellaMultiplayer.IsHost)
