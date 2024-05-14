@@ -1085,7 +1085,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     ChargeTrailOpacity = 1;
             }
 
-            return Color.Lerp(Color.Orange, Color.RoyalBlue, (1f - completionRatio)) * ChargeTrailOpacity;
+            return Color.Lerp(Color.Orange, Color.Orange, (1f - completionRatio)) * ChargeTrailOpacity;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1097,7 +1097,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 size = new Vector2(90, 90);
-            TrailDrawer.Shader = TrailRegistry.FireVertexShader;
+            TrailDrawer.Shader = TrailRegistry.LaserShader;
             TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
