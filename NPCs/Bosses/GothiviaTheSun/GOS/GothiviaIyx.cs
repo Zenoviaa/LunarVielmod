@@ -607,7 +607,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.TargetClosest();
                 if (!NPC.HasValidTarget)
                 {               // If the targeted player is dead, flee
-                    NPC.velocity.Y += 0.5f;
+                    NPC.velocity.Y += 1f;
                     NPC.noTileCollide = true;
                     NPC.noGravity = true;
                     // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
