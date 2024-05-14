@@ -22,6 +22,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         private ref float AttackTimer => ref NPC.ai[2];
         private ref float OrbitTimer => ref NPC.ai[3];
 
+        private bool killYoSelf;
         private Vector2 LaserDirection;
         private Player Target => Main.player[NPC.target];
         public override void SetStaticDefaults()
@@ -54,6 +55,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.scale = MathHelper.Lerp(NPC.scale, 1f, 0.1f);
             NPC.TargetClosest();
             if (!Owner.active)
+            {
+                killYoSelf = true;
+            }
+
+            if (killYoSelf)
             {
                 NPC.Kill();
             }
