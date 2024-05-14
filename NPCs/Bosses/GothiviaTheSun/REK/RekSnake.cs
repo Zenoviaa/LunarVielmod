@@ -1097,7 +1097,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 size = new Vector2(90, 90);
-            TrailDrawer.Shader = TrailRegistry.LaserShader;
+            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
             TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
