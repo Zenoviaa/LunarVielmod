@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Mage
         {
             Item.width = 60;
             Item.height = 80;
-            Item.damage = 400;
+            Item.damage = 300;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 15;
             Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
