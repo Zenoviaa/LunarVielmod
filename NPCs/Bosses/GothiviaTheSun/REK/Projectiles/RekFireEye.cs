@@ -43,18 +43,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.scale = 0f;
-        }
-
-        public override bool CheckActive()
-        {
-            return false;
+            NPC.boss = true;
         }
 
         public override void AI()
         {
             NPC.scale = MathHelper.Lerp(NPC.scale, 1f, 0.1f);
             NPC.TargetClosest();
-            if (!Owner.active)
+            if (Owner.life <= 1)
             {
                 killYoSelf = true;
             }
@@ -85,6 +81,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     break;
                 case 1:
                     Timer++;
+                    NPC.Center = Vector2.Lerp(NPC.Center, Target.Center + new Vector2(0, -512), 0.1f);
                     if(Timer >= 60)
                     {
                         if (StellaMultiplayer.IsHost)
