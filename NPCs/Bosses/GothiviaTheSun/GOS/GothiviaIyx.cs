@@ -2527,7 +2527,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (Arrows >= 3)
                 {
 
-                    ResetTimers();
+                   
                    
 
                     if (NPC.life > NPC.lifeMax / 2)
@@ -2558,7 +2558,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                     if (NPC.life < NPC.lifeMax / 2)
                     {
-                        switch (Main.rand.Next(4))
+                        switch (Main.rand.Next(5))
                         {
                             case 0:
                                 State = ActionState.BonfireLeft;
@@ -2575,9 +2575,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                             case 3:
                                 State = ActionState.Kick;
                                 break;
+
+                            case 4:
+                                State = ActionState.Kick;
+                                break;
                         }
 
                     }
+
+
+                    ResetTimers();
                 }
             }
         }
