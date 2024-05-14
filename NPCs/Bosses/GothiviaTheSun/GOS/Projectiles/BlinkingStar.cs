@@ -44,7 +44,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
 
 
-            Projectile.rotation += 0.2f;
+            Projectile.rotation -= 0.4f;
 
             alphaCounter -= 0.1f;
         }
