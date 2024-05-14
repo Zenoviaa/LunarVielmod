@@ -474,7 +474,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.Archery:
                     rect = new(0, 24 * 96, 166, 13 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 6, 13, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColor, 0f, Vector2.Zero, 2f, effects, 0f);
                     break;
 
                 case ActionState.ExplodeOut:
@@ -492,7 +492,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         private Vector2 originalHitbox;
         //int Timer2 = 0;
         float timert = 0;
-        public int Arrows = 0;
+        int Arrows = 0;
         public float Spawner = 0;
 
         public bool Elect = false;
@@ -821,22 +821,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        State = ActionState.BoostBounce1;
+                        State = ActionState.Archery;
                         break;
 
                     case 1:
-                        State = ActionState.BonfireLeft;
+                        State = ActionState.Archery;
                         break;
 
                     case 2:
-                        State = ActionState.BonfireRight;
+                        State = ActionState.Archery;
 
                         break;
 
-                    case 3:
-                        State = ActionState.Kick;
 
-                        break;
 
 
                 }
@@ -875,34 +872,47 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
                 */
+
             }
 
             if (timer == 60)
             {
                 ShakeModSystem.Shake = 5;
 
-                if (StellaMultiplayer.IsHost)
-                {
+                
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
-                    float numberProjectiles = 3;
-                    float rotation = MathHelper.ToRadians(20);
-                    for (int i = 0; i < 1; i++)
+                    switch (Main.rand.Next(2))
                     {
-                        Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 600, 1, Main.myPlayer, 0, 0);
+                        case 0:
+                            for (int i = 0; i < 1; i++)
+                            {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                            }
+
+                            }
+                            break;
+
+                        case 1:
+                            for (int i = 0; i < 1; i++)
+                            {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
+
+                            }
 
 
-
-                    }
-                    for (int i = 0; i < 1; i++)
-                    {
-                        Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 600, 1, Main.myPlayer, 0, 0);
+                        }
+                        break;
 
 
-
-                    }
+                    
+                  
+                  
 
 
                 }
@@ -921,25 +931,30 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if(Arrows < 10)
                 {
-
+                    Arrows+= 1;
                     timer = 0;
                 }
                 if (Arrows >= 10)
                 {
 
                     ResetTimers();
-                    switch (Main.rand.Next(3))
+                    switch (Main.rand.Next(4))
                     {
                         case 0:
-                            State = ActionState.Archery;
+                            State = ActionState.BoostBounce1;
                             break;
 
                         case 1:
-                            State = ActionState.Archery;
+                            State = ActionState.BonfireLeft;
                             break;
 
                         case 2:
-                            State = ActionState.Archery;
+                            State = ActionState.BonfireRight;
+
+                            break;
+
+                        case 3:
+                            State = ActionState.Kick;
 
                             break;
 
