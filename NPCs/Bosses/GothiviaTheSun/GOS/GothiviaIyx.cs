@@ -148,7 +148,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             // DisplayName.SetDefault("Verlia of The Moon");
 
             Main.npcFrameCount[Type] = 61;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 24;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 32;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
 
             // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
@@ -260,13 +260,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     ChargeTrailOpacity = 1;
             }
 
-            Color color = Color.OrangeRed;
+            Color color = Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
             return color * ChargeTrailOpacity * (1f - completionRatio);
         }
 
         public float WidthFunctionCharge(float completionRatio)
         {
-            return (((NPC.width * NPC.scale) * 2) / 0.75f * (1f - completionRatio)) * 0.4f;
+            return (((NPC.width * NPC.scale) * 2) / 0.75f * (1f - completionRatio)) * 1.5f;
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -276,12 +276,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (TrailDrawer == null)
             {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
+                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, TrailRegistry.FireVertexShader);
             }
 
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WaterTrail);
+            TrailRegistry.FireVertexShader.SetShaderTexture(TrailRegistry.WaterTrail);
             Vector2 size = new Vector2(166, 96);
-            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.8f - screenPos, 155);
+            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
 
             Player player = Main.player[NPC.target];
@@ -309,13 +309,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (ThreeQ && !FourQ && !NoWings)
             {
                 Vector2 drawPosition = NPC.Center - screenPos;
-                Vector2 origin = new Vector2(74, 74);
+                Vector2 origin = new Vector2(83, 48);
                 Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/Gwings3Q").Value;
                 int wingFrameSpeed = 1;
                 int wingFrameCount = 60;
                 spriteBatch.Draw(syliaWingsTexture, drawPosition,
                     syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
-                    drawColor, 0f, origin, 2f, effects, 0f);
+                    drawColor, NPC.rotation, origin, 2f, effects, 0f);
 
             }
 
@@ -323,13 +323,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (FourQ && !ThreeQ && !NoWings)
             {
                 Vector2 drawPosition = NPC.Center - screenPos;
-                Vector2 origin = new Vector2(83, 68);
+                Vector2 origin = new Vector2(83, 48);
                 Texture2D syliaWingsTexture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/Gwings4Q").Value;
                 int wingFrameSpeed = 1;
                 int wingFrameCount = 60;
                 spriteBatch.Draw(syliaWingsTexture, drawPosition,
                     syliaWingsTexture.AnimationFrame(ref _wingFrameCounter, ref _wingFrameTick, wingFrameSpeed, wingFrameCount, true),
-                    drawColor, 0f, origin, 2f, effects, 0f);
+                    drawColor, NPC.rotation, origin, 2f, effects, 0f);
 
             }
 
@@ -386,57 +386,57 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.ReallyStartIrr:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.StartIrr:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.HideIrr:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.Blastout:
                     rect = new(0, 18 * 146, 206, 5 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.FallingBlast:
                     rect = new(0, 24 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.STARTNODES:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.STARTAXE:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.STARTLASER:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.STARTSPIKE:
                     rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.CallHavoc:
                     rect = new(0, 1 * 146, 206, 17 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 17, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 17, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
                 case ActionState.LandIrr:
                     rect = new(0, 26 * 146, 206, 5 * 146);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
 
 
@@ -455,99 +455,99 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.ReallyStartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
 
 
                 case ActionState.StartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Desperation:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Suns1:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Suns2:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.SunExplosionCharge1:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.SunExplosionCharge2:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Invisible:
                     rect = new(0, 54 * 96, 166, 1 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.BonfireLeft:
                     rect = new(0, 54 * 96, 166, 1 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.BonfireRight:
                     rect = new(0, 54 * 96, 166, 1 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 200, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.TheZoomer:
                     rect = new(0, 55 * 96, 166, 1 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 400, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 400, 1, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.BoostBounce1:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.BoostBounce2:
                     rect = new(0, 57 * 96, 166, 4 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.BoostBounce3:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter,  ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Kick:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.StandCuss:
                     rect = new(0, 57 * 96, 166, 4 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 4, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Dichotamy:
                     rect = new(0, 1 * 96, 166, 14 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 14, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 14, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Archery:
                     rect = new(0, 24 * 96, 166, 13 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 13, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.ExplodeOut:
                     rect = new(0, 46 * 96, 166, 9 * 96);
-                    spriteBatch.Draw(texture, NPC.position - screenPos - originalHitbox, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 9, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 9, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
             }
 
@@ -660,7 +660,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     ThreeQ = false;
                     FourQ = true;
-                    DrawChargeTrail = true;
+                    DrawChargeTrail = false;
                     NPC.velocity.Y *= 0.96f;
                     BoostBoom1();
                     NPC.aiStyle = -1;
@@ -908,12 +908,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
 
 
-            if (timer > 60 && timer < 320)
+            if (timer > 60 && timer < 440)
             {
                 NPC.rotation = NPC.velocity.ToRotation();
-                float movementSpeed = 32;
-                float size = 712;
-                float figureEightSpeed = 0.05f;
+                float movementSpeed = 40;
+                float size = 812;
+                float figureEightSpeed = 0.07f;
 
                 float t = timer * figureEightSpeed;
                 float scale = 2 / (3 - MathF.Cos(2 * t));
@@ -932,11 +932,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = targetVelocity;
             }
        
-            if (timer == 380)
+            if (timer == 480)
             {
                 NPC.velocity *= 0.3f;
                 ResetTimers();
                 State = ActionState.StartGoth;
+                NPC.rotation = 0;
             }
         }
 
