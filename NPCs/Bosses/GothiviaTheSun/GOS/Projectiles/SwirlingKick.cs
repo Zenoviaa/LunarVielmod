@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void SetDefaults()
         {
             Projectile.friendly = false;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.width = 89 / 2;
             Projectile.height = 89 / 2;
             Projectile.penetrate = -1;

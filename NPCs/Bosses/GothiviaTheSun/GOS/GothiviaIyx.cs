@@ -246,6 +246,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
         float ChargeTrailOpacity;
         bool DrawChargeTrail;
+        bool TrailedOrange;
         public Color ColorFunctionCharge(float completionRatio)
         {
             if (!DrawChargeTrail)
@@ -260,8 +261,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (ChargeTrailOpacity >= 1)
                     ChargeTrailOpacity = 1;
             }
-
+           
             Color color = Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
+
+            if (TrailedOrange)
+            {
+                color = Color.Lerp(Color.Orange, Color.DarkGoldenrod, completionRatio);
+            }
             return color * ChargeTrailOpacity * (1f - completionRatio);
         }
 
@@ -618,6 +624,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.damage = 0;
                     counter++;
                     FourQ = true;
+                    TrailedOrange = false;
                     ThreeQ = false;
                     NoWings = false;
                     ReallyIdleGoth();
@@ -630,6 +637,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     counter++;
                     FourQ = true;
                     DrawChargeTrail = false;
+                    TrailedOrange = false;
                     ThreeQ = false;
                     IdleGoth();
                     NPC.noGravity = true;
@@ -642,6 +650,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.damage = 0;
                     counter++;
                     ThreeQ = true;
+                    TrailedOrange = false;
                     FourQ = false;
                     NPC.noGravity = true;
                     NoWings = false;
@@ -654,6 +663,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.damage = 0;
                     counter++;
                     ThreeQ = true;
+                    TrailedOrange = false;
                     FourQ = false;
                     NPC.noGravity = true;
                     NoWings = false;
@@ -665,6 +675,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 case ActionState.BoostBounce1:
                     NPC.damage = 600;
                     counter++;
+                    TrailedOrange = false;
                     ThreeQ = false;
                     FourQ = true;
                     DrawChargeTrail = false;
@@ -708,6 +719,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     DrawChargeTrail = true;
                     NPC.velocity *= 0.9f;
                     NPC.noGravity = true;
+                    TrailedOrange = true;
                     TheY();
                     NPC.aiStyle = -1;
                     break;
@@ -727,12 +739,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 case ActionState.SunExplosionCharge1:
-                    NPC.damage = 600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = true;
                     DrawChargeTrail = false;
                     NoWings = false;
+                    TrailedOrange = false;
                     NPC.velocity *= 0.96f;
                     SunchargeGreen();
                     NPC.aiStyle = -1;
@@ -740,12 +753,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 case ActionState.SunExplosionCharge2:
-                    NPC.damage = 600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = true;
                     DrawChargeTrail = false;
                     NoWings = false;
+                    TrailedOrange = false;
                     NPC.velocity *= 0.96f;
                     SunchargeOrange();
                     NPC.aiStyle = -1;
@@ -753,7 +767,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 case ActionState.Suns2:
-                    NPC.damage = 600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = true;
@@ -765,7 +779,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     break;
 
                 case ActionState.Suns1:
-                    NPC.damage = 600;
+                    NPC.damage = 0;
                     counter++;
                     ThreeQ = false;
                     FourQ = true;
@@ -997,7 +1011,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothBlastExplosionProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, ai1);
                 }
 
 
@@ -1018,7 +1032,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
 
 
-            if (timer > 60 && timer < 440)
+            if (timer > 90 && timer < 470)
             {
                 NPC.rotation = NPC.velocity.ToRotation();
                 float movementSpeed = 40;
@@ -1042,7 +1056,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = targetVelocity;
             }
        
-            if (timer == 480)
+            if (timer == 510)
             {
                 NPC.velocity *= 0.2f;
                 ResetTimers();
@@ -1073,7 +1087,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<SwirlingKick>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<SwirlingKick>(), 20, 0f, Main.myPlayer, 0f, ai1);
 
                     //     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
@@ -1302,7 +1316,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 20f;
+                speed = 18f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1369,7 +1383,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 26f;
+                speed = 20f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1436,7 +1450,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 26f;
+                speed = 24f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
