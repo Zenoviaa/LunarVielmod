@@ -17,7 +17,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override string Texture => TextureRegistry.EmptyTexture;
 
         //AI
-        private float LifeTime => 90f;
+        private float LifeTime => 120f;
         private ref float Timer => ref Projectile.ai[0];
         private float Progress
         {
@@ -41,9 +41,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
-        private float StartRadius => 612;
+        private float StartRadius => 712;
         private float EndRadius => 4;
-        private float Width => 78;
+        private float Width => 98;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;

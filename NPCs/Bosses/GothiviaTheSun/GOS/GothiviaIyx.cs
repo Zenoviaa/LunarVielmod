@@ -1155,7 +1155,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-            if (timer == 120)
+            if (timer == 150)
             {
                 NPC.velocity *= 0.3f;
                 ResetTimers();
@@ -1259,7 +1259,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-            if (timer == 120)
+            if (timer == 150)
             {
                 NPC.velocity *= 0.3f;
                 ResetTimers();
@@ -1961,8 +1961,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float ai1 = NPC.whoAmI;
             if (timer == 1)
             {
-               
 
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GreenSunsBoomProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
+
+
+                }
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -2030,7 +2037,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
 
 
+                if (StellaMultiplayer.IsHost)
+                {
+                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
+                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<SunsBoomProj>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
+
+                }
                 if (StellaMultiplayer.IsHost)
                 {
                     var entitySource = NPC.GetSource_FromThis();

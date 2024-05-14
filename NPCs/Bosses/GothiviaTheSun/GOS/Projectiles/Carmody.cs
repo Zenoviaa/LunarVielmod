@@ -134,7 +134,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 var EntitySource = NPC.GetSource_FromThis();
                 if (StellaMultiplayer.IsHost)
                 {
-                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 1800, 0, 10,
+                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 2000, 0, 10,
                         ModContent.ProjectileType<ORANGELS>(), 1500, 0f, owner: Main.myPlayer);
 
                 }
