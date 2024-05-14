@@ -91,6 +91,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     return true;
             }
 
+
             //Return false to not use default collision
             return false;
         }

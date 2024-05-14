@@ -72,6 +72,7 @@
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="effects\NormalDistortion.fx" />
+    <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="Effects\Tint.fx" />
     <None Remove="effects\Vignette.fx" />
     <None Remove="Gores\Bricks1.png" />
