@@ -1005,7 +1005,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1160,7 +1160,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     //     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
                 }
-
+                ShakeModSystem.Shake = 12;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothCarmody") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1257,6 +1257,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
             if (timer == 110)
             {
+                ShakeModSystem.Shake = 12;
                 if (StellaMultiplayer.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
@@ -1472,6 +1473,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
             if (timer == 1)
             {
+
+                ShakeModSystem.Shake = 8;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
                 switch (Main.rand.Next(2))
@@ -1512,7 +1515,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.velocity = dashDirection;
                 }
 
-                ShakeModSystem.Shake = 3;
+               
             }
 
 

@@ -141,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothExplode") { Pitch = Main.rand.NextFloat(-5f, 5f) }, Projectile.Center);
             var EntitySource = Projectile.GetSource_FromThis();
             float num = 8;
-
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 32f);
             switch (Main.rand.Next(2))
             {
                 case 0:
