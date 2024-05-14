@@ -1263,6 +1263,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         }
 
 
+        // Do bonfire into Boomboost
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         public int Wanger = 0;
@@ -1389,7 +1408,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (Wanger == 3)
                 {
                     Vector2 targetCenter = target.Center;
-                    Vector2 targetHoverCenter = targetCenter + new Vector2(0, -400);
+                    Vector2 targetHoverCenter = targetCenter + new Vector2(0, -450);
                     NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                     NPC.netUpdate = true;
 
@@ -1401,7 +1420,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (Wanger == 4)
                 {
                     Vector2 targetCenter = target.Center;
-                    Vector2 targetHoverCenter = targetCenter + new Vector2(0, 400);
+                    Vector2 targetHoverCenter = targetCenter + new Vector2(0, 450);
                     NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                     NPC.netUpdate = true;
 
