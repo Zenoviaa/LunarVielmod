@@ -69,6 +69,8 @@ namespace Stellamod.Projectiles.Magic
             Player owner = Main.player[Projectile.owner];
             SummonHelper.SearchForTargets(owner, Projectile, 
                 out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
+
+
             if(foundTarget)
             {
                 AI_Movement(targetCenter, 15);

@@ -40,7 +40,8 @@ namespace Stellamod.Helpers
         public static bool downedIrradiaBoss = false;
         public static bool downedSupernovaFragmentBoss = false;
 		public static bool downedNiiviBoss = false;
-		public static bool downedGothiviaBoss = false;
+        public static bool downedRekBoss = false;
+        public static bool downedGothiviaBoss = false;
 		public static bool downedEreshBoss = false;
 		public static bool downedLumiBoss = false;
 		public static bool downedVoidBoss = false;
@@ -74,6 +75,7 @@ namespace Stellamod.Helpers
             downedIrradiaBoss = false;
             downedSupernovaFragmentBoss = false;
 			downedNiiviBoss = false;
+			downedRekBoss = false;
 			downedGothiviaBoss = false;
 			downedEreshBoss = false;
 			downedLumiBoss = false;
@@ -94,6 +96,7 @@ namespace Stellamod.Helpers
 			tag["downedSunsBoss"] = downedSunsBoss;
 			tag["downedGothBoss"] = downedGothBoss;
 			tag["downedSOMBoss"] = downedSOMBoss;
+			tag["downedRekBoss"] = downedRekBoss;
 			tag["downedJackBoss"] = downedJackBoss;
 			tag["downedDaedusBoss"] = downedDaedusBoss;
 			tag["downedDreadBoss"] = downedDreadBoss;
@@ -149,6 +152,7 @@ namespace Stellamod.Helpers
             downedDreadMonolith3 = tag.GetBool("downedDreadMonolith3");
 			downedSupernovaFragmentBoss = tag.GetBool("downedSupernovaFragmentBoss");
 			downedNiiviBoss = tag.GetBool("downedNiiviBoss");
+			downedRekBoss = tag.GetBool("downedRekBoss");
 			downedGothiviaBoss = tag.GetBool("downedGothiviaBoss");
 			downedEreshBoss = tag.GetBool("downedEreshBoss");
 			downedLumiBoss = tag.GetBool("downedLumiBoss");
@@ -203,7 +207,8 @@ namespace Stellamod.Helpers
 				[2] = downedEreshBoss,
 				[3] = downedLumiBoss,
 				[4] = downedVoidBoss,
-                [5] = downedIrradiaBoss
+                [5] = downedIrradiaBoss,
+				[6] = downedRekBoss
             });
 		}
 
@@ -247,6 +252,7 @@ namespace Stellamod.Helpers
 			downedLumiBoss = flags[3];
 			downedVoidBoss = flags[4];
             downedIrradiaBoss = flags[5];
+			downedRekBoss = flags[6];
         }
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
-using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
+using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles;
+using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ using Terraria.GameContent.Animations;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 {
@@ -30,15 +31,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         public Vector2 Velocity;
         public float Rotation;
         public float Scale = 1f;
+        public bool Eaten;
 
         public RekSegment(NPC npc)
         {
             Position = npc.position;
             Rotation = 0;
             Velocity = Vector2.Zero;
+            Eaten = false;
         }
     }
 
+    [AutoloadBossHead]
     internal class RekSnake : ModNPC
     {
         //Draw Code
@@ -63,7 +67,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             EyePopout,
             Beamer,
             Ouroboros,
-            Crystal
+            Crystal,
+            Death
         }
 
    
@@ -73,10 +78,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             set => NPC.ai[0] = (float)value;
         }
 
+        //Damage Numbers
+        private int DamageBeamerFireBall => 60;
+        private int DamagePopoutEyeMiniLaser => 90;
+        private int DamageFireShockWave => 100;
+        private int DamageBlowtorch => 100;
+        private int DamageBlowtorchBlast => 50;
+        private int DamageBlowtorchExplosion => 150;
+
         private ref float Timer => ref NPC.ai[1];
         private ref float AttackTimer => ref NPC.ai[2];
+        private ref float AttackCycle => ref NPC.ai[3];
+        private bool PoppedOutEye;
+        private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
         private Player Target => Main.player[NPC.target];
         private IEntitySource EntitySource => NPC.GetSource_FromThis();
+        private Vector2 CrystalPosition;
         private Vector2 GothiviaPosition;
         private float GothiviaOrbitRadius;
 
@@ -100,6 +117,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             NPC.aiStyle = -1;
             NPC.knockBackResist = 0f;
             NPC.boss = true;
+            NPC.BossBar = ModContent.GetInstance<RekBossBar>();
 
             // The following code assigns a music track to the boss in a simple way.
             if (!Main.dedServ)
@@ -158,7 +176,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
      
                 float p = i;
-                float progress = p / (float)tailSegments;
+                float progress = p / tailSegments;
                 progress = 1 - progress;
                 string texturePath = $"{BaseTexturePath}RekBody6";
                 if(i > 2)
@@ -183,6 +201,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Timer = 0;
                 AttackTimer = 0;
+                AttackCycle = 0;
                 _resetTimers = false;
             }
         }
@@ -210,11 +229,28 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             base.OnSpawn(source);
             GothiviaPosition = NPC.position;
+            GothiviaOrbitRadius = 384;
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return State == ActionState.Dash;
         }
 
         public override void AI()
         {
             FinishResetTimers();
+            if(InPhase2 && !PoppedOutEye)
+            {
+                Head.TexturePath = $"{BaseTexturePath}RekSnakeNoEye";
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(EntitySource, (int)NPC.Center.X, (int)NPC.Center.Y, 
+                        ModContent.NPCType<RekFireEye>(), ai1: NPC.whoAmI);
+                }
+                PoppedOutEye = true;
+            }
+
             switch (State)
             {
                 case ActionState.Idle:
@@ -238,6 +274,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 case ActionState.Crystal:
                     AI_Crystal();
                     break;
+                case ActionState.Death:
+                    AI_Death();
+                    break;
             }
         }
 
@@ -245,12 +284,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             //Orbit Around
             Vector2 direction = GothiviaPosition.DirectionTo(NPC.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 720);
+            direction = direction.RotatedBy(MathHelper.TwoPi / 60);
             Vector2 targetCenter = GothiviaPosition + direction * GothiviaOrbitRadius;
-            AI_MoveToward(targetCenter, 4);
+            AI_MoveToward(targetCenter, 96);
         }
 
-        private void AI_MoveToward(Vector2 targetCenter, float speed = 8)
+        private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
         {
             //chase target
             Vector2 directionToTarget = NPC.Center.DirectionTo(targetCenter);
@@ -264,7 +303,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             if (NPC.velocity.X < targetVelocity.X)
             {
-                NPC.velocity.X++;
+                NPC.velocity.X+= accel;
                 if (NPC.velocity.X >= targetVelocity.X)
                 {
                     NPC.velocity.X = targetVelocity.X;
@@ -272,7 +311,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             }
             else if (NPC.velocity.X > targetVelocity.X)
             {
-                NPC.velocity.X--;
+                NPC.velocity.X-= accel;
                 if (NPC.velocity.X <= targetVelocity.X)
                 {
                     NPC.velocity.X = targetVelocity.X;
@@ -281,7 +320,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             if (NPC.velocity.Y < targetVelocity.Y)
             {
-                NPC.velocity.Y++;
+                NPC.velocity.Y+= accel;
                 if (NPC.velocity.Y >= targetVelocity.Y)
                 {
                     NPC.velocity.Y = targetVelocity.Y;
@@ -289,7 +328,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             }
             else if (NPC.velocity.Y > targetVelocity.Y)
             {
-                NPC.velocity.Y--;
+                NPC.velocity.Y-= accel;
                 if (NPC.velocity.Y <= targetVelocity.Y)
                 {
                     NPC.velocity.Y = targetVelocity.Y;
@@ -301,10 +340,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             Timer++;
             AI_MoveInOrbit();
+
+            NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
-            if (Timer >= 60)
+            if (Timer >= 120)
             {
-                ResetState(ActionState.EyePopout);
+                ResetState(ActionState.Dash);
             }
         }
 
@@ -426,49 +467,200 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if (AttackTimer >= 3)
             {
                 ResetSegmentGlow();
-                ResetState(ActionState.Idle);
+                ResetState(ActionState.Clappback);
             }
         }
 
         private void AI_Clappback()
         {
             Timer++;
-            if(Timer == 1)
+            NPC.velocity *= 0.98f;
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
-                NPC.velocity *= 0.98f;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/HavocCharge"), NPC.position);
 
-                SegmentStretch = 0.66f;
-                StartSegmentGlow(Color.Orange);
+                Vector2 directionToPlayer = NPC.Center.DirectionTo(Target.Center);
+                Vector2 targetVelocity = directionToPlayer * 1;
+                NPC.velocity = NPC.rotation.ToRotationVector2() * 2;
+
+                //Let's start glowing
+                Color color;
+                switch (AttackTimer)
+                {
+                    default:
+                        color = Color.White;
+                        break;
+                    case 1:
+                        color = Color.Orange;
+                        break;
+                    case 2:
+                        color = Color.White;
+                        break;
+                }
+
+                StartSegmentGlow(color);
+            }
+
+            //Glowing white
+            if (Timer < 60)
+            {
+                SegmentStretch -= 0.01f;
+                if (NPC.velocity.Length() < 32)
+                {
+                    NPC.velocity *= 1.08f;
+                }
+
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi * 2 / 60);
+                //Some smoky dusts while charging up
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    RekSegment segment = Segments[i];
+                    if (segment.GlowWhite)
+                    {
+                        if (Main.rand.NextBool(8))
+                        {
+                            Vector2 randOffset = Main.rand.NextVector2Circular(32, 32);
+                            Vector2 velocity = -(Vector2.UnitY * 5).RotatedByRandom(MathHelper.PiOver4 / 2);
+                            Dust.NewDustPerfect(segment.Center + randOffset, ModContent.DustType<TSmokeDust>(), velocity, 0, Color.DarkGray, 0.5f).noGravity = true;
+                        }
+
+                        if (Main.rand.NextBool(32))
+                        {
+                            Dust.NewDustPerfect(segment.Center, ModContent.DustType<GlowDust>(),
+                            (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
+                        }
+                    }
+                }
+
+                float glowSpeed = 1 / 60f;
+                GlowWhite(glowSpeed);
+            }
+
+            if (Timer > 60 && Timer < 90)
+            {
+                NPC.velocity *= 0.92f;
             }
 
             if(Timer < 90)
             {
-                AI_MoveToward(Target.Center);
-                SegmentStretch = MathHelper.Lerp(SegmentStretch, 3f, 0.1f);
-                if (Main.rand.NextBool(2))
-                {
-                    StartSegmentGlow(Color.Orange);
-                }
-                else
-                {
-                    StartSegmentGlow(Color.White);
-                }
-                GlowWhite(1 / 90f);
+                NPC.rotation = NPC.velocity.ToRotation();
+                MakeLikeWorm();
             }
 
-            if(Timer > 90)
+            if (Timer == 90)
             {
-                SegmentStretch = MathHelper.Lerp(SegmentStretch, 0.66f, 0.1f);
+                //Turn on the trail and roar!!!
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.Center, 1024f, 64f);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                //Explode
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    var segment = Segments[i];
+                    segment.Velocity = Main.rand.NextVector2Circular(32, 32);
+                    segment.Velocity.Y -= 24;
+                }
             }
 
-            NPC.rotation = NPC.velocity.ToRotation();
-            MakeLikeWorm();
-            if (Timer >= 120)
+            if(Timer > 90 && Timer < 120)
+            {
+                ResetSegmentGlow();
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    var segment = Segments[i];
+                    segment.Position += segment.Velocity;
+                    segment.Velocity.Y += 0.5f;
+                    segment.Rotation += segment.Velocity.Length() * 0.025f;
+                }
+            }
+   
+            if(Timer > 120 && Timer < 240)
+            {
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                NPC.velocity += directionToTarget;
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    var segment = Segments[i];
+                    segment.Position += segment.Velocity;
+                    segment.Velocity *= 0.98f;
+                    segment.Rotation += segment.Velocity.Length() * 0.025f;
+                }
+            }
+
+            if(Timer == 240)
+            {
+                StartSegmentGlow(Color.White);
+            }
+
+            if(Timer > 240 && Timer < 300)
+            {
+                GlowWhite(1 / 60f);
+                float progress = (Timer - 240) / 30f;
+                progress = Easing.InExpo(progress);
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    float recoverSpeed = 64 * progress;
+                    var segment = Segments[i];
+                    float distanceToCenter = Vector2.Distance(segment.Center, NPC.Center);
+                    if(distanceToCenter < recoverSpeed)
+                    {
+                        recoverSpeed = distanceToCenter;
+                    }
+
+                    segment.Position += segment.Center.DirectionTo(NPC.Center) * recoverSpeed;
+                    segment.Rotation += segment.Velocity.Length() * 0.025f;
+                }
+            }
+
+            if(Timer == 300)
+            {
+                //Explosion
+                ResetSegmentGlow();
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.Center, 3000, 128);
+                ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.2f, 0.2f), blend: 0.15f, timer: 30);
+                screenShaderSystem.FlashTintScreen(Color.Red, 0.3f, 30);
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    float knockback = 1;
+                    Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RekFireShockWave>(),
+                        DamageFireShockWave, knockback);
+                }
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                NPC.velocity = -Vector2.UnitY;
+            }
+
+
+            if(Timer > 300 & Timer < 310)
+            {
+                float maxSpeed = 45f;
+                if(NPC.velocity.Length() < maxSpeed)
+                {
+                    NPC.velocity *= 2f;
+                }
+            }
+
+            if(Timer > 310 && Timer < 370)
+            {
+                SegmentStretch = MathHelper.Lerp(0.1f, 0.66f, (Timer - 310f)/60f);
+                NPC.velocity *= 0.99f;
+                NPC.velocity = NPC.velocity.RotatedBy((MathHelper.TwoPi) / 60f);
+            }
+
+            if (Timer >= 300)
+            {
+                NPC.rotation = NPC.velocity.ToRotation();
+                MakeLikeWorm();
+            }
+
+            if (Timer >= 370)
             {
                 Timer = 0;
-                ResetSegmentGlow();
-                ResetState(ActionState.Idle);
+                StopSegmentGlow();
+                ResetState(ActionState.EyePopout);
             }
         }
 
@@ -478,18 +670,39 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if(Timer == 1)
             {
                 NPC.TargetClosest();
-              
+                Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
+                if (InPhase2 && StellaMultiplayer.IsHost)
+                {
+
+                    float knockback = 1;
+                    Projectile.NewProjectile(EntitySource, NPC.Center, laserDirection, ModContent.ProjectileType<RekFireBlowtorchProj>(),
+                        DamageBlowtorch, knockback, ai1: NPC.whoAmI);
+
+                }
             }
 
-            if(Timer % (int)(720 / (float)Segments.Length) == 0)
+            if(Timer % (int)((720 * 2) / (float)Segments.Length) == 0)
             {
+                Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
+                Vector2 laserVelocity = laserDirection * 40;
+
+                if (!InPhase2 && StellaMultiplayer.IsHost)
+                {
+                    float knockback = 1;
+                    Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity, ModContent.ProjectileType<RekFireEyeLaserMiniProj>(),
+                        DamagePopoutEyeMiniLaser, knockback);
+
+                    Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity * 0, ModContent.ProjectileType<CircleExplosionProj>(),
+                        DamagePopoutEyeMiniLaser, knockback);
+                }
+
                 StartSegmentGlow((int)AttackTimer, Color.White);
                 AttackTimer++;
                 if (AttackTimer >= Segments.Length)
                     AttackTimer = 0;
             }
 
-            GlowWhite(0.01f);
+            GlowWhite(0.02f);
             float distance = 16;
             Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
             Vector2 initialSpeed = directionToTarget * 8;
@@ -498,20 +711,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             offset *= (float)(Math.Cos(Timer * 3 * (Math.PI / 180)) * (distance / 3));
 
             NPC.velocity = initialSpeed + offset;
+            if (InPhase2)
+            {
+                NPC.velocity *= 1.25f;
+            }
+
             NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
             if(Timer >= 720)
             {
                 Timer = 0;
                 ResetSegmentGlow();
-                ResetState(ActionState.Idle);
+                ResetState(ActionState.Beamer);
             }
         }
 
         private void AI_Beamer()
         {
             Timer++;
-
             float rotationProgress = Timer / 90;
             rotationProgress = MathHelper.Clamp(rotationProgress, 0, 1);
             float rotationSpeed = MathHelper.Lerp(30, 180, rotationProgress);
@@ -523,11 +740,32 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             float time = 12;
             if (Timer % (time * 2) == 0 && Timer != 0)
             {
+                var segment = Segments[(int)AttackTimer];
+                Vector2 directionToTarget = segment.Center.DirectionTo(Target.Center);
+                Vector2 velocity = directionToTarget * 12;
+                if (StellaMultiplayer.IsHost)
+                {
+                    if(AttackTimer % 3 == 0)
+                    {
+                        float knockback = 1;
+                        Projectile.NewProjectile(EntitySource, segment.Center, velocity,
+                            ModContent.ProjectileType<RekFireBlowtorchBlastProj>(), DamageBlowtorchBlast, knockback, Main.myPlayer);
+                    }
+                    else
+                    {
+                        float knockback = 1;
+                        Projectile.NewProjectile(EntitySource, segment.Center, velocity,
+                            ModContent.ProjectileType<RekFireBallProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
+
+                        Projectile.NewProjectile(EntitySource, segment.Center, velocity * 0,
+                            ModContent.ProjectileType<SmallCircleExplosionProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
+                    }
+                }
+
                 for (int i = 0; i < 8; i++)
                 {
-                    var segment = Segments[(int)AttackTimer];
                     Vector2 dustSpeed = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    Dust d = Dust.NewDustPerfect(segment.Center + dustSpeed * 8, ModContent.DustType<GlowDust>(), dustSpeed * 5, Scale: 0.8f, newColor: Color.Orange); ;
+                    Dust d = Dust.NewDustPerfect(segment.Center + dustSpeed * 8, ModContent.DustType<GlowDust>(), dustSpeed * 5, Scale: 0.6f, newColor: Color.Orange); ;
                     d.noGravity = true;
                 }
 
@@ -539,12 +777,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 }
             }
 
-
             if (Timer % time == 0)
             {
                 StartSegmentGlow((int)AttackTimer, Color.White);
             }
-
 
             float glowSpeed = 1 / time;
             GlowWhite(glowSpeed);
@@ -554,14 +790,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             direction = direction.RotatedBy(MathHelper.TwoPi / rotationSpeed);
             Vector2 targetCenter = Target.Center + direction * 444;
             float speed = 96;
-
-
-            for(int i = 0; i < 16; i++)
-            {
-                AI_MoveToward(targetCenter, speed);
-            }
-
-  
+            float accel = 16;
+            AI_MoveToward(targetCenter, speed, accel);
 
             NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
@@ -569,18 +799,260 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Timer = 0;
                 ResetSegmentGlow();
-                ResetState(ActionState.Dash);
+                ResetState(ActionState.Ouroboros);
             }
         }
 
         private void AI_Ouroboros()
         {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                StartSegmentGlow(Color.Orange);
+            }
 
+
+            if (AttackCycle == 0)
+            {
+                var targetSegment = Segments[Segments.Length - (int)AttackTimer - 1];
+                float endSegment = Segments.Length - 5;
+                float progress = AttackTimer / endSegment;
+                float speed = 1 + (7f * (1f - progress));
+                float accel = 1;
+                AI_MoveToward(targetSegment.Center, speed, accel);
+                NPC.rotation = NPC.velocity.ToRotation();
+
+                if (AttackTimer < endSegment)
+                {
+                    if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            float rot = targetSegment.Rotation - MathHelper.PiOver2;
+                            Vector2 velocity = rot.ToRotationVector2();
+                            float knockback = 1;
+                            Projectile.NewProjectile(EntitySource, targetSegment.Center, velocity,
+                                ModContent.ProjectileType<RekFireBlowtorchBlastProj>(), DamageBlowtorchBlast, knockback, Main.myPlayer);
+                        }
+                      
+                        targetSegment.Eaten = true;
+                        AttackTimer++;
+                    }
+                }
+                if (AttackTimer >= endSegment)
+                {
+                    AttackTimer = 0;
+                    AttackCycle++;
+                }
+            }
+            else if (AttackCycle == 1)
+            {
+                int explosionTime = 120;
+                AttackTimer++;
+                if (AttackTimer  == 1)
+                {
+                    StopSegmentGlow();
+                }
+
+                if(AttackTimer == explosionTime / 2)
+                {
+                    StartSegmentGlow(Color.White);           
+                }
+
+
+                GlowWhite(1 / 60f);
+                if (AttackTimer == explosionTime)
+                {
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        var segment = Segments[i];
+                        segment.Eaten = false;
+                    }
+
+                    ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 30f);
+                    screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 30);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 3000f, 48);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekOuroborosExplosion"), NPC.Center);
+                    float num = 8;
+                    for (int i = 0; i < num; i++)
+                    {
+                        float progress = (float)i / num;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 velocity = rot.ToRotationVector2();
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            float knockback = 1;
+                            Projectile.NewProjectile(EntitySource, NPC.Center, velocity,
+                                ModContent.ProjectileType<RekFireOuroborosProj>(), DamageBlowtorchExplosion, knockback, Main.myPlayer);
+                        }
+                    }
+
+                    NPC.velocity = -Vector2.UnitY;
+                }
+
+                if (AttackTimer > explosionTime && AttackTimer < explosionTime + 10)
+                {
+                    float maxSpeed = 45f;
+                    if (NPC.velocity.Length() < maxSpeed)
+                    {
+                        NPC.velocity *= 2f;
+                    }
+                }
+
+                if (AttackTimer > explosionTime + 10 && AttackTimer < explosionTime + 70)
+                {
+                    NPC.velocity *= 0.99f;
+                    NPC.velocity = NPC.velocity.RotatedBy((MathHelper.TwoPi) / 60f);
+                }
+        
+                if(AttackTimer >= explosionTime + 70)
+                {
+                    AttackTimer = 0;
+                    AttackCycle++;
+                }
+            }
+    
+    
+            MakeLikeWorm(); 
+            if (AttackCycle == 2)
+            {
+                ResetState(ActionState.Crystal);
+            }
         }
 
         private void AI_Crystal()
         {
+            Timer++;
+            float rotationProgress = Timer / 180f;
+            rotationProgress = MathHelper.Clamp(rotationProgress, 0, 1);
+            rotationProgress = Easing.SpikeOrb(rotationProgress);
+            float rotationSpeed = MathHelper.Lerp(180, 30, rotationProgress);
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CrystalPosition = Target.Center;
+                StartSegmentGlow(Color.White);
+            }
 
+
+            if (Timer > 30 && Timer < 90)
+            {
+                Vector2 offset = new Vector2(0, -61);
+                int dustType = ModContent.DustType<GlowDust>();
+                if (Main.rand.NextBool(3))
+                {
+      
+                    Vector2 randPos = CrystalPosition + offset + Main.rand.NextVector2CircularEdge(196, 196);
+                    Vector2 velocity = randPos.DirectionTo(CrystalPosition + offset) * 4;
+                    float scale = Main.rand.NextFloat(0.5f, 1f);
+                    Dust.NewDustPerfect(randPos, dustType, velocity, Alpha: 0, newColor: Color.White, Scale: scale);
+
+                }
+
+                float dustProgress = (Timer - 30f) / 60f;
+
+                float centerScale = dustProgress * 4f;
+                Dust.NewDustPerfect(CrystalPosition + offset, dustType, Vector2.Zero, Alpha: 0, newColor: Color.White, Scale: centerScale);
+            }
+
+            if(Timer == 90)
+            {
+                StopSegmentGlow();
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(EntitySource, (int)CrystalPosition.X, (int)CrystalPosition.Y, ModContent.NPCType<RekFireCrystal>());
+                }
+            }
+
+            float glowSpeed = 1 / 90f;
+            GlowWhite(glowSpeed);
+
+            //Movement
+            Vector2 direction = CrystalPosition.DirectionTo(NPC.Center);
+            direction = direction.RotatedBy(MathHelper.TwoPi / rotationSpeed);
+            Vector2 targetCenter = CrystalPosition + direction * 444;
+            float speed = 96;
+            float accel = 16;
+            AI_MoveToward(targetCenter, speed, accel);
+
+            NPC.rotation = NPC.velocity.ToRotation();
+            MakeLikeWorm();
+            if (Timer >= 720)
+            {
+                Timer = 0;
+                StopSegmentGlow();
+                ResetState(ActionState.Idle);
+            }
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+                if(State != ActionState.Death)
+                {
+                    ResetState(ActionState.Death);
+                }
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            if(Timer % 2 == 0)
+            {
+                int randSegment = Main.rand.Next(0, Segments.Length);
+                Color color;
+                switch (Main.rand.Next(2))
+                {
+                    default:
+                    case 0:
+                        color = Color.White;
+                        break;
+                    case 1:
+                        color = Color.Orange;
+                        break;
+                }
+                StartSegmentGlow(randSegment, color);
+            }
+
+            SegmentStretch = MathHelper.Lerp(0.66f, 0.1f, Timer / 300f);
+            GlowWhite(0.5f);
+            NPC.velocity *= 0.98f;
+            NPC.rotation = NPC.velocity.ToRotation();
+            MakeLikeWorm();
+            if(Timer >= 300)
+            {
+                //DIE NOWWWW!!!
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
+
+                ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 5);
+                screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 15);
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    for(float i = 0; i < 8; i++)
+                    {
+                        float progress = i / 8f;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 direction = rot.ToRotationVector2();
+                        Projectile.NewProjectile(EntitySource, NPC.Center, direction,
+                            ModContent.ProjectileType<RekFireBlowtorchBlastDeathProj>(), 0, 0, Main.myPlayer);
+                    }
+                }
+                NPC.Kill();
+            }
+        }
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedRekBoss, -1);
         }
 
         #region Draw Code
@@ -727,7 +1199,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     ChargeTrailOpacity = 1;
             }
 
-            return Color.Orange * ChargeTrailOpacity * (1f - completionRatio);
+            return Color.Lerp(Color.Orange, Color.Orange, (1f - completionRatio)) * ChargeTrailOpacity;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -739,12 +1211,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
             Vector2 size = new Vector2(90, 90);
+            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
             TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 RekSegment segment = Segments[i];
+                if (segment.Eaten)
+                    continue;
+
                 Vector2 drawPosition = segment.Position - screenPos + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
@@ -757,9 +1233,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 RekSegment segment = Segments[i];
+                if (segment.Eaten)
+                    continue;
+
                 if (!ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_Glow", out var asset))
                     continue;
 
@@ -771,18 +1251,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 float osc = VectorHelper.Osc(0, 1);
    
                 spriteBatch.Draw(asset.Value, drawPosition, null, drawColor * osc, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-                if (segment.GlowTimer > 0 && ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_White", out var whiteAsset))
-                {
-                    spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-                }
-                
+
                 for (float j = 0f; j < 1f; j += 0.25f)
                 {
                     float radians = (j + osc) * MathHelper.TwoPi;
                     spriteBatch.Draw(segment.GlowTexture, drawPosition + new Vector2(0f, 8f).RotatedBy(radians) * osc,
                         null, Color.White * osc * 0.3f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
+
+                if (segment.GlowTimer > 0 && ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_White", out var whiteAsset))
+                {
+                    spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
             }
+
+
         }
         #endregion
     }

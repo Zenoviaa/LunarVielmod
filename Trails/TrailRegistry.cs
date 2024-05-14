@@ -20,7 +20,7 @@ namespace Stellamod.Trails
         public static MiscShaderData LightBeamVertexShader => GameShaders.Misc["VampKnives:LightBeamVertexShader"];
         public static MiscShaderData ArtemisLaserShader => GameShaders.Misc["VampKnives:ArtemisLaserShader"];
         public static MiscShaderData FireVertexShader => GameShaders.Misc["VampKnives:Fire"];
-
+        public static MiscShaderData FireWhiteVertexShader => GameShaders.Misc["VampKnives:FireWhite"];
 
 
         public static Asset<Texture2D> StarTrail => ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/StarTrail");

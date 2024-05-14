@@ -142,6 +142,9 @@ namespace Stellamod
                 Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
                 GameShaders.Misc[ShaderRegistry.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");
 
+                Ref<Effect> whiteflameShader = new(Assets.Request<Effect>("Effects/Whiteflame", AssetRequestMode.ImmediateLoad).Value);
+                GameShaders.Misc[ShaderRegistry.VampKnives_FireWhite] = new MiscShaderData(whiteflameShader, "TrailPass");
+
                 Asset<Effect> glowingDustShader = this.Assets.Request<Effect>("Effects/GlowingDust");
                 GameShaders.Misc[ShaderRegistry.Glowing_Dust] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
 

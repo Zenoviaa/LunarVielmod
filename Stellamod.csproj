@@ -72,6 +72,7 @@
     <None Remove="Dusts\TSmokeTornadoDust.png" />
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="effects\NormalDistortion.fx" />
+    <None Remove="Effects\Primitives\Whiteflame.fx" />
     <None Remove="Effects\Tint.fx" />
     <None Remove="effects\Vignette.fx" />
     <None Remove="Gores\Bricks1.png" />
@@ -557,6 +558,7 @@
     <None Remove="Projectiles\Swords\VoidBlasterSpawnEffect.png" />
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
+    <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />
     <None Remove="Projectiles\VoidRain.png" />
@@ -581,7 +583,6 @@
   <ItemGroup>
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Items\Accessories\Shields\" />
-    <Folder Include="NPCs\Bosses\GothiviaTheSun\REK\Projectiles\" />
     <Folder Include="Projectiles\Hostile\" />
     <Folder Include="Projectiles\FX\" />
     <Folder Include="Projectiles\Swords\Slashes\" />
