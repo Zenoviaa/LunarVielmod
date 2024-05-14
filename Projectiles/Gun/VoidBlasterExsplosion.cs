@@ -58,7 +58,7 @@ namespace Stellamod.Projectiles.Gun
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().VoidBlasterNPC = null;
                 Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<VoidBlasterExplosionBomb>(), Projectile.damage * 3, 1, Projectile.owner, 0, 0);
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 140f);
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2524f, 240f);
                 Projectile.alpha = 0;
             }
             if (Projectile.ai[0] >= 50)
