@@ -992,6 +992,7 @@ namespace Stellamod
 			DoNESTIntegration();
 			DoNiiviIntegration();
 			DoRekIntegration();
-		}
+            DoGothiviaIntegration();
+        }
 	}
 }
