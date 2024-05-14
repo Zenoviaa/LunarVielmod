@@ -1129,30 +1129,28 @@ IceCubeMakerProj.DisplayName: Ice Cube Maker Proj
 VixylSwordProj.DisplayName: Vixyl Sword Proj
 VixylSlashProj.DisplayName: Vixyl Slash Proj
 VixylParryProj.DisplayName: Vixyl Parry Proj
-CircleExplosionProj.DisplayName: Circle Explosion Proj
-RekFireCrystalCircle.DisplayName: Rek Fire Crystal Circle
-RekFireCrystalLaser.DisplayName: Rek Fire Crystal Laser
-RekFireBallProj.DisplayName: Rek Fire Ball Proj
-RekFireCrystalCircleProj.DisplayName: Rek Fire Crystal Circle Proj
 RekFireCrystalLaserProj.DisplayName: Rek Fire Crystal Laser Proj
+RekFireCrystalCircleProj.DisplayName: Rek Fire Crystal Circle Proj
+RekFireBlowtorchProj.DisplayName: Rek Fire Blowtorch Proj
+RekFireBlowtorchBlastProj.DisplayName: Rek Fire Blowtorch Blast Proj
+RekFireBlowtorchBlastDeathProj.DisplayName: Rek Fire Blowtorch Blast Death Proj
+RekFireBallProj.DisplayName: Rek Fire Ball Proj
+SunLaserProj2.DisplayName: Sun Laser Proj2
+RazorSuns.DisplayName: Razor Suns
+RazorRingSun.DisplayName: Razor Ring Sun
+RazorRingFire.DisplayName: Razor Ring Fire
+RazorBurns.DisplayName: Razor Burns
+GothSunBlowtorchBlastProj.DisplayName: Goth Sun Blowtorch Blast Proj
+GothFireBlowtorchBlastProj.DisplayName: Goth Fire Blowtorch Blast Proj
+GothCircleShrink.DisplayName: Goth Circle Shrink
 RekFireEyeLaserMiniProj.DisplayName: Rek Fire Eye Laser Mini Proj
 RekFireEyeLaserProj.DisplayName: Rek Fire Eye Laser Proj
-RekFireShockWave.DisplayName: Rek Fire Shock Wave
-RazorBurns.DisplayName: Razor Burns
-RazorSuns.DisplayName: Razor Suns
-SmallCircleExplosionProj.DisplayName: Small Circle Explosion Proj
-GothCircleExplosionProj2.DisplayName: Goth Circle Explosion Proj2
-GothCircleExplosionProj.DisplayName: Goth Circle Explosion Proj
-SunLaserProj2.DisplayName: Sun Laser Proj2
-GothCircleShrink.DisplayName: Goth Circle Shrink
-RazorRingFire.DisplayName: Razor Ring Fire
-RazorRingSun.DisplayName: Razor Ring Sun
-RekFireBlowtorchBlastProj.DisplayName: Rek Fire Blowtorch Blast Proj
-RekFireBlowtorchProj.DisplayName: Rek Fire Blowtorch Proj
-RekFireBlowtorchBlastDeathProj.DisplayName: Rek Fire Blowtorch Blast Death Proj
-GothFireBlowtorchBlastProj.DisplayName: Goth Fire Blowtorch Blast Proj
-GothSunBlowtorchBlastProj.DisplayName: Goth Sun Blowtorch Blast Proj
 RekFireOuroborosProj.DisplayName: Rek Fire Ouroboros Proj
+RekFireShockWave.DisplayName: Rek Fire Shock Wave
+VoidBlasterExplosionBomb.DisplayName: Void Blaster Explosion Bomb
+VoidBlasterExsplosion.DisplayName: Void Blaster Exsplosion
+VoidBlasterProj.DisplayName: Void Blaster Proj
+VoidBlasterSpawnEffect.DisplayName: Void Blaster Spawn Effect
 FigureEightTestProj.DisplayName: Figure Eight Test Proj
 KickboomSun.DisplayName: Kickboom Sun
 KickboomBurn.DisplayName: Kickboom Burn

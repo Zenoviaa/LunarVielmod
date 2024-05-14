@@ -251,6 +251,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 PoppedOutEye = true;
             }
 
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    NPC.EncourageDespawn(120);
+                    NPC.velocity += -Vector2.UnitY;
+                    NPC.rotation = NPC.velocity.ToRotation();
+                    MakeLikeWorm();
+                    return;
+                }
+            }
+
             switch (State)
             {
                 case ActionState.Idle:
@@ -590,6 +603,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             if(Timer == 240)
             {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekClappbackStart"), NPC.position);
                 StartSegmentGlow(Color.White);
             }
 
@@ -816,14 +830,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if (AttackCycle == 0)
             {
                 var targetSegment = Segments[Segments.Length - (int)AttackTimer - 1];
-                float endSegment = 3;
+                float endSegment = Segments.Length - 5;
                 float progress = AttackTimer / endSegment;
                 float speed = 1 + (7f * (1f - progress));
                 float accel = 1;
                 AI_MoveToward(targetSegment.Center, speed, accel);
                 NPC.rotation = NPC.velocity.ToRotation();
 
-                if (AttackTimer < (Segments.Length - endSegment))
+                if (AttackTimer < endSegment)
                 {
                     if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
                     {
@@ -840,7 +854,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                         AttackTimer++;
                     }
                 }
-                if (AttackTimer >= (Segments.Length - endSegment))
+                if (AttackTimer >= endSegment)
                 {
                     AttackTimer = 0;
                     AttackCycle++;
@@ -848,7 +862,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             }
             else if (AttackCycle == 1)
             {
-                int explosionTime = 30;
+                int explosionTime = 120;
                 AttackTimer++;
                 if (AttackTimer  == 1)
                 {
@@ -860,11 +874,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     StartSegmentGlow(Color.White);           
                 }
 
-                if(AttackTimer >= explosionTime / 2)
-                {
-                    GlowWhite(1 / (float)explosionTime / 2f);
-                }
 
+                GlowWhite(1 / 60f);
                 if (AttackTimer == explosionTime)
                 {
                     for (int i = 0; i < Segments.Length; i++)
@@ -1254,20 +1265,19 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 float osc = VectorHelper.Osc(0, 1);
    
                 spriteBatch.Draw(asset.Value, drawPosition, null, drawColor * osc, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-                if (segment.GlowTimer > 0 && ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_White", out var whiteAsset))
-                {
-                    spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-                }
-                
+
                 for (float j = 0f; j < 1f; j += 0.25f)
                 {
                     float radians = (j + osc) * MathHelper.TwoPi;
                     spriteBatch.Draw(segment.GlowTexture, drawPosition + new Vector2(0f, 8f).RotatedBy(radians) * osc,
                         null, Color.White * osc * 0.3f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
+
+                if (segment.GlowTimer > 0 && ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_White", out var whiteAsset))
+                {
+                    spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
             }
-
-
         }
         #endregion
     }

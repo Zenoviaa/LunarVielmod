@@ -48,7 +48,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Projectile.scale = 1f;
             }
 
-            float progress = (Timer - LifeTime / 2) / LifeTime;
+            float progress = Timer / LifeTime;
             float easedProgress = Easing.OutExpo(progress);
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
@@ -95,7 +95,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
             {
                 Vector2 position = positions[i];
                 Vector2 previousPosition = positions[i - 1];
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 64, ref collisionPoint))
                     return true;
             }
 

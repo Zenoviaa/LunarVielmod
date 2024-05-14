@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     {
                         if (StellaMultiplayer.IsHost)
                         {
-                            int damage = 150;
+                            int damage = 50;
                             int knockback = 1;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, LaserDirection,
                                 ModContent.ProjectileType<RekFireEyeLaserProj>(), damage, knockback, Main.myPlayer, ai1: NPC.whoAmI);

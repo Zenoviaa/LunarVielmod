@@ -8,6 +8,7 @@
         public const string VampKnives_Light_Beam_Vertex_Shader = "VampKnives:LightBeamVertexShader";
         public const string VampKnives_Artemis_Laser_Shader = "VampKnives:ArtemisLaserShader";
         public const string VampKnives_Fire = "VampKnives:Fire";
+        public const string VampKnives_FireWhite = "VampKnives:FireWhite";
         public const string Silhouette_Shader = "Stellamod:SilhouetteShader";
         public const string Glowing_Dust = "GlowingDust";
 
