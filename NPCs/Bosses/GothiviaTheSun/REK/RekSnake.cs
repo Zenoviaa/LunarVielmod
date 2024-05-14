@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Animations;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,12 +31,14 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         public Vector2 Velocity;
         public float Rotation;
         public float Scale = 1f;
+        public bool Eaten;
 
         public RekSegment(NPC npc)
         {
             Position = npc.position;
             Rotation = 0;
             Velocity = Vector2.Zero;
+            Eaten = false;
         }
     }
 
@@ -81,9 +84,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         private int DamageFireShockWave => 100;
         private int DamageBlowtorch => 100;
         private int DamageBlowtorchBlast => 50;
+        private int DamageBlowtorchExplosion => 150;
 
         private ref float Timer => ref NPC.ai[1];
         private ref float AttackTimer => ref NPC.ai[2];
+        private ref float AttackCycle => ref NPC.ai[3];
         private bool PoppedOutEye;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
         private Player Target => Main.player[NPC.target];
@@ -196,6 +201,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Timer = 0;
                 AttackTimer = 0;
+                AttackCycle = 0;
                 _resetTimers = false;
             }
         }
@@ -584,7 +590,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
             if(Timer == 240)
             {
-
                 StartSegmentGlow(Color.White);
             }
 
@@ -794,17 +799,129 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Timer = 0;
                 ResetSegmentGlow();
-                ResetState(ActionState.Crystal);
+                ResetState(ActionState.Ouroboros);
             }
         }
 
         private void AI_Ouroboros()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 StartSegmentGlow(Color.Orange);
+            }
+
+
+            if (AttackCycle == 0)
+            {
+                var targetSegment = Segments[Segments.Length - (int)AttackTimer - 1];
+                float endSegment = 3;
+                float progress = AttackTimer / endSegment;
+                float speed = 1 + (7f * (1f - progress));
+                float accel = 1;
+                AI_MoveToward(targetSegment.Center, speed, accel);
+                NPC.rotation = NPC.velocity.ToRotation();
+
+                if (AttackTimer < (Segments.Length - endSegment))
+                {
+                    if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
+                    {
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            float rot = targetSegment.Rotation - MathHelper.PiOver2;
+                            Vector2 velocity = rot.ToRotationVector2();
+                            float knockback = 1;
+                            Projectile.NewProjectile(EntitySource, targetSegment.Center, velocity,
+                                ModContent.ProjectileType<RekFireBlowtorchBlastProj>(), DamageBlowtorchBlast, knockback, Main.myPlayer);
+                        }
+                      
+                        targetSegment.Eaten = true;
+                        AttackTimer++;
+                    }
+                }
+                if (AttackTimer >= (Segments.Length - endSegment))
+                {
+                    AttackTimer = 0;
+                    AttackCycle++;
+                }
+            }
+            else if (AttackCycle == 1)
+            {
+                int explosionTime = 30;
+                AttackTimer++;
+                if (AttackTimer  == 1)
+                {
+                    StopSegmentGlow();
+                }
+
+                if(AttackTimer == explosionTime / 2)
+                {
+                    StartSegmentGlow(Color.White);           
+                }
+
+                if(AttackTimer >= explosionTime / 2)
+                {
+                    GlowWhite(1 / (float)explosionTime / 2f);
+                }
+
+                if (AttackTimer == explosionTime)
+                {
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        var segment = Segments[i];
+                        segment.Eaten = false;
+                    }
+
+                    ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    screenShaderSystem.FlashTintScreen(Color.Orange, 0.3f, 30f);
+                    screenShaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.5f, 0.5f), timer: 30);
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 3000f, 48);
+                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekOuroborosExplosion"), NPC.Center);
+                    float num = 8;
+                    for (int i = 0; i < num; i++)
+                    {
+                        float progress = (float)i / num;
+                        float rot = progress * MathHelper.TwoPi;
+                        Vector2 velocity = rot.ToRotationVector2();
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            float knockback = 1;
+                            Projectile.NewProjectile(EntitySource, NPC.Center, velocity,
+                                ModContent.ProjectileType<RekFireOuroborosProj>(), DamageBlowtorchExplosion, knockback, Main.myPlayer);
+                        }
+                    }
+
+                    NPC.velocity = -Vector2.UnitY;
+                }
+
+                if (AttackTimer > explosionTime && AttackTimer < explosionTime + 10)
+                {
+                    float maxSpeed = 45f;
+                    if (NPC.velocity.Length() < maxSpeed)
+                    {
+                        NPC.velocity *= 2f;
+                    }
+                }
+
+                if (AttackTimer > explosionTime + 10 && AttackTimer < explosionTime + 70)
+                {
+                    NPC.velocity *= 0.99f;
+                    NPC.velocity = NPC.velocity.RotatedBy((MathHelper.TwoPi) / 60f);
+                }
+        
+                if(AttackTimer >= explosionTime + 70)
+                {
+                    AttackTimer = 0;
+                    AttackCycle++;
+                }
+            }
+    
+    
+            MakeLikeWorm(); 
+            if (AttackCycle == 2)
+            {
+                ResetState(ActionState.Crystal);
             }
         }
 
@@ -1104,6 +1221,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 RekSegment segment = Segments[i];
+                if (segment.Eaten)
+                    continue;
+
                 Vector2 drawPosition = segment.Position - screenPos + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
@@ -1120,6 +1240,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             for (int i = Segments.Length - 1; i > -1; i--)
             {
                 RekSegment segment = Segments[i];
+                if (segment.Eaten)
+                    continue;
+
                 if (!ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_Glow", out var asset))
                     continue;
 
