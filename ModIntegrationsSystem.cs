@@ -1087,7 +1087,7 @@ namespace Stellamod
 
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SupernovaFragment/SupernovaBestiary").Value;
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SupernovaFragment/SupernovaFragmentBestiary").Value;
                 Vector2 centered = new Vector2(
                     rect.X + (rect.Width / 2) - (texture.Width / 2),
                     rect.Y + (rect.Height / 2) - (texture.Height / 2));
