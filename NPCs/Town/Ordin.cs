@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Stellamod.Assets.Biomes;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Armors.Vanity.Gia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Harvesting;
@@ -385,7 +386,14 @@ namespace Stellamod.NPCs.Town
 						shopCustomPrice = 3,
 						shopSpecialCurrency = Stellamod.MOCCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					})
-					;
+                    
+
+					 .Add(new Item(ModContent.ItemType<SerpentWings>())
+					 {
+					 shopCustomPrice = 1,
+					 shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+					 })
+                    ;
 
 
             npcShop.Register(); // Name of this shop tab
