@@ -2,6 +2,7 @@
 using ParticleLibrary;
 using Stellamod.Brooches;
 using Stellamod.Buffs;
+using Stellamod.Buffs.Minions;
 using Stellamod.Dusts;
 using Stellamod.Gores.Foreground;
 using Stellamod.Helpers;
@@ -17,20 +18,15 @@ using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Caeva;
 using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.INest;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
-using Stellamod.NPCs.Bosses.Veiizal;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.NPCs.Event.Luminull;
 using Stellamod.NPCs.Minibosses;
@@ -39,6 +35,7 @@ using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Paint;
+using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using Stellamod.UI.Dialogue;
 using Stellamod.WorldG;
@@ -1001,8 +998,8 @@ namespace Stellamod
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/ArcharilitDrone3"), player.position);
 					var EntitySource = Player.GetSource_FromThis();
 
-					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRight>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeft>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+					Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionRightProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<HMArncharMinionLeftProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
                     player.AddBuff(ModContent.BuffType<HMMinionBuff>(), 99999);
                 }
 
@@ -1043,27 +1040,18 @@ namespace Stellamod
                 {
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
                     var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinion>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    player.AddBuff(ModContent.BuffType<FCBuff>(), 99999);
+                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinionProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
+                    player.AddBuff(ModContent.BuffType<FCMinionBuff>(), 99999);
                 }
 
             }
             else
             {
-                player.ClearBuff(ModContent.BuffType<FCBuff>());
+                player.ClearBuff(ModContent.BuffType<FCMinionBuff>());
                 FCArmorTime = 0;
             }
-
-
-			if (ZoneIlluria)
-			{
 			
-
-				//Update Rain
-				
-			}
-
-				if (ZoneAcid　|| ZoneLab)
+			if (ZoneAcid　|| ZoneLab)
             {
                 if (player.wet)
                 {

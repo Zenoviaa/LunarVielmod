@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Projectiles.Summons.Minions
 {
     public class MushroomStaveMinionProg : ModProjectile
     {
@@ -74,7 +74,7 @@ namespace Stellamod.Items.Weapons.Summon
             {
                 VEL = Main.rand.NextFloat(-0.06f, 0.06f);
                 Projectile.ai[1] = 0;
- 
+
                 VELAdd = true;
             }
         }

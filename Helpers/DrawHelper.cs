@@ -12,6 +12,15 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+		public static void DrawDimLight(Vector2 pos, Color color, float rotation, float scale)
+		{
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/DimLight").Value;
+            Color drawColor = new Color(color.R, color.G, color.B, 0);
+			Vector2 drawOrigin = texture.Size() / 2;
+            spriteBatch.Draw(texture, pos, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0f);
+        }
+
 		public static void DrawCircle(Vector2 center, float radius, Vector2[] circlePos, float offset = 0)
 		{
             Vector2 startDirection = Vector2.UnitY;

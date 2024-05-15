@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs.Minions;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Trails;
@@ -8,7 +9,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons
+namespace Stellamod.Projectiles.Summons.Minions
 {
     // - ModProjectile - the minion itself
 
@@ -22,7 +23,7 @@ namespace Stellamod.Projectiles.Summons
     // Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
     // If the player targets a certain NPC with right-click, it will fly through tiles to it
     // If it isn't attacking, it will float near the player with minimal movement
-    public class LWProj : ModProjectile,
+    public class LifeWandMinionProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         float Heart = 0;

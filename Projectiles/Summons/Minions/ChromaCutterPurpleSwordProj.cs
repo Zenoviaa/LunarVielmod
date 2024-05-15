@@ -8,7 +8,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Summon
+namespace Stellamod.Projectiles.Summons.Minions
 {
     internal class ChromaCutterPurpleSwordProj : ModProjectile
     {
@@ -84,7 +84,7 @@ namespace Stellamod.Items.Weapons.Summon
         public override void AI()
         {
             ref float ai_Counter = ref Projectile.ai[0];
-            if(ai_Counter == 0 && Main.myPlayer == Projectile.owner)
+            if (ai_Counter == 0 && Main.myPlayer == Projectile.owner)
             {
                 float radius = 384;
                 _targetCenter = Projectile.Center + new Vector2(
@@ -94,18 +94,18 @@ namespace Stellamod.Items.Weapons.Summon
             }
 
             ai_Counter++;
-        
-            if(ai_Counter >= Fire)
+
+            if (ai_Counter >= Fire)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     AI_Movement(Main.MouseWorld, 25, 5);
                     Projectile.netUpdate = true;
                 }
-            
+
                 float targetRotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, targetRotation, 0.4f);
-            } 
+            }
             else if (ai_Counter > Freeze)
             {
                 float targetRotation = _velocity.ToRotation() + MathHelper.ToRadians(45);

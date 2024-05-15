@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs.Minions;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Summons;
+using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -10,28 +11,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class AlcadWandMinionBuff : ModBuff
-	{
-		public override void SetStaticDefaults()
-		{
-			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
-			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
-		}
-
-		public override void Update(Player player, ref int buffIndex)
-		{
-			// If the minions exist reset the buff time, otherwise remove the buff from the player
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<EPWProj>()] > 0)
-			{
-				player.buffTime[buffIndex] = 18000;
-			}
-			else
-			{
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
 	public class PotionOfAlcadWand : ModItem
 	{
 		public override void SetDefaults()
@@ -51,7 +30,7 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.value = 10000; // how much the Item sells for (measured in copper)
 			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
 			Item.autoReuse = false; // if you can hold click to automatically use it again
-			Item.shoot = ModContent.ProjectileType<EPWProj>();
+			Item.shoot = ModContent.ProjectileType<AlcadWandMinionProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.buffType = ModContent.BuffType<AlcadWandMinionBuff>();
 		}

@@ -3,7 +3,7 @@ VoidMinionBuff: {
 	DisplayName: Void Minion Buff
 }
 
-TheBurningRodBuff: {
+TheBurningRodMinionBuff: {
 	Description: It burns with passion
 	DisplayName: The Burning Rod Buff
 }
@@ -13,17 +13,17 @@ SwarmerMinionBuff: {
 	DisplayName: Swarmer Minion Buff
 }
 
-SolMothBuff: {
+SolMothMinionBuff: {
 	Description: Ooo a moth!~
 	DisplayName: Sol Moth Buff
 }
 
-ProbeBuff: {
+ProbeMinionBuff: {
 	Description: Getting probed might be actually really hot.
 	DisplayName: Probe Buff
 }
 
-MushroomStaveBuff: {
+MushroomStaveMinionBuff: {
 	Description: Im not on shrooms I promise officer!
 	DisplayName: Mushroom Stave Buff
 }
@@ -43,12 +43,12 @@ JellyMinionBuff: {
 	DisplayName: Jelly Minion Buff
 }
 
-IvyakenBuff: {
+IvyakenMinionBuff: {
 	Description: Really powerful bow!
 	DisplayName: Ivyaken Buff
 }
 
-IrradiatedCreeperBuff: {
+IrradiatedCreeperMinionBuff: {
 	Description: Its a creeper what did you think?
 	DisplayName: Irradiated Creeper Buff
 }
@@ -63,12 +63,12 @@ HMMinionBuff: {
 	DisplayName: H M Minion Buff
 }
 
-FCBuff: {
+FCMinionBuff: {
 	Description: Getting powerful now aren't we?
 	DisplayName: F C Buff
 }
 
-DripperBuff: {
+DripplerMinionBuff: {
 	Description: Drippin out.
 	DisplayName: Dripper Buff
 }
@@ -373,7 +373,7 @@ AbyssalFlame: {
 	DisplayName: Abyssal Flame
 }
 
-VehementBuff: {
+VehementMinionBuff: {
 	Description: Mods.Stellamod.Buffs.VehementBuff.Description
 	DisplayName: Vehement Buff
 }
@@ -711,4 +711,29 @@ StarSuper: {
 VixylDodgeBuff: {
 	DisplayName: Sonata of the Moon
 	Description: Check out my Verlia cosplay!
+}
+
+JacksonPollockMinionBuff: {
+	DisplayName: Jackson Pollock Minion Buff
+	Description: Such a great way to make art :)
+}
+
+PotOfGreedMinionBuff: {
+	DisplayName: Pot Of Greed Minion Buff
+	Description: I activate POT OF GREED!
+}
+
+ProbeMinionBuff: {
+	DisplayName: Probe Minion Buff
+	Description: Pew pew pew pew~
+}
+
+ReflectionSeekerMinionBuff: {
+	DisplayName: Reflection Seeker Minion Buff
+	Description: Why are you staring at yourself?
+}
+
+XScissorMinionBuff: {
+	DisplayName: X Rift
+	Description: Opening a rift through space!
 }

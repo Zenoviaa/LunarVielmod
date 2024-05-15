@@ -57,8 +57,6 @@ namespace Stellamod.Items.Weapons.Summon
 			recipe.AddTile(TileID.Anvils);
 			recipe.AddIngredient(ModContent.ItemType<FrileBar>(), 2);
 			recipe.AddIngredient(ItemID.AntlionMandible, 10);
-
-
 			recipe.Register();
 		}
 	}

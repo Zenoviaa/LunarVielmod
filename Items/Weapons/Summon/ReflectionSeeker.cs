@@ -1,14 +1,16 @@
-﻿using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
+using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
-using Stellamod.Helpers;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-	public class ReflectionSeeker : ModItem
+    public class ReflectionSeeker : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -32,8 +34,8 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.value = Item.buyPrice(0, 0, 100, 0);
 			Item.rare = ModContent.RarityType<SirestiasSpecialRarity>();
 			Item.UseSound = SoundID.Item44;
-			Item.shoot = ModContent.ProjectileType<ReflectionSeekerProj>();
-			Item.buffType = ModContent.BuffType<ReflectionSeekerBuff>();
+			Item.shoot = ModContent.ProjectileType<ReflectionSeekerMinionProj>();
+			Item.buffType = ModContent.BuffType<ReflectionSeekerMinionBuff>();
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -47,28 +49,4 @@ namespace Stellamod.Items.Weapons.Summon
 			return false;
 		}
 	}
-
-
-		public class ReflectionSeekerBuff : ModBuff
-		{
-			public override void SetStaticDefaults()
-			{
-				Main.buffNoTimeDisplay[Type] = true;
-				Main.buffNoSave[Type] = true;
-			}
-
-		public override void Update(Player player, ref int buffIndex)
-		{
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<ReflectionSeekerProj>()] > 0)
-			{
-				player.buffTime[buffIndex] = 18000;
-			}
-			else
-			{
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
-	
 }

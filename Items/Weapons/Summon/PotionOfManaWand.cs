@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Projectiles.Summons;
+using Stellamod.Buffs.Minions;
+using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -8,38 +9,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class ManaWandMinionBuff : ModBuff
-	{
-		public override void SetStaticDefaults()
-		{
-			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
-			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
-		}
-
-		public override void Update(Player player, ref int buffIndex)
-		{
-			// If the minions exist reset the buff time, otherwise remove the buff from the player
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<MWProj>()] > 0)
-			{
-				player.buffTime[buffIndex] = 18000;
-			}
-			else
-			{
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
 	public class PotionOfManaWand : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Alcadiz String n Charm");
-			/* Tooltip.SetDefault("Your summons will target focused enemies" +
-				"\nSummons will manifest out of your string shield" +
-				"\nThey will act as temporary summons to give your other minions company!" +
-				"\nThe Charm above gives you 10+ Defense while active!"); */
-		}
 		public override void SetDefaults()
 		{
 			Item.width = 20;
@@ -56,15 +27,17 @@ namespace Stellamod.Items.Weapons.Summon
 			Item.value = 10000; // how much the Item sells for (measured in copper)
 			Item.UseSound = SoundID.Item11; // The sound that this Item plays when used.
 			Item.autoReuse = false; // if you can hold click to automatically use it again
-			Item.shoot = ModContent.ProjectileType<MWProj>();
+			Item.shoot = ModContent.ProjectileType<ManaWandMinionProj>();
 			Item.shootSpeed = 0f; // the speed of the projectile (measured in pixels per frame)
 			Item.channel = true;
 			Item.buffType = ModContent.BuffType<ManaWandMinionBuff>();
 		}
+
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
 			Lighting.AddLight(Item.position, 0.46f, .07f, .52f);
 		}
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
