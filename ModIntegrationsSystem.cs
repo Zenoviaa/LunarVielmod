@@ -464,7 +464,7 @@ namespace Stellamod
         private void DoIrradiaIntegration()
         {
 
-            string internalName8 = "Irradia N Havoc";
+            string internalName8 = "IrradiaNHavoc";
 
             // The NPC type of the boss
             int bossType8 = ModContent.NPCType<NPCs.Bosses.IrradiaNHavoc.Irradia.Irradia>();
