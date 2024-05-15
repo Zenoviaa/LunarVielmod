@@ -37,8 +37,7 @@ namespace Stellamod.Projectiles.Test
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureRegistry.CloudTexture.Value;
-            texture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/ZuiEffect");
 
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();
@@ -46,11 +45,11 @@ namespace Stellamod.Projectiles.Test
 
             //Calculate the scale with easing
             Color drawColor = (Color)GetAlpha(lightColor);
-            float drawScale = Projectile.scale * 2f;
+            float drawScale = Projectile.scale * 4f;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
@@ -58,7 +57,7 @@ namespace Stellamod.Projectiles.Test
             //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
             //Should be between 0-1
             float opacity = 1f;
-            shader.UseOpacity(1f);
+            shader.UseOpacity(0.3f);
 
             //How intense the colors are
             //Should be between 0-1
@@ -69,10 +68,10 @@ namespace Stellamod.Projectiles.Test
             shader.UseSaturation(speed);
 
             //Color
-            shader.UseColor(Color.DarkGoldenrod);
+            shader.UseColor(Color.RoyalBlue);
 
             //Texture itself
-            shader.UseImage1(ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect));
+            shader.UseImage1(texture);
 
             // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
             shader.Apply(null);
@@ -83,7 +82,7 @@ namespace Stellamod.Projectiles.Test
             {
                 float nextDrawScale = drawScale;
                 float nextDrawRotation = drawRotation * (i / num);
-                spriteBatch.Draw(texture, drawPosition, null, (Color)GetAlpha(lightColor), nextDrawRotation, drawOrigin, nextDrawScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture.Value, drawPosition, null, (Color)GetAlpha(lightColor), nextDrawRotation, drawOrigin, nextDrawScale, SpriteEffects.None, 0f);
             }
 
 
