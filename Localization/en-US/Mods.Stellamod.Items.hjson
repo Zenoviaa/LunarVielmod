@@ -2990,11 +2990,11 @@ Neptune8Card: {
 Gintelze: {
 	DisplayName: Gintelze
 	Tooltip:
-	''' 
-	A stolen sword when Commander Gintzia betrayed Gothivia.
-	It was an up and coming sword for their army to use without arms.
-	Swing it well!
-	'''
+		'''
+		A stolen sword when Commander Gintzia betrayed Gothivia.
+		It was an up and coming sword for their army to use without arms.
+		Swing it well!
+		'''
 }
 
 HolmbergScythe: {
@@ -7155,7 +7155,8 @@ FoxMark: {
 }
 
 Vhel: {
-	Tooltip: '''
+	Tooltip:
+		'''
 		Gothivia's special volley bow.
 		She's used it for decades and now you have it.
 		'''
