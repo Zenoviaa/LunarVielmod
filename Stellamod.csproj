@@ -73,8 +73,11 @@
     <None Remove="Dusts\TSmokeTornadoDustTip.png" />
     <None Remove="effects\NormalDistortion.fx" />
     <None Remove="Effects\Primitives\Whiteflame.fx" />
+    <None Remove="effects\SilShader.fx" />
+    <None Remove="Effects\TestShader.fx" />
     <None Remove="Effects\Tint.fx" />
     <None Remove="effects\Vignette.fx" />
+    <None Remove="Effects\WhiteflamePixelShader.fx" />
     <None Remove="Gores\Bricks1.png" />
     <None Remove="Gores\Bricks2.png" />
     <None Remove="Gores\GraniteProbe1.png" />
@@ -563,6 +566,7 @@
     <None Remove="Projectiles\Swords\VoidBlasterSpawnEffect.png" />
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
+    <None Remove="Projectiles\Test\ExampleSilhouetteProjectile.png" />
     <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />
     <None Remove="Projectiles\Thrown\Jugglers\BasicBaseballProj.png" />

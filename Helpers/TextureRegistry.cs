@@ -1,4 +1,8 @@
-﻿namespace Stellamod.Helpers
+﻿using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria.ModLoader;
+
+namespace Stellamod.Helpers
 {
     internal static class TextureRegistry
     {
@@ -12,5 +16,6 @@
         public static string VoxTexture4 => "Stellamod/Assets/Effects/VoxTexture5";
 
         public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
+        public static Asset<Texture2D> CloudTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
     }
 }
