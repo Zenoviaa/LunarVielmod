@@ -33,6 +33,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             Projectile.timeLeft = (int)LifeTime;
             Projectile.hide = true;
             LinePos = new Vector2[5];
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 5;
         }
         public override void AI()
         {
