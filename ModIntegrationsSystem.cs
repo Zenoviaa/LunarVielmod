@@ -69,10 +69,16 @@ namespace Stellamod
 
 			// The item used to summon the boss with (if available)
 			int summonItem = ModContent.ItemType<Items.Consumables.WanderingEssence>();
-
-			// Information for the player so he knows how to encounter the boss
-			// Ideally you'd have this text in the localization file, but screw that
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem}] at a post in the Fabled Castle to the right at night.");
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Jack/JackBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // Information for the player so he knows how to encounter the boss
+            // Ideally you'd have this text in the localization file, but screw that
+            LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem}] at a post in the Fabled Castle to the right at night.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -111,10 +117,17 @@ namespace Stellamod
 				ModContent.ItemType<Items.Placeable.DaedusBossRel>(),
 
 			};
-
-			// Information for the player so he knows how to encounter the boss
-			//string spawnInfo2 = $"High at the fabled castle lies a forgotten guardian of Gothivia's ranks";
-			LocalizedText spawnConditionText = Language.GetText($"Disturb with the ruined tablet deep within the morrow.");
+           
+			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DaedusRework/DaedusBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // Information for the player so he knows how to encounter the boss
+            //string spawnInfo2 = $"High at the fabled castle lies a forgotten guardian of Gothivia's ranks";
+            LocalizedText spawnConditionText = Language.GetText($"Disturb with the ruined tablet deep within the morrow.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -142,9 +155,16 @@ namespace Stellamod
 
 			// Used for tracking checklist progress
 			Func<bool> downed3 = () => DownedBossSystem.downedDreadBoss;
-
-			// If the boss should show up on the checklist in the first place and when (here, always)
-			Func<bool> available3 = () => true;
+          
+			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/DreadMire/DreadMireBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // If the boss should show up on the checklist in the first place and when (here, always)
+            Func<bool> available3 = () => true;
 
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection3 = new List<int>()
@@ -198,9 +218,16 @@ namespace Stellamod
 
 			// The item used to summon the boss with (if available)
 			int summonItem4 = ModContent.ItemType<Items.Consumables.WanderingEssence>();
-
-			// Information for the player so he knows how to encounter the boss
-			LocalizedText spawnConditionText = Language.GetText($"Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!");
+           
+			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Event/Gintzearmy/BossGintze/GintziaPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // Information for the player so he knows how to encounter the boss
+            LocalizedText spawnConditionText = Language.GetText($"Randomly each day, if you have 3 npcs and have killed the Stone Guardian, an army will raid you!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -241,14 +268,20 @@ namespace Stellamod
 
 			// The item used to summon the boss with (if available)
 			int summonItem5 = ModContent.ItemType<Items.Consumables.SunClaw>();
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SunStalker/SunStalkerBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // Information for the player so he knows how to encounter the boss
 
-			// Information for the player so he knows how to encounter the boss
+            // The boss does not have a custom despawn message, so we omit it
 
-			// The boss does not have a custom despawn message, so we omit it
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem5}] at an altar in the desert.");
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem5}] at an altar in the desert.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -293,13 +326,22 @@ namespace Stellamod
 			// The item used to summon the boss with (if available)
 			int summonItem5 = ModContent.ItemType<Items.Consumables.EDR>();
 
-			// Information for the player so he knows how to encounter the boss
 
-			// The boss does not have a custom despawn message, so we omit it
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/INest/IrradiatedNestBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
 
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Buy a [i:{summonItem5}] from Gia and use it in the virulent acid or find an Unknown Signal.");
+            // Information for the player so he knows how to encounter the boss
+
+            // The boss does not have a custom despawn message, so we omit it
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Buy a [i:{summonItem5}] from Gia and use it in the virulent acid or find an Unknown Signal.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -340,9 +382,16 @@ namespace Stellamod
 				ModContent.ItemType<Items.Placeable.SOMBossRel>(),
 
 			};
-
-			// The item used to summon the boss with (if available)
-			int summonItem6 = ModContent.ItemType<Items.Consumables.VoidKey>();
+          
+			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/singularityFragment/SingularityFragmentBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // The item used to summon the boss with (if available)
+            int summonItem6 = ModContent.ItemType<Items.Consumables.VoidKey>();
 
 			// Information for the player so he knows how to encounter the boss
 			LocalizedText spawnConditionText = Language.GetText($"Use a [i:{summonItem6}] at an altar, in the Aurelus, deep in the ice.");
@@ -385,8 +434,16 @@ namespace Stellamod
 
 			};
 
-			// The item used to summon the boss with (if available)
-			int summonItem7 = ModContent.ItemType<Items.Consumables.MoonflameLantern>();
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Verlia/VerliaPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+            // The item used to summon the boss with (if available)
+            int summonItem7 = ModContent.ItemType<Items.Consumables.MoonflameLantern>();
 
 			// The boss does not have a custom despawn message, so we omit it
 
@@ -437,13 +494,19 @@ namespace Stellamod
 			// The item used to summon the boss with (if available)
 			int summonItem8 = ModContent.ItemType<Items.Consumables.GothiviasSeal>();
 
-			// Information for the player so he knows how to encounter the boss
+            // Information for the player so he knows how to encounter the boss
 
-			// The boss does not have a custom despawn message, so we omit it
-
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"After killing her friend Irradia, Green sun will start and she will await your arrival, kill Rek to challenge her.");
+            // The boss does not have a custom despawn message, so we omit it
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/GothiviaBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"After killing her friend Irradia, Green sun will start and she will await your arrival, kill Rek to challenge her.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -488,6 +551,14 @@ namespace Stellamod
             // The item used to summon the boss with (if available)
             int summonItem8 = ModContent.ItemType<Items.Materials.ManifestedBravery>();
 
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/IrradiaNHavoc/Irradia/IrradiaBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
             // Information for the player so he knows how to encounter the boss
 
             // The boss does not have a custom despawn message, so we omit it
@@ -528,10 +599,18 @@ namespace Stellamod
 			Func<bool> downed = () => DownedBossSystem.downedSyliaBoss;
 
 			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
+           
+			Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Sylia/SyliaPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
 
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Interact with the strange anomaly that lies in within the Underworld Ruins.");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -564,9 +643,17 @@ namespace Stellamod
 
 			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"Randomly during a hardmode Aurorean Starfall, they may fall from the sky.");
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/STARBOMBER/STARBOMBERPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Randomly during a hardmode Aurorean Starfall, they may fall from the sky.");
 			bossChecklistMod.Call(
 				"LogMiniBoss",
 				Mod,
@@ -598,9 +685,18 @@ namespace Stellamod
 
 			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
+
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Fenix/FenixPreview").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"She resides in the royal capital far to the left, she may want to play with you!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -635,9 +731,19 @@ namespace Stellamod
 
 			int summonItem8 = ModContent.ItemType<Items.Consumables.CursedShard>();
 
-			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
-			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
-			LocalizedText spawnConditionText = Language.GetText($"After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!");
+
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Zui/ZuiBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"After Plantera, Zui will sell you an item that'll allow you to fight her in the witch town!");
 			bossChecklistMod.Call(
 				"LogBoss",
 				Mod,
@@ -924,7 +1030,7 @@ namespace Stellamod
 
 
             Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
-                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/REK/RekPreview").Value;
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/GothiviaTheSun/REK/RekBestiary").Value;
                 Vector2 centered = new Vector2(
                     rect.X + (rect.Width / 2) - (texture.Width / 2),
                     rect.Y + (rect.Height / 2) - (texture.Height / 2));
