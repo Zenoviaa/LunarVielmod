@@ -7140,7 +7140,7 @@ FoxMark: {
 	DisplayName: Fox Mark
 	Tooltip:
 		'''
-		Can be worn as a vanity hat!
+		Can be worn as a hat although it won't give any stats!
 		+50% Movement speed!
 		+10 Health
 		+8% Damage 
@@ -7150,6 +7150,9 @@ FoxMark: {
 }
 
 Vhel: {
-	Tooltip: ""
+	Tooltip: '''
+		Gothivia's special volley bow.
+		She's used it for decades and now you have it.
+		'''
 	DisplayName: Vhel
 }
