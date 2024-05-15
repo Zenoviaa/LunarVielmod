@@ -2989,7 +2989,12 @@ Neptune8Card: {
 
 Gintelze: {
 	DisplayName: Gintelze
-	Tooltip: Why would you steal this :c
+	Tooltip:
+	''' 
+	A stolen sword when Commander Gintzia betrayed Gothivia.
+	It was an up and coming sword for their army to use without arms.
+	Swing it well!
+	'''
 }
 
 HolmbergScythe: {
