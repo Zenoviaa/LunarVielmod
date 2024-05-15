@@ -45,6 +45,13 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Main.npcFrameCount[NPC.type] = 12;
+
+
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Jack/JackBestiary";
+            drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
 
         public override void SetDefaults()
@@ -128,7 +135,7 @@ namespace Stellamod.NPCs.Bosses.Jack
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
-                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames"),
+                new FlavorTextBestiaryInfoElement("A scarecrow reanimated by the passion of wandering flames, exploring out of the veil."),
             });
         }
 

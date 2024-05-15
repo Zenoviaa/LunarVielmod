@@ -49,11 +49,15 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
 
 
             // Influences how the NPC looks in the Bestiary
+
+            // Influences how the NPC looks in the Bestiary
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
+                CustomTexturePath = "Stellamod/NPCs/Bosses/DaedusRework/DaedusBestiary",
                 PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
                 PortraitPositionYOverride = 0f,
             };
+
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
 
@@ -163,12 +167,22 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.frame.Y = frameHeight * frame;
         }
 
+       
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            // Sets the description of this NPC that is listed in the bestiary
-            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("A puppet, a guardian, and a follower of Gothivia, one of her finest creations")
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Graveyard,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("One who followed power, exchanging their freedom for a taste of a singularity. Trapped forever guarding whats left of the Govheil."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("The aspiring forgotten puppet")
             });
         }
 

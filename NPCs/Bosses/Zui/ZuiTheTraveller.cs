@@ -113,8 +113,8 @@ namespace Stellamod.NPCs.Bosses.Zui
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Ichor] = true;
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-			drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Verlia/VerliaPreview";
-			drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+			drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/Zui/ZuiBestiary";
+			drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
 			drawModifiers.PortraitPositionYOverride = 0f;
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
@@ -167,16 +167,25 @@ namespace Stellamod.NPCs.Bosses.Zui
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
+        
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Zui, not exactly someone that can be killed but loves to play around I guess? Sirestias is closely accompanied with her")
-			});
-		}
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
-		public override void SendExtraAI(BinaryWriter writer)
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Zui, not exactly someone that can be killed but loves to play around I guess? Sirestias is closely accompanied with her"),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Zui the Radiance")
+            });
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write((float)_state);
 			writer.WriteVector2(dashDirection);
