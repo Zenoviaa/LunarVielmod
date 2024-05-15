@@ -64,7 +64,7 @@ namespace Stellamod.NPCs.Town
 
         public static Point IrrSpawnTileOffset => new Point(120, -22);
 
-        public static Point GothSpawnTileOffset => new Point(120, -320);
+        public static Point GothSpawnTileOffset => new Point(120, -345);
         public static Point IshPinSpawnTileOffset => new Point(199, -286);
         public static Point EreshSpawnTileOffset => new Point(90, -31);
         public static Point PULSESpawnTileOffset => new Point(64, -23);
