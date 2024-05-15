@@ -111,7 +111,7 @@ namespace Stellamod.Projectiles.Test
         {
             //Tip Trail stuff underneath
             Vector2[] oldPos = new Vector2[Projectile.oldPos.Length];
-            /*
+           
            
            
             
@@ -122,13 +122,13 @@ namespace Stellamod.Projectiles.Test
                 oldPos[i] += Projectile.rotation.ToRotationVector2() * Projectile.width / 3f;
             }
 
-            */
+        
 
             Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TerraTrail").Value;
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass, 
-                    (p) => new Vector2(105f),
+                    (p) => new Vector2(145f),
                     (p) => Color.White * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 2f;
             }
@@ -138,7 +138,7 @@ namespace Stellamod.Projectiles.Test
             {
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
-            SwordSlash.Draw(Projectile.oldPos);
+            SwordSlash.Draw(oldPos, rotation);
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
