@@ -19,8 +19,8 @@ SolMothMinionBuff: {
 }
 
 ProbeMinionBuff: {
-	Description: Getting probed might be actually really hot.
-	DisplayName: Probe Buff
+	DisplayName: Probe Minion Buff
+	Description: Pew pew pew pew~
 }
 
 MushroomStaveMinionBuff: {
@@ -721,11 +721,6 @@ JacksonPollockMinionBuff: {
 PotOfGreedMinionBuff: {
 	DisplayName: Greedy
 	Description: I activate POT OF GREED!
-}
-
-ProbeMinionBuff: {
-	DisplayName: Probe Minion Buff
-	Description: Pew pew pew pew~
 }
 
 ReflectionSeekerMinionBuff: {
