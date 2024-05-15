@@ -22,7 +22,7 @@ namespace Stellamod.Projectiles.Wings
 
             FrameSpeed = 1;
             AlwaysAnimate = false;
-            WingOffset = new Vector2(2, -16);
+            WingOffset = new Vector2(2, 16);
             AccessoryItemType = ModContent.ItemType<GothinWings>();
         }
     }
