@@ -40,7 +40,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useAnimation = 10;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
-            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Balls");
+            Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/Laserlock2");
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
