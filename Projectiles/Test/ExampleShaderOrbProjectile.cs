@@ -58,11 +58,11 @@ namespace Stellamod.Projectiles.Test
             //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
             //Should be between 0-1
             float opacity = 1f;
-            shader.UseOpacity(0.25f);
+            shader.UseOpacity(1f);
 
             //How intense the colors are
             //Should be between 0-1
-            shader.UseIntensity(0.25f);
+            shader.UseIntensity(1f);
 
             //How fast the extra texture animates
             float speed = 0.2f;
