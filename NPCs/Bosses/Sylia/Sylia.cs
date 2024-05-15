@@ -127,17 +127,27 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPCID.Sets.TrailingMode[Type] = 2;
 		}
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Sylia, ")
-			});
-		}
 
-		//AI Values
-		public override void SetDefaults()
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Someone who was consumed by their dark magic, even more so than Fenix would bother with."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Sylia, Merena's Sister.")
+            });
+        }
+
+        //AI Values
+        public override void SetDefaults()
 		{
 			NPC.Size = new Vector2(24, 48);
 
@@ -149,7 +159,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(gold: 10);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.scale = 1f;

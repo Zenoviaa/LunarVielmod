@@ -18,6 +18,7 @@ using System.Threading;
 using System.Timers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,8 +47,33 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
         {
             Main.npcFrameCount[NPC.type] = 30;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-        }
 
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+          
+            // Influences how the NPC looks in the Bestiary
+
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/SingularityFragment/SingularityFragmentBestiary";
+            drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundSnow,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("A powerful gift that was given to Cozmire, yet was stolen away by Fenix to seal away Verlia."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Singularity Fragment")
+            });
+        }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return Spawner > 30;
@@ -68,7 +94,7 @@ namespace Stellamod.NPCs.Bosses.singularityFragment
             NPC.lifeMax = 4500;
             NPC.scale = 0.9f;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/VoidDead1") with { PitchVariance = 0.1f };
-            NPC.value = 60f;
+            NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;
             NPC.boss = true;
             NPC.noGravity = true;

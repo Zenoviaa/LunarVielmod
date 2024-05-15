@@ -113,16 +113,14 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 			NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-			// Influences how the NPC looks in the Bestiary
-		
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
-			{		
-				PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
-				PortraitPositionYOverride = 0f,
-			};
+            // Influences how the NPC looks in the Bestiary
 
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-		}
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/IrradiaNHavoc/Irradia/IrradiaBestiary";
+            drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
 
 		public override void SetDefaults()
 		{
@@ -135,7 +133,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 60);
+			NPC.value = Item.buyPrice(gold: 5);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 1f;
@@ -164,15 +162,23 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("This person isn't the real gothivia, where is she?")
-			});
-		}
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
-		public override void SendExtraAI(BinaryWriter writer)
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("The most committed protector of the Govhiel. She just wishes to see her friend's and village again."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Irradia N Havoc")
+            });
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write((float)_state);
 			writer.Write(_resetTimers);
@@ -1325,8 +1331,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
 				ModContent.ItemType<BurningGBroochA>(),
 				ModContent.ItemType<GothiviasCard>(),
-                ModContent.ItemType<BurnBlast>(),
-                ModContent.ItemType<WeddingDay>()));
+                ModContent.ItemType<BurnBlast>()));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 

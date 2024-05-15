@@ -131,8 +131,23 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
 			drawModifiers.PortraitPositionYOverride = 0f;
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot)
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Destruction is what these bring, Fenix may of purchased some things off the black market, destroy these immediately..."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("STARBOMBER")
+            });
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<STARBOMBERBossRel>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 6));	
@@ -209,14 +224,7 @@ namespace Stellamod.NPCs.Bosses.STARBOMBER
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Destroy these things immediately. We do not need this world being annihalated.")
-			});
-		}
+       
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{

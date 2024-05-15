@@ -92,6 +92,24 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("He's evil yet so weak. This fellow betrayed Gothivia during their war against Fenix and his part of the army joined the other side for power."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Commander Gintzia, the betrayer")
+            });
+        }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             return (spawnInfo.Player.ZoneOverworldHeight && !NPC.AnyNPCs(ModContent.NPCType<CommanderGintzia>()) && EventWorld.GintzingBoss) ? (53.5f) : 0f;
@@ -144,14 +162,7 @@ namespace Stellamod.NPCs.Event.Gintzearmy.BossGintze
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Gintzia, Maybe a bit drunken and cheery, but their spirit is out of this world!")
-			});
-		}
+     
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{

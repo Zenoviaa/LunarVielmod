@@ -34,7 +34,16 @@ namespace Stellamod.Projectiles.Wings
                 return;
             }
 
-            Projectile.Center = Owner.Center + WingOffset * (-Owner.direction);
+            if(Owner.direction >= 0)
+            {
+                Projectile.Center = Owner.Center + WingOffset * (-Owner.direction);
+            }
+            if (Owner.direction < 0)
+            {
+                Projectile.Center = Owner.Center - WingOffset * (-Owner.direction);
+            }
+
+
             Projectile.spriteDirection = Owner.direction;
 
 

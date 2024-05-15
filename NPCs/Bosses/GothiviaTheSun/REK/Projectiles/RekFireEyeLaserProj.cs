@@ -13,6 +13,7 @@ using Stellamod.UI.Systems;
 using Stellamod.Dusts;
 using Terraria.ID;
 using System.Threading;
+using Terraria.Audio;
 
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
@@ -54,6 +55,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
                     Direction = 1;
                 }
                 Projectile.netUpdate = true;
+            }
+            if(Time == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekLaser"), Projectile.position);
             }
 
             Projectile.Center = Owner.Center;

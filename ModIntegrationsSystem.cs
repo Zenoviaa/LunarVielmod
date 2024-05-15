@@ -430,7 +430,7 @@ namespace Stellamod
 			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection8 = new List<int>()
 			{
-				ModContent.ItemType<Items.Placeable.IrradiaBossRel>(),
+				ModContent.ItemType<Items.Placeable.GothiviaBossRel>(),
 
 			};
 
@@ -464,7 +464,7 @@ namespace Stellamod
         private void DoIrradiaIntegration()
         {
 
-            string internalName8 = "GothiviatheSunGoddess";
+            string internalName8 = "IrradiaNHavoc";
 
             // The NPC type of the boss
             int bossType8 = ModContent.NPCType<NPCs.Bosses.IrradiaNHavoc.Irradia.Irradia>();
@@ -875,7 +875,7 @@ namespace Stellamod
             int bossType = ModContent.NPCType<Niivi>();
 
             // Value inferred from boss progression, see the wiki for details
-            float weight = 18.1f;
+            float weight = 18.2f;
 
             // Used for tracking checklist progress
             Func<bool> downed = () => DownedBossSystem.downedNiiviBoss;
@@ -917,7 +917,7 @@ namespace Stellamod
             int bossType = ModContent.NPCType<RekSnake>();
 
             // Value inferred from boss progression, see the wiki for details
-            float weight = 18.2f;
+            float weight = 18.1f;
 
             // Used for tracking checklist progress
             Func<bool> downed = () => DownedBossSystem.downedRekBoss;
@@ -992,6 +992,7 @@ namespace Stellamod
 			DoNESTIntegration();
 			DoNiiviIntegration();
 			DoRekIntegration();
-		}
+            DoGothiviaIntegration();
+        }
 	}
 }

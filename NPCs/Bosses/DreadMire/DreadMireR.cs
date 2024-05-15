@@ -17,6 +17,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -100,15 +101,42 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 12;
             NPCID.Sets.TrailingMode[NPC.type] = 4;
+
+
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                CustomTexturePath = "Stellamod/NPCs/Bosses/DreadMire/DreadMireBestiary",
+                PortraitScale = 0.8f, // Portrait refers to the full picture when clicking on the icon in the bestiary
+                PortraitPositionYOverride = 0f,
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Traded her singularity in turn for more dreadful power, ridden of anxiety and all things dreadful"),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Cozmire- Dreadmire Veil??")
+            });
         }
 
         public override void SetDefaults()
         {
             NPC.noGravity = true;
-            NPC.lifeMax = 2200;
+            NPC.lifeMax = 2300;
             NPC.defense = 9;
             NPC.damage = 1;
-            NPC.value = 65f;
+            NPC.value = Item.buyPrice(gold: 4);
             NPC.knockBackResist = 0f;
             NPC.width = 30;
             NPC.height = 40;

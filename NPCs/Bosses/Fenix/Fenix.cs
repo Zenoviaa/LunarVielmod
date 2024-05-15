@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -114,7 +115,22 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			drawModifiers.PortraitPositionYOverride = 0f;
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
 
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void to kill Sigfried for revenge, so much power yet so lonely."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Fenix the Vengeful")
+            });
+        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 5, 12));
@@ -129,7 +145,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Yumiko>(), chanceDenominator: 2));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Nekomara>(), chanceDenominator: 1));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<FenixxCard>(), chanceDenominator: 2));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 7, maximumDropped: 50));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<FoxMark>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 7, maximumDropped: 50));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingMagic>(), chanceDenominator: 1));
 			npcLoot.Add(notExpertRule);
 		}
@@ -145,7 +162,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(gold: 20);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
@@ -180,14 +197,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			return false;
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// Sets the description of this NPC that is listed in the bestiary
-			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Searching for a lover, this particular Queen lacks anyone she can socialize with as she tries to gain power of the void, so much power yet so lonely.")
-			});
-		}
+       
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{

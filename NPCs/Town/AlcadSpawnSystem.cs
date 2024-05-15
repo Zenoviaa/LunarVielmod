@@ -15,6 +15,9 @@ using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.DreadMire.Monolith;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
+using Stellamod.WorldG;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 
 namespace Stellamod.NPCs.Town
 {
@@ -39,6 +42,7 @@ namespace Stellamod.NPCs.Town
         public static Point JhoviaTile;
         public static Point DaedenTile;
         public static Point OrdinTile;
+        public static Point GothTile;
 
         public static Point DreadMonolithTile1;
         public static Point DreadMonolithTile2;
@@ -60,6 +64,7 @@ namespace Stellamod.NPCs.Town
 
         public static Point IrrSpawnTileOffset => new Point(120, -22);
 
+        public static Point GothSpawnTileOffset => new Point(120, -345);
         public static Point IshPinSpawnTileOffset => new Point(199, -286);
         public static Point EreshSpawnTileOffset => new Point(90, -31);
         public static Point PULSESpawnTileOffset => new Point(64, -23);
@@ -103,6 +108,8 @@ namespace Stellamod.NPCs.Town
 
         public static Vector2 IrrSpawnWorld => IrrTile.ToWorldCoordinates() + IrrSpawnTileOffset.ToWorldCoordinates();
 
+        public static Vector2 GothSpawnWorld => GothTile.ToWorldCoordinates() + GothSpawnTileOffset.ToWorldCoordinates();
+
         public static Vector2 IshPinSpawnWorld => IshPinTile.ToWorldCoordinates() + IshPinSpawnTileOffset.ToWorldCoordinates();
 
         public static Vector2 EreshSpawnWorld => EreshTile.ToWorldCoordinates() + EreshSpawnTileOffset.ToWorldCoordinates();
@@ -134,6 +141,7 @@ namespace Stellamod.NPCs.Town
             tag["FableTile"] = FableTile;
             tag["SireTile"] = SireTile;
             tag["IrrTile"] = IrrTile;
+            tag["GothTile"] = GothTile;
             tag["PULSETile"] = PULSETile;
             tag["EreshTile"] = EreshTile;
             tag["IshPinTile"] = IshPinTile;
@@ -162,6 +170,7 @@ namespace Stellamod.NPCs.Town
             FableTile = tag.Get<Point>("FableTile");
             SireTile = tag.Get<Point>("SireTile");
             IrrTile = tag.Get<Point>("IrrTile");
+            GothTile = tag.Get<Point>("GothTile");
             IshPinTile = tag.Get<Point>("IshPinTile");
             EreshTile = tag.Get<Point>("EreshTile");
             PULSETile = tag.Get<Point>("PULSETile");
@@ -189,6 +198,7 @@ namespace Stellamod.NPCs.Town
             writer.WriteVector2(VelTile.ToVector2());
             writer.WriteVector2(SireTile.ToVector2());
             writer.WriteVector2(IrrTile.ToVector2());
+            writer.WriteVector2(GothTile.ToVector2());
             writer.WriteVector2(PULSETile.ToVector2());
             writer.WriteVector2(IshPinTile.ToVector2());
             writer.WriteVector2(EreshTile.ToVector2());
@@ -216,6 +226,7 @@ namespace Stellamod.NPCs.Town
             VelTile = reader.ReadVector2().ToPoint();
             SireTile = reader.ReadVector2().ToPoint();
             IrrTile = reader.ReadVector2().ToPoint();
+            GothTile = reader.ReadVector2().ToPoint();
             IshPinTile = reader.ReadVector2().ToPoint();
             EreshTile = reader.ReadVector2().ToPoint();
             PULSETile = reader.ReadVector2().ToPoint();
@@ -252,6 +263,8 @@ namespace Stellamod.NPCs.Town
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Irradia>()) ||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
 
@@ -364,6 +377,20 @@ namespace Stellamod.NPCs.Town
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 
+                else if (!NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) && !NPC.AnyNPCs(ModContent.NPCType<StartGoth>()) && EventWorld.GreenSun)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
+                        ModContent.NPCType<GothiviaIdle>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+                else if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnakeIdle>()) && !DownedBossSystem.downedRekBoss)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
+                        ModContent.NPCType<RekSnakeIdle>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Havoc>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),

@@ -1,7 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +24,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         private string FrostTexture => "Stellamod/Effects/Masks/ZuiEffect";
         private float LifeTime = 90;
-        private float MaxScale = 3f;
+        private float MaxScale = 1f;
 
         public override void SetDefaults()
         {
@@ -80,14 +85,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
-                Color.LightCyan.R, 
+                Color.White.R, 
                 Color.LightCyan.G, 
-                Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
+                Color.LightCyan.B, 0);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(FrostTexture).Value;
+            Texture2D texture = TextureRegistry.CloudTexture.Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();
             Vector2 drawOrigin = drawSize / 2;
@@ -104,13 +109,44 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             drawColor = drawColor * alpha;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            for(int i = 0; i < 4; i++)
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+            // Retrieve reference to shader
+            var shader = ShaderRegistry.MiscFireWhitePixelShader;
+            float opacityProgress = Easing.SpikeCirc(progress);
+
+            //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
+            //Should be between 0-1
+            float opacity = 0.5f;
+            shader.UseOpacity(opacityProgress * opacity);
+
+            //How intense the colors are
+            //Should be between 0-1
+            shader.UseIntensity(1f);
+
+            //How fast the extra texture animates
+            float speed = 1.0f;
+            shader.UseSaturation(speed);
+
+            //Color
+            shader.UseColor(new Color(123, 255, 231, 0));
+
+            //Texture itself
+            shader.UseImage1(TextureRegistry.CloudTexture);
+
+            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+            shader.Apply(null);
+
+            for (int i = 0; i < 4; i++)
             {
                 float drawScale = scale * (i / 4f);
                 float drawRotation = Projectile.rotation * (i / 4f);
-                spriteBatch.Draw(texture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
 
+            spriteBatch.End();
+            spriteBatch.Begin();
             //I think that one texture will work
             //The vortex looking one
             //And make it spin

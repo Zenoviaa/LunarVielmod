@@ -32,6 +32,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void AI()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekFireballShoot"), Projectile.position);
+            }
+
             if(Timer % 8 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 
@@ -41,7 +46,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekFireballDeath"), Projectile.position);
             for (int i = 0; i < 2; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,

@@ -12,6 +12,7 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,6 +30,29 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             Main.npcFrameCount[NPC.type] = 6;
+
+
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/SunStalker/SunStalkerBestiary";
+            drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Former flyer and born where all big birds were born, in the cinderspark."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("SunStalker, the Last Talon")
+            });
         }
 
         bool Intro;
@@ -60,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.lifeMax = 1300;
             NPC.HitSound = SoundID.NPCHit28;
             NPC.DeathSound = SoundID.NPCDeath42;
-            NPC.value = 30f;
+            NPC.value = Item.buyPrice(silver: 25);
             NPC.buffImmune[BuffID.OnFire] = true;
             NPC.alpha = 255;
             NPC.boss = true;

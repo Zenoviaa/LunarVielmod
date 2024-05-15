@@ -50,8 +50,8 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noUseGraphic = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<ExampleSinSwingProj>();
-			Item.shootSpeed = 1f;
+			Item.shoot = ModContent.ProjectileType<ExampleShaderOrbProjectile>();
+			Item.shootSpeed = 5;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

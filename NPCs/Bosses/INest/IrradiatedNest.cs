@@ -20,6 +20,7 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -44,8 +45,30 @@ namespace Stellamod.NPCs.Bosses.INest
             NPCID.Sets.TrailingMode[NPC.type] = 2;
             // DisplayName.SetDefault("Irradiated Nest");
             Main.npcFrameCount[NPC.type] = 20;
+
+
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/INest/IrradiatedNestBestiary";
+            drawModifiers.PortraitScale = 1f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
-       
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("A abomination housing the eggs for what seems to be a mechanical bird, born from the acid and a creation of Gia."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Irradiated Nest")
+            });
+        }
         public override void SetDefaults()
         {
             NPC.alpha = 255;

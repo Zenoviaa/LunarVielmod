@@ -3367,7 +3367,8 @@ namespace Stellamod.WorldG
 					int[] ChestIndexs = StructureLoader.ReadStruct(pointL, path, tileBlend);
 					rectangle.Location = pointL;
 					NPCs.Town.AlcadSpawnSystem.IrrTile = pointL;
-					StructureLoader.ProtectStructure(pointL, path);
+                    NPCs.Town.AlcadSpawnSystem.GothTile = pointL;
+                    StructureLoader.ProtectStructure(pointL, path);
 					foreach (int chestIndex in ChestIndexs)
 					{
 						var chest = Main.chest[chestIndex];

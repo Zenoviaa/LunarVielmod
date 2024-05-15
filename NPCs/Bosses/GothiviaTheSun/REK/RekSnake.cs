@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Wings;
+using Stellamod.Items.Consumables;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
@@ -11,6 +13,8 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Animations;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -103,8 +107,49 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             NPCID.Sets.TrailCacheLength[Type] = 32;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+
+
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
+            {
+                SpecificallyImmuneTo = new int[] {
+                    BuffID.Poisoned,
+
+                    BuffID.Confused // Most NPCs have this
+				}
+            };
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/RekBestiary";
+            drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
+            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
-        
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("A special snake from the Cinderspark that was atop it's food chain and took a liking to Gothivia. Eventually it became her guardian."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Rek, The Sun Serpent")
+            });
+        }
+
         public override void SetDefaults()
         {
             NPC.width = 90;
@@ -257,7 +302,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 if (!NPC.HasValidTarget)
                 {
                     NPC.EncourageDespawn(120);
-                    NPC.velocity += -Vector2.UnitY;
+                    NPC.velocity += -Vector2.UnitY * 0.03f;
                     NPC.rotation = NPC.velocity.ToRotation();
                     MakeLikeWorm();
                     return;
@@ -292,15 +337,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     break;
             }
         }
-
-        private void AI_MoveInOrbit()
-        {
-            //Orbit Around
-            Vector2 direction = GothiviaPosition.DirectionTo(NPC.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 60);
-            Vector2 targetCenter = GothiviaPosition + direction * GothiviaOrbitRadius;
-            AI_MoveToward(targetCenter, 96);
-        }
+       
 
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
         {
@@ -352,11 +389,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         private void AI_Idle()
         {
             Timer++;
-            AI_MoveInOrbit();
 
+            NPC.velocity *= 0.98f;
             NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
-            if (Timer >= 120)
+            if (Timer >= 15)
             {
                 ResetState(ActionState.Dash);
             }
@@ -440,13 +477,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 Vector2 directionToPlayer = NPC.Center.DirectionTo(Target.Center);
                 Vector2 targetVelocity = directionToPlayer * speed;
                 NPC.velocity = targetVelocity;
-          
-
 
                 //Turn on the trail and roar!!!
                 DrawChargeTrail = true;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 64f);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
                 StopSegmentGlow();
             }
 
@@ -566,7 +601,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 //Turn on the trail and roar!!!
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(NPC.Center, 1024f, 64f);
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
+            
                 //Explode
                 for (int i = 0; i < Segments.Length; i++)
                 {
@@ -643,7 +679,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RekFireShockWave>(),
                         DamageFireShockWave, knockback);
                 }
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekRoar"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SNAKEROAR"), NPC.position);
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekShockwave"), NPC.position);
                 NPC.velocity = -Vector2.UnitY;
             }
 
@@ -699,7 +736,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             {
                 Vector2 laserDirection = NPC.Center.DirectionTo(Target.Center);
                 Vector2 laserVelocity = laserDirection * 40;
-
+      
                 if (!InPhase2 && StellaMultiplayer.IsHost)
                 {
                     float knockback = 1;
@@ -841,6 +878,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 {
                     if (Vector2.Distance(NPC.Center, targetSegment.Center) <= 32)
                     {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/REKEAT"), NPC.position);
                         if (StellaMultiplayer.IsHost)
                         {
                             float rot = targetSegment.Rotation - MathHelper.PiOver2;
@@ -1042,6 +1080,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             if(Timer >= 300)
             {
                 //DIE NOWWWW!!!
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekDeath"), NPC.position);
+
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
 
@@ -1063,7 +1103,61 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 NPC.Kill();
             }
         }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
+            // Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+            //	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+
+
+
+
+            // ItemDropRule.MasterModeCommonDrop for the relic
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentWings>(), 1, 1, 1));
+            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
+            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
+
+
+
+            // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
+
+            /*
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
+                ModContent.ItemType<BurningGBroochA>(),
+                ModContent.ItemType<Gothinstein>(),
+                ModContent.ItemType<BurnBlast>(),
+                ModContent.ItemType<WeddingDay>()));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
+           
+            // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
+            // Boss masks are spawned with 1/7 chance
+            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
+
+            // This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
+            // We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
+            // which requires these parameters to be defined
+            //int itemType = ModContent.ItemType<Gambit>();
+            //var parameters = new DropOneByOne.Parameters()
+            //{
+            //	ChanceNumerator = 1,
+            //	ChanceDenominator = 1,
+            //	MinimumStackPerChunkBase = 1,
+            //	MaximumStackPerChunkBase = 1,
+            //	MinimumItemDropsCount = 1,
+            //	MaximumItemDropsCount = 3,
+            //};
+
+            //notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
+
+            // Finally add the leading rule
+            npcLoot.Add(notExpertRule);
+             */
+        }
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedRekBoss, -1);

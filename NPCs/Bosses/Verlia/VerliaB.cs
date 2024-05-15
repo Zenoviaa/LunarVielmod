@@ -151,7 +151,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(gold: 12);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;

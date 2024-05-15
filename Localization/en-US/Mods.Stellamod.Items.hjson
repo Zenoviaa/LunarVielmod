@@ -7111,3 +7111,45 @@ CleanestCleaver: {
 	DisplayName: Cleanest Cleaver
 	Tooltip: ""
 }
+
+GothiviaIyxBag: {
+	DisplayName: Gothivia Iyx Bag
+	Tooltip: ""
+}
+
+GothiviaBossRel: {
+	DisplayName: Gothivia Boss Rel
+	Tooltip: ""
+}
+
+SerpentWings: {
+	Tooltip: Wings from a devious cindered serpent which will give you 30 seconds of flight time!
+	DisplayName: Serpent Wings
+}
+
+GothinWings: {
+	Tooltip:
+		'''
+		Such lovely wings, dont you wish to wear them? 90 seconds of flight time!
+		Can put wings in the vanity slot to overlay wings on the front along with the back wings too!
+		'''
+	DisplayName: Gothin Wings
+}
+
+FoxMark: {
+	DisplayName: Fox Mark
+	Tooltip:
+		'''
+		Can be worn as a vanity hat!
+		+50% Movement speed!
+		+10 Health
+		+8% Damage 
+		Maybe being a fox girl isn't so bad. 
+		"She can fix me..."
+		'''
+}
+
+Vhel: {
+	Tooltip: ""
+	DisplayName: Vhel
+}

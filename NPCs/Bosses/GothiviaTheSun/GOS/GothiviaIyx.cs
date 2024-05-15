@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
+using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -29,6 +31,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -172,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             // Influences how the NPC looks in the Bestiary
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/STARBOMBER/STARBOMBERPreview";
+            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/GothiviaBestiary";
             drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
             drawModifiers.PortraitPositionYOverride = 0f;
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -218,16 +221,24 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.lifeMax = (int)(NPC.lifeMax * balance);
         }
 
+  
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            // Sets the description of this NPC that is listed in the bestiary
-            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Empress of the Green sun and nature. Everything empowering and living falls under her reign.")
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				// Sets the preferred biomes of this town NPC listed in the bestiary.
+				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
+
+				// Sets your NPC's flavor text in the bestiary.
+				new FlavorTextBestiaryInfoElement("Empress of the Green sun and nature. Everything empowering and living falls under her reign."),
+
+				// You can add multiple elements if you really wanted to
+				// You can also use localization keys (see Localization/en-US.lang)
+				new FlavorTextBestiaryInfoElement("Gothivia, One of the Green Sun")
             });
         }
-
-       
 
         bool axed = false;
         bool p2 = false;
@@ -605,7 +616,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.TargetClosest();
                 if (!NPC.HasValidTarget)
                 {               // If the targeted player is dead, flee
-                    NPC.velocity.Y += 0.5f;
+                    NPC.velocity.Y += 1f;
                     NPC.noTileCollide = true;
                     NPC.noGravity = true;
                     // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
@@ -2198,7 +2209,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 40, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 42, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -2206,7 +2217,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 40, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 42, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -3181,7 +3192,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaBag>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaIyxBag>()));
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 
@@ -3189,8 +3200,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<GothiviasCard>(),
-                ModContent.ItemType<BurnBlast>(),
+                ModContent.ItemType<Gothinstein>(),
+                ModContent.ItemType<GothinWings>(),
                 ModContent.ItemType<WeddingDay>()));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
@@ -3250,5 +3261,40 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
         }
 
+    }
+
+
+    public class GothiviaSkyPlayer : ModPlayer
+    {
+        public override void PostUpdateMiscEffects()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
+            {
+                ActivateGothSky();
+
+            }
+            else
+            {
+                DeActivateGothSky();
+            }
+        }
+
+        private void ActivateGothSky()
+        {
+            if (!SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Activate("Stellamod:NaxtrinSky2", targetCenter);
+            }
+        }
+
+        private void DeActivateGothSky()
+        {
+            if (SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Deactivate("Stellamod:NaxtrinSky2", targetCenter);
+            }
+        }
     }
 }
