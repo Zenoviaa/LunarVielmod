@@ -2969,7 +2969,10 @@ AurelusSummoni: {
 
 MagnusMagnum: {
 	DisplayName: Magnus Magnum
-	Tooltip: You know Harry, I've never really cared for your two-shoe ass
+	Tooltip: '''
+	You know Harry, I've never really cared for your two-shoe ass
+	After 30 shots, your gun will overheat and shoot 5 more slow shots to recover to regular speed.
+	'''
 }
 
 VoidKey: {

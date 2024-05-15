@@ -50,7 +50,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
 
             _comboCounter++;
-            if (_comboCounter > 100)
+            if (_comboCounter > 30)
             {
                 for (int k = 0; k < 7; k++)
                 {
@@ -61,16 +61,20 @@ namespace Stellamod.Items.Weapons.Ranged
                     Dust.NewDustPerfect(position + offset * 43, ModContent.DustType<Dusts.GlowDust>(), direction * Main.rand.NextFloat(8), 125, Color.DarkBlue, Main.rand.NextFloat(0.5f, 0.8f));
                 }
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/MiniPistol2"));
-                Item.useTime = 31;
-                Item.useAnimation = 31;
+                Item.useTime = 102;
+                Item.useAnimation = 102;
                 _comboCounter = 0;
             }
-            if (_comboCounter > 75)
+            if (_comboCounter > 15)
             {
                 Dust.NewDustPerfect(player.Center + offset * 43, ModContent.DustType<Dusts.TSmokeDust>(), Vector2.UnitY * -2 + offset.RotatedByRandom(spread), 150, Color.IndianRed * 0.5f, Main.rand.NextFloat(0.5f, 1));
             }
 
-     
+            if(_comboCounter == 5)
+            {
+                Item.useTime = 12;
+                Item.useAnimation = 12;
+            }
 
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 6f);
