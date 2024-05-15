@@ -138,7 +138,7 @@ namespace Stellamod.Projectiles.Test
             {
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
-            SwordSlash.Draw(oldPos, rotation);
+            SwordSlash.Draw(Projectile.oldPos);
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
