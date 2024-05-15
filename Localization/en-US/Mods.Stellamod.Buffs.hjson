@@ -649,7 +649,7 @@ ShadeWrathCooldown: {
 }
 
 BabySwarmerMinionBuff: {
-	DisplayName: Baby Swarmer Minion Buff
+	DisplayName: Swarming
 	Description: They're everywhere!
 }
 
@@ -714,12 +714,12 @@ VixylDodgeBuff: {
 }
 
 JacksonPollockMinionBuff: {
-	DisplayName: Jackson Pollock Minion Buff
+	DisplayName: The Jackson Pollock
 	Description: Such a great way to make art :)
 }
 
 PotOfGreedMinionBuff: {
-	DisplayName: Pot Of Greed Minion Buff
+	DisplayName: Greedy
 	Description: I activate POT OF GREED!
 }
 
