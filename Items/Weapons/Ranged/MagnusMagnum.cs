@@ -47,7 +47,7 @@ namespace Stellamod.Items.Weapons.Ranged
             float rot = velocity.ToRotation();
             float spread = 0.4f;
 
-            Vector2 offset = new Vector2(1.5f, -0.1f * player.direction).RotatedBy(rot);
+            Vector2 offset = new Vector2(0.5f, -0.1f * player.direction).RotatedBy(rot);
 
             _comboCounter++;
             if (_comboCounter > 30)
