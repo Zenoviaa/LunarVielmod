@@ -647,19 +647,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
             NPC.spriteDirection = NPC.direction;
 
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
-                {               // If the targeted player is dead, flee
-                    NPC.velocity.Y += 0.5f;
-                    NPC.noTileCollide = true;
-                    NPC.noGravity = true;
-                    // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-                    NPC.EncourageDespawn(1);
-                }
-            }
-
             FinishResetTimers();
             switch (State)
             {

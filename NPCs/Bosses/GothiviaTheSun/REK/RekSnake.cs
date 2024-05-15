@@ -257,7 +257,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 if (!NPC.HasValidTarget)
                 {
                     NPC.EncourageDespawn(120);
-                    NPC.velocity += -Vector2.UnitY;
+                    NPC.velocity += -Vector2.UnitY * 0.03f;
                     NPC.rotation = NPC.velocity.ToRotation();
                     MakeLikeWorm();
                     return;
@@ -291,15 +291,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     AI_Death();
                     break;
             }
-        }
-
-        private void AI_MoveInOrbit()
-        {
-            //Orbit Around
-            Vector2 direction = GothiviaPosition.DirectionTo(NPC.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 60);
-            Vector2 targetCenter = GothiviaPosition + direction * GothiviaOrbitRadius;
-            AI_MoveToward(targetCenter, 96);
         }
 
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
@@ -352,11 +343,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         private void AI_Idle()
         {
             Timer++;
-            AI_MoveInOrbit();
 
+            NPC.velocity *= 0.98f;
             NPC.rotation = NPC.velocity.ToRotation();
             MakeLikeWorm();
-            if (Timer >= 120)
+            if (Timer >= 15)
             {
                 ResetState(ActionState.Dash);
             }

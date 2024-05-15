@@ -339,6 +339,7 @@
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody3_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody4_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekBody5_White.png" />
+    <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnakeIdle.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekSnake_White.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_Glow.png" />
     <None Remove="NPCs\Bosses\GothiviaTheSun\REK\RekTail_White.png" />

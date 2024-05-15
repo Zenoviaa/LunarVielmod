@@ -17,6 +17,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.WorldG;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 
 namespace Stellamod.NPCs.Town
 {
@@ -262,7 +263,8 @@ namespace Stellamod.NPCs.Town
                 NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<IrradiatedNest>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
-                   NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Irradia>()) ||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
 
@@ -382,7 +384,13 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<GothiviaIdle>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-
+                else if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIdle>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) && !NPC.AnyNPCs(ModContent.NPCType<RekSnakeIdle>()) && !DownedBossSystem.downedRekBoss)
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)GothSpawnWorld.X, (int)GothSpawnWorld.Y,
+                        ModContent.NPCType<RekSnakeIdle>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Havoc>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
