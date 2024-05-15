@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.NPCs.Bosses.Zui;
 using Stellamod.NPCs.Bosses.Niivi;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
+using Stellamod.NPCs.Bosses.SupernovaFragment;
 
 namespace Stellamod
 {
@@ -1071,7 +1072,47 @@ namespace Stellamod
             );
         }
 
+		private void DoSupernovaFragmentIntegration()
+		{
+            string internalName = nameof(SupernovaFragment);
 
+            // The NPC type of the boss
+            int bossType = ModContent.NPCType<SupernovaFragment>();
+
+            // Value inferred from boss progression, see the wiki for details
+            float weight = 12.92f;
+
+            // Used for tracking checklist progress
+            Func<bool> downed = () => DownedBossSystem.downedSupernovaFragmentBoss;
+
+
+            Action<SpriteBatch, Rectangle, Color> customPortait = (SpriteBatch spriteBatch, Rectangle rect, Color color) => {
+                Texture2D texture = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/SupernovaFragment/SupernovaBestiary").Value;
+                Vector2 centered = new Vector2(
+                    rect.X + (rect.Width / 2) - (texture.Width / 2),
+                    rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                spriteBatch.Draw(texture, centered, color);
+            };
+
+
+            // By default, it draws the first frame of the boss, omit if you don't need custom drawing
+            // But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
+            LocalizedText spawnConditionText = Language.GetText($"Use Ereskigal's magical door to summon Supernova Fragment");
+            bossChecklistMod.Call(
+                "LogBoss",
+                Mod,
+                internalName,
+                weight,
+                downed,
+                bossType,
+                new Dictionary<string, object>()
+                {
+                    ["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
+            );
+        }
 
 		private void DoBossChecklistIntegration()
 		{
@@ -1113,6 +1154,7 @@ namespace Stellamod
 			DoNiiviIntegration();
 			DoRekIntegration();
             DoGothiviaIntegration();
+			DoSupernovaFragmentIntegration();
         }
 	}
 }
