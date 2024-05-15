@@ -7138,7 +7138,8 @@ GothinWings: {
 
 FoxMark: {
 	DisplayName: Fox Mark
-	Tooltip: '''
+	Tooltip:
+		'''
 		+60% Movement speed!
 		+10 Health
 		+8% Damage 
