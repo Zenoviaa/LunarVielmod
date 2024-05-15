@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -3192,7 +3193,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<BurningGBroochA>(),
                 ModContent.ItemType<Gothinstein>(),
-                ModContent.ItemType<BurnBlast>(),
+                ModContent.ItemType<GothinWings>(),
                 ModContent.ItemType<WeddingDay>()));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));

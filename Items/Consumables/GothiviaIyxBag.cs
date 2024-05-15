@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -54,7 +55,7 @@ namespace Stellamod.Items.Consumables
 				ModContent.ItemType<BurningGBroochA>(),
                 ModContent.ItemType<Gothinstein>(),
 				ModContent.ItemType<WeddingDay>(),
-				ModContent.ItemType<BurnBlast>()));
+				ModContent.ItemType<GothinWings>()));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1900));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 			itemLoot.Add(ItemDropRule.Common(ItemID.LunarBar, minimumDropped: 4, maximumDropped: 25));

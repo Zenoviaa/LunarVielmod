@@ -56,7 +56,7 @@ namespace Stellamod.NPCs.Bosses.Jack
             NPC.defense = 6;         
             NPC.lifeMax = 1100;
             NPC.HitSound = SoundID.NPCHit16;
-            NPC.value = 60f;
+            NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0.0f;
             NPC.noGravity = false;
             NPC.boss = true;

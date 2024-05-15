@@ -108,7 +108,7 @@ namespace Stellamod.NPCs.Bosses.DreadMire
             NPC.lifeMax = 2200;
             NPC.defense = 9;
             NPC.damage = 1;
-            NPC.value = 65f;
+            NPC.value = Item.buyPrice(gold: 4);
             NPC.knockBackResist = 0f;
             NPC.width = 30;
             NPC.height = 40;

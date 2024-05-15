@@ -149,7 +149,7 @@ namespace Stellamod.NPCs.Bosses.Sylia
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(gold: 10);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.scale = 1f;

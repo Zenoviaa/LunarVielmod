@@ -107,7 +107,7 @@ namespace Stellamod.NPCs.Bosses.DaedusRework
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            NPC.value = Item.buyPrice(gold: 40);
+            NPC.value = Item.buyPrice(gold: 1);
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.BossBar = ModContent.GetInstance<DaedusBossBar>();

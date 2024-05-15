@@ -145,7 +145,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 40);
+			NPC.value = Item.buyPrice(gold: 20);
 			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;

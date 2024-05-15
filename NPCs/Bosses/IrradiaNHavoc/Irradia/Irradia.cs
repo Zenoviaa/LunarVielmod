@@ -135,7 +135,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 			NPC.knockBackResist = 0f;
 			NPC.noGravity = false;
 			NPC.noTileCollide = false;
-			NPC.value = Item.buyPrice(gold: 60);
+			NPC.value = Item.buyPrice(gold: 5);
 			NPC.boss = true;
 			NPC.npcSlots = 10f;
 			NPC.scale = 1f;

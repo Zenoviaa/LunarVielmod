@@ -60,7 +60,7 @@ namespace Stellamod.NPCs.Bosses.SunStalker
             NPC.lifeMax = 1300;
             NPC.HitSound = SoundID.NPCHit28;
             NPC.DeathSound = SoundID.NPCDeath42;
-            NPC.value = 30f;
+            NPC.value = Item.buyPrice(silver: 25);
             NPC.buffImmune[BuffID.OnFire] = true;
             NPC.alpha = 255;
             NPC.boss = true;

@@ -7128,9 +7128,10 @@ SerpentWings: {
 }
 
 GothinWings: {
-	Tooltip:''' 
-	Such lovely wings, dont you wish to wear them? 90 seconds of flight time!
-	Can put wings in the vanity slot to overlay wings on the front along with the back wings too!
-	'''
+	Tooltip:
+		'''
+		Such lovely wings, dont you wish to wear them? 90 seconds of flight time!
+		Can put wings in the vanity slot to overlay wings on the front along with the back wings too!
+		'''
 	DisplayName: Gothin Wings
 }
