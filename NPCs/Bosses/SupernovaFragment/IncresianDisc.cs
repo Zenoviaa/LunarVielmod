@@ -75,7 +75,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
 
-            spriteBatch.Draw(texture, new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + new Vector2(0, NPC.gfxOffY) + new Vector2(0, 8), NPC.frame, new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f), 80, NPC.frame.Size() / 2, NPC.scale * 0.8f, effects, 0);
+            spriteBatch.Draw(texture, new Vector2(NPC.Center.X, NPC.Center.Y - 15) - Main.screenPosition + new Vector2(0, NPC.gfxOffY) + new Vector2(0, 8), NPC.frame, new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f), MathHelper.PiOver2 + NPC.rotation, NPC.frame.Size() / 2, NPC.scale * 0.8f, effects, 0);
 
 
             // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
