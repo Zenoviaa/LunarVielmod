@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
@@ -129,7 +130,8 @@ namespace Stellamod.NPCs.Bosses.Fenix
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Yumiko>(), chanceDenominator: 2));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Nekomara>(), chanceDenominator: 1));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<FenixxCard>(), chanceDenominator: 2));
-			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 7, maximumDropped: 50));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<FoxMark>(), chanceDenominator: 2));
+            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcaricMush>(), minimumDropped: 7, maximumDropped: 50));
 			notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TomedDustingMagic>(), chanceDenominator: 1));
 			npcLoot.Add(notExpertRule);
 		}

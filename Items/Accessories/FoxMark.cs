@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Accessories
 {
+    [AutoloadEquip(EquipType.Head)]
     public class FoxMark : ModItem
 	{
 		public override void SetStaticDefaults()

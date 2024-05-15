@@ -7135,3 +7135,14 @@ GothinWings: {
 		'''
 	DisplayName: Gothin Wings
 }
+
+FoxMark: {
+	DisplayName: Fox Mark
+	Tooltip: '''
+		+60% Movement speed!
+		+10 Health
+		+8% Damage 
+		Maybe being a fox girl isn't so bad. 
+		"She can fix me..."
+		'''
+}
