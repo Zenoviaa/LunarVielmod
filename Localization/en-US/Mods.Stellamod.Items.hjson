@@ -7121,3 +7121,13 @@ GothiviaBossRel: {
 	DisplayName: Gothivia Boss Rel
 	Tooltip: ""
 }
+
+SerpentWings: {
+	Tooltip: Wings from a devious cindered serpent which will give you 30 seconds of flight time!
+	DisplayName: Serpent Wings
+}
+
+GothinWings: {
+	Tooltip: Such lovely wings, dont you wish to wear them? 90 seconds of flight time!
+	DisplayName: Gothin Wings
+}

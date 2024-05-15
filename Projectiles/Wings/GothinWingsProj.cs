@@ -20,9 +20,9 @@ namespace Stellamod.Projectiles.Wings
             Projectile.height = 96;
 
 
-            FrameSpeed = 10;
+            FrameSpeed = 1;
             AlwaysAnimate = false;
-            WingOffset = new Vector2(40, 0);
+            WingOffset = new Vector2(2, -16);
             AccessoryItemType = ModContent.ItemType<GothinWings>();
         }
     }
