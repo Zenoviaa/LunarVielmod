@@ -49,7 +49,7 @@ namespace Stellamod.Items.Accessories.Wings
 			// Acceleration multiplier: 2.5
 			ItemID.Sets.ItemNoGravity[Item.type] = true;
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(1800, 10f, 2f, true, hoverFlySpeedOverride: 18f);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(1800, 11f, 2f, true, hoverFlySpeedOverride: 18f);
 		}
 
 		public override void SetDefaults()
@@ -70,12 +70,12 @@ namespace Stellamod.Items.Accessories.Wings
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
-			ascentWhenFalling = 0.85f; // Falling glide speed
-			ascentWhenRising = 0.15f; // Rising speed
-			maxCanAscendMultiplier = 1f;
-			maxAscentMultiplier = 3f;
-			constantAscend = 0.135f;
-		}
+            ascentWhenFalling = 0.85f; // Falling glide speed
+            ascentWhenRising = 0.25f; // Rising speed
+            maxCanAscendMultiplier = 1f;
+            maxAscentMultiplier = 5f;
+            constantAscend = 0.135f;
+        }
 
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
