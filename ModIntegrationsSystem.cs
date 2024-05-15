@@ -89,7 +89,8 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem,
-					["spawnInfo"] = spawnConditionText
+					["spawnInfo"] = spawnConditionText,
+					["customPortrait"] = customPortait
 					// Other optional arguments as needed are inferred from the wiki
 				}
 			);
@@ -137,9 +138,10 @@ namespace Stellamod
 				bossType2,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -187,9 +189,10 @@ namespace Stellamod
 				bossType3,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -237,9 +240,10 @@ namespace Stellamod
 				bossType4,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -292,9 +296,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem5,
-					["spawnInfo"] = spawnConditionText
-							// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -352,9 +357,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem5,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -405,9 +411,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem6,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -461,9 +468,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem7,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -517,9 +525,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -576,7 +585,8 @@ namespace Stellamod
                 new Dictionary<string, object>()
                 {
                     ["spawnItems"] = summonItem8,
-                    ["spawnInfo"] = spawnConditionText
+                    ["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
                     // Other optional arguments as needed are inferred from the wiki
                 }
             );
@@ -621,9 +631,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -663,9 +674,10 @@ namespace Stellamod
 				bossType,
 				new Dictionary<string, object>()
 				{
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -707,9 +719,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 
@@ -754,9 +767,10 @@ namespace Stellamod
 				new Dictionary<string, object>()
 				{
 					["spawnItems"] = summonItem8,
-					["spawnInfo"] = spawnConditionText
-					// Other optional arguments as needed are inferred from the wiki
-				}
+					["spawnInfo"] = spawnConditionText,
+                    ["customPortrait"] = customPortait
+                    // Other optional arguments as needed are inferred from the wiki
+                }
 			);
 		}
 		private void DoStoneGolemIntegration()
