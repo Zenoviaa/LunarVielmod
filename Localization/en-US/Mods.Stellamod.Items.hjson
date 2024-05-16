@@ -7175,3 +7175,8 @@ SerpentStaff: {
 		It grows much longer and stronger with the number of minion slots used!
 		'''
 }
+
+Incinerator: {
+	Tooltip: ""
+	DisplayName: Incinerator
+}
