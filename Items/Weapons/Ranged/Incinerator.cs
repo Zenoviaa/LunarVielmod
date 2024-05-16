@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             // Gun Properties
             Item.shoot = ModContent.ProjectileType<IncineratorProj>();
-            Item.shootSpeed = 12;
+            Item.shootSpeed = 9.5f;
             // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
             Item.value = Item.sellPrice(gold: 25);
         }

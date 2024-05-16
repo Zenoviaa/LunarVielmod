@@ -28,7 +28,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
-            Projectile.idStaticNPCHitCooldown = 15;
+            Projectile.idStaticNPCHitCooldown = 7;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = (int)LifeTime;

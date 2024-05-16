@@ -7178,8 +7178,11 @@ SerpentStaff: {
 }
 
 Incinerator: {
-	Tooltip: ""
 	DisplayName: Incinerator
+	Tooltip:
+		'''
+		The most powerful flamethrower, it melts through anything and everything!
+		'''
 }
 
 VeiledScriptureMiner2: {
@@ -7339,6 +7342,10 @@ VeiledScriptureMiner10: {
 }
 
 YourFired: {
-	Tooltip: ""
 	DisplayName: Your Fired
+	Tooltip: 
+		'''
+		Explodes into many small, fiery explosions, like a cluster bomb!
+		Yr'oue*
+		'''
 }
