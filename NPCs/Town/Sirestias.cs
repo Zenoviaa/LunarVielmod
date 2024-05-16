@@ -356,19 +356,64 @@ namespace Stellamod.NPCs.Town
 
 														Main.npcChatText = $"It was a void witch... Interesting. Must be related to that Merena person Aimacra talked about. I haven't been to the Royal Capital much, mainly because it's so far out but maybe we should kill the Queen there, she is definitely extremely powerful but I don't really know how to talk to her, I haven't seen her yet. If you can could you go kill her for us? ";
 
-
-
-														if (DownedBossSystem.downedFenixBoss)
+														if (DownedBossSystem.downedZuiBoss)
 														{
 
-															Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao.";
+															Main.npcChatText = $"Ereshkigal huh? I think I know her, she also isn't supposed to be here. However she got lost I guess we can give her some sense";
+
+                                                            if (DownedBossSystem.downedAzurewrathBoss)
+                                                            {
+
+                                                                Main.npcChatText = $"Weheeee! You're doing so well! I can like get off to this! I'm kidding :(. Maybe you can try and explore around some more. We need to prepare for moonlord!";
+
+
+
+                                                                if (DownedBossSystem.downedFenixBoss)
+                                                                {
+
+                                                                    Main.npcChatText = $"I did not expect you to want to kill her honestly. I went and explored around and she seemed nice. Wait you didn't kill her? Oh dang, well she isn't on our list anyway so it's fine lmao. She isn't causing us any issues.";
+
+
+                                                                    if (DownedBossSystem.downedRekBoss)
+                                                                    {
+
+                                                                        Main.npcChatText = $"Ok ok we got some good stuff done. Time for Gothivia as she's not particularly the worst but she keeps inspiring bad people to do ad things and we need to teach her not to do that.";
+
+
+                                                                        if (DownedBossSystem.downedNiiviBoss)
+                                                                        {
+
+                                                                            Main.npcChatText = $"Maybe we shouldn't have killed her, I don't know if there was a reason to kill Niivi. You just wanted weapons and gear? I mean if it helps I guess. She was doing more good than harm";
+
+
+
+                                                                            if (DownedBossSystem.downedGothiviaBoss)
+                                                                            {
+
+                                                                                Main.npcChatText = $"Okie dokie, Gothivia has agree to stay calm so we aren't going to assassinate her anymore, I feel bad for killing her sister now. I hope Vixyl doesn't find out.";
 
 
 
 
 
+                                                                            }
+
+                                                                        }
+
+
+                                                                    }
+
+
+                                                                   
+
+                                                                }
+
+
+
+                                                            }
+
+                                                           
 														}
-
 													}
 
 												}
