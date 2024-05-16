@@ -191,6 +191,14 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             Projectile.friendly = false;
             State = ActionState.Fall;
 
+            float catchCount = Juggler.CatchCount;
+            float pitch = MathHelper.Clamp(catchCount * 0.05f, 0f, 1f);
+            SoundStyle jugglerHit = SoundRegistry.JugglerHit;
+            jugglerHit.Pitch = pitch;
+            jugglerHit.PitchVariance = 0.1f;
+            jugglerHit.Volume = 0.5f;
+            SoundEngine.PlaySound(jugglerHit, Projectile.position);
+
             switch (Main.rand.Next(2))
             {
                 case 0:
