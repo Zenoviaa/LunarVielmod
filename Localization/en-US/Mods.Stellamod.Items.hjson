@@ -7127,8 +7127,8 @@ GothiviaIyxBag: {
 }
 
 GothiviaBossRel: {
-	DisplayName: Gothivia Boss Rel
-	Tooltip: ""
+	DisplayName: Gothivia Boss Relic
+	Tooltip: Obtained from killing the one of the Green Sun.
 }
 
 SerpentWings: {
