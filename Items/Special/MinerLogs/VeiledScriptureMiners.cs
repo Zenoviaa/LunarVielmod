@@ -10,6 +10,7 @@ namespace Stellamod.Items.Special.MinerLogs
     internal abstract class VeiledScriptureMiner : ModItem
     {
         public static LocalizedText ContentText { get; private set; }
+        public override string Texture => "Stellamod/Items/Special/MinerLogs/VeiledScriptureMiner1";
 
         public override void SetStaticDefaults()
         {
