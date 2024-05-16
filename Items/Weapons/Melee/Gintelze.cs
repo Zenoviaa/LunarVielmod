@@ -17,8 +17,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Melee
 {
-    public class Gintelze : ModItem
+    public class Gintelze : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 25;
+        }
+
         private int _dir = 1;
         public override void SetStaticDefaults()
         {
