@@ -111,7 +111,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             {
                 Vector2 position = positions[i];
                 Vector2 previousPosition = positions[i - 1];
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 6, ref collisionPoint))
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 24, ref collisionPoint))
                     return true;
             }
 
