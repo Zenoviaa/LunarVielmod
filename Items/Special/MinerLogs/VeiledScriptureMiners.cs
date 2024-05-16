@@ -53,4 +53,22 @@ namespace Stellamod.Items.Special.MinerLogs
 
     //These are the actual items, text is automatically grabbed from the localization
     internal class VeiledScriptureMiner1 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner2 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner3 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner4 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner5 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner6 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner7 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner8 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner9 : VeiledScriptureMiner { }
+
+    internal class VeiledScriptureMiner10 : VeiledScriptureMiner { }
 }

@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Items.Armors.Vanity.Astolfo;
 using Stellamod.Items.Materials.Tech;
+using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.Crossbows;
@@ -32,12 +33,22 @@ namespace Stellamod.NPCs.Global
 
 			};
 
-			if(shop.NpcType == NPCID.Demolitionist)
+            if (shop.NpcType == NPCID.Clothier)
+            {
+                shop.Add(ModContent.ItemType<VeiledScriptureMiner10>());
+            }
+
+            if (shop.NpcType == NPCID.Demolitionist)
 			{
 				shop.Add(ModContent.ItemType<RocketLauncher>());
 			}
 
-			if (shop.NpcType == NPCID.Merchant)
+            if (shop.NpcType == NPCID.SkeletonMerchant)
+            {
+                shop.Add(ModContent.ItemType<VeiledScriptureMiner6>());
+            }
+
+            if (shop.NpcType == NPCID.Merchant)
 			{
 				// Adding an item to a vanilla NPC is easy:
 				// This item sells for the normal price.

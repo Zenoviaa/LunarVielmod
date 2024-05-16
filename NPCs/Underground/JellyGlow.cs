@@ -5,6 +5,7 @@ using ReLogic.Content;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
+using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
@@ -222,6 +223,7 @@ namespace Stellamod.NPCs.Underground
             npcLoot.Add(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<JellyBow>(),
                 ModContent.ItemType<JellyStaff>(),
+                   ModContent.ItemType<VeiledScriptureMiner9>(),
                 ModContent.ItemType<JellyTome>()));
         }
       
