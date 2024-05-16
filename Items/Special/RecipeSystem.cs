@@ -29,7 +29,11 @@ namespace Stellamod.Items.Special
                     recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 15);
                 }
 
-              
+                if (recipe.TryGetResult(ItemID.Zenith, out Item result3))
+                {
+                    recipe.AddIngredient(ModContent.ItemType<RippedFabric>(), 25);
+                    recipe.AddIngredient(ModContent.ItemType<ManifestedLove>(), 1);
+                }
             }
         }
       
