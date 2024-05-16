@@ -1,8 +1,10 @@
 ﻿
+using Accord.Statistics.Distributions.Univariate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -118,6 +120,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Texture2D NiiviWingBack => ModContent.Request<Texture2D>($"{BaseTexturePath}NiiviWingBack").Value;
         public Vector2 NiiviWingSize => new Vector2(336, 464);
 
+        private bool ChargeCrystals;
+        private float ChargeCrystalTimer;
+
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
             float segmentWidth = ((segmentSize.X / 2) + 8) * scale;
@@ -151,7 +156,25 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void DrawAllSegments(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            _segmentIndex = SegmentPos.Length - 1;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+            var shader = ShaderRegistry.MiscSilPixelShader;
+
+            //The color to lerp to
+            shader.UseColor(Color.White);
+
+            //Should be between 0-1
+            //1 being fully opaque
+            //0 being the original color
+            shader.UseSaturation(ChargeCrystalTimer);
+
+            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+            shader.Apply(null);
+
+
+            {
+                _segmentIndex = SegmentPos.Length - 1;
             SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
             //Draw Tail Back
             DrawSegment(spriteBatch, NiiviTailBack, NiiviTailBackSize, drawColor, rot: MathHelper.Pi);
@@ -206,7 +229,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 drawOffset: backArmOffset,
                 overrideIndex: armDrawIndex - 1);
 
-    
+
             //Draw Body Front
             DrawSegment(spriteBatch, NiiviBodyFront, NiiviBodyFrontSize, drawColor, 1f + Body_Min_Scale);
             for (int i = 0; i < Neck_Segments; i++)
@@ -235,7 +258,100 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             //Draw4 Head
             DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin();
+
+
+            {
+                _segmentIndex = SegmentPos.Length - 1;
+                SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
+                //Draw Tail Back
+                DrawSegment(spriteBatch, NiiviTailBack, NiiviTailBackSize, drawColor, rot: MathHelper.Pi);
+
+                //Draw Tail
+                for (int i = 0; i < Tail_Segments; i++)
+                {
+                    float scaleProgress = i / (float)Tail_Segments;
+                    DrawSegment(spriteBatch, NiiviTailFront, NiiviTailFrontSize, drawColor, scaleProgress + Tail_Min_Scale);
+                }
+
+                //Draw Body Back
+                DrawSegment(spriteBatch, NiiviBodyBack, NiiviBodyBackSize, drawColor, Body_Min_Scale);
+                Vector2 rightWingDrawOrigin = new Vector2(226, 190);
+                Vector2 flippedWingDrawOrigin = new Vector2(110, 190);
+                Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
+
+                WingDrawIndex = _segmentIndex - Body_Segments - 1;
+                Rectangle drawRectangle;
+                switch (State)
+                {
+                    default:
+                        drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
+                        break;
+                }
+
+                Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
+                DrawSegment(spriteBatch, NiiviWingBack, NiiviWingSize, drawColor,
+                    drawOrigin: wingDrawOrigin,
+                    drawOffset: wingDrawOffset,
+                    sourceRectangle: drawRectangle,
+                    overrideIndex: WingDrawIndex);
+
+                //Draw Back Leg
+                int legDrawIndex = _segmentIndex - 2;
+                Vector2 backLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
+                DrawSegment(spriteBatch, NiiviLegBack, NiiviLegBackSize, drawColor,
+                        drawOffset: backLegDrawOffset,
+                        overrideIndex: legDrawIndex - 1);
+
+                //Draw Body
+                for (int i = 0; i < Body_Segments; i++)
+                {
+                    float scaleProgress = i / (float)Body_Segments;
+                    DrawSegment(spriteBatch, NiiviBodyMiddle, NiiviBodyMiddleSize, drawColor, scaleProgress + Body_Min_Scale);
+                }
+
+                //Draw Back Arm
+                int armDrawIndex = _segmentIndex;
+                Vector2 backArmOffset = Vector2.UnitY.RotatedBy(SegmentRot[armDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
+                DrawSegment(spriteBatch, NiiviArmBack, NiiviArmBackSize, drawColor,
+                    drawOffset: backArmOffset,
+                    overrideIndex: armDrawIndex - 1);
+
+
+                //Draw Body Front
+                DrawSegment(spriteBatch, NiiviBodyFront, NiiviBodyFrontSize, drawColor, 1f + Body_Min_Scale);
+                for (int i = 0; i < Neck_Segments; i++)
+                {
+                    //Draw Neck
+                    DrawSegment(spriteBatch, NiiviNeck, NiiviNeckSize, drawColor, 1.2f);
+                }
+
+                //Draw Front Arm
+                Vector2 frontArmOffset = Vector2.UnitY.RotatedBy(SegmentRot[armDrawIndex]) * NiiviArmBackSize.Y;
+                DrawSegment(spriteBatch, NiiviArmFront, NiiviArmFrontSize, drawColor,
+                    drawOffset: frontArmOffset,
+                    overrideIndex: armDrawIndex);
+
+                //Draw Front Leg
+                Vector2 frontLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
+                DrawSegment(spriteBatch, NiiviLegFront, NiiviLegFrontSize, drawColor,
+                     drawOffset: frontLegDrawOffset,
+                     overrideIndex: legDrawIndex);
+
+                DrawSegment(spriteBatch, NiiviWingFront, NiiviWingSize, drawColor,
+                    drawOrigin: wingDrawOrigin,
+                    drawOffset: wingDrawOffset,
+                    sourceRectangle: drawRectangle,
+                    overrideIndex: WingDrawIndex);
+
+                //Draw4 Head
+                DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
+            }
         }
+
+
 
         /*
         private void DrawSegmentGlow(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
@@ -458,6 +574,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void DrawCrystals(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
+            float speed = ChargeCrystals ? 0.3f : 0.015f;
             for(float i = 0; i < Crystals.Length; i++)
             {
                 var crystal = Crystals[(int)i];
@@ -467,15 +584,57 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float progress = i / (float)Crystals.Length;
                 float rot = progress * MathHelper.TwoPi;
                 float orbitRadius = 128;
-                Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
-                drawPosition += new Vector2(0, VectorHelper.Osc(0f, 8f, offset: i));
+                Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                drawPosition += new Vector2(0, VectorHelper.Osc(0f, 32, offset: i));
                 drawPosition -= screenPos;
-                crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
+                crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
                 crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 32f, offset: i));
 
                 Vector2 drawOrigin = crystal.Texture.Size() / 2;
                 float drawScale = 1f;
                 spriteBatch.Draw(crystal.Texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+
+            if (ChargeCrystals || ChargeCrystalTimer > 0f)
+            {
+                var shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.White);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(ChargeCrystalTimer);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                for (float i = 0; i < Crystals.Length; i++)
+                {
+                    var crystal = Crystals[(int)i];
+                    if (!crystal.Draw)
+                        continue;
+
+                    float progress = i / (float)Crystals.Length;
+                    float rot = progress * MathHelper.TwoPi;
+                    float orbitRadius = 128;
+                    Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                    drawPosition += new Vector2(0, VectorHelper.Osc(0f, 32, offset: i));
+                    drawPosition -= screenPos;
+                    crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * speed)) * orbitRadius;
+                    crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 32f, offset: i));
+
+                    Vector2 drawOrigin = crystal.Texture.Size() / 2;
+                    float drawScale = 1f;
+                    spriteBatch.Draw(crystal.Texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.End();
+                spriteBatch.Begin();
             }
         }
     }

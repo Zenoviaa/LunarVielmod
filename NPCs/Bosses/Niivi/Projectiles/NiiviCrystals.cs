@@ -126,6 +126,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             spriteBatch.End();
 
+
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             spriteBatch.Draw(texture, drawPosition, null, Color.White, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             // Retrieve reference to shader

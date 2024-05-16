@@ -40,6 +40,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
         }
 
+        private ref float VelTimer => ref Projectile.ai[2];
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -55,11 +57,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 360;
         }
 
         public override void AI()
         {
             Timer++;
+            VelTimer++;
             if(!HasBounced && Main.myPlayer == Projectile.owner && Main.rand.NextBool(600))
             {
                 //This should make them sometimes bounce upwards

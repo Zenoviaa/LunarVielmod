@@ -75,10 +75,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             BeamDrawer.SpecialShader.UseColor(Color.LightSkyBlue);
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
-            DrawHelper.DrawCircle(Projectile.Center, CircleRadius, CirclePos);
+            DrawHelper.DrawCircle(Projectile.Center, CircleRadius * Alpha * 4, CirclePos);
             BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
 
-            DrawHelper.DrawCircle(Projectile.Center, CircleRadius, CirclePos, MathHelper.PiOver2);
+            DrawHelper.DrawCircle(Projectile.Center, CircleRadius * Alpha * 4, CirclePos, MathHelper.PiOver2);
             BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
             Main.spriteBatch.ExitShaderRegion();
         }
