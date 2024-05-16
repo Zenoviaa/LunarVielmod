@@ -1,15 +1,12 @@
-﻿using Accord.Statistics.Distributions.Univariate;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.Projectiles.Thrown
 {
@@ -116,19 +113,19 @@ namespace Stellamod.Projectiles.Thrown
             return false;
         }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RekFireballDeath"), Projectile.position);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CombusterReady"), Projectile.position);
             float num = 8;
             float maxDelay = 30;
-            for(int i = 0; i < num; i++)
+            for (int i = 0; i < num; i++)
             {
                 float clusterRadius = 256;
-                float progress = (float)i / (float)num;
+                float progress = i / (float)num;
                 float delay = progress * maxDelay;
                 Vector2 randPosition = Projectile.Center + Main.rand.NextVector2Circular(clusterRadius, clusterRadius);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), randPosition, Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), randPosition, Vector2.Zero,
                     ModContent.ProjectileType<YourFiredExplosionProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: delay);
             }
         }
