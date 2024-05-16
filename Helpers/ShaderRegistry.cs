@@ -39,6 +39,9 @@ namespace Stellamod.Helpers
         private static string SilShaderName => "Stellamod:SilShader";
         public static MiscShaderData MiscSilPixelShader => GameShaders.Misc[SilShaderName];
 
+        private static string DistortionShaderName => "Stellamod:DistortionShader";
+        public static MiscShaderData MiscDistortionShader => GameShaders.Misc[DistortionShaderName];
+
         public static AssetRepository Assets => Stellamod.Instance.Assets;
 
         private static void RegisterMiscShader(string name, string path, string pass)
@@ -104,6 +107,9 @@ namespace Stellamod.Helpers
 
             //Sil Shader
             RegisterMiscShader(SilShaderName, "Effects/SilShader", "PixelPass");
+
+            //Distortion Shader
+            RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
 
             //Skies
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
