@@ -7,12 +7,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    internal class YourFired : ModItem
+    internal class YourFired : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Ranged;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Assassin's Shuriken");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+
+        public override void SetClassSwappedDefaults()
+        {
+            base.SetClassSwappedDefaults();
+            Item.damage = 362;
         }
 
         public override void SetDefaults()

@@ -14,8 +14,14 @@ using Stellamod.Projectiles.Gun;
 
 namespace Stellamod.Items.Weapons.Ranged
 {
-    internal class Incinerator : ModItem
+    internal class Incinerator : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Melee;
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 312;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 62;
@@ -29,13 +35,13 @@ namespace Stellamod.Items.Weapons.Ranged
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 150;
+            Item.damage = 300;
             Item.knockBack = 4;
             Item.noMelee = true;
 
             // Gun Properties
             Item.shoot = ModContent.ProjectileType<IncineratorProj>();
-            Item.shootSpeed = 8;
+            Item.shootSpeed = 12;
             // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
             Item.value = Item.sellPrice(gold: 25);
         }

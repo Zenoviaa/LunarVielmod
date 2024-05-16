@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Gun
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
             }
 
-            Projectile.velocity *= 0.98f;
+            Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.05f;
         }
 

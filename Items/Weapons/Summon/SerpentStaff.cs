@@ -23,8 +23,10 @@ using System.Collections.Generic;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class SerpentStaff : ModItem
+    public class SerpentStaff : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Magic;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Irradiated Creeper Staff");
@@ -32,6 +34,12 @@ namespace Stellamod.Items.Weapons.Summon
             ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
             ItemID.Sets.StaffMinionSlotsRequired[Item.type] = 1f;
+        }
+
+        public override void SetClassSwappedDefaults()
+        {
+            base.SetClassSwappedDefaults();
+            Item.damage = 102;
         }
 
         public override void SetDefaults()
