@@ -52,21 +52,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         private SerpentSegment[] Segments;
         private Vector2 HitboxFixer => new Vector2(Projectile.width, Projectile.height) / 2;
 
-        //AI
-        private enum ActionState
-        {
-            Circle,
-            Chase,
-            Fire_Breath
-        }
-
-
-        //AI
-        private ActionState State
-        {
-            get => (ActionState)Projectile.ai[0];
-            set => Projectile.ai[0] = (float)value;
-        }
 
         private ref float Timer => ref Projectile.ai[1];
         private int SegmentCount
@@ -74,19 +59,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             get => (int)Projectile.ai[2];
             set => Projectile.ai[2] = (int)value;
         }
-        private float FireBreathTimer;
-        private Player Owner => Main.player[Projectile.owner];
 
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            base.SendExtraAI(writer);
-            writer.Write(FireBreathTimer);
-        }
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            base.ReceiveExtraAI(reader);
-            FireBreathTimer = reader.ReadSingle();
-        }
+        private Player Owner => Main.player[Projectile.owner];
 
         public override void SetStaticDefaults()
         {
@@ -177,42 +151,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
             GlowWhite(1 / 60f);
-            switch (State)
-            {
-                case ActionState.Circle:
-                    AI_OrbitOwner();
-
-                    break;
-                case ActionState.Chase:
-                    AI_Chase();
-                    break;
-                case ActionState.Fire_Breath:
-                    AI_FireBreath();
-                    break;
-            }
-
-            MakeLikeWorm();
-        }
-
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            //This damages everything in the trail
-            float collisionPoint = 0;
-            for (int i = 1; i < Segments.Length; i++)
-            {
-                Vector2 position = Segments[i].Position;
-                Vector2 previousPosition = Segments[i - 1].Position;
-                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 8, ref collisionPoint))
-                    return true;
-            }
-            return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        private void AI_OrbitOwner()
-        {
             Timer++;
-
-
             SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
                  out bool foundTarget,
                  out float distanceFromTarget,
@@ -222,12 +161,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             Vector2 direction = Owner.Center.DirectionTo(Projectile.Center);
             direction = direction.RotatedBy(MathHelper.TwoPi / 180);
             Vector2 orbitCenter = Owner.Center + direction * orbitRadius;
-    
-         
 
-            if(foundTarget && distanceFromTarget <= 1500)
+            if (foundTarget && distanceFromTarget <= 1500)
             {
-                if(distanceFromTarget > 256)
+                if (distanceFromTarget > 256)
                 {
                     AI_MoveToward(targetCenter, 16, 1);
                 }
@@ -235,7 +172,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 {
                     Projectile.velocity *= 0.8f;
                 }
-        
+
 
                 StartSegmentGlow(Color.White);
                 Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
@@ -258,65 +195,21 @@ namespace Stellamod.Projectiles.Summons.Minions
                 StopSegmentGlow();
             }
 
+            MakeLikeWorm();
         }
 
-        private void AI_Chase()
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            StopSegmentGlow();
-            SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
-                 out bool foundTarget,
-                 out float distanceFromTarget,
-                 out Vector2 targetCenter);
-            if (!foundTarget || distanceFromTarget > 1500)
+            //This damages everything in the trail
+            float collisionPoint = 0;
+            for (int i = 1; i < Segments.Length; i++)
             {
-                State = ActionState.Circle;
+                Vector2 position = Segments[i].Position;
+                Vector2 previousPosition = Segments[i - 1].Position;
+                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, previousPosition, 8, ref collisionPoint))
+                    return true;
             }
-
-            float orbitRadius = 384;
-            Vector2 direction = Owner.Center.DirectionTo(Projectile.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 360);
-            Vector2 orbitCenter = Owner.Center + direction * orbitRadius;
-            AI_MoveToward(orbitCenter, 96, 8);
-
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            if(FireBreathTimer >= 240)
-            {
-                State = ActionState.Fire_Breath;
-            }
-        }
-
-        private void AI_FireBreath()
-        {
-            Timer++;
-            StartSegmentGlow(Color.White);
-            SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
-                 out bool foundTarget,
-                 out float distanceFromTarget,
-                 out Vector2 targetCenter);
-            if (!foundTarget || distanceFromTarget > 1500)
-            {
-                State = ActionState.Circle;
-            }
-
-            float orbitRadius = 384;
-            Vector2 direction = Owner.Center.DirectionTo(Projectile.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 360);
-            Vector2 orbitCenter = Owner.Center + direction * orbitRadius;
-            AI_MoveToward(orbitCenter, 96);
-
-  
-
-            FireBreathTimer--;
-            if (FireBreathTimer <= 0)
-            {
-                State = ActionState.Circle;
-            }
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-            FireBreathTimer++;
+            return base.Colliding(projHitbox, targetHitbox);
         }
 
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)
