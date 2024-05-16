@@ -1010,7 +1010,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
 
-            FigureEightStartCenter = Vector2.Lerp(FigureEightStartCenter, target.Center, 0.07f);
+            FigureEightStartCenter = Vector2.Lerp(FigureEightStartCenter, target.Center, 0.06f);
 
 
             if (timer == 1)
@@ -1040,7 +1040,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
-                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.20f);
+                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
                 NPC.netUpdate = true;
 
                 float hoverSpeed = 5;
