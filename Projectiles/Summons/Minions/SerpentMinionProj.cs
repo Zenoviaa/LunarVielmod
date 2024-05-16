@@ -188,7 +188,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.originalDamage = _originalDamage + ownedCounts * 15;
             ExtraScale = 1f + ((float)ownedCounts * 0.05f);
 
-            int numBodySegments = (int)(ownedCounts * 15) + 1;
+            int numBodySegments = (int)(ownedCounts * 10) + 1;
             if(SegmentCount != numBodySegments)
             {
                 InitSegments(numBodySegments);
