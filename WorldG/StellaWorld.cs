@@ -361,8 +361,23 @@ namespace Stellamod.WorldG
                 }
             }
 
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-04); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+                int yBelow = Y + 1;
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
 
-			for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+                if (Main.tile[X, yBelow].TileType == TileID.Mud ||
+                    Main.tile[X, yBelow].TileType == TileID.JungleGrass)
+                {
+                    WorldGen.PlaceObject(X, Y, ModContent.TileType<Tiles.Structures.LogS>());
+                }
+            }
+
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
 			{
 				int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
 				int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY / 2);
