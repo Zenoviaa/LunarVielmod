@@ -118,10 +118,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Texture2D NiiviWingBack => ModContent.Request<Texture2D>($"{BaseTexturePath}NiiviWingBack").Value;
         public Vector2 NiiviWingSize => new Vector2(336, 464);
 
-        private bool DrawCrystal;
-        private bool DrawIceCrystal;
-        private bool DrawStarsCrystal;
-
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
             float segmentWidth = ((segmentSize.X / 2) + 8) * scale;
@@ -470,12 +466,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 float progress = i / (float)Crystals.Length;
                 float rot = progress * MathHelper.TwoPi;
-                float orbitRadius = 256;
+                float orbitRadius = 128;
                 Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
                 drawPosition += new Vector2(0, VectorHelper.Osc(0f, 8f, offset: i));
                 drawPosition -= screenPos;
                 crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
-                crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 8f, offset: i));
+                crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 32f, offset: i));
 
                 Vector2 drawOrigin = crystal.Texture.Size() / 2;
                 float drawScale = 1f;
