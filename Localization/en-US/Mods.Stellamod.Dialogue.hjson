@@ -176,39 +176,29 @@ SirestiasTalk16: "Wowie, goodness gracious. I think we're getting places! "
 SirestiasTalk17: Ok so um, I hate to say this but I don't really have any tasks for you to do for now. Feel free to explore and do some other things. I'll catch up with you when I'm done exploring the world. I have some old friends to talk to..
 SirestiasTalk18: Verlia is our first step to getting to Gothivia, and her influence keeps ruining everything. She doesn't seem too bad but her influence on the world is so negative that we have to kill her. I think you should go find the catacombs soon. Anyways I'll be back.
 SirestiasTalk19: You're getting pretty good at this you know. Take that manifestation to Ordin, he seemed pretty compliant, except her kind of wants everything gone. I think I have to start doing something at least.
-
-
-
-DreadDialogue1:
+DreadTalk1:
 	'''
 	Who are you...
 	Whatever you're doing stop now. 
 	...
 	'''
-
-	DreadDialogue2:
+DreadTalk2:
 	'''
 	Why destroy something so important to me. 
 	Do you seek destruction?
 	...
 	'''
-
-	DreadDialogue3:
+DreadTalk3:
 	'''
 	So persistent..
 	Maybe I can put my powers to use.
 	...
 	'''
-
-	DreadDialogue4:
+DreadTalk4:
 	'''
 	Must you use your ignorance as a shield?
 	Stop...
 	I need to call Azurerin...
 	...
 	'''
-
-		DreadDialogue5:
-	'''
-	...
-	'''
+DreadTalk5: ...
