@@ -48,13 +48,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             SegmentPosOsc = new Vector2(0, sinOsc);
             SegmentRotationOsc = rotOsc;
-            if (State == ActionState.Sleeping)
-            {
-                SegmentPosOsc *= 0.2f;
-                SegmentRotationOsc *= 0.2f;
-            }
-           
-
         }
 
         private void OrientArching()
@@ -87,7 +80,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             Player target = Main.player[NPC.target];
             float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
-            float tiles = 32f;
+            float tiles = 96;
             Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
             if(distanceToTarget < tiles.TilesToDistance())
             {
@@ -97,6 +90,5 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 TargetHeadRotation = MathHelper.PiOver4;
             }
         }
-
     }
 }

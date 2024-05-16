@@ -5,14 +5,13 @@ using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
-using Stellamod.NPCs.Town;
 using Stellamod.Particles;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -25,14 +24,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
     {
         public enum ActionState
         {
-            Roaming,
-            Obliterate,
-            Sleeping,
-            BossFight
-        }
-
-        public enum BossActionState
-        {
+            Spawn,
             Idle,
             Frost_Breath,
             Laser_Blast,
@@ -69,21 +61,19 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int P1_StarWrathDamage => 40;
         private int P1_LaserDamage => 500;
 
-
         //AI
+        private bool _resetTimers;
         ref float Timer => ref NPC.ai[1];
         ref float AttackTimer => ref NPC.ai[2];
-        public BossActionState BossState
+        public ActionState NextAttack
         {
-            get => (BossActionState)NPC.ai[3];
+            get => (ActionState)NPC.ai[3];
             set => NPC.ai[3] = (float)value;
         }
+        private float CrystalTimer;
 
-        int SleepingTimer;
-        BossActionState NextAttack = BossActionState.Frost_Breath;
         int ScaleDamageCounter;
         int AggroDamageCounter;
-        bool Spawned;
   
         private Player Target => Main.player[NPC.target];
         private IEntitySource EntitySource => NPC.GetSource_FromThis();
@@ -115,23 +105,48 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private Vector2 ChargeDirection;
         private Vector2 LaserAttackPos;
 
-        public float RoamingDirection = -1f;
-        public float RoamingSpeed = 2;
+        private void FinishResetTimers()
+        {
+            if (_resetTimers)
+            {
+                Timer = 0;
+                AttackTimer = 0;
+                AttackCount = 0;
+                _resetTimers = false;
+            }
+        }
+
+        private void ResetTimers()
+        {
+            if (StellaMultiplayer.IsHost)
+            {
+                _resetTimers = true;
+                NPC.netUpdate = true;
+            }
+        }
+
+
+        private void ResetState(ActionState bossActionState)
+        {
+            State = bossActionState;
+            ResetTimers();
+            NPC.netUpdate = true;
+        }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write((float)BossState);
-            writer.Write((float)NextAttack);
+            writer.Write(_resetTimers);
             writer.Write(ScaleDamageCounter);
             writer.Write(AggroDamageCounter);
+            writer.Write(CrystalTimer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            BossState = (BossActionState)reader.ReadSingle();
-            NextAttack = (BossActionState)reader.ReadSingle();
+            _resetTimers = reader.ReadBoolean();
             ScaleDamageCounter = reader.ReadInt32();
             AggroDamageCounter = reader.ReadInt32();
+            CrystalTimer = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -160,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             //Stats
             NPC.lifeMax = 232000;
-            NPC.defense = 90;
+            NPC.defense = 110;
             NPC.damage = 240;
             NPC.width = (int)NiiviHeadSize.X;
             NPC.height = (int)NiiviHeadSize.Y;
@@ -175,109 +190,106 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.noGravity = true;
             NPC.knockBackResist = 0;
 
+            NPC.BossBar = ModContent.GetInstance<NiiviBossBar>();
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
-            TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
-        }
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Niivi");
+            }
 
-        public override bool CheckActive()
-        {
-            //Return false to prevents despawning.
-            //She'll have custom code when she's in her fight phase
-            return false;
+            Crystals = new NiiviCrystalDraw[3];
+            Crystals[0] = new NiiviCrystalDraw(NPC, ModContent.Request<Texture2D>($"{BaseProjectileTexturePath}NiiviCrystalFrost").Value);
+            Crystals[1] = new NiiviCrystalDraw(NPC, ModContent.Request<Texture2D>($"{BaseProjectileTexturePath}NiiviCrystalLightning").Value);
+            Crystals[2] = new NiiviCrystalDraw(NPC, ModContent.Request<Texture2D>($"{BaseProjectileTexturePath}NiiviCrystalStars").Value);
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             //Return false for no Contact Damage
-            if (BossState == BossActionState.Charge)
+            if (State == ActionState.Charge)
                 return IsCharging;
             return false;
         }
 
-        private void ResetState(ActionState actionState)
-        {
-            State = actionState;
-            if(State == ActionState.BossFight)
-            {
-                TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>("Stellamod/NPCs/Bosses/Niivi/Niivi_Head_Boss");
-                // Custom boss bar
-                NPC.BossBar = ModContent.GetInstance<NiiviBossBar>();
-                NPC.boss = true;
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Niivi");
-            }
-            else
-            {
-                TextureAssets.NpcHeadBoss[NPC.GetBossHeadTextureIndex()] = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
-                Timer = 0;
-                AttackTimer = 0;
-                AttackCount = 0;
-                NextAttack = BossActionState.Frost_Breath;
-                Music = -1;
-
-                NPC.boss = false;
-                NPC.BossBar = null;
-                NPC.netUpdate = true;
-            }
-        }
-
-        private void ResetState(BossActionState bossActionState)
-        {
-            BossState = bossActionState;
-            Timer = 0;
-            AttackTimer = 0;
-            AttackCount = 0;
-            NPC.netUpdate = true;
-        }
-
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            int lifeToGiveIllurineScale = NPC.lifeMax / 300;
-            int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
-            if (StellaMultiplayer.IsHost)
-            {
-                AggroDamageCounter += hit.Damage;
-                ScaleDamageCounter += hit.Damage;
-
-                int lifeToGive = State == ActionState.BossFight ? lifeToGiveIllurineScaleInBoss : lifeToGiveIllurineScale;
-                if (ScaleDamageCounter >= lifeToGive)
-                {
-                    Vector2 velocity = -Vector2.UnitY;
-                    velocity *= Main.rand.NextFloat(4, 8);
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
-                        ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
-                    ScaleDamageCounter = 0;
-                }
-
-                if (AggroDamageCounter >= lifeToGiveIllurineScale * 15 && State != ActionState.BossFight)
-                {
-                    ResetState(ActionState.BossFight);
-                    ResetState(BossActionState.Idle);
-                    AggroDamageCounter = 0;
-                }
-            }
-        }
 
         public override void AI()
         {
-            if (!Spawned)
+            FinishResetTimers();
+            AI_PhaseSwaps();
+
+            if (!NPC.HasValidTarget)
             {
-                NPC.boss = false;
-                Spawned = true;
+                //Despawn basically
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget && State != ActionState.Calm_Down)
+                {
+                    ResetState(ActionState.Calm_Down);
+                }
             }
+
+            if(State != ActionState.Spawn)
+            {
+                Crystals[0].Draw = !NPC.AnyNPCs(ModContent.NPCType<NiiviCrystalFrost>());
+                Crystals[1].Draw = !NPC.AnyNPCs(ModContent.NPCType<NiiviCrystalLightning>());
+                Crystals[2].Draw = !NPC.AnyNPCs(ModContent.NPCType<NiiviCrystalStars>());
+            }
+            CrystalTimer++;
 
             switch (State)
             {
-                case ActionState.Roaming:
-                    AIRoaming();
+                case ActionState.Spawn:
+                    AI_Spawn();
                     break;
-                case ActionState.Sleeping:
-                    AISleeping();
+                case ActionState.Idle:
+                    AI_Idle();
                     break;
-                case ActionState.BossFight:
-                    AIBossFight();
-                    break; 
+                case ActionState.Swoop_Out:
+                    AI_SwoopOut();
+                    break;
+                case ActionState.PrepareAttack:
+                    AI_PrepareAttack();
+                    break;
+                case ActionState.Frost_Breath:
+                    AI_FrostBreath();
+                    break;
+                case ActionState.Laser_Blast:
+                    AI_LaserBlast();
+                    break;
+                case ActionState.Star_Wrath:
+                    AI_StarWrath();
+                    break;
+                case ActionState.Charge:
+                    AI_Charge();
+                    break;
+                case ActionState.Thunderstorm:
+                    AI_Thunderstorm();
+                    break;
+                case ActionState.Baby_Dragons:
+                    AI_BabyDragons();
+                    break;
+                case ActionState.Calm_Down:
+                    AI_CalmDown();
+                    break;
+
+                //Phase 2
+                case ActionState.Frost_Breath_V2:
+                    AI_FrostBreath_V2();
+                    break;
+                case ActionState.Thunderstorm_V2:
+                    AI_Thunderstorm_V2();
+                    break;
+                case ActionState.Laser_Blast_V2:
+                    AI_LaserBlast_V2();
+                    break;
+                case ActionState.Star_Wrath_V2:
+                    AI_StarWrath_V2();
+                    break;
+                case ActionState.Charge_V2:
+                    AI_Charge_V2();
+                    break;
             }
+
+            UpdateOrientation();
         }
 
         private void AI_PhaseSwaps()
@@ -298,173 +310,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
-        private void AIRoaming()
-        {
-            if (!Main.dayTime)
-            {
-                AIRoaming_GoHome();
-            }
-            else
-            {
-                AIRoaming_FlyAroundTree();
-            }
-        }
-
-        private void AIRoaming_FlyAroundTree()
-        {
-            float orbitDistance = 2000;
-            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 1024);
-            Vector2 direction = home.DirectionTo(NPC.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 2000);
-            Vector2 targetCenter = home + direction * orbitDistance;
-            Vector2 directionToTargetCenter = NPC.Center.DirectionTo(targetCenter);
-            AI_MoveToward(targetCenter, 2);
-            OrientArching();
-            if (directionToTargetCenter.X > 0)
-            {
-                FlightDirection = 1;
-                LookDirection = 1;
-                StartSegmentDirection = -Vector2.UnitX;
-
-            }
-            else
-            {
-                FlightDirection = -1;
-                LookDirection = -1;
-                StartSegmentDirection = Vector2.UnitX;
-                TargetHeadRotation = -MathHelper.PiOver4 + MathHelper.Pi;
-            }
-
-            UpdateOrientation();
-            LookAtTarget();
-        }
-
-        private void AIRoaming_GoHome()
-        {
-            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld;
-            Vector2 directionToHome = NPC.Center.DirectionTo(home);
-            float distanceToHome = Vector2.Distance(NPC.Center, home);
-
-            //Set orientation
-            if (directionToHome.X > 0)
-            {
-                FlightDirection = 1;
-                LookDirection = 1;
-                StartSegmentDirection = -Vector2.UnitX;
-                OrientStraight();
-                TargetHeadRotation = NPC.velocity.ToRotation();
-
-            }
-            else
-            {
-                FlightDirection = -1;
-                LookDirection = -1;
-                StartSegmentDirection = Vector2.UnitX;
-                OrientStraight();
-                TargetHeadRotation = NPC.velocity.ToRotation();
-            }
-
-
-            float speed = MathHelper.Min(RoamingSpeed, distanceToHome);
-            Vector2 targetVelocity = directionToHome * speed;
-            targetVelocity += new Vector2(0, VectorHelper.Osc(-1, 1));
-            NPC.velocity = targetVelocity;
-
-            if (distanceToHome <= 1)
-            {
-                ResetState(ActionState.Sleeping);
-            }
-
-            UpdateOrientation();
-            LookAtTarget();
-        }
- 
-        private void AISleeping()
-        {
-            if (Main.dayTime)
-            {
-                SleepingTimer = 0;
-                ResetState(ActionState.Roaming);
-            }
-            else
-            {
-                FlightDirection = 1;
-                LookDirection = 1;
-                StartSegmentDirection = -Vector2.UnitX;
-
-                //Go sleep
-                Vector2 sleepPos = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 164);
-                NPC.Center = Vector2.Lerp(NPC.Center, sleepPos, 0.01f);
-                NPC.velocity *= 0.9f;
-                TargetSegmentRotation = -MathHelper.PiOver4 / 80;
-                TargetHeadRotation = 0;
-                SleepingTimer++;
-                if (SleepingTimer > 60 && SleepingTimer % 60 == 0)
-                {
-                    ParticleManager.NewParticle<ZeeParticle>(NPC.Center + new Vector2(64, -32), -Vector2.UnitY, Color.White, 1f);
-                }
-            }
-            UpdateOrientation();
-        }
-
-
-        private void AIBossFight()
-        {
-            AI_PhaseSwaps();
-            switch (BossState)
-            {
-                case BossActionState.Idle:
-                    AI_Idle();
-                    break;
-                  
-                case BossActionState.Swoop_Out:
-                    AI_SwoopOut();
-                    break;
-                case BossActionState.PrepareAttack:
-                    AI_PrepareAttack();
-                    break;
-                case BossActionState.Frost_Breath:
-                    AI_FrostBreath();
-                    break;
-                case BossActionState.Laser_Blast:
-                    AI_LaserBlast();
-                    break;
-                case BossActionState.Star_Wrath:
-                    AI_StarWrath();
-                    break;
-                case BossActionState.Charge:
-                    AI_Charge();
-                    break;
-                case BossActionState.Thunderstorm:
-                    AI_Thunderstorm();
-                    break;
-                case BossActionState.Baby_Dragons:
-                    AI_BabyDragons();
-                    break;
-                case BossActionState.Calm_Down:
-                    AI_CalmDown();
-                    break;
-
-                //Phase 2
-                case BossActionState.Frost_Breath_V2:
-                    AI_FrostBreath_V2();
-                    break;
-                case BossActionState.Thunderstorm_V2:
-                    AI_Thunderstorm_V2();
-                    break;
-                case BossActionState.Laser_Blast_V2:
-                    AI_LaserBlast_V2();
-                    break;
-                case BossActionState.Star_Wrath_V2:
-                    AI_StarWrath_V2();
-                    break;
-                case BossActionState.Charge_V2:
-                    AI_Charge_V2();
-                    break;
-            }
-
-            UpdateOrientation();
-        }
 
         private void ChargeVisuals<T>(float timer, float maxTimer) where T : Particle
         {
@@ -484,18 +329,48 @@ namespace Stellamod.NPCs.Bosses.Niivi
         }
 
         #region Phase 1
+        private void AI_Spawn()
+        {
+            NPC.TargetClosest();
+            Timer++;
+            if (Timer == 1)
+            {
+                if (StellaMultiplayer.IsHost)
+                {
+                    Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero, ModContent.ProjectileType<NiiviSpawnExplosionProj>(),
+                        0, 0, Main.myPlayer);
+                }
+
+                for (int i = 0; i < Crystals.Length; i++)
+                {
+                    Crystals[i].Draw = true;
+                }
+                NPC.velocity = -Vector2.UnitY;
+            }
+
+            OrientArching();
+            UpdateOrientation();
+            LookAtTarget();
+            FlipToDirection();
+            //Slowdown over time
+            float length = 720;
+            NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+
+            if (Timer >= 60)
+            {
+                NextAttack = ActionState.Frost_Breath;
+                ResetState(ActionState.Idle);
+
+            }
+        }
+
         private void AI_Idle()
         {
             NPC.TargetClosest();
-            if (!NPC.HasValidTarget)
-            {
-                //Despawn basically
-                ResetState(BossActionState.Calm_Down);
-            }
             Timer++;
             if (Timer >= 1)
             {
-                ResetState(BossActionState.PrepareAttack);
+                ResetState(ActionState.PrepareAttack);
             }
 
             UpdateOrientation();
@@ -508,240 +383,20 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Timer++;
             if (Timer >= 60)
             {
-                ResetState(ActionState.Roaming);
-                ResetState(BossActionState.Idle);
-            }
+                if (StellaMultiplayer.IsHost)
+                {
+                    NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<NiiviRoaming>());
+                }
 
+                ResetShaders();
+                NPC.active = false;
+            }
+          
+            OrientArching();
             UpdateOrientation();
             NPC.velocity *= 0.98f;
         }
 
-        private void AI_FrostBreath()
-        {
-
-            /*
-            //Ok so how is this attack going to work
-            Step 1: Niivi takes aim at you for a few seconds, then rotates her head 135 degrees upward
-            
-            Step 2: Snowflake and snow particles circle around into her magic sigil thing
-            
-            Step 3: Then they form a frosty rune/sigil thingy
-            
-            Step 4: A second or two later, Niivi starts breathing the ice breath while slowly rotating her head
-            
-            Step 5: The attack goes 180 degrees, or a little more, so you'll need to move behind her
-            
-            Step 6: The breath spews out a windy looking projectile that quickly expands and dissipates
-            
-            Step 7: Stars and snowflake particles also come out
-            
-            Step 8: The screen is tinted blue/white during this attack (shader time!)
-            
-            Step 9: When the breath collides with tiles (including platforms if possible), 
-                there is a chance for it to form large icicles, these are NPCs, you can break them
-                they have a snowy aura
-
-            Step 10: Niivi stops breathing once she reaches the edge of her range,
-                she turns around towards you and fires three frost blasts while slowly flying away
-
-            Step 11: The frost blasts travel a short distance, (slowing down over time)
-                when they come to complete stop, they explode into icicles that are affected by gravity
-
-            Step 12: Niivi flies away to decide a new attack
-           
-            In Phase 2:
-                Niivi does frost balls before doing the breath, and rotates her head slightly faster
-            */
-
-
-            if (AttackTimer == 0)
-            {
-                //Taking aim
-                Timer++;
-
-                //Rotate Head
-                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
-                if (Timer >= 60)
-                {
-                    NPC.velocity = -Vector2.UnitY;
-                    Timer = 0;
-                    AttackTimer++;
-                }
-            }
-            else if (AttackTimer == 1)
-            {
-                //Rotate head 90-ish degrees upward
-                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
-
-                float targetRotation = MathHelper.PiOver2 * -AttackSide;
-                Vector2 rotatedDirection = directionToTarget.RotatedBy(targetRotation);
-                TargetHeadRotation = rotatedDirection.ToRotation();
-
-                //Slowly accelerate up while charging
-                NPC.velocity *= 1.002f;
-
-                Timer++;
-                if (Timer == 1)
-                {
-                    Vector2 velocity = Vector2.Zero;
-                    int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
-                        0, 0, Main.myPlayer);
-                    }
-                }
-
-                //Charge up
-                ChargeVisuals<SnowFlakeParticle>(Timer, 60);
-                if (Timer >= 60)
-                {
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        int type = ModContent.ProjectileType<NiiviFrostCircleProj>();
-                        int damage = 0;
-                        int knockback = 0;
-                        Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero,
-                            type, damage, knockback, Main.myPlayer);
-                    }
-
-                    Timer = 0;
-                    AttackTimer++;
-                }
-            }
-            else if (AttackTimer == 2)
-            {
-                //Get the shader system!
-                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.TintScreen(Color.Cyan, 0.1f);
-                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f);
-                shaderSystem.VignetteScreen(-1f);
-
-                //Slowdown over time
-                NPC.velocity *= 0.99f;
-
-                //Slowly rotate while shooting projectile
-                float length = 720;
-                float amountToRotateBy = 3 * MathHelper.TwoPi / length;
-                amountToRotateBy = amountToRotateBy * AttackSide;
-                TargetHeadRotation += amountToRotateBy;
-                NPC.rotation = HeadRotation;
-
-                Timer++;
-                if (Timer % 4 == 0)
-                {
-                    float particleSpeed = 16;
-                    Vector2 velocity = TargetHeadRotation.ToRotationVector2() * particleSpeed;
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
-
-                    Color[] colors = new Color[] { Color.Cyan, Color.LightCyan, Color.DarkCyan, Color.White };
-                    Color color = colors[Main.rand.Next(0, colors.Length)];
-
-                    //Spawn Star and Snowflake Particles
-                    for(int i = 0; i < 4; i++)
-                    {
-                        if (Main.rand.NextBool(2))
-                        {
-                            //Snowflake particle
-                            ParticleManager.NewParticle<SnowFlakeParticle>(NPC.Center, velocity, color, 1f);
-                        }
-                        else
-                        {
-                            //Star particle
-                            ParticleManager.NewParticle<StarParticle2>(NPC.Center, velocity, color, 1f);
-                        }
-                    }
-
-                }
-
-                if (Timer % 4 == 0 && StellaMultiplayer.IsHost)
-                {
-                    float speed = 16;
-                    Vector2 velocity = TargetHeadRotation.ToRotationVector2() * speed;
-
-                    //Add some random offset to the attack
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
-
-                    int type = ModContent.ProjectileType<NiiviFrostBreathProj>();
-                    int damage = P1_FrostBreathDamage;
-                    float knockback = 1;
-
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
-                        damage, knockback, Main.myPlayer);
-                    }
-                }
-
-                if (Timer >= length)
-                {
-
-                    Timer = 0;
-                    AttackTimer++;
-                }
-            }
-            else if (AttackTimer == 3)
-            {
-                //Untint the screen
-                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.UnTintScreen();
-                shaderSystem.UnDistortScreen();
-                shaderSystem.UnVignetteScreen();
-
-                Timer++;
-                if (Timer == 1)
-                {
-                    //Retarget, just incase target died ya know
-                    NPC.TargetClosest();
-
-                    //Re-orient incase target went behind
-                    LookDirection = DirectionToTarget;
-                    OrientArching();
-                    FlipToDirection();
-
-                    Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
-                    TargetHeadRotation = directionToTarget.ToRotation();
-                }
-
-                if (Timer >= 30)
-                {
-                    float speed = 24;
-                    Vector2 velocity = TargetHeadRotation.ToRotationVector2() * speed;
-
-                    //Add some random offset to the attack
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
-
-                    int type = ModContent.ProjectileType<NiiviFrostBombProj>();
-
-                    Vector2 spawnPos = NPC.Center + Main.rand.NextVector2Circular(128, 128);
-                    velocity *= Main.rand.NextFloat(0.5f, 1f);
-
-                    int damage = P1_FrostBreathDamage / 2;
-                    float knockback = 1;
-
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        Projectile.NewProjectile(EntitySource, spawnPos, velocity, type,
-                        damage, knockback, Main.myPlayer);
-                    }
-
-                    Timer = 0;
-                    AttackCount++;
-                }
-
-                if (AttackCount >= 6)
-                {
-                    Timer = 0;
-                    AttackCount = 0;
-                    AttackTimer++;
-                }
-            }
-            else if (AttackTimer == 4)
-            {
-                NextAttack = BossActionState.Laser_Blast;
-                ResetState(BossActionState.Swoop_Out);
-            }
-        }
 
         private void AI_SwoopOut()
         {
@@ -750,14 +405,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 OrientationSpeed = 0.03f;
                 NPC.velocity = -Vector2.UnitY * 0.02f;
-                // TargetHeadRotation = NPC.velocity.ToRotation();
             }
 
-            NPC.velocity *= 1.016f;
-            NPC.velocity.Y -= 0.002f;
+            AI_MoveToward(Target.Center);
+            //NPC.velocity *= 1.016f;
+           // NPC.velocity.Y -= 0.002f;
             if (Timer >= 30)
             {
-                ResetState(BossActionState.Idle);
+                ResetState(ActionState.Idle);
             }
         }
 
@@ -903,14 +558,21 @@ namespace Stellamod.NPCs.Bosses.Niivi
                         p.timeLeft = 8;
                     }
                 }
+                
+                if(Timer > 61)
+                {
+                    NPC.velocity *= 0.98f;
+                }
 
                 //Rotate head 90-ish degrees upward
                 if (Timer < 60)
                 {
+              
                     LaserAttackPos = Target.Center;
                     Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
                     TargetHeadRotation = directionToTarget.ToRotation();
 
+                    AI_MoveToward(Target.Center, 3);
                     //Slowly accelerate up while charging
                     NPC.velocity *= 1.002f;
 
@@ -929,6 +591,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
                 else if (Timer >= 120)
                 {
+              
                     //SHOOT LOL
                     Vector2 fireDirection = TargetHeadRotation.ToRotationVector2();
                     float distance = Vector2.Distance(NPC.Center, LaserAttackPos);
@@ -961,9 +624,194 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if (AttackCount >= 3)
                 {
-                    NextAttack = BossActionState.Star_Wrath;
-                    ResetState(BossActionState.Swoop_Out);
+                    NextAttack = ActionState.Star_Wrath;
+                    ResetState(ActionState.Swoop_Out);
                 }
+            }
+        }
+        private void AI_FrostBreath()
+        {
+
+            /*
+            //Ok so how is this attack going to work
+            Step 1: Niivi takes aim at you for a few seconds, then rotates her head 135 degrees upward
+            
+            Step 2: Snowflake and snow particles circle around into her magic sigil thing
+            
+            Step 3: Then they form a frosty rune/sigil thingy
+            
+            Step 4: A second or two later, Niivi starts breathing the ice breath while slowly rotating her head
+            
+            Step 5: The attack goes 180 degrees, or a little more, so you'll need to move behind her
+            
+            Step 6: The breath spews out a windy looking projectile that quickly expands and dissipates
+            
+            Step 7: Stars and snowflake particles also come out
+            
+            Step 8: The screen is tinted blue/white during this attack (shader time!)
+            
+            Step 9: When the breath collides with tiles (including platforms if possible), 
+                there is a chance for it to form large icicles, these are NPCs, you can break them
+                they have a snowy aura
+
+            Step 10: Niivi stops breathing once she reaches the edge of her range,
+                she turns around towards you and fires three frost blasts while slowly flying away
+
+            Step 11: The frost blasts travel a short distance, (slowing down over time)
+                when they come to complete stop, they explode into icicles that are affected by gravity
+
+            Step 12: Niivi flies away to decide a new attack
+           
+            In Phase 2:
+                Niivi does frost balls before doing the breath, and rotates her head slightly faster
+            */
+
+
+            if (AttackTimer == 0)
+            {
+                //Taking aim
+                Timer++;
+
+                //Rotate Head
+                TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+                if (Timer >= 60)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            }
+            else if (AttackTimer == 1)
+            {
+                //Rotate head 90-ish degrees upward
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+
+                float targetRotation = MathHelper.PiOver2 * -AttackSide;
+                Vector2 rotatedDirection = directionToTarget.RotatedBy(targetRotation);
+                TargetHeadRotation = rotatedDirection.ToRotation();
+
+                //Slowly accelerate up while charging
+                NPC.velocity *= 1.002f;
+
+                Timer++;
+                if (Timer == 1)
+                {
+                    Vector2 velocity = Vector2.Zero;
+                    int type = ModContent.ProjectileType<NiiviFrostTelegraphProj>();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center, velocity, type,
+                        0, 0, Main.myPlayer);
+                    }
+                }
+
+                //Charge up
+                ChargeVisuals<SnowFlakeParticle>(Timer, 60);
+                if (Timer >= 60)
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        int type = ModContent.ProjectileType<NiiviFrostCircleProj>();
+                        int damage = 0;
+                        int knockback = 0;
+                        Projectile.NewProjectile(EntitySource, NPC.Center, Vector2.Zero,
+                            type, damage, knockback, Main.myPlayer);
+
+                        NPC.NewNPC(EntitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<NiiviCrystalFrost>());
+                    }
+
+                    Timer = 0;
+                    AttackTimer++;
+                    NPC.velocity = -Vector2.UnitY;
+                }
+            }
+            else if (AttackTimer == 2)
+            {
+                //Get the shader system!
+                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                shaderSystem.TintScreen(Color.Cyan, 0.1f);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f);
+                shaderSystem.VignetteScreen(-1f);
+
+                //Slowdown over time
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+
+                //Re-orient incase target went behind
+                LookDirection = DirectionToTarget;
+                OrientArching();
+                FlipToDirection();
+
+                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                TargetHeadRotation = directionToTarget.ToRotation();
+                Timer++;
+                if (Timer >= length)
+                {
+
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            }
+            else if (AttackTimer == 3)
+            {
+                //Untint the screen
+                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                shaderSystem.UnTintScreen();
+                shaderSystem.UnDistortScreen();
+                shaderSystem.UnVignetteScreen();
+
+                Timer++;
+                if (Timer == 1)
+                {
+                    //Retarget, just incase target died ya know
+                    NPC.TargetClosest();
+
+                    //Re-orient incase target went behind
+                    LookDirection = DirectionToTarget;
+                    OrientArching();
+                    FlipToDirection();
+
+                    Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                    TargetHeadRotation = directionToTarget.ToRotation();
+                }
+
+                if (Timer >= 30)
+                {
+                    float speed = 24;
+                    Vector2 velocity = TargetHeadRotation.ToRotationVector2() * speed;
+
+                    //Add some random offset to the attack
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 8);
+
+                    int type = ModContent.ProjectileType<NiiviFrostBombProj>();
+
+                    Vector2 spawnPos = NPC.Center + Main.rand.NextVector2Circular(128, 128);
+                    velocity *= Main.rand.NextFloat(0.5f, 1f);
+
+                    int damage = P1_FrostBreathDamage / 2;
+                    float knockback = 1;
+
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, spawnPos, velocity, type,
+                        damage, knockback, Main.myPlayer);
+                    }
+
+                    Timer = 0;
+                    AttackCount++;
+                }
+
+                if (AttackCount >= 6)
+                {
+                    Timer = 0;
+                    AttackCount = 0;
+                    AttackTimer++;
+                }
+            }
+            else if (AttackTimer == 4)
+            {
+                NextAttack = ActionState.Laser_Blast;
+                ResetState(ActionState.Swoop_Out);
             }
         }
 
@@ -980,6 +828,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     NPC.velocity = -Vector2.UnitY;
                     Timer = 0;
                     AttackTimer++;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Vector2 spawnCenter = Target.Center + new Vector2(0, -128);
+                        NPC.NewNPC(EntitySource, (int)spawnCenter.X, (int)spawnCenter.Y, ModContent.NPCType<NiiviCrystalStars>());
+                    }
                 }
             }
             else if (AttackTimer == 1)
@@ -987,27 +840,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Timer++;
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
-                if (Timer % 8 == 0 && StellaMultiplayer.IsHost)
-                {
-                    int type = ModContent.ProjectileType<NiiviCometProj>();
-                    int damage = P1_StarWrathDamage;
-                    int knockback = 1;
 
-                    float height = 768;
-                    Vector2 targetCenter = Target.Center;
-                    Vector2 cometOffset = -Vector2.UnitY * height + new Vector2(Main.rand.NextFloat(512, 1750), 0);
-                    Vector2 cometPos = targetCenter + cometOffset;
-
-                    float speed = 12;
-                    Vector2 velocity = new Vector2(-1, 1) * speed;
-                    Projectile.NewProjectile(EntitySource, cometPos, velocity,
-                        type, damage, knockback, Main.myPlayer);
-                }
+                //Slowdown over time
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
 
                 if (Timer >= 360)
                 {
-                    NextAttack = BossActionState.Charge;
-                    ResetState(BossActionState.Swoop_Out);
+                    NextAttack = ActionState.Charge;
+                    ResetState(ActionState.Swoop_Out);
                 }
             }
         }
@@ -1074,8 +915,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 AttackCount++;
                 if (AttackCount >= 3)
                 {
-                    NextAttack = BossActionState.Thunderstorm;
-                    ResetState(BossActionState.Swoop_Out);
+                    NextAttack = ActionState.Thunderstorm;
+                    ResetState(ActionState.Swoop_Out);
                 }
             }
         }
@@ -1110,6 +951,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 {
                     Timer = 0;
                     AttackTimer++;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Vector2 spawnCenter = Target.Center + new Vector2(0, -128);
+                        NPC.NewNPC(EntitySource, (int)spawnCenter.X, (int)spawnCenter.Y, ModContent.NPCType<NiiviCrystalLightning>());
+                    }
                 }
             }
             else if (AttackTimer == 2)
@@ -1123,14 +969,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer == 1)
                 {
                     LaserAttackPos = Target.Center;
-                }
-
-                if (Timer > 30 && Timer % 15 == 0 && StellaMultiplayer.IsHost)
-                {
-                    Vector2 pos = Target.Center + Target.velocity * 48;
-                    pos += new Vector2(Main.rand.NextFloat(-64, 64), 0);
-                    Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
-                        ModContent.ProjectileType<NiiviThundercloudProj>(), P1_LightningDamage, 2, Main.myPlayer);
                 }
 
                 if (Timer >= 90)
@@ -1148,18 +986,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 NPC.velocity *= 0.98f;
                 Timer++;
-                if (Timer == 45 && StellaMultiplayer.IsHost)
-                {
-                    Vector2 pos = Target.Center + Target.velocity * 48;
-                    Projectile.NewProjectile(EntitySource, pos, Vector2.UnitY,
-                        ModContent.ProjectileType<NiiviLightningRayWarnProj>(), P1_LightningDamage, 2, Main.myPlayer);
-                }
-
                 if (Timer >= 90)
                 {
                     shaderSystem.UnTintScreen();
-                    NextAttack = BossActionState.Frost_Breath;
-                    ResetState(BossActionState.Swoop_Out);
+                    NextAttack = ActionState.Frost_Breath;
+                    ResetState(ActionState.Swoop_Out);
                 }
             }
         }
@@ -1177,8 +1008,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
-            ResetState(BossActionState.Swoop_Out);
-            NextAttack = BossActionState.Laser_Blast_V2;
+            ResetState(ActionState.Swoop_Out);
+            NextAttack = ActionState.Laser_Blast_V2;
         }
 
         private void AI_FrostBreath_V2()
@@ -1281,8 +1112,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 720)
                 {
                     ResetShaders();
-                    NextAttack = BossActionState.Laser_Blast_V2;
-                    ResetState(BossActionState.Swoop_Out);
+                    NextAttack = ActionState.Laser_Blast_V2;
+                    ResetState(ActionState.Swoop_Out);
                 }
             }
         }
@@ -1305,8 +1136,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
-            ResetState(BossActionState.Swoop_Out);
-            NextAttack = BossActionState.Laser_Blast_V2;
+            ResetState(ActionState.Swoop_Out);
+            NextAttack = ActionState.Laser_Blast_V2;
         }
         #endregion
 

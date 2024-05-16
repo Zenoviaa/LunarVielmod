@@ -145,7 +145,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         }
     }
 
-    public override void AI()
+        public override bool CheckActive()
+        {
+			return false;
+        }
+
+        public override void AI()
 	{
 			var entitySource = NPC.GetSource_FromAI();
 			timer++;

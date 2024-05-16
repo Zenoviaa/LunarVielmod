@@ -16,7 +16,7 @@ namespace Stellamod.Helpers
         public static string VampKnives_Light_Beam_Vertex_Shader => "VampKnives:LightBeamVertexShader";
         public static string VampKnives_Artemis_Laser_Shader => "VampKnives:ArtemisLaserShader";
         public static string VampKnives_Fire => "VampKnives:Fire";
-        public static string StellamodFireWhiteShader => "Stellamod:FireWhite";
+        public static string StellamodFireWhiteShader => "VampKnives:FireWhite";
 
 
         private static string Silhouette_Shader => "Stellamod:SilhouetteShader";

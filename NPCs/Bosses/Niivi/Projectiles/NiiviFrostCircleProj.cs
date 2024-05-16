@@ -14,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private float CircleRadius => 768;
-        private float BeamWidth => 32;
+        private float BeamWidth => 64;
         private float Alpha;
         Vector2[] CirclePos = new Vector2[32];
         public override void SetDefaults()
@@ -71,9 +71,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, 
                 TrailRegistry.LaserShader);
             // Some visuals here
-
-            TrailRegistry.LaserShader.UseColor(Color.LightSkyBlue);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
+            BeamDrawer.SpecialShader = TrailRegistry.FireWhiteVertexShader;
+            BeamDrawer.SpecialShader.UseColor(Color.LightSkyBlue);
+            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
             DrawHelper.DrawCircle(Projectile.Center, CircleRadius, CirclePos);
             BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);

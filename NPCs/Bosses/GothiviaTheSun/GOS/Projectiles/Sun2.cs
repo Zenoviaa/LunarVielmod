@@ -117,6 +117,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 		int gr = 118;
 		public bool HHH = false;
 
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
         private void AI_Movement(Vector2 targetCenter, float moveSpeed, float accel = 1f)
         {
             //This code should give quite interesting movement

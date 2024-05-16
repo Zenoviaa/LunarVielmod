@@ -267,6 +267,7 @@ namespace Stellamod.NPCs.Town
                 NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Irradia>()) ||
+                NPC.AnyNPCs(ModContent.NPCType<Niivi>())||
                 NPC.AnyNPCs(NPCID.WallofFlesh);
 
         }
@@ -346,11 +347,11 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<EreshkigalIdle>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<NiiviRoaming>()) && !NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)NiiviSpawnWorld.X, (int)NiiviSpawnWorld.Y,
-                        ModContent.NPCType<Niivi>());
+                        ModContent.NPCType<NiiviRoaming>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
 

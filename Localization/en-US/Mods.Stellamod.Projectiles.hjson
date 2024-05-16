@@ -1217,3 +1217,5 @@ ExampleDistortionProjectile.DisplayName: Example Distortion Projectile
 IncineratorProj.DisplayName: Incinerator Proj
 YourFiredExplosionProj.DisplayName: Your Fired Explosion Proj
 YourFiredProj.DisplayName: Your Fired Proj
+NiiviCrystalWarpExplosionProj.DisplayName: Niivi Crystal Warp Explosion Proj
+NiiviSpawnExplosionProj.DisplayName: Niivi Spawn Explosion Proj

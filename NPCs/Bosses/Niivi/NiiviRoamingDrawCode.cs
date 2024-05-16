@@ -1,53 +1,20 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.Niivi.Projectiles;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
-    internal class NiiviCrystalDraw
-    {
-        public NiiviCrystalDraw(NPC npc, Texture2D texture)
-        {
-            DrawPosition = npc.Center;
-            Npc = npc;
-            Texture = texture;
-        }
-
-        private bool _draw;
-        public bool Draw
-        {
-            get
-            {
-                return _draw;
-            }
-            set
-            {
-                if(value == false && _draw != false)
-                {
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        Projectile.NewProjectile(Npc.GetSource_FromThis(), DrawPosition, Vector2.Zero,
-                            ModContent.ProjectileType<NiiviCrystalWarpExplosionProj>(), 0, 0, Main.myPlayer);
-                    }
-                }
-
-                _draw = value;
-            }
-        }
-        public Vector2 DrawPosition;
-        public Texture2D Texture;
-        public NPC Npc;
-    }
-
-    internal partial class Niivi 
+    internal partial class NiiviRoaming
     {
         private int _segmentIndex;
         public const string BaseTexturePath = "Stellamod/NPCs/Bosses/Niivi/";
-        private string BaseProjectileTexturePath => $"{BaseTexturePath}Projectiles/";
 
         public Vector2 NextSegmentPos;
         public float NextSegmentRot;
@@ -61,9 +28,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Vector2 SegmentPosOsc;
         public float SegmentTurnRotation;
         public float HeadRotation;
-
-        //Crystals
-        public NiiviCrystalDraw[] Crystals;
 
         // Wing Animation Frame Counters
         public int WingFrameCounter;
@@ -118,20 +82,111 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Texture2D NiiviWingBack => ModContent.Request<Texture2D>($"{BaseTexturePath}NiiviWingBack").Value;
         public Vector2 NiiviWingSize => new Vector2(336, 464);
 
-        private bool DrawCrystal;
-        private bool DrawIceCrystal;
-        private bool DrawStarsCrystal;
+        #region Orientations
+        public float LookDirection = -1;
 
+        public float TargetHeadRotation;
+        public float TargetSegmentRotation;
+
+        public float OscTimer;
+        public float OscDir = 1;
+
+        public float OrientationSpeed = 0.2f;
+        private void UpdateOrientation()
+        {
+            //This makes it smoothly enter the thingy
+            float targetHeadRotation = TargetHeadRotation;
+            if (LookDirection == -1)
+            {
+                targetHeadRotation += MathHelper.Pi;
+                targetHeadRotation = MathHelper.WrapAngle(targetHeadRotation);
+            }
+
+
+            HeadRotation = MathHelper.Lerp(HeadRotation, targetHeadRotation, 0.04f);
+            SegmentTurnRotation = MathHelper.Lerp(SegmentTurnRotation, TargetSegmentRotation, 0.04f);
+
+            float duration = 300f;
+            //Oscillate
+            OscTimer += OscDir;
+            if (OscTimer >= duration)
+            {
+                OscDir = -1;
+            }
+            else if (OscTimer <= 0)
+            {
+                OscDir = 1;
+            }
+
+            float progress = OscTimer / duration;
+            float sinOsc = MathF.Sin(progress * -16);
+            float rotOsc = progress * MathHelper.PiOver4 / 16;
+
+            SegmentPosOsc = new Vector2(0, sinOsc);
+            SegmentRotationOsc = rotOsc;
+            if (State == ActionState.Sleeping)
+            {
+                SegmentPosOsc *= 0.2f;
+                SegmentRotationOsc *= 0.2f;
+            }
+
+
+        }
+
+        private void OrientArching()
+        {
+            TargetSegmentRotation = (MathHelper.PiOver4 / Total_Segments) * 1.3f * -LookDirection;
+            TargetHeadRotation = MathHelper.PiOver4;
+        }
+
+        private void OrientStraight()
+        {
+            TargetSegmentRotation = (MathHelper.PiOver4 / Total_Segments) / 3;
+            TargetHeadRotation = 0;
+        }
+
+        private void FlipToDirection()
+        {
+            if (LookDirection < 0)
+            {
+                FlightDirection = -1;
+                StartSegmentDirection = Vector2.UnitX;
+            }
+            else
+            {
+                FlightDirection = 1;
+                StartSegmentDirection = -Vector2.UnitX;
+            }
+        }
+
+        private void LookAtTarget()
+        {
+            Player target = Main.player[NPC.target];
+            float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
+            float tiles = 32f;
+            Vector2 directionToTarget = NPC.Center.DirectionTo(target.Center);
+            if (distanceToTarget < tiles.TilesToDistance())
+            {
+                TargetHeadRotation = NPC.Center.DirectionTo(target.Center).ToRotation() * LookDirection;
+            }
+            else
+            {
+                TargetHeadRotation = MathHelper.PiOver4;
+            }
+        }
+        #endregion
+
+        #region Segments
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
             float segmentWidth = ((segmentSize.X / 2) + 8) * scale;
-            if(_segmentIndex > 0)
+            if (_segmentIndex > 0)
             {
                 //Set the position of the segment
                 SegmentPos[_segmentIndex] = NextSegmentPos;
                 SegmentRot[_segmentIndex] = NextSegmentRot;
 
-                float rotMultiplier = _segmentIndex >= 1 + Neck_Segments && 
+                float rotMultiplier = _segmentIndex >= 1 + Neck_Segments &&
                     _segmentIndex <= 1 + Neck_Segments + Body_Segments ? 0.2f : 1f;
                 //Set the position and rotation of the next one
                 Vector2 segmentDirection = (SegmentPos[_segmentIndex] - SegmentPos[_segmentIndex - 1])
@@ -180,6 +235,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 default:
                     drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
                     break;
+                case ActionState.Sleeping:
+                    WingFrameCounter = 7;
+                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
+                    break;
             }
 
             Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
@@ -210,7 +269,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 drawOffset: backArmOffset,
                 overrideIndex: armDrawIndex - 1);
 
-    
+
             //Draw Body Front
             DrawSegment(spriteBatch, NiiviBodyFront, NiiviBodyFrontSize, drawColor, 1f + Body_Min_Scale);
             for (int i = 0; i < Neck_Segments; i++)
@@ -241,7 +300,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
         }
 
-        /*
         private void DrawSegmentGlow(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
             Vector2? drawOrigin = null,
             Rectangle? sourceRectangle = null,
@@ -312,29 +370,28 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, Effects, 0);
             }
         }
-        */
 
         private void DrawSegment(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
             float scale = 1,
             float rot = 0,
-            Vector2? drawOrigin = null, 
-            Rectangle? sourceRectangle = null, 
-            Vector2? drawOffset = null, 
+            Vector2? drawOrigin = null,
+            Rectangle? sourceRectangle = null,
+            Vector2? drawOffset = null,
             int overrideIndex = -1)
         {
             Vector2 origin = segmentSize / 2;
-            if(drawOrigin != null)
+            if (drawOrigin != null)
             {
                 origin = (Vector2)drawOrigin;
             }
 
-            if(_segmentIndex == SegmentRot.Length - 1)
+            if (_segmentIndex == SegmentRot.Length - 1)
             {
                 SegmentRot[_segmentIndex] += MathHelper.PiOver2;
             }
 
             Vector2 drawPos;
-            if(overrideIndex != -1)
+            if (overrideIndex != -1)
             {
                 drawPos = SegmentPos[overrideIndex];
             }
@@ -348,7 +405,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 drawPos += (Vector2)drawOffset;
             }
 
-            if(_segmentIndex != 0 || overrideIndex != -1)
+            if (_segmentIndex != 0 || overrideIndex != -1)
             {
                 drawPos -= SegmentCorrection;
             }
@@ -357,12 +414,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Color rotatedColor = Color.LightSkyBlue;
             rotatedColor = rotatedColor.MultiplyAlpha(0.1f);
             float glowDistance = Glow_Distance;
-            if(overrideIndex != -1)
+            if (overrideIndex != -1)
             {
                 Vector2 posOsc = SegmentPosOsc * (overrideIndex + 1);
                 float rotationOsc = SegmentRotationOsc * (overrideIndex + 1);
 
-    
+
                 float time = Main.GlobalTimeWrappedHourly;
                 float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
                 float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
@@ -382,7 +439,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rot + rotationOsc, origin, scale, Effects, 0);
                 }
 
-       
+
                 spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rot + rotationOsc, origin, scale, Effects, 0);
             }
             else
@@ -454,33 +511,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             SetSegmentPositions(screenPos);
             DrawAllSegments(spriteBatch, screenPos, drawColor);
-            DrawCrystals(spriteBatch, screenPos, drawColor);
             Lighting.AddLight(NPC.Center, Color.White.ToVector3() * 1.75f * Main.essScale);
             return false;
         }
-
-        private void DrawCrystals(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-
-            for(float i = 0; i < Crystals.Length; i++)
-            {
-                var crystal = Crystals[(int)i];
-                if (!crystal.Draw)
-                    continue;
-
-                float progress = i / (float)Crystals.Length;
-                float rot = progress * MathHelper.TwoPi;
-                float orbitRadius = 256;
-                Vector2 drawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
-                drawPosition += new Vector2(0, VectorHelper.Osc(0f, 8f, offset: i));
-                drawPosition -= screenPos;
-                crystal.DrawPosition = NPC.Center + Vector2.UnitX.RotatedBy(rot + (CrystalTimer * 0.015f)) * orbitRadius;
-                crystal.DrawPosition += new Vector2(0, VectorHelper.Osc(0f, 8f, offset: i));
-
-                Vector2 drawOrigin = crystal.Texture.Size() / 2;
-                float drawScale = 1f;
-                spriteBatch.Draw(crystal.Texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
-            }
-        }
+        #endregion
     }
 }
