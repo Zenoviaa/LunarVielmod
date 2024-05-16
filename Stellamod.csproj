@@ -569,6 +569,7 @@
     <None Remove="Projectiles\Swords\VoidBlasterSpawnEffect.png" />
     <None Remove="Projectiles\TestRay.png" />
     <None Remove="Projectiles\Test\ChainTestProj2.png" />
+    <None Remove="Projectiles\Test\ExampleDistortionProjectile.png" />
     <None Remove="Projectiles\Test\ExampleSilhouetteProjectile.png" />
     <None Remove="Projectiles\Test\FigureEightTestProj.png" />
     <None Remove="Projectiles\Thrown\GintzeSpearMini.png" />

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Special.MinerLogs
 {
-    internal class VeiledScriptureMiner1 : ModItem
+    internal abstract class VeiledScriptureMiner : ModItem
     {
         public static LocalizedText ContentText { get; private set; }
 
@@ -49,4 +49,7 @@ namespace Stellamod.Items.Special.MinerLogs
             return true;
         }
     }
+
+    //These are the actual items, text is automatically grabbed from the localization
+    internal class VeiledScriptureMiner1 : VeiledScriptureMiner { }
 }
