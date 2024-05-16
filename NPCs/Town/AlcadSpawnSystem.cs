@@ -18,6 +18,7 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.WorldG;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
+using Stellamod.NPCs.Bosses.Ereshkigal;
 
 namespace Stellamod.NPCs.Town
 {
@@ -335,6 +336,14 @@ namespace Stellamod.NPCs.Town
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
                         ModContent.NPCType<Gia>());
+                    NetMessage.SendData(MessageID.SyncNPC);
+                }
+
+                else if (!NPC.AnyNPCs(ModContent.NPCType<EreshkigalIdle>()))
+                {
+                    NPC.NewNPC(player.GetSource_FromThis(),
+                        (int)EreshSpawnWorld.X, (int)EreshSpawnWorld.Y,
+                        ModContent.NPCType<EreshkigalIdle>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
