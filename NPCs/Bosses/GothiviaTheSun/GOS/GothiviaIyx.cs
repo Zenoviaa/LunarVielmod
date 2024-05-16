@@ -1029,30 +1029,30 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
              
             }
-            if (timer < 50)
+            if (timer < 80)
             {
                 NPC.damage = 0;
             }
         
-            if (timer < 50 && NPC.HasValidTarget)
+            if (timer < 80 && NPC.HasValidTarget)
             {
 
                
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
-                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.20f);
                 NPC.netUpdate = true;
 
                 float hoverSpeed = 5;
                 float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
             }
-            if (timer == 90)
+            if (timer == 120)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
             }
 
-            if (timer > 90 && timer < 470)
+            if (timer > 120 && timer < 500)
             {
                 NPC.damage = 1600;
                 NPC.rotation = NPC.velocity.ToRotation();
@@ -1077,7 +1077,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = targetVelocity;
             }
        
-            if (timer == 510)
+            if (timer == 540)
             {
                 NPC.velocity *= 0.2f;
                 ResetTimers();
