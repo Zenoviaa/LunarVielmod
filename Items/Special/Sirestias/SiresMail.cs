@@ -245,6 +245,64 @@ namespace Stellamod.Items.Special.Sirestias
                         if (DownedBossSystem.downedSOMBoss)
                         {
 
+                            switch (Main.rand.Next(1))
+                            {
+
+
+                                case 0:
+                                    CallDialogue9 exampleDialogue = new CallDialogue9();
+
+
+                                    dialogueSystem.StartDialogue(exampleDialogue);
+                                    break;
+
+
+
+                            }
+
+
+
+
+
+
+
+                            if (DownedBossSystem.downedVeriBoss)
+                            {
+
+                                switch (Main.rand.Next(2))
+                                {
+
+
+                                    case 0:
+                                        CallDialogue10 exampleDialogue = new CallDialogue10();
+
+
+                                        dialogueSystem.StartDialogue(exampleDialogue);
+                                        break;
+
+
+                                    case 1:
+                                        CallDialogue11 exampleDialogue2 = new CallDialogue11();
+
+
+                                        dialogueSystem.StartDialogue(exampleDialogue2);
+                                        break;
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+                            }
+
+
 
 
                         }
@@ -298,7 +356,7 @@ namespace Stellamod.Items.Special.Sirestias
         internal class CallDialogue9 : Dialogue
         {
             //The number of steps in this dialogue
-            public override int Length => 2;
+            public override int Length => 1;
 
             public override void Next(int index)
             {
@@ -312,15 +370,10 @@ namespace Stellamod.Items.Special.Sirestias
                         DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
 
                         //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
-                        DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk6"));
+                        DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk15"));
                         break;
 
-                    case 1:
-                        //Set the texture of the portrait
 
-                        //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
-                        DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk7"));
-                        break;
 
                 }
             }
@@ -349,6 +402,76 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+    //---------------------------
+
+
+
+
+
+
+    internal class CallDialogue10 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 3;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk16"));
+                    break;
+
+
+                case 1:
+                    //Set the texture of the portrait
+           
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk17"));
+                    break;
+
+
+                case 2:
+                    //Set the texture of the portrait
+                  
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk18"));
+                    break;
+
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
 
 
 
@@ -358,6 +481,72 @@ namespace Stellamod.Items.Special.Sirestias
 
 
 
+
+
+
+    internal class CallDialogue11 : Dialogue
+    {
+        //The number of steps in this dialogue
+        public override int Length => 3;
+
+        public override void Next(int index)
+        {
+            base.Next(index);
+
+            //This starts the dialogue
+            switch (index)
+            {
+                case 0:
+                    //Set the texture of the portrait
+                    DialogueSystem.SetPortrait("Stellamod/UI/Dialogue/SirestiasDialoguePortrait");
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk19"));
+                    break;
+
+
+                case 1:
+                    //Set the texture of the portrait
+
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk17"));
+                    break;
+
+
+                case 2:
+                    //Set the texture of the portrait
+
+
+                    //Put your dialogue in Mods.Stellamod.Dialogue.hjson, then get it like this
+                    DialogueSystem.WriteText(GetLocalizedText("SirestiasTalk18"));
+                    break;
+
+
+            }
+        }
+
+        public override void Update(int index)
+        {
+            base.Update(index);
+            //If you want stuff to happen while they're talking you can do it here ig
+            //But that might not be a good idea since you can just speed through dialogues
+        }
+
+        public override void Complete()
+        {
+
+            //Do something when the dialogue is completely finished
+
+
+            base.Complete();
+        }
+
+
+
+
+
+    }
 
 
 }
