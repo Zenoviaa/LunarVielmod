@@ -45,7 +45,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.value = Item.sellPrice(0, 0, 33, 0);
             Item.rare = ItemRarityID.Purple;
             Item.UseSound = SoundID.Item44;
-
+    
             // These below are needed for a minion weapon
             Item.noMelee = true;
             Item.DamageType = DamageClass.Summon;
@@ -74,7 +74,6 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override bool CanUseItem(Player player)
         {
-            ItemID.Sets.StaffMinionSlotsRequired[Item.type] = 1f;
             if (player.altFunctionUse != 2)
             {
                 if (player.numMinions >= player.maxMinions)
