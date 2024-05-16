@@ -734,6 +734,6 @@ XScissorMinionBuff: {
 }
 
 SerpentMinionBuff: {
-	DisplayName: Serpent Minion Buff
-	Description: Mods.Stellamod.Buffs.SerpentMinionBuff.Description
+	DisplayName: Snake Serpent Raven Thing
+	Description: He's long, and he breathes fire!
 }

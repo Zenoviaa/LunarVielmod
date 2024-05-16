@@ -220,14 +220,23 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             float orbitRadius = 384;
             Vector2 direction = Owner.Center.DirectionTo(Projectile.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 360);
+            direction = direction.RotatedBy(MathHelper.TwoPi / 180);
             Vector2 orbitCenter = Owner.Center + direction * orbitRadius;
-            AI_MoveToward(orbitCenter, 96, 96);
-
+    
          
 
             if(foundTarget && distanceFromTarget <= 1500)
             {
+                if(distanceFromTarget > 256)
+                {
+                    AI_MoveToward(targetCenter, 16, 1);
+                }
+                else
+                {
+                    Projectile.velocity *= 0.8f;
+                }
+        
+
                 StartSegmentGlow(Color.White);
                 Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, directionToTarget.ToRotation(), 0.1f);
@@ -237,12 +246,14 @@ namespace Stellamod.Projectiles.Summons.Minions
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
                     SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, directionToTarget * 8,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, directionToTarget * 10,
                         ModContent.ProjectileType<SerpentMinionFireBreathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
             else
             {
+                SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+                SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.ToRotation(), 0.1f);
                 StopSegmentGlow();
             }

@@ -34,7 +34,7 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetDefaults()
         {
-            Item.damage = 150;
+            Item.damage = 92;
             Item.knockBack = 6f;
             Item.mana = 10;
             Item.width = 32;
@@ -77,7 +77,6 @@ namespace Stellamod.Items.Weapons.Summon
             ItemID.Sets.StaffMinionSlotsRequired[Item.type] = 1f;
             if (player.altFunctionUse != 2)
             {
-                Console.WriteLine(player.numMinions);
                 if (player.numMinions >= player.maxMinions)
                     return true;
                 for (int i = 0; i < 1000; ++i)
