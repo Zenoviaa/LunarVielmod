@@ -250,6 +250,8 @@ namespace Stellamod
 		public bool ZoneVeil;
         public bool ZoneGreenSun;
 
+
+
         public float AssassinsSlashes;
         public float AssassinsTime;
         public bool AssassinsSlash;
@@ -293,10 +295,12 @@ namespace Stellamod
 
 
         public bool Dead;
+		public bool DreadMonOne = false;
+        public bool DreadMonTwo = false;
+        public bool DreadMonThree = false;
 
 
-
-		public bool Teric = false;
+        public bool Teric = false;
 		public int TericGramTime = 0;
         public int TericGramLevel = 0;
         public bool TericGram = false;
@@ -782,7 +786,50 @@ namespace Stellamod
 				Zuitalk = true;
 			}
 
-			if(VoidBlasterHits >= 0)
+
+            if (!DreadMonOne && DownedBossSystem.downedDreadMonolith1)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue1 exampleDialogue = new DreadDialogue1();
+				
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonOne = true;
+            }
+
+            if (!DreadMonTwo && DownedBossSystem.downedDreadMonolith2)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue2 exampleDialogue = new DreadDialogue2();
+
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonTwo = true;
+            }
+
+            if (!DreadMonThree && DownedBossSystem.downedDreadMonolith3)
+            {
+
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                DreadDialogue3 exampleDialogue = new DreadDialogue3();
+
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                DreadMonThree = true;
+            }
+
+            if (VoidBlasterHits >= 0)
 			{
 				VoidBlasterHitsTime++;
 				if(VoidBlasterHitsTime >= 100)
@@ -2727,13 +2774,18 @@ namespace Stellamod
 		public override void SaveData(TagCompound tag)
 		{
 			tag["Sirestiastalk"] = Sirestiastalk;
-			tag["Zuitalk"] = Zuitalk;
+            tag["MonO"] = DreadMonOne;
+            tag["MonTw"] = DreadMonTwo;
+            tag["MonTh"] = DreadMonThree;
+            tag["Zuitalk"] = Zuitalk;
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
-
-			Sirestiastalk = tag.GetBool("Sirestiastalk");
+            DreadMonOne = tag.GetBool("MonO");
+            DreadMonTwo = tag.GetBool("MonTw");
+            DreadMonThree = tag.GetBool("MonTh");
+            Sirestiastalk = tag.GetBool("Sirestiastalk");
 			Zuitalk = tag.GetBool("Zuitalk");
 		}
 
