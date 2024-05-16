@@ -6,6 +6,7 @@ using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
@@ -1121,7 +1122,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentWings>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.OneFromOptions(1,
                 ModContent.ItemType<SerpentStaff>(),
-                ModContent.ItemType<Incinerator>()
+                ModContent.ItemType<Incinerator>(),
+                ModContent.ItemType<YourFired>()
                 ));
 
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet

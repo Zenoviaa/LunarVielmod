@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.Niivi.Projectiles;
 using Stellamod.NPCs.Catacombs.Trap.Sparn;
 using Stellamod.NPCs.Catacombs.Water.WaterCogwork;
@@ -50,7 +51,7 @@ namespace Stellamod.Items.Weapons.Ranged
 			Item.noUseGraphic = true;
 
 			// Gun Properties
-			Item.shoot = ModContent.ProjectileType<ExampleShaderOrbProjectile>();
+			Item.shoot = ModContent.ProjectileType<GothDarkBlastProj>();
 			Item.shootSpeed = 5;
 		}
 

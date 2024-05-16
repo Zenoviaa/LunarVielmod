@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
     internal class GothDarkBlastProj : ModProjectile
     {
         internal PrimitiveTrail BeamDrawer;
-        public override string Texture => TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.EmptyBigTexture;
         //Ai
         private ref float Timer => ref Projectile.ai[0];
         private float LifeTime => 60f;
@@ -26,11 +25,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override void SetDefaults()
         {
             Projectile.width = 1012;
-            Projectile.height = 16;
+            Projectile.height = 3096;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = (int)LifeTime;
             Projectile.hide = true;
+       
             LinePos = new Vector2[5];
         }
         public override void AI()
