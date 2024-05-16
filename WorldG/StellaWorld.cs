@@ -7689,9 +7689,8 @@ namespace Stellamod.WorldG
 
 					// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
 					StructureMap structures = GenVars.structures;
-					Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Ice/VeldrisHouse");
-					rectangle.Location = Loc;
-					structures.AddProtectedStructure(rectangle);
+					if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Ice/VeldrisHouse"))
+						continue;
 					int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VeldrisHouse");
 					NPCs.Town.AlcadSpawnSystem.VelTile = Loc;
 					Chest c = Main.chest[ChestIndexs[0]];
