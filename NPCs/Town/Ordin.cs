@@ -394,9 +394,15 @@ namespace Stellamod.NPCs.Town
 					 shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
 					 })
 
+                     .Add(new Item(ModContent.ItemType<SerpentStaff>())
+                     {
+                         shopCustomPrice = 1,
+                         shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                     })
+
                       .Add(new Item(ModContent.ItemType<Vhel>())
                       {
-                          shopCustomPrice = 2,
+                          shopCustomPrice = 3,
                           shopSpecialCurrency = Stellamod.MOLCurrencyID // omit this line if shopCustomPrice should be in regular coins.
                       })
 
