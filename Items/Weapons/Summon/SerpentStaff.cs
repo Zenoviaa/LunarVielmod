@@ -17,6 +17,8 @@ using Stellamod.Trails;
 using Terraria.Graphics.Shaders;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
+using System.Collections.Generic;
 
 
 namespace Stellamod.Items.Weapons.Summon
@@ -56,11 +58,6 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            for (int i = 0; i < 1000; ++i)
-            {
-                if (Main.projectile[i].active && Main.projectile[i].owner == Main.myPlayer && Main.projectile[i].type == Item.shoot)
-                    return false;
-            }
             var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
             projectile.originalDamage = Item.damage;
 
@@ -69,30 +66,6 @@ namespace Stellamod.Items.Weapons.Summon
             // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
             position = Main.MouseWorld;
             return false;
-        }
-
-
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse != 2)
-            {
-                if (player.numMinions >= player.maxMinions)
-                    return true;
-                for (int i = 0; i < 1000; ++i)
-                {
-                    if (Main.projectile[i].active && Main.projectile[i].owner ==player.whoAmI && Main.projectile[i].type == Item.shoot)
-                    {
-                        Main.projectile[i].minionSlots += 1f;
-                        Main.projectile[i].originalDamage = Item.damage + (int)(18 * Main.projectile[i].minionSlots);
-                        /*if (Main.projectile[i].scale < 1.3f)
-                        {
-                            Main.projectile[i].scale += .062f;
-                        }*/
-
-                    }
-                }
-            }
-            return true;
         }
     }
 }

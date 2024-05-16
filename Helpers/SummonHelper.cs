@@ -7,8 +7,29 @@ using static Terraria.ModLoader.ModContent;
 namespace Stellamod.Helpers
 {
     public static class SummonHelper
-	{
-		public static void CalculateIdleValues(Player owner, Projectile projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
+    {
+        public static void CalculateIdleValuesWithOverlap(Player owner, Projectile projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
+        {
+            Vector2 idlePosition = owner.Center;
+            idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
+
+            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+            // Teleport to player if distance is too big
+            vectorToIdlePosition = idlePosition - projectile.Center;
+            distanceToIdlePosition = vectorToIdlePosition.Length();
+
+            if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 2000f)
+            {
+                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                // and then set netUpdate to true
+                projectile.position = idlePosition;
+                projectile.velocity *= 0.1f;
+                //Projectile.netUpdate = true;
+            }
+        }
+
+        public static void CalculateIdleValues(Player owner, Projectile projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
 		{
 			Vector2 idlePosition = owner.Center;
 			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)

@@ -53,6 +53,31 @@ namespace Stellamod.Projectiles.Summons.Minions
         private Vector2 HitboxFixer => new Vector2(Projectile.width, Projectile.height) / 2;
 
 
+        private Projectile MainSerpentProjectile
+        {
+            get
+            {
+                for (int i = 0; i < Main.maxProjectiles; i++)
+                {
+                    Projectile p = Main.projectile[i];
+                    if (!p.active)
+                        continue;
+                    if (p.type == Type && p.owner == Projectile.owner)
+                        return p;
+                }
+
+                return Projectile;
+            }
+        }
+
+        private bool IsMainSerpent
+        {
+            get
+            {
+                return MainSerpentProjectile == Projectile;
+            }
+        }
+
         private ref float Timer => ref Projectile.ai[1];
         private int SegmentCount
         {
@@ -61,6 +86,8 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         private Player Owner => Main.player[Projectile.owner];
+        private int _originalDamage;
+        private float ExtraScale;
 
         public override void SetStaticDefaults()
         {
@@ -129,14 +156,16 @@ namespace Stellamod.Projectiles.Summons.Minions
         // Here you can decide if your minion breaks things like grass or pots
         public override bool? CanCutTiles()
         {
-            return true;
+            return IsMainSerpent;
         }
 
         // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
         public override bool MinionContactDamage()
         {
-            return true;
+            return IsMainSerpent;
         }
+
+        
 
         public override void AI()
         {
@@ -144,7 +173,22 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!SummonHelper.CheckMinionActive<SerpentMinionBuff>(Owner, Projectile))
                 return;
 
-            int numBodySegments = (int)(Projectile.minionSlots * 15) + 1;
+            if (!IsMainSerpent)
+            {
+                Projectile.position = MainSerpentProjectile.position;
+                return;
+            }
+
+            if(_originalDamage == 0)
+            {
+                _originalDamage = Projectile.originalDamage;
+            }
+  
+            int ownedCounts = Owner.ownedProjectileCounts[Type];
+            Projectile.originalDamage = _originalDamage + ownedCounts * 15;
+            ExtraScale = 1f + ((float)ownedCounts * 0.05f);
+
+            int numBodySegments = (int)(ownedCounts * 15) + 1;
             if(SegmentCount != numBodySegments)
             {
                 InitSegments(numBodySegments);
@@ -152,6 +196,11 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             GlowWhite(1 / 60f);
             Timer++;
+            if(Timer == 1)
+            {
+                _originalDamage = Projectile.originalDamage;
+            }
+  
             SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
                  out bool foundTarget,
                  out float distanceFromTarget,
@@ -189,7 +238,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
             else
             {
-                SummonHelper.CalculateIdleValues(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
+                SummonHelper.CalculateIdleValuesWithOverlap(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
                 SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.ToRotation(), 0.1f);
                 StopSegmentGlow();
@@ -200,6 +249,9 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+            if (!IsMainSerpent)
+                return false;
+
             //This damages everything in the trail
             float collisionPoint = 0;
             for (int i = 1; i < Segments.Length; i++)
@@ -409,6 +461,9 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (!IsMainSerpent)
+                return false;
+
             if (TrailDrawer == null)
             {
                 TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
@@ -429,7 +484,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
-                float drawScale = Projectile.scale * segment.Scale;
+                float drawScale = Projectile.scale * segment.Scale * ExtraScale;
                 Color drawColor = Color.White;
                 spriteBatch.Draw(segment.Texture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
@@ -453,7 +508,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
-                float drawScale = Projectile.scale;
+                float drawScale = Projectile.scale * segment.Scale * ExtraScale;
                 Color drawGlowColor = Color.White;
                 float osc = VectorHelper.Osc(0, 1);
 
