@@ -732,3 +732,8 @@ XScissorMinionBuff: {
 	DisplayName: X Rift
 	Description: Opening a rift through space!
 }
+
+SerpentMinionBuff: {
+	DisplayName: Serpent Minion Buff
+	Description: Mods.Stellamod.Buffs.SerpentMinionBuff.Description
+}

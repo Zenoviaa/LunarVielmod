@@ -7166,3 +7166,12 @@ Vhel: {
 		'''
 	DisplayName: Vhel
 }
+
+SerpentStaff: {
+	DisplayName: Serpent Staff
+	Tooltip:
+		'''
+		Summons a serpent to fight for you
+		It grows much longer and stronger with the number of minion slots used!
+		'''
+}

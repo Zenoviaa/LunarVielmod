@@ -205,4 +205,6 @@ namespace Stellamod.Buffs.Minions
     internal class JacksonPollockMinionBuff : MinionBuff<JacksonPollockMinionProj> { }
 
     internal class XScissorMinionBuff : MinionBuff<XScissorMinionProj> { }
+
+    internal class SerpentMinionBuff : MinionBuff<SerpentMinionProj> { }
 }

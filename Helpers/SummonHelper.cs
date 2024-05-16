@@ -280,5 +280,47 @@ namespace Stellamod.Helpers
 				}
 			}
 		}
-	}
+
+        public static void SearchForTargetsThroughTiles(Player owner, Projectile minion, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter, float startingSearchDistanceFromTarget = 700f)
+        {
+            // Starting search distance
+            distanceFromTarget = startingSearchDistanceFromTarget;
+            targetCenter = minion.position;
+            foundTarget = false;
+            if (owner.HasMinionAttackTargetNPC)
+            {
+                NPC npc = Main.npc[owner.MinionAttackTargetNPC];
+                float between = Vector2.Distance(npc.Center, minion.Center);
+
+                // Reasonable distance away so it doesn't target across multiple screens
+                if (between < 2000f)
+                {
+                    distanceFromTarget = between;
+                    targetCenter = npc.Center;
+                    foundTarget = true;
+                }
+            }
+
+            if (!foundTarget)
+            {
+                // This code is required either way, used for finding a target
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+                    if (npc.CanBeChasedBy())
+                    {
+                        float between = Vector2.Distance(npc.Center, minion.Center);
+                        bool closest = Vector2.Distance(minion.Center, targetCenter) > between;
+                        bool inRange = between < distanceFromTarget;
+                        if (((closest && inRange) || !foundTarget))
+                        {
+                            distanceFromTarget = between;
+                            targetCenter = npc.Center;
+                            foundTarget = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
