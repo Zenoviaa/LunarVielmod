@@ -7,8 +7,8 @@ namespace Stellamod.NPCs
     internal static class SpawnRates
     {
         public const float Mechanical_Enemy_Spawn_Chance = 0.06f;
-        public const float Flower_Spawn_Chance = 0.04f;
-        public const float Rune_Spawn_Chance = 0.01f;
+        public const float Flower_Spawn_Chance = 0.03f;
+        public const float Rune_Spawn_Chance = 0.02f;
 
         public static float GetFlowerSpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -33,7 +33,7 @@ namespace Stellamod.NPCs
         {
             if (!spawnInfo.Player.InModBiome<IshtarBiome>())
                 return 0;
-            return SpawnCondition.Cavern.Chance;
+            return SpawnCondition.Cavern.Chance * 2f;
         }
     }
 }
