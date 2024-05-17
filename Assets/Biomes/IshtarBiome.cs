@@ -11,7 +11,7 @@ namespace Stellamod.Assets.Biomes
         //public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("SpiritMod/Biomes/SpiritUgBgStyle");
         public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("Stellamod/IshtarBackgroundStyle");
         public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/IshtarWaterStyle");
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Hidding_In_The_Shadows");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Ishtar");
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
