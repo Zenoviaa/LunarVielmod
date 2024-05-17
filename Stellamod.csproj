@@ -203,6 +203,7 @@
     <None Remove="Items\Special\ExampleDialogueItem.png" />
     <None Remove="Items\Special\VeiledScriptureAzurerin.png" />
     <None Remove="Items\Special\VeiledScriptureCozmire.png" />
+    <None Remove="Items\Special\VeiledScriptureLumi.png" />
     <None Remove="Items\Special\VeiledScriptureMiner1.png" />
     <None Remove="Items\Special\VeiledScriptureSigfried.png" />
     <None Remove="Items\Weapons\Mage\Aneuriliac.png" />
