@@ -428,9 +428,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
             Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.2f);
-            AI_MoveToward(Target.Center);
-            //NPC.velocity *= 1.016f;
-           // NPC.velocity.Y -= 0.002f;
             if (Timer >= 30)
             {
                 ResetState(ActionState.Idle);
