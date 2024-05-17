@@ -170,10 +170,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Timer++;
             if(Timer == 1)
             {
-                screenShaderSystem.VignetteScreen(-1f);
+                screenShaderSystem.VignetteScreen(-3f);
             }
 
-
+            screenShaderSystem.TintScreen(Main.DiscoColor, 0.2f);
             float maxDetectDistance = 3000;
             float maxSpeed = 12;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
@@ -182,15 +182,43 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 AI_MoveToward(player.Center, maxSpeed);
             }
 
-            if(Timer >= 270)
+            if (Timer % 8 == 0)
+            {
+                float starRadius = 2048;
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
+                    Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
+                    ParticleManager.NewParticle<StarParticle>(pos, vel, Main.DiscoColor, 1f);
+                }
+            }
+
+            if(Timer % 20 == 0)
+            {
+                for(int i = 0; i < 2; i++)
+                {
+                    Vector2 direction = Projectile.Center.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
+                    Vector2 velocity = direction * 24;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                }
+               
+            }
+            if (Timer == 275)
+            {
+                screenShaderSystem.VignetteScreen(3f);
+            }
+
+            if(Timer >= 275)
             {
                 CondenseColor = true;
-                Scale = MathHelper.Lerp(Scale, 12, 0.1f);
+                Scale = MathHelper.Lerp(Scale, VectorHelper.Osc(0f, 8f, speed: 16f), 0.3f);
             }
 
             if(Timer >= 300)
             {
                 //KABOOM
+                screenShaderSystem.UnTintScreen();
                 screenShaderSystem.UnVignetteScreen();
                 Projectile.Kill();
             }
@@ -218,7 +246,15 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            if (CondenseColor)
+            {
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            }
+            else
+            {
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            }
+         
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
@@ -237,10 +273,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (SwapColor)
             {
                 shader.UseColor(Main.DiscoColor);
-            }
-            if (CondenseColor)
-            {
-                shader.UseColor(Color.Black);
             }
 
             //Texture itself

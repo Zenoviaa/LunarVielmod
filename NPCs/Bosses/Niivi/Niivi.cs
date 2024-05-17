@@ -35,6 +35,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Swoop_Out,
             PrepareAttack,
             Calm_Down,
+            Transition_P2,
             Frost_Breath_V2,
             Laser_Blast_V2,
             Star_Wrath_V2,
@@ -213,6 +214,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             return false;
         }
 
+        public override bool CheckActive()
+        {
+            return false;
+        }
 
         public override void AI()
         {
@@ -284,6 +289,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     break;
 
                 //Phase 2
+                case ActionState.Transition_P2:
+                    AI_Transition_P2();
+                    break;
                 case ActionState.Frost_Breath_V2:
                     AI_FrostBreath_V2();
                     break;
@@ -417,6 +425,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 NPC.velocity = -Vector2.UnitY * 0.02f;
             }
 
+            Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
+            Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.2f);
             AI_MoveToward(Target.Center);
             //NPC.velocity *= 1.016f;
            // NPC.velocity.Y -= 0.002f;
@@ -1030,12 +1041,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
         #region Phase 2
         private void AI_Phase2_Reset()
         {
-            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
-            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
-            ResetState(ActionState.Swoop_Out);
-            NextAttack = ActionState.Laser_Blast_V2;
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
+            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
+            ResetState(ActionState.Transition_P2);
         }
 
         private void AI_FrostBreath_V2()
@@ -1046,6 +1056,28 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Charge_V2()
         {
 
+        }
+
+
+
+        private void AI_Transition_P2()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.velocity = Vector2.Zero;
+                NPC.defense *= 8;
+            }
+            ChargeCrystals = false;
+            NPC.velocity.Y += 0.002f;
+            OrientArching();
+            UpdateOrientation();
+            if(Timer >= 450)
+            {
+                NPC.defense /= 8;
+                ResetState(ActionState.Swoop_Out);
+                NextAttack = ActionState.Laser_Blast_V2;
+            }
         }
 
         private void AI_LaserBlast_V2()
@@ -1131,7 +1163,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 else if (Timer >= 120)
                 {
                     NPC.velocity *= 0.98f;
-                    TargetHeadRotation += 0.02f;
+                  //  TargetHeadRotation += 0.02f;
                     NPC.rotation += 0.02f;
                 }
 

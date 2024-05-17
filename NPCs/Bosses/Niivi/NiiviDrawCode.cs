@@ -122,6 +122,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private bool ChargeCrystals;
         private float ChargeCrystalTimer;
         private bool Black;
+        private bool WormDraw;
 
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
@@ -152,6 +153,60 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
 
             _segmentIndex++;
+        }
+
+        private void MakeLikeWorm()
+        {
+            //Segments
+            SegmentPos[0] = NPC.position;
+            SegmentRot[0] = HeadRotation;
+            MoveSegmentsLikeWorm();
+        }
+
+        private void MoveSegmentsLikeWorm()
+        {
+            for (int i = 1; i < SegmentPos.Length; i++)
+            {
+                MoveSegmentLikeWorm(i);
+            }
+        }
+
+
+        private void MoveSegmentLikeWorm(int index)
+        {
+            int inFrontIndex = index - 1;
+            if (inFrontIndex < 0)
+                return;
+
+            ref var segment = ref SegmentPos[index];
+            ref var frontSegment = ref SegmentPos[index - 1];
+
+            // Follow behind the segment "in front" of this NPC
+            // Use the current NPC.Center to calculate the direction towards the "parent NPC" of this NPC.
+            float dirX = frontSegment.X - segment.X;
+            float dirY = frontSegment.Y - segment.Y;
+
+            // We then use Atan2 to get a correct rotation towards that parent NPC.
+            // Assumes the sprite for the NPC points upward.  You might have to modify this line to properly account for your NPC's orientation
+            SegmentRot[index] = (float)Math.Atan2(dirY, dirX);
+            // We also get the length of the direction vector.
+            float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+            // We calculate a new, correct distance.
+
+            float fixer = 1;
+            if (index == SegmentPos.Length - 1)
+            {
+                fixer /= 1.75f;
+            }
+
+            float dist = (length - 32 * fixer) / length;
+
+            float posX = dirX * dist;
+            float posY = dirY * dist;
+
+            // And set this NPCs position accordingly to that of this NPCs parent NPC.
+            segment.X += posX;
+            segment.Y += posY;
         }
 
         private void DrawAllSegments(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
