@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Particles;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -9,8 +10,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviIcicleProj : ModProjectile
+    internal class NiiviIcicleProj : ModProjectile,
+        IPixelPrimitiveDrawer
     {
+        private PrimitiveTrail BeamDrawer;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 8;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -18,13 +27,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.tileCollide = true;
             Projectile.friendly = false;
             Projectile.hostile = true;
+            Projectile.light = 0.4f;
         }
 
         public override void AI()
         {
             Projectile.velocity.Y += 0.25f;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if (Main.rand.NextBool(8))
+            if (Main.rand.NextBool(60))
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow);
             }
@@ -53,6 +63,28 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
 
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
+        }
+
+
+        public float WidthFunction(float completionRatio)
+        {
+            float baseWidth = Projectile.scale * Projectile.width;
+            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.LightCyan, Color.RoyalBlue, completionRatio);
+        }
+
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
+            BeamDrawer.SpecialShader.UseColor(Color.White);
+            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
+            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }
