@@ -165,7 +165,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     internal class NiiviCrystalFrost : NiiviCrystal
     {
         //Damage Values
-        private int Damage_FrostBreath => 120;
+        private int Damage_FrostBreath => 40;
 
         public override Color AfterImageStartColor => Color.LightCyan;
 
@@ -258,8 +258,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
     internal class NiiviCrystalLightning : NiiviCrystal
     {
-        private int Damage_Lightning_Small => 120;
-        private int Damage_Lightning_Big => 120;
+        private int Damage_Lightning_Small => 60;
+        private int Damage_Lightning_Big => 60;
 
         private ref float AttackTimer => ref NPC.ai[1];
         public override Color AfterImageStartColor => Color.White;
@@ -319,7 +319,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     internal class NiiviCrystalStars : NiiviCrystal
     {
         //Damage Values
-        private int Damage_Comet => 120;
+        private int Damage_Comet => 40;
 
         public override Color AfterImageStartColor => Color.White;
 

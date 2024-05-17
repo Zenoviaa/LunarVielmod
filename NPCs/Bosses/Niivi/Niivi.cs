@@ -579,8 +579,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer < 60)
                 {
               
-                    LaserAttackPos = Target.Center;
+                   
                     Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                    LaserAttackPos = Target.Center + directionToTarget * 384;
                     TargetHeadRotation = directionToTarget.ToRotation();
 
                     AI_MoveToward(Target.Center, 3);
