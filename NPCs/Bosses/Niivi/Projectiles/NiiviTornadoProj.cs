@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using ParticleLibrary;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -52,7 +54,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 nextPointOnOval += velocity * 512 * progress;
 
                 Vector2 tornadoVelocity = pointOnOval.DirectionTo(nextPointOnOval) * 32 * progress;
-                Dust.NewDustPerfect(nextPointOnOval, ModContent.DustType<TSmokeTornadoDust>(), tornadoVelocity, 0, Color.Lerp(Color.WhiteSmoke, Color.DarkGray, progress), MathHelper.Lerp(0.4f, 0.7f, progress)).noGravity = true;
+              //  Dust.NewDustPerfect(nextPointOnOval, ModContent.DustType<TSmokeTornadoDust>(), tornadoVelocity, 0, Color.Lerp(Color.WhiteSmoke, Color.DarkGray, progress), MathHelper.Lerp(0.4f, 0.7f, progress)).noGravity = true;
+                ParticleManager.NewParticle<TornadoParticle>(nextPointOnOval, tornadoVelocity, Color.Lerp(Color.WhiteSmoke, Color.DarkGray, progress), MathHelper.Lerp(0.4f, 0.7f, progress));
             }
         }
 

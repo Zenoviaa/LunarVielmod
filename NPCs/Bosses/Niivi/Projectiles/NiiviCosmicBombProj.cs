@@ -175,7 +175,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             screenShaderSystem.TintScreen(Main.DiscoColor, 0.2f);
             float maxDetectDistance = 3000;
-            float maxSpeed = 12;
+            float maxSpeed = 9;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             if(player != null)
             {
@@ -206,18 +206,18 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 }
                
             }
-            if (Timer == 275)
+            if (Timer == 575)
             {
                 screenShaderSystem.VignetteScreen(3f);
             }
 
-            if(Timer >= 275)
+            if(Timer >= 575)
             {
                 CondenseColor = true;
                 Scale = MathHelper.Lerp(Scale, VectorHelper.Osc(0f, 8f, speed: 16f), 0.3f);
             }
 
-            if(Timer >= 300)
+            if(Timer >= 600)
             {
                 //KABOOM
                 screenShaderSystem.UnTintScreen();

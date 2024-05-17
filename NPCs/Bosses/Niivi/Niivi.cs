@@ -14,11 +14,46 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi
 {
+    internal class NiiviPlayer : ModPlayer
+    {
+        public override void PostUpdateMiscEffects()
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
+            {
+                ActivateSkye();
+
+            }
+            else
+            {
+                DeActivateSkye();
+            }
+        }
+
+        private void ActivateSkye()
+        {
+            if (!SkyManager.Instance["Stellamod:NiiviSky"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Activate("Stellamod:NiiviSky", targetCenter);
+            }
+        }
+
+        private void DeActivateSkye()
+        {
+            if (SkyManager.Instance["Stellamod:NiiviSky"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Deactivate("Stellamod:NiiviSky", targetCenter);
+            }
+        }
+    }
+
     [AutoloadBossHead]
     internal partial class Niivi : ModNPC
     {
@@ -36,11 +71,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             PrepareAttack,
             Calm_Down,
             Transition_P2,
-            Frost_Breath_V2,
+            Tornado,
             Laser_Blast_V2,
             Star_Wrath_V2,
-            Charge_V2,
-            Thunderstorm_V2
+       
         }
 
         public ActionState State
@@ -74,7 +108,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             set => NPC.ai[3] = (float)value;
         }
         private float CrystalTimer;
-
+        private float SpecialTimer;
+        private int SpecialCycle;
         int ScaleDamageCounter;
         int AggroDamageCounter;
   
@@ -142,6 +177,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             writer.Write(ScaleDamageCounter);
             writer.Write(AggroDamageCounter);
             writer.Write(CrystalTimer);
+            writer.Write(SpecialTimer);
+            writer.Write(SpecialCycle);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -150,6 +187,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             ScaleDamageCounter = reader.ReadInt32();
             AggroDamageCounter = reader.ReadInt32();
             CrystalTimer = reader.ReadSingle();
+            SpecialTimer = reader.ReadSingle();
+            SpecialCycle = reader.ReadInt32();
         }
 
         public override void SetStaticDefaults()
@@ -258,8 +297,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 Crystals[1].Draw = !NPC.AnyNPCs(ModContent.NPCType<NiiviCrystalLightning>());
                 Crystals[2].Draw = !NPC.AnyNPCs(ModContent.NPCType<NiiviCrystalStars>());
             }
-            CrystalTimer++;
-
+            CrystalTimer++; 
             if (ChargeCrystals == false)
             {
                 ChargeCrystalTimer -= 1 / 60f;
@@ -269,6 +307,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 ChargeCrystalTimer += 1 / 60f;
             }
             ChargeCrystalTimer = MathHelper.Clamp(ChargeCrystalTimer, 0f, 1f);
+
+
+            SpecialTimer++;
+            if(SpecialTimer == 2500)
+            {
+                AI_Phase2_SpecialReset();
+            }
 
             switch (State)
             {
@@ -310,20 +355,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case ActionState.Transition_P2:
                     AI_Transition_P2();
                     break;
-                case ActionState.Frost_Breath_V2:
-                    AI_FrostBreath_V2();
-                    break;
-                case ActionState.Thunderstorm_V2:
-                    AI_Thunderstorm_V2();
+                case ActionState.Tornado:
+                    AI_Tornado();
                     break;
                 case ActionState.Laser_Blast_V2:
                     AI_LaserBlast_V2();
                     break;
                 case ActionState.Star_Wrath_V2:
                     AI_StarWrath_V2();
-                    break;
-                case ActionState.Charge_V2:
-                    AI_Charge_V2();
                     break;
             }
 
@@ -546,7 +585,22 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 AttackTimer++;
                 NPC.velocity *= 0.98f;
-                if (AttackTimer >= 3)
+                if (SpecialTimer >= 2500)
+                {
+                    switch (SpecialCycle)
+                    {
+                        case 0:
+                            ResetState(ActionState.Laser_Blast_V2);
+                            SpecialCycle = 1;
+                            break;
+                        case 1:
+                            ResetState(ActionState.Star_Wrath_V2);
+                            SpecialCycle = 0;
+                            break;
+                    }
+                    SpecialTimer = 0;
+                }
+                else if (AttackTimer >= 3)
                 {
                     ResetState(NextAttack);
                 }
@@ -852,24 +906,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 4)
             {
-                if (InPhase2 && StellaMultiplayer.IsHost)
-                {
-                    switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            NextAttack = ActionState.Laser_Blast;
-                            break;
-                        case 1:
-                            NextAttack = ActionState.Laser_Blast_V2;
-                            break;
-                    }
-                }
-                else
-                {
-                    NextAttack = ActionState.Laser_Blast;
-                }
-
-                ResetState(ActionState.Swoop_Out);
+                NextAttack = ActionState.Laser_Blast;
+                ResetState(ActionState.Swoop_Out);    
             }
         }
 
@@ -1057,23 +1095,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 90)
                 {
                     shaderSystem.UnTintScreen();
-                    if (InPhase2 && StellaMultiplayer.IsHost)
-                    {
-                        switch (Main.rand.Next(2))
-                        {
-                            case 0:
-                                NextAttack = ActionState.Frost_Breath;
-                                break; 
-                            case 1:
-                                NextAttack = ActionState.Star_Wrath_V2;
-                                break;
-                        }
-                    } 
-                    else
-                    {
-                        NextAttack = ActionState.Frost_Breath;
-                    }
-            
+                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1095,17 +1117,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
             ResetState(ActionState.Transition_P2);
         }
 
-        private void AI_FrostBreath_V2()
+        private void AI_Phase2_SpecialReset()
         {
-
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
+            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
         }
-
-        private void AI_Charge_V2()
-        {
-
-        }
-
-
 
         private void AI_Transition_P2()
         {
@@ -1137,8 +1154,48 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
 
                 NPC.defense /= 8;
-                ResetState(ActionState.Swoop_Out);
-                NextAttack = ActionState.Star_Wrath_V2;
+                ResetState(ActionState.Swoop_Out);        
+            }
+        }
+
+        private void AI_Tornado()
+        {
+            if (AttackTimer == 0)
+            {
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+                TargetHeadRotation = -MathHelper.PiOver4;
+                OrientArching();
+                UpdateOrientation();
+                FlipToDirection();
+
+                Timer++;
+                if (Timer == 1)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                }
+                if (Timer >= 60)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            }
+            else if (AttackTimer == 1)
+            {
+                ChargeCrystals = true;
+                Black = true;
+
+                Timer++;
+                AI_MoveToward(Target.Center);
+                OrientArching();
+                UpdateOrientation();
+                FlipToDirection();
+                if (Timer >= 480)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    AttackTimer++;
+                    Timer = 0;
+                }
             }
         }
 
@@ -1232,7 +1289,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 720)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1299,10 +1355,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float length = 720;
                 NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
 
-                if(Timer >= 300)
+                if(Timer >= 600)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
