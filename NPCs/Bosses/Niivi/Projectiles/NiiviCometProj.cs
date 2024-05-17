@@ -104,15 +104,15 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White * 0.3f, Color.Transparent, completionRatio);
+            return Color.Lerp(Main.DiscoColor * 0.3f, Color.Transparent, completionRatio);
         }
 
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
                 Color.White.R,
-                Color.LightCyan.G,
-                Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
+                Color.White.G,
+                Color.White.B, 0) * (1f - Projectile.alpha / 50f);
         }
 
 
@@ -158,7 +158,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 float scale = Main.rand.NextFloat(0.3f, 0.5f);
-                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Color.White, scale);
+                ParticleManager.NewParticle<StarParticle2>(Projectile.Center, velocity, Main.DiscoColor, scale);
             }
         }
     }

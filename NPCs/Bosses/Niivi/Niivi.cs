@@ -61,6 +61,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int P1_StarWrathDamage => 40;
         private int P1_LaserDamage => 500;
         private int P1_StarStormDamage => 40;
+        private int P1_CosmicBombDamage => 500;
 
         //AI
         private bool _resetTimers;
@@ -1137,7 +1138,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 720)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Laser_Blast_V2;
+                    NextAttack = ActionState.Star_Wrath_V2;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1145,7 +1146,72 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_StarWrath_V2()
         {
+            if(AttackTimer == 0)
+            {
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+                TargetHeadRotation = -MathHelper.PiOver4;
+                OrientArching();
+                UpdateOrientation();
+                FlipToDirection();
 
+                Timer++;
+                if(Timer == 1)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                }
+                if(Timer >= 60)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } else if(AttackTimer == 1)
+            {
+                ChargeCrystals = true;
+                Black = true;
+
+                NPC.velocity = -Vector2.UnitY * 0.02f;
+                NPC.velocity *= 0.8f;
+                Timer++;
+                OrientArching();
+                if(FlightDirection == -1)
+                {
+                    TargetHeadRotation = -MathHelper.PiOver4 * 3;
+                }
+         
+                UpdateOrientation();
+                FlipToDirection();
+                if(Timer == 1) 
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, Vector2.Zero,
+                            ModContent.ProjectileType<NiiviCosmicBombProj>(), P1_CosmicBombDamage, 1, Main.myPlayer);
+                    }
+                }
+
+                if(Timer >= 480)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } else if (AttackTimer == 2)
+            {
+                ChargeCrystals = false;
+                Black = false;
+
+                Timer++;
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+
+                if(Timer >= 300)
+                {
+                    ResetShaders();
+                    NextAttack = ActionState.Laser_Blast_V2;
+                    ResetState(ActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_Thunderstorm_V2()
