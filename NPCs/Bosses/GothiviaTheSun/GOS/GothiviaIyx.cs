@@ -1010,7 +1010,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
 
-            FigureEightStartCenter = Vector2.Lerp(FigureEightStartCenter, target.Center, 0.06f);
+            FigureEightStartCenter = Vector2.Lerp(FigureEightStartCenter, target.Center, 0.07f);
 
 
             if (timer == 1)
@@ -1626,11 +1626,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 25f;
+                speed = 26f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
-                speed = 24f;
+                speed = 23f;
             }
 
 
@@ -1828,41 +1828,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 150)
             {
-                if (Wtimes < 4)
+                if (NPC.life < NPC.lifeMax / 2)
                 {
-                   
-                    Wtimes += 1;
-                    timer = 0;
-                }
-
-                if (Wtimes >= 4)
-                {
-                    ResetTimers();
-                    if (NPC.life > NPC.lifeMax / 2)
+                    if (Wtimes < 8)
                     {
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                State = ActionState.BoostBounce1;
-                                break;
 
-                            case 1:
-                                State = ActionState.BoostBounce1;
-                                //BonfireRight and Left
-                                break;
-
-                            case 2:
-                                State = ActionState.BoostBounce1;
-                                break;
-
-
-                        }
-
+                        Wtimes += 1;
+                        timer = 0;
                     }
 
-
-                    if (NPC.life < NPC.lifeMax / 2)
+                    if (Wtimes >= 8)
                     {
+                        ResetTimers();
                         switch (Main.rand.Next(2))
                         {
                             case 0:
@@ -1878,12 +1855,50 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                         }
+                    }
+                }
 
+
+
+
+                if (NPC.life > NPC.lifeMax / 2)
+                {
+                    if (Wtimes < 4)
+                    {
+
+                        Wtimes += 1;
+                        timer = 0;
                     }
 
+                    if (Wtimes >= 4)
+                    {
+                        ResetTimers();
+                        
+                            switch (Main.rand.Next(3))
+                            {
+                                case 0:
+                                    State = ActionState.BoostBounce1;
+                                    break;
+
+                                case 1:
+                                    State = ActionState.BoostBounce1;
+                                    //BonfireRight and Left
+                                    break;
+
+                                case 2:
+                                    State = ActionState.BoostBounce1;
+                                    break;
 
 
-                }
+                            }
+
+                        
+                    }
+                 }
+
+               
+
+               
 
                 NPC.velocity *= 0.3f;
 
