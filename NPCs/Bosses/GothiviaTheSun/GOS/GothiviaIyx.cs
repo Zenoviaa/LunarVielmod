@@ -1411,7 +1411,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 20f;
+                speed = 26f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1480,7 +1480,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 24f;
+                speed = 30f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
