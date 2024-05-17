@@ -162,7 +162,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             var shader = ShaderRegistry.MiscSilPixelShader;
 
             //The color to lerp to
-            shader.UseColor(Color.White);
+            shader.UseColor(Main.DiscoColor);
 
             //Should be between 0-1
             //1 being fully opaque

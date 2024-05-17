@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            Color startColor = Color.DarkGoldenrod;
+            Color startColor = Color.White;
             Color endColor = Color.Transparent;
             return Color.Lerp(startColor, endColor, completionRatio);
         }
