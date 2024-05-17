@@ -445,7 +445,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
             Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.2f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.05f);
             if (Timer >= 30)
             {
                 ResetState(ActionState.Idle);
@@ -1232,7 +1232,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 720)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Star_Wrath_V2;
+                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1302,7 +1302,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if(Timer >= 300)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Laser_Blast_V2;
+                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }

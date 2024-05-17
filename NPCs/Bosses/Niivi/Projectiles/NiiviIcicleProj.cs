@@ -10,10 +10,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviIcicleProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    internal class NiiviIcicleProj : ModProjectile
     {
-        private PrimitiveTrail BeamDrawer;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 8;
@@ -63,28 +61,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
 
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
-        }
-
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightCyan, Color.RoyalBlue, completionRatio);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.White);
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }
