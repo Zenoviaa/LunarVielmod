@@ -7352,13 +7352,8 @@ LumiPaintingI: {
 	DisplayName: Lumi Painting I
 }
 
-
-
 VeiledScriptureLumi: {
-	Tooltip:
-		'''
-		Use to read.		
-		'''
+	Tooltip: '''Use to read.		'''
 	DisplayName: Lumi's Veiled Scripture
 	Content:
 		'''
