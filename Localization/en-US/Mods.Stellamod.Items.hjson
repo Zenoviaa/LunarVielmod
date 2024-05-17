@@ -7351,3 +7351,9 @@ LumiPaintingI: {
 	Tooltip: ""
 	DisplayName: Lumi Painting I
 }
+
+VeiledScriptureLumi: {
+	Content: Mods.Stellamod.Items.VeiledScriptureLumi.Content
+	DisplayName: Veiled Scripture Lumi
+	Tooltip: ""
+}
