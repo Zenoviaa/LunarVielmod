@@ -7352,8 +7352,30 @@ LumiPaintingI: {
 	DisplayName: Lumi Painting I
 }
 
+
+
 VeiledScriptureLumi: {
-	Content: Mods.Stellamod.Items.VeiledScriptureLumi.Content
-	DisplayName: Veiled Scripture Lumi
-	Tooltip: ""
+	Tooltip:
+		'''
+		Use to read.		
+		'''
+	DisplayName: Lumi's Veiled Scripture
+	Content:
+		'''
+		---------------------------------------
+
+		This higher being is of the Iyx family. Related to Verlia and Vixyl they hold a high amount of skill and passion for the things they love.
+		They are to be believed to be seperated at birth from Rosemary of Ekrose from their other sister. 
+
+		This specimen bears heavy grudges and will attempt to do anything to reconcile. 
+		She had her village (Govheil Castle) taken away from her as the acidic corruption took her people, her ginzte army and her friends.
+		After Fenix took and trapped her sister this beig took a journey to go seek power from Lumi Veil, another benounced god to save her.
+		I believe she may have taken a weak singularity and bounded it to Daedus for protection meaning she is most likely the strongest being over
+		Fenix without using a singularity's power. 
+
+		She currently is gone but the people who escaped the acid from taking over ended up going to the fable, they pay their respects to her here.
+		We can only assume she has been training to save her sister for the past 30 years...
+
+		- Love Sirestias
+		'''
 }
