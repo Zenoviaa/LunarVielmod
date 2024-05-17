@@ -1,5 +1,4 @@
 ﻿
-using Accord.Statistics.Distributions.Univariate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
