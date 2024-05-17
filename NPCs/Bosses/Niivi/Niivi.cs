@@ -834,7 +834,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 4)
             {
-                NextAttack = ActionState.Laser_Blast;
+                if (InPhase2 && StellaMultiplayer.IsHost)
+                {
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            NextAttack = ActionState.Laser_Blast;
+                            break;
+                        case 1:
+                            NextAttack = ActionState.Laser_Blast_V2;
+                            break;
+                    }
+                }
+                else
+                {
+                    NextAttack = ActionState.Laser_Blast;
+                }
+
                 ResetState(ActionState.Swoop_Out);
             }
         }
@@ -1023,7 +1039,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 90)
                 {
                     shaderSystem.UnTintScreen();
-                    NextAttack = ActionState.Frost_Breath;
+                    if (InPhase2 && StellaMultiplayer.IsHost)
+                    {
+                        switch (Main.rand.Next(2))
+                        {
+                            case 0:
+                                NextAttack = ActionState.Frost_Breath;
+                                break; 
+                            case 1:
+                                NextAttack = ActionState.Star_Wrath_V2;
+                                break;
+                        }
+                    } 
+                    else
+                    {
+                        NextAttack = ActionState.Frost_Breath;
+                    }
+            
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1088,7 +1120,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 NPC.defense /= 8;
                 ResetState(ActionState.Swoop_Out);
-                NextAttack = ActionState.Laser_Blast_V2;
+                NextAttack = ActionState.Star_Wrath_V2;
             }
         }
 
