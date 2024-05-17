@@ -219,6 +219,24 @@ namespace Stellamod.NPCs.Bosses.Niivi
             return false;
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
+            if (StellaMultiplayer.IsHost)
+            {
+                ScaleDamageCounter += hit.Damage;
+                if (ScaleDamageCounter >= lifeToGiveIllurineScaleInBoss)
+                {
+                    Vector2 velocity = -Vector2.UnitY;
+                    velocity *= Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
+                        ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
+                    ScaleDamageCounter = 0;
+                }
+            }
+        }
+
         public override void AI()
         {
             FinishResetTimers();
