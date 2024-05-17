@@ -28,9 +28,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         private ref float Timer => ref Projectile.ai[1];
         private float Scale = 0f;
-        private float DistortTimer;
         private bool SwapColor;
-        private bool Distort;
+        private bool CondenseColor;
         public override void SetDefaults()
         {
             Projectile.width = 256;
@@ -183,6 +182,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 AI_MoveToward(player.Center, maxSpeed);
             }
 
+            if(Timer >= 270)
+            {
+                CondenseColor = true;
+                Scale = MathHelper.Lerp(Scale, 12, 0.1f);
+            }
+
             if(Timer >= 300)
             {
                 //KABOOM
@@ -232,6 +237,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (SwapColor)
             {
                 shader.UseColor(Main.DiscoColor);
+            }
+            if (CondenseColor)
+            {
+                shader.UseColor(Color.Black);
             }
 
             //Texture itself
