@@ -29,7 +29,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Frost_Breath,
             Laser_Blast,
             Star_Wrath,
-            Charge,
+            Star_Storm,
             Thunderstorm,
             Baby_Dragons,
             Swoop_Out,
@@ -60,6 +60,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int P1_FrostBreathDamage => 120;
         private int P1_StarWrathDamage => 40;
         private int P1_LaserDamage => 500;
+        private int P1_StarStormDamage => 40;
 
         //AI
         private bool _resetTimers;
@@ -206,7 +207,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             //Return false for no Contact Damage
-            if (State == ActionState.Charge)
+            if (State == ActionState.Star_Storm)
                 return IsCharging;
             return false;
         }
@@ -235,6 +236,16 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             CrystalTimer++;
 
+            if (ChargeCrystals == false)
+            {
+                ChargeCrystalTimer -= 1 / 60f;
+            }
+            else
+            {
+                ChargeCrystalTimer += 1 / 60f;
+            }
+            ChargeCrystalTimer = MathHelper.Clamp(ChargeCrystalTimer, 0f, 1f);
+
             switch (State)
             {
                 case ActionState.Spawn:
@@ -258,8 +269,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case ActionState.Star_Wrath:
                     AI_StarWrath();
                     break;
-                case ActionState.Charge:
-                    AI_Charge();
+                case ActionState.Star_Storm:
+                    AI_StarStorm();
                     break;
                 case ActionState.Thunderstorm:
                     AI_Thunderstorm();
@@ -377,7 +388,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.velocity *= 0.98f;
         }
 
-
         private void AI_CalmDown()
         {
             Timer++;
@@ -397,7 +407,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.velocity *= 0.98f;
         }
 
-
         private void AI_SwoopOut()
         {
             Timer++;
@@ -415,7 +424,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 ResetState(ActionState.Idle);
             }
         }
-
 
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8)
         {
@@ -531,7 +539,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (AttackTimer == 0)
             {
                 Timer++;
-
+  
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
@@ -544,7 +552,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             else if (AttackTimer == 1)
             {
                 Timer++;
-
+                if(Timer == 1)
+                {
+                    ChargeCrystals = true;
+                }
 
                 float progress = Timer / 60;
                 progress = MathHelper.Clamp(progress, 0, 1);
@@ -591,7 +602,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 }
                 else if (Timer >= 120)
                 {
-              
+                    ChargeCrystals = false;
                     //SHOOT LOL
                     Vector2 fireDirection = TargetHeadRotation.ToRotationVector2();
                     float distance = Vector2.Distance(NPC.Center, LaserAttackPos);
@@ -624,14 +635,16 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if (AttackCount >= 3)
                 {
+                    ChargeCrystals = false;
                     NextAttack = ActionState.Star_Wrath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
         }
+
         private void AI_FrostBreath()
         {
-
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             /*
             //Ok so how is this attack going to work
             Step 1: Niivi takes aim at you for a few seconds, then rotates her head 135 degrees upward
@@ -671,7 +684,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 //Taking aim
                 Timer++;
-
+                ChargeCrystals = true;
+                shaderSystem.VignetteScreen(-0.5f);
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
@@ -683,6 +697,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 1)
             {
+                shaderSystem.UnVignetteScreen();
                 //Rotate head 90-ish degrees upward
                 Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
 
@@ -727,8 +742,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 2)
             {
+                ChargeCrystals = false;
+
                 //Get the shader system!
-                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+
                 shaderSystem.TintScreen(Color.Cyan, 0.1f);
                 shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f);
                 shaderSystem.VignetteScreen(-1f);
@@ -755,10 +772,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             else if (AttackTimer == 3)
             {
                 //Untint the screen
-                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                shaderSystem.UnTintScreen();
-                shaderSystem.UnDistortScreen();
-                shaderSystem.UnVignetteScreen();
+                ResetShaders();
 
                 Timer++;
                 if (Timer == 1)
@@ -817,10 +831,15 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_StarWrath()
         {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             if (AttackTimer == 0)
             {
                 Timer++;
-
+                if (Timer == 1)
+                {
+                    shaderSystem.VignetteScreen(1);
+                }
+                ChargeCrystals = true;
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
@@ -837,6 +856,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 1)
             {
+                ChargeCrystals = false;
                 Timer++;
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
@@ -847,78 +867,79 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
                 if (Timer >= 360)
                 {
-                    NextAttack = ActionState.Charge;
+                    NextAttack = ActionState.Star_Storm;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
         }
 
-        private void AI_Charge()
+        private void AI_StarStorm()
         {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             NPC.rotation = 0;
-            Timer++;
-            if (Timer < 100)
+            if(AttackTimer == 0)
             {
+                Timer++;
+                if(Timer == 1)
+                {
+                    shaderSystem.VignetteScreen(1);
+                }
+
                 OrientArching();
-                if (Timer == 1)
-                {
-                    NPC.TargetClosest();
-                }
-
-                NPC.velocity *= 0.8f;
-                Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
-                TargetHeadRotation = directionToTarget.ToRotation();
-
-                LookDirection = DirectionToTarget;
+                UpdateOrientation();
+                LookAtTarget();
                 FlipToDirection();
-            }
-            else if (Timer < 150)
-            {
-                ChargeDirection = NPC.Center.DirectionTo(Target.Center);
-                NPC.velocity *= 0.3f;
-                TargetHeadRotation = MathHelper.Lerp(TargetHeadRotation, ChargeDirection.ToRotation(), 0.08f);
-                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
-                for (int i = 0; i < NPC.oldPos.Length; i++)
+                //Slowdown over time
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+
+                ChargeCrystals = true;
+                if(Timer >= 60)
                 {
-                    NPC.oldPos[i] = NPC.position;
+      
+                    Timer = 0;
+                    AttackTimer++;
+                }
+            }
+            else if (AttackTimer == 1)
+            {
+                Timer++;
+                if(Timer % 30 == 0)
+                {
+                    shaderSystem.UnVignetteScreen();
+                    shaderSystem.FlashTintScreen(Color.White, 0.2f, 15);
+                    NPC.velocity = -NPC.Center.DirectionTo(Target.Center) * 16;
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        float speed = Main.rand.NextFloat(24, 42);
+                        Vector2 spawnCenter = NPC.Center + Main.rand.NextVector2Circular(128, 128);
+                        Vector2 directionToTarget = NPC.Center.DirectionTo(Target.Center);
+                        Vector2 velocityToTarget = directionToTarget * speed;
+                        Projectile.NewProjectile(EntitySource, spawnCenter, velocityToTarget, 
+                            ModContent.ProjectileType<NiiviStarBounceProj>(), P1_StarStormDamage, 1, Main.myPlayer);
+                    }
+                }
+                else
+                {
+                    NPC.velocity *= 0.92f;
                 }
 
-                LookDirection = DirectionToTarget;
-                FlipToDirection();
-            }
-            else if (Timer < 180)
-            {
-                IsCharging = true;
-                TargetSegmentRotation = 0;
-                StartSegmentDirection = Vector2.Lerp(StartSegmentDirection, HeadRotation.ToRotationVector2() * -LookDirection, 0.04f);
-
-                //DrawChargeTrail = true;
-                if (Timer == 151)
+                if(Timer >= 120)
                 {
-                    SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/RekRoar");
-                    SoundEngine.PlaySound(soundStyle, NPC.position);
+                    Timer = 0;
+                    AttackTimer++;
                 }
-                NPC.velocity = ChargeDirection * 40;
-            }
-            else if (Timer < 240)
+            }     
+            else if (AttackTimer == 2)
             {
-                IsCharging = false;
-                OrientArching();
-                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.Pi / 60);
-                NPC.velocity *= 0.96f;
-
-            }
-            else
-            {
-                IsCharging = false;
-                Timer = 0;
-                AttackCount++;
-                if (AttackCount >= 3)
+                ChargeCrystals = false;
+                Timer++;
+                if(Timer >= 60)
                 {
                     NextAttack = ActionState.Thunderstorm;
                     ResetState(ActionState.Swoop_Out);
                 }
-            }
+            }     
         }
 
         private void AI_Thunderstorm()
@@ -929,6 +950,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (AttackTimer == 0)
             {
                 Timer++;
+                ChargeCrystals = true;
 
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
@@ -956,10 +978,12 @@ namespace Stellamod.NPCs.Bosses.Niivi
                         Vector2 spawnCenter = Target.Center + new Vector2(0, -128);
                         NPC.NewNPC(EntitySource, (int)spawnCenter.X, (int)spawnCenter.Y, ModContent.NPCType<NiiviCrystalLightning>());
                     }
+
                 }
             }
             else if (AttackTimer == 2)
             {
+                ChargeCrystals = false;
                 NPC.velocity *= 0.98f;
                 Timer++;
 
