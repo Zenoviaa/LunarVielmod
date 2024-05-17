@@ -361,9 +361,9 @@ namespace Stellamod.WorldG
                 }
             }
 
-            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-04); k++)
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 20.2f) * 6E-03); k++)
             {
-                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 20);
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
                 int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                 int yBelow = Y + 1;
                 if (!WorldGen.SolidTile(X, yBelow))
