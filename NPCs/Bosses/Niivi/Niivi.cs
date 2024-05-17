@@ -1074,6 +1074,21 @@ namespace Stellamod.NPCs.Bosses.Niivi
             UpdateOrientation();
             if(Timer >= 450)
             {
+                for (int i = 0; i < 150; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var d = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speed * 17, Scale: 5f);
+                    d.noGravity = true;
+
+                    Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var da = Dust.NewDustPerfect(NPC.Center, DustID.WhiteTorch, speeda * 11, Scale: 5f);
+                    da.noGravity = false;
+
+                    Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
+                    var dab = Dust.NewDustPerfect(NPC.Center, DustID.HallowedTorch, speeda * 30, Scale: 5f);
+                    dab.noGravity = false;
+                }
+
                 NPC.defense /= 8;
                 ResetState(ActionState.Swoop_Out);
                 NextAttack = ActionState.Laser_Blast_V2;
