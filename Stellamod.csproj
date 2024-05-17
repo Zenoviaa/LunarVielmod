@@ -190,6 +190,7 @@
     <None Remove="Items\Placeable\Veil\AzurerinPaintingI.png" />
     <None Remove="Items\Placeable\Veil\CozmirePaintingI.png" />
     <None Remove="Items\Placeable\Veil\GothiviaPaintingI.png" />
+    <None Remove="Items\Placeable\Veil\LumiPaintingI.png" />
     <None Remove="Items\Placeable\Veil\SigfriedPaintingI.png" />
     <None Remove="Items\Placeable\Veil\VeilPot.png" />
     <None Remove="Items\Shrines\GovheilNAlca\ShrineAI.png" />

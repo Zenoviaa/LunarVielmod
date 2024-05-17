@@ -7346,3 +7346,8 @@ YourFired: {
 		Yr'oue*
 		'''
 }
+
+LumiPaintingI: {
+	Tooltip: ""
+	DisplayName: Lumi Painting I
+}
