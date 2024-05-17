@@ -117,6 +117,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             NPC.HitSound = SoundID.DD2_WitherBeastCrystalImpact;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
 
         private void ResetState(ActionState actionState)
         {

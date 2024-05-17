@@ -35,6 +35,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Swoop_Out,
             PrepareAttack,
             Calm_Down,
+            Transition_P2,
             Frost_Breath_V2,
             Laser_Blast_V2,
             Star_Wrath_V2,
@@ -61,6 +62,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int P1_StarWrathDamage => 40;
         private int P1_LaserDamage => 500;
         private int P1_StarStormDamage => 40;
+        private int P1_CosmicBombDamage => 500;
 
         //AI
         private bool _resetTimers;
@@ -212,6 +214,28 @@ namespace Stellamod.NPCs.Bosses.Niivi
             return false;
         }
 
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            int lifeToGiveIllurineScaleInBoss = NPC.lifeMax / 100;
+            if (StellaMultiplayer.IsHost)
+            {
+                ScaleDamageCounter += hit.Damage;
+                if (ScaleDamageCounter >= lifeToGiveIllurineScaleInBoss)
+                {
+                    Vector2 velocity = -Vector2.UnitY;
+                    velocity *= Main.rand.NextFloat(4, 8);
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
+                        ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
+                    ScaleDamageCounter = 0;
+                }
+            }
+        }
 
         public override void AI()
         {
@@ -283,6 +307,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     break;
 
                 //Phase 2
+                case ActionState.Transition_P2:
+                    AI_Transition_P2();
+                    break;
                 case ActionState.Frost_Breath_V2:
                     AI_FrostBreath_V2();
                     break;
@@ -416,9 +443,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 NPC.velocity = -Vector2.UnitY * 0.02f;
             }
 
-            AI_MoveToward(Target.Center);
-            //NPC.velocity *= 1.016f;
-           // NPC.velocity.Y -= 0.002f;
+            Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
+            Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.05f);
             if (Timer >= 30)
             {
                 ResetState(ActionState.Idle);
@@ -825,7 +852,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             else if (AttackTimer == 4)
             {
-                NextAttack = ActionState.Laser_Blast;
+                if (InPhase2 && StellaMultiplayer.IsHost)
+                {
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            NextAttack = ActionState.Laser_Blast;
+                            break;
+                        case 1:
+                            NextAttack = ActionState.Laser_Blast_V2;
+                            break;
+                    }
+                }
+                else
+                {
+                    NextAttack = ActionState.Laser_Blast;
+                }
+
                 ResetState(ActionState.Swoop_Out);
             }
         }
@@ -1014,7 +1057,23 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if (Timer >= 90)
                 {
                     shaderSystem.UnTintScreen();
-                    NextAttack = ActionState.Frost_Breath;
+                    if (InPhase2 && StellaMultiplayer.IsHost)
+                    {
+                        switch (Main.rand.Next(2))
+                        {
+                            case 0:
+                                NextAttack = ActionState.Frost_Breath;
+                                break; 
+                            case 1:
+                                NextAttack = ActionState.Star_Wrath_V2;
+                                break;
+                        }
+                    } 
+                    else
+                    {
+                        NextAttack = ActionState.Frost_Breath;
+                    }
+            
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1029,12 +1088,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
         #region Phase 2
         private void AI_Phase2_Reset()
         {
-            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
-            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
-            ResetState(ActionState.Swoop_Out);
-            NextAttack = ActionState.Laser_Blast_V2;
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
+            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
+            ResetState(ActionState.Transition_P2);
         }
 
         private void AI_FrostBreath_V2()
@@ -1045,6 +1103,43 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Charge_V2()
         {
 
+        }
+
+
+
+        private void AI_Transition_P2()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.velocity = Vector2.Zero;
+                NPC.defense *= 8;
+            }
+            ChargeCrystals = false;
+            NPC.velocity.Y += 0.002f;
+            OrientArching();
+            UpdateOrientation();
+            if(Timer >= 450)
+            {
+                for (int i = 0; i < 150; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var d = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speed * 17, Scale: 5f);
+                    d.noGravity = true;
+
+                    Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var da = Dust.NewDustPerfect(NPC.Center, DustID.WhiteTorch, speeda * 11, Scale: 5f);
+                    da.noGravity = false;
+
+                    Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
+                    var dab = Dust.NewDustPerfect(NPC.Center, DustID.HallowedTorch, speeda * 30, Scale: 5f);
+                    dab.noGravity = false;
+                }
+
+                NPC.defense /= 8;
+                ResetState(ActionState.Swoop_Out);
+                NextAttack = ActionState.Star_Wrath_V2;
+            }
         }
 
         private void AI_LaserBlast_V2()
@@ -1130,14 +1225,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 else if (Timer >= 120)
                 {
                     NPC.velocity *= 0.98f;
-                    TargetHeadRotation += 0.02f;
+                  //  TargetHeadRotation += 0.02f;
                     NPC.rotation += 0.02f;
                 }
 
                 if (Timer >= 720)
                 {
                     ResetShaders();
-                    NextAttack = ActionState.Laser_Blast_V2;
+                    NextAttack = ActionState.Frost_Breath;
                     ResetState(ActionState.Swoop_Out);
                 }
             }
@@ -1145,7 +1240,72 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_StarWrath_V2()
         {
+            if(AttackTimer == 0)
+            {
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+                TargetHeadRotation = -MathHelper.PiOver4;
+                OrientArching();
+                UpdateOrientation();
+                FlipToDirection();
 
+                Timer++;
+                if(Timer == 1)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                }
+                if(Timer >= 60)
+                {
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } else if(AttackTimer == 1)
+            {
+                ChargeCrystals = true;
+                Black = true;
+
+                NPC.velocity = -Vector2.UnitY * 0.02f;
+                NPC.velocity *= 0.8f;
+                Timer++;
+                OrientArching();
+                if(FlightDirection == -1)
+                {
+                    TargetHeadRotation = -MathHelper.PiOver4 * 3;
+                }
+         
+                UpdateOrientation();
+                FlipToDirection();
+                if(Timer == 1) 
+                {
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, Vector2.Zero,
+                            ModContent.ProjectileType<NiiviCosmicBombProj>(), P1_CosmicBombDamage, 1, Main.myPlayer);
+                    }
+                }
+
+                if(Timer >= 480)
+                {
+                    NPC.velocity = -Vector2.UnitY;
+                    AttackTimer++;
+                    Timer = 0;
+                }
+            } else if (AttackTimer == 2)
+            {
+                ChargeCrystals = false;
+                Black = false;
+
+                Timer++;
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
+
+                if(Timer >= 300)
+                {
+                    ResetShaders();
+                    NextAttack = ActionState.Frost_Breath;
+                    ResetState(ActionState.Swoop_Out);
+                }
+            }
         }
 
         private void AI_Thunderstorm_V2()

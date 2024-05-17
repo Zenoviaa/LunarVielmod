@@ -8,9 +8,10 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
+
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    internal class NiiviCrystalWarpExplosionProj : ModProjectile,
+    internal class NiiviCosmicBombAbsorbProj : ModProjectile,
         IPixelPrimitiveDrawer
     {
         //Texture
@@ -42,15 +43,15 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
 
         //Radius
-        private float StartRadius => 4;
-        private float EndRadius => 196;
+        private float StartRadius => 384;
+        private float EndRadius => 4;
         private float Width => 32;
 
         //Colors
         private Color FrontCircleStartDrawColor => Color.White;
         private Color FrontCircleEndDrawColor => Color.Transparent;
-        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.LightCyan, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.DarkCyan, Color.BlueViolet, 0.7f);
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.White, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Lerp(Color.White, Color.White, 0.7f);
         private Vector2[] CirclePos;
 
         public override void SetDefaults()

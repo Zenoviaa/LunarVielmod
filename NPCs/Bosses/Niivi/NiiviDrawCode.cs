@@ -121,6 +121,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private bool ChargeCrystals;
         private float ChargeCrystalTimer;
+        private bool Black;
 
         private void SetSegmentPosition(Vector2 segmentSize, float scale = 1f)
         {
@@ -171,9 +172,40 @@ namespace Stellamod.NPCs.Bosses.Niivi
             // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
             shader.Apply(null);
 
+            DrawSegments(spriteBatch, screenPos, drawColor, true);
 
+            spriteBatch.End();
+            spriteBatch.Begin();
+
+            //Draw Normal Niivi
+            DrawSegments(spriteBatch, screenPos, drawColor, false);
+
+            if (Black)
             {
-                _segmentIndex = SegmentPos.Length - 1;
+                shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.Black);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(ChargeCrystalTimer);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, true);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+        }
+
+
+        private void DrawSegments(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor, bool animate)
+        {
+            _segmentIndex = SegmentPos.Length - 1;
             SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
             //Draw Tail Back
             DrawSegment(spriteBatch, NiiviTailBack, NiiviTailBackSize, drawColor, rot: MathHelper.Pi);
@@ -196,7 +228,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             switch (State)
             {
                 default:
-                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, true);
+                    drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, animate);
                     break;
             }
 
@@ -257,173 +289,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             //Draw4 Head
             DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
-            }
-            spriteBatch.End();
-            spriteBatch.Begin();
-
-
-            {
-                _segmentIndex = SegmentPos.Length - 1;
-                SegmentCorrection = (SegmentPos[1] - SegmentPos[0]);
-                //Draw Tail Back
-                DrawSegment(spriteBatch, NiiviTailBack, NiiviTailBackSize, drawColor, rot: MathHelper.Pi);
-
-                //Draw Tail
-                for (int i = 0; i < Tail_Segments; i++)
-                {
-                    float scaleProgress = i / (float)Tail_Segments;
-                    DrawSegment(spriteBatch, NiiviTailFront, NiiviTailFrontSize, drawColor, scaleProgress + Tail_Min_Scale);
-                }
-
-                //Draw Body Back
-                DrawSegment(spriteBatch, NiiviBodyBack, NiiviBodyBackSize, drawColor, Body_Min_Scale);
-                Vector2 rightWingDrawOrigin = new Vector2(226, 190);
-                Vector2 flippedWingDrawOrigin = new Vector2(110, 190);
-                Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
-
-                WingDrawIndex = _segmentIndex - Body_Segments - 1;
-                Rectangle drawRectangle;
-                switch (State)
-                {
-                    default:
-                        drawRectangle = NiiviWingBack.AnimationFrame(ref WingFrameCounter, ref WingFrameTick, 4, 9, false);
-                        break;
-                }
-
-                Vector2 wingDrawOffset = Vector2.UnitY.RotatedBy(-SegmentRot[WingDrawIndex] - MathHelper.PiOver2) * -24;
-                DrawSegment(spriteBatch, NiiviWingBack, NiiviWingSize, drawColor,
-                    drawOrigin: wingDrawOrigin,
-                    drawOffset: wingDrawOffset,
-                    sourceRectangle: drawRectangle,
-                    overrideIndex: WingDrawIndex);
-
-                //Draw Back Leg
-                int legDrawIndex = _segmentIndex - 2;
-                Vector2 backLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
-                DrawSegment(spriteBatch, NiiviLegBack, NiiviLegBackSize, drawColor,
-                        drawOffset: backLegDrawOffset,
-                        overrideIndex: legDrawIndex - 1);
-
-                //Draw Body
-                for (int i = 0; i < Body_Segments; i++)
-                {
-                    float scaleProgress = i / (float)Body_Segments;
-                    DrawSegment(spriteBatch, NiiviBodyMiddle, NiiviBodyMiddleSize, drawColor, scaleProgress + Body_Min_Scale);
-                }
-
-                //Draw Back Arm
-                int armDrawIndex = _segmentIndex;
-                Vector2 backArmOffset = Vector2.UnitY.RotatedBy(SegmentRot[armDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
-                DrawSegment(spriteBatch, NiiviArmBack, NiiviArmBackSize, drawColor,
-                    drawOffset: backArmOffset,
-                    overrideIndex: armDrawIndex - 1);
-
-
-                //Draw Body Front
-                DrawSegment(spriteBatch, NiiviBodyFront, NiiviBodyFrontSize, drawColor, 1f + Body_Min_Scale);
-                for (int i = 0; i < Neck_Segments; i++)
-                {
-                    //Draw Neck
-                    DrawSegment(spriteBatch, NiiviNeck, NiiviNeckSize, drawColor, 1.2f);
-                }
-
-                //Draw Front Arm
-                Vector2 frontArmOffset = Vector2.UnitY.RotatedBy(SegmentRot[armDrawIndex]) * NiiviArmBackSize.Y;
-                DrawSegment(spriteBatch, NiiviArmFront, NiiviArmFrontSize, drawColor,
-                    drawOffset: frontArmOffset,
-                    overrideIndex: armDrawIndex);
-
-                //Draw Front Leg
-                Vector2 frontLegDrawOffset = Vector2.UnitY.RotatedBy(SegmentRot[legDrawIndex]) * NiiviArmBackSize.Y * 1.3f;
-                DrawSegment(spriteBatch, NiiviLegFront, NiiviLegFrontSize, drawColor,
-                     drawOffset: frontLegDrawOffset,
-                     overrideIndex: legDrawIndex);
-
-                DrawSegment(spriteBatch, NiiviWingFront, NiiviWingSize, drawColor,
-                    drawOrigin: wingDrawOrigin,
-                    drawOffset: wingDrawOffset,
-                    sourceRectangle: drawRectangle,
-                    overrideIndex: WingDrawIndex);
-
-                //Draw4 Head
-                DrawSegment(spriteBatch, NiiviHead, NiiviHeadSize, drawColor);
-            }
         }
-
-
-
-        /*
-        private void DrawSegmentGlow(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
-            Vector2? drawOrigin = null,
-            Rectangle? sourceRectangle = null,
-            Vector2? drawOffset = null,
-            int overrideIndex = -1)
-        {
-            Vector2 origin = segmentSize / 2;
-            if (drawOrigin != null)
-            {
-                origin = (Vector2)drawOrigin;
-            }
-
-            if (_segmentIndex == SegmentRot.Length - 1)
-            {
-                SegmentRot[_segmentIndex] += MathHelper.PiOver2;
-            }
-
-            Vector2 drawPos;
-            if (overrideIndex != -1)
-            {
-                drawPos = SegmentPos[overrideIndex];
-            }
-            else
-            {
-                drawPos = SegmentPos[_segmentIndex];
-            }
-
-            if (drawOffset != null)
-            {
-                drawPos += (Vector2)drawOffset;
-            }
-
-            if (_segmentIndex != 0 || overrideIndex != -1)
-            {
-                drawPos -= SegmentCorrection;
-            }
-
-
-            Color rotatedColor = Color.LightSkyBlue;
-            rotatedColor = rotatedColor.MultiplyAlpha(0.1f);
-            float glowDistance = Glow_Distance;
-            if (overrideIndex != -1)
-            {
-                Vector2 posOsc = SegmentPosOsc * (overrideIndex + 1);
-                float rotationOsc = SegmentRotationOsc * (overrideIndex + 1);
-
-
-                float time = Main.GlobalTimeWrappedHourly;
-                float timer = Main.GlobalTimeWrappedHourly / 2f + time * 0.04f;
-                float rotationOffset = VectorHelper.Osc(1f, 2f, 5);
-                time %= 4f;
-                time /= 2f;
-
-                if (time >= 1f)
-                {
-                    time = 2f - time;
-                }
-
-                time = time * 0.5f + 0.5f;
-                for (float i = 0f; i < 1f; i += 0.25f)
-                {
-                    float radians = (i + timer) * MathHelper.TwoPi;
-                    Vector2 rotatedPos = drawPos + posOsc + new Vector2(0f, glowDistance * rotationOffset).RotatedBy(radians) * time;
-                    spriteBatch.Draw(segmentTexture, rotatedPos, sourceRectangle, rotatedColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, Effects, 0);
-                }
-
-
-                spriteBatch.Draw(segmentTexture, drawPos + posOsc, sourceRectangle, drawColor, SegmentRot[overrideIndex] + rotationOsc, origin, 1, Effects, 0);
-            }
-        }
-        */
 
         private void DrawSegment(SpriteBatch spriteBatch, Texture2D segmentTexture, Vector2 segmentSize, Color drawColor,
             float scale = 1,
