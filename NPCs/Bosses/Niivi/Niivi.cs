@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
+using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
@@ -294,6 +295,43 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if(NPC.life <= 0)
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Death, NPC.position);
+                var entitySource = NPC.GetSource_Death();
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi1);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi2);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi3);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi2);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi3);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi4);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi5);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi6);
+                Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi7);
+
+                for (int i = 0; i < 150; i++)
+                {
+                    Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var d = Dust.NewDustPerfect(NPC.Center, DustID.BlueTorch, speed * 17, Scale: 5f);
+                    d.noGravity = true;
+
+                    Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
+                    var da = Dust.NewDustPerfect(NPC.Center, DustID.WhiteTorch, speeda * 11, Scale: 5f);
+                    da.noGravity = false;
+
+                    Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
+                    var dab = Dust.NewDustPerfect(NPC.Center, DustID.HallowedTorch, speeda * 30, Scale: 5f);
+                    dab.noGravity = false;
+                }
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    for(int i = 0; i < 8; i++)
+                    {
+                        Vector2 velocity = -Vector2.UnitY;
+                        velocity *= Main.rand.NextFloat(8, 16);
+                        velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position, velocity,
+                            ModContent.ProjectileType<NiiviScaleProj>(), 0, 1, Main.myPlayer);
+                    }
+                }
             }
         }
 
