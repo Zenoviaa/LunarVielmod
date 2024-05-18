@@ -31,7 +31,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Projectile.width = Projectile.height = 128;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = (int)LifeTime;
         }
@@ -80,11 +80,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     ParticleManager.NewParticle<StarParticle>(pos, vel, Color.White, 1f);
                 }
             }
-            if (Timer % (int)(LifeTime / 6) == 0)
+            if (Timer % (int)(LifeTime / 4) == 0)
             {
                 //Spawn the things
                 Vector2 spikeVelocity = Projectile.velocity;
-                float spawnNum = 6;
+                float spawnNum = 8;
                 for (int i = 0; i < spawnNum; i++)
                 {
                     float progress = (float)i / spawnNum;
@@ -122,8 +122,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override bool ShouldUpdatePosition() => false;
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.LightSkyBlue, Color.White, VectorHelper.Osc(0, 1));
-            return color;
+            return Main.DiscoColor;
         }
 
         public override bool PreDraw(ref Color lightColor)

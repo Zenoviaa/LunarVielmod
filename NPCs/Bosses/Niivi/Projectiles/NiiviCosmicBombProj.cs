@@ -206,6 +206,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
                             ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                     }
+                    Vector2 diffVelocity = player.velocity - player.oldVelocity;
+                    Projectile.position += diffVelocity;
                 }
             }
             if (Timer == 575)

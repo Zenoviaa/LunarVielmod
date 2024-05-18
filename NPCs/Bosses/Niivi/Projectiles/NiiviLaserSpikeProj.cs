@@ -95,8 +95,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.LightCyan, Color.White, VectorHelper.Osc(0, 1));
-            return color;
+            return Main.DiscoColor;
         }
         public override bool ShouldUpdatePosition()
         {

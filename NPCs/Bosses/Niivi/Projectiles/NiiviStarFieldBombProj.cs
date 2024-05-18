@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             // Retrieve reference to shader
             var shader = ShaderRegistry.MiscFireWhitePixelShader;
-            shader.UseOpacity(0.3f * Scale);
+            shader.UseOpacity(0.3f * Scale * 2);
 
             //How intense the colors are
             //Should be between 0-1

@@ -33,7 +33,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.friendly = false;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;

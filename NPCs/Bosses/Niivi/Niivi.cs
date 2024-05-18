@@ -119,7 +119,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private int SpecialCycle;
         int ScaleDamageCounter;
         int AggroDamageCounter;
-  
+
         private Player Target => Main.player[NPC.target];
         private IEntitySource EntitySource => NPC.GetSource_FromThis();
         private float DirectionToTarget
@@ -136,9 +136,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private bool InPhase2 => NPC.life <= (NPC.lifeMax * 0.66f);
         private bool TriggeredPhase2;
 
-        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.05f);
+        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.66f);
         private bool TriggeredPhase3;
-
         private int AttackCount;
         private int AttackSide;
         private bool DoAttack;
@@ -282,6 +281,17 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 Timer = 0;
             }
+            if(State != ActionState.Spare_Me && NPC.life <= NPC.lifeMax / 100f)
+            {
+                //Dying
+                NPC.life = NPC.lifeMax / 100;
+                SpecialTimer = 0;
+                Black = false;
+                ChargeCrystals = false;
+                ResetShaders();
+                AI_Phase3_Reset();
+                ResetState(ActionState.Spare_Me);
+            }
         }
 
         public override void AI()
@@ -392,13 +402,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 AI_Phase2_Reset();
                 TriggeredPhase2 = true;
-                return;
-            }
-
-            if (InPhase3 && !TriggeredPhase3)
-            {
-                AI_Phase3_Reset();
-                TriggeredPhase3 = true;
                 return;
             }
         }
@@ -1567,15 +1570,28 @@ namespace Stellamod.NPCs.Bosses.Niivi
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.VignetteScreen(progress * 2.5f);
 
+            float length = 450;
+            SpecialTimer++;
+            if(SpecialTimer < length)
+            {
+                NPC.dontTakeDamage = true;
+            }
+            else
+            {
+                NPC.dontTakeDamage  = false;
+                SpecialTimer = length;
+            }
+          
             Timer++;
             if(Timer == 1)
             {
 
             }
             NPC.velocity *= 0.8f;
-
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
             //Put huffing and puffing sounds here
-            if(Timer >= 900)
+            if(Timer >= 1350)
             {
                 ResetShaders();
                 ResetState(ActionState.Spared);

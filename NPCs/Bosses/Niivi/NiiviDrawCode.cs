@@ -1,4 +1,5 @@
 ﻿
+using Accord.Statistics.Distributions.Univariate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
@@ -176,14 +177,18 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             DrawSegments(spriteBatch, screenPos, drawColor, true);
 
+     
             spriteBatch.End();
             spriteBatch.Begin();
 
             //Draw Normal Niivi
             DrawSegments(spriteBatch, screenPos, drawColor, false);
 
+
             if (Black)
             {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                 shader = ShaderRegistry.MiscSilPixelShader;
 
                 //The color to lerp to
@@ -193,6 +198,60 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 //1 being fully opaque
                 //0 being the original color
                 shader.UseSaturation(ChargeCrystalTimer);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, true);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+
+            if (SpecialTimer >= 2500 || State == ActionState.Laser_Blast_V2 || State == ActionState.Star_Wrath_V2 || State == ActionState.Space_Circle)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                shader = ShaderRegistry.MiscFireWhitePixelShader;
+
+                shader.UseOpacity(1f);
+
+                //How intense the colors are
+                //Should be between 0-1
+                shader.UseIntensity(1f);
+
+                //How fast the extra texture animates
+                float speed = 5f;
+                shader.UseSaturation(speed);
+
+                //Color
+                shader.UseColor(Main.DiscoColor);
+
+                //Texture itself
+                shader.UseImage1(TextureRegistry.CloudTexture);
+
+                // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+                shader.Apply(null);
+
+                DrawSegments(spriteBatch, screenPos, drawColor, false);
+
+                spriteBatch.End();
+                spriteBatch.Begin();
+            }
+
+            if(State == ActionState.Transition_P2)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                shader = ShaderRegistry.MiscSilPixelShader;
+
+                //The color to lerp to
+                shader.UseColor(Color.Black);
+
+                //Should be between 0-1
+                //1 being fully opaque
+                //0 being the original color
+                shader.UseSaturation(0.5f);
 
                 // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
                 shader.Apply(null);
