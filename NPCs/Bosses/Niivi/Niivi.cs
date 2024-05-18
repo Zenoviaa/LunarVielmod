@@ -613,29 +613,20 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (Timer == 1)
             {
                 DoAttack = false;
+            }
 
-                //Initialize Attack
-                NPC.TargetClosest();
-                LookDirection = DirectionToTarget;
-                OrientArching();
-                FlipToDirection();
-
-                if (NPC.position.X > Target.position.X)
-                {
-                    AttackSide = 1;
-                }
-                else
-                {
-                    AttackSide = -1;
-                }
-
-                //Values
-                float offsetDistance = 384;
-                float hoverDistance = 90;
-
-                //Get the direction
-                Vector2 targetCenter = Target.Center + (AttackSide * Vector2.UnitX * offsetDistance) + new Vector2(0, -hoverDistance);
-                AttackPos = targetCenter;
+            //Initialize Attack
+            NPC.TargetClosest();
+            LookDirection = DirectionToTarget;
+            OrientArching();
+            FlipToDirection();
+            if (NPC.position.X > Target.position.X)
+            {
+                AttackSide = 1;
+            }
+            else
+            {
+                AttackSide = -1;
             }
 
             //Rotate Head
@@ -643,8 +634,62 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
             if (AttackTimer == 0)
             {
-                AI_MoveToward(AttackPos);
-                if (Timer >= 360 || Vector2.Distance(NPC.Center, AttackPos) <= 8)
+                Vector2 targetCenter = AttackPos = Target.Center + new Vector2(DirectionToTarget * -256, -256);
+                Vector2 idlePosition = targetCenter;
+
+                // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
+                // The index is projectile.minionPos
+                float minionPositionOffsetX = (10) * -DirectionToTarget;
+                idlePosition.X += minionPositionOffsetX; // Go behind the player
+
+                // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+                // Teleport to player if distance is too big
+                Vector2 vectorToIdlePosition = idlePosition - NPC.Center;
+                float distanceToIdlePosition = vectorToIdlePosition.Length();
+
+                if (distanceToIdlePosition > 2000f)
+                {
+                    // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                    // and then set netUpdate to true
+                    //       NPC.position = idlePosition;
+                    //     NPC.velocity *= 0.1f;
+                    //Projectile.netUpdate = true;
+                }
+
+
+                float speed;
+                float inertia;
+
+                // Minion doesn't have a target: return to player and idle
+                if (distanceToIdlePosition > 100f)
+                {
+                    // Speed up the minion if it's away from the player
+                    speed = 80;
+                    inertia = 150;
+                }
+                else
+                {
+                    // Slow down the minion if closer to the player
+                    speed = 3f;
+                    inertia = 100f;
+                }
+
+                if (distanceToIdlePosition > 20f)
+                {
+                    // The immediate range around the player (when it passively floats about)
+                    // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
+                    vectorToIdlePosition.Normalize();
+                    vectorToIdlePosition *= speed;
+                    NPC.velocity = (NPC.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+                }
+                else if (NPC.velocity == Vector2.Zero)
+                {
+                    // If there is a case where it's not moving at all, give it a little "poke"
+                    NPC.velocity.X = -0.28f;
+                    NPC.velocity.Y = -0.14f;
+                }
+                if (Timer >= 360 || Vector2.Distance(NPC.Center, AttackPos) <= 128)
                 {
                     DoAttack = true;
                 }
@@ -653,8 +698,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (DoAttack)
             {
                 AttackTimer++;
-                NPC.velocity *= 0.98f;
-                if (SpecialTimer >= 2500)
+                NPC.velocity *= 0.6f;
+                if (SpecialTimer >= 2500 && AttackTimer >= 30)
                 {
                     switch (SpecialCycle)
                     {
@@ -673,7 +718,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     }
                     SpecialTimer = 0;
                 }
-                else if (AttackTimer >= 3)
+                else if (AttackTimer >= 30)
                 {
                     ResetState(NextAttack);
                 }
@@ -695,8 +740,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (AttackTimer == 0)
             {
                 Timer++;
-  
-                //Rotate Head
+                NPC.velocity *= 0.8f;
+                              //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
                 {
@@ -999,6 +1044,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     shaderSystem.VignetteScreen(1);
                 }
                 ChargeCrystals = true;
+                NPC.velocity *= 0.8f;
+
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
                 if (Timer >= 60)
@@ -1111,6 +1158,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 Timer++;
                 ChargeCrystals = true;
+                NPC.velocity *= 0.8f;
 
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
@@ -1333,6 +1381,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             if (AttackTimer == 0)
             {
                 Timer++;
+                NPC.velocity *= 0.8f;
 
                 //Rotate Head
                 TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
