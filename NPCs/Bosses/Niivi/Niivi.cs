@@ -41,7 +41,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Activate("Stellamod:NiiviSky", targetCenter);
-                Main.shimmerDarken = 0f;
+                Main.shimmerDarken = 0.1f;
                 Main.shimmerAlpha = 0.5f;
             }
  
@@ -497,9 +497,63 @@ namespace Stellamod.NPCs.Bosses.Niivi
             LookDirection = DirectionToTarget;
             DefaultOrientation();
             LookAtTarget();
+
             Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
-            Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.05f);
+            Vector2 idlePosition = targetCenter;
+
+            // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
+            // The index is projectile.minionPos
+            float minionPositionOffsetX = (10) * -DirectionToTarget;
+            idlePosition.X += minionPositionOffsetX; // Go behind the player
+
+            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+            // Teleport to player if distance is too big
+            Vector2 vectorToIdlePosition = idlePosition - NPC.Center;
+            float distanceToIdlePosition = vectorToIdlePosition.Length();
+
+            if (distanceToIdlePosition > 2000f)
+            {
+                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                // and then set netUpdate to true
+         //       NPC.position = idlePosition;
+           //     NPC.velocity *= 0.1f;
+                //Projectile.netUpdate = true;
+            }
+
+
+            float speed;
+            float inertia;
+
+            // Minion doesn't have a target: return to player and idle
+            if (distanceToIdlePosition > 100f)
+            {
+                // Speed up the minion if it's away from the player
+                speed = 128;
+                inertia = 200f;
+            }
+            else
+            {
+                // Slow down the minion if closer to the player
+                speed = 3f;
+                inertia = 100f;
+            }
+
+            if (distanceToIdlePosition > 20f)
+            {
+                // The immediate range around the player (when it passively floats about)
+                // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
+                vectorToIdlePosition.Normalize();
+                vectorToIdlePosition *= speed;
+                NPC.velocity = (NPC.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+            }
+            else if (NPC.velocity == Vector2.Zero)
+            {
+                // If there is a case where it's not moving at all, give it a little "poke"
+                NPC.velocity.X = -0.28f;
+                NPC.velocity.Y = -0.14f;
+            }
+
             if (Timer >= 30)
             {
                 ResetState(ActionState.Idle);
@@ -637,6 +691,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
              */
 
             LookDirection = DirectionToTarget;
+            FlipToDirection();
             if (AttackTimer == 0)
             {
                 Timer++;
@@ -1207,14 +1262,27 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 float progress = Timer / 120f;
                 progress = MathHelper.Clamp(progress, 0, 1);
                 float sparkleSize = MathHelper.Lerp(0f, 4f, progress);
+                Vector2 pos = NPC.Center + HeadRotation.ToRotationVector2() * 256;
                 if (Timer % 4 == 0)
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        Particle p = ParticleManager.NewParticle(NPC.Center + HeadRotation.ToRotationVector2() * 256, Vector2.Zero,
+                        Particle p = ParticleManager.NewParticle(pos, Vector2.Zero,
                             ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
                         p.timeLeft = 8;
                     }
+                }
+
+                if (Timer % 16 == 0)
+                {
+                    Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(pos, 1024, 16);
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, Vector2.Zero,
+                            ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Main.myPlayer);
+                    }
+      
+                    screenShaderSystem.FlashTintScreen(Color.Black, 0.3f, 7);
                 }
 
                 if (Timer >= 120)

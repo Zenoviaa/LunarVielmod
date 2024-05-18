@@ -37,7 +37,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void AI()
         {
-            Scale = MathHelper.Lerp(Scale, 1f, 0.02f);
+            if(Timer < 60)
+            {
+                Scale = MathHelper.Lerp(Scale, 1f, 0.04f);
+            } else if (Timer > 400)
+            {
+                Scale = MathHelper.Lerp(Scale, 0f, 0.04f);
+            }
+  
             Timer++;
             if(Timer == 1)
             {
@@ -45,9 +52,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
             if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
             {
-                float rippleCount = 10;
-                float rippleSize = 50;
-                float rippleSpeed = 20;
+                float rippleCount = 5;
+                float rippleSize = 25;
+                float rippleSpeed = 40;
                 Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
             }
 
