@@ -43,16 +43,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Timer++;
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.05f;
-
-            if(Timer % Main.rand.Next(15, 32) == 0 && Main.rand.NextBool(12))
-            {
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 16);
-                int type = ModContent.ProjectileType<NiiviFrostFlowerProj>();
-                int damage = Projectile.damage / 2;
-                float knockback = Projectile.knockBack / 2;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    type, damage, knockback, Projectile.owner);
-            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

@@ -80,6 +80,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Space_Circle,
             Laser_Blast_V2,
             Star_Wrath_V2,      
+            Spare_Me,
+            Spared
         }
 
         public ActionState State
@@ -134,11 +136,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private bool InPhase2 => NPC.life <= (NPC.lifeMax * 0.66f);
         private bool TriggeredPhase2;
 
-        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.22f);
+        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.05f);
         private bool TriggeredPhase3;
-
-        private bool InPhase4 => NPC.life <= (NPC.lifeMax * 0.01f);
-        private bool TriggeredPhase4;
 
         private int AttackCount;
         private int AttackSide;
@@ -279,6 +278,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     ScaleDamageCounter = 0;
                 }
             }
+            if(State == ActionState.Spare_Me)
+            {
+                Timer = 0;
+            }
         }
 
         public override void AI()
@@ -368,6 +371,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     break;
                 case ActionState.Star_Wrath_V2:
                     AI_StarWrath_V2();
+                    break;
+
+                //Phase 3
+                case ActionState.Spare_Me:
+                    AI_SpareMe();
+                    break;
+                case ActionState.Spared:
+                    AI_Spared();
                     break;
             }
 
@@ -1541,8 +1552,56 @@ namespace Stellamod.NPCs.Bosses.Niivi
             screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 5);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetShaders();
+            NextAttack = ActionState.Spare_Me;
             ResetState(ActionState.Swoop_Out);
-            NextAttack = ActionState.Laser_Blast_V2;
+      
+        }
+
+        private void AI_SpareMe()
+        {
+            //Vignette
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float progress = distanceToTarget / 2000f;
+            progress = 1f - progress;
+
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.VignetteScreen(progress * 2.5f);
+
+            Timer++;
+            if(Timer == 1)
+            {
+
+            }
+            NPC.velocity *= 0.8f;
+
+            //Put huffing and puffing sounds here
+            if(Timer >= 900)
+            {
+                ResetShaders();
+                ResetState(ActionState.Spared);
+            }
+        }
+
+        private void AI_Spared()
+        {
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.velocity = -Vector2.UnitY;
+            }
+            NPC.velocity *= 1.05f;
+            TargetHeadRotation = NPC.Center.DirectionTo(Target.Center).ToRotation();
+            if(Timer >= 120)
+            {
+                if (!DownedBossSystem.downedNiiviBoss)
+                {
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedNiiviBoss, -1);
+                }
+     
+                NPC.active = false;
+            }
         }
         #endregion
 

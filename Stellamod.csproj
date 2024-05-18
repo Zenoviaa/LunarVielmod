@@ -353,6 +353,7 @@
     <None Remove="NPCs\Bosses\IrradiaNHavoc\Projectiles\IrradiaCombustionBoom.png" />
     <None Remove="NPCs\Bosses\Niivi\NiiviRoaming.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
+    <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostFlowerProj.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
     <None Remove="NPCs\Bosses\singularityFragment\LazerOrb.png" />
     <None Remove="NPCs\Bosses\singularityFragment\Phase1\SingularityLazer.png" />

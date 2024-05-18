@@ -177,7 +177,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             base.AI();
-
+            NPC.TargetClosest();
             //Spawn effect
             if (Timer == 1)
             {
@@ -241,6 +241,24 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity, type,
                     damage, knockback, Main.myPlayer);
                 }
+            }
+
+            if (Timer % 32 == 0)
+            {
+
+                if (StellaMultiplayer.IsHost)
+                {
+                    int type = ModContent.ProjectileType<NiiviFrostFlowerProj>();
+                    int damage = Damage_FrostBreath / 2;
+                    float knockback = 1;
+                    float maxDistance = 768;
+                    float progress = Main.rand.NextFloat(0.2f, 1f);
+                    float distance = progress * maxDistance;
+                    Vector2 velocity = NPC.Center.DirectionTo(Main.player[NPC.target].Center) * distance / 32f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity,
+                        type, damage, knockback, Main.myPlayer);
+                }
+
             }
 
             if (Timer >= length)

@@ -347,7 +347,9 @@ namespace Stellamod.NPCs.Town
                         ModContent.NPCType<EreshkigalIdle>());
                     NetMessage.SendData(MessageID.SyncNPC);
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<NiiviRoaming>()) && !NPC.AnyNPCs(ModContent.NPCType<Niivi>()))
+                else if (!NPC.AnyNPCs(ModContent.NPCType<NiiviRoaming>()) 
+                    && !NPC.AnyNPCs(ModContent.NPCType<Niivi>()) 
+                    && !DownedBossSystem.downedNiiviBoss)
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
                         (int)NiiviSpawnWorld.X, (int)NiiviSpawnWorld.Y,

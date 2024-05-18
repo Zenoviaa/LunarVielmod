@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             {
                 //Spawn the things
                 Vector2 spikeVelocity = Projectile.velocity;
-                float spawnNum = 8;
+                float spawnNum = 6;
                 for (int i = 0; i < spawnNum; i++)
                 {
                     float progress = (float)i / spawnNum;

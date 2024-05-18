@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
+using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -37,6 +38,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void AI()
         {
+            ShakeModSystem.Shake = 2;
             if(Timer < 60)
             {
                 Scale = MathHelper.Lerp(Scale, 1f, 0.04f);
