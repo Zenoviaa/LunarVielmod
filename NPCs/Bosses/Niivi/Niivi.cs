@@ -1309,7 +1309,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 //Slowdown over time
                 float length = 720;
                 NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
-                if (Timer >= 480)
+                if (Timer >= 680)
                 {
                     ResetShaders();
                     NPC.velocity = -Vector2.UnitY;

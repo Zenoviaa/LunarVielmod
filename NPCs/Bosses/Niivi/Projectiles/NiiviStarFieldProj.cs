@@ -20,7 +20,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             set => Projectile.ai[0] = value;
         }
 
-        private float LifeTime => 480;
+        private float LifeTime => 680;
         private float MaxScale => 4.66f;
         private float Scale;
         public override void SetDefaults()
@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if(Timer < 60)
             {
                 Scale = MathHelper.Lerp(Scale, 1f, 0.04f);
-            } else if (Timer > 400)
+            } else if (Timer > 600)
             {
                 Scale = MathHelper.Lerp(Scale, 0f, 0.04f);
             }
