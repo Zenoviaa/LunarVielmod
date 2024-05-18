@@ -53,7 +53,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Timer++;
             if(Timer == 1)
             {
-                SoundEngine.PlaySound(SoundRegistry.Niivi_CrystalSummon, NPC.position);
+                SoundStyle soundStyle = SoundRegistry.Niivi_CrystalSummon;
+                soundStyle.Volume = 0.66f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
             }
         }
 

@@ -224,6 +224,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Starence, Projectile.position);
             }
 
+            if(Timer == 480)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimBomb, Projectile.position);
+            }
             if (Timer == 575)
             {
                 screenShaderSystem.VignetteScreen(3f);
@@ -322,7 +326,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 4000, 64);
+
+            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 4000, 80);
             float num = 32;
             for(float i = 0; i < num; i++)
             {
