@@ -65,7 +65,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 targetHeadRotation += MathHelper.Pi;
                 targetHeadRotation = MathHelper.WrapAngle(targetHeadRotation);
             }
-            Console.WriteLine(HeadRotation);
 
             HeadRotation = MathHelper.Lerp(HeadRotation, targetHeadRotation, 0.04f);
             if(lookProgress >= 0.5f)
