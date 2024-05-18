@@ -41,7 +41,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Activate("Stellamod:NiiviSky", targetCenter);
+                Main.shimmerDarken = 0f;
+                Main.shimmerAlpha = 0.5f;
             }
+ 
         }
 
         private void DeActivateSkye()
@@ -50,7 +53,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 Vector2 targetCenter = Player.Center;
                 SkyManager.Instance.Deactivate("Stellamod:NiiviSky", targetCenter);
+                Main.shimmerDarken = 0f;
+                Main.shimmerAlpha = 0f;
             }
+
         }
     }
 
@@ -71,10 +77,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
             PrepareAttack,
             Calm_Down,
             Transition_P2,
-            Tornado,
+            Space_Circle,
             Laser_Blast_V2,
-            Star_Wrath_V2,
-       
+            Star_Wrath_V2,      
         }
 
         public ActionState State
@@ -309,10 +314,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
             ChargeCrystalTimer = MathHelper.Clamp(ChargeCrystalTimer, 0f, 1f);
 
 
-            SpecialTimer++;
-            if(SpecialTimer == 2500)
+            if (InPhase2)
             {
-                AI_Phase2_SpecialReset();
+                SpecialTimer++;
+                if (SpecialTimer == 2500)
+                {
+                    AI_Phase2_SpecialReset();
+                }
             }
 
             switch (State)
@@ -344,9 +352,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case ActionState.Thunderstorm:
                     AI_Thunderstorm();
                     break;
-                case ActionState.Baby_Dragons:
-                    AI_BabyDragons();
-                    break;
                 case ActionState.Calm_Down:
                     AI_CalmDown();
                     break;
@@ -355,8 +360,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 case ActionState.Transition_P2:
                     AI_Transition_P2();
                     break;
-                case ActionState.Tornado:
-                    AI_Tornado();
+                case ActionState.Space_Circle:
+                    AI_SpaceCircle();
                     break;
                 case ActionState.Laser_Blast_V2:
                     AI_LaserBlast_V2();
@@ -595,6 +600,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
                             break;
                         case 1:
                             ResetState(ActionState.Star_Wrath_V2);
+                            SpecialCycle = 2;
+                            break;
+                        case 2:
+                            ResetState(ActionState.Space_Circle);
                             SpecialCycle = 0;
                             break;
                     }
@@ -1101,10 +1110,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
-        private void AI_BabyDragons()
-        {
-
-        }
         #endregion
 
         #region Phase 2
@@ -1115,6 +1120,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
             screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
             SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
             ResetState(ActionState.Transition_P2);
+            SpecialTimer = 0;
+            SpecialCycle = 0;
         }
 
         private void AI_Phase2_SpecialReset()
@@ -1158,43 +1165,75 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
-        private void AI_Tornado()
+        private void AI_SpaceCircle()
         {
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+      
             if (AttackTimer == 0)
             {
                 float length = 720;
                 NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
                 TargetHeadRotation = -MathHelper.PiOver4;
                 OrientArching();
+                if (FlightDirection == -1)
+                {
+                    TargetHeadRotation = -MathHelper.PiOver4 * 3;
+                }
+
                 UpdateOrientation();
                 FlipToDirection();
-
+                ChargeCrystals = true;
+                Black = true;
                 Timer++;
                 if (Timer == 1)
                 {
                     NPC.velocity = -Vector2.UnitY;
                 }
-                if (Timer >= 60)
+
+                float progress = Timer / 120f;
+                progress = MathHelper.Clamp(progress, 0, 1);
+                float sparkleSize = MathHelper.Lerp(0f, 4f, progress);
+                if (Timer % 4 == 0)
                 {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Particle p = ParticleManager.NewParticle(NPC.Center + HeadRotation.ToRotationVector2() * 256, Vector2.Zero,
+                            ParticleManager.NewInstance<GoldSparkleParticle>(), Color.White, sparkleSize);
+                        p.timeLeft = 8;
+                    }
+                }
+
+                if (Timer >= 120)
+                {
+                    screenShaderSystem.VignetteScreen(1f);
+                    Vector2 velocity = Vector2.Zero;
+                    int type = ModContent.ProjectileType<NiiviStarFieldProj>();
+                    if (StellaMultiplayer.IsHost)
+                    {
+                        Projectile.NewProjectile(EntitySource, NPC.Center + HeadRotation.ToRotationVector2() * 256, velocity, type,
+                            0, 0, Main.myPlayer);
+                    }
                     AttackTimer++;
                     Timer = 0;
                 }
             }
             else if (AttackTimer == 1)
             {
-                ChargeCrystals = true;
-                Black = true;
-
                 Timer++;
-                AI_MoveToward(Target.Center);
                 OrientArching();
                 UpdateOrientation();
+                LookAtTarget();
                 FlipToDirection();
+                //Slowdown over time
+                float length = 720;
+                NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
                 if (Timer >= 480)
                 {
+                    ResetShaders();
                     NPC.velocity = -Vector2.UnitY;
                     AttackTimer++;
                     Timer = 0;
+                    ResetState(ActionState.Swoop_Out);
                 }
             }
         }
@@ -1361,11 +1400,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     ResetState(ActionState.Swoop_Out);
                 }
             }
-        }
-
-        private void AI_Thunderstorm_V2()
-        {
-
         }
         #endregion
 

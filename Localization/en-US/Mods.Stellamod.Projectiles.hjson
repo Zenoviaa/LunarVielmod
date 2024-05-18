@@ -1222,3 +1222,7 @@ NiiviSpawnExplosionProj.DisplayName: Niivi Spawn Explosion Proj
 NiiviStarBounceProj.DisplayName: Niivi Star Bounce Proj
 NiiviCosmicBombProj.DisplayName: Niivi Cosmic Bomb Proj
 NiiviCosmicBombAbsorbProj.DisplayName: Niivi Cosmic Bomb Absorb Proj
+ExampleVoidProjectile.DisplayName: Example Void Projectile
+NiiviStarFieldBombProj.DisplayName: Niivi Star Field Bomb Proj
+NiiviStarFieldProj.DisplayName: Niivi Star Field Proj
+NiiviStarsBoom.DisplayName: Niivi Stars Boom

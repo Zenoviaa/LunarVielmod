@@ -91,7 +91,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
                     Vector2 pos = Projectile.Center;
-                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), rand,
+                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), rand * 0.1f,
                         newColor: BackCircleStartDrawColor,
                         Scale: Main.rand.NextFloat(0.3f, 0.6f));
                     d.noGravity = true;

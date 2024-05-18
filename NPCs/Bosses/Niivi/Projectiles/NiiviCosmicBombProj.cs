@@ -195,16 +195,18 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             if(Timer % 20 == 0)
             {
-                float starRadius = 550;
-                for (int i = 0; i < 2; i++)
+                if (player != null)
                 {
-                    Vector2 projSpawn = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
-                    Vector2 direction = projSpawn.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
-                    Vector2 velocity = direction * 22;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
-                        ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    float starRadius = 550;
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Vector2 projSpawn = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
+                        Vector2 direction = projSpawn.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
+                        Vector2 velocity = direction * 22;
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
+                            ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    }
                 }
-               
             }
             if (Timer == 575)
             {
