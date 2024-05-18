@@ -24,7 +24,7 @@ namespace Stellamod.Items.Materials
 
         public override void PostUpdate()
         {
-            Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
+            Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 1.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

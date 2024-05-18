@@ -294,6 +294,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
             if(NPC.life <= 0)
             {
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 2000, 32);
                 SoundEngine.PlaySound(SoundRegistry.Niivi_Death, NPC.position);
                 var entitySource = NPC.GetSource_Death();
                 Gore.NewGore(entitySource, NPC.position, NPC.velocity, GoreHelper.Niivi1);

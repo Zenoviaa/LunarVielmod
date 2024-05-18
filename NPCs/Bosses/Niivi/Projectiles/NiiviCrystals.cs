@@ -171,7 +171,8 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     internal class NiiviCrystalFrost : NiiviCrystal
     {
         //Damage Values
-        private int Damage_FrostBreath => 40;
+        private int Damage_FrostBreath => 52;
+        private int Damage_FrostBomb => 32;
 
         public override Color AfterImageStartColor => Color.LightCyan;
 
@@ -255,7 +256,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 if (StellaMultiplayer.IsHost)
                 {
                     int type = ModContent.ProjectileType<NiiviFrostFlowerProj>();
-                    int damage = Damage_FrostBreath / 2;
+                    int damage = Damage_FrostBomb;
                     float knockback = 1;
                     float maxDistance = 768;
                     float progress = Main.rand.NextFloat(0.2f, 1f);
