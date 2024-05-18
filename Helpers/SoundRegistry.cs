@@ -26,5 +26,8 @@ namespace Stellamod.Helpers
         public static SoundStyle Niivi_Voidence => new SoundStyle($"{Path}Voidence");
         public static SoundStyle Niivi_PrimAm => new SoundStyle($"{Path}PrimAm");
         public static SoundStyle Niivi_PrimRay => new SoundStyle($"{Path}PrimRay");
+        public static SoundStyle Niivi_HeavyBreathing1 => new SoundStyle($"{Path}NiiviBreathing1");
+        public static SoundStyle Niivi_HeavyBreathing2 => new SoundStyle($"{Path}NiiviBreathing2");
+        public static SoundStyle Niivi_WingFlap => new SoundStyle($"{Path}NiiviWingFlap");
     }
 }

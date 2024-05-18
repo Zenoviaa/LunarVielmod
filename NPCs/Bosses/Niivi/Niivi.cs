@@ -136,10 +136,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private bool InPhase2 => NPC.life <= (NPC.lifeMax * 0.66f);
         private bool TriggeredPhase2;
 
-        private bool InPhase3 => NPC.life <= (NPC.lifeMax * 0.66f);
-        private bool TriggeredPhase3;
         private int AttackCount;
         private int AttackSide;
+        private int BreathingTimer;
         private bool DoAttack;
         private bool IsCharging;
         private Vector2 AttackPos;
@@ -626,7 +625,13 @@ namespace Stellamod.NPCs.Bosses.Niivi
             Timer++;
             if (Timer == 1)
             {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_WingFlap, NPC.position);
                 DoAttack = false;
+            }
+
+            if (Timer % 60 == 0)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_WingFlap, NPC.position);
             }
 
             //Initialize Attack
@@ -708,6 +713,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     DoAttack = true;
                 }
             }
+
 
             if (DoAttack)
             {
@@ -1583,7 +1589,21 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 NPC.dontTakeDamage  = false;
                 SpecialTimer = length;
             }
-          
+
+            BreathingTimer++;
+            if(BreathingTimer % 150 == 0)
+            {
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        SoundEngine.PlaySound(SoundRegistry.Niivi_HeavyBreathing1, NPC.position);
+                        break;
+                    case 1:
+                        SoundEngine.PlaySound(SoundRegistry.Niivi_HeavyBreathing2, NPC.position);
+                        break;
+                }
+            }
+
             Timer++;
             if(Timer == 1)
             {
