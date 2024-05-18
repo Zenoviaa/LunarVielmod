@@ -509,6 +509,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             {
                 OrientationSpeed = 0.03f;
                 NPC.velocity = -Vector2.UnitY * 0.02f;
+                SoundEngine.PlaySound(SoundRegistry.Niivi_WingFlap, NPC.position);
             }
 
             LookDirection = DirectionToTarget;
