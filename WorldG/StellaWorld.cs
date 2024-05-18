@@ -1029,9 +1029,8 @@ namespace Stellamod.WorldG
 				for (int da = 0; da < 1; da++)
 				{
 					Point Loc = new Point(smx, smy + 18);
-
-					string path = "Struct/Overworld/XixVillage";
-
+                    Point Loc22 = new Point(smx, smy + 58);
+                    string path = "Struct/Overworld/XixVillage";
                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
 					StructureLoader.ProtectStructure(Loc, path);
                     NPCs.Town.AlcadSpawnSystem.LittleWitchTownTile = Loc;
