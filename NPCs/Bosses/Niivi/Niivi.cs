@@ -291,6 +291,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 AI_Phase3_Reset();
                 ResetState(ActionState.Spare_Me);
             }
+            if(NPC.life <= 0)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_Death, NPC.position);
+            }
         }
 
         public override void AI()
@@ -1591,6 +1595,11 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
 
             BreathingTimer++;
+            if(BreathingTimer == 1)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_Tired, NPC.position);
+            }
+
             if(BreathingTimer % 150 == 0)
             {
                 switch (Main.rand.Next(2))
