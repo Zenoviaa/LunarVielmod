@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
-using Stellamod.UI.Systems;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,7 +11,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
     internal class NiiviCosmicBombProj : ModProjectile
     {
-        public override string Texture => TextureRegistry.ZuiEffect;
         private enum ActionState
         {
             Growing,
