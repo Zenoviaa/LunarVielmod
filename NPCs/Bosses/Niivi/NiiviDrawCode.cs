@@ -53,6 +53,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public Vector2 NextSegmentPos;
         public float NextSegmentRot;
         public Vector2 StartSegmentDirection = new Vector2(-1, 0);
+
         public Vector2[] SegmentPos = new Vector2[Total_Segments];
         public Vector2 SegmentCorrection;
         public float[] SegmentRot = new float[Total_Segments];
@@ -71,7 +72,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         public int WingFrameTick;
         public int WingDrawIndex;
         public int FlightDirection;
-        public SpriteEffects Effects => FlightDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        public float CurrentFlightDirection;
+        public SpriteEffects Effects => CurrentFlightDirection < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
         public const int Total_Segments = Neck_Segments + Body_Segments + Tail_Segments + 4;
         public const int Neck_Segments = 3;
@@ -139,7 +141,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     .SafeNormalize(Vector2.Zero)
                     .RotatedBy(NextSegmentRot * rotMultiplier);
 
-                NextSegmentPos += segmentDirection * segmentWidth;
+                NextSegmentPos += segmentDirection * segmentWidth * Math.Abs(StartSegmentDirection.X);
                 NextSegmentRot += SegmentTurnRotation * rotMultiplier;
             }
             else
@@ -147,7 +149,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 SegmentPos[_segmentIndex] = NextSegmentPos;
                 SegmentRot[_segmentIndex] = NextSegmentRot;
 
-                NextSegmentPos += StartSegmentDirection * segmentWidth;
+                NextSegmentPos += StartSegmentDirection * segmentWidth * Math.Abs(StartSegmentDirection.X);
                 NextSegmentRot += SegmentTurnRotation;
             }
 
@@ -221,7 +223,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
             DrawSegment(spriteBatch, NiiviBodyBack, NiiviBodyBackSize, drawColor, Body_Min_Scale);
             Vector2 rightWingDrawOrigin = new Vector2(226, 190);
             Vector2 flippedWingDrawOrigin = new Vector2(110, 190);
-            Vector2 wingDrawOrigin = FlightDirection == -1 ? flippedWingDrawOrigin : rightWingDrawOrigin;
+            Vector2 wingDrawOrigin = CurrentFlightDirection < 0 ? flippedWingDrawOrigin : rightWingDrawOrigin;
 
             WingDrawIndex = _segmentIndex - Body_Segments - 1;
             Rectangle drawRectangle;

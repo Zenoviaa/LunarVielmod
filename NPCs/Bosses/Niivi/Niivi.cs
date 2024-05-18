@@ -446,6 +446,14 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
+
+        private void DefaultOrientation()
+        {
+            OrientArching();
+            UpdateOrientation();
+            FlipToDirection();
+        }
+
         private void AI_Idle()
         {
             NPC.TargetClosest();
@@ -455,7 +463,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 ResetState(ActionState.PrepareAttack);
             }
 
-            UpdateOrientation();
+            DefaultOrientation();
             NPC.velocity *= 0.98f;
         }
 
@@ -472,9 +480,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 ResetShaders();
                 NPC.active = false;
             }
-          
-            OrientArching();
-            UpdateOrientation();
+
+            DefaultOrientation();
             NPC.velocity *= 0.98f;
         }
 
@@ -487,6 +494,9 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 NPC.velocity = -Vector2.UnitY * 0.02f;
             }
 
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
+            LookAtTarget();
             Vector2 targetCenter = Target.Center + new Vector2(DirectionToTarget * -256, -256);
             Vector2 velocityToTarget = VectorHelper.VelocitySlowdownTo(NPC.Center, targetCenter, 32);
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.05f);
@@ -626,6 +636,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
              * Step 3: Fire the laser, twice?, Nah maybe three times
              */
 
+            LookDirection = DirectionToTarget;
             if (AttackTimer == 0)
             {
                 Timer++;
@@ -923,6 +934,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_StarWrath()
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
             if (AttackTimer == 0)
             {
                 Timer++;
@@ -968,7 +981,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             NPC.rotation = 0;
-            if(AttackTimer == 0)
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
+            LookAtTarget();
+            if (AttackTimer == 0)
             {
                 Timer++;
                 if(Timer == 1)
@@ -976,10 +992,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
                     shaderSystem.VignetteScreen(1);
                 }
 
-                OrientArching();
-                UpdateOrientation();
-                LookAtTarget();
-                FlipToDirection();
                 //Slowdown over time
                 float length = 720;
                 NPC.velocity = NPC.velocity.RotatedBy(MathHelper.TwoPi / length);
@@ -1036,6 +1048,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AI_Thunderstorm()
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            LookDirection = DirectionToTarget;
+            DefaultOrientation();
             //Aight, this shouldn't be too hard to do
             //She flies up and rains down lightning
             if (AttackTimer == 0)

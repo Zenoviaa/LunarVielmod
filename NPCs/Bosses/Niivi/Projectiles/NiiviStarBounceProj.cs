@@ -63,7 +63,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
             Projectile.velocity *= 0.99f;
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.PiOver4 / 90f);
-            float maxDetectDistance = 2400;
+            float maxDetectDistance = 9000;
             Player closestPlayer = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             Vector2 directionToPlayer = Projectile.Center.DirectionTo(closestPlayer.Center);
             if(Timer == 66)
