@@ -770,6 +770,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 if(Timer == 1)
                 {
                     ChargeCrystals = true;
+                    SoundEngine.PlaySound(SoundRegistry.Niivi_LaserBlastReady, NPC.position);
                 }
 
                 float progress = Timer / 60;
@@ -1259,7 +1260,8 @@ namespace Stellamod.NPCs.Bosses.Niivi
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             screenShaderSystem.FlashTintScreen(Color.White, 0.5f, 5);
-            SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen, NPC.position);
+            SoundStyle soundStyle = SoundRegistry.Niivi_PrismaticCharge;
+            SoundEngine.PlaySound(soundStyle, NPC.position);
         }
 
         private void AI_Transition_P2()

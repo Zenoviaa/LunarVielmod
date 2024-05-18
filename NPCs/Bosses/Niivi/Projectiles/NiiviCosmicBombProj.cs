@@ -4,6 +4,7 @@ using ParticleLibrary;
 using Stellamod.Helpers;
 using Stellamod.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,6 +106,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = SoundRegistry.Niivi_BigCharge;
+                soundStyle.Volume = 0.7f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
             if (Timer % 4 == 0)
             {
                 float starRadius = 1024;
@@ -121,6 +129,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
             if (Timer == 120)
             {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
@@ -132,6 +141,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
             if(Timer == 240)
             {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
@@ -144,6 +154,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if (Timer == 360)
             {
                 SwapColor = true;
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow2, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
@@ -207,6 +218,12 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     Projectile.position += diffVelocity;
                 }
             }
+            
+            if(Timer == 300)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_Starence, Projectile.position);
+            }
+
             if (Timer == 575)
             {
                 screenShaderSystem.VignetteScreen(3f);

@@ -7,6 +7,7 @@ using Stellamod.Particles;
 using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -49,8 +50,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
             base.AI();
-            NPCID.Sets.TrailingMode[Type] = 3;
             Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_CrystalSummon, NPC.position);
+            }
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)

@@ -7,6 +7,7 @@ using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using static tModPorter.ProgressUpdate;
 
@@ -70,6 +71,11 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
 
             Timer++;
+            if(Timer == 1)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimRay, Projectile.position);
+            }
+
             if(Timer % 4 == 0)
             {
                 float starRadius = 1024;

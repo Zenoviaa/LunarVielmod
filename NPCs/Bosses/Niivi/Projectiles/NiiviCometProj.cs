@@ -64,6 +64,13 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         {
             Timer++;
             VelTimer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = SoundRegistry.Niivi_StarSummon;
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+            }
+
             if(!HasBounced && Main.myPlayer == Projectile.owner && Main.rand.NextBool(600))
             {
                 //This should make them sometimes bounce upwards
@@ -154,6 +161,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            SoundStyle soundStyle = SoundRegistry.Niivi_StarringDeath;
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
             for (int i = 0; i < 8; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);

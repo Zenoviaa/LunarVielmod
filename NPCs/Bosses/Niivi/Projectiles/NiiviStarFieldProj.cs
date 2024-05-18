@@ -6,6 +6,7 @@ using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,7 +52,14 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             if(Timer == 1)
             {
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048, 32);
+                SoundEngine.PlaySound(SoundRegistry.Niivi_Voidfield, Projectile.position);
             }
+
+            if(Timer == 300)
+            {
+                SoundEngine.PlaySound(SoundRegistry.Niivi_Voidence, Projectile.position);
+            }
+
             if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
             {
                 float rippleCount = 5;
@@ -184,6 +192,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.FlashTintScreen(Color.Black, 0.5f, 60);
+            SoundEngine.PlaySound(SoundRegistry.Niivi_PrimAm, Projectile.position);
             if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
