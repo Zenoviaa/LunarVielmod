@@ -7374,3 +7374,8 @@ VeiledScriptureLumi: {
 		- Love Sirestias
 		'''
 }
+
+RekBossRel: {
+	Tooltip: ""
+	DisplayName: Rek Boss Rel
+}
