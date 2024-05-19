@@ -18,5 +18,6 @@ namespace Stellamod.Helpers
 
         public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
         public static Asset<Texture2D> CloudTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/CloudTexture");
+        public static Asset<Texture2D> IrraTexture => ModContent.Request<Texture2D>("Stellamod/Assets/Effects/IrraTexture1");
     }
 }

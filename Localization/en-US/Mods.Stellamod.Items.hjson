@@ -7379,3 +7379,8 @@ RekBossRel: {
 	Tooltip: ""
 	DisplayName: Rek Boss Rel
 }
+
+Irrasprayer: {
+	DisplayName: Irrasprayer
+	Tooltip: ""
+}
