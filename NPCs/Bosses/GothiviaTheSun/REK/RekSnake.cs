@@ -157,9 +157,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             NPC.width = 90;
             NPC.height = 90;
-            NPC.lifeMax = 142000;
+            NPC.lifeMax = 138000;
            
             NPC.damage = 900;
+            NPC.defense = 175;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
