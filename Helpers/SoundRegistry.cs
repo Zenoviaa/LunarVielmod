@@ -13,6 +13,8 @@ namespace Stellamod.Helpers
         public static SoundStyle BeeDeath2 => new SoundStyle($"{Path}BeeDeath2");
         public static SoundStyle StingBoom1 => new SoundStyle($"{Path}StingBomb1");
         public static SoundStyle StingBoom2 => new SoundStyle($"{Path}StingBomb2");
+        public static SoundStyle FanHit1 => new SoundStyle($"{Path}FanHit1");
+        public static SoundStyle FanHit2 => new SoundStyle($"{Path}FanHit2");
 
         //Niivi Sounds
         public static SoundStyle Niivi_LaserBlastReady => new SoundStyle($"{Path}DreamCharge");

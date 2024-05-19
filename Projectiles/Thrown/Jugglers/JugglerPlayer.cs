@@ -13,11 +13,13 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             ModContent.ProjectileType<DaggerDaggerProj>(),
             ModContent.ProjectileType<DaggerDaggerProj2>(),
             ModContent.ProjectileType<CinderBomberProj>(),
-            ModContent.ProjectileType<LilStingerProj>()
+            ModContent.ProjectileType<LilStingerProj>(),
+            ModContent.ProjectileType<FlinchMachineProj>()
         };
 
         public float DamageBonus;
         public int CatchCount;
+        public bool SpecialAttack;
         public void ResetJuggle()
         {
             DamageBonus = 0f;

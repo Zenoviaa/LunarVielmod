@@ -7410,12 +7410,25 @@ LilStinger: {
 
 FiveAdvance: {
 	DisplayName: Dharlie Mixam's Five's Advance
-	Tooltip: '''
+	Tooltip:
+		'''
 		+5% Movement Speed!
 		+5% Increased Damage
 		+5% Increased Enemy Damage Reduction
 		+5 Increased Regeneration
 		+5 Life
 		Dharlie Mixam appreciates your efforts..
+		'''
+}
+
+FlinchMachine: {
+	DisplayName: Flinch Machine
+	Tooltip:
+		'''
+		After hitting an enemy, the fan bounces off
+		Catch the fan to gain a damage bonus to your next throw!
+		After a combo of x5, every third hit... hits extra hard!
+		Stacks infinitely
+		What bro threw at me
 		'''
 }
