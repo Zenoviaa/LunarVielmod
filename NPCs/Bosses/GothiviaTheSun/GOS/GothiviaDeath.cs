@@ -187,7 +187,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.knockBackResist = 0f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
-            NPC.value = Item.buyPrice(gold: 99);
             NPC.scale = 1f;
             NPC.knockBackResist = 0.5f;
             NPC.dontTakeDamage = true;
@@ -206,10 +205,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             // Custom boss bar
 
             // The following code assigns a music track to the boss in a simple way.
-            if (!Main.dedServ)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gothivia");
-            }
+         
         }
         public override bool CheckActive()
         {
@@ -218,25 +214,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
         public override bool CanChat()
         {
-            return true;
+            return false;
         }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-        {
-            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("You sense a strange godly prescence coming from Gothivia"),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("???")
-            });
-        }
+       
 
        
 
