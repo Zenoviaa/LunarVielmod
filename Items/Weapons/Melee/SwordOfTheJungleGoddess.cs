@@ -19,7 +19,7 @@ namespace Stellamod.Items.Weapons.Melee
 
     public override void SetClassSwappedDefaults()
     {
-        Item.damage = 20;
+        Item.damage = 30;
         Item.mana = 3;
     }
     public override void SetStaticDefaults()
@@ -29,12 +29,12 @@ namespace Stellamod.Items.Weapons.Melee
 
     public override void SetDefaults()
     {
-        Item.damage = 20;
+        Item.damage = 30;
         Item.DamageType = DamageClass.Melee/* tModPorter Suggestion: Consider MeleeNoSpeed for no attack speed scaling */;
         Item.width = 40;
         Item.height = 40;
-        Item.useTime = 30;
-        Item.useAnimation = 30;
+        Item.useTime = 90;
+        Item.useAnimation = 90;
         Item.useStyle = ItemUseStyleID.Swing;
         Item.knockBack = 7;
         Item.value = Item.sellPrice(0, 3, 20, 14);

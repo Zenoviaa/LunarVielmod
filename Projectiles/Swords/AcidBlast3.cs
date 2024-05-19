@@ -1,6 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
@@ -87,9 +88,47 @@ namespace Stellamod.Projectiles.Swords
 			for (int i = 0; i < 15; i++)
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch);
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch);
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
 			}
-			SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+
+            var EntitySource = Projectile.GetSource_Death();
+            for (int i = 0; i < 14; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGoldenrod, 1f).noGravity = true;
+            }
+            for (int i = 0; i < 14; i++)
+            {
+
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.ForestGreen, 1f).noGravity = true;
+            }
+           
+            for (int i = 0; i < 20; i++)
+            {
+                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), .8f);
+                Main.dust[num1].noGravity = true;
+                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                if (Main.dust[num1].position != Projectile.Center)
+                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
+                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.VenomStaff, 0f, -2f, 0, default(Color), .8f);
+                Main.dust[num].noGravity = true;
+                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                if (Main.dust[num].position != Projectile.Center)
+                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+            }
+            int Sound = Main.rand.Next(1, 3);
+            if (Sound == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall3"), Projectile.position);
+            }
+            else
+            {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall4"), Projectile.position);
+            }
+
+
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 		}
 
 

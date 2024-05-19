@@ -25,7 +25,7 @@ namespace Stellamod.Projectiles.Swords
 
         //Swing Stats
         public float SwingDistance;
-        public int SwingTime = 10 * Swing_Speed_Multiplier;
+        public int SwingTime = 90 * Swing_Speed_Multiplier;
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
@@ -56,7 +56,7 @@ namespace Stellamod.Projectiles.Swords
             Projectile.usesLocalNPCImmunity = true;
 
             //Multiplying by the thing so it's still 10 ticks
-            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+            Projectile.localNPCHitCooldown = 90 * Swing_Speed_Multiplier;
         }
 
         public override void AI()
@@ -165,13 +165,13 @@ namespace Stellamod.Projectiles.Swords
             TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);*/
             if (SwordSlash == null)
             {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(155, 255, 20, 50) * (1f - p));
+                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass, (p) => new Vector2(70f), (p) => new Color(155, 255, 20, 50) * (1f - p));
                 SwordSlash.drawOffset = Projectile.Size / 1.8f;
             }
 
             if (SwordSlash2 == null)
             {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(50f), (p) => new Color(255, 255, 255, 4) * (1f - p));
+                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass, (p) => new Vector2(70f), (p) => new Color(255, 255, 255, 4) * (1f - p));
                 SwordSlash2.drawOffset = Projectile.Size / 1.9f;
             }
 
