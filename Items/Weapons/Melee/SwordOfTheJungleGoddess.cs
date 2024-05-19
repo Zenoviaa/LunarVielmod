@@ -66,7 +66,7 @@ namespace Stellamod.Items.Weapons.Melee
         }
 
         Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
-        return true; // return false to prevent original projectile from being shot
+        return false; // return false to prevent original projectile from being shot
     }
 
 }
