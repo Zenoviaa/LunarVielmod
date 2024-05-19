@@ -193,6 +193,15 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             jugglerHit.Volume = 0.5f;
             SoundEngine.PlaySound(jugglerHit, Projectile.position);
 
+            if (Juggler.CatchCount >= 5)
+            {
+                SoundStyle jugglerHitMax = SoundRegistry.JugglerHit;
+                pitch = MathHelper.Clamp(catchCount * 0.02f, 0f, 1f);
+                jugglerHitMax.Pitch = pitch;
+                jugglerHitMax.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(jugglerHitMax, Projectile.position);
+            }
+
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit2"), Projectile.position);
             for (int i = 0; i < 4; i++)
             {

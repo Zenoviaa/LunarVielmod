@@ -7384,3 +7384,14 @@ Irrasprayer: {
 	DisplayName: Irrasprayer
 	Tooltip: Extinguish thy flame with a flamethrower!
 }
+
+CinderBomber: {
+	DisplayName: Cinder Bomber
+	Tooltip:
+		'''
+		After hitting an enemy, the ball bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		After a combo of x5, the ball catches fire and begins exploding
+		Stacks infinitely
+		'''
+}

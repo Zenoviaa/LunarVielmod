@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -36,6 +37,7 @@ namespace Stellamod.Projectiles.Thrown
                 //Effects
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             }
+
 
             Projectile.velocity.Y += 0.3f;
             Projectile.rotation = Projectile.velocity.ToRotation();
