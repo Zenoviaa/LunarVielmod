@@ -109,9 +109,9 @@ namespace Stellamod.Projectiles.Swords
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
-                Color.RoyalBlue.R,
-                Color.RoyalBlue.G,
-                Color.RoyalBlue.B, 0);
+                Color.OrangeRed.R,
+                Color.OrangeRed.G,
+                Color.OrangeRed.B, 0);
         }
       
         private float LifeTime = 300;
@@ -157,7 +157,7 @@ namespace Stellamod.Projectiles.Swords
             shader.UseSaturation(speed);
 
             //Color
-            shader.UseColor(new Color(Color.OrangeRed.R, Color.OrangeRed.G, Color.OrangeRed.B, 0));
+            shader.UseColor(new Color(Color.ForestGreen.R, Color.ForestGreen.G, Color.ForestGreen.B, 0));
 
             //Texture itself
             shader.UseImage1(textureAsset);
