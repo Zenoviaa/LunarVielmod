@@ -7389,9 +7389,21 @@ CinderBomber: {
 	DisplayName: Cinder Bomber
 	Tooltip:
 		'''
-		After hitting an enemy, the ball bounces off
+		After hitting an enemy, the bomb bounces off
 		Catch the ball to gain a damage bonus to your next throw!
-		After a combo of x5, the ball catches fire and begins exploding
+		After a combo of x5, the bomb catches fire and begins exploding
+		Stacks infinitely
+		'''
+}
+
+LilStinger: {
+	DisplayName: Lil' Stinger
+	Tooltip:
+		'''
+		After hitting an enemy, the bee bounces off
+		Catch the ball to gain a damage bonus to your next throw!
+		After a combo of x5, the bee begins exploding!
+		Has strong homing
 		Stacks infinitely
 		'''
 }

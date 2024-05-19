@@ -1,4 +1,6 @@
 ﻿using Stellamod.Items.Consumables;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -29,6 +31,10 @@ namespace Stellamod.NPCs.Global
                         itemLoot.Remove(rule);
                     }
                 }
+
+                LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+                notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LilStinger>(), chanceDenominator: 4));
+                itemLoot.Add(notExpertRule);
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TempleKeyMold>()));
             }
         }
