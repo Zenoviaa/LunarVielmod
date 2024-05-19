@@ -6,7 +6,7 @@ namespace Stellamod.Helpers
     {
         private static string Path => "Stellamod/Assets/Sounds/";
         public static SoundStyle JugglerHit => new SoundStyle($"{Path}JugglerHit");
-
+        public static SoundStyle JugglerHitMax => new SoundStyle($"{Path}JugglerHitMax");
 
 
         //Niivi Sounds

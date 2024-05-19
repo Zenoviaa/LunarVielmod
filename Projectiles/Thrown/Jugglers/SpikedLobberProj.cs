@@ -169,6 +169,16 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
             jugglerHit.Volume = 0.5f;
             SoundEngine.PlaySound(jugglerHit, Projectile.position);
 
+
+            if (Juggler.CatchCount >= 5)
+            {
+                SoundStyle jugglerHitMax = SoundRegistry.JugglerHitMax;
+                pitch = MathHelper.Clamp(catchCount * 0.02f, 0f, 1f);
+                jugglerHitMax.Pitch = pitch;
+                jugglerHitMax.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(jugglerHitMax, Projectile.position);
+            }
+
             for (int i = 0; i < 14; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightGray, 1f).noGravity = true;

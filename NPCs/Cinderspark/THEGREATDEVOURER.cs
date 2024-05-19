@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.DropRules;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -187,6 +189,11 @@ namespace Stellamod.NPCs.Cinderspark
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Cinderscrap>(), chanceDenominator: 4, minimumDropped: 2, maximumDropped: 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MoltenScrap>(), chanceDenominator: 2, minimumDropped: 1, maximumDropped: 3));
+           
+            LeadingConditionRule hardmodeDropRule = new LeadingConditionRule(new HardmodeDropRule());
+            hardmodeDropRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CinderBomber>(), 
+                chanceDenominator: 3));
+            npcLoot.Add(hardmodeDropRule);
         }
     }
 }
