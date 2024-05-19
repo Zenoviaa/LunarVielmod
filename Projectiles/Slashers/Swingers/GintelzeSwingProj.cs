@@ -34,7 +34,7 @@ namespace Stellamod.Projectiles.Test
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 48;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 68;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 4;
         }
 
@@ -124,7 +124,7 @@ namespace Stellamod.Projectiles.Test
 
         
 
-            Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/SmooothTrail").Value;
+            Texture2D tipSlashTexture = ModContent.Request<Texture2D>("Stellamod/Effects/Primitives/Trails/TerraTrail").Value;
             if (SwordSlash == null)
             {
                 SwordSlash = new TrailRenderer(tipSlashTexture, TrailRenderer.DefaultPass, 
