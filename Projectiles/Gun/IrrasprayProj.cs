@@ -64,9 +64,9 @@ namespace Stellamod.Projectiles.Gun
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(
-                Color.RoyalBlue.R,
-                Color.RoyalBlue.G,
-                Color.RoyalBlue.B, 0);
+                Color.DarkOrange.R,
+                Color.DarkOrange.G,
+                Color.DarkOrange.B, 0);
         }
 
         public override bool PreDraw(ref Color lightColor)
