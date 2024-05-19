@@ -2,13 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Accessories.Wings;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Igniters;
-using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.DaedusRework;
@@ -18,12 +16,15 @@ using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles;
+using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
+using Stellamod.UI.Dialogue;
 using Stellamod.UI.Systems;
+using Stellamod.Utilis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,39 +33,33 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 {
-    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
-    public class GothiviaIyx : ModNPC
+    // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
+    
+
+    public class GothiviaDeath : ModNPC
     {
         private bool _resetTimers;
         public enum ActionState
         {
 
 
-        
-            
-            CallHavoc,
-            StartIrr,
-            Blastout,
-            FallingBlast,
-            HideIrr,
-            STARTNODES,
-            STARTAXE,
-            STARTSPIKE,
-            STARTLASER,
-            ReallyStartIrr,
-            LandIrr,
+
+
+
 
 
 
             //--------------------------------------------
             ReallyStartGoth,
+            IdleGoth,
             StartGoth,
             Dichotamy,
             Archery,
@@ -88,7 +83,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
         }
-        private ActionState _state = ActionState.ReallyStartGoth;
+        private ActionState _state = ActionState.IdleGoth;
         // Current state
         public int Jumpin = 0;
         public ActionState State
@@ -147,7 +142,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Spawner = reader.ReadSingle();
             _resetTimers = reader.ReadBoolean();
         }
-
+    
+        public int NumberOfTimesTalkedTo = 0;
+        public const string ShopName = "Shop";
+        public const string ShopName2 = "New Shop";
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Verlia of The Moon");
@@ -156,38 +154,33 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPCID.Sets.TrailCacheLength[NPC.type] = 32;
             NPCID.Sets.TrailingMode[NPC.type] = 3;
 
+            NPCID.Sets.ActsLikeTownNPC[Type] = true;
+
             // Add this in for bosses that have a summon item, requires corresponding code in the item (See MinionBossSummonItem.cs)
             // Automatically group with other bosses
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new int[] {
-                    BuffID.Poisoned,
+            NPCID.Sets.SpawnsWithCustomName[Type] = true;
 
-                    BuffID.Confused // Most NPCs have this
-				}
-            };
-            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
-
+            NPCID.Sets.NoTownNPCHappiness[Type] = true;
             // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
-            drawModifiers.CustomTexturePath = "Stellamod/NPCs/Bosses/GothiviaTheSun/GOS/GothiviaBestiary";
-            drawModifiers.PortraitScale = 0.8f; // Portrait refers to the full picture when clicking on the icon in the bestiary
-            drawModifiers.PortraitPositionYOverride = 0f;
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+                Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
+                              // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
+                              // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+            };
+
+
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
-     
+
         private Vector2 FigureEightStartCenter;
         public override void SetDefaults()
         {
             NPC.Size = new Vector2(44, 80);
             NPC.damage = 1;
-            NPC.defense = 120;
+            NPC.friendly = true;
+            NPC.defense = 110;
             NPC.lifeMax = 240000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
@@ -195,10 +188,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.value = Item.buyPrice(gold: 99);
-            NPC.boss = true;
-            NPC.npcSlots = 10f;
             NPC.scale = 1f;
-            NPC.BossBar = ModContent.GetInstance<GothiviaBossBar>();
+            NPC.knockBackResist = 0.5f;
+            NPC.dontTakeDamage = true;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+
 
             // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
@@ -217,12 +211,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Gothivia");
             }
         }
-        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        public override bool CheckActive()
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * balance);
+            return false;
         }
 
-  
+        public override bool CanChat()
+        {
+            return true;
+        }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -230,31 +227,25 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.VortexPillar,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundJungle,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Empress of the Green sun and nature. Everything empowering and living falls under her reign."),
+				new FlavorTextBestiaryInfoElement("You sense a strange godly prescence coming from Gothivia"),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Gothivia, One of the Green Sun")
+				new FlavorTextBestiaryInfoElement("???")
             });
         }
+
+       
 
         bool axed = false;
         bool p2 = false;
 
         public float squish = 0f;
         private int _wingFrameCounter;
-        private int _wingFrameTick;
-
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            for (int k = 0; k < 20; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.CoralTorch, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
-        }
+        private int _wingFrameTick;    
 
         float ChargeTrailOpacity;
         bool DrawChargeTrail;
@@ -273,7 +264,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (ChargeTrailOpacity >= 1)
                     ChargeTrailOpacity = 1;
             }
-           
+
             Color color = Color.Lerp(Color.Turquoise, Color.RoyalBlue, completionRatio);
 
             if (TrailedOrange)
@@ -394,69 +385,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             switch (State)
             {
-                
-
-                
-
-            
-
-
-
-
-                case ActionState.ReallyStartIrr:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.StartIrr:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.HideIrr:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.Blastout:
-                    rect = new(0, 18 * 146, 206, 5 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.FallingBlast:
-                    rect = new(0, 24 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.STARTNODES:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.STARTAXE:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.STARTLASER:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.STARTSPIKE:
-                    rect = new(0, 32 * 146, 206, 1 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.CallHavoc:
-                    rect = new(0, 1 * 146, 206, 17 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 4, 17, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
-
-                case ActionState.LandIrr:
-                    rect = new(0, 26 * 146, 206, 5 * 146);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 8, 5, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
-                    break;
 
 
 
@@ -466,7 +394,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-
+               
                 //------------------------ Gothivia
 
 
@@ -474,14 +402,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.ReallyStartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
 
 
+                case ActionState.IdleGoth:
+                    rect = new(0, 16 * 96, 166, 7 * 96);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    break;
+
+
                 case ActionState.StartGoth:
                     rect = new(0, 16 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 7, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Desperation:
@@ -541,12 +475,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 case ActionState.BoostBounce3:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 5, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.Kick:
                     rect = new(0, 38 * 96, 166, 7 * 96);
-                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter,  ref frameTick, 25, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
+                    spriteBatch.Draw(texture, NPC.Center - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 25, 7, rect), drawColor, NPC.rotation, NPC.frame.Size() / 2, 2f, effects, 0f);
                     break;
 
                 case ActionState.StandCuss:
@@ -582,9 +516,127 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         int Arrows = 0;
         public float Spawner = 0;
 
+        public bool DM = false;
         public bool Elect = false;
         public override void AI()
         {
+
+            NPC.CheckActive();
+
+            timer++;
+            if (timer == 1)
+            {
+                DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
+
+                //2. Create a new instance of your dialogue
+                GothiviaBeatDialogue exampleDialogue = new GothiviaBeatDialogue();
+
+                //3. Start it
+                dialogueSystem.StartDialogue(exampleDialogue);
+
+                Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 4f);
+                CombatText.NewText(NPC.getRect(), Color.Gold, "Stoppp~", true, false);
+            }
+
+
+
+            Player player = Main.player[NPC.target];
+            bool expertMode = Main.expertMode;
+            if (!NPC.HasPlayerTarget)
+            {
+                NPC.TargetClosest(false);
+                Player player1 = Main.player[NPC.target];
+
+                if (!NPC.HasPlayerTarget || NPC.Distance(player1.Center) > 3000f)
+                {
+                    return;
+                }
+            }
+            Player playerT = Main.player[NPC.target];
+            int distance = (int)(NPC.Center - playerT.Center).Length();
+
+            if (distance > 3000f || playerT.dead)
+            {
+                NPC.ai[0] = 0;
+                NPC.ai[3]++;
+                NPC.position.Y = player.Center.Y + -800;
+                if (NPC.ai[3] >= 80)
+                {
+                    NPC.active = false;
+                }
+            }
+
+
+            if (DM)
+            {
+                if (NPC.ai[2] == 0)
+                {
+                    NPC.ai[2] = 10;
+                }
+                p2 = NPC.life < NPC.lifeMax * 0.5f;
+                Main.GraveyardVisualIntensity = 0.4f;
+                if (NPC.ai[2] == 10)
+                {
+                    if (NPC.alpha >= 0)
+                    {
+                        NPC.alpha = 0;
+                    }
+                    NPC.ai[0]++;
+                    if (Main.netMode != NetmodeID.Server)
+                    {
+                        Dust dust = Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, DustID.CoralTorch);
+                        dust.velocity *= -1f;
+                        dust.scale *= .8f;
+                        dust.noGravity = true;
+                        Vector2 vector2_1 = new Vector2(Main.rand.Next(-80, 81), Main.rand.Next(-80, 81));
+                        vector2_1.Normalize();
+                        Vector2 vector2_2 = vector2_1 * (Main.rand.Next(50, 100) * 0.04f);
+                        dust.velocity = vector2_2;
+                        vector2_2.Normalize();
+                        Vector2 vector2_3 = vector2_2 * 34f;
+                        dust.position = NPC.Center - vector2_3;
+                        NPC.netUpdate = true;
+                    }
+                    if (NPC.ai[0] == 110)
+                    {
+                        CombatText.NewText(NPC.getRect(), Color.Gold, "I'm cant-", true, false);
+                        var EntitySource = NPC.GetSource_Death();
+                        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 90f);
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer4"), NPC.position);
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldCoin, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = true;
+                        }
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.CoralTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                        }
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 4f).noGravity = false;
+                        }
+                        for (int j = 0; j < 26; j++)
+                        {
+
+                            int a = Gore.NewGore(EntitySource, new Vector2(NPC.Center.X + Main.rand.Next(-10, 10), NPC.Center.Y + Main.rand.Next(-10, 10)), NPC.velocity, 911);
+                            Main.gore[a].timeLeft = 20;
+                            Main.gore[a].scale = Main.rand.NextFloat(.5f, 1f);
+                        }
+                        for (int i = 0; i < 40; i++)
+                        {
+                            Dust.NewDustPerfect(base.NPC.Center, DustID.GoldFlame, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
+                        }
+
+                      //  int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
+                      //  Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
+                       // Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
+
+                        NPC.active = false;
+                    }
+                }
+
+            }
+
             p2 = NPC.life < NPC.lifeMax * 0.5f;
             bee--;
             //Main.LocalPlayer.GetModPlayer<MyPlayer>().FocusOn(base.NPC.Center, 10f);
@@ -598,7 +650,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-           
+
 
 
 
@@ -612,25 +664,21 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
             NPC.spriteDirection = NPC.direction;
 
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
-                {               // If the targeted player is dead, flee
-                    NPC.velocity.Y += 3f;
-                    NPC.noTileCollide = true;
-                    NPC.noGravity = true;
-                    // This method makes it so when the boss is in "despawn range" (outside of the screen), it despawns in 10 ticks
-                    NPC.EncourageDespawn(1);
-                }
-            }
-
             FinishResetTimers();
             switch (State)
             {
                 //Gothivia Stuff here
 
-
+                case ActionState.IdleGoth:
+                    NPC.damage = 0;
+                    counter++;
+                    FourQ = true;
+                    TrailedOrange = false;
+                    ThreeQ = false;
+                    NoWings = false;
+                    NPC.noGravity = true;
+                    NPC.aiStyle = -1;
+                    break;
 
                 case ActionState.ReallyStartGoth:
                     NPC.damage = 0;
@@ -810,7 +858,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     DrawChargeTrail = true;
                     NoWings = true;
                     NPC.noGravity = false;
-               
+
                     BonfireGreen();
                     NPC.aiStyle = -1;
                     break;
@@ -822,106 +870,15 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     FourQ = false;
                     DrawChargeTrail = true;
                     NoWings = true;
-                   
+
                     NPC.noGravity = false;
                     BonfireOrange();
                     NPC.aiStyle = -1;
                     break;
 
-                //----------- Irradia stuff under
+              
 
-                case ActionState.ReallyStartIrr:
-                    NPC.damage = 0;
-                    counter++;
-
-                    ReallyIdleIrr();
-                    NPC.aiStyle = -1;
-                    break;
-
-
-                case ActionState.StartIrr:
-                    NPC.damage = 0;
-                    counter++;
-
-                    StartIrr();
-                    NPC.aiStyle = -1;
-                    break;
-
-
-                case ActionState.Blastout:
-                    NPC.damage = 0;
-                    counter++;
-
-                    Blastout();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.CallHavoc:
-                    NPC.damage = 0;
-                    counter++;
-
-                    CallingHavoc();
-                    NPC.aiStyle = -1;
-                    break;
-
-
-                case ActionState.FallingBlast:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.velocity.Y *= 1.01f;
-                    NPC.velocity.X *= 0.96f;
-                    NPC.aiStyle = -1;
-                    NPC.noTileCollide = false;
-                    if (NPC.velocity.Y == 0)
-                    {
-
-                        State = ActionState.LandIrr;
-                        frameCounter = 0;
-                        frameTick = 0;
-                    }
-                    // You dont need to do anything here
-                    break;
-
-
-                case ActionState.LandIrr:
-                    NPC.damage = 0;
-                    counter++;
-
-                    LandIrr();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.STARTLASER:
-                    NPC.damage = 0;
-                    counter++;
-
-                    LASERIRR();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.STARTAXE:
-                    NPC.damage = 0;
-                    counter++;
-
-                    AXEIRR();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.STARTSPIKE:
-                    NPC.damage = 0;
-                    counter++;
-
-                    SPIKEIRR();
-                    NPC.aiStyle = -1;
-                    break;
-
-                case ActionState.STARTNODES:
-                    NPC.damage = 0;
-                    counter++;
-
-                    ELECTRICIRR();
-                    NPC.aiStyle = -1;
-                    break;
+               
             }
         }
 
@@ -962,7 +919,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             Player target = Main.player[NPC.target];
             if (timer == 1 && NPC.HasValidTarget)
             {
-               
+
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(312, 0);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
@@ -1028,17 +985,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-             
+
             }
-            if (timer < 80)
+            if (timer < 50)
             {
                 NPC.damage = 0;
             }
-        
-            if (timer < 80 && NPC.HasValidTarget)
+
+            if (timer < 50 && NPC.HasValidTarget)
             {
 
-               
+
                 Vector2 targetCenter = target.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
                 NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
@@ -1048,12 +1005,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
             }
-            if (timer == 120)
+            if (timer == 90)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2") { Pitch = Main.rand.NextFloat(-3f, 3f) }, NPC.Center);
             }
 
-            if (timer > 120 && timer < 500)
+            if (timer > 90 && timer < 470)
             {
                 NPC.damage = 1600;
                 NPC.rotation = NPC.velocity.ToRotation();
@@ -1077,8 +1034,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
                 NPC.velocity = targetVelocity;
             }
-       
-            if (timer == 540)
+
+            if (timer == 510)
             {
                 NPC.velocity *= 0.2f;
                 ResetTimers();
@@ -1116,7 +1073,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
 
-            
+
                 if (StellaMultiplayer.IsHost)
                 {
                     int distanceY = Main.rand.Next(-900, -600);
@@ -1128,9 +1085,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 }
             }
             float speed = 20;
-          
-             
-          
+
+
+
 
             if (timer > 110)
             {
@@ -1159,7 +1116,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 ShakeModSystem.Shake = 3;
             }
-     
+
 
             if (timer > 110)
             {
@@ -1322,12 +1279,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
 
-               //     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+                    //     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
                 }
 
             }
-          
+
             if (timer < 50 && NPC.HasValidTarget)
             {
                 Vector2 targetCenter = target.Center;
@@ -1367,7 +1324,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 }
-                
+
 
             }
 
@@ -1408,11 +1365,11 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             timer++;
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
-           
+
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 26f;
+                speed = 20f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1481,7 +1438,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             float speed = 1;
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 30f;
+                speed = 24f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
@@ -1533,7 +1490,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     NPC.velocity = dashDirection;
                 }
 
-               
+
             }
 
 
@@ -1592,7 +1549,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
         public int Wanger = 0;
         public int Wtimes = 0;
-        
+
         private void Wangler()
         {
             NPC.spriteDirection = NPC.direction;
@@ -1620,18 +1577,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                         break;
                 }
 
-              
+
 
             }
             float speed = 1;
 
             if (NPC.life < NPC.lifeMax / 2)
             {
-                speed = 26f;
+                speed = 24f;
             }
             if (NPC.life > NPC.lifeMax / 2)
             {
-                speed = 23f;
+                speed = 22f;
             }
 
 
@@ -1756,7 +1713,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
-                  
+
                 }
             }
 
@@ -1770,7 +1727,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                     if (StellaMultiplayer.IsHost)
                     {
-                      
+
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X, direction.Y, ModContent.ProjectileType<WingRazor>(), 700, 0f, Main.myPlayer, 0f, ai1);
                     }
                 }
@@ -1799,10 +1756,10 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
 
 
-       
-           
-    
-            
+
+
+
+
 
             if (timer > 50 && timer < 56)
             {
@@ -1829,18 +1786,41 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 150)
             {
-                if (NPC.life < NPC.lifeMax / 2)
+                if (Wtimes < 4)
                 {
-                    if (Wtimes < 8)
-                    {
 
-                        Wtimes += 1;
-                        timer = 0;
+                    Wtimes += 1;
+                    timer = 0;
+                }
+
+                if (Wtimes >= 4)
+                {
+                    ResetTimers();
+                    if (NPC.life > NPC.lifeMax / 2)
+                    {
+                        switch (Main.rand.Next(3))
+                        {
+                            case 0:
+                                State = ActionState.BoostBounce1;
+                                break;
+
+                            case 1:
+                                State = ActionState.BoostBounce1;
+                                //BonfireRight and Left
+                                break;
+
+                            case 2:
+                                State = ActionState.BoostBounce1;
+                                break;
+
+
+                        }
+
                     }
 
-                    if (Wtimes >= 8)
+
+                    if (NPC.life < NPC.lifeMax / 2)
                     {
-                        ResetTimers();
                         switch (Main.rand.Next(2))
                         {
                             case 0:
@@ -1856,50 +1836,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                         }
+
                     }
+
+
+
                 }
-
-
-
-
-                if (NPC.life > NPC.lifeMax / 2)
-                {
-                    if (Wtimes < 4)
-                    {
-
-                        Wtimes += 1;
-                        timer = 0;
-                    }
-
-                    if (Wtimes >= 4)
-                    {
-                        ResetTimers();
-                        
-                            switch (Main.rand.Next(3))
-                            {
-                                case 0:
-                                    State = ActionState.BoostBounce1;
-                                    break;
-
-                                case 1:
-                                    State = ActionState.BoostBounce1;
-                                    //BonfireRight and Left
-                                    break;
-
-                                case 2:
-                                    State = ActionState.BoostBounce1;
-                                    break;
-
-
-                            }
-
-                        
-                    }
-                 }
-
-               
-
-               
 
                 NPC.velocity *= 0.3f;
 
@@ -1915,7 +1857,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
                 ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                
+
 
                 if (StellaMultiplayer.IsHost)
                 {
@@ -1940,7 +1882,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 ShakeModSystem.Shake = 5;
 
-               
+
 
                 //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 
@@ -2029,7 +1971,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
         }
 
 
-  
+
         private void GreenSuns()
         {
             NPC.spriteDirection = NPC.direction;
@@ -2055,22 +1997,22 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     if (StellaMultiplayer.IsHost)
                     {
                         NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Sun2>());
-                      
+
                     }
 
                 }
 
-            
+
             }
-       
+
 
 
             if (timer < 560 && timer > 4)
             {
-                
-                    circleDistance = 415;
-                    movementSpeed = 10;
-                    circleSpeed = 2;
+
+                circleDistance = 415;
+                movementSpeed = 10;
+                circleSpeed = 2;
 
                 _circleDegrees += circleSpeed;
                 float circleRadians = MathHelper.ToRadians(_circleDegrees);
@@ -2083,7 +2025,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, movementSpeed);
 
             }
-      
+
 
 
             if (timer == 590)
@@ -2136,7 +2078,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
             }
-        
+
 
 
             if (timer < 560 && timer > 4)
@@ -2219,13 +2161,13 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DUAL2") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
 
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
-                   
+
                     float numberProjectiles = 3;
                     float rotation = MathHelper.ToRadians(20);
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 42, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorBurns>(), 30, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -2233,7 +2175,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     for (int i = 0; i < 1; i++)
                     {
                         Vector2 perturbedSpeed = new Vector2(direction.X, direction.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numberProjectiles - 1))) * 1f; // This defines the projectile roatation and speed. .4f == projectile speed
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 42, 1, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X * 3, perturbedSpeed.Y * 6, ModContent.ProjectileType<RazorSuns>(), 30, 1, Main.myPlayer, 0, 0);
 
 
 
@@ -2241,12 +2183,12 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
                 }
-              
-                        //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
-                    
 
-                
-               
+                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+
+
+
+
             }
 
 
@@ -2316,7 +2258,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 170)
             {
                 movementSpeed = 25;
-             
+
             }
 
             if (timer == 210)
@@ -2329,7 +2271,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 movementSpeed = 12;
                 circleSpeed = 2;
-                
+
             }
 
 
@@ -2397,7 +2339,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
                     float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<GothCircleShrink>(), 24, 0f, Main.myPlayer, 0f, ai1);
-                   
+
                 }
 
                 switch (Main.rand.Next(2))
@@ -2437,9 +2379,9 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             }
 
-                if (timer == 154)
-                {
-                    ShakeModSystem.Shake = 5;
+            if (timer == 154)
+            {
+                ShakeModSystem.Shake = 5;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -2451,46 +2393,46 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 }
                 switch (Main.rand.Next(2))
-                    {
-                        case 0:
-                            for (int i = 0; i < 1; i++)
+                {
+                    case 0:
+                        for (int i = 0; i < 1; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
                             {
-                                if (StellaMultiplayer.IsHost)
-                                {
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
-
-                                }
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothSunBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
                             }
-                            break;
 
-                        case 1:
-                            for (int i = 0; i < 1; i++)
+                        }
+                        break;
+
+                    case 1:
+                        for (int i = 0; i < 1; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
                             {
-                                if (StellaMultiplayer.IsHost)
-                                {
-                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
-
-                                }
-
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X * 3, direction.Y * 3, ModContent.ProjectileType<GothFireBlowtorchBlastProj>(), 600, 1, Main.myPlayer, 0, 0);
 
                             }
-                            break;
+
+
+                        }
+                        break;
 
 
 
-
-
-
-
-                    }
-
-                    //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
 
 
 
 
                 }
+
+                //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/FenixSlash1"));
+
+
+
+
+            }
 
             if (timer == 248)
             {
@@ -2552,16 +2494,16 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
 
 
-                if(Arrows < 3)
+                if (Arrows < 3)
                 {
-                    Arrows+= 1;
+                    Arrows += 1;
                     timer = 0;
                 }
                 if (Arrows >= 3)
                 {
 
-                   
-                   
+
+
 
                     if (NPC.life > NPC.lifeMax / 2)
                     {
@@ -2629,622 +2571,20 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
 
 
-        // ----------------- Irradia AI
-        private void ReallyIdleIrr()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 1)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-
-                }
-            }
-
-
-
-            if (timer == 2)
-            {
-                ResetTimers();
-                State = ActionState.StartIrr;
-            }
-        }
-
-        private void StartIrr()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-
-            if (timer == 50)
-            {
-                ResetTimers();
-                State = ActionState.CallHavoc;
-            }
-        }
-
-        private void CallingHavoc()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-            Player player = Main.player[NPC.target];
-            if (timer == 1)
-            {
-                if (Elect)
-                {
-                    if (StellaMultiplayer.IsHost)
-                    {
-                        float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                        float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
-                        float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), player.position.X, player.position.Y, speedXa * 0, speedYa * 0,
-                            ModContent.ProjectileType<IrradiaElectricBoxConnectorProj>(), 24, 0f, Owner: Main.myPlayer);
-
-                    }
-
-                    Elect = false;
-                }
-
-
-
-               
-            }
-
-
-            if (timer == 68)
-            {
-                ResetTimers();
-                State = ActionState.Blastout;
-            }
-        }
-
-        private void Blastout()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-
-            if (timer == 45)
-            {
-                if (Jumpin < 1)
-                {
-                    switch (Main.rand.Next(6))
-                    {
-                        case 0:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X -= 18;
-
-                            Jumpin = 2;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 18;
-
-
-                            Jumpin = 1;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X -= 18;
-
-                            Jumpin = 3;
-
-                            break;
-
-
-                        case 3:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X += 18;
-
-                            Jumpin = 5;
-                            break;
-
-                        case 4:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 18;
-
-
-                            Jumpin = 4;
-                            break;
-
-                        case 5:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X += 18;
-
-                            Jumpin = 6;
-
-                            break;
-                    }
-
-
-
-                }
-
-
-
-
-
-                if (Jumpin == 1)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y -= 6.0f;
-                            NPC.velocity.X += 20;
-
-                            Jumpin = 2;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X += 18;
-
-
-                            Jumpin = 0;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y -= 10.0f;
-                            NPC.velocity.X += 30;
-
-                            Jumpin = 6;
-
-                            break;
-                    }
-
-
-
-                }
-
-                if (Jumpin == 2)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X += 30;
-
-                            Jumpin = 1;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y += 6.0f;
-                            NPC.velocity.X += 18;
-
-
-                            Jumpin = 0;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y += 1.0f;
-                            NPC.velocity.X += 30;
-
-                            Jumpin = 4;
-
-                            break;
-                    }
-
-
-
-                }
-
-                if (Jumpin == 3)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X += 20;
-
-                            Jumpin = 1;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y -= 2f;
-                            NPC.velocity.X += 30;
-
-
-                            Jumpin = 6;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X += 30;
-
-                            Jumpin = 5;
-
-                            break;
-                    }
-
-
-
-                }
-
-                if (Jumpin == 4)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y -= 12.0f;
-                            NPC.velocity.X -= 0;
-
-                            Jumpin = 5;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y -= 5.0f;
-                            NPC.velocity.X -= 30;
-
-
-                            Jumpin = 0;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y -= 20.0f;
-                            NPC.velocity.X -= 30;
-
-                            Jumpin = 3;
-
-                            break;
-                    }
-
-
-
-                }
-
-                if (Jumpin == 5)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y += 9.0f;
-                            NPC.velocity.X -= 0;
-
-                            Jumpin = 4;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y += 12.0f;
-                            NPC.velocity.X -= 20;
-
-
-                            Jumpin = 0;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y += 4.0f;
-                            NPC.velocity.X -= 30;
-
-                            Jumpin = 1;
-
-                            break;
-                    }
-
-
-
-                }
-
-
-
-                if (Jumpin == 6)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            NPC.velocity.Y += 18.0f;
-                            NPC.velocity.X -= 0;
-
-                            Jumpin = 4;
-                            break;
-
-                        case 1:
-                            NPC.velocity.Y += 0f;
-                            NPC.velocity.X -= 30;
-
-
-                            Jumpin = 3;
-                            break;
-
-                        case 2:
-                            NPC.velocity.Y += 3.0f;
-                            NPC.velocity.X -= 30;
-
-                            Jumpin = 2;
-
-                            break;
-                    }
-
-
-
-                }
-
-
-
-
-
-
-
-
-            }
-
-
-            if (timer == 50)
-            {
-                ResetTimers();
-                State = ActionState.FallingBlast;
-            }
-        }
-
-        private void LandIrr()
-        {
-            NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
-            // Maybe a land effect or projectile?
-            // 
-            float ai1 = NPC.whoAmI;
-            NPC.velocity.X *= 0;
-            timer++;
-            if (timer == 49)
-            {
-
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
-                    float speedYb = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXb, NPC.position.Y - 250, speedXb - 2 * 2, speedYb - 2 * 2,
-                        ModContent.ProjectileType<IrradiaBuilds>(), 1, 0f, Main.myPlayer, 0f, ai1);
-
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BuildingSomething"), NPC.position);
-                }
-
-            }
-
-
-            if (timer == 50)
-            {
-
-                switch (Main.rand.Next(6))
-                {
-                    case 0:
-                        State = ActionState.STARTAXE;
-                        break;
-
-                    case 1:
-                        State = ActionState.STARTLASER;
-                        break;
-
-                    case 2:
-                        State = ActionState.STARTNODES;
-
-                        break;
-
-                    case 3:
-                        State = ActionState.STARTSPIKE;
-
-                        break;
-
-                    case 4:
-                        State = ActionState.STARTNODES;
-
-                        break;
-
-                    case 5:
-                        State = ActionState.STARTSPIKE;
-
-                        break;
-                }
-                ResetTimers();
-
-            }
-        }
-
-
-        private void LASERIRR()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-            if (timer == 60)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.3f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 39, 0f, Owner: Main.myPlayer);
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXb * 0.3f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaLaserBoxProj>(), 39, 0f, Owner: Main.myPlayer);
-                }
-            }
-
-
-
-
-
-
-            if (timer == 240)
-            {
-
-
-                ResetTimers();
-                State = ActionState.StartIrr;
-
-            }
-        }
-
-
-        private void AXEIRR()
-        {
-            NPC.spriteDirection = NPC.direction;
-            timer++;
-            if (timer == 1)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.position.X + speedXa, NPC.position.Y + speedYa, speedXa * 0.5f, speedYa - 1 * 0,
-                        ModContent.ProjectileType<IrradiaAxeProj>(), 26, 0f, Owner: Main.myPlayer);
-
-                }
-            }
-
-            if (timer == 420)
-            {
-
-
-                ResetTimers();
-                State = ActionState.StartIrr;
-
-            }
-        }
-        public int recharge = 0;
-        private void SPIKEIRR()
-        {
-            NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
-            timer++;
-
-            recharge++;
-
-            if (recharge == 120)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), player.position.X, player.position.Y, speedXa * 0, speedYa * 0,
-                        ModContent.ProjectileType<Noder>(), 1, 0f, Owner: Main.myPlayer);
-
-                }
-
-                recharge = 0;
-            }
-
-            if (timer == 241)
-            {
-
-                recharge = 0;
-                ResetTimers();
-                State = ActionState.StartIrr;
-
-            }
-        }
-
-
-        private void ELECTRICIRR()
-        {
-            NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
-            timer++;
-
-            recharge++;
-
-            if (recharge == 40)
-            {
-                if (StellaMultiplayer.IsHost)
-                {
-                    float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, -4f);
-                    float speedXa = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(-4f, 4f);
-                    float speedYa = NPC.velocity.Y * Main.rand.Next(0, 0) * 0.0f + Main.rand.Next(0, 0) * 0f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), player.position.X, player.position.Y, speedXa * 0, speedYa * 0,
-                        ModContent.ProjectileType<NoderElectric>(), 1, 0f, Owner: Main.myPlayer);
-
-                }
-
-                recharge = 0;
-            }
-
-
-            Elect = true;
-            if (timer == 240)
-            {
-
-                recharge = 0;
-                ResetTimers();
-                State = ActionState.StartIrr;
-
-            }
-        }
-
 
         
 
 
+
+
+
+
+
+
+
+
+
        
-
-       
-
-        
-
-       
-
-       
-
-
-
-
-
-
-
-
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-            // Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-            //	npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-
-
-
-
-            // ItemDropRule.MasterModeCommonDrop for the relic
-
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedLove>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GothiviaIyxBag>()));
-            // ItemDropRule.MasterModeDropOnAllPlayers for the pet
-            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-            // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
-            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-                ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<Gothinstein>(),
-                ModContent.ItemType<GothinWings>(),
-                ModContent.ItemType<WeddingDay>()));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
-            notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
-
-            // Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
-            // Boss masks are spawned with 1/7 chance
-            //notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MinionBossMask>(), 7));
-
-            // This part is not required for a boss and is just showcasing some advanced stuff you can do with drop rules to control how items spawn
-            // We make 12-15 ExampleItems spawn randomly in all directions, like the lunar pillar fragments. Hereby we need the DropOneByOne rule,
-            // which requires these parameters to be defined
-            //int itemType = ModContent.ItemType<Gambit>();
-            //var parameters = new DropOneByOne.Parameters()
-            //{
-            //	ChanceNumerator = 1,
-            //	ChanceDenominator = 1,
-            //	MinimumStackPerChunkBase = 1,
-            //	MaximumStackPerChunkBase = 1,
-            //	MinimumItemDropsCount = 1,
-            //	MaximumItemDropsCount = 3,
-            //};
-
-            //notExpertRule.OnSuccess(new DropOneByOne(itemType, parameters));
-
-            // Finally add the leading rule
-            npcLoot.Add(notExpertRule);
-        }
         private void FinishResetTimers()
         {
             if (_resetTimers)
@@ -3274,52 +2614,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             {
                 Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
             }
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGothBoss, -1);
-
-
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Spawn"), NPC.position);
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.NPC.Center, 2048f, 128f);
-            var entitySource = NPC.GetSource_FromThis();
-            if (StellaMultiplayer.IsHost)
-            {
-                NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GothiviaDeath>());
-            }
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedIrradiaBoss, -1);
         }
 
-    }
-
-
-    public class GothiviaSkyPlayer : ModPlayer
-    {
-        public override void PostUpdateMiscEffects()
-        {
-            if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
-            {
-                ActivateGothSky();
-
-            }
-            else
-            {
-                DeActivateGothSky();
-            }
-        }
-
-        private void ActivateGothSky()
-        {
-            if (!SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Activate("Stellamod:NaxtrinSky2", targetCenter);
-            }
-        }
-
-        private void DeActivateGothSky()
-        {
-            if (SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Deactivate("Stellamod:NaxtrinSky2", targetCenter);
-            }
-        }
     }
 }

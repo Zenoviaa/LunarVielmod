@@ -75,7 +75,7 @@ namespace Stellamod.NPCs
                 }
 
                 int itemIndex;
-                switch (Main.rand.Next(5))
+                switch (Main.rand.Next(10))
                 {
                     case 0:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Wohooo", true, false);
@@ -101,6 +101,35 @@ namespace Stellamod.NPCs
                     case 4:
                         CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Sooo lucky!", true, false);
                         itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                        break;
+
+                    case 5:
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "WHATTT, you should not be this lucky..", true, false);
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(2, 2));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                        break;
+
+                    case 6:
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Pfffft HAHA, laugh at this user.", true, false);
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 1));
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+                        break;
+
+                    case 7:
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Sometimes, you just have to tie your hair back and get on your knees.", true, false);
+                        break;
+
+                    case 8:
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "Womp womp", true, false);
+                        break;
+
+                    case 9:
+                        CombatText.NewText(NPC.getRect(), Color.YellowGreen, "NOW THIS IS AMAZEBALLS", true, false);
+                        itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(), ModContent.ItemType<GildedBag1>(), Main.rand.Next(0, 5));
                         if (Main.netMode == NetmodeID.MultiplayerClient)
                             NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
                         break;
