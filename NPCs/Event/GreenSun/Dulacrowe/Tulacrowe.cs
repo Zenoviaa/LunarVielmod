@@ -219,7 +219,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.TargetClosest(true);
 
             // Now we check the make sure the target is still valid and within our specified notice range (500)
-            if (Tti > 240)
+            if (Tti > 540)
             {
                 if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 270f)
                 {
