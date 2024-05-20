@@ -79,14 +79,12 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.Player;
-            if (!(player.ZoneTowerSolar || player.ZoneTowerVortex || player.ZoneTowerNebula || player.ZoneTowerStardust && !Main.pumpkinMoon && !Main.snowMoon && EventWorld.GreenSun))
-            {
-                return spawnInfo.Player.ZoneAcid() ? 0.3f : 0f;
-            }
 
 
+            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun && NPC.downedPlantBoss) ? 0.3f : 0f;
 
-            return 0f;
+
+            
         }
 
         public override void AI()
