@@ -36,6 +36,12 @@ namespace Stellamod
                 spawnRate = (int)(spawnRate * 0.1);
                 maxSpawns = (int)(maxSpawns * 4.3f);
             }
+
+            if (NPC.downedPlantBoss)
+            {
+                spawnRate = (int)(spawnRate * 0.4);
+                maxSpawns = (int)(maxSpawns * 2.3f);
+            }
         }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
