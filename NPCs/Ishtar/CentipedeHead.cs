@@ -58,8 +58,8 @@ namespace Stellamod.NPCs.Ishtar
         {
             // Set the segment variance
             // If you want the segment length to be constant, set these two properties to the same value
-            MinSegmentLength = 12;
-            MaxSegmentLength = 36;
+            MinSegmentLength = 36;
+            MaxSegmentLength = 42;
 
             CommonWormInit(this);
         }
