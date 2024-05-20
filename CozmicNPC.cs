@@ -33,8 +33,8 @@ namespace Stellamod
 
             if (EventWorld.GreenSun && player.ZoneAcid())
             {
-                spawnRate = (int)(spawnRate * 0.1);
-                maxSpawns = (int)(maxSpawns * 4.3f);
+                spawnRate = (int)(spawnRate * 0.15);
+                maxSpawns = (int)(maxSpawns * 2.3f);
             }
 
  
