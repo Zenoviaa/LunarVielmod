@@ -7,10 +7,11 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.Summons.Minions
 {
     internal class ClimateIceProj : ModProjectile
     {
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             Projectile.width = 8;
@@ -31,19 +32,22 @@ namespace Stellamod.Projectiles
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
+                if (!npc.active)
+                    continue;
+
                 float between = Vector2.Distance(npc.Center, Projectile.Center);
                 bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
                 bool inRange = between < distanceFromTarget;
-            
-                if (((closest && inRange) || !foundTarget))
+
+                if (closest && inRange || !foundTarget)
                 {
                     foundTarget = true;
-                       distanceFromTarget = between;
+                    distanceFromTarget = between;
                     targetCenter = npc.Center;
                 }
             }
 
-            if(foundTarget)
+            if (foundTarget)
                 Projectile.velocity = VectorHelper.VelocityHomingTo(Projectile.position, Projectile.velocity, targetCenter, 0.5f);
             for (int j = 0; j < 5; j++)
             {
@@ -56,16 +60,15 @@ namespace Stellamod.Projectiles
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
-            int tickDuration = Main.rand.Next(60, 240);
-            target.AddBuff(BuffID.Frozen, tickDuration);
-            target.AddBuff(BuffID.Frostburn, tickDuration);
+            target.AddBuff(BuffID.Frozen, 120);
+            target.AddBuff(BuffID.Frostburn, 120);
         }
 
 
         public override void OnKill(int timeLeft)
         {
             //Explosion
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3"));
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Crysalizer3"), Projectile.position);
 
             int count = Main.rand.Next(10, 30);
             for (int j = 0; j < count; j++)
@@ -75,8 +78,8 @@ namespace Stellamod.Projectiles
             }
 
             //Explosion?
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-                ModContent.ProjectileType<ClimateIceProjExplosion>(), Projectile.damage, Projectile.knockBack);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<ClimateIceProjExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 }

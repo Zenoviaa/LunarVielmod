@@ -2954,7 +2954,12 @@ Venatici: {
 
 IceboundStaff: {
 	DisplayName: Icebound Staff
-	Tooltip: Frozen by the icebound and spirits!
+	Tooltip:
+		'''
+		Summons a winterborn bat to fight for you!
+		Bats consume half a minion slot, and will all swarm the same target
+		Frozen by the icebound and spirits!
+		'''
 }
 
 AurelusDoor: {
@@ -3204,7 +3209,12 @@ Galvinie: {
 
 TheBurningRod: {
 	DisplayName: The Burning Rod
-	Tooltip: They may be innacurate but they get the job done :P
+	Tooltip:
+		'''
+		Summons a lamp to fight for you!
+		Lamps shoot blasts of ichor at enemies
+		They may be innacurate but they get the job done :P
+		'''
 }
 
 AcidicalDirtBlock: {
@@ -7430,5 +7440,14 @@ FlinchMachine: {
 		After a combo of x5, every third hit... hits extra hard!
 		Stacks infinitely
 		What bro threw at me
+		'''
+}
+
+IllurineBrew: {
+	DisplayName: Illurine Brew
+	Tooltip:
+		'''
+		Grants normal gravity while in out space
+		Slightly increases movement speed and acceleration
 		'''
 }

@@ -44,6 +44,7 @@
     <None Remove="Buffs\Dusteffects\VoiddDust.png" />
     <None Remove="Buffs\FlowerPower.png" />
     <None Remove="Buffs\Gintzingwinds.png" />
+    <None Remove="Buffs\IlluriasBlessing.png" />
     <None Remove="Buffs\Irradiation.png" />
     <None Remove="Buffs\Lacerated.png" />
     <None Remove="Buffs\Minions\JacksonPollockMinionBuff.png" />

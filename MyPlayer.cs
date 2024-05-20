@@ -720,7 +720,7 @@ namespace Stellamod
         public static float AuroreanB = 0.5f;
         public override void PostUpdateMiscEffects()
 		{
-
+	
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:GovheilSky", ZoneFable);
 
