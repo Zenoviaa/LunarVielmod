@@ -71,7 +71,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
             NPC.value = 500f; // How many copper coins the NPC will drop when killed.
-            NPC.knockBackResist = 0f;
+            NPC.knockBackResist = 0.2f;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.npcSlots = 4f;
@@ -118,7 +118,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 case ActionState.Idle:
                     NPC.damage = 0;
                     counter++;
-                    NPC.aiStyle = 22;
+                    NPC.aiStyle = 44;
                     Idling();
                     break;
 
@@ -238,8 +238,10 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             timer++;
             if (timer >= 23)
             {
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/AssassinsKnifeHit"), NPC.position);
                 State = ActionState.Summon;
                 ResetTimers();
+
             }
 
             if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 475f)
@@ -261,10 +263,12 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
                 NPC.velocity *= 0f;
+
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GoldPrice2"), NPC.position);
                 switch (Main.rand.Next(4))
                 {
                     case 0:
-
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1"), NPC.position);
                         float numberProjectiles = 20;
                         float rotation = MathHelper.ToRadians(10);
 
@@ -280,6 +284,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
                         break;
                     case 1:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SoftSummon"), NPC.position);
                         if (StellaMultiplayer.IsHost)
                         {
                             float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
@@ -287,6 +292,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         }
                         break;
                     case 2:
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1"), NPC.position);
                         float num = 64;
                         for (float i = 0; i < num; i++)
                         {
@@ -298,7 +304,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         }
                         break;
                     case 3:
-
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RibbonStaffBoom1"), NPC.position);
                         float numberProjectiles2 = 6;
                         float rotation2 = MathHelper.ToRadians(50);
 
