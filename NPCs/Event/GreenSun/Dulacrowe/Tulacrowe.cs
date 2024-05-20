@@ -178,17 +178,6 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
 
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            for (int k = 0; k < NPC.oldPos.Length; k++)
-            {
-                Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-                Color color = NPC.GetAlpha(Color.Lerp(new Color(9, 228, 11), new Color(9, 226, 58), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 
             return false;
@@ -259,7 +248,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     case 0:
                         
                         float numberProjectiles = 20;
-                        float rotation = MathHelper.ToRadians(5);
+                        float rotation = MathHelper.ToRadians(10);
 
                         for (int i = 0; i < numberProjectiles; i++)
                         {
@@ -280,20 +269,20 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                         }
                         break;
                     case 2:
-                        float num = 64;
+                        float num = 24;
                         for (float i = 0; i < num; i++)
                         {
                             float progress = i / num;
                             float rot = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
-                            Vector2 velocity = direction2 * 33;
+                            Vector2 velocity = direction2 * 10;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacBombProj>(), 50, 0f, Owner: Main.myPlayer); 
                         }
                         break;
                     case 3:
 
                         float numberProjectiles2 = 6;
-                        float rotation2 = MathHelper.ToRadians(30);
+                        float rotation2 = MathHelper.ToRadians(50);
 
                         for (int i = 0; i < numberProjectiles2; i++)
                         {

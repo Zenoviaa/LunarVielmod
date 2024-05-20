@@ -131,7 +131,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     float progress = i / num;
                     float rot = MathHelper.TwoPi * progress;
                     Vector2 direction = Vector2.UnitY.RotatedBy(rot);
-                    Vector2 velocity = direction * 33;
+                    Vector2 velocity = direction * 13;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                         ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                 }
@@ -153,7 +153,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     float progress = i / num;
                     float rot = MathHelper.TwoPi * progress;
                     Vector2 direction = Vector2.UnitY.RotatedBy(rot);
-                    Vector2 velocity = direction * 33;
+                    Vector2 velocity = direction * 13;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                         ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                 }
@@ -176,7 +176,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     float progress = i / num;
                     float rot = MathHelper.TwoPi * progress;
                     Vector2 direction = Vector2.UnitY.RotatedBy(rot);
-                    Vector2 velocity = direction * 33;
+                    Vector2 velocity = direction * 13;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                         ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                 }
