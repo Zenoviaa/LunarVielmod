@@ -420,6 +420,7 @@
     <None Remove="NPCs\Cinderspark\CinderCrawlerBody.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerHead.png" />
     <None Remove="NPCs\Cinderspark\CinderCrawlerTail.png" />
+    <None Remove="NPCs\Event\GreenSun\Dulacrowe\TulacBombProj.png" />
     <None Remove="NPCs\Harvesting\Morrow\BlueLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\DesertRuneLightBig.png" />
     <None Remove="NPCs\Harvesting\Morrow\GoldLightBig.png" />

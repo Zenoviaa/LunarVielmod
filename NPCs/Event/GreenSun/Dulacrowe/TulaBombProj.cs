@@ -113,16 +113,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
            //     SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
-            if (Timer % 4 == 0)
-            {
-                float starRadius = 1024;
-                for (int i = 0; i < 4; i++)
-                {
-                    Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
-                    Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Color.White, 1f);
-                }
-            }
+
             if (Timer > 0 && Timer < 120)
             {
                 Scale = MathHelper.Lerp(Scale, 1f, 0.1f);
@@ -169,7 +160,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             if (Timer > 240 && Timer < 360)
             {
-                Scale = MathHelper.Lerp(Scale, 4f, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 2.5f, 0.1f);
             }
             if (Timer == 360)
             {
@@ -192,7 +183,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             if (Timer > 360 && Timer < 480)
             {
-                Scale = MathHelper.Lerp(Scale, 6, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 4, 0.1f);
             }
             if(Timer >= 480)
             {
@@ -206,10 +197,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         {
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             Timer++;
-            if(Timer == 1)
-            {
-                screenShaderSystem.VignetteScreen(-3f);
-            }
+
 
             screenShaderSystem.TintScreen(Color.DarkSeaGreen, 0.2f);
             float maxDetectDistance = 3000;
@@ -220,22 +208,13 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 AI_MoveToward(player.Center, maxSpeed);
             }
 
-            if (Timer % 8 == 0)
-            {
-                float starRadius = 2048;
-                for (int i = 0; i < 4; i++)
-                {
-                    Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
-                    Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Color.DarkSeaGreen, 1f);
-                }
-            }
+
 
             if(Timer % 20 == 0)
             {
                 if (player != null)
                 {
-                    float starRadius = 550;
+                    float starRadius = 5;
                     for (int i = 0; i < 2; i++)
                     {
                         Vector2 projSpawn = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
