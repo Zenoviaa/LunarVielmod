@@ -83,7 +83,7 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
             Player player = spawnInfo.Player;
 
 
-            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun && NPC.downedMechBossAny) ? 0.5f : 0f;
+            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun && NPC.downedMechBossAny) ? 0.8f : 0f;
 
 
 

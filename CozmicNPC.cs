@@ -14,6 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Items.Weapons.Ranged;
 using System.Security.Policy;
+using Stellamod.Utilis;
 
 namespace Stellamod
 {
@@ -30,9 +31,10 @@ namespace Stellamod
                 maxSpawns = (int)(maxSpawns * 4.3f);
             }
 
-            if (EventWorld.GreenSun)
+            if (EventWorld.GreenSun && player.ZoneAcid())
             {
-                maxSpawns = (int)(maxSpawns * 1.5f);
+                spawnRate = (int)(spawnRate * 0.1);
+                maxSpawns = (int)(maxSpawns * 4.3f);
             }
         }
 
