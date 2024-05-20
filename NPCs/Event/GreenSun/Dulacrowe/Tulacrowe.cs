@@ -350,13 +350,26 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         }
         public override void HitEffect(NPC.HitInfo hit)
         {
-
-            //SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"));
-
-            for (int i = 0; i < 5; i++)
+            for (int k = 0; k < 3; k++)
             {
-                Vector2 speed = Main.rand.NextVector2Circular(0.5f, 0.5f);
-                ParticleManager.NewParticle(NPC.Center, speed * 4, ParticleManager.NewInstance<FlameParticle>(), Color.RosyBrown, Main.rand.NextFloat(0.2f, 0.8f));
+                Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GlowDust>(), newColor: new Color(24, 142, 61));
+                int d = Dust.NewDust(NPC.position, NPC.width, NPC.height,
+                    ModContent.DustType<Dusts.GunFlash>(), newColor: new Color(24, 142, 61));
+                Main.dust[d].rotation = (Main.dust[d].position - NPC.position).ToRotation() - MathHelper.PiOver4;
+            }
+
+            if (NPC.life <= 0)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.CursedTorch, 0f, -2f, 0, default(Color), .8f);
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
+                    if (Main.dust[num].position != NPC.Center)
+                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
+                }
             }
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
