@@ -205,13 +205,18 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.TargetClosest(true);
 
             // Now we check the make sure the target is still valid and within our specified notice range (500)
-            if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 270f)
+            if (Tti > 60)
             {
-                // Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
-                Tti = 0;
-                State = ActionState.Notice;
-                ResetTimers();
+                if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 270f)
+                {
+                    // Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
+                    Tti = 0;
+                    State = ActionState.Notice;
+                    ResetTimers();
+                }
+
             }
+           
         }
 
         public void Notice()
@@ -235,7 +240,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         {
             timer++;
 
-            if (timer == 1)
+            if (timer == 48)
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
@@ -265,10 +270,10 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
             }
 
-            if (timer == 21)
+            if (timer == 54)
             {
                 // after .66 seconds, we go to the hover state. //TODO, gravity?
-                State = ActionState.Notice;
+                State = ActionState.Idle;
                 ResetTimers();
             }
         }
