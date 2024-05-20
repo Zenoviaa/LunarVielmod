@@ -3,6 +3,7 @@ using ReLogic.OS.Windows;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
+using Stellamod.Utilis;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -14,8 +15,6 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.WorldG
 {
-
-
     public class EventWorld : ModSystem
     {
         //Gintzing--------------------------

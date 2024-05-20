@@ -104,7 +104,7 @@ namespace Stellamod.NPCs.Ishtar
                 if (NPC.collideX)
                 {
                     CollideTimer++;
-                    if (CollideTimer >= 30)
+                    if (CollideTimer >= 15)
                     {
                         NPC.noTileCollide = true;
                         CollideTimer = 0;
@@ -117,7 +117,7 @@ namespace Stellamod.NPCs.Ishtar
 
                 if (NPC.noTileCollide)
                 {
-                    yDir = -1;
+                    yDir = -2;
                     CollideTimer++;
                     if (CollideTimer >= 10)
                     {
