@@ -46,6 +46,12 @@ namespace Stellamod.NPCs.Event.GreenSun.IrravheilFlames
 
             Projectile.velocity *= 0.98f;
             Projectile.rotation += 0.05f;
+
+            if (Timer > 150)
+            {
+
+                Projectile.hostile = false;
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
