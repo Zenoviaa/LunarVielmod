@@ -102,7 +102,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 
                 case ActionState.Notice:
                     NPC.damage = 0;
-                    NPC.velocity *= 0.94f;
+                    NPC.velocity *= 0.9f;
                     counter++;
                     Notice();
                     break;
@@ -111,6 +111,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     NPC.damage = 90;
                     counter++;
                     Summon();
+                    NPC.velocity *= 0f;
                     break;
 
 
