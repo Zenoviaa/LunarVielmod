@@ -13,6 +13,8 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Items.Weapons.Ranged;
+using System.Security.Policy;
+using Stellamod.Utilis;
 
 namespace Stellamod
 {
@@ -20,10 +22,25 @@ namespace Stellamod
     {
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
+
+            
+
             if (EventWorld.Gintzing)
             {
                 spawnRate = (int)(spawnRate * 0.01);
                 maxSpawns = (int)(maxSpawns * 4.3f);
+            }
+
+            if (EventWorld.GreenSun && player.ZoneAcid())
+            {
+                spawnRate = (int)(spawnRate * 0.1);
+                maxSpawns = (int)(maxSpawns * 4.3f);
+            }
+
+            if (NPC.downedPlantBoss)
+            {
+                spawnRate = (int)(spawnRate * 0.4);
+                maxSpawns = (int)(maxSpawns * 2.3f);
             }
         }
 
