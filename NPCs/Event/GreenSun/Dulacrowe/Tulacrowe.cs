@@ -81,7 +81,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             Player player = spawnInfo.Player;
 
 
-            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun && NPC.downedPlantBoss) ? 0.3f : 0f;
+            return (spawnInfo.Player.ZoneAcid() && EventWorld.GreenSun && NPC.downedPlantBoss) ? 0.2f : 0f;
 
 
             
