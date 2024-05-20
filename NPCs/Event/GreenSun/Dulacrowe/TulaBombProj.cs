@@ -160,7 +160,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             if (Timer > 240 && Timer < 360)
             {
-                Scale = MathHelper.Lerp(Scale, 2.5f, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 4f, 0.1f);
             }
             if (Timer == 360)
             {
@@ -170,7 +170,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
                 screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
 
-                float num = 32;
+                float num = 64;
                 for (float i = 0; i < num; i++)
                 {
                     float progress = i / num;
@@ -183,7 +183,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             }
             if (Timer > 360 && Timer < 480)
             {
-                Scale = MathHelper.Lerp(Scale, 4, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 6, 0.1f);
             }
             if(Timer >= 480)
             {
