@@ -254,7 +254,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-                switch (Main.rand.Next(3))
+                switch (Main.rand.Next(4))
                 {
                     case 0:
                         
@@ -288,6 +288,21 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
                             Vector2 velocity = direction2 * 33;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacBombProj>(), 50, 0f, Owner: Main.myPlayer); 
+                        }
+                        break;
+                    case 3:
+
+                        float numberProjectiles2 = 6;
+                        float rotation2 = MathHelper.ToRadians(30);
+
+                        for (int i = 0; i < numberProjectiles2; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation2, rotation2, i / (numberProjectiles2 - 1))) * 1f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<TulacroweFireball>(), 45, 1, Main.myPlayer, 0, 0);
+                            }
+
                         }
                         break;
                 }
