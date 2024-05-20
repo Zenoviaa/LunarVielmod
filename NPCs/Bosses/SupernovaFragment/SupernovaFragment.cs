@@ -84,7 +84,7 @@ namespace Stellamod.NPCs.Bosses.SupernovaFragment
             NPC.npcSlots = 10f;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SupernovaFragment");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/VoidHit") with { PitchVariance = 0.1f };
-            NPC.BossBar = GetInstance<SInBossBar>();
+            NPC.BossBar = GetInstance<SUPBossBar>();
             NPC.aiStyle = 0;
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
