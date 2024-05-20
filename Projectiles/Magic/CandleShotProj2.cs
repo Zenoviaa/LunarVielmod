@@ -12,6 +12,7 @@ namespace Stellamod.Projectiles.Magic
 {
     internal class CandleShotProj2 : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
@@ -44,6 +45,18 @@ namespace Stellamod.Projectiles.Magic
         private float alphaCounter = 0;
         public override void AI()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
+                    Vector2 spawnPos = Projectile.Center + randOffset;
+                    Vector2 velocity = spawnPos.DirectionTo(Projectile.Center) * 4;
+                    Dust d = Dust.NewDustPerfect(spawnPos, DustID.Torch, velocity, Scale: 2);
+                        d.noGravity = true;
+                }
+            }
             counterAdd *= 1.06f;
             if (Projectile.scale <= 1.3)
             {
@@ -69,10 +82,7 @@ namespace Stellamod.Projectiles.Magic
                 }
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Infernis1"), Projectile.position);
                 var EntitySource = Projectile.GetSource_Death();
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Main.myPlayer, 0, 0);
-                }
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<StarFlowerproj3>(), Projectile.damage * 2, 1, Projectile.owner, 0, 0);
 
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 524f, 14f);
                 for (int i = 0; i < 50; i++)
@@ -85,19 +95,19 @@ namespace Stellamod.Projectiles.Magic
                         Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
                     }
                 }
-                for (int i = 0; i < 14; i++)
+                for (int i = 0; i < 7; i++)
                 {
                     Dust.NewDustPerfect(base.Projectile.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(19.0), 0, default(Color), 2f).noGravity = false;
                 }
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     Dust.NewDustPerfect(base.Projectile.Center, DustID.Torch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(10.0), 0, default(Color), 1f).noGravity = false;
                 }
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < 7; i++)
                 {
                     Dust.NewDustPerfect(base.Projectile.Center, DustID.YellowTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.6f).noGravity = true;
                 }
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     Dust.NewDustPerfect(base.Projectile.Center, DustID.YellowTorch, (Vector2.One * Main.rand.Next(1, 12)).RotatedByRandom(25.0), 0, default(Color), 0.2f).noGravity = false;
                 }

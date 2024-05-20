@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -14,24 +15,26 @@ namespace Stellamod.Projectiles.Magic
     internal class CandleShotProj1 : ModProjectile
     {
         private bool Moved;
+        private bool SpawnedProj;
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Shadow Hand");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 40;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 12;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
 
         public override void SetDefaults()
         {
-            base.Projectile.penetrate = 35;
-            base.Projectile.width = 24;
-            base.Projectile.height = 24;
-            base.Projectile.timeLeft = 150;
-            base.Projectile.alpha = 0;
-            base.Projectile.friendly = true;
-            base.Projectile.hostile = false;
-            base.Projectile.ignoreWater = true;
-            base.Projectile.tileCollide = false;
+            Projectile.penetrate = 35;
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.timeLeft = 150;
+            Projectile.alpha = 0;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -41,17 +44,15 @@ namespace Stellamod.Projectiles.Magic
                 target.AddBuff(BuffID.OnFire, 180);
             }
             var EntitySource = Projectile.GetSource_Death();
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-            }
+            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            SpawnedProj = true;
             Projectile.velocity *= 0.1f;
-            Projectile.ai[1] = 70;
         }
 
         private float alphaCounter = 0;
         public override void AI()
         {
+            Timer++;
             Projectile.velocity *= 0.98f;
             Projectile.ai[1]++;
             if (!Moved && Projectile.ai[1] >= 0)
@@ -76,11 +77,8 @@ namespace Stellamod.Projectiles.Magic
             if (Projectile.ai[1] == 70)
             {
                 var EntitySource = Projectile.GetSource_Death();
-              
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-                }
+                Projectile.velocity = Vector2.Zero;
+                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Projectile.owner, 0, 0);
             }
             if (Projectile.ai[1] == 110)
             {
@@ -107,10 +105,11 @@ namespace Stellamod.Projectiles.Magic
         }
         public override Color? GetAlpha(Color lightColor)
         {
-            return Color.White;
+            return new Color(255, 255, 255, 0);
         }
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
+        private PrimitiveTrail PrimTrailDrawer;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width * 1.3f;
@@ -128,11 +127,66 @@ namespace Stellamod.Projectiles.Magic
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            var textureAsset = TextureRegistry.CloudTexture;
+
+            float progress = 1f;
+            if(Timer > 70)
+            {
+                progress = (Timer - 70) / 40f;
+            }
+            float drawScale = 0.06f * progress;
+            float drawRotation = Projectile.rotation;
+
+            Vector2 drawSize = textureAsset.Value.Size();
+            Vector2 drawOrigin = drawSize / 2;
+            Color drawColor = (Color)GetAlpha(lightColor);
+            Vector2 drawPosition = Projectile.position - Main.screenPosition + Projectile.Size / 2;
+
             TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail2);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.7f - Main.screenPosition, 155);
+            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Draw(textureAsset.Value, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+
+            // Retrieve reference to shader
+            var shader = ShaderRegistry.MiscFireWhitePixelShader;
+
+            //You have to set the opacity/alpha here, alpha in the spritebatch won't do anything
+            //Should be between 0-1
+            float opacity = 0.75f;
+            shader.UseOpacity(opacity);
+
+            //How intense the colors are
+            //Should be between 0-1
+            shader.UseIntensity(0.15f);
+
+            //How fast the extra texture animates
+            float speed = 1.0f;
+            shader.UseSaturation(speed);
+
+            //Color
+            shader.UseColor(Color.LightGoldenrodYellow);
+
+            //Texture itself
+            shader.UseImage1(TrailRegistry.WaterTrail);
+
+            // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
+            shader.Apply(null);
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                float ds = drawScale * (i / 4f);
+                float dr = Projectile.rotation * (i / 4f);
+                spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), dr, drawOrigin, ds, SpriteEffects.None, 0f);
+            }
+            spriteBatch.Draw(textureAsset.Value, drawPosition, null, (Color)GetAlpha(lightColor), drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin();
             return false;
         }
 
