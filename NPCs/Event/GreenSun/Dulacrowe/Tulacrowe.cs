@@ -9,17 +9,20 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
+using Stellamod.NPCs.Bosses.Fenix.Projectiles;
 using Stellamod.Particles;
 using Stellamod.UI.Systems;
 using Stellamod.Utilis;
 using Stellamod.WorldG;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using static Accord.Math.FourierTransform;
 
 namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 {
@@ -51,6 +54,8 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 40;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 15;
+            NPCID.Sets.TrailingMode[NPC.type] = 0;
 
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
@@ -86,6 +91,8 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 
         public override void AI()
         {
+
+            NPC.TargetClosest();
             switch (State)
             {
               
@@ -169,24 +176,25 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     spriteBatch.Draw(texture, NPC.position - screenPos, texture.AnimationFrame(ref frameCounter, ref frameTick, 600, 1, rect), drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
                     break;
             }
+
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            for (int k = 0; k < NPC.oldPos.Length; k++)
+            {
+                Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+                Color color = NPC.GetAlpha(Color.Lerp(new Color(9, 228, 11), new Color(9, 226, 58), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+
             return false;
         }
 
-        public void FallAsleep()
-        {
-            // TargetClosest sets npc.target to the player.whoAmI of the closest player.
-            // The faceTarget parameter means that npc.direction will automatically be 1 or -1 if the targeted player is to the right or left.
-            // This is also automatically flipped if npc.confused.
-            NPC.TargetClosest(true);
 
-            // Now we check the make sure the target is still valid and within our specified notice range (500)
-            if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 70f)
-            {
-                // Since we have a target in range, we change to the Notice state. (and zero out the Timer for good measure)
-                State = ActionState.Notice;
-                ResetTimers();
-            }
-        }
 
         int Tti = 0;
         public void Idling()
@@ -196,7 +204,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             if (Tti < 60)
             {
 
-                NPC.velocity.X *= 1.01f;
+                NPC.velocity.X *= 1.03f;
             }
 
             // TargetClosest sets npc.target to the player.whoAmI of the closest player.
@@ -205,7 +213,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.TargetClosest(true);
 
             // Now we check the make sure the target is still valid and within our specified notice range (500)
-            if (Tti > 60)
+            if (Tti > 120)
             {
                 if (NPC.HasValidTarget && Main.player[NPC.target].Distance(NPC.Center) < 270f)
                 {
@@ -239,25 +247,48 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public void Summon()
         {
             timer++;
+            Player player = Main.player[NPC.target];
+            Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
             if (timer == 48)
             {
                 // We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 
-                switch (Main.rand.Next(4))
+                switch (Main.rand.Next(3))
                 {
                     case 0:
-                       
+                        
+                        float numberProjectiles = 20;
+                        float rotation = MathHelper.ToRadians(5);
+
+                        for (int i = 0; i < numberProjectiles; i++)
+                        {
+                            if (StellaMultiplayer.IsHost)
+                            {
+                                Vector2 perturbedSpeed = new Vector2((direction.X * 1.5f), (direction.Y * 1.5f)).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * 1f;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, perturbedSpeed.X, perturbedSpeed.Y, ModContent.ProjectileType<TulacroweFireball>(), 40, 1, Main.myPlayer, 0, 0);
+                            }
+
+                        }
+
                         break;
                     case 1:
-                       
+                        if (StellaMultiplayer.IsHost)
+                        {
+                            float speedYa = NPC.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, 0, speedYa * 0, ModContent.ProjectileType<TulacBombProj>(), 50, 0f, Owner: Main.myPlayer);
+                        }
                         break;
                     case 2:
-                        
-                        break;
-                    case 3:
-
-                     
+                        float num = 64;
+                        for (float i = 0; i < num; i++)
+                        {
+                            float progress = i / num;
+                            float rot = MathHelper.TwoPi * progress;
+                            Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
+                            Vector2 velocity = direction2 * 33;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacBombProj>(), 50, 0f, Owner: Main.myPlayer); 
+                        }
                         break;
                 }
 

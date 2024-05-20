@@ -8,9 +8,9 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
+namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
 {
-    internal class NiiviCosmicBombProj : ModProjectile
+    internal class TulacBombProj : ModProjectile
     {
         private enum ActionState
         {
@@ -108,9 +108,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Timer++;
             if(Timer == 1)
             {
-                SoundStyle soundStyle = SoundRegistry.Niivi_BigCharge;
-                soundStyle.Volume = 1f;
-                SoundEngine.PlaySound(soundStyle, Projectile.position);
+           //     SoundStyle soundStyle = SoundRegistry.Niivi_BigCharge;
+            //    soundStyle.Volume = 0.7f;
+           //     SoundEngine.PlaySound(soundStyle, Projectile.position);
             }
 
             if (Timer % 4 == 0)
@@ -129,11 +129,21 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
             if (Timer == 120)
             {
-                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
+              //  SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+
                 screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+
+                float num = 4;
+                for (float i = 0; i < num; i++)
+                {
+                    float progress = i / num;
+                    float rot = MathHelper.TwoPi * progress;
+                    Vector2 direction = Vector2.UnitY.RotatedBy(rot);
+                    Vector2 velocity = direction * 33;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                }
             }
             if(Timer > 120 && Timer < 240)
             {
@@ -141,28 +151,48 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             }
             if(Timer == 240)
             {
-                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
+             //   SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow1, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+
                 screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+
+                float num = 8;
+                for (float i = 0; i < num; i++)
+                {
+                    float progress = i / num;
+                    float rot = MathHelper.TwoPi * progress;
+                    Vector2 direction = Vector2.UnitY.RotatedBy(rot);
+                    Vector2 velocity = direction * 33;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                }
             }
             if (Timer > 240 && Timer < 360)
             {
-                Scale = MathHelper.Lerp(Scale, 6f, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 4f, 0.1f);
             }
             if (Timer == 360)
             {
                 SwapColor = true;
-                SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow2, Projectile.position);
+             //   SoundEngine.PlaySound(SoundRegistry.Niivi_PrimGrow2, Projectile.position);
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024, 16);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                    ModContent.ProjectileType<NiiviCosmicBombAbsorbProj>(), 0, 0, Projectile.owner);
+
                 screenShaderSystem.FlashTintScreen(Color.White, 0.3f, 15);
+
+                float num = 32;
+                for (float i = 0; i < num; i++)
+                {
+                    float progress = i / num;
+                    float rot = MathHelper.TwoPi * progress;
+                    Vector2 direction = Vector2.UnitY.RotatedBy(rot);
+                    Vector2 velocity = direction * 33;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                        ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                }
             }
             if (Timer > 360 && Timer < 480)
             {
-                Scale = MathHelper.Lerp(Scale, 18, 0.1f);
+                Scale = MathHelper.Lerp(Scale, 6, 0.1f);
             }
             if(Timer >= 480)
             {
@@ -181,9 +211,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 screenShaderSystem.VignetteScreen(-3f);
             }
 
-            screenShaderSystem.TintScreen(Main.DiscoColor, 0.2f);
+            screenShaderSystem.TintScreen(Color.DarkSeaGreen, 0.2f);
             float maxDetectDistance = 3000;
-            float maxSpeed = 9;
+            float maxSpeed = 4;
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
             if(player != null)
             {
@@ -197,7 +227,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 {
                     Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(starRadius, starRadius);
                     Vector2 vel = (Projectile.Center - pos).SafeNormalize(Vector2.Zero) * 16;
-                    ParticleManager.NewParticle<StarParticle>(pos, vel, Main.DiscoColor, 1f);
+                    ParticleManager.NewParticle<StarParticle>(pos, vel, Color.DarkSeaGreen, 1f);
                 }
             }
 
@@ -212,7 +242,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                         Vector2 direction = projSpawn.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver4);
                         Vector2 velocity = direction * 22;
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), projSpawn, velocity,
-                            ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                            ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
                     }
                     Vector2 diffVelocity = player.velocity - player.oldVelocity;
                     Projectile.position += diffVelocity;
@@ -258,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/ZuiEffect");
+            var texture = ModContent.Request<Texture2D>("Stellamod/Effects/Masks/GreenSunEffect2");
 
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();
@@ -293,10 +323,10 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             shader.UseSaturation(speed);
 
             //Color
-            shader.UseColor(Color.RoyalBlue);
+            shader.UseColor(Color.ForestGreen);
             if (SwapColor)
             {
-                shader.UseColor(Main.DiscoColor);
+                shader.UseColor(Color.DarkOrange);
             }
 
             //Texture itself
@@ -328,7 +358,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             base.OnKill(timeLeft);
 
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 4000, 80);
-            float num = 32;
+            float num = 16;
             for(float i = 0; i < num; i++)
             {
                 float progress = i / num;
@@ -336,18 +366,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 33;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
-            }
-
-            num = 16;
-            for (float i = 0; i < num; i++)
-            {
-                float progress = i / num;
-                float rot = MathHelper.TwoPi * progress;
-                Vector2 direction = Vector2.UnitY.RotatedBy(rot);
-                Vector2 velocity = direction * 15;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
             }
 
             num = 8;
@@ -356,9 +375,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float progress = i / num;
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
-                Vector2 velocity = direction * 12;
+                Vector2 velocity = direction * 15;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
             }
 
             num = 4;
@@ -367,23 +386,34 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                 float progress = i / num;
                 float rot = MathHelper.TwoPi * progress;
                 Vector2 direction = Vector2.UnitY.RotatedBy(rot);
+                Vector2 velocity = direction * 12;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
+                    ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+            }
+
+            num = 2;
+            for (float i = 0; i < num; i++)
+            {
+                float progress = i / num;
+                float rot = MathHelper.TwoPi * progress;
+                Vector2 direction = Vector2.UnitY.RotatedBy(rot);
                 Vector2 velocity = direction * 6;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
-                    ModContent.ProjectileType<NiiviCometProj>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<TulacroweFireball>(), Projectile.damage / 10, Projectile.knockBack, Projectile.owner);
             }
 
             for (int i = 0; i < 150; i++)
             {
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.BlueTorch, speed * 17, Scale: 5f);
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.CoralTorch, speed * 17, Scale: 5f);
                 d.noGravity = true;
 
                 Vector2 speeda = Main.rand.NextVector2CircularEdge(4f, 4f);
-                var da = Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch, speeda * 11, Scale: 5f);
+                var da = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, speeda * 11, Scale: 5f);
                 da.noGravity = false;
 
                 Vector2 speedab = Main.rand.NextVector2CircularEdge(5f, 5f);
-                var dab = Dust.NewDustPerfect(Projectile.Center, DustID.BlueTorch, speeda * 30, Scale: 5f);
+                var dab = Dust.NewDustPerfect(Projectile.Center, DustID.CoralTorch, speeda * 30, Scale: 5f);
                 dab.noGravity = false;
             }
         }
