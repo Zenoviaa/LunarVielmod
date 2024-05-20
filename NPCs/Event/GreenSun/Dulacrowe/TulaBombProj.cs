@@ -237,10 +237,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             {
                 SoundEngine.PlaySound(SoundRegistry.Niivi_PrimBomb, Projectile.position);
             }
-            if (Timer == 575)
-            {
-                screenShaderSystem.VignetteScreen(3f);
-            }
+
 
             if(Timer >= 575)
             {
