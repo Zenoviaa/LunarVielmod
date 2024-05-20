@@ -130,6 +130,8 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             // The multiplication here wasn't doing anything
             Lighting.AddLight(NPC.position, RGB.X, RGB.Y, RGB.Z);
         }
+
+        public bool Tu = false;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             // Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
@@ -177,7 +179,21 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                     break;
             }
 
+            if (Tu)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                for (int k = 0; k < NPC.oldPos.Length; k++)
+                {
+                    Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
+                    Color color = NPC.GetAlpha(Color.Lerp(new Color(9, 228, 11), new Color(9, 226, 58), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
+                    spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, effects, 0f);
+                }
 
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            }
 
 
             return false;
@@ -189,7 +205,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public void Idling()
         {
             Tti++;
-
+            Tu = false;
             if (Tti < 60)
             {
 
@@ -236,6 +252,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
         public void Summon()
         {
             timer++;
+            Tu = true;
             Player player = Main.player[NPC.target];
             Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
 
@@ -246,7 +263,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                 switch (Main.rand.Next(4))
                 {
                     case 0:
-                        
+
                         float numberProjectiles = 20;
                         float rotation = MathHelper.ToRadians(10);
 
@@ -276,7 +293,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
                             float rot = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot);
                             Vector2 velocity = direction2 * 10;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacroweFireball>(), 50, 0f, Owner: Main.myPlayer); 
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y - 100, velocity.X, velocity.Y, ModContent.ProjectileType<TulacroweFireball>(), 50, 0f, Owner: Main.myPlayer);
                         }
                         break;
                     case 3:
