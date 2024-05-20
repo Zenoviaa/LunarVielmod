@@ -7410,7 +7410,8 @@ LilStinger: {
 
 FiveAdvance: {
 	DisplayName: Dharlie Mixam's Five's Advance
-	Tooltip: '''
+	Tooltip:
+		'''
 		+5% Movement Speed!
 		+5% Increased Damage
 		+5% Increased Enemy Damage Reduction
