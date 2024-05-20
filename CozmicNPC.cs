@@ -39,7 +39,7 @@ namespace Stellamod
 
             if (NPC.downedPlantBoss)
             {
-                spawnRate = (int)(spawnRate * 0.4);
+                spawnRate = (int)(spawnRate * 0.8);
                 maxSpawns = (int)(maxSpawns * 2.3f);
             }
         }
