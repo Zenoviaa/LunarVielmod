@@ -28,6 +28,60 @@ namespace Stellamod.Helpers
                 //Projectile.netUpdate = true;
             }
         }
+        public static void CalculateIdleValues(Player owner, Projectile projectile, Vector2 idlePosition, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
+        {
+            idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
+
+            // If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
+            // The index is projectile.minionPos
+            float minionPositionOffsetX = (10 + projectile.minionPos * 40) * -owner.direction;
+            idlePosition.X += minionPositionOffsetX; // Go behind the player
+
+            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+            // Teleport to player if distance is too big
+            vectorToIdlePosition = idlePosition - projectile.Center;
+            distanceToIdlePosition = vectorToIdlePosition.Length();
+
+            if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 2000f)
+            {
+                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                // and then set netUpdate to true
+                projectile.position = idlePosition;
+                projectile.velocity *= 0.1f;
+                //Projectile.netUpdate = true;
+            }
+
+            // If your minion is flying, you want to do this independently of any conditions
+            float overlapVelocity = 0.04f;
+
+            // Fix overlap with other minions
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile other = Main.projectile[i];
+
+                if (i != projectile.whoAmI && other.active && other.owner == projectile.owner && Math.Abs(projectile.position.X - other.position.X) + Math.Abs(projectile.position.Y - other.position.Y) < projectile.width)
+                {
+                    if (projectile.position.X < other.position.X)
+                    {
+                        projectile.velocity.X -= overlapVelocity;
+                    }
+                    else
+                    {
+                        projectile.velocity.X += overlapVelocity;
+                    }
+
+                    if (projectile.position.Y < other.position.Y)
+                    {
+                        projectile.velocity.Y -= overlapVelocity;
+                    }
+                    else
+                    {
+                        projectile.velocity.Y += overlapVelocity;
+                    }
+                }
+            }
+        }
 
         public static void CalculateIdleValues(Player owner, Projectile projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
 		{

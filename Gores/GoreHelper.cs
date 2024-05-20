@@ -25,5 +25,9 @@ namespace Stellamod.Gores
         public static int Niivi5 => ModContent.Find<ModGore>("Stellamod/Niivi5").Type;
         public static int Niivi6 => ModContent.Find<ModGore>("Stellamod/Niivi6").Type;
         public static int Niivi7 => ModContent.Find<ModGore>("Stellamod/Niivi7").Type;
+
+        public static int Fan1 => ModContent.Find<ModGore>("Stellamod/Fan1").Type;
+        public static int Fan2 => ModContent.Find<ModGore>("Stellamod/Fan2").Type;
+        public static int Fan3 => ModContent.Find<ModGore>("Stellamod/Fan3").Type;
     }
 }

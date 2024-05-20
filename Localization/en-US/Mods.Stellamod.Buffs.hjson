@@ -737,3 +737,8 @@ SerpentMinionBuff: {
 	DisplayName: Snake Serpent Raven Thing
 	Description: He's long, and he breathes fire!
 }
+
+IlluriasBlessing: {
+	DisplayName: Illuria's Blessing
+	Description: Outer space cannot hinder you!
+}

@@ -1,15 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using ParticleLibrary;
-using Stellamod.Particles;
+﻿using Stellamod.Helpers;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles
+namespace Stellamod.Projectiles.Summons.Minions
 {
     internal class ClimateIceProjExplosion : ModProjectile
     {
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             Projectile.width = 128;
