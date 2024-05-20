@@ -67,7 +67,7 @@ namespace Stellamod.NPCs.Event.GreenSun.Dulacrowe
             NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
             NPC.damage = 12; // The amount of damage that this npc deals
             NPC.defense = 80; // The amount of defense that this npc has
-            NPC.lifeMax = 4010; // The amount of health that this npc has
+            NPC.lifeMax = 4510; // The amount of health that this npc has
             NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Morrowsc1");
             NPC.value = 500f; // How many copper coins the NPC will drop when killed.
