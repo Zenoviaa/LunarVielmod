@@ -16,6 +16,7 @@ namespace Stellamod.Items.Weapons.Ranged
     public class WaterGun : ClassSwapItem
     {
         private int _index;
+        private int _comboCounter;
         public override DamageClass AlternateClass => DamageClass.Magic;
         public override void SetClassSwappedDefaults()
         {
@@ -59,8 +60,8 @@ namespace Stellamod.Items.Weapons.Ranged
                     break;
                 }
             }
-
-            if (Main.rand.NextBool(5))
+            _comboCounter++;
+            if (_comboCounter % 9 == 0)
             {
                 SoundStyle soundStyle = SoundRegistry.BubbleIn;
                 soundStyle.PitchVariance = 0.2f;
