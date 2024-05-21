@@ -96,7 +96,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             Projectile.aiStyle = -1;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 30;
+            Projectile.localNPCHitCooldown = 20;
             InitSegments(3);
         }
 
