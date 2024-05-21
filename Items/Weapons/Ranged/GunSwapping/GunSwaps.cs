@@ -174,6 +174,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             LeftHand = true;
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterPulsingProj>();
+           
         }
     }
 
@@ -272,6 +273,10 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             Item.damage = 16;
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterElectrifyingProj>();
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunElectric");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
@@ -290,6 +295,11 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             RightHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterRavestBlastLeftProj>();
             GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterRavestBlastRightProj>();
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunRaving");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
@@ -385,6 +395,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             LeftHand = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterCarrotPatrolProj>();
         }
+
     }
 
     internal class MeredaX : MiniGun
@@ -398,6 +409,12 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
             TwoHands = true;
             GunHolsterProjectile = ModContent.ProjectileType<GunHolsterMeredaXLeftProj>();
             GunHolsterProjectile2 = ModContent.ProjectileType<GunHolsterMeredaXRightProj>();
+
+
+
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GunBlasting");
+            soundStyle.PitchVariance = 0.5f;
+            Item.UseSound = soundStyle;
         }
     }
 
