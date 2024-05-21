@@ -7,8 +7,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class IllurianBible : ModItem
+    internal class IllurianBible : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 78;
+            Item.mana = 0;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 30;
