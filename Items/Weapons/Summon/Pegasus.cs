@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Summons.Minions;
 using Terraria;
@@ -22,7 +23,7 @@ namespace Stellamod.Items.Weapons.Summon
 
         public override void SetDefaults()
         {
-            Item.damage = 98;
+            Item.damage = 106;
             Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
@@ -31,7 +32,7 @@ namespace Stellamod.Items.Weapons.Summon
             Item.useAnimation = 36;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.value = Item.sellPrice(0, 0, 33, 0);
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ModContent.RarityType<NiiviSpecialRarity>();
 
             // These below are needed for a minion weapon
             Item.noMelee = true;
@@ -74,7 +75,6 @@ namespace Stellamod.Items.Weapons.Summon
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddIngredient(ItemID.FragmentStardust, 12);
             recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }

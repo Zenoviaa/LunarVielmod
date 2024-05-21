@@ -44,7 +44,6 @@ namespace Stellamod.Items.Weapons.Thrown
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<PureHeart>(), 1);
-            recipe.AddIngredient(ItemID.FragmentVortex, 12);
             recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
