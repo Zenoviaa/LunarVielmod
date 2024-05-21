@@ -4737,11 +4737,11 @@ WaterSong: {
 }
 
 Dulahaun: {
-	DisplayName: Dulahaun
+	DisplayName: World's Collide
 	Tooltip:
 		'''
-		A weapon so magical and devious it may have killed it's previous owners.
-		Forged from the the haunting and bright, this sword is sentient and alive.
+		A weapon so magical and devious, two swords with immense gravitational force hit each other.
+		Forged from the the haunting and bright, this sword is born from a supernova.
 		'''
 }
 
