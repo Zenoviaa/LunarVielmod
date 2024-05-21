@@ -8,8 +8,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Thrown
 {
-    public class CleanestCleaver : ModItem
-	{
+    public class CleanestCleaver : ClassSwapItem
+    {
+        public override DamageClass AlternateClass => DamageClass.Melee;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.damage = 20;
+        }
+
         public override void SetStaticDefaults() 
 		{
 			// DisplayName.SetDefault("Plantius"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.

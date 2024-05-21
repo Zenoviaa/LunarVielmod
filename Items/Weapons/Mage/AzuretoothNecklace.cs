@@ -6,8 +6,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Mage
 {
-    internal class AzuretoothNecklace : ModItem
+    internal class AzuretoothNecklace : ClassSwapItem
     {
+        public override DamageClass AlternateClass => DamageClass.Summon;
+
+        public override void SetClassSwappedDefaults()
+        {
+            Item.DamageType = DamageClass.Summon;
+            Item.damage = 26;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 26;
