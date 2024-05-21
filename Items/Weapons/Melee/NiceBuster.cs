@@ -40,9 +40,7 @@ namespace Stellamod.Items.Weapons.Melee
             Item.useTime = 45;
             Item.useAnimation = 45;
             Item.useStyle = ItemUseStyleID.Swing;
-            SoundStyle soundStyle = SoundRegistry.QuickHit;
-            soundStyle.PitchVariance = 0.33f;
-            Item.UseSound = soundStyle;
+
             Item.knockBack = 7;
             Item.value = Item.sellPrice(0, 10, 20, 14);
             Item.rare = ItemRarityID.Blue;
@@ -78,7 +76,7 @@ namespace Stellamod.Items.Weapons.Melee
             {
                 dir = 1;
             }
-
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 1f) }, player.Center);
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, dir);
             return false; // return false to prevent original projectile from being shot
         }
