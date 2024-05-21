@@ -373,9 +373,14 @@ namespace Stellamod.NPCs.Town
 
 
 
-              
-				
-					.Add(new Item(ModContent.ItemType<Vixyl>())
+                    .Add(new Item(ModContent.ItemType<DreadsVile>())
+                    {
+                        shopCustomPrice = 3,
+                        shopSpecialCurrency = Stellamod.MOACurrencyID // omit this line if shopCustomPrice should be in regular coins.
+                    })
+
+
+                    .Add(new Item(ModContent.ItemType<Vixyl>())
 					 {
 						shopCustomPrice = 3,
 						shopSpecialCurrency = Stellamod.MOBCurrencyID // omit this line if shopCustomPrice should be in regular coins.
