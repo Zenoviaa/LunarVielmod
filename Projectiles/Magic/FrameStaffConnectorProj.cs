@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles.Magic
             Player player = Main.player[Projectile.owner];
 
             Timer++;
-            if (Timer == 1)
+            if (Timer % 58 == 0)
             {
                 SoundEngine.PlaySound(SoundRegistry.LaserChannel, player.position);
             }
