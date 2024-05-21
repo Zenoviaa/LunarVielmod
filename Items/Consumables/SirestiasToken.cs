@@ -1,6 +1,7 @@
 ﻿
 
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Greatswords.INY;
@@ -39,7 +40,6 @@ namespace Stellamod.Items.Consumables
             recipe.AddIngredient(ModContent.ItemType<ReflectionSeeker>(), 1);
             recipe.Register();
 
-
             Recipe recipe2 = CreateRecipe();
             recipe2.AddIngredient(ModContent.ItemType<Maelstrom>(), 1);
             recipe2.Register();
@@ -63,6 +63,10 @@ namespace Stellamod.Items.Consumables
             Recipe recipe7 = CreateRecipe();
             recipe7.AddIngredient(ModContent.ItemType<Mordred>(), 1);
             recipe7.Register();
+
+            Recipe recipe8 = CreateRecipe();
+            recipe8.AddIngredient(ModContent.ItemType<SirestiasMask>(), 1);
+            recipe8.Register();
         }
     }
 }

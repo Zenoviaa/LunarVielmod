@@ -528,17 +528,15 @@ namespace Stellamod.NPCs.Town
 						{
 							case 0:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
-
 								break;
 
 							case 1:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-
 								break;
 
 							case 2:
-
-								break;
+                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasMask>(), 1);
+                                break;
 
 						}
 

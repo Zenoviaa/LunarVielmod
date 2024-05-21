@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +18,17 @@ namespace Stellamod.Buffs.Charms
         {
             if (Collision.SolidCollision(player.position + new Vector2(0, 2), player.width, player.height, true))
             {
-                Dust.NewDustPerfect(new Vector2(player.position.X + Main.rand.Next(player.width), player.position.Y + player.height - Main.rand.Next(7)), DustID.t_LivingWood, Vector2.Zero);
+                float num = 16;
+                for (int i = 0; i < num; i++)
+                {
+                    float progress = (float)i / num;
+                    Vector2 velocity = Vector2.Zero;
+                    Vector2 offset = -Vector2.UnitY;
+                    offset = offset.RotatedBy(progress * MathHelper.TwoPi);
+                    offset *= 80;
+                    Vector2 position = player.Center + offset;
+                    Dust.NewDustPerfect(position, ModContent.DustType<Sparkle>(), velocity, newColor: Color.ForestGreen, Scale: 0.7f);
+                }
                 player.GetDamage(DamageClass.Generic) += 0.3f;
             }
             else
