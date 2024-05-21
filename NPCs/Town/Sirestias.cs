@@ -515,75 +515,12 @@ namespace Stellamod.NPCs.Town
 
 							case 2:
 								Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
-								break;
+                                Main.npcChatText = $"I couldnt find anything more so I'll give you an extra token!";
+                                break;
 
-						}
-
-
-						if (DownedBossSystem.downedIrradiaBoss)
-						{
-
-							switch (Main.rand.Next(3))
-							{
-								case 0:
-									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<StickyCards>(), 1);
-
-									break;
-
-								case 1:
-									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Mordred>(), 1);
-
-									break;
-
-								case 2:
-
-									break;
-
-							}
-
-
-
-
-
-
-
-
-
-
-
-							if (DownedBossSystem.downedAzurewrathBoss)
-							{
-
-								switch (Main.rand.Next(3))
-								{
-									case 0:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
-
-										break;
-
-									case 1:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-
-										break;
-
-									case 2:
-										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-										break;
-
-								}
-
-							}
 						}
 
 					}
-
-
-
-
-
-
-
-
 					else if (DownedBossSystem.downedIrradiaBoss)
 					{
 
@@ -611,56 +548,44 @@ namespace Stellamod.NPCs.Town
 
 
 
-
-
-
-
-						if (DownedBossSystem.downedAzurewrathBoss)
-						{
-
-							switch (Main.rand.Next(3))
-							{
-								case 0:
-									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
-
-									break;
-
-								case 1:
-									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
-
-									break;
-
-								case 2:
-									Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-									break;
-
-							}
-
-						}
 					}
 
-                    else if (DownedBossSystem.downedAzurewrathBoss)
-                    {
 
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-                                break;
+					else if (DownedBossSystem.downedAzurewrathBoss)
+					{
 
-                            case 1:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
+								switch (Main.rand.Next(3))
+								{
+									case 0:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SineSire>(), 1);
 
-                                break;
+										break;
 
-                            case 2:
-                                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
-                                break;
+									case 1:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RavestBlast>(), 1);
 
-                        }
+										break;
 
-                    }
+									case 2:
+										Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<IshNYire>(), 1);
+										break;
+
+								}
+
+					}
+						
+
+					
+
+
+
+
+
+
+
+
+					
                     else
 					{
 
