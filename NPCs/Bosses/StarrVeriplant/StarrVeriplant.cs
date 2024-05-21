@@ -112,8 +112,8 @@ namespace Stellamod.NPCs.Bosses.StarrVeriplant
 			NPC.width = 80;
 			NPC.height = 44;
 			NPC.damage = 1;
-			NPC.defense = 1;
-			NPC.lifeMax = 300;
+			NPC.defense = 5;
+			NPC.lifeMax = 600;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0f;
