@@ -23,7 +23,7 @@ namespace Stellamod.Helpers
         public static SoundStyle LaserChannel => new SoundStyle($"{Path}LaserChannel");
         public static SoundStyle ExplosionCrystalShard => new SoundStyle($"{Path}ExplosionCrystalShard");
         public static SoundStyle QuickHit => new SoundStyle($"{Path}QuickHit");
-
+        public static SoundStyle IceyWind => new SoundStyle($"{Path}IceyWind");
 
         public static SoundStyle JellyBow => new SoundStyle($"{Path}JellyBow");
         public static SoundStyle JellyTome => new SoundStyle($"{Path}JellyTome");

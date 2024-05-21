@@ -60,7 +60,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 }
             }
 
-            if (Main.rand.NextBool(8))
+            if (Main.rand.NextBool(5))
             {
                 SoundStyle soundStyle = SoundRegistry.BubbleIn;
                 soundStyle.PitchVariance = 0.2f;
