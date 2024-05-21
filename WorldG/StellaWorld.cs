@@ -7407,7 +7407,7 @@ namespace Stellamod.WorldG
                         if (tileType == ModContent.TileType<IlluriaChest>())
                         {
 							//Illura Chest Loot here
-							switch (Main.rand.Next(5))
+							switch (Main.rand.Next(6))
 							{
 								case 0:
 									//Illuria Brooch
@@ -7428,6 +7428,9 @@ namespace Stellamod.WorldG
 									break;
 								case 4:
                                     itemsToAdd.Add((ModContent.ItemType<MsFreeze>(), 1));
+									break;
+								case 5:
+                                    itemsToAdd.Add((ModContent.ItemType<IllurianBible>(), 1));
 									break;
                             }
 

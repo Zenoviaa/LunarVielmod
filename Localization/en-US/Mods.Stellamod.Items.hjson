@@ -7451,3 +7451,11 @@ IllurineBrew: {
 		Slightly increases movement speed and acceleration
 		'''
 }
+
+IllurianBible: {
+	DisplayName: Illurian Bible
+	Tooltip:
+		'''
+		Summons prismatic comets to chase your enemies!
+		'''
+}
