@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Materials;
 using Stellamod.NPCs.Event.GreenSun.IrravheilFlames;
 using Stellamod.Utilis;
@@ -146,6 +147,7 @@ namespace Stellamod.NPCs.Event.GreenSun
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WoodyBroochA>(), 7, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraftedSoul>(), 2, 1, 5));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VirulentPlating>(), minimumDropped: 1, maximumDropped: 3));
         }
