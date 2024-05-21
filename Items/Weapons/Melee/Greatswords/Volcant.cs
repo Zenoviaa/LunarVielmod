@@ -98,7 +98,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
             }
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyLong") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Swinger") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
            // Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<AuroranBullet>(), damage * 2, knockback, player.whoAmI, 1, dir);

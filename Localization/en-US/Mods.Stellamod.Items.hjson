@@ -7461,3 +7461,8 @@ SupernovaBag: {
 	DisplayName: Supernova Bag
 	Tooltip: ""
 }
+
+SupernovaBossRel: {
+	DisplayName: Supernova Boss Rel
+	Tooltip: ""
+}
