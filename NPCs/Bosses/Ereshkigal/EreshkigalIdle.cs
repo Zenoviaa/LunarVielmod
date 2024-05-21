@@ -263,7 +263,7 @@ namespace Stellamod.NPCs.Bosses.Ereshkigal
                         Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Silver, 1f).noGravity = true;
                     }
 
-                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<SirestiasToken>(), 1);
+                    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<VoidalPassageway>(), 1);
 
                     DialogueSystem dialogueSystem = ModContent.GetInstance<DialogueSystem>();
                     EreshkigalPhotos exampleDialogue = new EreshkigalPhotos();

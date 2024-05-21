@@ -7519,3 +7519,8 @@ SirestiasMask: {
 	DisplayName: Sirestias's Mask
 	Tooltip: 30% increased damage while at full health!
 }
+
+VoidalPassageway: {
+	DisplayName: Voidal Passageway
+	Tooltip: Use this to open a doorway, calling down Supernova Fragment!
+}
