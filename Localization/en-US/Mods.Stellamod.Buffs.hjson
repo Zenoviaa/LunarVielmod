@@ -752,3 +752,8 @@ WoodyB: {
 	DisplayName: Woody
 	Description: You're stronger while grounded!
 }
+
+CentipedeMinionBuff: {
+	DisplayName: Don't Skip Leg Day
+	Description: It has so many legs!
+}

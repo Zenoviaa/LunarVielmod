@@ -1,47 +1,24 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs.Minions;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ModLoader;
 using Terraria;
+using Microsoft.Xna.Framework;
+using Stellamod.Trails;
+using Terraria.ID;
+using Stellamod.Helpers;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.ModLoader;
+using Stellamod.Buffs.Minions;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    internal class SerpentSegment
-    {
-        public string TexturePath;
-        public Texture2D Texture => ModContent.Request<Texture2D>(TexturePath).Value;
-        public Texture2D GlowTexture => ModContent.Request<Texture2D>(TexturePath + "_Glow").Value;
-        public Color GlowWhiteColor;
-        public bool GlowWhite;
-        public float GlowTimer;
-        public Rectangle? Frame;
-        public Vector2 Size => Texture.Size();
-        public Vector2 Position;
-        public Vector2 Center => Position + Size / 2;
-        public Vector2 Velocity;
-        public float Rotation;
-        public float Scale = 1f;
-        public bool Eaten;
-        public int FrameCounter;
-        public int FrameTick;
-        public SerpentSegment(Projectile projectile)
-        {
-            Position = projectile.position;
-            Rotation = 0;
-            Velocity = Vector2.Zero;
-            Eaten = false;
-        }
-    }
 
-    internal class SerpentMinionProj : ModProjectile
+
+    internal class CentipedeMinionProj : ModProjectile
     {
 
         public PrimDrawer TrailDrawer { get; private set; } = null;
@@ -86,6 +63,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             get => (int)Projectile.ai[2];
             set => Projectile.ai[2] = (int)value;
         }
+        private int TargetNpc = -1;
 
         private Player Owner => Main.player[Projectile.owner];
         private int _originalDamage;
@@ -108,8 +86,8 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public override void SetDefaults()
         {
-            Projectile.width = 90;
-            Projectile.height = 90;
+            Projectile.width = 58;
+            Projectile.height = 58;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.minionSlots = 1;
@@ -123,7 +101,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         }
 
         private void InitSegments(int numSegments)
-        {          
+        {
             //Initialize Segments
             List<SerpentSegment> segments = new List<SerpentSegment>();
             //Set the textures
@@ -138,15 +116,10 @@ namespace Stellamod.Projectiles.Summons.Minions
                 segment = new SerpentSegment(Projectile);
                 segment.TexturePath = $"{Texture}_Body";
                 segment.Position = Projectile.position + new Vector2(1, 0);
-
-                float p = i;
-                float progress = p / (float)numSegments;
-                progress = 1 - progress;
-                segment.Scale = Math.Max(0.5f, progress);
-
+                //segment.FrameCounter = i;
                 segments.Add(segment);
             }
-    
+
             segment = new SerpentSegment(Projectile);
             segment.TexturePath = $"{Texture}_Tail";
             segment.Position = Projectile.position + new Vector2(1, 0);
@@ -167,12 +140,10 @@ namespace Stellamod.Projectiles.Summons.Minions
             return IsMainSerpent;
         }
 
-        
-
         public override void AI()
         {
             //Whopliwooo
-            if (!SummonHelper.CheckMinionActive<SerpentMinionBuff>(Owner, Projectile))
+            if (!SummonHelper.CheckMinionActive<CentipedeMinionBuff>(Owner, Projectile))
                 return;
 
             if (!IsMainSerpent)
@@ -181,65 +152,80 @@ namespace Stellamod.Projectiles.Summons.Minions
                 return;
             }
 
-            if(_originalDamage == 0)
+            if (_originalDamage == 0)
             {
                 _originalDamage = Projectile.originalDamage;
             }
-  
+
             int ownedCounts = Owner.ownedProjectileCounts[Type];
             Projectile.originalDamage = _originalDamage + ownedCounts * 15;
             ExtraScale = 1f + ((float)ownedCounts * 0.05f);
 
             int numBodySegments = (int)(ownedCounts * 10) + 1;
-            if(SegmentCount != numBodySegments)
+            if (SegmentCount != numBodySegments)
             {
                 InitSegments(numBodySegments);
             }
 
+            if(TargetNpc != -1)
+            {
+                NPC npc = Main.npc[TargetNpc];
+                if (!npc.active)
+                {
+                    TargetNpc = -1;
+                }
+                else
+                {
+                    npc.Center = Segments[0].Center;
+                    npc.velocity *= 0.2f;
+                }
+            }
+
+            for(int i = 0; i < Segments.Length; i++)
+            {
+                var segment = Segments[i];
+                if(segment.TexturePath == $"{Texture}_Body")
+                {
+                    int frameTime = 4;
+                    int frameCount = 8;
+                    Rectangle frame =
+                        segment.Texture.AnimationFrame(ref segment.FrameCounter, ref segment.FrameTick, frameTime, frameCount, true);
+                    segment.Frame = frame;
+                }
+            }
+
             GlowWhite(1 / 60f);
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _originalDamage = Projectile.originalDamage;
             }
-  
+
             SummonHelper.SearchForTargetsThroughTiles(Owner, Projectile,
                  out bool foundTarget,
                  out float distanceFromTarget,
                  out Vector2 targetCenter);
 
-            float orbitRadius = 384;
-            Vector2 direction = Owner.Center.DirectionTo(Projectile.Center);
-            direction = direction.RotatedBy(MathHelper.TwoPi / 180);
-            Vector2 orbitCenter = Owner.Center + direction * orbitRadius;
-
             if (foundTarget && distanceFromTarget <= 1500)
             {
-                if (distanceFromTarget > 256)
+                DrawChargeTrail = true;
+         
+                if (TargetNpc != -1)
                 {
-                    AI_MoveToward(targetCenter, 16, 1);
+                    Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.TwoPi / 60f);
                 }
                 else
                 {
-                    Projectile.velocity *= 0.8f;
+                    AI_MoveToward(targetCenter, 16, 1);
                 }
-
-
+                    
                 StartSegmentGlow(Color.White);
                 Vector2 directionToTarget = Projectile.Center.DirectionTo(targetCenter);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, directionToTarget.ToRotation(), 0.1f);
-                if (Timer % 8 == 0)
-                {
-                    //Shoot fire breath
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
-                    SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
-
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, directionToTarget * 10,
-                        ModContent.ProjectileType<SerpentMinionFireBreathProj>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                }
             }
             else
             {
+                DrawChargeTrail = false;
                 SummonHelper.CalculateIdleValuesWithOverlap(Owner, Projectile, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
                 SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
                 Projectile.rotation = MathHelper.Lerp(Projectile.rotation, Projectile.velocity.ToRotation(), 0.1f);
@@ -247,6 +233,15 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
 
             MakeLikeWorm();
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            if(TargetNpc == -1 && !target.boss && Vector2.Distance(Projectile.Center, target.Center) <= 32)
+            {
+                TargetNpc = target.whoAmI;
+            }
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -400,7 +395,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             int inFrontIndex = index - 1;
             if (inFrontIndex < 0)
                 return;
-            
+
             ref var segment = ref Segments[index];
             ref var frontSegment = ref Segments[index - 1];
 
@@ -422,7 +417,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                 fixer /= 1.75f;
             }
 
-     
+
             float dist = (length - segment.Size.X * SegmentStretch * fixer) / length;
 
             float posX = dirX * dist;
@@ -458,7 +453,7 @@ namespace Stellamod.Projectiles.Summons.Minions
                     ChargeTrailOpacity = 1;
             }
 
-            return Color.Lerp(Color.Orange, Color.Orange, (1f - completionRatio)) * ChargeTrailOpacity;
+            return Color.Lerp(ColorFunctions.AcidFlame, Color.Transparent, (1f - completionRatio)) * ChargeTrailOpacity;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -472,7 +467,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
             SpriteBatch spriteBatch = Main.spriteBatch;
             GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            Vector2 size = new Vector2(90, 90);
+            Vector2 size = new Vector2(58, 22);
             TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
             TrailDrawer.DrawPrims(Projectile.oldPos, size * 0.5f - Main.screenPosition, 155);
 
@@ -486,9 +481,14 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
+                if(segment.Frame != null)
+                {
+                    drawOrigin = segment.Frame.Value.Size() / 2;
+                }
+
                 float drawScale = Projectile.scale * segment.Scale * ExtraScale;
                 Color drawColor = Color.White;
-                spriteBatch.Draw(segment.Texture, drawPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(segment.Texture, drawPosition, segment.Frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
 
             return false;
@@ -510,22 +510,27 @@ namespace Stellamod.Projectiles.Summons.Minions
                 Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
                 float drawRotation = segment.Rotation;
                 Vector2 drawOrigin = segment.Size / 2;
+                if (segment.Frame != null)
+                {
+                    drawOrigin = segment.Frame.Value.Size() / 2;
+                }
+
                 float drawScale = Projectile.scale * segment.Scale * ExtraScale;
                 Color drawGlowColor = Color.White;
                 float osc = VectorHelper.Osc(0, 1);
 
-                spriteBatch.Draw(asset.Value, drawPosition, null, drawGlowColor * osc, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(asset.Value, drawPosition, segment.Frame, drawGlowColor * osc, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
                 for (float j = 0f; j < 1f; j += 0.25f)
                 {
                     float radians = (j + osc) * MathHelper.TwoPi;
                     spriteBatch.Draw(segment.GlowTexture, drawPosition + new Vector2(0f, 8f).RotatedBy(radians) * osc,
-                        null, Color.White * osc * 0.3f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                        segment.Frame, Color.White * osc * 0.3f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
 
                 if (segment.GlowTimer > 0 && ModContent.RequestIfExists<Texture2D>(segment.TexturePath + "_White", out var whiteAsset))
                 {
-                    spriteBatch.Draw(whiteAsset.Value, drawPosition, null, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(whiteAsset.Value, drawPosition, segment.Frame, segment.GlowWhiteColor * segment.GlowTimer, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
                 }
             }
         }
