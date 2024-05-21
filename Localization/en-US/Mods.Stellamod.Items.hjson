@@ -7494,3 +7494,12 @@ WoodyBroochA: {
 		But- you have 30% decreased damage while airborne
 		'''
 }
+
+DreadsVile: {
+	DisplayName: Dread's Vile
+	Tooltip: '''
+	Ever wanted to dash with swinging speeds like Dreadmire? Now you can fill the world with dread as well!
+	Click at enemies to go for a striking hit that will grant immunity and skulls!
+	If you miss though you most likely will get hit by contact damage and you'll be on cooldown!.
+	'''
+}
