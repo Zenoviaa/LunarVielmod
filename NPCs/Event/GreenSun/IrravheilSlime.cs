@@ -19,6 +19,7 @@ namespace Stellamod.NPCs.Event.GreenSun
     public class IrravheilSlime : ModNPC
     {
         private float JumpTimer;
+        private bool DoJump;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -158,10 +159,11 @@ namespace Stellamod.NPCs.Event.GreenSun
         {
             base.PostAI();
             NPC.ai[0] += 3;
-            if(NPC.velocity.Y < 0 && JumpTimer == 0)
+            JumpTimer--;
+            if(NPC.velocity.Y < 0 && JumpTimer <= 0 && !DoJump)
             {
-                NPC.velocity.Y *= 1.6f;
-                JumpTimer++;
+                DoJump = true;
+                NPC.velocity.Y *= 5.5f;
                 if (StellaMultiplayer.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitX * 2,
@@ -173,7 +175,8 @@ namespace Stellamod.NPCs.Event.GreenSun
 
             if (NPC.collideY)
             {
-                JumpTimer = 0;
+                DoJump = false;
+                JumpTimer = 15;
             }
         }
 
